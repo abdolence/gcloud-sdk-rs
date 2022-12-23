@@ -405,6 +405,16 @@ impl State {
             State::Deleting => "DELETING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CREATING" => Some(Self::Creating),
+            "ACTIVE" => Some(Self::Active),
+            "DELETING" => Some(Self::Deleting),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod hub_service_client {

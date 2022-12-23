@@ -42,6 +42,22 @@ impl AcceleratorType {
             AcceleratorType::TpuV3 => "TPU_V3",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACCELERATOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NVIDIA_TESLA_K80" => Some(Self::NvidiaTeslaK80),
+            "NVIDIA_TESLA_P100" => Some(Self::NvidiaTeslaP100),
+            "NVIDIA_TESLA_V100" => Some(Self::NvidiaTeslaV100),
+            "NVIDIA_TESLA_P4" => Some(Self::NvidiaTeslaP4),
+            "NVIDIA_TESLA_T4" => Some(Self::NvidiaTeslaT4),
+            "NVIDIA_TESLA_A100" => Some(Self::NvidiaTeslaA100),
+            "NVIDIA_A100_80GB" => Some(Self::NvidiaA10080gb),
+            "TPU_V2" => Some(Self::TpuV2),
+            "TPU_V3" => Some(Self::TpuV3),
+            _ => None,
+        }
+    }
 }
 /// References an API call. It contains more information about long running
 /// operation and Jobs that are triggered by the API call.
@@ -257,6 +273,15 @@ pub mod artifact {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Pending => "PENDING",
                 State::Live => "LIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "LIVE" => Some(Self::Live),
+                _ => None,
             }
         }
     }
@@ -550,6 +575,15 @@ pub mod explanation_metadata {
                         Type::Outlines => "OUTLINES",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "PIXELS" => Some(Self::Pixels),
+                        "OUTLINES" => Some(Self::Outlines),
+                        _ => None,
+                    }
+                }
             }
             /// Whether to only highlight pixels with positive contributions, negative
             /// or both. Defaults to POSITIVE.
@@ -588,6 +622,16 @@ pub mod explanation_metadata {
                         Polarity::Positive => "POSITIVE",
                         Polarity::Negative => "NEGATIVE",
                         Polarity::Both => "BOTH",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "POLARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                        "POSITIVE" => Some(Self::Positive),
+                        "NEGATIVE" => Some(Self::Negative),
+                        "BOTH" => Some(Self::Both),
+                        _ => None,
                     }
                 }
             }
@@ -638,6 +682,19 @@ pub mod explanation_metadata {
                         ColorMap::PinkWhiteGreen => "PINK_WHITE_GREEN",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "COLOR_MAP_UNSPECIFIED" => Some(Self::Unspecified),
+                        "PINK_GREEN" => Some(Self::PinkGreen),
+                        "VIRIDIS" => Some(Self::Viridis),
+                        "RED" => Some(Self::Red),
+                        "GREEN" => Some(Self::Green),
+                        "RED_GREEN" => Some(Self::RedGreen),
+                        "PINK_WHITE_GREEN" => Some(Self::PinkWhiteGreen),
+                        _ => None,
+                    }
+                }
             }
             /// How the original image is displayed in the visualization.
             #[derive(
@@ -678,6 +735,17 @@ pub mod explanation_metadata {
                         OverlayType::Original => "ORIGINAL",
                         OverlayType::Grayscale => "GRAYSCALE",
                         OverlayType::MaskBlack => "MASK_BLACK",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "OVERLAY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "NONE" => Some(Self::None),
+                        "ORIGINAL" => Some(Self::Original),
+                        "GRAYSCALE" => Some(Self::Grayscale),
+                        "MASK_BLACK" => Some(Self::MaskBlack),
+                        _ => None,
                     }
                 }
             }
@@ -762,6 +830,19 @@ pub mod explanation_metadata {
                     Encoding::Indicator => "INDICATOR",
                     Encoding::CombinedEmbedding => "COMBINED_EMBEDDING",
                     Encoding::ConcatEmbedding => "CONCAT_EMBEDDING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IDENTITY" => Some(Self::Identity),
+                    "BAG_OF_FEATURES" => Some(Self::BagOfFeatures),
+                    "BAG_OF_FEATURES_SPARSE" => Some(Self::BagOfFeaturesSparse),
+                    "INDICATOR" => Some(Self::Indicator),
+                    "COMBINED_EMBEDDING" => Some(Self::CombinedEmbedding),
+                    "CONCAT_EMBEDDING" => Some(Self::ConcatEmbedding),
+                    _ => None,
                 }
             }
         }
@@ -1396,6 +1477,14 @@ pub mod presets {
                 Query::Fast => "FAST",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRECISE" => Some(Self::Precise),
+                "FAST" => Some(Self::Fast),
+                _ => None,
+            }
+        }
     }
     /// Preset option controlling parameters for different modalities
     #[derive(
@@ -1431,6 +1520,16 @@ pub mod presets {
                 Modality::Image => "IMAGE",
                 Modality::Text => "TEXT",
                 Modality::Tabular => "TABULAR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODALITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMAGE" => Some(Self::Image),
+                "TEXT" => Some(Self::Text),
+                "TABULAR" => Some(Self::Tabular),
+                _ => None,
             }
         }
     }
@@ -1540,6 +1639,15 @@ pub mod examples_override {
                 DataFormat::Embeddings => "EMBEDDINGS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSTANCES" => Some(Self::Instances),
+                "EMBEDDINGS" => Some(Self::Embeddings),
+                _ => None,
+            }
+        }
     }
 }
 /// Restrictions namespace for example-based explanations overrides.
@@ -1606,6 +1714,23 @@ impl JobState {
             JobState::Paused => "JOB_STATE_PAUSED",
             JobState::Expired => "JOB_STATE_EXPIRED",
             JobState::Updating => "JOB_STATE_UPDATING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "JOB_STATE_QUEUED" => Some(Self::Queued),
+            "JOB_STATE_PENDING" => Some(Self::Pending),
+            "JOB_STATE_RUNNING" => Some(Self::Running),
+            "JOB_STATE_SUCCEEDED" => Some(Self::Succeeded),
+            "JOB_STATE_FAILED" => Some(Self::Failed),
+            "JOB_STATE_CANCELLING" => Some(Self::Cancelling),
+            "JOB_STATE_CANCELLED" => Some(Self::Cancelled),
+            "JOB_STATE_PAUSED" => Some(Self::Paused),
+            "JOB_STATE_EXPIRED" => Some(Self::Expired),
+            "JOB_STATE_UPDATING" => Some(Self::Updating),
+            _ => None,
         }
     }
 }
@@ -2089,6 +2214,15 @@ pub mod model_monitoring_objective_config {
                         PredictionFormat::Bigquery => "BIGQUERY",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "PREDICTION_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                        "JSONL" => Some(Self::Jsonl),
+                        "BIGQUERY" => Some(Self::Bigquery),
+                        _ => None,
+                    }
+                }
             }
             /// The configuration specifying of BatchExplain job output. This can be
             /// used to generate the baseline of feature attribution scores.
@@ -2371,6 +2505,16 @@ pub mod model_deployment_monitoring_job {
                 MonitoringScheduleState::Running => "RUNNING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MONITORING_SCHEDULE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "OFFLINE" => Some(Self::Offline),
+                "RUNNING" => Some(Self::Running),
+                _ => None,
+            }
+        }
     }
 }
 /// ModelDeploymentMonitoringBigQueryTable specifies the BigQuery table name
@@ -2431,6 +2575,15 @@ pub mod model_deployment_monitoring_big_query_table {
                 LogSource::Serving => "SERVING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOG_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRAINING" => Some(Self::Training),
+                "SERVING" => Some(Self::Serving),
+                _ => None,
+            }
+        }
     }
     /// Indicates what type of traffic does the log belong to.
     #[derive(
@@ -2463,6 +2616,15 @@ pub mod model_deployment_monitoring_big_query_table {
                 LogType::Unspecified => "LOG_TYPE_UNSPECIFIED",
                 LogType::Predict => "PREDICT",
                 LogType::Explain => "EXPLAIN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOG_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PREDICT" => Some(Self::Predict),
+                "EXPLAIN" => Some(Self::Explain),
+                _ => None,
             }
         }
     }
@@ -2577,6 +2739,19 @@ impl ModelDeploymentMonitoringObjectiveType {
             ModelDeploymentMonitoringObjectiveType::FeatureAttributionDrift => {
                 "FEATURE_ATTRIBUTION_DRIFT"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MODEL_DEPLOYMENT_MONITORING_OBJECTIVE_TYPE_UNSPECIFIED" => {
+                Some(Self::Unspecified)
+            }
+            "RAW_FEATURE_SKEW" => Some(Self::RawFeatureSkew),
+            "RAW_FEATURE_DRIFT" => Some(Self::RawFeatureDrift),
+            "FEATURE_ATTRIBUTION_SKEW" => Some(Self::FeatureAttributionSkew),
+            "FEATURE_ATTRIBUTION_DRIFT" => Some(Self::FeatureAttributionDrift),
+            _ => None,
         }
     }
 }
@@ -2929,6 +3104,15 @@ pub mod model {
                     ExportableContent::Image => "IMAGE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "EXPORTABLE_CONTENT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ARTIFACT" => Some(Self::Artifact),
+                    "IMAGE" => Some(Self::Image),
+                    _ => None,
+                }
+            }
         }
     }
     /// Identifies a type of Model's prediction resources.
@@ -2970,6 +3154,16 @@ pub mod model {
                 DeploymentResourcesType::DedicatedResources => "DEDICATED_RESOURCES",
                 DeploymentResourcesType::AutomaticResources => "AUTOMATIC_RESOURCES",
                 DeploymentResourcesType::SharedResources => "SHARED_RESOURCES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_RESOURCES_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEDICATED_RESOURCES" => Some(Self::DedicatedResources),
+                "AUTOMATIC_RESOURCES" => Some(Self::AutomaticResources),
+                "SHARED_RESOURCES" => Some(Self::SharedResources),
+                _ => None,
             }
         }
     }
@@ -3282,6 +3476,16 @@ pub mod model_source_info {
                 ModelSourceType::Automl => "AUTOML",
                 ModelSourceType::Custom => "CUSTOM",
                 ModelSourceType::Bqml => "BQML",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOML" => Some(Self::Automl),
+                "CUSTOM" => Some(Self::Custom),
+                "BQML" => Some(Self::Bqml),
+                _ => None,
             }
         }
     }
@@ -4250,6 +4454,14 @@ pub mod sample_config {
             match self {
                 SampleStrategy::Unspecified => "SAMPLE_STRATEGY_UNSPECIFIED",
                 SampleStrategy::Uncertainty => "UNCERTAINTY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SAMPLE_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNCERTAINTY" => Some(Self::Uncertainty),
+                _ => None,
             }
         }
     }
@@ -6405,6 +6617,16 @@ pub mod featurestore_monitoring_config {
                     State::Disabled => "DISABLED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DEFAULT" => Some(Self::Default),
+                    "ENABLED" => Some(Self::Enabled),
+                    "DISABLED" => Some(Self::Disabled),
+                    _ => None,
+                }
+            }
         }
         /// Defines the baseline to do anomaly detection for feature values imported
         /// by each \[ImportFeatureValues][\] operation.
@@ -6447,6 +6669,18 @@ pub mod featurestore_monitoring_config {
                     Baseline::PreviousImportFeaturesStats => {
                         "PREVIOUS_IMPORT_FEATURES_STATS"
                     }
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "BASELINE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LATEST_STATS" => Some(Self::LatestStats),
+                    "MOST_RECENT_SNAPSHOT_STATS" => Some(Self::MostRecentSnapshotStats),
+                    "PREVIOUS_IMPORT_FEATURES_STATS" => {
+                        Some(Self::PreviousImportFeaturesStats)
+                    }
+                    _ => None,
                 }
             }
         }
@@ -6607,6 +6841,15 @@ pub mod event {
                 Type::Output => "OUTPUT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INPUT" => Some(Self::Input),
+                "OUTPUT" => Some(Self::Output),
+                _ => None,
+            }
+        }
     }
 }
 /// Instance of a general execution.
@@ -6716,6 +6959,19 @@ pub mod execution {
                 State::Failed => "FAILED",
                 State::Cached => "CACHED",
                 State::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW" => Some(Self::New),
+                "RUNNING" => Some(Self::Running),
+                "COMPLETE" => Some(Self::Complete),
+                "FAILED" => Some(Self::Failed),
+                "CACHED" => Some(Self::Cached),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -6858,6 +7114,15 @@ pub mod feature {
                     Objective::SnapshotAnalysis => "SNAPSHOT_ANALYSIS",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OBJECTIVE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IMPORT_FEATURE_ANALYSIS" => Some(Self::ImportFeatureAnalysis),
+                    "SNAPSHOT_ANALYSIS" => Some(Self::SnapshotAnalysis),
+                    _ => None,
+                }
+            }
         }
     }
     /// An enum representing the value type of a feature.
@@ -6912,6 +7177,22 @@ pub mod feature {
                 ValueType::String => "STRING",
                 ValueType::StringArray => "STRING_ARRAY",
                 ValueType::Bytes => "BYTES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VALUE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOL" => Some(Self::Bool),
+                "BOOL_ARRAY" => Some(Self::BoolArray),
+                "DOUBLE" => Some(Self::Double),
+                "DOUBLE_ARRAY" => Some(Self::DoubleArray),
+                "INT64" => Some(Self::Int64),
+                "INT64_ARRAY" => Some(Self::Int64Array),
+                "STRING" => Some(Self::String),
+                "STRING_ARRAY" => Some(Self::StringArray),
+                "BYTES" => Some(Self::Bytes),
+                _ => None,
             }
         }
     }
@@ -7075,6 +7356,15 @@ pub mod featurestore {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Stable => "STABLE",
                 State::Updating => "UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STABLE" => Some(Self::Stable),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
             }
         }
     }
@@ -9210,6 +9500,16 @@ pub mod study {
                 State::Completed => "COMPLETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                "COMPLETED" => Some(Self::Completed),
+                _ => None,
+            }
+        }
     }
 }
 /// A message representing a Trial. A Trial contains a unique set of Parameters
@@ -9344,6 +9644,18 @@ pub mod trial {
                 State::Infeasible => "INFEASIBLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUESTED" => Some(Self::Requested),
+                "ACTIVE" => Some(Self::Active),
+                "STOPPING" => Some(Self::Stopping),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "INFEASIBLE" => Some(Self::Infeasible),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents specification of a Study.
@@ -9425,6 +9737,15 @@ pub mod study_spec {
                     GoalType::Unspecified => "GOAL_TYPE_UNSPECIFIED",
                     GoalType::Maximize => "MAXIMIZE",
                     GoalType::Minimize => "MINIMIZE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "GOAL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MAXIMIZE" => Some(Self::Maximize),
+                    "MINIMIZE" => Some(Self::Minimize),
+                    _ => None,
                 }
             }
         }
@@ -9639,6 +9960,16 @@ pub mod study_spec {
                     ScaleType::UnitReverseLogScale => "UNIT_REVERSE_LOG_SCALE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SCALE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "UNIT_LINEAR_SCALE" => Some(Self::UnitLinearScale),
+                    "UNIT_LOG_SCALE" => Some(Self::UnitLogScale),
+                    "UNIT_REVERSE_LOG_SCALE" => Some(Self::UnitReverseLogScale),
+                    _ => None,
+                }
+            }
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -9826,6 +10157,15 @@ pub mod study_spec {
                 Algorithm::RandomSearch => "RANDOM_SEARCH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "GRID_SEARCH" => Some(Self::GridSearch),
+                "RANDOM_SEARCH" => Some(Self::RandomSearch),
+                _ => None,
+            }
+        }
     }
     /// Describes the noise level of the repeated observations.
     ///
@@ -9864,6 +10204,15 @@ pub mod study_spec {
                 ObservationNoise::Unspecified => "OBSERVATION_NOISE_UNSPECIFIED",
                 ObservationNoise::Low => "LOW",
                 ObservationNoise::High => "HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OBSERVATION_NOISE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOW" => Some(Self::Low),
+                "HIGH" => Some(Self::High),
+                _ => None,
             }
         }
     }
@@ -9912,6 +10261,15 @@ pub mod study_spec {
                 }
                 MeasurementSelectionType::LastMeasurement => "LAST_MEASUREMENT",
                 MeasurementSelectionType::BestMeasurement => "BEST_MEASUREMENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEASUREMENT_SELECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LAST_MEASUREMENT" => Some(Self::LastMeasurement),
+                "BEST_MEASUREMENT" => Some(Self::BestMeasurement),
+                _ => None,
             }
         }
     }
@@ -10150,6 +10508,15 @@ pub mod index {
                 IndexUpdateMethod::Unspecified => "INDEX_UPDATE_METHOD_UNSPECIFIED",
                 IndexUpdateMethod::BatchUpdate => "BATCH_UPDATE",
                 IndexUpdateMethod::StreamUpdate => "STREAM_UPDATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INDEX_UPDATE_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "BATCH_UPDATE" => Some(Self::BatchUpdate),
+                "STREAM_UPDATE" => Some(Self::StreamUpdate),
+                _ => None,
             }
         }
     }
@@ -11113,6 +11480,20 @@ pub mod nearest_neighbor_search_operation_metadata {
                     RecordErrorType::InvalidEmbeddingId => "INVALID_EMBEDDING_ID",
                     RecordErrorType::EmbeddingSizeMismatch => "EMBEDDING_SIZE_MISMATCH",
                     RecordErrorType::NamespaceMissing => "NAMESPACE_MISSING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ERROR_TYPE_UNSPECIFIED" => Some(Self::ErrorTypeUnspecified),
+                    "EMPTY_LINE" => Some(Self::EmptyLine),
+                    "INVALID_JSON_SYNTAX" => Some(Self::InvalidJsonSyntax),
+                    "INVALID_CSV_SYNTAX" => Some(Self::InvalidCsvSyntax),
+                    "INVALID_AVRO_SYNTAX" => Some(Self::InvalidAvroSyntax),
+                    "INVALID_EMBEDDING_ID" => Some(Self::InvalidEmbeddingId),
+                    "EMBEDDING_SIZE_MISMATCH" => Some(Self::EmbeddingSizeMismatch),
+                    "NAMESPACE_MISSING" => Some(Self::NamespaceMissing),
+                    _ => None,
                 }
             }
         }
@@ -12808,6 +13189,16 @@ pub mod metadata_schema {
                 MetadataSchemaType::ArtifactType => "ARTIFACT_TYPE",
                 MetadataSchemaType::ExecutionType => "EXECUTION_TYPE",
                 MetadataSchemaType::ContextType => "CONTEXT_TYPE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METADATA_SCHEMA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARTIFACT_TYPE" => Some(Self::ArtifactType),
+                "EXECUTION_TYPE" => Some(Self::ExecutionType),
+                "CONTEXT_TYPE" => Some(Self::ContextType),
+                _ => None,
             }
         }
     }
@@ -16047,6 +16438,15 @@ impl PipelineFailurePolicy {
             PipelineFailurePolicy::FailFast => "PIPELINE_FAILURE_POLICY_FAIL_FAST",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PIPELINE_FAILURE_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+            "PIPELINE_FAILURE_POLICY_FAIL_SLOW" => Some(Self::FailSlow),
+            "PIPELINE_FAILURE_POLICY_FAIL_FAST" => Some(Self::FailFast),
+            _ => None,
+        }
+    }
 }
 /// Describes the state of a pipeline.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -16090,6 +16490,21 @@ impl PipelineState {
             PipelineState::Cancelling => "PIPELINE_STATE_CANCELLING",
             PipelineState::Cancelled => "PIPELINE_STATE_CANCELLED",
             PipelineState::Paused => "PIPELINE_STATE_PAUSED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PIPELINE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PIPELINE_STATE_QUEUED" => Some(Self::Queued),
+            "PIPELINE_STATE_PENDING" => Some(Self::Pending),
+            "PIPELINE_STATE_RUNNING" => Some(Self::Running),
+            "PIPELINE_STATE_SUCCEEDED" => Some(Self::Succeeded),
+            "PIPELINE_STATE_FAILED" => Some(Self::Failed),
+            "PIPELINE_STATE_CANCELLING" => Some(Self::Cancelling),
+            "PIPELINE_STATE_CANCELLED" => Some(Self::Cancelled),
+            "PIPELINE_STATE_PAUSED" => Some(Self::Paused),
+            _ => None,
         }
     }
 }
@@ -16452,6 +16867,22 @@ pub mod pipeline_task_detail {
                 State::Failed => "FAILED",
                 State::Skipped => "SKIPPED",
                 State::NotTriggered => "NOT_TRIGGERED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCEL_PENDING" => Some(Self::CancelPending),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                "SKIPPED" => Some(Self::Skipped),
+                "NOT_TRIGGERED" => Some(Self::NotTriggered),
+                _ => None,
             }
         }
     }
@@ -18232,6 +18663,16 @@ pub mod tensorboard_time_series {
                 ValueType::Scalar => "SCALAR",
                 ValueType::Tensor => "TENSOR",
                 ValueType::BlobSequence => "BLOB_SEQUENCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VALUE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCALAR" => Some(Self::Scalar),
+                "TENSOR" => Some(Self::Tensor),
+                "BLOB_SEQUENCE" => Some(Self::BlobSequence),
+                _ => None,
             }
         }
     }

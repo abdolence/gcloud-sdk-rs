@@ -389,6 +389,15 @@ impl MqttState {
             MqttState::MqttDisabled => "MQTT_DISABLED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MQTT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MQTT_ENABLED" => Some(Self::MqttEnabled),
+            "MQTT_DISABLED" => Some(Self::MqttDisabled),
+            _ => None,
+        }
+    }
 }
 /// Indicates whether DeviceService (HTTP) is enabled or disabled for the
 /// registry. See the field description for details.
@@ -413,6 +422,15 @@ impl HttpState {
             HttpState::Unspecified => "HTTP_STATE_UNSPECIFIED",
             HttpState::HttpEnabled => "HTTP_ENABLED",
             HttpState::HttpDisabled => "HTTP_DISABLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HTTP_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "HTTP_ENABLED" => Some(Self::HttpEnabled),
+            "HTTP_DISABLED" => Some(Self::HttpDisabled),
+            _ => None,
         }
     }
 }
@@ -451,6 +469,17 @@ impl LogLevel {
             LogLevel::Debug => "DEBUG",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LOG_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "NONE" => Some(Self::None),
+            "ERROR" => Some(Self::Error),
+            "INFO" => Some(Self::Info),
+            "DEBUG" => Some(Self::Debug),
+            _ => None,
+        }
+    }
 }
 /// Gateway type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -473,6 +502,15 @@ impl GatewayType {
             GatewayType::Unspecified => "GATEWAY_TYPE_UNSPECIFIED",
             GatewayType::Gateway => "GATEWAY",
             GatewayType::NonGateway => "NON_GATEWAY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GATEWAY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "GATEWAY" => Some(Self::Gateway),
+            "NON_GATEWAY" => Some(Self::NonGateway),
+            _ => None,
         }
     }
 }
@@ -510,6 +548,18 @@ impl GatewayAuthMethod {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GATEWAY_AUTH_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "ASSOCIATION_ONLY" => Some(Self::AssociationOnly),
+            "DEVICE_AUTH_TOKEN_ONLY" => Some(Self::DeviceAuthTokenOnly),
+            "ASSOCIATION_AND_DEVICE_AUTH_TOKEN" => {
+                Some(Self::AssociationAndDeviceAuthToken)
+            }
+            _ => None,
+        }
+    }
 }
 /// The supported formats for the public key.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -534,6 +584,16 @@ impl PublicKeyCertificateFormat {
                 "UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT"
             }
             PublicKeyCertificateFormat::X509CertificatePem => "X509_CERTIFICATE_PEM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT" => {
+                Some(Self::UnspecifiedPublicKeyCertificateFormat)
+            }
+            "X509_CERTIFICATE_PEM" => Some(Self::X509CertificatePem),
+            _ => None,
         }
     }
 }
@@ -578,6 +638,17 @@ impl PublicKeyFormat {
             PublicKeyFormat::RsaX509Pem => "RSA_X509_PEM",
             PublicKeyFormat::Es256Pem => "ES256_PEM",
             PublicKeyFormat::Es256X509Pem => "ES256_X509_PEM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNSPECIFIED_PUBLIC_KEY_FORMAT" => Some(Self::UnspecifiedPublicKeyFormat),
+            "RSA_PEM" => Some(Self::RsaPem),
+            "RSA_X509_PEM" => Some(Self::RsaX509Pem),
+            "ES256_PEM" => Some(Self::Es256Pem),
+            "ES256_X509_PEM" => Some(Self::Es256X509Pem),
+            _ => None,
         }
     }
 }

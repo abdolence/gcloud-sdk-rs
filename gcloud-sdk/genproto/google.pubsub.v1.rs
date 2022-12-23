@@ -50,6 +50,15 @@ pub mod schema {
                 Type::Avro => "AVRO",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROTOCOL_BUFFER" => Some(Self::ProtocolBuffer),
+                "AVRO" => Some(Self::Avro),
+                _ => None,
+            }
+        }
     }
 }
 /// Request for the CreateSchema method.
@@ -210,6 +219,15 @@ impl SchemaView {
             SchemaView::Full => "FULL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SCHEMA_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
 }
 /// Possible encoding types for messages.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -233,6 +251,15 @@ impl Encoding {
             Encoding::Unspecified => "ENCODING_UNSPECIFIED",
             Encoding::Json => "JSON",
             Encoding::Binary => "BINARY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+            "JSON" => Some(Self::Json),
+            "BINARY" => Some(Self::Binary),
+            _ => None,
         }
     }
 }
@@ -849,8 +876,8 @@ pub struct Subscription {
     pub topic_message_retention_duration: ::core::option::Option<
         ::prost_types::Duration,
     >,
-    /// Output only. An output-only field indicating whether or not the subscription can receive
-    /// messages.
+    /// Output only. An output-only field indicating whether or not the
+    /// subscription can receive messages.
     #[prost(enumeration = "subscription::State", tag = "19")]
     pub state: i32,
 }
@@ -889,6 +916,15 @@ pub mod subscription {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::ResourceError => "RESOURCE_ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "RESOURCE_ERROR" => Some(Self::ResourceError),
+                _ => None,
             }
         }
     }
@@ -1071,8 +1107,8 @@ pub struct BigQueryConfig {
     /// subscription's backlog.
     #[prost(bool, tag = "4")]
     pub drop_unknown_fields: bool,
-    /// Output only. An output-only field that indicates whether or not the subscription can
-    /// receive messages.
+    /// Output only. An output-only field that indicates whether or not the
+    /// subscription can receive messages.
     #[prost(enumeration = "big_query_config::State", tag = "5")]
     pub state: i32,
 }
@@ -1115,6 +1151,17 @@ pub mod big_query_config {
                 State::PermissionDenied => "PERMISSION_DENIED",
                 State::NotFound => "NOT_FOUND",
                 State::SchemaMismatch => "SCHEMA_MISMATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "NOT_FOUND" => Some(Self::NotFound),
+                "SCHEMA_MISMATCH" => Some(Self::SchemaMismatch),
+                _ => None,
             }
         }
     }

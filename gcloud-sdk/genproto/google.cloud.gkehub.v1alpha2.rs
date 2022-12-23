@@ -114,6 +114,15 @@ pub mod membership {
                 InfrastructureType::MultiCloud => "MULTI_CLOUD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INFRASTRUCTURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON_PREM" => Some(Self::OnPrem),
+                "MULTI_CLOUD" => Some(Self::MultiCloud),
+                _ => None,
+            }
+        }
     }
     /// Type of resource represented by this Membership
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -394,6 +403,18 @@ pub mod membership_state {
                 Code::Deleting => "DELETING",
                 Code::Updating => "UPDATING",
                 Code::ServiceUpdating => "SERVICE_UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                "UPDATING" => Some(Self::Updating),
+                "SERVICE_UPDATING" => Some(Self::ServiceUpdating),
+                _ => None,
             }
         }
     }

@@ -131,6 +131,20 @@ pub mod registration {
                 State::Exported => "EXPORTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REGISTRATION_PENDING" => Some(Self::RegistrationPending),
+                "REGISTRATION_FAILED" => Some(Self::RegistrationFailed),
+                "TRANSFER_PENDING" => Some(Self::TransferPending),
+                "TRANSFER_FAILED" => Some(Self::TransferFailed),
+                "ACTIVE" => Some(Self::Active),
+                "SUSPENDED" => Some(Self::Suspended),
+                "EXPORTED" => Some(Self::Exported),
+                _ => None,
+            }
+        }
     }
     /// Possible issues with a `Registration` that require attention.
     #[derive(
@@ -170,6 +184,15 @@ pub mod registration {
                 Issue::Unspecified => "ISSUE_UNSPECIFIED",
                 Issue::ContactSupport => "CONTACT_SUPPORT",
                 Issue::UnverifiedEmail => "UNVERIFIED_EMAIL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ISSUE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONTACT_SUPPORT" => Some(Self::ContactSupport),
+                "UNVERIFIED_EMAIL" => Some(Self::UnverifiedEmail),
+                _ => None,
             }
         }
     }
@@ -226,6 +249,15 @@ pub mod management_settings {
                 RenewalMethod::Unspecified => "RENEWAL_METHOD_UNSPECIFIED",
                 RenewalMethod::AutomaticRenewal => "AUTOMATIC_RENEWAL",
                 RenewalMethod::ManualRenewal => "MANUAL_RENEWAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RENEWAL_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOMATIC_RENEWAL" => Some(Self::AutomaticRenewal),
+                "MANUAL_RENEWAL" => Some(Self::ManualRenewal),
+                _ => None,
             }
         }
     }
@@ -382,6 +414,30 @@ pub mod dns_settings {
                     Algorithm::Privateoid => "PRIVATEOID",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                    "RSAMD5" => Some(Self::Rsamd5),
+                    "DH" => Some(Self::Dh),
+                    "DSA" => Some(Self::Dsa),
+                    "ECC" => Some(Self::Ecc),
+                    "RSASHA1" => Some(Self::Rsasha1),
+                    "DSANSEC3SHA1" => Some(Self::Dsansec3sha1),
+                    "RSASHA1NSEC3SHA1" => Some(Self::Rsasha1nsec3sha1),
+                    "RSASHA256" => Some(Self::Rsasha256),
+                    "RSASHA512" => Some(Self::Rsasha512),
+                    "ECCGOST" => Some(Self::Eccgost),
+                    "ECDSAP256SHA256" => Some(Self::Ecdsap256sha256),
+                    "ECDSAP384SHA384" => Some(Self::Ecdsap384sha384),
+                    "ED25519" => Some(Self::Ed25519),
+                    "ED448" => Some(Self::Ed448),
+                    "INDIRECT" => Some(Self::Indirect),
+                    "PRIVATEDNS" => Some(Self::Privatedns),
+                    "PRIVATEOID" => Some(Self::Privateoid),
+                    _ => None,
+                }
+            }
         }
         /// List of hash functions that may have been used to generate a digest of a
         /// DNSKEY.
@@ -421,6 +477,17 @@ pub mod dns_settings {
                     DigestType::Sha256 => "SHA256",
                     DigestType::Gost3411 => "GOST3411",
                     DigestType::Sha384 => "SHA384",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DIGEST_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SHA1" => Some(Self::Sha1),
+                    "SHA256" => Some(Self::Sha256),
+                    "GOST3411" => Some(Self::Gost3411),
+                    "SHA384" => Some(Self::Sha384),
+                    _ => None,
                 }
             }
         }
@@ -483,6 +550,15 @@ pub mod dns_settings {
                 DsState::Unspecified => "DS_STATE_UNSPECIFIED",
                 DsState::DsRecordsUnpublished => "DS_RECORDS_UNPUBLISHED",
                 DsState::DsRecordsPublished => "DS_RECORDS_PUBLISHED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DS_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DS_RECORDS_UNPUBLISHED" => Some(Self::DsRecordsUnpublished),
+                "DS_RECORDS_PUBLISHED" => Some(Self::DsRecordsPublished),
+                _ => None,
             }
         }
     }
@@ -911,6 +987,17 @@ pub mod register_parameters {
                 Availability::Unknown => "UNKNOWN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AVAILABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AVAILABLE" => Some(Self::Available),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "UNSUPPORTED" => Some(Self::Unsupported),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
+            }
+        }
     }
 }
 /// Parameters required to transfer a domain from another registrar.
@@ -1010,6 +1097,16 @@ impl ContactPrivacy {
             ContactPrivacy::RedactedContactData => "REDACTED_CONTACT_DATA",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTACT_PRIVACY_UNSPECIFIED" => Some(Self::Unspecified),
+            "PUBLIC_CONTACT_DATA" => Some(Self::PublicContactData),
+            "PRIVATE_CONTACT_DATA" => Some(Self::PrivateContactData),
+            "REDACTED_CONTACT_DATA" => Some(Self::RedactedContactData),
+            _ => None,
+        }
+    }
 }
 /// Notices about special properties of certain domains.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1033,6 +1130,14 @@ impl DomainNotice {
         match self {
             DomainNotice::Unspecified => "DOMAIN_NOTICE_UNSPECIFIED",
             DomainNotice::HstsPreloaded => "HSTS_PRELOADED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DOMAIN_NOTICE_UNSPECIFIED" => Some(Self::Unspecified),
+            "HSTS_PRELOADED" => Some(Self::HstsPreloaded),
+            _ => None,
         }
     }
 }
@@ -1059,6 +1164,16 @@ impl ContactNotice {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTACT_NOTICE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT" => {
+                Some(Self::PublicContactDataAcknowledgement)
+            }
+            _ => None,
+        }
+    }
 }
 /// Possible states of a `Registration`'s transfer lock.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1081,6 +1196,15 @@ impl TransferLockState {
             TransferLockState::Unspecified => "TRANSFER_LOCK_STATE_UNSPECIFIED",
             TransferLockState::Unlocked => "UNLOCKED",
             TransferLockState::Locked => "LOCKED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSFER_LOCK_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "UNLOCKED" => Some(Self::Unlocked),
+            "LOCKED" => Some(Self::Locked),
+            _ => None,
         }
     }
 }

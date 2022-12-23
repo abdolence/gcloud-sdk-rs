@@ -98,6 +98,17 @@ pub mod lifecycle {
                 State::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNPUBLISHED_DRAFT" => Some(Self::UnpublishedDraft),
+                "PUBLISHED" => Some(Self::Published),
+                "DISABLED" => Some(Self::Disabled),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// Information about a user.
@@ -234,6 +245,20 @@ pub mod invalid_argument {
                     Reason::ChoiceNotFound => "CHOICE_NOT_FOUND",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "FIELD_REQUIRED" => Some(Self::FieldRequired),
+                    "INVALID_VALUE" => Some(Self::InvalidValue),
+                    "VALUE_OUT_OF_RANGE" => Some(Self::ValueOutOfRange),
+                    "STRING_VALUE_TOO_LONG" => Some(Self::StringValueTooLong),
+                    "MAX_ENTRIES_EXCEEDED" => Some(Self::MaxEntriesExceeded),
+                    "FIELD_NOT_FOUND" => Some(Self::FieldNotFound),
+                    "CHOICE_NOT_FOUND" => Some(Self::ChoiceNotFound),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -334,6 +359,29 @@ pub mod precondition_failure {
                     Reason::CannotModifyLockedComponent => {
                         "CANNOT_MODIFY_LOCKED_COMPONENT"
                     }
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CANNOT_DISABLE" => Some(Self::CannotDisable),
+                    "CANNOT_ENABLE" => Some(Self::CannotEnable),
+                    "CANNOT_PUBLISH" => Some(Self::CannotPublish),
+                    "CANNOT_UNPUBLISH" => Some(Self::CannotUnpublish),
+                    "CANNOT_DELETE" => Some(Self::CannotDelete),
+                    "CANNOT_RESTRICT_RANGE" => Some(Self::CannotRestrictRange),
+                    "CANNOT_CHANGE_PUBLISHED_FIELD" => {
+                        Some(Self::CannotChangePublishedField)
+                    }
+                    "CANNOT_CREATE_MORE_LABELS" => Some(Self::CannotCreateMoreLabels),
+                    "CANNOT_CHANGE_PUBLISHED_FIELD_TYPE" => {
+                        Some(Self::CannotChangePublishedFieldType)
+                    }
+                    "CANNOT_MODIFY_LOCKED_COMPONENT" => {
+                        Some(Self::CannotModifyLockedComponent)
+                    }
+                    _ => None,
                 }
             }
         }
@@ -465,6 +513,52 @@ impl ExceptionType {
             }
             ExceptionType::InvalidChoiceSetState => "INVALID_CHOICE_SET_STATE",
             ExceptionType::InternalServerError => "INTERNAL_SERVER_ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXCEPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FIELD_REQUIRED" => Some(Self::FieldRequired),
+            "METAMODEL_ALREADY_EXISTS" => Some(Self::MetamodelAlreadyExists),
+            "METAMODEL_NOT_FOUND" => Some(Self::MetamodelNotFound),
+            "ILLEGAL_METAMODEL_STATE_TRANSITION" => {
+                Some(Self::IllegalMetamodelStateTransition)
+            }
+            "INVALID_METAMODEL_DEPRECATION_POLICY" => {
+                Some(Self::InvalidMetamodelDeprecationPolicy)
+            }
+            "METAMODEL_DELETION_DENIED_UNTIL" => Some(Self::MetamodelDeletionDeniedUntil),
+            "INVALID_FIELD" => Some(Self::InvalidField),
+            "METAMODEL_PRECONDITION_FAILED" => Some(Self::MetamodelPreconditionFailed),
+            "DUPLICATE_FIELD_KEY" => Some(Self::DuplicateFieldKey),
+            "ILLEGAL_FIELD_REMOVAL" => Some(Self::IllegalFieldRemoval),
+            "ILLEGAL_FIELD_OPTIONS_FOR_FIELD" => Some(Self::IllegalFieldOptionsForField),
+            "UNSUPPORTED_CHANGE_TO_PUBLISHED_METAMODEL" => {
+                Some(Self::UnsupportedChangeToPublishedMetamodel)
+            }
+            "ILLEGAL_METAMODEL_STATE_TRANSITION_IN_UPDATE" => {
+                Some(Self::IllegalMetamodelStateTransitionInUpdate)
+            }
+            "PAGE_TOKEN_EXPIRED" => Some(Self::PageTokenExpired),
+            "NOT_AUTHORIZED" => Some(Self::NotAuthorized),
+            "ILLEGAL_FIELD_STATE_TRANSITION" => Some(Self::IllegalFieldStateTransition),
+            "ILLEGAL_CHOICE_SET_OPTION_STATE_TRANSITION" => {
+                Some(Self::IllegalChoiceSetOptionStateTransition)
+            }
+            "INVALID_CHOICE_SET_OPTIONS" => Some(Self::InvalidChoiceSetOptions),
+            "INVALID_FIELD_KEY" => Some(Self::InvalidFieldKey),
+            "INVALID_FIELD_PROPERTY_RANGE" => Some(Self::InvalidFieldPropertyRange),
+            "INVALID_LOCALIZED_STRING" => Some(Self::InvalidLocalizedString),
+            "ILLEGAL_CHANGE_TO_PUBLISHED_FIELD" => {
+                Some(Self::IllegalChangeToPublishedField)
+            }
+            "INVALID_FIELD_UPDATE_NOT_INCLUSIVE" => {
+                Some(Self::InvalidFieldUpdateNotInclusive)
+            }
+            "INVALID_CHOICE_SET_STATE" => Some(Self::InvalidChoiceSetState),
+            "INTERNAL_SERVER_ERROR" => Some(Self::InternalServerError),
+            _ => None,
         }
     }
 }
@@ -692,6 +786,15 @@ pub mod field {
                     DateFormat::Unspecified => "DATE_FORMAT_UNSPECIFIED",
                     DateFormat::LongDate => "LONG_DATE",
                     DateFormat::ShortDate => "SHORT_DATE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DATE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LONG_DATE" => Some(Self::LongDate),
+                    "SHORT_DATE" => Some(Self::ShortDate),
+                    _ => None,
                 }
             }
         }
@@ -1096,6 +1199,16 @@ pub mod label {
                     CopyMode::CopyAppliable => "COPY_APPLIABLE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "COPY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DO_NOT_COPY" => Some(Self::DoNotCopy),
+                    "ALWAYS_COPY" => Some(Self::AlwaysCopy),
+                    "COPY_APPLIABLE" => Some(Self::CopyAppliable),
+                    _ => None,
+                }
+            }
         }
     }
     /// The type of this label.
@@ -1130,6 +1243,15 @@ pub mod label {
                 LabelType::Unspecified => "LABEL_TYPE_UNSPECIFIED",
                 LabelType::Shared => "SHARED",
                 LabelType::Admin => "ADMIN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LABEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SHARED" => Some(Self::Shared),
+                "ADMIN" => Some(Self::Admin),
+                _ => None,
             }
         }
     }
@@ -1182,6 +1304,17 @@ pub mod label_permission {
                 LabelRole::Applier => "APPLIER",
                 LabelRole::Organizer => "ORGANIZER",
                 LabelRole::Editor => "EDITOR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LABEL_ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READER" => Some(Self::Reader),
+                "APPLIER" => Some(Self::Applier),
+                "ORGANIZER" => Some(Self::Organizer),
+                "EDITOR" => Some(Self::Editor),
+                _ => None,
             }
         }
     }
@@ -1292,6 +1425,14 @@ impl LabelView {
         match self {
             LabelView::Basic => "LABEL_VIEW_BASIC",
             LabelView::Full => "LABEL_VIEW_FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LABEL_VIEW_BASIC" => Some(Self::Basic),
+            "LABEL_VIEW_FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }

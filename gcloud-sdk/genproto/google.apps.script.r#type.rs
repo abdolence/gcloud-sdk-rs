@@ -56,6 +56,20 @@ pub mod add_on_widget_set {
                 WidgetType::AddonComposeUiAction => "ADDON_COMPOSE_UI_ACTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WIDGET_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATE_PICKER" => Some(Self::DatePicker),
+                "STYLED_BUTTONS" => Some(Self::StyledButtons),
+                "PERSISTENT_FORMS" => Some(Self::PersistentForms),
+                "FIXED_FOOTER" => Some(Self::FixedFooter),
+                "UPDATE_SUBJECT_AND_RECIPIENTS" => Some(Self::UpdateSubjectAndRecipients),
+                "GRID_WIDGET" => Some(Self::GridWidget),
+                "ADDON_COMPOSE_UI_ACTION" => Some(Self::AddonComposeUiAction),
+                _ => None,
+            }
+        }
     }
 }
 /// Common format for declaring a  menu item, or button, that appears within a
@@ -218,6 +232,16 @@ impl HttpAuthorizationHeader {
             HttpAuthorizationHeader::SystemIdToken => "SYSTEM_ID_TOKEN",
             HttpAuthorizationHeader::UserIdToken => "USER_ID_TOKEN",
             HttpAuthorizationHeader::None => "NONE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HTTP_AUTHORIZATION_HEADER_UNSPECIFIED" => Some(Self::Unspecified),
+            "SYSTEM_ID_TOKEN" => Some(Self::SystemIdToken),
+            "USER_ID_TOKEN" => Some(Self::UserIdToken),
+            "NONE" => Some(Self::None),
+            _ => None,
         }
     }
 }

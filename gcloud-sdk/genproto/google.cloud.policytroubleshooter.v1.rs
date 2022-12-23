@@ -193,6 +193,16 @@ pub mod binding_explanation {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_PERMISSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ROLE_PERMISSION_INCLUDED" => Some(Self::Included),
+                "ROLE_PERMISSION_NOT_INCLUDED" => Some(Self::NotIncluded),
+                "ROLE_PERMISSION_UNKNOWN_INFO_DENIED" => Some(Self::UnknownInfoDenied),
+                _ => None,
+            }
+        }
     }
     /// Whether the binding includes the member.
     #[derive(
@@ -239,6 +249,17 @@ pub mod binding_explanation {
                 Membership::UnknownUnsupported => "MEMBERSHIP_UNKNOWN_UNSUPPORTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEMBERSHIP_UNSPECIFIED" => Some(Self::Unspecified),
+                "MEMBERSHIP_INCLUDED" => Some(Self::Included),
+                "MEMBERSHIP_NOT_INCLUDED" => Some(Self::NotIncluded),
+                "MEMBERSHIP_UNKNOWN_INFO_DENIED" => Some(Self::UnknownInfoDenied),
+                "MEMBERSHIP_UNKNOWN_UNSUPPORTED" => Some(Self::UnknownUnsupported),
+                _ => None,
+            }
+        }
     }
 }
 /// Whether a member has a permission for a resource.
@@ -272,6 +293,17 @@ impl AccessState {
             AccessState::UnknownInfoDenied => "UNKNOWN_INFO_DENIED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACCESS_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "GRANTED" => Some(Self::Granted),
+            "NOT_GRANTED" => Some(Self::NotGranted),
+            "UNKNOWN_CONDITIONAL" => Some(Self::UnknownConditional),
+            "UNKNOWN_INFO_DENIED" => Some(Self::UnknownInfoDenied),
+            _ => None,
+        }
+    }
 }
 /// The extent to which a single data point contributes to an overall
 /// determination.
@@ -297,6 +329,15 @@ impl HeuristicRelevance {
             HeuristicRelevance::Unspecified => "HEURISTIC_RELEVANCE_UNSPECIFIED",
             HeuristicRelevance::Normal => "NORMAL",
             HeuristicRelevance::High => "HIGH",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HEURISTIC_RELEVANCE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NORMAL" => Some(Self::Normal),
+            "HIGH" => Some(Self::High),
+            _ => None,
         }
     }
 }

@@ -219,6 +219,15 @@ impl VariableState {
             VariableState::Deleted => "DELETED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "VARIABLE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "UPDATED" => Some(Self::Updated),
+            "DELETED" => Some(Self::Deleted),
+            _ => None,
+        }
+    }
 }
 /// Request for the `ListConfigs()` method.
 #[allow(clippy::derive_partial_eq_without_eq)]

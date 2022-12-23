@@ -158,6 +158,18 @@ pub mod task_status {
                 State::Succeeded => "SUCCEEDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ASSIGNED" => Some(Self::Assigned),
+                "RUNNING" => Some(Self::Running),
+                "FAILED" => Some(Self::Failed),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                _ => None,
+            }
+        }
     }
 }
 /// Runnable describes instructions for executing a specific script or container
@@ -391,6 +403,15 @@ pub mod lifecycle_policy {
                 Action::FailTask => "FAIL_TASK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "RETRY_TASK" => Some(Self::RetryTask),
+                "FAIL_TASK" => Some(Self::FailTask),
+                _ => None,
+            }
+        }
     }
 }
 /// A Cloud Batch task.
@@ -522,6 +543,15 @@ pub mod logs_policy {
                 Destination::Path => "PATH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DESTINATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_LOGGING" => Some(Self::CloudLogging),
+                "PATH" => Some(Self::Path),
+                _ => None,
+            }
+        }
     }
 }
 /// Job status.
@@ -621,6 +651,19 @@ pub mod job_status {
                 State::DeletionInProgress => "DELETION_IN_PROGRESS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUEUED" => Some(Self::Queued),
+                "SCHEDULED" => Some(Self::Scheduled),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "DELETION_IN_PROGRESS" => Some(Self::DeletionInProgress),
+                _ => None,
+            }
+        }
     }
 }
 /// Notification configurations.
@@ -688,6 +731,15 @@ pub mod job_notification {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::JobStateChanged => "JOB_STATE_CHANGED",
                 Type::TaskStateChanged => "TASK_STATE_CHANGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "JOB_STATE_CHANGED" => Some(Self::JobStateChanged),
+                "TASK_STATE_CHANGED" => Some(Self::TaskStateChanged),
+                _ => None,
             }
         }
     }
@@ -884,10 +936,20 @@ pub mod allocation_policy {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NetworkInterface {
-        /// The URL of the network resource.
+        /// The URL of an existing network resource.
+        /// You can specify the network as a full or partial URL.
+        /// For example, the following are all valid URLs:
+        /// <https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}>
+        /// projects/{project}/global/networks/{network}
+        /// global/networks/{network}
         #[prost(string, tag = "1")]
         pub network: ::prost::alloc::string::String,
-        /// The URL of the Subnetwork resource.
+        /// The URL of an existing subnetwork resource in the network.
+        /// You can specify the subnetwork as a full or partial URL.
+        /// For example, the following are all valid URLs:
+        /// <https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}>
+        /// projects/{project}/regions/{region}/subnetworks/{subnetwork}
+        /// regions/{region}/subnetworks/{subnetwork}
         #[prost(string, tag = "2")]
         pub subnetwork: ::prost::alloc::string::String,
         /// Default is false (with an external IP address). Required if
@@ -947,6 +1009,16 @@ pub mod allocation_policy {
                 ProvisioningModel::Standard => "STANDARD",
                 ProvisioningModel::Spot => "SPOT",
                 ProvisioningModel::Preemptible => "PREEMPTIBLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVISIONING_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "SPOT" => Some(Self::Spot),
+                "PREEMPTIBLE" => Some(Self::Preemptible),
+                _ => None,
             }
         }
     }

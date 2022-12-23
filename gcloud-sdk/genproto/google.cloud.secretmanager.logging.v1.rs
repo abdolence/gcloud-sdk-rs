@@ -69,5 +69,20 @@ pub mod secret_event {
                 EventType::TopicPermissionDenied => "TOPIC_PERMISSION_DENIED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXPIRES_IN_30_DAYS" => Some(Self::ExpiresIn30Days),
+                "EXPIRES_IN_7_DAYS" => Some(Self::ExpiresIn7Days),
+                "EXPIRES_IN_1_DAY" => Some(Self::ExpiresIn1Day),
+                "EXPIRES_IN_6_HOURS" => Some(Self::ExpiresIn6Hours),
+                "EXPIRES_IN_1_HOUR" => Some(Self::ExpiresIn1Hour),
+                "EXPIRED" => Some(Self::Expired),
+                "TOPIC_NOT_FOUND" => Some(Self::TopicNotFound),
+                "TOPIC_PERMISSION_DENIED" => Some(Self::TopicPermissionDenied),
+                _ => None,
+            }
+        }
     }
 }

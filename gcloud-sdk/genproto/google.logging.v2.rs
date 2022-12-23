@@ -597,6 +597,15 @@ pub mod tail_log_entries_response {
                     Reason::NotConsumed => "NOT_CONSUMED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "RATE_LIMIT" => Some(Self::RateLimit),
+                    "NOT_CONSUMED" => Some(Self::NotConsumed),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -1057,6 +1066,15 @@ pub mod log_sink {
                 VersionFormat::Unspecified => "VERSION_FORMAT_UNSPECIFIED",
                 VersionFormat::V2 => "V2",
                 VersionFormat::V1 => "V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VERSION_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "V2" => Some(Self::V2),
+                "V1" => Some(Self::V1),
+                _ => None,
             }
         }
     }
@@ -2021,6 +2039,15 @@ impl LifecycleState {
             LifecycleState::DeleteRequested => "DELETE_REQUESTED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LIFECYCLE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACTIVE" => Some(Self::Active),
+            "DELETE_REQUESTED" => Some(Self::DeleteRequested),
+            _ => None,
+        }
+    }
 }
 /// List of different operation states.
 /// High level state of the operation. This is used to report the job's
@@ -2061,6 +2088,21 @@ impl OperationState {
             OperationState::Succeeded => "OPERATION_STATE_SUCCEEDED",
             OperationState::Failed => "OPERATION_STATE_FAILED",
             OperationState::Cancelled => "OPERATION_STATE_CANCELLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OPERATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "OPERATION_STATE_SCHEDULED" => Some(Self::Scheduled),
+            "OPERATION_STATE_WAITING_FOR_PERMISSIONS" => {
+                Some(Self::WaitingForPermissions)
+            }
+            "OPERATION_STATE_RUNNING" => Some(Self::Running),
+            "OPERATION_STATE_SUCCEEDED" => Some(Self::Succeeded),
+            "OPERATION_STATE_FAILED" => Some(Self::Failed),
+            "OPERATION_STATE_CANCELLED" => Some(Self::Cancelled),
+            _ => None,
         }
     }
 }
@@ -2898,6 +2940,14 @@ pub mod log_metric {
             match self {
                 ApiVersion::V2 => "V2",
                 ApiVersion::V1 => "V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "V2" => Some(Self::V2),
+                "V1" => Some(Self::V1),
+                _ => None,
             }
         }
     }

@@ -126,6 +126,18 @@ pub mod feature_resource_state {
                 State::ServiceUpdating => "SERVICE_UPDATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLING" => Some(Self::Enabling),
+                "ACTIVE" => Some(Self::Active),
+                "DISABLING" => Some(Self::Disabling),
+                "UPDATING" => Some(Self::Updating),
+                "SERVICE_UPDATING" => Some(Self::ServiceUpdating),
+                _ => None,
+            }
+        }
     }
 }
 /// FeatureState describes the high-level state of a Feature. It may be used to
@@ -186,6 +198,16 @@ pub mod feature_state {
                 Code::Ok => "OK",
                 Code::Warning => "WARNING",
                 Code::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OK" => Some(Self::Ok),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }

@@ -65,6 +65,15 @@ pub mod workload_identity_pool {
                 State::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// A configuration for an external identity provider.
@@ -276,6 +285,15 @@ pub mod workload_identity_pool_provider {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
             }
         }
     }

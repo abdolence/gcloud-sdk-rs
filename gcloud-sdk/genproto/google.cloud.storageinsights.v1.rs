@@ -295,6 +295,15 @@ pub mod frequency_options {
                 Frequency::Weekly => "WEEKLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FREQUENCY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DAILY" => Some(Self::Daily),
+                "WEEKLY" => Some(Self::Weekly),
+                _ => None,
+            }
+        }
     }
 }
 /// Options to configure CSV formatted reports.

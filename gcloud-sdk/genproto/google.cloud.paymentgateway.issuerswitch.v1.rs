@@ -85,6 +85,15 @@ pub mod participant {
                 Persona::Person => "PERSON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERSONA_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENTITY" => Some(Self::Entity),
+                "PERSON" => Some(Self::Person),
+                _ => None,
+            }
+        }
     }
 }
 /// A merchant entity participating in a payment settlement transaction.
@@ -181,6 +190,15 @@ pub mod merchant_additional_info {
                 Type::Small => "SMALL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LARGE" => Some(Self::Large),
+                "SMALL" => Some(Self::Small),
+                _ => None,
+            }
+        }
     }
     /// Indicates whether the merchant is an online or offline merchant.
     #[derive(
@@ -213,6 +231,15 @@ pub mod merchant_additional_info {
                 Genre::Unspecified => "GENRE_UNSPECIFIED",
                 Genre::Offline => "OFFLINE",
                 Genre::Online => "ONLINE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GENRE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OFFLINE" => Some(Self::Offline),
+                "ONLINE" => Some(Self::Online),
+                _ => None,
             }
         }
     }
@@ -256,6 +283,17 @@ pub mod merchant_additional_info {
                 OnboardingType::Tpap => "TPAP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ONBOARDING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AGGREGATOR" => Some(Self::Aggregator),
+                "BANK" => Some(Self::Bank),
+                "NETWORK" => Some(Self::Network),
+                "TPAP" => Some(Self::Tpap),
+                _ => None,
+            }
+        }
     }
     /// Indicates the ownership type of the merchant.
     #[derive(
@@ -297,6 +335,18 @@ pub mod merchant_additional_info {
                 OwnershipType::Public => "PUBLIC",
                 OwnershipType::Private => "PRIVATE",
                 OwnershipType::Others => "OTHERS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OWNERSHIP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROPRIETARY" => Some(Self::Proprietary),
+                "PARTNERSHIP" => Some(Self::Partnership),
+                "PUBLIC" => Some(Self::Public),
+                "PRIVATE" => Some(Self::Private),
+                "OTHERS" => Some(Self::Others),
+                _ => None,
             }
         }
     }
@@ -371,6 +421,27 @@ impl ApiType {
             ApiType::ValidateCustomer => "VALIDATE_CUSTOMER",
             ApiType::Voucher => "VOUCHER",
             ApiType::VoucherConfirmation => "VOUCHER_CONFIRMATION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "API_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BALANCE" => Some(Self::Balance),
+            "CHECK_STATUS" => Some(Self::CheckStatus),
+            "COMPLAINT" => Some(Self::Complaint),
+            "HEART_BEAT" => Some(Self::HeartBeat),
+            "INITIATE_REGISTRATION" => Some(Self::InitiateRegistration),
+            "LIST_ACCOUNTS" => Some(Self::ListAccounts),
+            "MANDATE" => Some(Self::Mandate),
+            "MANDATE_CONFIRMATION" => Some(Self::MandateConfirmation),
+            "SETTLE_PAYMENT" => Some(Self::SettlePayment),
+            "UPDATE_CREDENTIALS" => Some(Self::UpdateCredentials),
+            "VALIDATE_REGISTRATION" => Some(Self::ValidateRegistration),
+            "VALIDATE_CUSTOMER" => Some(Self::ValidateCustomer),
+            "VOUCHER" => Some(Self::Voucher),
+            "VOUCHER_CONFIRMATION" => Some(Self::VoucherConfirmation),
+            _ => None,
         }
     }
 }
@@ -495,6 +566,38 @@ impl TransactionType {
             TransactionType::ValidateCustomer => "TRANSACTION_TYPE_VALIDATE_CUSTOMER",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TRANSACTION_TYPE_AUTOUPDATE" => Some(Self::Autoupdate),
+            "TRANSACTION_TYPE_BALANCE_CHECK" => Some(Self::BalanceCheck),
+            "TRANSACTION_TYPE_BALANCE_ENQUIRY" => Some(Self::BalanceEnquiry),
+            "TRANSACTION_TYPE_CHECK_STATUS" => Some(Self::CheckStatus),
+            "TRANSACTION_TYPE_CHECK_TRANSACTION" => Some(Self::CheckTransaction),
+            "TRANSACTION_TYPE_COMPLAINT" => Some(Self::Complaint),
+            "TRANSACTION_TYPE_CREATE" => Some(Self::Create),
+            "TRANSACTION_TYPE_CREDIT" => Some(Self::Credit),
+            "TRANSACTION_TYPE_DEBIT" => Some(Self::Debit),
+            "TRANSACTION_TYPE_DISPUTE" => Some(Self::Dispute),
+            "TRANSACTION_TYPE_HEART_BEAT" => Some(Self::HeartBeat),
+            "TRANSACTION_TYPE_LIST_ACCOUNTS" => Some(Self::ListAccounts),
+            "TRANSACTION_TYPE_MANDATE_NOTIFICATION" => Some(Self::MandateNotification),
+            "TRANSACTION_TYPE_OTP" => Some(Self::Otp),
+            "TRANSACTION_TYPE_PAUSE" => Some(Self::Pause),
+            "TRANSACTION_TYPE_REDEEM" => Some(Self::Redeem),
+            "TRANSACTION_TYPE_REFUND" => Some(Self::Refund),
+            "TRANSACTION_TYPE_REGISTER_MOBILE" => Some(Self::RegisterMobile),
+            "TRANSACTION_TYPE_REVERSAL" => Some(Self::Reversal),
+            "TRANSACTION_TYPE_REVOKE" => Some(Self::Revoke),
+            "TRANSACTION_TYPE_STATUS_UPDATE" => Some(Self::StatusUpdate),
+            "TRANSACTION_TYPE_UNPAUSE" => Some(Self::Unpause),
+            "TRANSACTION_TYPE_UPDATE" => Some(Self::Update),
+            "TRANSACTION_TYPE_UPDATE_CREDENTIALS" => Some(Self::UpdateCredentials),
+            "TRANSACTION_TYPE_VALIDATE_CUSTOMER" => Some(Self::ValidateCustomer),
+            _ => None,
+        }
+    }
 }
 /// XmlApiType specifies the API type of the request or response as specified in
 /// the XML payload.
@@ -608,6 +711,43 @@ impl XmlApiType {
             XmlApiType::RespVoucher => "RESP_VOUCHER",
             XmlApiType::RespVoucherConfirmation => "RESP_VOUCHER_CONFIRMATION",
             XmlApiType::RespTxnConfirmation => "RESP_TXN_CONFIRMATION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "XML_API_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "REQ_BAL_ENQ" => Some(Self::ReqBalEnq),
+            "REQ_CHK_TXN" => Some(Self::ReqChkTxn),
+            "REQ_COMPLAINT" => Some(Self::ReqComplaint),
+            "REQ_HBT" => Some(Self::ReqHbt),
+            "REQ_LIST_ACCOUNT" => Some(Self::ReqListAccount),
+            "REQ_MANDATE" => Some(Self::ReqMandate),
+            "REQ_MANDATE_CONFIRMATION" => Some(Self::ReqMandateConfirmation),
+            "REQ_OTP" => Some(Self::ReqOtp),
+            "REQ_PAY" => Some(Self::ReqPay),
+            "REQ_REG_MOB" => Some(Self::ReqRegMob),
+            "REQ_SET_CRE" => Some(Self::ReqSetCre),
+            "REQ_VAL_CUST" => Some(Self::ReqValCust),
+            "REQ_VOUCHER" => Some(Self::ReqVoucher),
+            "REQ_VOUCHER_CONFIRMATION" => Some(Self::ReqVoucherConfirmation),
+            "REQ_TXN_CONFIRMATION" => Some(Self::ReqTxnConfirmation),
+            "RESP_BAL_ENQ" => Some(Self::RespBalEnq),
+            "RESP_CHK_TXN" => Some(Self::RespChkTxn),
+            "RESP_COMPLAINT" => Some(Self::RespComplaint),
+            "RESP_HBT" => Some(Self::RespHbt),
+            "RESP_LIST_ACCOUNT" => Some(Self::RespListAccount),
+            "RESP_MANDATE" => Some(Self::RespMandate),
+            "RESP_MANDATE_CONFIRMATION" => Some(Self::RespMandateConfirmation),
+            "RESP_OTP" => Some(Self::RespOtp),
+            "RESP_PAY" => Some(Self::RespPay),
+            "RESP_REG_MOB" => Some(Self::RespRegMob),
+            "RESP_SET_CRE" => Some(Self::RespSetCre),
+            "RESP_VAL_CUST" => Some(Self::RespValCust),
+            "RESP_VOUCHER" => Some(Self::RespVoucher),
+            "RESP_VOUCHER_CONFIRMATION" => Some(Self::RespVoucherConfirmation),
+            "RESP_TXN_CONFIRMATION" => Some(Self::RespTxnConfirmation),
+            _ => None,
         }
     }
 }
@@ -852,6 +992,14 @@ pub mod raise_complaint_adjustment {
                 AdjustmentFlag::Raise => "RAISE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADJUSTMENT_FLAG_UNSPECIFIED" => Some(Self::Unspecified),
+                "RAISE" => Some(Self::Raise),
+                _ => None,
+            }
+        }
     }
     /// The reason for raising complaint.
     #[derive(
@@ -922,6 +1070,28 @@ pub mod raise_complaint_adjustment {
                 ReasonCode::PaidByAlternateMeans => "PAID_BY_ALTERNATE_MEANS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CUSTOMER_ACCOUNT_NOT_REVERSED" => Some(Self::CustomerAccountNotReversed),
+                "GOODS_SERVICES_NOT_PROVIDED" => Some(Self::GoodsServicesNotProvided),
+                "CUSTOMER_ACCOUNT_NOT_CREDITED_BACK" => {
+                    Some(Self::CustomerAccountNotCreditedBack)
+                }
+                "BENEFICIARY_ACCOUNT_NOT_CREDITED" => {
+                    Some(Self::BeneficiaryAccountNotCredited)
+                }
+                "GOODS_SERVICES_CREDIT_NOT_PROCESSED" => {
+                    Some(Self::GoodsServicesCreditNotProcessed)
+                }
+                "MERCHANT_NOT_RECEIVED_CONFIRMATION" => {
+                    Some(Self::MerchantNotReceivedConfirmation)
+                }
+                "PAID_BY_ALTERNATE_MEANS" => Some(Self::PaidByAlternateMeans),
+                _ => None,
+            }
+        }
     }
 }
 /// The adjusment flag and reason code for resolving the complaint.
@@ -986,6 +1156,19 @@ pub mod resolve_complaint_adjustment {
                 AdjustmentFlag::TransactionCreditConfirmation => {
                     "TRANSACTION_CREDIT_CONFIRMATION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADJUSTMENT_FLAG_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEBIT_REVERSAL_CONFIRMATION" => Some(Self::DebitReversalConfirmation),
+                "RETURN" => Some(Self::Return),
+                "REFUND_REVERSAL_CONFIRMATION" => Some(Self::RefundReversalConfirmation),
+                "TRANSACTION_CREDIT_CONFIRMATION" => {
+                    Some(Self::TransactionCreditConfirmation)
+                }
+                _ => None,
             }
         }
     }
@@ -1080,6 +1263,32 @@ pub mod resolve_complaint_adjustment {
                 ReasonCode::RrcCustomerAccountCredited => "RRC_CUSTOMER_ACCOUNT_CREDITED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLAINT_RESOLVED_ONLINE" => Some(Self::ComplaintResolvedOnline),
+                "COMPLAINT_RESOLVED_NOW_OR_MANUALLY" => {
+                    Some(Self::ComplaintResolvedNowOrManually)
+                }
+                "ORIGINAL_TRANSACTION_NOT_DONE" => Some(Self::OriginalTransactionNotDone),
+                "RET_ACCOUNT_CLOSED" => Some(Self::RetAccountClosed),
+                "RET_ACCOUNT_DOES_NOT_EXIST" => Some(Self::RetAccountDoesNotExist),
+                "RET_PARTY_INSTRUCTIONS" => Some(Self::RetPartyInstructions),
+                "RET_NRI_ACCOUNT" => Some(Self::RetNriAccount),
+                "RET_CREDIT_FREEZED" => Some(Self::RetCreditFreezed),
+                "RET_INVALID_BENEFICIARY_DETAILS" => {
+                    Some(Self::RetInvalidBeneficiaryDetails)
+                }
+                "RET_ANY_OTHER_REASON" => Some(Self::RetAnyOtherReason),
+                "RET_BENEFICIARY_CANNOT_CREDIT" => Some(Self::RetBeneficiaryCannotCredit),
+                "RET_MERCHANT_NOT_RECEIVED_CONFIRMATION" => {
+                    Some(Self::RetMerchantNotReceivedConfirmation)
+                }
+                "RRC_CUSTOMER_ACCOUNT_CREDITED" => Some(Self::RrcCustomerAccountCredited),
+                _ => None,
+            }
+        }
     }
 }
 /// The adjusment flag and reason code for raising dispute.
@@ -1158,6 +1367,23 @@ pub mod raise_dispute_adjustment {
                 }
                 AdjustmentFlag::ArbitrationRaise => "ARBITRATION_RAISE",
                 AdjustmentFlag::DeferredArbitrationRaise => "DEFERRED_ARBITRATION_RAISE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADJUSTMENT_FLAG_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHARGEBACK_RAISE" => Some(Self::ChargebackRaise),
+                "FRAUD_CHARGEBACK_RAISE" => Some(Self::FraudChargebackRaise),
+                "WRONG_CREDIT_CHARGEBACK_RAISE" => Some(Self::WrongCreditChargebackRaise),
+                "DEFERRED_CHARGEBACK_RAISE" => Some(Self::DeferredChargebackRaise),
+                "PRE_ARBITRATION_RAISE" => Some(Self::PreArbitrationRaise),
+                "DEFERRED_PRE_ARBITRATION_RAISE" => {
+                    Some(Self::DeferredPreArbitrationRaise)
+                }
+                "ARBITRATION_RAISE" => Some(Self::ArbitrationRaise),
+                "DEFERRED_ARBITRATION_RAISE" => Some(Self::DeferredArbitrationRaise),
+                _ => None,
             }
         }
     }
@@ -1288,6 +1514,52 @@ pub mod raise_dispute_adjustment {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHARGEBACK_RAISE_REMITTER_DEBITED_BENEFICIARY_NOT_CREDITED" => {
+                    Some(Self::ChargebackRaiseRemitterDebitedBeneficiaryNotCredited)
+                }
+                "PRE_ARBITRATION_RAISE_BENEFICIARY_NOT_CREDITED" => {
+                    Some(Self::PreArbitrationRaiseBeneficiaryNotCredited)
+                }
+                "DEFERRED_CHARGEBACK_RAISE_BENEFICIARY_NOT_CREDITED" => {
+                    Some(Self::DeferredChargebackRaiseBeneficiaryNotCredited)
+                }
+                "DEFERRED_PRE_ARBITRATION_RAISE_BENEFICIARY_NOT_CREDITED" => {
+                    Some(Self::DeferredPreArbitrationRaiseBeneficiaryNotCredited)
+                }
+                "DEFERRED_ARBITRATION_RAISE_DEFERRED_CHARGEBACK_PRE_ARBITRATION_REJECTED" => {
+                    Some(
+                        Self::DeferredArbitrationRaiseDeferredChargebackPreArbitrationRejected,
+                    )
+                }
+                "CHARGEBACK_ON_FRAUD" => Some(Self::ChargebackOnFraud),
+                "GOODS_SERVICES_CREDIT_NOT_PROCESSED" => {
+                    Some(Self::GoodsServicesCreditNotProcessed)
+                }
+                "GOODS_SERVICES_DEFECTIVE" => Some(Self::GoodsServicesDefective),
+                "PAID_BY_ALTERNATE_MEANS" => Some(Self::PaidByAlternateMeans),
+                "GOODS_SERVICES_NOT_RECEIVED" => Some(Self::GoodsServicesNotReceived),
+                "MERCHANT_NOT_RECEIVED_CONFIRMATION" => {
+                    Some(Self::MerchantNotReceivedConfirmation)
+                }
+                "TRANSACTION_NOT_STEELED" => Some(Self::TransactionNotSteeled),
+                "DUPLICATE_TRANSACTION" => Some(Self::DuplicateTransaction),
+                "CHARGEBACK_CARD_HOLDER_CHARGED_MORE" => {
+                    Some(Self::ChargebackCardHolderChargedMore)
+                }
+                "CUSTOMER_CLAIMING_GOODS_SERVICES_NOT_DELIVERED" => {
+                    Some(Self::CustomerClaimingGoodsServicesNotDelivered)
+                }
+                "PARTIES_DENIED" => Some(Self::PartiesDenied),
+                "FUNDS_TRANSFERRED_TO_UNINTENDED_BENEFICIARY" => {
+                    Some(Self::FundsTransferredToUnintendedBeneficiary)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// The adjusment flag and reason code for resolving the dispute.
@@ -1414,6 +1686,41 @@ pub mod resolve_dispute_adjustment {
                     "WRONG_CREDIT_CHARGEBACK_ACCEPTANCE"
                 }
                 AdjustmentFlag::ManualAdjustment => "MANUAL_ADJUSTMENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADJUSTMENT_FLAG_UNSPECIFIED" => Some(Self::Unspecified),
+                "RE_PRESENTMENT_RAISE" => Some(Self::RePresentmentRaise),
+                "DEFERRED_RE_PRESENTMENT_RAISE" => Some(Self::DeferredRePresentmentRaise),
+                "CHARGEBACK_ACCEPTANCE" => Some(Self::ChargebackAcceptance),
+                "DEFERRED_CHARGEBACK_ACCEPTANCE" => {
+                    Some(Self::DeferredChargebackAcceptance)
+                }
+                "PRE_ARBITRATION_ACCEPTANCE" => Some(Self::PreArbitrationAcceptance),
+                "DEFERRED_PRE_ARBITRATION_ACCEPTANCE" => {
+                    Some(Self::DeferredPreArbitrationAcceptance)
+                }
+                "PRE_ARBITRATION_DECLINED" => Some(Self::PreArbitrationDeclined),
+                "DEFERRED_PRE_ARBITRATION_DECLINED" => {
+                    Some(Self::DeferredPreArbitrationDeclined)
+                }
+                "ARBITRATION_ACCEPTANCE" => Some(Self::ArbitrationAcceptance),
+                "ARBITRATION_CONTINUATION" => Some(Self::ArbitrationContinuation),
+                "ARBITRATION_WITHDRAWN" => Some(Self::ArbitrationWithdrawn),
+                "ARBITRATION_VERDICT" => Some(Self::ArbitrationVerdict),
+                "CREDIT_ADJUSTMENT" => Some(Self::CreditAdjustment),
+                "FRAUD_CHARGEBACK_REPRESENTMENT" => {
+                    Some(Self::FraudChargebackRepresentment)
+                }
+                "FRAUD_CHARGEBACK_ACCEPT" => Some(Self::FraudChargebackAccept),
+                "WRONG_CREDIT_REPRESENTMENT" => Some(Self::WrongCreditRepresentment),
+                "WRONG_CREDIT_CHARGEBACK_ACCEPTANCE" => {
+                    Some(Self::WrongCreditChargebackAcceptance)
+                }
+                "MANUAL_ADJUSTMENT" => Some(Self::ManualAdjustment),
+                _ => None,
             }
         }
     }
@@ -1694,6 +2001,126 @@ pub mod resolve_dispute_adjustment {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHARGEBACK_BENEFICIARY_CANNOT_CREDIT_OR_PRE_ARBITRATION_DUPLICATE_PROCESS" => {
+                    Some(
+                        Self::ChargebackBeneficiaryCannotCreditOrPreArbitrationDuplicateProcess,
+                    )
+                }
+                "PRE_ARBITRATION_DECLINED_BENEFICIARY_CREDITED_ONLINE" => {
+                    Some(Self::PreArbitrationDeclinedBeneficiaryCreditedOnline)
+                }
+                "PRE_ARBITRATION_DECLINED_BENEFICIARY_CREDITED_MANUALLY" => {
+                    Some(Self::PreArbitrationDeclinedBeneficiaryCreditedManually)
+                }
+                "DEFERRED_CHARGEBACK_ACCEPTANCE_ACCOUNT_NOT_CREDITED_TCC_RAISED" => {
+                    Some(Self::DeferredChargebackAcceptanceAccountNotCreditedTccRaised)
+                }
+                "DEFERRED_RE_PRESENTMENT_RAISE_ACCOUNT_CREDITED_TCC_RAISED" => {
+                    Some(Self::DeferredRePresentmentRaiseAccountCreditedTccRaised)
+                }
+                "DEFERRED_PRE_ARBITRATION_ACCEPTANCE_ACCOUNT_NOT_CREDITED" => {
+                    Some(Self::DeferredPreArbitrationAcceptanceAccountNotCredited)
+                }
+                "DEFERRED_PRE_ARBITRATION_DECLINED_ACCOUNT_CREDITED" => {
+                    Some(Self::DeferredPreArbitrationDeclinedAccountCredited)
+                }
+                "FRAUD_CHARGEBACK_ACCEPT_AMOUNT_RECOVERED_FROM_FRAUDULENT_ACCOUNT" => {
+                    Some(Self::FraudChargebackAcceptAmountRecoveredFromFraudulentAccount)
+                }
+                "FRAUD_CHARGEBACK_REPRESENTMENT_LIEN_MARKED_INSUFFICIENT_BALANCE" => {
+                    Some(Self::FraudChargebackRepresentmentLienMarkedInsufficientBalance)
+                }
+                "FRAUD_CHARGEBACK_REPRESENTMENT_FIR_NOT_PROVIDED" => {
+                    Some(Self::FraudChargebackRepresentmentFirNotProvided)
+                }
+                "FRAUD_CHARGEBACK_REPRESENTMENT_REASON_OTHERS" => {
+                    Some(Self::FraudChargebackRepresentmentReasonOthers)
+                }
+                "RE_PRESENTMENT_RAISE_BENEFICIARY_CREDITED_ONLINE" => {
+                    Some(Self::RePresentmentRaiseBeneficiaryCreditedOnline)
+                }
+                "RE_PRESENTMENT_RAISE_BENEFICIARY_CREDITED_MANUALLY" => {
+                    Some(Self::RePresentmentRaiseBeneficiaryCreditedManually)
+                }
+                "CREDIT_ADJUSTMENT_GOODS_SERVICES_CREDIT_NOT_PROCESSED" => {
+                    Some(Self::CreditAdjustmentGoodsServicesCreditNotProcessed)
+                }
+                "CREDIT_ADJUSTMENT_GOODS_SERVICES_DEFECTIVE" => {
+                    Some(Self::CreditAdjustmentGoodsServicesDefective)
+                }
+                "CREDIT_ADJUSTMENT_PAID_BY_ALTERNATE_MEANS" => {
+                    Some(Self::CreditAdjustmentPaidByAlternateMeans)
+                }
+                "CREDIT_ADJUSTMENT_GOODS_SERVICES_NOT_RECEIVED" => {
+                    Some(Self::CreditAdjustmentGoodsServicesNotReceived)
+                }
+                "CREDIT_ADJUSTMENT_MERCHANT_NOT_RECEIVED_CONFIRMATION" => {
+                    Some(Self::CreditAdjustmentMerchantNotReceivedConfirmation)
+                }
+                "CREDIT_ADJUSTMENT_DUPLICATE_TRANSACTION" => {
+                    Some(Self::CreditAdjustmentDuplicateTransaction)
+                }
+                "CREDIT_ADJUSTMENT_REASON_OTHERS" => {
+                    Some(Self::CreditAdjustmentReasonOthers)
+                }
+                "CREDIT_ADJUSTMENT_NON_MATCHING_ACCOUNT_NUMBER" => {
+                    Some(Self::CreditAdjustmentNonMatchingAccountNumber)
+                }
+                "CREDIT_ADJUSTMENT_CARD_HOLDER_CHARGED_MORE" => {
+                    Some(Self::CreditAdjustmentCardHolderChargedMore)
+                }
+                "CREDIT_ADJUSTMENT_CREDIT_NOT_PROCESSED" => {
+                    Some(Self::CreditAdjustmentCreditNotProcessed)
+                }
+                "CREDIT_ADJUSTMENT_BENEFICIARY_CANNOT_CREDIT" => {
+                    Some(Self::CreditAdjustmentBeneficiaryCannotCredit)
+                }
+                "CHARGEBACK_ACCEPTANCE_MERCHANT_CANNOT_PROVIDE_SERVICE" => {
+                    Some(Self::ChargebackAcceptanceMerchantCannotProvideService)
+                }
+                "RE_PRESENTMENT_RAISE_GOODS_SERVICES_PROVIDED" => {
+                    Some(Self::RePresentmentRaiseGoodsServicesProvided)
+                }
+                "PRE_ARBITRATION_DECLINED_SERVICES_PROVIDED_LATER" => {
+                    Some(Self::PreArbitrationDeclinedServicesProvidedLater)
+                }
+                "PRE_ARBITRATION_ACCEPTANCE_SERVICES_NOT_PROVIDED_BY_MERCHANT" => {
+                    Some(Self::PreArbitrationAcceptanceServicesNotProvidedByMerchant)
+                }
+                "ARBITRATION_ACCEPTANCE_ILLEGIBLE_FULFILMENT" => {
+                    Some(Self::ArbitrationAcceptanceIllegibleFulfilment)
+                }
+                "ARBITRATION_CONTINUATION_CUSTOMER_STILL_NOT_RECEIVED_SERVICE" => {
+                    Some(Self::ArbitrationContinuationCustomerStillNotReceivedService)
+                }
+                "ARBITRATION_WITHDRAWN_CUSTOMER_RECEIVED_SERVICE_LATER" => {
+                    Some(Self::ArbitrationWithdrawnCustomerReceivedServiceLater)
+                }
+                "ARBITRATION_VERDICT_PANEL_VERDICT" => {
+                    Some(Self::ArbitrationVerdictPanelVerdict)
+                }
+                "MANUAL_ADJUSTMENT_REASON" => Some(Self::ManualAdjustmentReason),
+                "ATTRIBUTING_CUSTOMER" => Some(Self::AttributingCustomer),
+                "ATTRIBUTING_TECHNICAL_ISSUE" => Some(Self::AttributingTechnicalIssue),
+                "WRONG_CREDIT_CHARGEBACK_ACCEPTANCE_AMOUNT_RECOVERED" => {
+                    Some(Self::WrongCreditChargebackAcceptanceAmountRecovered)
+                }
+                "WRONG_CREDIT_REPRESENTMENT_LIEN_MARKED_INSUFFICIENT_BALANCE" => {
+                    Some(Self::WrongCreditRepresentmentLienMarkedInsufficientBalance)
+                }
+                "WRONG_CREDIT_REPRESENTMENT_CUSTOMER_INACCESSIBLE" => {
+                    Some(Self::WrongCreditRepresentmentCustomerInaccessible)
+                }
+                "WRONG_CREDIT_REPRESENTMENT_REASON_OTHERS" => {
+                    Some(Self::WrongCreditRepresentmentReasonOthers)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Metadata for CreateComplaint.
@@ -1733,6 +2160,15 @@ impl TransactionSubType {
             TransactionSubType::Unspecified => "TRANSACTION_SUB_TYPE_UNSPECIFIED",
             TransactionSubType::Beneficiary => "TRANSACTION_SUB_TYPE_BENEFICIARY",
             TransactionSubType::Remitter => "TRANSACTION_SUB_TYPE_REMITTER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSACTION_SUB_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TRANSACTION_SUB_TYPE_BENEFICIARY" => Some(Self::Beneficiary),
+            "TRANSACTION_SUB_TYPE_REMITTER" => Some(Self::Remitter),
+            _ => None,
         }
     }
 }
@@ -1999,6 +2435,15 @@ pub mod transaction_info {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
     /// The sub-type of a transaction. This value is used only for certain API type
     /// and transaction type combinations.
@@ -2051,6 +2496,18 @@ pub mod transaction_info {
                 TransactionSubType::Pay => "PAY",
                 TransactionSubType::Beneficiary => "BENEFICIARY",
                 TransactionSubType::Remitter => "REMITTER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRANSACTION_SUB_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COLLECT" => Some(Self::Collect),
+                "DEBIT" => Some(Self::Debit),
+                "PAY" => Some(Self::Pay),
+                "BENEFICIARY" => Some(Self::Beneficiary),
+                "REMITTER" => Some(Self::Remitter),
+                _ => None,
             }
         }
     }
@@ -2232,6 +2689,23 @@ pub mod mandate_transaction {
                 RecurrencePatternType::Yearly => "YEARLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECURRENCE_PATTERN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AS_PRESENTED" => Some(Self::AsPresented),
+                "BIMONTHLY" => Some(Self::Bimonthly),
+                "DAILY" => Some(Self::Daily),
+                "FORTNIGHTLY" => Some(Self::Fortnightly),
+                "HALF_YEARLY" => Some(Self::HalfYearly),
+                "MONTHLY" => Some(Self::Monthly),
+                "ONE_TIME" => Some(Self::OneTime),
+                "QUARTERLY" => Some(Self::Quarterly),
+                "WEEKLY" => Some(Self::Weekly),
+                "YEARLY" => Some(Self::Yearly),
+                _ => None,
+            }
+        }
     }
     /// RecurrenceRuleType specifies the recurrence rule type of mandate.
     #[derive(
@@ -2269,6 +2743,16 @@ pub mod mandate_transaction {
                 RecurrenceRuleType::On => "ON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECURRENCE_RULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AFTER" => Some(Self::After),
+                "BEFORE" => Some(Self::Before),
+                "ON" => Some(Self::On),
+                _ => None,
+            }
+        }
     }
     /// AmountRuleType specifies the type of rule associated with the mandate
     /// amount.
@@ -2304,6 +2788,15 @@ pub mod mandate_transaction {
                 AmountRuleType::Unspecified => "AMOUNT_RULE_TYPE_UNSPECIFIED",
                 AmountRuleType::Exact => "EXACT",
                 AmountRuleType::Max => "MAX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AMOUNT_RULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT" => Some(Self::Exact),
+                "MAX" => Some(Self::Max),
+                _ => None,
             }
         }
     }
@@ -3741,6 +4234,14 @@ pub mod rule_metadata {
             match self {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::List => "LIST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LIST" => Some(Self::List),
+                _ => None,
             }
         }
     }

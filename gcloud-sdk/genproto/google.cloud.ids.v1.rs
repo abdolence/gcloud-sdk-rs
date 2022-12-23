@@ -85,6 +85,18 @@ pub mod endpoint {
                 Severity::Critical => "CRITICAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "INFORMATIONAL" => Some(Self::Informational),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                "CRITICAL" => Some(Self::Critical),
+                _ => None,
+            }
+        }
     }
     /// Endpoint state
     #[derive(
@@ -120,6 +132,16 @@ pub mod endpoint {
                 State::Creating => "CREATING",
                 State::Ready => "READY",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }

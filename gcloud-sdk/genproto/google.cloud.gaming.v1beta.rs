@@ -85,6 +85,16 @@ pub mod operation_status {
                 ErrorCode::ClusterConnection => "CLUSTER_CONNECTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "CLUSTER_CONNECTION" => Some(Self::ClusterConnection),
+                _ => None,
+            }
+        }
     }
 }
 /// The label selector, used to group labels on the resources.

@@ -208,6 +208,16 @@ pub mod data_stream {
                 DataStreamType::IosAppDataStream => "IOS_APP_DATA_STREAM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_STREAM_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "WEB_DATA_STREAM" => Some(Self::WebDataStream),
+                "ANDROID_APP_DATA_STREAM" => Some(Self::AndroidAppDataStream),
+                "IOS_APP_DATA_STREAM" => Some(Self::IosAppDataStream),
+                _ => None,
+            }
+        }
     }
     /// Data for specific data stream types. The message that will be
     /// set corresponds to the type of this stream.
@@ -573,6 +583,15 @@ pub mod custom_dimension {
                 DimensionScope::User => "USER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIMENSION_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EVENT" => Some(Self::Event),
+                "USER" => Some(Self::User),
+                _ => None,
+            }
+        }
     }
 }
 /// A definition for a custom metric.
@@ -682,6 +701,23 @@ pub mod custom_metric {
                 MeasurementUnit::Hours => "HOURS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEASUREMENT_UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "CURRENCY" => Some(Self::Currency),
+                "FEET" => Some(Self::Feet),
+                "METERS" => Some(Self::Meters),
+                "KILOMETERS" => Some(Self::Kilometers),
+                "MILES" => Some(Self::Miles),
+                "MILLISECONDS" => Some(Self::Milliseconds),
+                "SECONDS" => Some(Self::Seconds),
+                "MINUTES" => Some(Self::Minutes),
+                "HOURS" => Some(Self::Hours),
+                _ => None,
+            }
+        }
     }
     /// The scope of this metric.
     #[derive(
@@ -711,6 +747,14 @@ pub mod custom_metric {
             match self {
                 MetricScope::Unspecified => "METRIC_SCOPE_UNSPECIFIED",
                 MetricScope::Event => "EVENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METRIC_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EVENT" => Some(Self::Event),
+                _ => None,
             }
         }
     }
@@ -746,6 +790,15 @@ pub mod custom_metric {
                 RestrictedMetricType::Unspecified => "RESTRICTED_METRIC_TYPE_UNSPECIFIED",
                 RestrictedMetricType::CostData => "COST_DATA",
                 RestrictedMetricType::RevenueData => "REVENUE_DATA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESTRICTED_METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COST_DATA" => Some(Self::CostData),
+                "REVENUE_DATA" => Some(Self::RevenueData),
+                _ => None,
             }
         }
     }
@@ -811,6 +864,18 @@ pub mod data_retention_settings {
                 RetentionDuration::TwentySixMonths => "TWENTY_SIX_MONTHS",
                 RetentionDuration::ThirtyEightMonths => "THIRTY_EIGHT_MONTHS",
                 RetentionDuration::FiftyMonths => "FIFTY_MONTHS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETENTION_DURATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "TWO_MONTHS" => Some(Self::TwoMonths),
+                "FOURTEEN_MONTHS" => Some(Self::FourteenMonths),
+                "TWENTY_SIX_MONTHS" => Some(Self::TwentySixMonths),
+                "THIRTY_EIGHT_MONTHS" => Some(Self::ThirtyEightMonths),
+                "FIFTY_MONTHS" => Some(Self::FiftyMonths),
+                _ => None,
             }
         }
     }
@@ -912,6 +977,39 @@ impl IndustryCategory {
             IndustryCategory::Shopping => "SHOPPING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INDUSTRY_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "AUTOMOTIVE" => Some(Self::Automotive),
+            "BUSINESS_AND_INDUSTRIAL_MARKETS" => Some(Self::BusinessAndIndustrialMarkets),
+            "FINANCE" => Some(Self::Finance),
+            "HEALTHCARE" => Some(Self::Healthcare),
+            "TECHNOLOGY" => Some(Self::Technology),
+            "TRAVEL" => Some(Self::Travel),
+            "OTHER" => Some(Self::Other),
+            "ARTS_AND_ENTERTAINMENT" => Some(Self::ArtsAndEntertainment),
+            "BEAUTY_AND_FITNESS" => Some(Self::BeautyAndFitness),
+            "BOOKS_AND_LITERATURE" => Some(Self::BooksAndLiterature),
+            "FOOD_AND_DRINK" => Some(Self::FoodAndDrink),
+            "GAMES" => Some(Self::Games),
+            "HOBBIES_AND_LEISURE" => Some(Self::HobbiesAndLeisure),
+            "HOME_AND_GARDEN" => Some(Self::HomeAndGarden),
+            "INTERNET_AND_TELECOM" => Some(Self::InternetAndTelecom),
+            "LAW_AND_GOVERNMENT" => Some(Self::LawAndGovernment),
+            "NEWS" => Some(Self::News),
+            "ONLINE_COMMUNITIES" => Some(Self::OnlineCommunities),
+            "PEOPLE_AND_SOCIETY" => Some(Self::PeopleAndSociety),
+            "PETS_AND_ANIMALS" => Some(Self::PetsAndAnimals),
+            "REAL_ESTATE" => Some(Self::RealEstate),
+            "REFERENCE" => Some(Self::Reference),
+            "SCIENCE" => Some(Self::Science),
+            "SPORTS" => Some(Self::Sports),
+            "JOBS_AND_EDUCATION" => Some(Self::JobsAndEducation),
+            "SHOPPING" => Some(Self::Shopping),
+            _ => None,
+        }
+    }
 }
 /// Various levels of service for Google Analytics.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -934,6 +1032,15 @@ impl ServiceLevel {
             ServiceLevel::Unspecified => "SERVICE_LEVEL_UNSPECIFIED",
             ServiceLevel::GoogleAnalyticsStandard => "GOOGLE_ANALYTICS_STANDARD",
             ServiceLevel::GoogleAnalytics360 => "GOOGLE_ANALYTICS_360",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SERVICE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "GOOGLE_ANALYTICS_STANDARD" => Some(Self::GoogleAnalyticsStandard),
+            "GOOGLE_ANALYTICS_360" => Some(Self::GoogleAnalytics360),
+            _ => None,
         }
     }
 }
@@ -964,6 +1071,16 @@ impl ActorType {
             ActorType::Support => "SUPPORT",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACTOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "USER" => Some(Self::User),
+            "SYSTEM" => Some(Self::System),
+            "SUPPORT" => Some(Self::Support),
+            _ => None,
+        }
+    }
 }
 /// Types of actions that may change a resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -989,6 +1106,16 @@ impl ActionType {
             ActionType::Created => "CREATED",
             ActionType::Updated => "UPDATED",
             ActionType::Deleted => "DELETED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CREATED" => Some(Self::Created),
+            "UPDATED" => Some(Self::Updated),
+            "DELETED" => Some(Self::Deleted),
+            _ => None,
         }
     }
 }
@@ -1053,6 +1180,29 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::AttributionSettings => "ATTRIBUTION_SETTINGS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACCOUNT" => Some(Self::Account),
+            "PROPERTY" => Some(Self::Property),
+            "FIREBASE_LINK" => Some(Self::FirebaseLink),
+            "GOOGLE_ADS_LINK" => Some(Self::GoogleAdsLink),
+            "GOOGLE_SIGNALS_SETTINGS" => Some(Self::GoogleSignalsSettings),
+            "CONVERSION_EVENT" => Some(Self::ConversionEvent),
+            "MEASUREMENT_PROTOCOL_SECRET" => Some(Self::MeasurementProtocolSecret),
+            "DATA_RETENTION_SETTINGS" => Some(Self::DataRetentionSettings),
+            "DISPLAY_VIDEO_360_ADVERTISER_LINK" => {
+                Some(Self::DisplayVideo360AdvertiserLink)
+            }
+            "DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL" => {
+                Some(Self::DisplayVideo360AdvertiserLinkProposal)
+            }
+            "DATA_STREAM" => Some(Self::DataStream),
+            "ATTRIBUTION_SETTINGS" => Some(Self::AttributionSettings),
+            _ => None,
+        }
+    }
 }
 /// Types of Property resources.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1078,6 +1228,16 @@ impl PropertyType {
             PropertyType::Ordinary => "PROPERTY_TYPE_ORDINARY",
             PropertyType::Subproperty => "PROPERTY_TYPE_SUBPROPERTY",
             PropertyType::Rollup => "PROPERTY_TYPE_ROLLUP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROPERTY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PROPERTY_TYPE_ORDINARY" => Some(Self::Ordinary),
+            "PROPERTY_TYPE_SUBPROPERTY" => Some(Self::Subproperty),
+            "PROPERTY_TYPE_ROLLUP" => Some(Self::Rollup),
+            _ => None,
         }
     }
 }

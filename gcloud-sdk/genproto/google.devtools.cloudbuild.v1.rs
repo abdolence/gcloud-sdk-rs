@@ -594,6 +594,16 @@ pub mod build {
                     Priority::Alert => "ALERT",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PRIORITY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INFO" => Some(Self::Info),
+                    "WARNING" => Some(Self::Warning),
+                    "ALERT" => Some(Self::Alert),
+                    _ => None,
+                }
+            }
         }
     }
     /// A fatal problem encountered during the execution of the build.
@@ -655,6 +665,19 @@ pub mod build {
                     FailureType::FetchSourceFailed => "FETCH_SOURCE_FAILED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FAILURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PUSH_FAILED" => Some(Self::PushFailed),
+                    "PUSH_IMAGE_NOT_FOUND" => Some(Self::PushImageNotFound),
+                    "PUSH_NOT_AUTHORIZED" => Some(Self::PushNotAuthorized),
+                    "LOGGING_FAILURE" => Some(Self::LoggingFailure),
+                    "USER_BUILD_STEP" => Some(Self::UserBuildStep),
+                    "FETCH_SOURCE_FAILED" => Some(Self::FetchSourceFailed),
+                    _ => None,
+                }
+            }
         }
     }
     /// Possible status of a build or build step.
@@ -710,6 +733,22 @@ pub mod build {
                 Status::Timeout => "TIMEOUT",
                 Status::Cancelled => "CANCELLED",
                 Status::Expired => "EXPIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "QUEUED" => Some(Self::Queued),
+                "WORKING" => Some(Self::Working),
+                "SUCCESS" => Some(Self::Success),
+                "FAILURE" => Some(Self::Failure),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "TIMEOUT" => Some(Self::Timeout),
+                "CANCELLED" => Some(Self::Cancelled),
+                "EXPIRED" => Some(Self::Expired),
+                _ => None,
             }
         }
     }
@@ -945,6 +984,15 @@ pub mod hash {
                 HashType::Md5 => "MD5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NONE" => Some(Self::None),
+                "SHA256" => Some(Self::Sha256),
+                "MD5" => Some(Self::Md5),
+                _ => None,
+            }
+        }
     }
 }
 /// Secrets and secret environment variables.
@@ -1171,6 +1219,17 @@ pub mod build_approval {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "APPROVED" => Some(Self::Approved),
+                "REJECTED" => Some(Self::Rejected),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// ApprovalConfig describes configuration for manual approval of a build.
@@ -1242,6 +1301,15 @@ pub mod approval_result {
                 Decision::Unspecified => "DECISION_UNSPECIFIED",
                 Decision::Approved => "APPROVED",
                 Decision::Rejected => "REJECTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DECISION_UNSPECIFIED" => Some(Self::Unspecified),
+                "APPROVED" => Some(Self::Approved),
+                "REJECTED" => Some(Self::Rejected),
+                _ => None,
             }
         }
     }
@@ -1473,6 +1541,17 @@ pub mod pubsub_config {
                 State::SubscriptionMisconfigured => "SUBSCRIPTION_MISCONFIGURED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OK" => Some(Self::Ok),
+                "SUBSCRIPTION_DELETED" => Some(Self::SubscriptionDeleted),
+                "TOPIC_DELETED" => Some(Self::TopicDeleted),
+                "SUBSCRIPTION_MISCONFIGURED" => Some(Self::SubscriptionMisconfigured),
+                _ => None,
+            }
+        }
     }
 }
 /// WebhookConfig describes the configuration of a trigger that
@@ -1522,6 +1601,15 @@ pub mod webhook_config {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Ok => "OK",
                 State::SecretDeleted => "SECRET_DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OK" => Some(Self::Ok),
+                "SECRET_DELETED" => Some(Self::SecretDeleted),
+                _ => None,
             }
         }
     }
@@ -1588,6 +1676,17 @@ pub mod pull_request_filter {
                 CommentControl::CommentsEnabledForExternalContributorsOnly => {
                     "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMMENTS_DISABLED" => Some(Self::CommentsDisabled),
+                "COMMENTS_ENABLED" => Some(Self::CommentsEnabled),
+                "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY" => {
+                    Some(Self::CommentsEnabledForExternalContributorsOnly)
+                }
+                _ => None,
             }
         }
     }
@@ -1854,6 +1953,14 @@ pub mod build_options {
                 VerifyOption::Verified => "VERIFIED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NOT_VERIFIED" => Some(Self::NotVerified),
+                "VERIFIED" => Some(Self::Verified),
+                _ => None,
+            }
+        }
     }
     /// Supported Compute Engine machine types.
     /// For more information, see [Machine
@@ -1896,6 +2003,17 @@ pub mod build_options {
                 MachineType::E2Highcpu32 => "E2_HIGHCPU_32",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "N1_HIGHCPU_8" => Some(Self::N1Highcpu8),
+                "N1_HIGHCPU_32" => Some(Self::N1Highcpu32),
+                "E2_HIGHCPU_8" => Some(Self::E2Highcpu8),
+                "E2_HIGHCPU_32" => Some(Self::E2Highcpu32),
+                _ => None,
+            }
+        }
     }
     /// Specifies the behavior when there is an error in the substitution checks.
     #[derive(
@@ -1926,6 +2044,14 @@ pub mod build_options {
             match self {
                 SubstitutionOption::MustMatch => "MUST_MATCH",
                 SubstitutionOption::AllowLoose => "ALLOW_LOOSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MUST_MATCH" => Some(Self::MustMatch),
+                "ALLOW_LOOSE" => Some(Self::AllowLoose),
+                _ => None,
             }
         }
     }
@@ -1961,6 +2087,15 @@ pub mod build_options {
                 LogStreamingOption::StreamDefault => "STREAM_DEFAULT",
                 LogStreamingOption::StreamOn => "STREAM_ON",
                 LogStreamingOption::StreamOff => "STREAM_OFF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STREAM_DEFAULT" => Some(Self::StreamDefault),
+                "STREAM_ON" => Some(Self::StreamOn),
+                "STREAM_OFF" => Some(Self::StreamOff),
+                _ => None,
             }
         }
     }
@@ -2007,6 +2142,18 @@ pub mod build_options {
                 LoggingMode::StackdriverOnly => "STACKDRIVER_ONLY",
                 LoggingMode::CloudLoggingOnly => "CLOUD_LOGGING_ONLY",
                 LoggingMode::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOGGING_UNSPECIFIED" => Some(Self::LoggingUnspecified),
+                "LEGACY" => Some(Self::Legacy),
+                "GCS_ONLY" => Some(Self::GcsOnly),
+                "STACKDRIVER_ONLY" => Some(Self::StackdriverOnly),
+                "CLOUD_LOGGING_ONLY" => Some(Self::CloudLoggingOnly),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -2140,6 +2287,17 @@ pub mod worker_pool {
                 State::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "RUNNING" => Some(Self::Running),
+                "DELETING" => Some(Self::Deleting),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
     /// Private Pool configuration for the `WorkerPool`.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2235,6 +2393,15 @@ pub mod private_pool_v1_config {
                     EgressOption::Unspecified => "EGRESS_OPTION_UNSPECIFIED",
                     EgressOption::NoPublicEgress => "NO_PUBLIC_EGRESS",
                     EgressOption::PublicEgress => "PUBLIC_EGRESS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "EGRESS_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NO_PUBLIC_EGRESS" => Some(Self::NoPublicEgress),
+                    "PUBLIC_EGRESS" => Some(Self::PublicEgress),
+                    _ => None,
                 }
             }
         }

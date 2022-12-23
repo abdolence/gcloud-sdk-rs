@@ -97,6 +97,18 @@ pub mod connector {
                 State::Updating => "UPDATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READY" => Some(Self::Ready),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "ERROR" => Some(Self::Error),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
+            }
+        }
     }
 }
 /// Request for creating a Serverless VPC Access connector.

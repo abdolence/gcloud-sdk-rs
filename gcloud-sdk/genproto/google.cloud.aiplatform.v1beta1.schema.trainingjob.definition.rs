@@ -103,6 +103,17 @@ pub mod auto_ml_image_classification_inputs {
                 ModelType::MobileTfHighAccuracy1 => "MOBILE_TF_HIGH_ACCURACY_1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD" => Some(Self::Cloud),
+                "MOBILE_TF_LOW_LATENCY_1" => Some(Self::MobileTfLowLatency1),
+                "MOBILE_TF_VERSATILE_1" => Some(Self::MobileTfVersatile1),
+                "MOBILE_TF_HIGH_ACCURACY_1" => Some(Self::MobileTfHighAccuracy1),
+                _ => None,
+            }
+        }
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -154,6 +165,15 @@ pub mod auto_ml_image_classification_metadata {
                 SuccessfulStopReason::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
                 SuccessfulStopReason::BudgetReached => "BUDGET_REACHED",
                 SuccessfulStopReason::ModelConverged => "MODEL_CONVERGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SUCCESSFUL_STOP_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "BUDGET_REACHED" => Some(Self::BudgetReached),
+                "MODEL_CONVERGED" => Some(Self::ModelConverged),
+                _ => None,
             }
         }
     }
@@ -255,6 +275,18 @@ pub mod auto_ml_image_object_detection_inputs {
                 ModelType::MobileTfHighAccuracy1 => "MOBILE_TF_HIGH_ACCURACY_1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_HIGH_ACCURACY_1" => Some(Self::CloudHighAccuracy1),
+                "CLOUD_LOW_LATENCY_1" => Some(Self::CloudLowLatency1),
+                "MOBILE_TF_LOW_LATENCY_1" => Some(Self::MobileTfLowLatency1),
+                "MOBILE_TF_VERSATILE_1" => Some(Self::MobileTfVersatile1),
+                "MOBILE_TF_HIGH_ACCURACY_1" => Some(Self::MobileTfHighAccuracy1),
+                _ => None,
+            }
+        }
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -306,6 +338,15 @@ pub mod auto_ml_image_object_detection_metadata {
                 SuccessfulStopReason::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
                 SuccessfulStopReason::BudgetReached => "BUDGET_REACHED",
                 SuccessfulStopReason::ModelConverged => "MODEL_CONVERGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SUCCESSFUL_STOP_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "BUDGET_REACHED" => Some(Self::BudgetReached),
+                "MODEL_CONVERGED" => Some(Self::ModelConverged),
+                _ => None,
             }
         }
     }
@@ -393,6 +434,16 @@ pub mod auto_ml_image_segmentation_inputs {
                 ModelType::MobileTfLowLatency1 => "MOBILE_TF_LOW_LATENCY_1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_HIGH_ACCURACY_1" => Some(Self::CloudHighAccuracy1),
+                "CLOUD_LOW_ACCURACY_1" => Some(Self::CloudLowAccuracy1),
+                "MOBILE_TF_LOW_LATENCY_1" => Some(Self::MobileTfLowLatency1),
+                _ => None,
+            }
+        }
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -444,6 +495,15 @@ pub mod auto_ml_image_segmentation_metadata {
                 SuccessfulStopReason::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
                 SuccessfulStopReason::BudgetReached => "BUDGET_REACHED",
                 SuccessfulStopReason::ModelConverged => "MODEL_CONVERGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SUCCESSFUL_STOP_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "BUDGET_REACHED" => Some(Self::BudgetReached),
+                "MODEL_CONVERGED" => Some(Self::ModelConverged),
+                _ => None,
             }
         }
     }
@@ -1193,6 +1253,17 @@ pub mod auto_ml_video_action_recognition_inputs {
                 ModelType::MobileCoralVersatile1 => "MOBILE_CORAL_VERSATILE_1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD" => Some(Self::Cloud),
+                "MOBILE_VERSATILE_1" => Some(Self::MobileVersatile1),
+                "MOBILE_JETSON_VERSATILE_1" => Some(Self::MobileJetsonVersatile1),
+                "MOBILE_CORAL_VERSATILE_1" => Some(Self::MobileCoralVersatile1),
+                _ => None,
+            }
+        }
     }
 }
 /// A TrainingJob that trains and uploads an AutoML Video Classification Model.
@@ -1249,6 +1320,16 @@ pub mod auto_ml_video_classification_inputs {
                 ModelType::Cloud => "CLOUD",
                 ModelType::MobileVersatile1 => "MOBILE_VERSATILE_1",
                 ModelType::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD" => Some(Self::Cloud),
+                "MOBILE_VERSATILE_1" => Some(Self::MobileVersatile1),
+                "MOBILE_JETSON_VERSATILE_1" => Some(Self::MobileJetsonVersatile1),
+                _ => None,
             }
         }
     }
@@ -1318,6 +1399,19 @@ pub mod auto_ml_video_object_tracking_inputs {
                 ModelType::MobileCoralLowLatency1 => "MOBILE_CORAL_LOW_LATENCY_1",
                 ModelType::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
                 ModelType::MobileJetsonLowLatency1 => "MOBILE_JETSON_LOW_LATENCY_1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD" => Some(Self::Cloud),
+                "MOBILE_VERSATILE_1" => Some(Self::MobileVersatile1),
+                "MOBILE_CORAL_VERSATILE_1" => Some(Self::MobileCoralVersatile1),
+                "MOBILE_CORAL_LOW_LATENCY_1" => Some(Self::MobileCoralLowLatency1),
+                "MOBILE_JETSON_VERSATILE_1" => Some(Self::MobileJetsonVersatile1),
+                "MOBILE_JETSON_LOW_LATENCY_1" => Some(Self::MobileJetsonLowLatency1),
+                _ => None,
             }
         }
     }

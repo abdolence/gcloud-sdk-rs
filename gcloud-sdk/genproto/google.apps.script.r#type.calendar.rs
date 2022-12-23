@@ -74,6 +74,17 @@ pub mod calendar_add_on_manifest {
                 EventAccess::ReadWrite => "READ_WRITE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "METADATA" => Some(Self::Metadata),
+                "READ" => Some(Self::Read),
+                "WRITE" => Some(Self::Write),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
+            }
+        }
     }
 }
 /// Defines conference related values.

@@ -72,6 +72,15 @@ pub mod version {
                 Type::GeneralAvailability => "TYPE_GENERAL_AVAILABILITY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TYPE_PREVIEW" => Some(Self::Preview),
+                "TYPE_GENERAL_AVAILABILITY" => Some(Self::GeneralAvailability),
+                _ => None,
+            }
+        }
     }
 }
 /// Identifies Data Fusion accelerators for an instance.
@@ -127,6 +136,16 @@ pub mod accelerator {
                 AcceleratorType::CcaiInsights => "CCAI_INSIGHTS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCELERATOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CDC" => Some(Self::Cdc),
+                "HEALTHCARE" => Some(Self::Healthcare),
+                "CCAI_INSIGHTS" => Some(Self::CcaiInsights),
+                _ => None,
+            }
+        }
     }
     /// Different values possible for the state of an accelerator
     #[derive(
@@ -163,6 +182,16 @@ pub mod accelerator {
                 State::Enabled => "ENABLED",
                 State::Disabled => "DISABLED",
                 State::Unknown => "UNKNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
             }
         }
     }
@@ -341,6 +370,16 @@ pub mod instance {
                 Type::Developer => "DEVELOPER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "ENTERPRISE" => Some(Self::Enterprise),
+                "DEVELOPER" => Some(Self::Developer),
+                _ => None,
+            }
+        }
     }
     /// Represents the state of a Data Fusion instance
     #[derive(
@@ -400,6 +439,23 @@ pub mod instance {
                 State::Disabled => "DISABLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "UPGRADING" => Some(Self::Upgrading),
+                "RESTARTING" => Some(Self::Restarting),
+                "UPDATING" => Some(Self::Updating),
+                "AUTO_UPDATING" => Some(Self::AutoUpdating),
+                "AUTO_UPGRADING" => Some(Self::AutoUpgrading),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
     }
     /// The reason for disabling the instance if the state is DISABLED.
     #[derive(
@@ -429,6 +485,14 @@ pub mod instance {
             match self {
                 DisabledReason::Unspecified => "DISABLED_REASON_UNSPECIFIED",
                 DisabledReason::KmsKeyIssue => "KMS_KEY_ISSUE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISABLED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "KMS_KEY_ISSUE" => Some(Self::KmsKeyIssue),
+                _ => None,
             }
         }
     }

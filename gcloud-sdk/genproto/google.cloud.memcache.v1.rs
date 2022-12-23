@@ -165,6 +165,17 @@ pub mod instance {
                     State::Updating => "UPDATING",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CREATING" => Some(Self::Creating),
+                    "READY" => Some(Self::Ready),
+                    "DELETING" => Some(Self::Deleting),
+                    "UPDATING" => Some(Self::Updating),
+                    _ => None,
+                }
+            }
         }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -206,6 +217,16 @@ pub mod instance {
                 match self {
                     Code::Unspecified => "CODE_UNSPECIFIED",
                     Code::ZoneDistributionUnbalanced => "ZONE_DISTRIBUTION_UNBALANCED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ZONE_DISTRIBUTION_UNBALANCED" => {
+                        Some(Self::ZoneDistributionUnbalanced)
+                    }
+                    _ => None,
                 }
             }
         }
@@ -251,6 +272,18 @@ pub mod instance {
                 State::Updating => "UPDATING",
                 State::Deleting => "DELETING",
                 State::PerformingMaintenance => "PERFORMING_MAINTENANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "PERFORMING_MAINTENANCE" => Some(Self::PerformingMaintenance),
+                _ => None,
             }
         }
     }
@@ -359,6 +392,16 @@ pub mod reschedule_maintenance_request {
                 RescheduleType::Immediate => "IMMEDIATE",
                 RescheduleType::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
                 RescheduleType::SpecificTime => "SPECIFIC_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "NEXT_AVAILABLE_WINDOW" => Some(Self::NextAvailableWindow),
+                "SPECIFIC_TIME" => Some(Self::SpecificTime),
+                _ => None,
             }
         }
     }
@@ -581,6 +624,14 @@ impl MemcacheVersion {
         match self {
             MemcacheVersion::Unspecified => "MEMCACHE_VERSION_UNSPECIFIED",
             MemcacheVersion::Memcache15 => "MEMCACHE_1_5",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MEMCACHE_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+            "MEMCACHE_1_5" => Some(Self::Memcache15),
+            _ => None,
         }
     }
 }

@@ -516,6 +516,19 @@ pub mod r#type {
                 PrimitiveType::Bytes => "BYTES",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIMITIVE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOL" => Some(Self::Bool),
+                "INT64" => Some(Self::Int64),
+                "UINT64" => Some(Self::Uint64),
+                "DOUBLE" => Some(Self::Double),
+                "STRING" => Some(Self::String),
+                "BYTES" => Some(Self::Bytes),
+                _ => None,
+            }
+        }
     }
     /// Well-known protobuf types treated with first-class support in CEL.
     #[derive(
@@ -555,6 +568,16 @@ pub mod r#type {
                 WellKnownType::Any => "ANY",
                 WellKnownType::Timestamp => "TIMESTAMP",
                 WellKnownType::Duration => "DURATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WELL_KNOWN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANY" => Some(Self::Any),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                "DURATION" => Some(Self::Duration),
+                _ => None,
             }
         }
     }

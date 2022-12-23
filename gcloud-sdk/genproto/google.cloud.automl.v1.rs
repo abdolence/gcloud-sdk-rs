@@ -177,6 +177,15 @@ impl ClassificationType {
             ClassificationType::Multilabel => "MULTILABEL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CLASSIFICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MULTICLASS" => Some(Self::Multiclass),
+            "MULTILABEL" => Some(Self::Multilabel),
+            _ => None,
+        }
+    }
 }
 /// A vertex represents a 2D point in the image.
 /// The normalized vertex coordinates are between 0 to 1 fractions relative to
@@ -1875,6 +1884,16 @@ pub mod document_dimensions {
                 DocumentDimensionUnit::Point => "POINT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DOCUMENT_DIMENSION_UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCH" => Some(Self::Inch),
+                "CENTIMETER" => Some(Self::Centimeter),
+                "POINT" => Some(Self::Point),
+                _ => None,
+            }
+        }
     }
 }
 /// A structured text document e.g. a PDF.
@@ -1990,6 +2009,22 @@ pub mod document {
                     TextSegmentType::TableHeader => "TABLE_HEADER",
                     TextSegmentType::TableRow => "TABLE_ROW",
                     TextSegmentType::TableCell => "TABLE_CELL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TEXT_SEGMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TOKEN" => Some(Self::Token),
+                    "PARAGRAPH" => Some(Self::Paragraph),
+                    "FORM_FIELD" => Some(Self::FormField),
+                    "FORM_FIELD_NAME" => Some(Self::FormFieldName),
+                    "FORM_FIELD_CONTENTS" => Some(Self::FormFieldContents),
+                    "TABLE" => Some(Self::Table),
+                    "TABLE_HEADER" => Some(Self::TableHeader),
+                    "TABLE_ROW" => Some(Self::TableRow),
+                    "TABLE_CELL" => Some(Self::TableCell),
+                    _ => None,
                 }
             }
         }
@@ -2514,6 +2549,15 @@ pub mod model {
                 DeploymentState::Unspecified => "DEPLOYMENT_STATE_UNSPECIFIED",
                 DeploymentState::Deployed => "DEPLOYED",
                 DeploymentState::Undeployed => "UNDEPLOYED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEPLOYED" => Some(Self::Deployed),
+                "UNDEPLOYED" => Some(Self::Undeployed),
+                _ => None,
             }
         }
     }

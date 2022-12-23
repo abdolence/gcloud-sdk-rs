@@ -153,6 +153,34 @@ impl Language {
             Language::Xml => "XML",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LANGUAGE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NONE" => Some(Self::None),
+            "ANDROID" => Some(Self::Android),
+            "AS" => Some(Self::As),
+            "CC" => Some(Self::Cc),
+            "CSS" => Some(Self::Css),
+            "DART" => Some(Self::Dart),
+            "GO" => Some(Self::Go),
+            "GWT" => Some(Self::Gwt),
+            "HASKELL" => Some(Self::Haskell),
+            "JAVA" => Some(Self::Java),
+            "JS" => Some(Self::Js),
+            "LISP" => Some(Self::Lisp),
+            "OBJC" => Some(Self::Objc),
+            "PY" => Some(Self::Py),
+            "SH" => Some(Self::Sh),
+            "SWIFT" => Some(Self::Swift),
+            "TS" => Some(Self::Ts),
+            "WEB" => Some(Self::Web),
+            "SCALA" => Some(Self::Scala),
+            "PROTO" => Some(Self::Proto),
+            "XML" => Some(Self::Xml),
+            _ => None,
+        }
+    }
 }
 /// Status of a resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -220,6 +248,26 @@ impl Status {
             Status::Skipped => "SKIPPED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "BUILDING" => Some(Self::Building),
+            "BUILT" => Some(Self::Built),
+            "FAILED_TO_BUILD" => Some(Self::FailedToBuild),
+            "TESTING" => Some(Self::Testing),
+            "PASSED" => Some(Self::Passed),
+            "FAILED" => Some(Self::Failed),
+            "TIMED_OUT" => Some(Self::TimedOut),
+            "CANCELLED" => Some(Self::Cancelled),
+            "TOOL_FAILED" => Some(Self::ToolFailed),
+            "INCOMPLETE" => Some(Self::Incomplete),
+            "FLAKY" => Some(Self::Flaky),
+            "UNKNOWN" => Some(Self::Unknown),
+            "SKIPPED" => Some(Self::Skipped),
+            _ => None,
+        }
+    }
 }
 /// Indicates the upload status of the invocation, whether it is
 /// post-processing, or immutable, etc.
@@ -247,6 +295,16 @@ impl UploadStatus {
             UploadStatus::Uploading => "UPLOADING",
             UploadStatus::PostProcessing => "POST_PROCESSING",
             UploadStatus::Immutable => "IMMUTABLE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UPLOAD_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "UPLOADING" => Some(Self::Uploading),
+            "POST_PROCESSING" => Some(Self::PostProcessing),
+            "IMMUTABLE" => Some(Self::Immutable),
+            _ => None,
         }
     }
 }
@@ -438,6 +496,16 @@ pub mod file {
                 HashType::Sha256 => "SHA256",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HASH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MD5" => Some(Self::Md5),
+                "SHA1" => Some(Self::Sha1),
+                "SHA256" => Some(Self::Sha256),
+                _ => None,
+            }
+        }
     }
 }
 /// Information specific to an entry in an archive.
@@ -520,6 +588,21 @@ impl FileProcessingErrorType {
             FileProcessingErrorType::DeadlineExceeded => "DEADLINE_EXCEEDED",
             FileProcessingErrorType::NotFound => "NOT_FOUND",
             FileProcessingErrorType::FileEmpty => "FILE_EMPTY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FILE_PROCESSING_ERROR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "GENERIC_READ_ERROR" => Some(Self::GenericReadError),
+            "GENERIC_PARSE_ERROR" => Some(Self::GenericParseError),
+            "FILE_TOO_LARGE" => Some(Self::FileTooLarge),
+            "OUTPUT_TOO_LARGE" => Some(Self::OutputTooLarge),
+            "ACCESS_DENIED" => Some(Self::AccessDenied),
+            "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
+            "NOT_FOUND" => Some(Self::NotFound),
+            "FILE_EMPTY" => Some(Self::FileEmpty),
+            _ => None,
         }
     }
 }
@@ -675,6 +758,19 @@ pub mod test_case {
                 Result::Filtered => "FILTERED",
                 Result::Skipped => "SKIPPED",
                 Result::Suppressed => "SUPPRESSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETED" => Some(Self::Completed),
+                "INTERRUPTED" => Some(Self::Interrupted),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FILTERED" => Some(Self::Filtered),
+                "SKIPPED" => Some(Self::Skipped),
+                "SUPPRESSED" => Some(Self::Suppressed),
+                _ => None,
             }
         }
     }
@@ -1095,6 +1191,17 @@ impl ExecutionStrategy {
             ExecutionStrategy::LocalSequential => "LOCAL_SEQUENTIAL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXECUTION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+            "OTHER_ENVIRONMENT" => Some(Self::OtherEnvironment),
+            "REMOTE_SERVICE" => Some(Self::RemoteService),
+            "LOCAL_PARALLEL" => Some(Self::LocalParallel),
+            "LOCAL_SEQUENTIAL" => Some(Self::LocalSequential),
+            _ => None,
+        }
+    }
 }
 /// Most build systems cache build results to speed up incremental builds.
 /// Some also cache test results too. This indicates whether the test results
@@ -1122,6 +1229,16 @@ impl TestCaching {
             TestCaching::LocalCacheHit => "LOCAL_CACHE_HIT",
             TestCaching::RemoteCacheHit => "REMOTE_CACHE_HIT",
             TestCaching::CacheMiss => "CACHE_MISS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TEST_CACHING_UNSPECIFIED" => Some(Self::Unspecified),
+            "LOCAL_CACHE_HIT" => Some(Self::LocalCacheHit),
+            "REMOTE_CACHE_HIT" => Some(Self::RemoteCacheHit),
+            "CACHE_MISS" => Some(Self::CacheMiss),
+            _ => None,
         }
     }
 }
@@ -1654,6 +1771,18 @@ impl TargetType {
             TargetType::Test => "TEST",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TARGET_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "APPLICATION" => Some(Self::Application),
+            "BINARY" => Some(Self::Binary),
+            "LIBRARY" => Some(Self::Library),
+            "PACKAGE" => Some(Self::Package),
+            "TEST" => Some(Self::Test),
+            _ => None,
+        }
+    }
 }
 /// Indicates how big the user indicated the test action was.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1685,6 +1814,18 @@ impl TestSize {
             TestSize::Large => "LARGE",
             TestSize::Enormous => "ENORMOUS",
             TestSize::OtherSize => "OTHER_SIZE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TEST_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SMALL" => Some(Self::Small),
+            "MEDIUM" => Some(Self::Medium),
+            "LARGE" => Some(Self::Large),
+            "ENORMOUS" => Some(Self::Enormous),
+            "OTHER_SIZE" => Some(Self::OtherSize),
+            _ => None,
         }
     }
 }
@@ -3864,6 +4005,17 @@ pub mod upload_request {
                 UploadOperation::Update => "UPDATE",
                 UploadOperation::Merge => "MERGE",
                 UploadOperation::Finalize => "FINALIZE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UPLOAD_OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "MERGE" => Some(Self::Merge),
+                "FINALIZE" => Some(Self::Finalize),
+                _ => None,
             }
         }
     }

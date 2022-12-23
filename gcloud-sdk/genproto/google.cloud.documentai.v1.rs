@@ -394,6 +394,17 @@ pub mod document {
                         Orientation::PageLeft => "PAGE_LEFT",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "ORIENTATION_UNSPECIFIED" => Some(Self::Unspecified),
+                        "PAGE_UP" => Some(Self::PageUp),
+                        "PAGE_RIGHT" => Some(Self::PageRight),
+                        "PAGE_DOWN" => Some(Self::PageDown),
+                        "PAGE_LEFT" => Some(Self::PageLeft),
+                        _ => None,
+                    }
+                }
             }
         }
         /// A block has a set of lines (collected into paragraphs) that have a
@@ -513,6 +524,16 @@ pub mod document {
                             Type::Space => "SPACE",
                             Type::WideSpace => "WIDE_SPACE",
                             Type::Hyphen => "HYPHEN",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "SPACE" => Some(Self::Space),
+                            "WIDE_SPACE" => Some(Self::WideSpace),
+                            "HYPHEN" => Some(Self::Hyphen),
+                            _ => None,
                         }
                     }
                 }
@@ -985,6 +1006,20 @@ pub mod document {
                         LayoutType::FormField => "FORM_FIELD",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "LAYOUT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "BLOCK" => Some(Self::Block),
+                        "PARAGRAPH" => Some(Self::Paragraph),
+                        "LINE" => Some(Self::Line),
+                        "TOKEN" => Some(Self::Token),
+                        "VISUAL_ELEMENT" => Some(Self::VisualElement),
+                        "TABLE" => Some(Self::Table),
+                        "FORM_FIELD" => Some(Self::FormField),
+                        _ => None,
+                    }
+                }
             }
         }
     }
@@ -1072,6 +1107,19 @@ pub mod document {
                     OperationType::EvalRequested => "EVAL_REQUESTED",
                     OperationType::EvalApproved => "EVAL_APPROVED",
                     OperationType::EvalSkipped => "EVAL_SKIPPED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADD" => Some(Self::Add),
+                    "REMOVE" => Some(Self::Remove),
+                    "REPLACE" => Some(Self::Replace),
+                    "EVAL_REQUESTED" => Some(Self::EvalRequested),
+                    "EVAL_APPROVED" => Some(Self::EvalApproved),
+                    "EVAL_SKIPPED" => Some(Self::EvalSkipped),
+                    _ => None,
                 }
             }
         }
@@ -1405,6 +1453,17 @@ pub mod document_schema {
                         OccurrenceType::RequiredMultiple => "REQUIRED_MULTIPLE",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "OCCURRENCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "OPTIONAL_ONCE" => Some(Self::OptionalOnce),
+                        "OPTIONAL_MULTIPLE" => Some(Self::OptionalMultiple),
+                        "REQUIRED_ONCE" => Some(Self::RequiredOnce),
+                        "REQUIRED_MULTIPLE" => Some(Self::RequiredMultiple),
+                        _ => None,
+                    }
+                }
             }
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1504,6 +1563,18 @@ pub mod common_operation_metadata {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "CANCELLING" => Some(Self::Cancelling),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -1607,6 +1678,20 @@ pub mod processor_version {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEPLOYED" => Some(Self::Deployed),
+                "DEPLOYING" => Some(Self::Deploying),
+                "UNDEPLOYED" => Some(Self::Undeployed),
+                "UNDEPLOYING" => Some(Self::Undeploying),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
 /// The first-class citizen for Document AI. Each processor defines how to
@@ -1700,6 +1785,20 @@ pub mod processor {
                 State::Creating => "CREATING",
                 State::Failed => "FAILED",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLING" => Some(Self::Enabling),
+                "DISABLING" => Some(Self::Disabling),
+                "CREATING" => Some(Self::Creating),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }
@@ -1848,6 +1947,17 @@ pub mod human_review_status {
                 State::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SKIPPED" => Some(Self::Skipped),
+                "VALIDATION_PASSED" => Some(Self::ValidationPassed),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// Response message for the process document method.
@@ -1978,6 +2088,19 @@ pub mod batch_process_metadata {
                 State::Cancelling => "CANCELLING",
                 State::Cancelled => "CANCELLED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "WAITING" => Some(Self::Waiting),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -2318,6 +2441,14 @@ pub mod review_document_request {
                 Priority::Urgent => "URGENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEFAULT" => Some(Self::Default),
+                "URGENT" => Some(Self::Urgent),
+                _ => None,
+            }
+        }
     }
     /// The document payload.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2376,6 +2507,15 @@ pub mod review_document_response {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Rejected => "REJECTED",
                 State::Succeeded => "SUCCEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REJECTED" => Some(Self::Rejected),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                _ => None,
             }
         }
     }

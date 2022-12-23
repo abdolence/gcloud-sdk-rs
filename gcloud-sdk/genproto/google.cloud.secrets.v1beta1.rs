@@ -98,6 +98,16 @@ pub mod secret_version {
                 State::Destroyed => "DESTROYED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "DESTROYED" => Some(Self::Destroyed),
+                _ => None,
+            }
+        }
     }
 }
 /// A policy that defines the replication configuration of data.

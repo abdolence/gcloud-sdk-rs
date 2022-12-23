@@ -373,6 +373,15 @@ impl DataFormat {
             DataFormat::Arrow => "ARROW",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "AVRO" => Some(Self::Avro),
+            "ARROW" => Some(Self::Arrow),
+            _ => None,
+        }
+    }
 }
 /// Strategy for distributing data among multiple streams in a read session.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -403,6 +412,15 @@ impl ShardingStrategy {
             ShardingStrategy::Unspecified => "SHARDING_STRATEGY_UNSPECIFIED",
             ShardingStrategy::Liquid => "LIQUID",
             ShardingStrategy::Balanced => "BALANCED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SHARDING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+            "LIQUID" => Some(Self::Liquid),
+            "BALANCED" => Some(Self::Balanced),
+            _ => None,
         }
     }
 }

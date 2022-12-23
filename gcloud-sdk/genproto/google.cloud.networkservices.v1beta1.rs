@@ -145,6 +145,17 @@ pub mod endpoint_matcher {
                     MetadataLabelMatchCriteria::MatchAll => "MATCH_ALL",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED" => {
+                        Some(Self::Unspecified)
+                    }
+                    "MATCH_ANY" => Some(Self::MatchAny),
+                    "MATCH_ALL" => Some(Self::MatchAll),
+                    _ => None,
+                }
+            }
         }
     }
     /// Specifies type of the matcher used for this endpoint matcher.
@@ -251,6 +262,15 @@ pub mod endpoint_policy {
                 EndpointPolicyType::Unspecified => "ENDPOINT_POLICY_TYPE_UNSPECIFIED",
                 EndpointPolicyType::SidecarProxy => "SIDECAR_PROXY",
                 EndpointPolicyType::GrpcServer => "GRPC_SERVER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENDPOINT_POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SIDECAR_PROXY" => Some(Self::SidecarProxy),
+                "GRPC_SERVER" => Some(Self::GrpcServer),
+                _ => None,
             }
         }
     }

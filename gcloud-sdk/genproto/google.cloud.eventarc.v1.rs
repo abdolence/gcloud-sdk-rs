@@ -95,6 +95,16 @@ pub mod channel {
                 State::Inactive => "INACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                _ => None,
+            }
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]

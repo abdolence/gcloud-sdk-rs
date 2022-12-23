@@ -75,6 +75,16 @@ pub mod support_account {
                 State::PendingDeletion => "PENDING_DELETION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "PENDING" => Some(Self::Pending),
+                "PENDING_DELETION" => Some(Self::PendingDeletion),
+                _ => None,
+            }
+        }
     }
     /// Pricing model applicable to this support account.
     #[derive(
@@ -108,6 +118,15 @@ pub mod support_account {
                 PricingModel::Unknown => "PRICING_MODEL_UNKNOWN",
                 PricingModel::Packages => "PACKAGES",
                 PricingModel::UserRoles => "USER_ROLES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRICING_MODEL_UNKNOWN" => Some(Self::Unknown),
+                "PACKAGES" => Some(Self::Packages),
+                "USER_ROLES" => Some(Self::UserRoles),
+                _ => None,
             }
         }
     }
@@ -216,6 +235,18 @@ pub mod case {
                 Priority::P4 => "P4",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIORITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "P0" => Some(Self::P0),
+                "P1" => Some(Self::P1),
+                "P2" => Some(Self::P2),
+                "P3" => Some(Self::P3),
+                "P4" => Some(Self::P4),
+                _ => None,
+            }
+        }
     }
     /// The state of a case.
     #[derive(
@@ -266,6 +297,21 @@ pub mod case {
                 State::WaitingForCustomerResponse => "WAITING_FOR_CUSTOMER_RESPONSE",
                 State::SolutionOffered => "SOLUTION_OFFERED",
                 State::Closed => "CLOSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW" => Some(Self::New),
+                "ASSIGNED" => Some(Self::Assigned),
+                "IN_PROGRESS_GOOGLE_SUPPORT" => Some(Self::InProgressGoogleSupport),
+                "IN_PROGRESS_GOOGLE_ENG" => Some(Self::InProgressGoogleEng),
+                "IN_PROGRESS_KNOWN_ISSUE" => Some(Self::InProgressKnownIssue),
+                "WAITING_FOR_CUSTOMER_RESPONSE" => Some(Self::WaitingForCustomerResponse),
+                "SOLUTION_OFFERED" => Some(Self::SolutionOffered),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
             }
         }
     }
@@ -341,6 +387,18 @@ pub mod customer_issue {
                 IssueState::Verified => "VERIFIED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ISSUE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OPEN" => Some(Self::Open),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "FIXED" => Some(Self::Fixed),
+                "WONT_FIX" => Some(Self::WontFix),
+                "VERIFIED" => Some(Self::Verified),
+                _ => None,
+            }
+        }
     }
 }
 /// A message that contains mapping of a user and their role under a support
@@ -395,6 +453,17 @@ pub mod support_role {
                 Role::Developer => "DEVELOPER",
                 Role::Operation => "OPERATION",
                 Role::SiteReliability => "SITE_RELIABILITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "DEVELOPER" => Some(Self::Developer),
+                "OPERATION" => Some(Self::Operation),
+                "SITE_RELIABILITY" => Some(Self::SiteReliability),
+                _ => None,
             }
         }
     }

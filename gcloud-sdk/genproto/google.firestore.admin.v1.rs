@@ -77,6 +77,15 @@ pub mod database {
                 DatabaseType::DatastoreMode => "DATASTORE_MODE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FIRESTORE_NATIVE" => Some(Self::FirestoreNative),
+                "DATASTORE_MODE" => Some(Self::DatastoreMode),
+                _ => None,
+            }
+        }
     }
     /// The type of concurrency control mode for transactions.
     #[derive(
@@ -125,6 +134,16 @@ pub mod database {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONCURRENCY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OPTIMISTIC" => Some(Self::Optimistic),
+                "PESSIMISTIC" => Some(Self::Pessimistic),
+                "OPTIMISTIC_WITH_ENTITY_GROUPS" => Some(Self::OptimisticWithEntityGroups),
+                _ => None,
+            }
+        }
     }
     /// The type of App Engine integration mode.
     #[derive(
@@ -163,6 +182,15 @@ pub mod database {
                 }
                 AppEngineIntegrationMode::Enabled => "ENABLED",
                 AppEngineIntegrationMode::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
             }
         }
     }
@@ -256,6 +284,15 @@ pub mod index {
                     Order::Descending => "DESCENDING",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ORDER_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ASCENDING" => Some(Self::Ascending),
+                    "DESCENDING" => Some(Self::Descending),
+                    _ => None,
+                }
+            }
         }
         /// The supported array value configurations.
         #[derive(
@@ -285,6 +322,14 @@ pub mod index {
                 match self {
                     ArrayConfig::Unspecified => "ARRAY_CONFIG_UNSPECIFIED",
                     ArrayConfig::Contains => "CONTAINS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ARRAY_CONFIG_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CONTAINS" => Some(Self::Contains),
+                    _ => None,
                 }
             }
         }
@@ -339,6 +384,15 @@ pub mod index {
                 QueryScope::CollectionGroup => "COLLECTION_GROUP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUERY_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COLLECTION" => Some(Self::Collection),
+                "COLLECTION_GROUP" => Some(Self::CollectionGroup),
+                _ => None,
+            }
+        }
     }
     /// The state of an index. During index creation, an index will be in the
     /// `CREATING` state. If the index is created successfully, it will transition
@@ -389,6 +443,16 @@ pub mod index {
                 State::Creating => "CREATING",
                 State::Ready => "READY",
                 State::NeedsRepair => "NEEDS_REPAIR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "NEEDS_REPAIR" => Some(Self::NeedsRepair),
+                _ => None,
             }
         }
     }
@@ -523,6 +587,16 @@ pub mod field {
                     State::Creating => "CREATING",
                     State::Active => "ACTIVE",
                     State::NeedsRepair => "NEEDS_REPAIR",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CREATING" => Some(Self::Creating),
+                    "ACTIVE" => Some(Self::Active),
+                    "NEEDS_REPAIR" => Some(Self::NeedsRepair),
+                    _ => None,
                 }
             }
         }
@@ -1232,6 +1306,15 @@ pub mod field_operation_metadata {
                     ChangeType::Remove => "REMOVE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADD" => Some(Self::Add),
+                    "REMOVE" => Some(Self::Remove),
+                    _ => None,
+                }
+            }
         }
     }
     /// Information about an TTL configuration change.
@@ -1275,6 +1358,15 @@ pub mod field_operation_metadata {
                     ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
                     ChangeType::Add => "ADD",
                     ChangeType::Remove => "REMOVE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADD" => Some(Self::Add),
+                    "REMOVE" => Some(Self::Remove),
+                    _ => None,
                 }
             }
         }
@@ -1397,6 +1489,20 @@ impl OperationState {
             OperationState::Successful => "SUCCESSFUL",
             OperationState::Failed => "FAILED",
             OperationState::Cancelled => "CANCELLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OPERATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "INITIALIZING" => Some(Self::Initializing),
+            "PROCESSING" => Some(Self::Processing),
+            "CANCELLING" => Some(Self::Cancelling),
+            "FINALIZING" => Some(Self::Finalizing),
+            "SUCCESSFUL" => Some(Self::Successful),
+            "FAILED" => Some(Self::Failed),
+            "CANCELLED" => Some(Self::Cancelled),
+            _ => None,
         }
     }
 }

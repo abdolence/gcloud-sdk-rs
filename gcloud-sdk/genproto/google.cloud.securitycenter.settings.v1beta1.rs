@@ -42,6 +42,15 @@ impl BillingTier {
             BillingTier::Premium => "PREMIUM",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BILLING_TIER_UNSPECIFIED" => Some(Self::Unspecified),
+            "STANDARD" => Some(Self::Standard),
+            "PREMIUM" => Some(Self::Premium),
+            _ => None,
+        }
+    }
 }
 /// Billing type
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -67,6 +76,16 @@ impl BillingType {
             BillingType::Subscription => "SUBSCRIPTION",
             BillingType::TrialSubscription => "TRIAL_SUBSCRIPTION",
             BillingType::Alpha => "ALPHA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BILLING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SUBSCRIPTION" => Some(Self::Subscription),
+            "TRIAL_SUBSCRIPTION" => Some(Self::TrialSubscription),
+            "ALPHA" => Some(Self::Alpha),
+            _ => None,
         }
     }
 }
@@ -242,6 +261,16 @@ impl ComponentEnablementState {
             ComponentEnablementState::Inherit => "INHERIT",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPONENT_ENABLEMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DISABLE" => Some(Self::Disable),
+            "ENABLE" => Some(Self::Enable),
+            "INHERIT" => Some(Self::Inherit),
+            _ => None,
+        }
+    }
 }
 /// Detector is a set of detectors or scanners act as individual checks done
 /// within a component e.g. bad IP, bad domains, IAM anomaly, cryptomining, open
@@ -394,6 +423,19 @@ pub mod settings {
                 OnboardingState::OrgServiceAccountCreated => {
                     "ORG_SERVICE_ACCOUNT_CREATED"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ONBOARDING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "BILLING_SELECTED" => Some(Self::BillingSelected),
+                "PROVIDERS_SELECTED" => Some(Self::ProvidersSelected),
+                "RESOURCES_SELECTED" => Some(Self::ResourcesSelected),
+                "ORG_SERVICE_ACCOUNT_CREATED" => Some(Self::OrgServiceAccountCreated),
+                _ => None,
             }
         }
     }

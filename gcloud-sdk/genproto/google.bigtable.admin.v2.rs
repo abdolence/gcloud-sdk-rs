@@ -38,6 +38,15 @@ impl StorageType {
             StorageType::Hdd => "HDD",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STORAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SSD" => Some(Self::Ssd),
+            "HDD" => Some(Self::Hdd),
+            _ => None,
+        }
+    }
 }
 /// A collection of Bigtable \[Tables][google.bigtable.admin.v2.Table\] and
 /// the resources that serve them.
@@ -124,6 +133,15 @@ pub mod instance {
                 State::Creating => "CREATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_NOT_KNOWN" => Some(Self::NotKnown),
+                "READY" => Some(Self::Ready),
+                "CREATING" => Some(Self::Creating),
+                _ => None,
+            }
+        }
     }
     /// The type of the instance.
     #[derive(
@@ -160,6 +178,15 @@ pub mod instance {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Production => "PRODUCTION",
                 Type::Development => "DEVELOPMENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRODUCTION" => Some(Self::Production),
+                "DEVELOPMENT" => Some(Self::Development),
+                _ => None,
             }
         }
     }
@@ -310,6 +337,17 @@ pub mod cluster {
                 State::Creating => "CREATING",
                 State::Resizing => "RESIZING",
                 State::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_NOT_KNOWN" => Some(Self::NotKnown),
+                "READY" => Some(Self::Ready),
+                "CREATING" => Some(Self::Creating),
+                "RESIZING" => Some(Self::Resizing),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
             }
         }
     }
@@ -692,6 +730,17 @@ pub mod create_cluster_metadata {
                     State::Copying => "COPYING",
                     State::Completed => "COMPLETED",
                     State::Cancelled => "CANCELLED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PENDING" => Some(Self::Pending),
+                    "COPYING" => Some(Self::Copying),
+                    "COMPLETED" => Some(Self::Completed),
+                    "CANCELLED" => Some(Self::Cancelled),
+                    _ => None,
                 }
             }
         }
@@ -1596,6 +1645,18 @@ pub mod table {
                     ReplicationState::ReadyOptimizing => "READY_OPTIMIZING",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_NOT_KNOWN" => Some(Self::StateNotKnown),
+                    "INITIALIZING" => Some(Self::Initializing),
+                    "PLANNED_MAINTENANCE" => Some(Self::PlannedMaintenance),
+                    "UNPLANNED_MAINTENANCE" => Some(Self::UnplannedMaintenance),
+                    "READY" => Some(Self::Ready),
+                    "READY_OPTIMIZING" => Some(Self::ReadyOptimizing),
+                    _ => None,
+                }
+            }
         }
     }
     /// Possible timestamp granularities to use when keeping multiple versions
@@ -1628,6 +1689,14 @@ pub mod table {
             match self {
                 TimestampGranularity::Unspecified => "TIMESTAMP_GRANULARITY_UNSPECIFIED",
                 TimestampGranularity::Millis => "MILLIS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIMESTAMP_GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "MILLIS" => Some(Self::Millis),
+                _ => None,
             }
         }
     }
@@ -1672,6 +1741,18 @@ pub mod table {
                 View::ReplicationView => "REPLICATION_VIEW",
                 View::EncryptionView => "ENCRYPTION_VIEW",
                 View::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "NAME_ONLY" => Some(Self::NameOnly),
+                "SCHEMA_VIEW" => Some(Self::SchemaView),
+                "REPLICATION_VIEW" => Some(Self::ReplicationView),
+                "ENCRYPTION_VIEW" => Some(Self::EncryptionView),
+                "FULL" => Some(Self::Full),
+                _ => None,
             }
         }
     }
@@ -1799,6 +1880,15 @@ pub mod encryption_info {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCRYPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_DEFAULT_ENCRYPTION" => Some(Self::GoogleDefaultEncryption),
+                "CUSTOMER_MANAGED_ENCRYPTION" => Some(Self::CustomerManagedEncryption),
+                _ => None,
+            }
+        }
     }
 }
 /// A snapshot of a table at a particular time. A snapshot can be used as a
@@ -1875,6 +1965,15 @@ pub mod snapshot {
                 State::NotKnown => "STATE_NOT_KNOWN",
                 State::Ready => "READY",
                 State::Creating => "CREATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_NOT_KNOWN" => Some(Self::NotKnown),
+                "READY" => Some(Self::Ready),
+                "CREATING" => Some(Self::Creating),
+                _ => None,
             }
         }
     }
@@ -1963,6 +2062,15 @@ pub mod backup {
                 State::Ready => "READY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                _ => None,
+            }
+        }
     }
 }
 /// Information about a backup.
@@ -2002,6 +2110,14 @@ impl RestoreSourceType {
         match self {
             RestoreSourceType::Unspecified => "RESTORE_SOURCE_TYPE_UNSPECIFIED",
             RestoreSourceType::Backup => "BACKUP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESTORE_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BACKUP" => Some(Self::Backup),
+            _ => None,
         }
     }
 }

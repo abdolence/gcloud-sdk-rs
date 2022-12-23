@@ -68,6 +68,17 @@ pub mod condition {
                 State::ConditionSucceeded => "CONDITION_SUCCEEDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONDITION_PENDING" => Some(Self::ConditionPending),
+                "CONDITION_RECONCILING" => Some(Self::ConditionReconciling),
+                "CONDITION_FAILED" => Some(Self::ConditionFailed),
+                "CONDITION_SUCCEEDED" => Some(Self::ConditionSucceeded),
+                _ => None,
+            }
+        }
     }
     /// Represents the severity of the condition failures.
     #[derive(
@@ -103,6 +114,16 @@ pub mod condition {
                 Severity::Error => "ERROR",
                 Severity::Warning => "WARNING",
                 Severity::Info => "INFO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ERROR" => Some(Self::Error),
+                "WARNING" => Some(Self::Warning),
+                "INFO" => Some(Self::Info),
+                _ => None,
             }
         }
     }
@@ -181,6 +202,31 @@ pub mod condition {
                 CommonReason::Internal => "INTERNAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMMON_REASON_UNDEFINED" => Some(Self::Undefined),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REVISION_FAILED" => Some(Self::RevisionFailed),
+                "PROGRESS_DEADLINE_EXCEEDED" => Some(Self::ProgressDeadlineExceeded),
+                "CONTAINER_MISSING" => Some(Self::ContainerMissing),
+                "CONTAINER_PERMISSION_DENIED" => Some(Self::ContainerPermissionDenied),
+                "CONTAINER_IMAGE_UNAUTHORIZED" => Some(Self::ContainerImageUnauthorized),
+                "CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED" => {
+                    Some(Self::ContainerImageAuthorizationCheckFailed)
+                }
+                "ENCRYPTION_KEY_PERMISSION_DENIED" => {
+                    Some(Self::EncryptionKeyPermissionDenied)
+                }
+                "ENCRYPTION_KEY_CHECK_FAILED" => Some(Self::EncryptionKeyCheckFailed),
+                "SECRETS_ACCESS_CHECK_FAILED" => Some(Self::SecretsAccessCheckFailed),
+                "WAITING_FOR_OPERATION" => Some(Self::WaitingForOperation),
+                "IMMEDIATE_RETRY" => Some(Self::ImmediateRetry),
+                "POSTPONED_RETRY" => Some(Self::PostponedRetry),
+                "INTERNAL" => Some(Self::Internal),
+                _ => None,
+            }
+        }
     }
     /// Reasons specific to Revision resource.
     #[derive(
@@ -256,6 +302,26 @@ pub mod condition {
                 RevisionReason::HealthCheckSkipped => "HEALTH_CHECK_SKIPPED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REVISION_REASON_UNDEFINED" => Some(Self::Undefined),
+                "PENDING" => Some(Self::Pending),
+                "RESERVE" => Some(Self::Reserve),
+                "RETIRED" => Some(Self::Retired),
+                "RETIRING" => Some(Self::Retiring),
+                "RECREATING" => Some(Self::Recreating),
+                "HEALTH_CHECK_CONTAINER_ERROR" => Some(Self::HealthCheckContainerError),
+                "CUSTOMIZED_PATH_RESPONSE_PENDING" => {
+                    Some(Self::CustomizedPathResponsePending)
+                }
+                "MIN_INSTANCES_NOT_PROVISIONED" => Some(Self::MinInstancesNotProvisioned),
+                "ACTIVE_REVISION_LIMIT_REACHED" => Some(Self::ActiveRevisionLimitReached),
+                "NO_DEPLOYMENT" => Some(Self::NoDeployment),
+                "HEALTH_CHECK_SKIPPED" => Some(Self::HealthCheckSkipped),
+                _ => None,
+            }
+        }
     }
     /// Reasons specific to Execution resource.
     #[derive(
@@ -294,6 +360,18 @@ pub mod condition {
                 }
                 ExecutionReason::NonZeroExitCode => "NON_ZERO_EXIT_CODE",
                 ExecutionReason::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXECUTION_REASON_UNDEFINED" => Some(Self::Undefined),
+                "JOB_STATUS_SERVICE_POLLING_ERROR" => {
+                    Some(Self::JobStatusServicePollingError)
+                }
+                "NON_ZERO_EXIT_CODE" => Some(Self::NonZeroExitCode),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -748,6 +826,15 @@ pub mod vpc_access {
                 VpcEgress::PrivateRangesOnly => "PRIVATE_RANGES_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VPC_EGRESS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_TRAFFIC" => Some(Self::AllTraffic),
+                "PRIVATE_RANGES_ONLY" => Some(Self::PrivateRangesOnly),
+                _ => None,
+            }
+        }
     }
 }
 /// Settings for Binary Authorization feature.
@@ -813,6 +900,16 @@ impl IngressTraffic {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INGRESS_TRAFFIC_UNSPECIFIED" => Some(Self::Unspecified),
+            "INGRESS_TRAFFIC_ALL" => Some(Self::All),
+            "INGRESS_TRAFFIC_INTERNAL_ONLY" => Some(Self::InternalOnly),
+            "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" => Some(Self::InternalLoadBalancer),
+            _ => None,
+        }
+    }
 }
 /// Alternatives for execution environments.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -835,6 +932,15 @@ impl ExecutionEnvironment {
             ExecutionEnvironment::Unspecified => "EXECUTION_ENVIRONMENT_UNSPECIFIED",
             ExecutionEnvironment::Gen1 => "EXECUTION_ENVIRONMENT_GEN1",
             ExecutionEnvironment::Gen2 => "EXECUTION_ENVIRONMENT_GEN2",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXECUTION_ENVIRONMENT_UNSPECIFIED" => Some(Self::Unspecified),
+            "EXECUTION_ENVIRONMENT_GEN1" => Some(Self::Gen1),
+            "EXECUTION_ENVIRONMENT_GEN2" => Some(Self::Gen2),
+            _ => None,
         }
     }
 }
@@ -2222,6 +2328,15 @@ impl TrafficTargetAllocationType {
             TrafficTargetAllocationType::Revision => {
                 "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST" => Some(Self::Latest),
+            "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION" => Some(Self::Revision),
+            _ => None,
         }
     }
 }

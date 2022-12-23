@@ -116,6 +116,15 @@ pub mod compose_trigger {
                 DraftAccess::Metadata => "METADATA",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "METADATA" => Some(Self::Metadata),
+                _ => None,
+            }
+        }
     }
 }
 /// Defines a trigger that fires when the open email meets a specific criteria.

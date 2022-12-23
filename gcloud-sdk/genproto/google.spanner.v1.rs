@@ -395,6 +395,15 @@ pub mod plan_node {
                 Kind::Scalar => "SCALAR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KIND_UNSPECIFIED" => Some(Self::Unspecified),
+                "RELATIONAL" => Some(Self::Relational),
+                "SCALAR" => Some(Self::Scalar),
+                _ => None,
+            }
+        }
     }
 }
 /// Contains an ordered list of nodes appearing in the query plan.
@@ -793,6 +802,15 @@ pub mod transaction_options {
                     ReadLockMode::Optimistic => "OPTIMISTIC",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "READ_LOCK_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PESSIMISTIC" => Some(Self::Pessimistic),
+                    "OPTIMISTIC" => Some(Self::Optimistic),
+                    _ => None,
+                }
+            }
         }
     }
     /// Message type to initiate a Partitioned DML transaction.
@@ -1106,6 +1124,24 @@ impl TypeCode {
             TypeCode::Json => "JSON",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TYPE_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BOOL" => Some(Self::Bool),
+            "INT64" => Some(Self::Int64),
+            "FLOAT64" => Some(Self::Float64),
+            "TIMESTAMP" => Some(Self::Timestamp),
+            "DATE" => Some(Self::Date),
+            "STRING" => Some(Self::String),
+            "BYTES" => Some(Self::Bytes),
+            "ARRAY" => Some(Self::Array),
+            "STRUCT" => Some(Self::Struct),
+            "NUMERIC" => Some(Self::Numeric),
+            "JSON" => Some(Self::Json),
+            _ => None,
+        }
+    }
 }
 /// `TypeAnnotationCode` is used as a part of \[Type][google.spanner.v1.Type\] to
 /// disambiguate SQL types that should be used for a given Cloud Spanner value.
@@ -1142,6 +1178,15 @@ impl TypeAnnotationCode {
             TypeAnnotationCode::Unspecified => "TYPE_ANNOTATION_CODE_UNSPECIFIED",
             TypeAnnotationCode::PgNumeric => "PG_NUMERIC",
             TypeAnnotationCode::PgJsonb => "PG_JSONB",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TYPE_ANNOTATION_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PG_NUMERIC" => Some(Self::PgNumeric),
+            "PG_JSONB" => Some(Self::PgJsonb),
+            _ => None,
         }
     }
 }
@@ -1559,6 +1604,16 @@ pub mod request_options {
                 Priority::High => "PRIORITY_HIGH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIORITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIORITY_LOW" => Some(Self::Low),
+                "PRIORITY_MEDIUM" => Some(Self::Medium),
+                "PRIORITY_HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
     }
 }
 /// The request for \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\] and
@@ -1737,6 +1792,15 @@ pub mod execute_sql_request {
                 QueryMode::Normal => "NORMAL",
                 QueryMode::Plan => "PLAN",
                 QueryMode::Profile => "PROFILE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NORMAL" => Some(Self::Normal),
+                "PLAN" => Some(Self::Plan),
+                "PROFILE" => Some(Self::Profile),
+                _ => None,
             }
         }
     }

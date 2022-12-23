@@ -85,6 +85,17 @@ pub mod annotate_assessment_request {
                 Annotation::PasswordIncorrect => "PASSWORD_INCORRECT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANNOTATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "LEGITIMATE" => Some(Self::Legitimate),
+                "FRAUDULENT" => Some(Self::Fraudulent),
+                "PASSWORD_CORRECT" => Some(Self::PasswordCorrect),
+                "PASSWORD_INCORRECT" => Some(Self::PasswordIncorrect),
+                _ => None,
+            }
+        }
     }
     /// Enum that represents potential reasons for annotating an assessment.
     #[derive(
@@ -170,6 +181,27 @@ pub mod annotate_assessment_request {
                 Reason::CorrectPassword => "CORRECT_PASSWORD",
                 Reason::IncorrectPassword => "INCORRECT_PASSWORD",
                 Reason::SocialSpam => "SOCIAL_SPAM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHARGEBACK" => Some(Self::Chargeback),
+                "CHARGEBACK_FRAUD" => Some(Self::ChargebackFraud),
+                "CHARGEBACK_DISPUTE" => Some(Self::ChargebackDispute),
+                "REFUND" => Some(Self::Refund),
+                "REFUND_FRAUD" => Some(Self::RefundFraud),
+                "TRANSACTION_ACCEPTED" => Some(Self::TransactionAccepted),
+                "TRANSACTION_DECLINED" => Some(Self::TransactionDeclined),
+                "PAYMENT_HEURISTICS" => Some(Self::PaymentHeuristics),
+                "INITIATED_TWO_FACTOR" => Some(Self::InitiatedTwoFactor),
+                "PASSED_TWO_FACTOR" => Some(Self::PassedTwoFactor),
+                "FAILED_TWO_FACTOR" => Some(Self::FailedTwoFactor),
+                "CORRECT_PASSWORD" => Some(Self::CorrectPassword),
+                "INCORRECT_PASSWORD" => Some(Self::IncorrectPassword),
+                "SOCIAL_SPAM" => Some(Self::SocialSpam),
+                _ => None,
             }
         }
     }
@@ -295,6 +327,28 @@ pub mod account_verification_info {
                 Result::ErrorCustomerQuotaExhausted => "ERROR_CUSTOMER_QUOTA_EXHAUSTED",
                 Result::ErrorVerificationBypassed => "ERROR_VERIFICATION_BYPASSED",
                 Result::ErrorVerdictMismatch => "ERROR_VERDICT_MISMATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCESS_USER_VERIFIED" => Some(Self::SuccessUserVerified),
+                "ERROR_USER_NOT_VERIFIED" => Some(Self::ErrorUserNotVerified),
+                "ERROR_SITE_ONBOARDING_INCOMPLETE" => {
+                    Some(Self::ErrorSiteOnboardingIncomplete)
+                }
+                "ERROR_RECIPIENT_NOT_ALLOWED" => Some(Self::ErrorRecipientNotAllowed),
+                "ERROR_RECIPIENT_ABUSE_LIMIT_EXHAUSTED" => {
+                    Some(Self::ErrorRecipientAbuseLimitExhausted)
+                }
+                "ERROR_CRITICAL_INTERNAL" => Some(Self::ErrorCriticalInternal),
+                "ERROR_CUSTOMER_QUOTA_EXHAUSTED" => {
+                    Some(Self::ErrorCustomerQuotaExhausted)
+                }
+                "ERROR_VERIFICATION_BYPASSED" => Some(Self::ErrorVerificationBypassed),
+                "ERROR_VERDICT_MISMATCH" => Some(Self::ErrorVerdictMismatch),
+                _ => None,
             }
         }
     }
@@ -448,6 +502,18 @@ pub mod risk_analysis {
                 ClassificationReason::LowConfidenceScore => "LOW_CONFIDENCE_SCORE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLASSIFICATION_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOMATION" => Some(Self::Automation),
+                "UNEXPECTED_ENVIRONMENT" => Some(Self::UnexpectedEnvironment),
+                "TOO_MUCH_TRAFFIC" => Some(Self::TooMuchTraffic),
+                "UNEXPECTED_USAGE_PATTERNS" => Some(Self::UnexpectedUsagePatterns),
+                "LOW_CONFIDENCE_SCORE" => Some(Self::LowConfidenceScore),
+                _ => None,
+            }
+        }
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -529,6 +595,19 @@ pub mod token_properties {
                 InvalidReason::BrowserError => "BROWSER_ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INVALID_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN_INVALID_REASON" => Some(Self::UnknownInvalidReason),
+                "MALFORMED" => Some(Self::Malformed),
+                "EXPIRED" => Some(Self::Expired),
+                "DUPE" => Some(Self::Dupe),
+                "MISSING" => Some(Self::Missing),
+                "BROWSER_ERROR" => Some(Self::BrowserError),
+                _ => None,
+            }
+        }
     }
 }
 /// Account defender risk assessment.
@@ -592,6 +671,17 @@ pub mod account_defender_assessment {
                 AccountDefenderLabel::RelatedAccountsNumberHigh => {
                     "RELATED_ACCOUNTS_NUMBER_HIGH"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCOUNT_DEFENDER_LABEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROFILE_MATCH" => Some(Self::ProfileMatch),
+                "SUSPICIOUS_LOGIN_ACTIVITY" => Some(Self::SuspiciousLoginActivity),
+                "SUSPICIOUS_ACCOUNT_CREATION" => Some(Self::SuspiciousAccountCreation),
+                "RELATED_ACCOUNTS_NUMBER_HIGH" => Some(Self::RelatedAccountsNumberHigh),
+                _ => None,
             }
         }
     }
@@ -841,6 +931,15 @@ pub mod testing_options {
                 TestingChallenge::UnsolvableChallenge => "UNSOLVABLE_CHALLENGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TESTING_CHALLENGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOCAPTCHA" => Some(Self::Nocaptcha),
+                "UNSOLVABLE_CHALLENGE" => Some(Self::UnsolvableChallenge),
+                _ => None,
+            }
+        }
     }
 }
 /// Settings specific to keys that can be used by websites.
@@ -912,6 +1011,16 @@ pub mod web_key_settings {
                 IntegrationType::Invisible => "INVISIBLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTEGRATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCORE" => Some(Self::Score),
+                "CHECKBOX" => Some(Self::Checkbox),
+                "INVISIBLE" => Some(Self::Invisible),
+                _ => None,
+            }
+        }
     }
     /// Enum that represents the possible challenge frequency and difficulty
     /// configurations for a web key.
@@ -950,6 +1059,16 @@ pub mod web_key_settings {
                 ChallengeSecurityPreference::Usability => "USABILITY",
                 ChallengeSecurityPreference::Balance => "BALANCE",
                 ChallengeSecurityPreference::Security => "SECURITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHALLENGE_SECURITY_PREFERENCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "USABILITY" => Some(Self::Usability),
+                "BALANCE" => Some(Self::Balance),
+                "SECURITY" => Some(Self::Security),
+                _ => None,
             }
         }
     }
@@ -1212,6 +1331,16 @@ pub mod waf_settings {
                 WafFeature::ActionToken => "ACTION_TOKEN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WAF_FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHALLENGE_PAGE" => Some(Self::ChallengePage),
+                "SESSION_TOKEN" => Some(Self::SessionToken),
+                "ACTION_TOKEN" => Some(Self::ActionToken),
+                _ => None,
+            }
+        }
     }
     /// Web Application Firewalls supported by reCAPTCHA Enterprise.
     #[derive(
@@ -1241,6 +1370,14 @@ pub mod waf_settings {
             match self {
                 WafService::Unspecified => "WAF_SERVICE_UNSPECIFIED",
                 WafService::Ca => "CA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WAF_SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CA" => Some(Self::Ca),
+                _ => None,
             }
         }
     }

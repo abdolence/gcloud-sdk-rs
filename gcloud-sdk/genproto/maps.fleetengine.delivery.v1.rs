@@ -159,6 +159,19 @@ impl DeliveryVehicleLocationSensor {
             DeliveryVehicleLocationSensor::CoreLocation => "CORE_LOCATION",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_SENSOR" => Some(Self::UnknownSensor),
+            "GPS" => Some(Self::Gps),
+            "NETWORK" => Some(Self::Network),
+            "PASSIVE" => Some(Self::Passive),
+            "ROAD_SNAPPED_LOCATION_PROVIDER" => Some(Self::RoadSnappedLocationProvider),
+            "FUSED_LOCATION_PROVIDER" => Some(Self::FusedLocationProvider),
+            "CORE_LOCATION" => Some(Self::CoreLocation),
+            _ => None,
+        }
+    }
 }
 /// The vehicle's navigation status.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -194,6 +207,17 @@ impl DeliveryVehicleNavigationStatus {
             DeliveryVehicleNavigationStatus::ArrivedAtDestination => {
                 "ARRIVED_AT_DESTINATION"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_NAVIGATION_STATUS" => Some(Self::UnknownNavigationStatus),
+            "NO_GUIDANCE" => Some(Self::NoGuidance),
+            "ENROUTE_TO_DESTINATION" => Some(Self::EnrouteToDestination),
+            "OFF_ROUTE" => Some(Self::OffRoute),
+            "ARRIVED_AT_DESTINATION" => Some(Self::ArrivedAtDestination),
+            _ => None,
         }
     }
 }
@@ -437,6 +461,16 @@ pub mod vehicle_stop {
                 State::Arrived => "ARRIVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW" => Some(Self::New),
+                "ENROUTE" => Some(Self::Enroute),
+                "ARRIVED" => Some(Self::Arrived),
+                _ => None,
+            }
+        }
     }
 }
 /// A RequestHeader contains fields common to all Delivery RPC requests.
@@ -527,6 +561,16 @@ pub mod delivery_request_header {
                 SdkType::Javascript => "JAVASCRIPT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SDK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONSUMER" => Some(Self::Consumer),
+                "DRIVER" => Some(Self::Driver),
+                "JAVASCRIPT" => Some(Self::Javascript),
+                _ => None,
+            }
+        }
     }
     /// The platform of the calling SDK.
     #[derive(
@@ -562,6 +606,16 @@ pub mod delivery_request_header {
                 Platform::Android => "ANDROID",
                 Platform::Ios => "IOS",
                 Platform::Web => "WEB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                "WEB" => Some(Self::Web),
+                _ => None,
             }
         }
     }
@@ -725,6 +779,17 @@ pub mod task {
                 Type::Unavailable => "UNAVAILABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PICKUP" => Some(Self::Pickup),
+                "DELIVERY" => Some(Self::Delivery),
+                "SCHEDULED_STOP" => Some(Self::ScheduledStop),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                _ => None,
+            }
+        }
     }
     /// The state of a Task. This indicates the Tasks's progress.
     #[derive(
@@ -758,6 +823,15 @@ pub mod task {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Open => "OPEN",
                 State::Closed => "CLOSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OPEN" => Some(Self::Open),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
             }
         }
     }
@@ -795,6 +869,15 @@ pub mod task {
                 TaskOutcome::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TASK_OUTCOME_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
     /// The identity of the source that populated the `task_outcome_location`.
     #[derive(
@@ -830,6 +913,15 @@ pub mod task {
                 }
                 TaskOutcomeLocationSource::Provider => "PROVIDER",
                 TaskOutcomeLocationSource::LastVehicleLocation => "LAST_VEHICLE_LOCATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TASK_OUTCOME_LOCATION_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVIDER" => Some(Self::Provider),
+                "LAST_VEHICLE_LOCATION" => Some(Self::LastVehicleLocation),
+                _ => None,
             }
         }
     }

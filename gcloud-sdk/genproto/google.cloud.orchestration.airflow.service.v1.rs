@@ -384,6 +384,16 @@ pub mod environment_config {
                 EnvironmentSize::Large => "ENVIRONMENT_SIZE_LARGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENVIRONMENT_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENVIRONMENT_SIZE_SMALL" => Some(Self::Small),
+                "ENVIRONMENT_SIZE_MEDIUM" => Some(Self::Medium),
+                "ENVIRONMENT_SIZE_LARGE" => Some(Self::Large),
+                _ => None,
+            }
+        }
     }
 }
 /// Network-level access control policy for the Airflow web server.
@@ -871,6 +881,15 @@ pub mod networking_config {
                 ConnectionType::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VPC_PEERING" => Some(Self::VpcPeering),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                _ => None,
+            }
+        }
     }
 }
 /// The configuration information for configuring a Private IP Cloud Composer
@@ -1150,6 +1169,18 @@ pub mod environment {
                 State::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "RUNNING" => Some(Self::Running),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// Message containing information about the result of an upgrade check
@@ -1211,6 +1242,15 @@ pub mod check_upgrade_response {
                 ConflictResult::Unspecified => "CONFLICT_RESULT_UNSPECIFIED",
                 ConflictResult::Conflict => "CONFLICT",
                 ConflictResult::NoConflict => "NO_CONFLICT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONFLICT_RESULT_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONFLICT" => Some(Self::Conflict),
+                "NO_CONFLICT" => Some(Self::NoConflict),
+                _ => None,
             }
         }
     }
@@ -1675,6 +1715,17 @@ pub mod operation_metadata {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
     /// Type of longrunning operation.
     #[derive(
@@ -1719,6 +1770,19 @@ pub mod operation_metadata {
                 Type::Check => "CHECK",
                 Type::SaveSnapshot => "SAVE_SNAPSHOT",
                 Type::LoadSnapshot => "LOAD_SNAPSHOT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "DELETE" => Some(Self::Delete),
+                "UPDATE" => Some(Self::Update),
+                "CHECK" => Some(Self::Check),
+                "SAVE_SNAPSHOT" => Some(Self::SaveSnapshot),
+                "LOAD_SNAPSHOT" => Some(Self::LoadSnapshot),
+                _ => None,
             }
         }
     }

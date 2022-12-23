@@ -66,6 +66,18 @@ pub mod sensitivity_score {
                 SensitivityScoreLevel::SensitivityHigh => "SENSITIVITY_HIGH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SENSITIVITY_SCORE_UNSPECIFIED" => {
+                    Some(Self::SensitivityScoreUnspecified)
+                }
+                "SENSITIVITY_LOW" => Some(Self::SensitivityLow),
+                "SENSITIVITY_MODERATE" => Some(Self::SensitivityModerate),
+                "SENSITIVITY_HIGH" => Some(Self::SensitivityHigh),
+                _ => None,
+            }
+        }
     }
 }
 /// A reference to a StoredInfoType to use with scanning.
@@ -313,6 +325,14 @@ pub mod custom_info_type {
                 ExclusionType::Exclude => "EXCLUSION_TYPE_EXCLUDE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXCLUSION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXCLUSION_TYPE_EXCLUDE" => Some(Self::Exclude),
+                _ => None,
+            }
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -532,6 +552,15 @@ pub mod cloud_storage_options {
                 SampleMethod::RandomStart => "RANDOM_START",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SAMPLE_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "TOP" => Some(Self::Top),
+                "RANDOM_START" => Some(Self::RandomStart),
+                _ => None,
+            }
+        }
     }
 }
 /// Message representing a set of files in Cloud Storage.
@@ -625,6 +654,15 @@ pub mod big_query_options {
                 SampleMethod::Unspecified => "SAMPLE_METHOD_UNSPECIFIED",
                 SampleMethod::Top => "TOP",
                 SampleMethod::RandomStart => "RANDOM_START",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SAMPLE_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "TOP" => Some(Self::Top),
+                "RANDOM_START" => Some(Self::RandomStart),
+                _ => None,
             }
         }
     }
@@ -950,6 +988,18 @@ impl Likelihood {
             Likelihood::VeryLikely => "VERY_LIKELY",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LIKELIHOOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "VERY_UNLIKELY" => Some(Self::VeryUnlikely),
+            "UNLIKELY" => Some(Self::Unlikely),
+            "POSSIBLE" => Some(Self::Possible),
+            "LIKELY" => Some(Self::Likely),
+            "VERY_LIKELY" => Some(Self::VeryLikely),
+            _ => None,
+        }
+    }
 }
 /// Definitions of file type groups to scan. New types will be added to this
 /// list.
@@ -1021,6 +1071,23 @@ impl FileType {
             FileType::Tsv => "TSV",
             FileType::Powerpoint => "POWERPOINT",
             FileType::Excel => "EXCEL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FILE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BINARY_FILE" => Some(Self::BinaryFile),
+            "TEXT_FILE" => Some(Self::TextFile),
+            "IMAGE" => Some(Self::Image),
+            "WORD" => Some(Self::Word),
+            "PDF" => Some(Self::Pdf),
+            "AVRO" => Some(Self::Avro),
+            "CSV" => Some(Self::Csv),
+            "TSV" => Some(Self::Tsv),
+            "POWERPOINT" => Some(Self::Powerpoint),
+            "EXCEL" => Some(Self::Excel),
+            _ => None,
         }
     }
 }
@@ -1307,6 +1374,26 @@ pub mod byte_content_item {
                 BytesType::Avro => "AVRO",
                 BytesType::Csv => "CSV",
                 BytesType::Tsv => "TSV",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BYTES_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMAGE" => Some(Self::Image),
+                "IMAGE_JPEG" => Some(Self::ImageJpeg),
+                "IMAGE_BMP" => Some(Self::ImageBmp),
+                "IMAGE_PNG" => Some(Self::ImagePng),
+                "IMAGE_SVG" => Some(Self::ImageSvg),
+                "TEXT_UTF8" => Some(Self::TextUtf8),
+                "WORD_DOCUMENT" => Some(Self::WordDocument),
+                "PDF" => Some(Self::Pdf),
+                "POWERPOINT_DOCUMENT" => Some(Self::PowerpointDocument),
+                "EXCEL_DOCUMENT" => Some(Self::ExcelDocument),
+                "AVRO" => Some(Self::Avro),
+                "CSV" => Some(Self::Csv),
+                "TSV" => Some(Self::Tsv),
+                _ => None,
             }
         }
     }
@@ -2031,6 +2118,18 @@ pub mod output_storage_config {
                 OutputSchema::AllColumns => "ALL_COLUMNS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OUTPUT_SCHEMA_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC_COLUMNS" => Some(Self::BasicColumns),
+                "GCS_COLUMNS" => Some(Self::GcsColumns),
+                "DATASTORE_COLUMNS" => Some(Self::DatastoreColumns),
+                "BIG_QUERY_COLUMNS" => Some(Self::BigQueryColumns),
+                "ALL_COLUMNS" => Some(Self::AllColumns),
+                _ => None,
+            }
+        }
     }
     /// Output storage types.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2316,6 +2415,54 @@ pub mod info_type_category {
                 LocationCategory::NewZealand => "NEW_ZEALAND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCATION_UNSPECIFIED" => Some(Self::LocationUnspecified),
+                "GLOBAL" => Some(Self::Global),
+                "ARGENTINA" => Some(Self::Argentina),
+                "AUSTRALIA" => Some(Self::Australia),
+                "BELGIUM" => Some(Self::Belgium),
+                "BRAZIL" => Some(Self::Brazil),
+                "CANADA" => Some(Self::Canada),
+                "CHILE" => Some(Self::Chile),
+                "CHINA" => Some(Self::China),
+                "COLOMBIA" => Some(Self::Colombia),
+                "DENMARK" => Some(Self::Denmark),
+                "FRANCE" => Some(Self::France),
+                "FINLAND" => Some(Self::Finland),
+                "GERMANY" => Some(Self::Germany),
+                "HONG_KONG" => Some(Self::HongKong),
+                "INDIA" => Some(Self::India),
+                "INDONESIA" => Some(Self::Indonesia),
+                "IRELAND" => Some(Self::Ireland),
+                "ISRAEL" => Some(Self::Israel),
+                "ITALY" => Some(Self::Italy),
+                "JAPAN" => Some(Self::Japan),
+                "KOREA" => Some(Self::Korea),
+                "MEXICO" => Some(Self::Mexico),
+                "THE_NETHERLANDS" => Some(Self::TheNetherlands),
+                "NORWAY" => Some(Self::Norway),
+                "PARAGUAY" => Some(Self::Paraguay),
+                "PERU" => Some(Self::Peru),
+                "POLAND" => Some(Self::Poland),
+                "PORTUGAL" => Some(Self::Portugal),
+                "SINGAPORE" => Some(Self::Singapore),
+                "SOUTH_AFRICA" => Some(Self::SouthAfrica),
+                "SPAIN" => Some(Self::Spain),
+                "SWEDEN" => Some(Self::Sweden),
+                "TAIWAN" => Some(Self::Taiwan),
+                "THAILAND" => Some(Self::Thailand),
+                "TURKEY" => Some(Self::Turkey),
+                "UNITED_KINGDOM" => Some(Self::UnitedKingdom),
+                "UNITED_STATES" => Some(Self::UnitedStates),
+                "URUGUAY" => Some(Self::Uruguay),
+                "VENEZUELA" => Some(Self::Venezuela),
+                "INTERNAL" => Some(Self::Internal),
+                "NEW_ZEALAND" => Some(Self::NewZealand),
+                _ => None,
+            }
+        }
     }
     /// Enum of the current industries in the category.
     /// We might add more industries in the future.
@@ -2352,6 +2499,16 @@ pub mod info_type_category {
                 IndustryCategory::Finance => "FINANCE",
                 IndustryCategory::Health => "HEALTH",
                 IndustryCategory::Telecommunications => "TELECOMMUNICATIONS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INDUSTRY_UNSPECIFIED" => Some(Self::IndustryUnspecified),
+                "FINANCE" => Some(Self::Finance),
+                "HEALTH" => Some(Self::Health),
+                "TELECOMMUNICATIONS" => Some(Self::Telecommunications),
+                _ => None,
             }
         }
     }
@@ -2406,6 +2563,20 @@ pub mod info_type_category {
                 TypeCategory::GovernmentId => "GOVERNMENT_ID",
                 TypeCategory::Document => "DOCUMENT",
                 TypeCategory::ContextualInformation => "CONTEXTUAL_INFORMATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
+                "PII" => Some(Self::Pii),
+                "SPII" => Some(Self::Spii),
+                "DEMOGRAPHIC" => Some(Self::Demographic),
+                "CREDENTIAL" => Some(Self::Credential),
+                "GOVERNMENT_ID" => Some(Self::GovernmentId),
+                "DOCUMENT" => Some(Self::Document),
+                "CONTEXTUAL_INFORMATION" => Some(Self::ContextualInformation),
+                _ => None,
             }
         }
     }
@@ -3465,6 +3636,19 @@ pub mod time_part_config {
                 TimePart::HourOfDay => "HOUR_OF_DAY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIME_PART_UNSPECIFIED" => Some(Self::Unspecified),
+                "YEAR" => Some(Self::Year),
+                "MONTH" => Some(Self::Month),
+                "DAY_OF_MONTH" => Some(Self::DayOfMonth),
+                "DAY_OF_WEEK" => Some(Self::DayOfWeek),
+                "WEEK_OF_YEAR" => Some(Self::WeekOfYear),
+                "HOUR_OF_DAY" => Some(Self::HourOfDay),
+                _ => None,
+            }
+        }
     }
 }
 /// Pseudonymization method that generates surrogates via cryptographic hashing.
@@ -3634,6 +3818,18 @@ pub mod chars_to_ignore {
                 CommonCharsToIgnore::AlphaLowerCase => "ALPHA_LOWER_CASE",
                 CommonCharsToIgnore::Punctuation => "PUNCTUATION",
                 CommonCharsToIgnore::Whitespace => "WHITESPACE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMMON_CHARS_TO_IGNORE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NUMERIC" => Some(Self::Numeric),
+                "ALPHA_UPPER_CASE" => Some(Self::AlphaUpperCase),
+                "ALPHA_LOWER_CASE" => Some(Self::AlphaLowerCase),
+                "PUNCTUATION" => Some(Self::Punctuation),
+                "WHITESPACE" => Some(Self::Whitespace),
+                _ => None,
             }
         }
     }
@@ -3884,6 +4080,17 @@ pub mod crypto_replace_ffx_fpe_config {
                     "UPPER_CASE_ALPHA_NUMERIC"
                 }
                 FfxCommonNativeAlphabet::AlphaNumeric => "ALPHA_NUMERIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED" => Some(Self::Unspecified),
+                "NUMERIC" => Some(Self::Numeric),
+                "HEXADECIMAL" => Some(Self::Hexadecimal),
+                "UPPER_CASE_ALPHA_NUMERIC" => Some(Self::UpperCaseAlphaNumeric),
+                "ALPHA_NUMERIC" => Some(Self::AlphaNumeric),
+                _ => None,
             }
         }
     }
@@ -4216,6 +4423,14 @@ pub mod record_condition {
                     LogicalOperator::And => "AND",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "LOGICAL_OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "AND" => Some(Self::And),
+                    _ => None,
+                }
+            }
         }
         /// Expression types.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4319,6 +4534,15 @@ pub mod transformation_summary {
                 }
                 TransformationResultCode::Success => "SUCCESS",
                 TransformationResultCode::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRANSFORMATION_RESULT_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCESS" => Some(Self::Success),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }
@@ -4665,6 +4889,16 @@ pub mod job_trigger {
                 Status::Healthy => "HEALTHY",
                 Status::Paused => "PAUSED",
                 Status::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "HEALTHY" => Some(Self::Healthy),
+                "PAUSED" => Some(Self::Paused),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -5336,6 +5570,15 @@ pub mod data_profile_action {
                     DetailLevel::ResourceName => "RESOURCE_NAME",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DETAIL_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TABLE_PROFILE" => Some(Self::TableProfile),
+                    "RESOURCE_NAME" => Some(Self::ResourceName),
+                    _ => None,
+                }
+            }
         }
     }
     /// Types of event that can trigger an action.
@@ -5381,6 +5624,17 @@ pub mod data_profile_action {
                 EventType::ChangedProfile => "CHANGED_PROFILE",
                 EventType::ScoreIncreased => "SCORE_INCREASED",
                 EventType::ErrorChanged => "ERROR_CHANGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW_PROFILE" => Some(Self::NewProfile),
+                "CHANGED_PROFILE" => Some(Self::ChangedProfile),
+                "SCORE_INCREASED" => Some(Self::ScoreIncreased),
+                "ERROR_CHANGED" => Some(Self::ErrorChanged),
+                _ => None,
             }
         }
     }
@@ -5538,6 +5792,19 @@ pub mod dlp_job {
                 JobState::Canceled => "CANCELED",
                 JobState::Failed => "FAILED",
                 JobState::Active => "ACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JOB_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                "CANCELED" => Some(Self::Canceled),
+                "FAILED" => Some(Self::Failed),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
             }
         }
     }
@@ -6237,6 +6504,16 @@ pub mod data_risk_level {
                 DataRiskLevelScore::RiskHigh => "RISK_HIGH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RISK_SCORE_UNSPECIFIED" => Some(Self::RiskScoreUnspecified),
+                "RISK_LOW" => Some(Self::RiskLow),
+                "RISK_MODERATE" => Some(Self::RiskModerate),
+                "RISK_HIGH" => Some(Self::RiskHigh),
+                _ => None,
+            }
+        }
     }
 }
 /// Snapshot of the configurations used to generate the profile.
@@ -6377,6 +6654,15 @@ pub mod table_data_profile {
                 State::Done => "DONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                _ => None,
+            }
+        }
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6495,6 +6781,17 @@ pub mod data_profile_pub_sub_condition {
                     PubSubLogicalOperator::And => "AND",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "LOGICAL_OPERATOR_UNSPECIFIED" => {
+                        Some(Self::LogicalOperatorUnspecified)
+                    }
+                    "OR" => Some(Self::Or),
+                    "AND" => Some(Self::And),
+                    _ => None,
+                }
+            }
         }
     }
     /// Various score levels for resources.
@@ -6528,6 +6825,15 @@ pub mod data_profile_pub_sub_condition {
                 ProfileScoreBucket::Unspecified => "PROFILE_SCORE_BUCKET_UNSPECIFIED",
                 ProfileScoreBucket::High => "HIGH",
                 ProfileScoreBucket::MediumOrHigh => "MEDIUM_OR_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROFILE_SCORE_BUCKET_UNSPECIFIED" => Some(Self::Unspecified),
+                "HIGH" => Some(Self::High),
+                "MEDIUM_OR_HIGH" => Some(Self::MediumOrHigh),
+                _ => None,
             }
         }
     }
@@ -6588,6 +6894,17 @@ impl TransformationResultStatusType {
             TransformationResultStatusType::Success => "SUCCESS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_TYPE_UNSPECIFIED" => Some(Self::StateTypeUnspecified),
+            "INVALID_TRANSFORM" => Some(Self::InvalidTransform),
+            "BIGQUERY_MAX_ROW_SIZE_EXCEEDED" => Some(Self::BigqueryMaxRowSizeExceeded),
+            "METADATA_UNRETRIEVABLE" => Some(Self::MetadataUnretrievable),
+            "SUCCESS" => Some(Self::Success),
+            _ => None,
+        }
+    }
 }
 /// Describes functionality of a given container in its original format.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6611,6 +6928,16 @@ impl TransformationContainerType {
             TransformationContainerType::TransformBody => "TRANSFORM_BODY",
             TransformationContainerType::TransformMetadata => "TRANSFORM_METADATA",
             TransformationContainerType::TransformTable => "TRANSFORM_TABLE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSFORM_UNKNOWN_CONTAINER" => Some(Self::TransformUnknownContainer),
+            "TRANSFORM_BODY" => Some(Self::TransformBody),
+            "TRANSFORM_METADATA" => Some(Self::TransformMetadata),
+            "TRANSFORM_TABLE" => Some(Self::TransformTable),
+            _ => None,
         }
     }
 }
@@ -6677,6 +7004,27 @@ impl TransformationType {
             TransformationType::RedactImage => "REDACT_IMAGE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSFORMATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RECORD_SUPPRESSION" => Some(Self::RecordSuppression),
+            "REPLACE_VALUE" => Some(Self::ReplaceValue),
+            "REPLACE_DICTIONARY" => Some(Self::ReplaceDictionary),
+            "REDACT" => Some(Self::Redact),
+            "CHARACTER_MASK" => Some(Self::CharacterMask),
+            "CRYPTO_REPLACE_FFX_FPE" => Some(Self::CryptoReplaceFfxFpe),
+            "FIXED_SIZE_BUCKETING" => Some(Self::FixedSizeBucketing),
+            "BUCKETING" => Some(Self::Bucketing),
+            "REPLACE_WITH_INFO_TYPE" => Some(Self::ReplaceWithInfoType),
+            "TIME_PART" => Some(Self::TimePart),
+            "CRYPTO_HASH" => Some(Self::CryptoHash),
+            "DATE_SHIFT" => Some(Self::DateShift),
+            "CRYPTO_DETERMINISTIC_CONFIG" => Some(Self::CryptoDeterministicConfig),
+            "REDACT_IMAGE" => Some(Self::RedactImage),
+            _ => None,
+        }
+    }
 }
 /// Operators available for comparing the value of fields.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6714,6 +7062,20 @@ impl RelationalOperator {
             RelationalOperator::GreaterThanOrEquals => "GREATER_THAN_OR_EQUALS",
             RelationalOperator::LessThanOrEquals => "LESS_THAN_OR_EQUALS",
             RelationalOperator::Exists => "EXISTS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RELATIONAL_OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+            "EQUAL_TO" => Some(Self::EqualTo),
+            "NOT_EQUAL_TO" => Some(Self::NotEqualTo),
+            "GREATER_THAN" => Some(Self::GreaterThan),
+            "LESS_THAN" => Some(Self::LessThan),
+            "GREATER_THAN_OR_EQUALS" => Some(Self::GreaterThanOrEquals),
+            "LESS_THAN_OR_EQUALS" => Some(Self::LessThanOrEquals),
+            "EXISTS" => Some(Self::Exists),
+            _ => None,
         }
     }
 }
@@ -6757,6 +7119,16 @@ impl MatchingType {
             MatchingType::InverseMatch => "MATCHING_TYPE_INVERSE_MATCH",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MATCHING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MATCHING_TYPE_FULL_MATCH" => Some(Self::FullMatch),
+            "MATCHING_TYPE_PARTIAL_MATCH" => Some(Self::PartialMatch),
+            "MATCHING_TYPE_INVERSE_MATCH" => Some(Self::InverseMatch),
+            _ => None,
+        }
+    }
 }
 /// Deprecated and unused.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6781,6 +7153,15 @@ impl ContentOption {
             ContentOption::ContentImage => "CONTENT_IMAGE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTENT_UNSPECIFIED" => Some(Self::ContentUnspecified),
+            "CONTENT_TEXT" => Some(Self::ContentText),
+            "CONTENT_IMAGE" => Some(Self::ContentImage),
+            _ => None,
+        }
+    }
 }
 /// Type of metadata containing the finding.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6800,6 +7181,14 @@ impl MetadataType {
         match self {
             MetadataType::MetadatatypeUnspecified => "METADATATYPE_UNSPECIFIED",
             MetadataType::StorageMetadata => "STORAGE_METADATA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "METADATATYPE_UNSPECIFIED" => Some(Self::MetadatatypeUnspecified),
+            "STORAGE_METADATA" => Some(Self::StorageMetadata),
+            _ => None,
         }
     }
 }
@@ -6826,6 +7215,15 @@ impl InfoTypeSupportedBy {
             InfoTypeSupportedBy::RiskAnalysis => "RISK_ANALYSIS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENUM_TYPE_UNSPECIFIED" => Some(Self::EnumTypeUnspecified),
+            "INSPECT" => Some(Self::Inspect),
+            "RISK_ANALYSIS" => Some(Self::RiskAnalysis),
+            _ => None,
+        }
+    }
 }
 /// An enum to represent the various types of DLP jobs.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6848,6 +7246,15 @@ impl DlpJobType {
             DlpJobType::Unspecified => "DLP_JOB_TYPE_UNSPECIFIED",
             DlpJobType::InspectJob => "INSPECT_JOB",
             DlpJobType::RiskAnalysisJob => "RISK_ANALYSIS_JOB",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DLP_JOB_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "INSPECT_JOB" => Some(Self::InspectJob),
+            "RISK_ANALYSIS_JOB" => Some(Self::RiskAnalysisJob),
+            _ => None,
         }
     }
 }
@@ -6883,6 +7290,17 @@ impl StoredInfoTypeState {
             StoredInfoTypeState::Invalid => "INVALID",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STORED_INFO_TYPE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PENDING" => Some(Self::Pending),
+            "READY" => Some(Self::Ready),
+            "FAILED" => Some(Self::Failed),
+            "INVALID" => Some(Self::Invalid),
+            _ => None,
+        }
+    }
 }
 /// How broadly a resource has been shared. New items may be added over time.
 /// A higher number means more restricted.
@@ -6908,6 +7326,15 @@ impl ResourceVisibility {
             ResourceVisibility::Restricted => "RESOURCE_VISIBILITY_RESTRICTED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESOURCE_VISIBILITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "RESOURCE_VISIBILITY_PUBLIC" => Some(Self::Public),
+            "RESOURCE_VISIBILITY_RESTRICTED" => Some(Self::Restricted),
+            _ => None,
+        }
+    }
 }
 /// How a resource is encrypted.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -6930,6 +7357,15 @@ impl EncryptionStatus {
             EncryptionStatus::Unspecified => "ENCRYPTION_STATUS_UNSPECIFIED",
             EncryptionStatus::EncryptionGoogleManaged => "ENCRYPTION_GOOGLE_MANAGED",
             EncryptionStatus::EncryptionCustomerManaged => "ENCRYPTION_CUSTOMER_MANAGED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENCRYPTION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENCRYPTION_GOOGLE_MANAGED" => Some(Self::EncryptionGoogleManaged),
+            "ENCRYPTION_CUSTOMER_MANAGED" => Some(Self::EncryptionCustomerManaged),
+            _ => None,
         }
     }
 }

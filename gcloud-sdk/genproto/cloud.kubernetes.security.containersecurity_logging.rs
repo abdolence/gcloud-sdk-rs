@@ -111,6 +111,15 @@ pub mod finding {
                 State::Remediated => "REMEDIATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "REMEDIATED" => Some(Self::Remediated),
+                _ => None,
+            }
+        }
     }
     /// Specific details about the security finding if there are any.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -144,6 +153,15 @@ impl FindingType {
             FindingType::Vulnerability => "FINDING_TYPE_VULNERABILITY",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FINDING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FINDING_TYPE_MISCONFIG" => Some(Self::Misconfig),
+            "FINDING_TYPE_VULNERABILITY" => Some(Self::Vulnerability),
+            _ => None,
+        }
+    }
 }
 /// Severity is an enumeration of all the possible severities of a violation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -172,6 +190,17 @@ impl Severity {
             Severity::High => "SEVERITY_HIGH",
             Severity::Medium => "SEVERITY_MEDIUM",
             Severity::Low => "SEVERITY_LOW",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "SEVERITY_CRITICAL" => Some(Self::Critical),
+            "SEVERITY_HIGH" => Some(Self::High),
+            "SEVERITY_MEDIUM" => Some(Self::Medium),
+            "SEVERITY_LOW" => Some(Self::Low),
+            _ => None,
         }
     }
 }

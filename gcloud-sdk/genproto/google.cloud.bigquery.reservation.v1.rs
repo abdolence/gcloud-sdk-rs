@@ -159,6 +159,17 @@ pub mod capacity_commitment {
                 CommitmentPlan::Annual => "ANNUAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMMITMENT_PLAN_UNSPECIFIED" => Some(Self::Unspecified),
+                "FLEX" => Some(Self::Flex),
+                "TRIAL" => Some(Self::Trial),
+                "MONTHLY" => Some(Self::Monthly),
+                "ANNUAL" => Some(Self::Annual),
+                _ => None,
+            }
+        }
     }
     /// Capacity commitment can either become ACTIVE right away or transition
     /// from PENDING to ACTIVE or FAILED.
@@ -197,6 +208,16 @@ pub mod capacity_commitment {
                 State::Pending => "PENDING",
                 State::Active => "ACTIVE",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -461,6 +482,16 @@ pub mod assignment {
                 JobType::MlExternal => "ML_EXTERNAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JOB_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PIPELINE" => Some(Self::Pipeline),
+                "QUERY" => Some(Self::Query),
+                "ML_EXTERNAL" => Some(Self::MlExternal),
+                _ => None,
+            }
+        }
     }
     /// Assignment will remain in PENDING state if no active capacity commitment is
     /// present. It will become ACTIVE when some capacity commitment becomes
@@ -496,6 +527,15 @@ pub mod assignment {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Pending => "PENDING",
                 State::Active => "ACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
             }
         }
     }

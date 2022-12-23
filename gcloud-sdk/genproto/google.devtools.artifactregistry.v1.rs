@@ -58,6 +58,15 @@ pub mod apt_artifact {
                 PackageType::Source => "SOURCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PACKAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BINARY" => Some(Self::Binary),
+                "SOURCE" => Some(Self::Source),
+                _ => None,
+            }
+        }
     }
 }
 /// Google Cloud Storage location where the artifacts currently reside.
@@ -259,6 +268,15 @@ pub mod hash {
                 HashType::Unspecified => "HASH_TYPE_UNSPECIFIED",
                 HashType::Sha256 => "SHA256",
                 HashType::Md5 => "MD5",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HASH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SHA256" => Some(Self::Sha256),
+                "MD5" => Some(Self::Md5),
+                _ => None,
             }
         }
     }
@@ -495,6 +513,15 @@ pub mod repository {
                     VersionPolicy::Snapshot => "SNAPSHOT",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "VERSION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "RELEASE" => Some(Self::Release),
+                    "SNAPSHOT" => Some(Self::Snapshot),
+                    _ => None,
+                }
+            }
         }
     }
     /// A package format.
@@ -540,6 +567,19 @@ pub mod repository {
                 Format::Apt => "APT",
                 Format::Yum => "YUM",
                 Format::Python => "PYTHON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "DOCKER" => Some(Self::Docker),
+                "MAVEN" => Some(Self::Maven),
+                "NPM" => Some(Self::Npm),
+                "APT" => Some(Self::Apt),
+                "YUM" => Some(Self::Yum),
+                "PYTHON" => Some(Self::Python),
+                _ => None,
             }
         }
     }
@@ -681,6 +721,22 @@ pub mod project_settings {
                 RedirectionState::RedirectionFromGcrIoFinalized => {
                     "REDIRECTION_FROM_GCR_IO_FINALIZED"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REDIRECTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REDIRECTION_FROM_GCR_IO_DISABLED" => {
+                    Some(Self::RedirectionFromGcrIoDisabled)
+                }
+                "REDIRECTION_FROM_GCR_IO_ENABLED" => {
+                    Some(Self::RedirectionFromGcrIoEnabled)
+                }
+                "REDIRECTION_FROM_GCR_IO_FINALIZED" => {
+                    Some(Self::RedirectionFromGcrIoFinalized)
+                }
+                _ => None,
             }
         }
     }
@@ -915,6 +971,15 @@ impl VersionView {
             VersionView::Full => "FULL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "VERSION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
 }
 /// A detailed representation of a Yum artifact.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -966,6 +1031,15 @@ pub mod yum_artifact {
                 PackageType::Unspecified => "PACKAGE_TYPE_UNSPECIFIED",
                 PackageType::Binary => "BINARY",
                 PackageType::Source => "SOURCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PACKAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BINARY" => Some(Self::Binary),
+                "SOURCE" => Some(Self::Source),
+                _ => None,
             }
         }
     }

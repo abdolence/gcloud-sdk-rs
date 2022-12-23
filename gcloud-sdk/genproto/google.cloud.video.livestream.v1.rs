@@ -125,6 +125,15 @@ pub mod manifest {
                 ManifestType::Dash => "DASH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MANIFEST_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HLS" => Some(Self::Hls),
+                "DASH" => Some(Self::Dash),
+                _ => None,
+            }
+        }
     }
 }
 /// Sprite sheet configuration.
@@ -543,6 +552,15 @@ pub mod input {
                 Type::SrtPush => "SRT_PUSH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RTMP_PUSH" => Some(Self::RtmpPush),
+                "SRT_PUSH" => Some(Self::SrtPush),
+                _ => None,
+            }
+        }
     }
     /// Tier of the input specification.
     #[derive(
@@ -578,6 +596,16 @@ pub mod input {
                 Tier::Sd => "SD",
                 Tier::Hd => "HD",
                 Tier::Uhd => "UHD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "SD" => Some(Self::Sd),
+                "HD" => Some(Self::Hd),
+                "UHD" => Some(Self::Uhd),
+                _ => None,
             }
         }
     }
@@ -706,6 +734,20 @@ pub mod channel {
                 StreamingState::Stopping => "STOPPING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STREAMING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STREAMING" => Some(Self::Streaming),
+                "AWAITING_INPUT" => Some(Self::AwaitingInput),
+                "STREAMING_ERROR" => Some(Self::StreamingError),
+                "STREAMING_NO_INPUT" => Some(Self::StreamingNoInput),
+                "STOPPED" => Some(Self::Stopped),
+                "STARTING" => Some(Self::Starting),
+                "STOPPING" => Some(Self::Stopping),
+                _ => None,
+            }
+        }
     }
 }
 /// Configuration of platform logs.
@@ -768,6 +810,18 @@ pub mod log_config {
                 LogSeverity::Info => "INFO",
                 LogSeverity::Warning => "WARNING",
                 LogSeverity::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOG_SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "OFF" => Some(Self::Off),
+                "DEBUG" => Some(Self::Debug),
+                "INFO" => Some(Self::Info),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }
@@ -962,6 +1016,19 @@ pub mod event {
                 State::Failed => "FAILED",
                 State::Pending => "PENDING",
                 State::Stopped => "STOPPED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCHEDULED" => Some(Self::Scheduled),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "PENDING" => Some(Self::Pending),
+                "STOPPED" => Some(Self::Stopped),
+                _ => None,
             }
         }
     }

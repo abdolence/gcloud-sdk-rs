@@ -210,6 +210,14 @@ pub mod app_gateway {
                 Type::TcpProxy => "TCP_PROXY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TCP_PROXY" => Some(Self::TcpProxy),
+                _ => None,
+            }
+        }
     }
     /// Represents the different states of an AppGateway.
     #[derive(
@@ -254,6 +262,18 @@ pub mod app_gateway {
                 State::Down => "DOWN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "DOWN" => Some(Self::Down),
+                _ => None,
+            }
+        }
     }
     /// Enum containing list of all possible host types supported by BeyondCorp
     /// Connection.
@@ -284,6 +304,14 @@ pub mod app_gateway {
             match self {
                 HostType::Unspecified => "HOST_TYPE_UNSPECIFIED",
                 HostType::GcpRegionalMig => "GCP_REGIONAL_MIG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HOST_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GCP_REGIONAL_MIG" => Some(Self::GcpRegionalMig),
+                _ => None,
             }
         }
     }

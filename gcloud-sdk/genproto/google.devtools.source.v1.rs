@@ -93,6 +93,16 @@ pub mod alias_context {
                 Kind::Other => "OTHER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANY" => Some(Self::Any),
+                "FIXED" => Some(Self::Fixed),
+                "MOVABLE" => Some(Self::Movable),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
     }
 }
 /// A CloudRepoSourceContext denotes a particular revision in a cloud

@@ -138,6 +138,15 @@ pub mod trace_span {
                 SpanKind::RpcClient => "RPC_CLIENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SPAN_KIND_UNSPECIFIED" => Some(Self::Unspecified),
+                "RPC_SERVER" => Some(Self::RpcServer),
+                "RPC_CLIENT" => Some(Self::RpcClient),
+                _ => None,
+            }
+        }
     }
 }
 /// The request message for the `ListTraces` method. All fields are required
@@ -257,6 +266,16 @@ pub mod list_traces_request {
                 ViewType::Minimal => "MINIMAL",
                 ViewType::Rootspan => "ROOTSPAN",
                 ViewType::Complete => "COMPLETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VIEW_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MINIMAL" => Some(Self::Minimal),
+                "ROOTSPAN" => Some(Self::Rootspan),
+                "COMPLETE" => Some(Self::Complete),
+                _ => None,
             }
         }
     }

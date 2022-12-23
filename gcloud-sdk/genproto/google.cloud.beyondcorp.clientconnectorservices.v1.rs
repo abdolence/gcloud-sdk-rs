@@ -101,6 +101,14 @@ pub mod client_connector_service {
                         TransportProtocol::Tcp => "TCP",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "TRANSPORT_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                        "TCP" => Some(Self::Tcp),
+                        _ => None,
+                    }
+                }
             }
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -181,6 +189,19 @@ pub mod client_connector_service {
                 State::Running => "RUNNING",
                 State::Down => "DOWN",
                 State::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "RUNNING" => Some(Self::Running),
+                "DOWN" => Some(Self::Down),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }

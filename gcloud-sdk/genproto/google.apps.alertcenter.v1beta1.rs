@@ -211,6 +211,14 @@ pub mod settings {
                     PayloadFormat::Json => "JSON",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PAYLOAD_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JSON" => Some(Self::Json),
+                    _ => None,
+                }
+            }
         }
         /// Exactly one destination to be specified.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -468,6 +476,16 @@ impl AlertFeedbackType {
             AlertFeedbackType::NotUseful => "NOT_USEFUL",
             AlertFeedbackType::SomewhatUseful => "SOMEWHAT_USEFUL",
             AlertFeedbackType::VeryUseful => "VERY_USEFUL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ALERT_FEEDBACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NOT_USEFUL" => Some(Self::NotUseful),
+            "SOMEWHAT_USEFUL" => Some(Self::SomewhatUseful),
+            "VERY_USEFUL" => Some(Self::VeryUseful),
+            _ => None,
         }
     }
 }

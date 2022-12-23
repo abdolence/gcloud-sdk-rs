@@ -86,6 +86,23 @@ pub mod traffic_director_log_entry {
                 ClientType::Unknown => "UNKNOWN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLIENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENVOY" => Some(Self::Envoy),
+                "GRPC_JAVA" => Some(Self::GrpcJava),
+                "GRPC_CPP" => Some(Self::GrpcCpp),
+                "GRPC_PYTHON" => Some(Self::GrpcPython),
+                "GRPC_GO" => Some(Self::GrpcGo),
+                "GRPC_RUBY" => Some(Self::GrpcRuby),
+                "GRPC_PHP" => Some(Self::GrpcPhp),
+                "GRPC_NODE" => Some(Self::GrpcNode),
+                "GRPC_CSHARP" => Some(Self::GrpcCsharp),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
+            }
+        }
     }
     /// Defines possible values of API version.
     #[derive(
@@ -118,6 +135,15 @@ pub mod traffic_director_log_entry {
                 TransportApiVersion::Unspecified => "TRANSPORT_API_VERSION_UNSPECIFIED",
                 TransportApiVersion::V2 => "V2",
                 TransportApiVersion::V3 => "V3",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRANSPORT_API_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "V2" => Some(Self::V2),
+                "V3" => Some(Self::V3),
+                _ => None,
             }
         }
     }

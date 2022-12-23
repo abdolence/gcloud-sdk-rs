@@ -58,6 +58,15 @@ pub mod ssl_config {
                 SslType::ServerClient => "SERVER_CLIENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SSL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SERVER_ONLY" => Some(Self::ServerOnly),
+                "SERVER_CLIENT" => Some(Self::ServerClient),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies connection parameters required specifically for MySQL databases.
@@ -312,6 +321,15 @@ pub mod cloud_sql_settings {
                 SqlActivationPolicy::Never => "NEVER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_ACTIVATION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALWAYS" => Some(Self::Always),
+                "NEVER" => Some(Self::Never),
+                _ => None,
+            }
+        }
     }
     /// The storage options for Cloud SQL databases.
     #[derive(
@@ -344,6 +362,15 @@ pub mod cloud_sql_settings {
                 SqlDataDiskType::Unspecified => "SQL_DATA_DISK_TYPE_UNSPECIFIED",
                 SqlDataDiskType::PdSsd => "PD_SSD",
                 SqlDataDiskType::PdHdd => "PD_HDD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_DATA_DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PD_SSD" => Some(Self::PdSsd),
+                "PD_HDD" => Some(Self::PdHdd),
+                _ => None,
             }
         }
     }
@@ -396,6 +423,21 @@ pub mod cloud_sql_settings {
                 SqlDatabaseVersion::Mysql80 => "MYSQL_8_0",
                 SqlDatabaseVersion::Postgres12 => "POSTGRES_12",
                 SqlDatabaseVersion::Postgres13 => "POSTGRES_13",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_DATABASE_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "MYSQL_5_6" => Some(Self::Mysql56),
+                "MYSQL_5_7" => Some(Self::Mysql57),
+                "POSTGRES_9_6" => Some(Self::Postgres96),
+                "POSTGRES_11" => Some(Self::Postgres11),
+                "POSTGRES_10" => Some(Self::Postgres10),
+                "MYSQL_8_0" => Some(Self::Mysql80),
+                "POSTGRES_12" => Some(Self::Postgres12),
+                "POSTGRES_13" => Some(Self::Postgres13),
+                _ => None,
             }
         }
     }
@@ -597,6 +639,28 @@ pub mod migration_job {
                 State::Resuming => "RESUMING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAINTENANCE" => Some(Self::Maintenance),
+                "DRAFT" => Some(Self::Draft),
+                "CREATING" => Some(Self::Creating),
+                "NOT_STARTED" => Some(Self::NotStarted),
+                "RUNNING" => Some(Self::Running),
+                "FAILED" => Some(Self::Failed),
+                "COMPLETED" => Some(Self::Completed),
+                "DELETING" => Some(Self::Deleting),
+                "STOPPING" => Some(Self::Stopping),
+                "STOPPED" => Some(Self::Stopped),
+                "DELETED" => Some(Self::Deleted),
+                "UPDATING" => Some(Self::Updating),
+                "STARTING" => Some(Self::Starting),
+                "RESTARTING" => Some(Self::Restarting),
+                "RESUMING" => Some(Self::Resuming),
+                _ => None,
+            }
+        }
     }
     /// The current migration job phase.
     #[derive(
@@ -642,6 +706,20 @@ pub mod migration_job {
                 Phase::PreparingTheDump => "PREPARING_THE_DUMP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHASE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL_DUMP" => Some(Self::FullDump),
+                "CDC" => Some(Self::Cdc),
+                "PROMOTE_IN_PROGRESS" => Some(Self::PromoteInProgress),
+                "WAITING_FOR_SOURCE_WRITES_TO_STOP" => {
+                    Some(Self::WaitingForSourceWritesToStop)
+                }
+                "PREPARING_THE_DUMP" => Some(Self::PreparingTheDump),
+                _ => None,
+            }
+        }
     }
     /// The type of migration job (one-time or continuous).
     #[derive(
@@ -674,6 +752,15 @@ pub mod migration_job {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::OneTime => "ONE_TIME",
                 Type::Continuous => "CONTINUOUS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ONE_TIME" => Some(Self::OneTime),
+                "CONTINUOUS" => Some(Self::Continuous),
+                _ => None,
             }
         }
     }
@@ -787,6 +874,20 @@ pub mod connection_profile {
                 State::Deleting => "DELETING",
                 State::Deleted => "DELETED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DRAFT" => Some(Self::Draft),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "DELETED" => Some(Self::Deleted),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -922,6 +1023,46 @@ pub mod migration_job_verification_error {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONNECTION_FAILURE" => Some(Self::ConnectionFailure),
+                "AUTHENTICATION_FAILURE" => Some(Self::AuthenticationFailure),
+                "INVALID_CONNECTION_PROFILE_CONFIG" => {
+                    Some(Self::InvalidConnectionProfileConfig)
+                }
+                "VERSION_INCOMPATIBILITY" => Some(Self::VersionIncompatibility),
+                "CONNECTION_PROFILE_TYPES_INCOMPATIBILITY" => {
+                    Some(Self::ConnectionProfileTypesIncompatibility)
+                }
+                "NO_PGLOGICAL_INSTALLED" => Some(Self::NoPglogicalInstalled),
+                "PGLOGICAL_NODE_ALREADY_EXISTS" => Some(Self::PglogicalNodeAlreadyExists),
+                "INVALID_WAL_LEVEL" => Some(Self::InvalidWalLevel),
+                "INVALID_SHARED_PRELOAD_LIBRARY" => {
+                    Some(Self::InvalidSharedPreloadLibrary)
+                }
+                "INSUFFICIENT_MAX_REPLICATION_SLOTS" => {
+                    Some(Self::InsufficientMaxReplicationSlots)
+                }
+                "INSUFFICIENT_MAX_WAL_SENDERS" => Some(Self::InsufficientMaxWalSenders),
+                "INSUFFICIENT_MAX_WORKER_PROCESSES" => {
+                    Some(Self::InsufficientMaxWorkerProcesses)
+                }
+                "UNSUPPORTED_EXTENSIONS" => Some(Self::UnsupportedExtensions),
+                "UNSUPPORTED_MIGRATION_TYPE" => Some(Self::UnsupportedMigrationType),
+                "INVALID_RDS_LOGICAL_REPLICATION" => {
+                    Some(Self::InvalidRdsLogicalReplication)
+                }
+                "UNSUPPORTED_GTID_MODE" => Some(Self::UnsupportedGtidMode),
+                "UNSUPPORTED_TABLE_DEFINITION" => Some(Self::UnsupportedTableDefinition),
+                "UNSUPPORTED_DEFINER" => Some(Self::UnsupportedDefiner),
+                "CANT_RESTART_RUNNING_MIGRATION" => {
+                    Some(Self::CantRestartRunningMigration)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// The database engine types.
@@ -947,6 +1088,15 @@ impl DatabaseEngine {
             DatabaseEngine::Postgresql => "POSTGRESQL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATABASE_ENGINE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MYSQL" => Some(Self::Mysql),
+            "POSTGRESQL" => Some(Self::Postgresql),
+            _ => None,
+        }
+    }
 }
 /// The database providers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -969,6 +1119,15 @@ impl DatabaseProvider {
             DatabaseProvider::Unspecified => "DATABASE_PROVIDER_UNSPECIFIED",
             DatabaseProvider::Cloudsql => "CLOUDSQL",
             DatabaseProvider::Rds => "RDS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATABASE_PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+            "CLOUDSQL" => Some(Self::Cloudsql),
+            "RDS" => Some(Self::Rds),
+            _ => None,
         }
     }
 }

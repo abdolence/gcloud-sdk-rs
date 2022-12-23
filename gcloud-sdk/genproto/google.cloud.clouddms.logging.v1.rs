@@ -138,6 +138,28 @@ pub mod logged_migration_job {
                 State::Resuming => "RESUMING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAINTENANCE" => Some(Self::Maintenance),
+                "DRAFT" => Some(Self::Draft),
+                "CREATING" => Some(Self::Creating),
+                "NOT_STARTED" => Some(Self::NotStarted),
+                "RUNNING" => Some(Self::Running),
+                "FAILED" => Some(Self::Failed),
+                "COMPLETED" => Some(Self::Completed),
+                "DELETING" => Some(Self::Deleting),
+                "STOPPING" => Some(Self::Stopping),
+                "STOPPED" => Some(Self::Stopped),
+                "DELETED" => Some(Self::Deleted),
+                "UPDATING" => Some(Self::Updating),
+                "STARTING" => Some(Self::Starting),
+                "RESTARTING" => Some(Self::Restarting),
+                "RESUMING" => Some(Self::Resuming),
+                _ => None,
+            }
+        }
     }
     /// The migration job phases enum.
     #[derive(
@@ -183,6 +205,20 @@ pub mod logged_migration_job {
                 Phase::PreparingTheDump => "PREPARING_THE_DUMP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHASE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL_DUMP" => Some(Self::FullDump),
+                "CDC" => Some(Self::Cdc),
+                "PROMOTE_IN_PROGRESS" => Some(Self::PromoteInProgress),
+                "WAITING_FOR_SOURCE_WRITES_TO_STOP" => {
+                    Some(Self::WaitingForSourceWritesToStop)
+                }
+                "PREPARING_THE_DUMP" => Some(Self::PreparingTheDump),
+                _ => None,
+            }
+        }
     }
     /// The migration job types.
     #[derive(
@@ -215,6 +251,15 @@ pub mod logged_migration_job {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::OneTime => "ONE_TIME",
                 Type::Continuous => "CONTINUOUS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ONE_TIME" => Some(Self::OneTime),
+                "CONTINUOUS" => Some(Self::Continuous),
+                _ => None,
             }
         }
     }
@@ -252,6 +297,16 @@ pub mod logged_migration_job {
                 ConnectivityType::StaticIp => "STATIC_IP",
                 ConnectivityType::ReverseSsh => "REVERSE_SSH",
                 ConnectivityType::VpcPeering => "VPC_PEERING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTIVITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STATIC_IP" => Some(Self::StaticIp),
+                "REVERSE_SSH" => Some(Self::ReverseSsh),
+                "VPC_PEERING" => Some(Self::VpcPeering),
+                _ => None,
             }
         }
     }
@@ -306,6 +361,17 @@ pub mod my_sql_connection_profile {
                 Version::V56 => "V5_6",
                 Version::V57 => "V5_7",
                 Version::V80 => "V8_0",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "V5_5" => Some(Self::V55),
+                "V5_6" => Some(Self::V56),
+                "V5_7" => Some(Self::V57),
+                "V8_0" => Some(Self::V80),
+                _ => None,
             }
         }
     }
@@ -365,6 +431,18 @@ pub mod postgre_sql_connection_profile {
                 Version::V13 => "V13",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "V9_6" => Some(Self::V96),
+                "V11" => Some(Self::V11),
+                "V10" => Some(Self::V10),
+                "V12" => Some(Self::V12),
+                "V13" => Some(Self::V13),
+                _ => None,
+            }
+        }
     }
 }
 /// A CloudSQL connection profile.
@@ -419,6 +497,16 @@ pub mod oracle_connection_profile {
                 ConnectivityType::StaticServiceIp => "STATIC_SERVICE_IP",
                 ConnectivityType::ForwardSshTunnel => "FORWARD_SSH_TUNNEL",
                 ConnectivityType::PrivateConnectivity => "PRIVATE_CONNECTIVITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTIVITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STATIC_SERVICE_IP" => Some(Self::StaticServiceIp),
+                "FORWARD_SSH_TUNNEL" => Some(Self::ForwardSshTunnel),
+                "PRIVATE_CONNECTIVITY" => Some(Self::PrivateConnectivity),
+                _ => None,
             }
         }
     }
@@ -506,6 +594,20 @@ pub mod logged_connection_profile {
                 State::Deleting => "DELETING",
                 State::Deleted => "DELETED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DRAFT" => Some(Self::Draft),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "DELETED" => Some(Self::Deleted),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -671,6 +773,19 @@ pub mod logged_private_connection {
                 State::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED_TO_DELETE" => Some(Self::FailedToDelete),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// The VPC Peering configuration is used to create VPC peering between
@@ -753,6 +868,18 @@ impl DatabaseEngine {
             DatabaseEngine::Spanner => "SPANNER",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATABASE_ENGINE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MYSQL" => Some(Self::Mysql),
+            "POSTGRESQL" => Some(Self::Postgresql),
+            "SQLSERVER" => Some(Self::Sqlserver),
+            "ORACLE" => Some(Self::Oracle),
+            "SPANNER" => Some(Self::Spanner),
+            _ => None,
+        }
+    }
 }
 /// The database providers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -781,6 +908,17 @@ impl DatabaseProvider {
             DatabaseProvider::Rds => "RDS",
             DatabaseProvider::Aurora => "AURORA",
             DatabaseProvider::Alloydb => "ALLOYDB",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATABASE_PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+            "CLOUDSQL" => Some(Self::Cloudsql),
+            "RDS" => Some(Self::Rds),
+            "AURORA" => Some(Self::Aurora),
+            "ALLOYDB" => Some(Self::Alloydb),
+            _ => None,
         }
     }
 }

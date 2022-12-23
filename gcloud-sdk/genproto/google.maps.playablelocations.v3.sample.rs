@@ -140,6 +140,15 @@ pub mod spacing_options {
                 PointType::SnappedPoint => "SNAPPED_POINT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POINT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CENTER_POINT" => Some(Self::CenterPoint),
+                "SNAPPED_POINT" => Some(Self::SnappedPoint),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies the filters to use when searching for playable locations.

@@ -246,6 +246,15 @@ pub mod subscription {
                     DeliveryRequirement::DeliverAfterStored => "DELIVER_AFTER_STORED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DELIVERY_REQUIREMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DELIVER_IMMEDIATELY" => Some(Self::DeliverImmediately),
+                    "DELIVER_AFTER_STORED" => Some(Self::DeliverAfterStored),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -326,6 +335,17 @@ pub mod export_config {
                 State::Paused => "PAUSED",
                 State::PermissionDenied => "PERMISSION_DENIED",
                 State::NotFound => "NOT_FOUND",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "PAUSED" => Some(Self::Paused),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "NOT_FOUND" => Some(Self::NotFound),
+                _ => None,
             }
         }
     }
@@ -626,6 +646,15 @@ pub mod seek_subscription_request {
                 NamedTarget::Unspecified => "NAMED_TARGET_UNSPECIFIED",
                 NamedTarget::Tail => "TAIL",
                 NamedTarget::Head => "HEAD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NAMED_TARGET_UNSPECIFIED" => Some(Self::Unspecified),
+                "TAIL" => Some(Self::Tail),
+                "HEAD" => Some(Self::Head),
+                _ => None,
             }
         }
     }
@@ -1813,6 +1842,15 @@ pub mod seek_request {
                 NamedTarget::Unspecified => "NAMED_TARGET_UNSPECIFIED",
                 NamedTarget::Head => "HEAD",
                 NamedTarget::CommittedCursor => "COMMITTED_CURSOR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NAMED_TARGET_UNSPECIFIED" => Some(Self::Unspecified),
+                "HEAD" => Some(Self::Head),
+                "COMMITTED_CURSOR" => Some(Self::CommittedCursor),
+                _ => None,
             }
         }
     }

@@ -68,6 +68,15 @@ pub mod index {
                 AncestorMode::AllAncestors => "ALL_ANCESTORS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANCESTOR_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "ALL_ANCESTORS" => Some(Self::AllAncestors),
+                _ => None,
+            }
+        }
     }
     /// The direction determines how a property is indexed.
     #[derive(
@@ -102,6 +111,15 @@ pub mod index {
                 Direction::Unspecified => "DIRECTION_UNSPECIFIED",
                 Direction::Ascending => "ASCENDING",
                 Direction::Descending => "DESCENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASCENDING" => Some(Self::Ascending),
+                "DESCENDING" => Some(Self::Descending),
+                _ => None,
             }
         }
     }
@@ -155,6 +173,17 @@ pub mod index {
                 State::Ready => "READY",
                 State::Deleting => "DELETING",
                 State::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }
@@ -242,6 +271,16 @@ pub mod migration_progress_event {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONCURRENCY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PESSIMISTIC" => Some(Self::Pessimistic),
+                "OPTIMISTIC" => Some(Self::Optimistic),
+                "OPTIMISTIC_WITH_ENTITY_GROUPS" => Some(Self::OptimisticWithEntityGroups),
+                _ => None,
+            }
+        }
     }
     /// Details about this step.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -279,6 +318,16 @@ impl MigrationState {
             MigrationState::Running => "RUNNING",
             MigrationState::Paused => "PAUSED",
             MigrationState::Complete => "COMPLETE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MIGRATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RUNNING" => Some(Self::Running),
+            "PAUSED" => Some(Self::Paused),
+            "COMPLETE" => Some(Self::Complete),
+            _ => None,
         }
     }
 }
@@ -323,6 +372,24 @@ impl MigrationStep {
                 "REDIRECT_STRONGLY_CONSISTENT_READS"
             }
             MigrationStep::RedirectWrites => "REDIRECT_WRITES",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MIGRATION_STEP_UNSPECIFIED" => Some(Self::Unspecified),
+            "PREPARE" => Some(Self::Prepare),
+            "START" => Some(Self::Start),
+            "APPLY_WRITES_SYNCHRONOUSLY" => Some(Self::ApplyWritesSynchronously),
+            "COPY_AND_VERIFY" => Some(Self::CopyAndVerify),
+            "REDIRECT_EVENTUALLY_CONSISTENT_READS" => {
+                Some(Self::RedirectEventuallyConsistentReads)
+            }
+            "REDIRECT_STRONGLY_CONSISTENT_READS" => {
+                Some(Self::RedirectStronglyConsistentReads)
+            }
+            "REDIRECT_WRITES" => Some(Self::RedirectWrites),
+            _ => None,
         }
     }
 }
@@ -401,6 +468,20 @@ pub mod common_metadata {
                 State::Successful => "SUCCESSFUL",
                 State::Failed => "FAILED",
                 State::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INITIALIZING" => Some(Self::Initializing),
+                "PROCESSING" => Some(Self::Processing),
+                "CANCELLING" => Some(Self::Cancelling),
+                "FINALIZING" => Some(Self::Finalizing),
+                "SUCCESSFUL" => Some(Self::Successful),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -711,6 +792,17 @@ impl OperationType {
             OperationType::ImportEntities => "IMPORT_ENTITIES",
             OperationType::CreateIndex => "CREATE_INDEX",
             OperationType::DeleteIndex => "DELETE_INDEX",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "EXPORT_ENTITIES" => Some(Self::ExportEntities),
+            "IMPORT_ENTITIES" => Some(Self::ImportEntities),
+            "CREATE_INDEX" => Some(Self::CreateIndex),
+            "DELETE_INDEX" => Some(Self::DeleteIndex),
+            _ => None,
         }
     }
 }

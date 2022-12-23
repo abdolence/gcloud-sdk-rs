@@ -61,6 +61,17 @@ pub mod temporal_asset {
                 PriorAssetState::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIOR_ASSET_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRESENT" => Some(Self::Present),
+                "INVALID" => Some(Self::Invalid),
+                "DOES_NOT_EXIST" => Some(Self::DoesNotExist),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// A time window specified by its `start_time` and `end_time`.
@@ -857,6 +868,16 @@ pub mod condition_evaluation {
                 EvaluationValue::Conditional => "CONDITIONAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVALUATION_VALUE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRUE" => Some(Self::True),
+                "FALSE" => Some(Self::False),
+                "CONDITIONAL" => Some(Self::Conditional),
+                _ => None,
+            }
+        }
     }
 }
 /// IAM Policy analysis result, consisting of one IAM policy binding and derived
@@ -1545,6 +1566,15 @@ pub mod partition_spec {
                 PartitionKey::Unspecified => "PARTITION_KEY_UNSPECIFIED",
                 PartitionKey::ReadTime => "READ_TIME",
                 PartitionKey::RequestTime => "REQUEST_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PARTITION_KEY_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_TIME" => Some(Self::ReadTime),
+                "REQUEST_TIME" => Some(Self::RequestTime),
+                _ => None,
             }
         }
     }
@@ -2343,6 +2373,14 @@ pub mod iam_policy_analysis_output_config {
                     PartitionKey::RequestTime => "REQUEST_TIME",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PARTITION_KEY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "REQUEST_TIME" => Some(Self::RequestTime),
+                    _ => None,
+                }
+            }
         }
     }
     /// IAM policy analysis export destination.
@@ -2621,6 +2659,15 @@ pub mod analyze_move_request {
                 AnalysisView::Unspecified => "ANALYSIS_VIEW_UNSPECIFIED",
                 AnalysisView::Full => "FULL",
                 AnalysisView::Basic => "BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANALYSIS_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL" => Some(Self::Full),
+                "BASIC" => Some(Self::Basic),
+                _ => None,
             }
         }
     }
@@ -3033,6 +3080,19 @@ impl ContentType {
             ContentType::AccessPolicy => "ACCESS_POLICY",
             ContentType::OsInventory => "OS_INVENTORY",
             ContentType::Relationship => "RELATIONSHIP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RESOURCE" => Some(Self::Resource),
+            "IAM_POLICY" => Some(Self::IamPolicy),
+            "ORG_POLICY" => Some(Self::OrgPolicy),
+            "ACCESS_POLICY" => Some(Self::AccessPolicy),
+            "OS_INVENTORY" => Some(Self::OsInventory),
+            "RELATIONSHIP" => Some(Self::Relationship),
+            _ => None,
         }
     }
 }

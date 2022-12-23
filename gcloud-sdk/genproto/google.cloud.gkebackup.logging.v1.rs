@@ -75,6 +75,18 @@ pub mod logged_backup {
                 State::Deleting => "DELETING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
     }
 }
 /// Namespaces, list of namespaces
@@ -290,6 +302,18 @@ pub mod logged_restore {
                 State::Deleting => "DELETING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
     }
 }
 /// RestorePlan as stored in Platform log. It's used to log the details of
@@ -494,6 +518,20 @@ pub mod restore_config {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "RESTORE_VOLUME_DATA_FROM_BACKUP" => {
+                    Some(Self::RestoreVolumeDataFromBackup)
+                }
+                "REUSE_VOLUME_HANDLE_FROM_BACKUP" => {
+                    Some(Self::ReuseVolumeHandleFromBackup)
+                }
+                "NO_VOLUME_DATA_RESTORATION" => Some(Self::NoVolumeDataRestoration),
+                _ => None,
+            }
+        }
     }
     /// Defines the behavior for handling the situation where cluster-scoped
     /// resources being restored already exist in the target cluster.
@@ -535,6 +573,15 @@ pub mod restore_config {
                     "USE_EXISTING_VERSION"
                 }
                 ClusterResourceConflictPolicy::UseBackupVersion => "USE_BACKUP_VERSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "USE_EXISTING_VERSION" => Some(Self::UseExistingVersion),
+                "USE_BACKUP_VERSION" => Some(Self::UseBackupVersion),
+                _ => None,
             }
         }
     }
@@ -582,6 +629,15 @@ pub mod restore_config {
                 }
                 NamespacedResourceRestoreMode::DeleteAndRestore => "DELETE_AND_RESTORE",
                 NamespacedResourceRestoreMode::FailOnConflict => "FAIL_ON_CONFLICT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DELETE_AND_RESTORE" => Some(Self::DeleteAndRestore),
+                "FAIL_ON_CONFLICT" => Some(Self::FailOnConflict),
+                _ => None,
             }
         }
     }
@@ -734,6 +790,16 @@ impl ChangeType {
             ChangeType::Creation => "CREATION",
             ChangeType::Update => "UPDATE",
             ChangeType::Deletion => "DELETION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CREATION" => Some(Self::Creation),
+            "UPDATE" => Some(Self::Update),
+            "DELETION" => Some(Self::Deletion),
+            _ => None,
         }
     }
 }

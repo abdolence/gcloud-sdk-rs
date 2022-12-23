@@ -92,6 +92,16 @@ impl TravelMode {
             TravelMode::Walking => "WALKING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRAVEL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DRIVING" => Some(Self::Driving),
+            "CYCLING" => Some(Self::Cycling),
+            "WALKING" => Some(Self::Walking),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod roads_service_client {

@@ -97,6 +97,17 @@ pub mod insight {
                 Category::Manageability => "MANAGEABILITY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "COST" => Some(Self::Cost),
+                "SECURITY" => Some(Self::Security),
+                "PERFORMANCE" => Some(Self::Performance),
+                "MANAGEABILITY" => Some(Self::Manageability),
+                _ => None,
+            }
+        }
     }
     /// Insight severity levels.
     #[derive(
@@ -135,6 +146,17 @@ pub mod insight {
                 Severity::Medium => "MEDIUM",
                 Severity::High => "HIGH",
                 Severity::Critical => "CRITICAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                "CRITICAL" => Some(Self::Critical),
+                _ => None,
             }
         }
     }
@@ -195,6 +217,16 @@ pub mod insight_state_info {
                 State::Active => "ACTIVE",
                 State::Accepted => "ACCEPTED",
                 State::Dismissed => "DISMISSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "ACCEPTED" => Some(Self::Accepted),
+                "DISMISSED" => Some(Self::Dismissed),
+                _ => None,
             }
         }
     }
@@ -306,6 +338,17 @@ pub mod recommendation {
                 Priority::P3 => "P3",
                 Priority::P2 => "P2",
                 Priority::P1 => "P1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIORITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "P4" => Some(Self::P4),
+                "P3" => Some(Self::P3),
+                "P2" => Some(Self::P2),
+                "P1" => Some(Self::P1),
+                _ => None,
             }
         }
     }
@@ -535,6 +578,17 @@ pub mod impact {
                 Category::Manageability => "MANAGEABILITY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "COST" => Some(Self::Cost),
+                "SECURITY" => Some(Self::Security),
+                "PERFORMANCE" => Some(Self::Performance),
+                "MANAGEABILITY" => Some(Self::Manageability),
+                _ => None,
+            }
+        }
     }
     /// Contains projections (if any) for this category.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -619,6 +673,18 @@ pub mod recommendation_state_info {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Dismissed => "DISMISSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CLAIMED" => Some(Self::Claimed),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "DISMISSED" => Some(Self::Dismissed),
+                _ => None,
             }
         }
     }

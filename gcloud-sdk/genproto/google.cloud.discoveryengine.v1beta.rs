@@ -830,6 +830,15 @@ pub mod import_documents_request {
                 ReconciliationMode::Full => "FULL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECONCILIATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCREMENTAL" => Some(Self::Incremental),
+                "FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
     }
     /// Required. The source of the input.
     #[allow(clippy::derive_partial_eq_without_eq)]

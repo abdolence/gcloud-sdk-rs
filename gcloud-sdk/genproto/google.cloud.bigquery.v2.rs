@@ -121,6 +121,29 @@ pub mod standard_sql_data_type {
                 TypeKind::Struct => "STRUCT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_KIND_UNSPECIFIED" => Some(Self::Unspecified),
+                "INT64" => Some(Self::Int64),
+                "BOOL" => Some(Self::Bool),
+                "FLOAT64" => Some(Self::Float64),
+                "STRING" => Some(Self::String),
+                "BYTES" => Some(Self::Bytes),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                "DATE" => Some(Self::Date),
+                "TIME" => Some(Self::Time),
+                "DATETIME" => Some(Self::Datetime),
+                "INTERVAL" => Some(Self::Interval),
+                "GEOGRAPHY" => Some(Self::Geography),
+                "NUMERIC" => Some(Self::Numeric),
+                "BIGNUMERIC" => Some(Self::Bignumeric),
+                "JSON" => Some(Self::Json),
+                "ARRAY" => Some(Self::Array),
+                "STRUCT" => Some(Self::Struct),
+                _ => None,
+            }
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -306,6 +329,19 @@ pub mod model {
                     SeasonalPeriodType::Yearly => "YEARLY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SEASONAL_PERIOD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NO_SEASONALITY" => Some(Self::NoSeasonality),
+                    "DAILY" => Some(Self::Daily),
+                    "WEEKLY" => Some(Self::Weekly),
+                    "MONTHLY" => Some(Self::Monthly),
+                    "QUARTERLY" => Some(Self::Quarterly),
+                    "YEARLY" => Some(Self::Yearly),
+                    _ => None,
+                }
+            }
         }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -351,6 +387,16 @@ pub mod model {
                     KmeansInitializationMethod::Random => "RANDOM",
                     KmeansInitializationMethod::Custom => "CUSTOM",
                     KmeansInitializationMethod::KmeansPlusPlus => "KMEANS_PLUS_PLUS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "KMEANS_INITIALIZATION_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                    "RANDOM" => Some(Self::Random),
+                    "CUSTOM" => Some(Self::Custom),
+                    "KMEANS_PLUS_PLUS" => Some(Self::KmeansPlusPlus),
+                    _ => None,
                 }
             }
         }
@@ -1261,6 +1307,26 @@ pub mod model {
                 ModelType::ArimaPlus => "ARIMA_PLUS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINEAR_REGRESSION" => Some(Self::LinearRegression),
+                "LOGISTIC_REGRESSION" => Some(Self::LogisticRegression),
+                "KMEANS" => Some(Self::Kmeans),
+                "MATRIX_FACTORIZATION" => Some(Self::MatrixFactorization),
+                "DNN_CLASSIFIER" => Some(Self::DnnClassifier),
+                "TENSORFLOW" => Some(Self::Tensorflow),
+                "DNN_REGRESSOR" => Some(Self::DnnRegressor),
+                "BOOSTED_TREE_REGRESSOR" => Some(Self::BoostedTreeRegressor),
+                "BOOSTED_TREE_CLASSIFIER" => Some(Self::BoostedTreeClassifier),
+                "ARIMA" => Some(Self::Arima),
+                "AUTOML_REGRESSOR" => Some(Self::AutomlRegressor),
+                "AUTOML_CLASSIFIER" => Some(Self::AutomlClassifier),
+                "ARIMA_PLUS" => Some(Self::ArimaPlus),
+                _ => None,
+            }
+        }
     }
     /// Loss metric to evaluate model training performance.
     #[derive(
@@ -1294,6 +1360,15 @@ pub mod model {
                 LossType::MeanLogLoss => "MEAN_LOG_LOSS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOSS_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MEAN_SQUARED_LOSS" => Some(Self::MeanSquaredLoss),
+                "MEAN_LOG_LOSS" => Some(Self::MeanLogLoss),
+                _ => None,
+            }
+        }
     }
     /// Distance metric used to compute the distance between two points.
     #[derive(
@@ -1325,6 +1400,15 @@ pub mod model {
                 DistanceType::Unspecified => "DISTANCE_TYPE_UNSPECIFIED",
                 DistanceType::Euclidean => "EUCLIDEAN",
                 DistanceType::Cosine => "COSINE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISTANCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EUCLIDEAN" => Some(Self::Euclidean),
+                "COSINE" => Some(Self::Cosine),
+                _ => None,
             }
         }
     }
@@ -1368,6 +1452,18 @@ pub mod model {
                 DataSplitMethod::Sequential => "SEQUENTIAL",
                 DataSplitMethod::NoSplit => "NO_SPLIT",
                 DataSplitMethod::AutoSplit => "AUTO_SPLIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_SPLIT_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "RANDOM" => Some(Self::Random),
+                "CUSTOM" => Some(Self::Custom),
+                "SEQUENTIAL" => Some(Self::Sequential),
+                "NO_SPLIT" => Some(Self::NoSplit),
+                "AUTO_SPLIT" => Some(Self::AutoSplit),
+                _ => None,
             }
         }
     }
@@ -1419,6 +1515,21 @@ pub mod model {
                 DataFrequency::Daily => "DAILY",
                 DataFrequency::Hourly => "HOURLY",
                 DataFrequency::PerMinute => "PER_MINUTE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_FREQUENCY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTO_FREQUENCY" => Some(Self::AutoFrequency),
+                "YEARLY" => Some(Self::Yearly),
+                "QUARTERLY" => Some(Self::Quarterly),
+                "MONTHLY" => Some(Self::Monthly),
+                "WEEKLY" => Some(Self::Weekly),
+                "DAILY" => Some(Self::Daily),
+                "HOURLY" => Some(Self::Hourly),
+                "PER_MINUTE" => Some(Self::PerMinute),
+                _ => None,
             }
         }
     }
@@ -1654,6 +1765,81 @@ pub mod model {
                 HolidayRegion::Za => "ZA",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HOLIDAY_REGION_UNSPECIFIED" => Some(Self::Unspecified),
+                "GLOBAL" => Some(Self::Global),
+                "NA" => Some(Self::Na),
+                "JAPAC" => Some(Self::Japac),
+                "EMEA" => Some(Self::Emea),
+                "LAC" => Some(Self::Lac),
+                "AE" => Some(Self::Ae),
+                "AR" => Some(Self::Ar),
+                "AT" => Some(Self::At),
+                "AU" => Some(Self::Au),
+                "BE" => Some(Self::Be),
+                "BR" => Some(Self::Br),
+                "CA" => Some(Self::Ca),
+                "CH" => Some(Self::Ch),
+                "CL" => Some(Self::Cl),
+                "CN" => Some(Self::Cn),
+                "CO" => Some(Self::Co),
+                "CS" => Some(Self::Cs),
+                "CZ" => Some(Self::Cz),
+                "DE" => Some(Self::De),
+                "DK" => Some(Self::Dk),
+                "DZ" => Some(Self::Dz),
+                "EC" => Some(Self::Ec),
+                "EE" => Some(Self::Ee),
+                "EG" => Some(Self::Eg),
+                "ES" => Some(Self::Es),
+                "FI" => Some(Self::Fi),
+                "FR" => Some(Self::Fr),
+                "GB" => Some(Self::Gb),
+                "GR" => Some(Self::Gr),
+                "HK" => Some(Self::Hk),
+                "HU" => Some(Self::Hu),
+                "ID" => Some(Self::Id),
+                "IE" => Some(Self::Ie),
+                "IL" => Some(Self::Il),
+                "IN" => Some(Self::In),
+                "IR" => Some(Self::Ir),
+                "IT" => Some(Self::It),
+                "JP" => Some(Self::Jp),
+                "KR" => Some(Self::Kr),
+                "LV" => Some(Self::Lv),
+                "MA" => Some(Self::Ma),
+                "MX" => Some(Self::Mx),
+                "MY" => Some(Self::My),
+                "NG" => Some(Self::Ng),
+                "NL" => Some(Self::Nl),
+                "NO" => Some(Self::No),
+                "NZ" => Some(Self::Nz),
+                "PE" => Some(Self::Pe),
+                "PH" => Some(Self::Ph),
+                "PK" => Some(Self::Pk),
+                "PL" => Some(Self::Pl),
+                "PT" => Some(Self::Pt),
+                "RO" => Some(Self::Ro),
+                "RS" => Some(Self::Rs),
+                "RU" => Some(Self::Ru),
+                "SA" => Some(Self::Sa),
+                "SE" => Some(Self::Se),
+                "SG" => Some(Self::Sg),
+                "SI" => Some(Self::Si),
+                "SK" => Some(Self::Sk),
+                "TH" => Some(Self::Th),
+                "TR" => Some(Self::Tr),
+                "TW" => Some(Self::Tw),
+                "UA" => Some(Self::Ua),
+                "US" => Some(Self::Us),
+                "VE" => Some(Self::Ve),
+                "VN" => Some(Self::Vn),
+                "ZA" => Some(Self::Za),
+                _ => None,
+            }
+        }
     }
     /// Indicates the learning rate optimization strategy to use.
     #[derive(
@@ -1685,6 +1871,15 @@ pub mod model {
                 LearnRateStrategy::Unspecified => "LEARN_RATE_STRATEGY_UNSPECIFIED",
                 LearnRateStrategy::LineSearch => "LINE_SEARCH",
                 LearnRateStrategy::Constant => "CONSTANT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LEARN_RATE_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINE_SEARCH" => Some(Self::LineSearch),
+                "CONSTANT" => Some(Self::Constant),
+                _ => None,
             }
         }
     }
@@ -1720,6 +1915,15 @@ pub mod model {
                 OptimizationStrategy::NormalEquation => "NORMAL_EQUATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPTIMIZATION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "BATCH_GRADIENT_DESCENT" => Some(Self::BatchGradientDescent),
+                "NORMAL_EQUATION" => Some(Self::NormalEquation),
+                _ => None,
+            }
+        }
     }
     /// Indicates the training algorithm to use for matrix factorization models.
     #[derive(
@@ -1751,6 +1955,15 @@ pub mod model {
                 FeedbackType::Unspecified => "FEEDBACK_TYPE_UNSPECIFIED",
                 FeedbackType::Implicit => "IMPLICIT",
                 FeedbackType::Explicit => "EXPLICIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FEEDBACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMPLICIT" => Some(Self::Implicit),
+                "EXPLICIT" => Some(Self::Explicit),
+                _ => None,
             }
         }
     }

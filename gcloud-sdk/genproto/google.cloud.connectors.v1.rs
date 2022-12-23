@@ -114,6 +114,19 @@ pub mod config_variable_template {
                 ValueType::AuthorizationCode => "AUTHORIZATION_CODE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VALUE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STRING" => Some(Self::String),
+                "INT" => Some(Self::Int),
+                "BOOL" => Some(Self::Bool),
+                "SECRET" => Some(Self::Secret),
+                "ENUM" => Some(Self::Enum),
+                "AUTHORIZATION_CODE" => Some(Self::AuthorizationCode),
+                _ => None,
+            }
+        }
     }
     /// Indicates the state of the config variable.
     #[derive(
@@ -146,6 +159,15 @@ pub mod config_variable_template {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Deprecated => "DEPRECATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DEPRECATED" => Some(Self::Deprecated),
+                _ => None,
             }
         }
     }
@@ -281,6 +303,19 @@ pub mod role_grant {
                     }
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "GCP_PROJECT" => Some(Self::GcpProject),
+                    "GCP_RESOURCE" => Some(Self::GcpResource),
+                    "GCP_SECRETMANAGER_SECRET" => Some(Self::GcpSecretmanagerSecret),
+                    "GCP_SECRETMANAGER_SECRET_VERSION" => {
+                        Some(Self::GcpSecretmanagerSecretVersion)
+                    }
+                    _ => None,
+                }
+            }
         }
     }
     /// Supported Principal values.
@@ -313,6 +348,14 @@ pub mod role_grant {
             match self {
                 Principal::Unspecified => "PRINCIPAL_UNSPECIFIED",
                 Principal::ConnectorSa => "CONNECTOR_SA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRINCIPAL_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONNECTOR_SA" => Some(Self::ConnectorSa),
+                _ => None,
             }
         }
     }
@@ -363,6 +406,16 @@ impl LaunchStage {
             LaunchStage::Preview => "PREVIEW",
             LaunchStage::Ga => "GA",
             LaunchStage::Deprecated => "DEPRECATED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LAUNCH_STAGE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PREVIEW" => Some(Self::Preview),
+            "GA" => Some(Self::Ga),
+            "DEPRECATED" => Some(Self::Deprecated),
+            _ => None,
         }
     }
 }
@@ -516,6 +569,17 @@ impl AuthType {
             AuthType::Oauth2JwtBearer => "OAUTH2_JWT_BEARER",
             AuthType::Oauth2ClientCredentials => "OAUTH2_CLIENT_CREDENTIALS",
             AuthType::SshPublicKey => "SSH_PUBLIC_KEY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "AUTH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "USER_PASSWORD" => Some(Self::UserPassword),
+            "OAUTH2_JWT_BEARER" => Some(Self::Oauth2JwtBearer),
+            "OAUTH2_CLIENT_CREDENTIALS" => Some(Self::Oauth2ClientCredentials),
+            "SSH_PUBLIC_KEY" => Some(Self::SshPublicKey),
+            _ => None,
         }
     }
 }
@@ -999,6 +1063,19 @@ pub mod connection_status {
                 State::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                "DELETING" => Some(Self::Deleting),
+                "UPDATING" => Some(Self::Updating),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// All possible data types of a entity or action field.
@@ -1150,6 +1227,57 @@ impl DataType {
             DataType::TimestampWithTimezone => "DATA_TYPE_TIMESTAMP_WITH_TIMEZONE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DATA_TYPE_INT" => Some(Self::Int),
+            "DATA_TYPE_SMALLINT" => Some(Self::Smallint),
+            "DATA_TYPE_DOUBLE" => Some(Self::Double),
+            "DATA_TYPE_DATE" => Some(Self::Date),
+            "DATA_TYPE_DATETIME" => Some(Self::Datetime),
+            "DATA_TYPE_TIME" => Some(Self::Time),
+            "DATA_TYPE_STRING" => Some(Self::String),
+            "DATA_TYPE_LONG" => Some(Self::Long),
+            "DATA_TYPE_BOOLEAN" => Some(Self::Boolean),
+            "DATA_TYPE_DECIMAL" => Some(Self::Decimal),
+            "DATA_TYPE_UUID" => Some(Self::Uuid),
+            "DATA_TYPE_BLOB" => Some(Self::Blob),
+            "DATA_TYPE_BIT" => Some(Self::Bit),
+            "DATA_TYPE_TINYINT" => Some(Self::Tinyint),
+            "DATA_TYPE_INTEGER" => Some(Self::Integer),
+            "DATA_TYPE_BIGINT" => Some(Self::Bigint),
+            "DATA_TYPE_FLOAT" => Some(Self::Float),
+            "DATA_TYPE_REAL" => Some(Self::Real),
+            "DATA_TYPE_NUMERIC" => Some(Self::Numeric),
+            "DATA_TYPE_CHAR" => Some(Self::Char),
+            "DATA_TYPE_VARCHAR" => Some(Self::Varchar),
+            "DATA_TYPE_LONGVARCHAR" => Some(Self::Longvarchar),
+            "DATA_TYPE_TIMESTAMP" => Some(Self::Timestamp),
+            "DATA_TYPE_NCHAR" => Some(Self::Nchar),
+            "DATA_TYPE_NVARCHAR" => Some(Self::Nvarchar),
+            "DATA_TYPE_LONGNVARCHAR" => Some(Self::Longnvarchar),
+            "DATA_TYPE_NULL" => Some(Self::Null),
+            "DATA_TYPE_OTHER" => Some(Self::Other),
+            "DATA_TYPE_JAVA_OBJECT" => Some(Self::JavaObject),
+            "DATA_TYPE_DISTINCT" => Some(Self::Distinct),
+            "DATA_TYPE_STRUCT" => Some(Self::Struct),
+            "DATA_TYPE_ARRAY" => Some(Self::Array),
+            "DATA_TYPE_CLOB" => Some(Self::Clob),
+            "DATA_TYPE_REF" => Some(Self::Ref),
+            "DATA_TYPE_DATALINK" => Some(Self::Datalink),
+            "DATA_TYPE_ROWID" => Some(Self::Rowid),
+            "DATA_TYPE_BINARY" => Some(Self::Binary),
+            "DATA_TYPE_VARBINARY" => Some(Self::Varbinary),
+            "DATA_TYPE_LONGVARBINARY" => Some(Self::Longvarbinary),
+            "DATA_TYPE_NCLOB" => Some(Self::Nclob),
+            "DATA_TYPE_SQLXML" => Some(Self::Sqlxml),
+            "DATA_TYPE_REF_CURSOR" => Some(Self::RefCursor),
+            "DATA_TYPE_TIME_WITH_TIMEZONE" => Some(Self::TimeWithTimezone),
+            "DATA_TYPE_TIMESTAMP_WITH_TIMEZONE" => Some(Self::TimestampWithTimezone),
+            _ => None,
+        }
+    }
 }
 /// Enum to control which fields should be included in the response.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1172,6 +1300,15 @@ impl ConnectionView {
             ConnectionView::Unspecified => "CONNECTION_VIEW_UNSPECIFIED",
             ConnectionView::Basic => "BASIC",
             ConnectionView::Full => "FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONNECTION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }
@@ -1467,6 +1604,14 @@ pub mod extraction_rule {
                 SourceType::ConfigVariable => "CONFIG_VARIABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONFIG_VARIABLE" => Some(Self::ConfigVariable),
+                _ => None,
+            }
+        }
     }
 }
 /// Enum to control which fields should be included in the response.
@@ -1490,6 +1635,15 @@ impl ConnectorVersionView {
             ConnectorVersionView::Unspecified => "CONNECTOR_VERSION_VIEW_UNSPECIFIED",
             ConnectorVersionView::Basic => "CONNECTOR_VERSION_VIEW_BASIC",
             ConnectorVersionView::Full => "CONNECTOR_VERSION_VIEW_FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONNECTOR_VERSION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "CONNECTOR_VERSION_VIEW_BASIC" => Some(Self::Basic),
+            "CONNECTOR_VERSION_VIEW_FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }
@@ -1673,6 +1827,19 @@ pub mod runtime_config {
                 State::Creating => "CREATING",
                 State::Deleting => "DELETING",
                 State::Updating => "UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INACTIVE" => Some(Self::Inactive),
+                "ACTIVATING" => Some(Self::Activating),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
             }
         }
     }

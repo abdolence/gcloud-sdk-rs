@@ -107,6 +107,17 @@ pub mod setting_metadata {
                 DataType::EnumValue => "ENUM_VALUE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOLEAN" => Some(Self::Boolean),
+                "STRING" => Some(Self::String),
+                "STRING_SET" => Some(Self::StringSet),
+                "ENUM_VALUE" => Some(Self::EnumValue),
+                _ => None,
+            }
+        }
     }
 }
 /// The data in a setting value.
@@ -237,6 +248,16 @@ impl SettingView {
             SettingView::Basic => "SETTING_VIEW_BASIC",
             SettingView::EffectiveValue => "SETTING_VIEW_EFFECTIVE_VALUE",
             SettingView::LocalValue => "SETTING_VIEW_LOCAL_VALUE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SETTING_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "SETTING_VIEW_BASIC" => Some(Self::Basic),
+            "SETTING_VIEW_EFFECTIVE_VALUE" => Some(Self::EffectiveValue),
+            "SETTING_VIEW_LOCAL_VALUE" => Some(Self::LocalValue),
+            _ => None,
         }
     }
 }

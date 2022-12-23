@@ -38,4 +38,15 @@ impl OperationResponseMapping {
             OperationResponseMapping::ErrorMessage => "ERROR_MESSAGE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNDEFINED" => Some(Self::Undefined),
+            "NAME" => Some(Self::Name),
+            "STATUS" => Some(Self::Status),
+            "ERROR_CODE" => Some(Self::ErrorCode),
+            "ERROR_MESSAGE" => Some(Self::ErrorMessage),
+            _ => None,
+        }
+    }
 }

@@ -328,6 +328,20 @@ pub mod sync_state {
                 SyncCode::Unreachable => "UNREACHABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SYNC_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SYNCED" => Some(Self::Synced),
+                "PENDING" => Some(Self::Pending),
+                "ERROR" => Some(Self::Error),
+                "NOT_CONFIGURED" => Some(Self::NotConfigured),
+                "NOT_INSTALLED" => Some(Self::NotInstalled),
+                "UNAUTHORIZED" => Some(Self::Unauthorized),
+                "UNREACHABLE" => Some(Self::Unreachable),
+                _ => None,
+            }
+        }
     }
 }
 /// An ACM created error representing a problem syncing configurations
@@ -430,6 +444,16 @@ impl DeploymentState {
             DeploymentState::NotInstalled => "NOT_INSTALLED",
             DeploymentState::Installed => "INSTALLED",
             DeploymentState::Error => "ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEPLOYMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NOT_INSTALLED" => Some(Self::NotInstalled),
+            "INSTALLED" => Some(Self::Installed),
+            "ERROR" => Some(Self::Error),
+            _ => None,
         }
     }
 }

@@ -207,6 +207,18 @@ pub mod private_connection {
                 State::FailedToDelete => "FAILED_TO_DELETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED_TO_DELETE" => Some(Self::FailedToDelete),
+                _ => None,
+            }
+        }
     }
 }
 /// Private Connectivity
@@ -682,6 +694,15 @@ pub mod json_file_format {
                 SchemaFileFormat::AvroSchemaFile => "AVRO_SCHEMA_FILE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCHEMA_FILE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_SCHEMA_FILE" => Some(Self::NoSchemaFile),
+                "AVRO_SCHEMA_FILE" => Some(Self::AvroSchemaFile),
+                _ => None,
+            }
+        }
     }
     /// Json file compression.
     #[derive(
@@ -714,6 +735,15 @@ pub mod json_file_format {
                 JsonCompression::Unspecified => "JSON_COMPRESSION_UNSPECIFIED",
                 JsonCompression::NoCompression => "NO_COMPRESSION",
                 JsonCompression::Gzip => "GZIP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JSON_COMPRESSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_COMPRESSION" => Some(Self::NoCompression),
+                "GZIP" => Some(Self::Gzip),
+                _ => None,
             }
         }
     }
@@ -986,6 +1016,21 @@ pub mod stream {
                 State::Draining => "DRAINING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_STARTED" => Some(Self::NotStarted),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "MAINTENANCE" => Some(Self::Maintenance),
+                "FAILED" => Some(Self::Failed),
+                "FAILED_PERMANENTLY" => Some(Self::FailedPermanently),
+                "STARTING" => Some(Self::Starting),
+                "DRAINING" => Some(Self::Draining),
+                _ => None,
+            }
+        }
     }
     /// Stream backfill strategy.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1159,6 +1204,20 @@ pub mod backfill_job {
                 State::Unsupported => "UNSUPPORTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_STARTED" => Some(Self::NotStarted),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                "STOPPED" => Some(Self::Stopped),
+                "FAILED" => Some(Self::Failed),
+                "COMPLETED" => Some(Self::Completed),
+                "UNSUPPORTED" => Some(Self::Unsupported),
+                _ => None,
+            }
+        }
     }
     /// Triggering reason for a backfill job.
     #[derive(
@@ -1192,6 +1251,15 @@ pub mod backfill_job {
                 Trigger::Unspecified => "TRIGGER_UNSPECIFIED",
                 Trigger::Automatic => "AUTOMATIC",
                 Trigger::Manual => "MANUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRIGGER_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOMATIC" => Some(Self::Automatic),
+                "MANUAL" => Some(Self::Manual),
+                _ => None,
             }
         }
     }
@@ -1284,6 +1352,16 @@ pub mod validation {
                 State::Passed => "PASSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_EXECUTED" => Some(Self::NotExecuted),
+                "FAILED" => Some(Self::Failed),
+                "PASSED" => Some(Self::Passed),
+                _ => None,
+            }
+        }
     }
 }
 /// Represent user-facing validation result message.
@@ -1339,6 +1417,15 @@ pub mod validation_message {
                 Level::Unspecified => "LEVEL_UNSPECIFIED",
                 Level::Warning => "WARNING",
                 Level::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }

@@ -524,6 +524,15 @@ impl LocationFeature {
             LocationFeature::SiteToSiteSpokes => "SITE_TO_SITE_SPOKES",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LOCATION_FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SITE_TO_CLOUD_SPOKES" => Some(Self::SiteToCloudSpokes),
+            "SITE_TO_SITE_SPOKES" => Some(Self::SiteToSiteSpokes),
+            _ => None,
+        }
+    }
 }
 /// The State enum represents the lifecycle stage of a Network Connectivity
 /// Center resource.
@@ -553,6 +562,17 @@ impl State {
             State::Active => "ACTIVE",
             State::Deleting => "DELETING",
             State::Updating => "UPDATING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CREATING" => Some(Self::Creating),
+            "ACTIVE" => Some(Self::Active),
+            "DELETING" => Some(Self::Deleting),
+            "UPDATING" => Some(Self::Updating),
+            _ => None,
         }
     }
 }
@@ -985,6 +1005,14 @@ pub mod policy_based_route {
                     ProtocolVersion::Ipv4 => "IPV4",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PROTOCOL_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IPV4" => Some(Self::Ipv4),
+                    _ => None,
+                }
+            }
         }
     }
     /// Informational warning message.
@@ -1046,6 +1074,15 @@ pub mod policy_based_route {
                     Code::WarningUnspecified => "WARNING_UNSPECIFIED",
                     Code::ResourceNotActive => "RESOURCE_NOT_ACTIVE",
                     Code::ResourceBeingModified => "RESOURCE_BEING_MODIFIED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "WARNING_UNSPECIFIED" => Some(Self::WarningUnspecified),
+                    "RESOURCE_NOT_ACTIVE" => Some(Self::ResourceNotActive),
+                    "RESOURCE_BEING_MODIFIED" => Some(Self::ResourceBeingModified),
+                    _ => None,
                 }
             }
         }

@@ -348,6 +348,31 @@ pub mod aggregation {
                 Aligner::AlignPercentChange => "ALIGN_PERCENT_CHANGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ALIGN_NONE" => Some(Self::AlignNone),
+                "ALIGN_DELTA" => Some(Self::AlignDelta),
+                "ALIGN_RATE" => Some(Self::AlignRate),
+                "ALIGN_INTERPOLATE" => Some(Self::AlignInterpolate),
+                "ALIGN_NEXT_OLDER" => Some(Self::AlignNextOlder),
+                "ALIGN_MIN" => Some(Self::AlignMin),
+                "ALIGN_MAX" => Some(Self::AlignMax),
+                "ALIGN_MEAN" => Some(Self::AlignMean),
+                "ALIGN_COUNT" => Some(Self::AlignCount),
+                "ALIGN_SUM" => Some(Self::AlignSum),
+                "ALIGN_STDDEV" => Some(Self::AlignStddev),
+                "ALIGN_COUNT_TRUE" => Some(Self::AlignCountTrue),
+                "ALIGN_COUNT_FALSE" => Some(Self::AlignCountFalse),
+                "ALIGN_FRACTION_TRUE" => Some(Self::AlignFractionTrue),
+                "ALIGN_PERCENTILE_99" => Some(Self::AlignPercentile99),
+                "ALIGN_PERCENTILE_95" => Some(Self::AlignPercentile95),
+                "ALIGN_PERCENTILE_50" => Some(Self::AlignPercentile50),
+                "ALIGN_PERCENTILE_05" => Some(Self::AlignPercentile05),
+                "ALIGN_PERCENT_CHANGE" => Some(Self::AlignPercentChange),
+                _ => None,
+            }
+        }
     }
     /// A Reducer operation describes how to aggregate data points from multiple
     /// time series into a single time series, where the value of each data point
@@ -465,6 +490,26 @@ pub mod aggregation {
                 Reducer::ReducePercentile05 => "REDUCE_PERCENTILE_05",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REDUCE_NONE" => Some(Self::ReduceNone),
+                "REDUCE_MEAN" => Some(Self::ReduceMean),
+                "REDUCE_MIN" => Some(Self::ReduceMin),
+                "REDUCE_MAX" => Some(Self::ReduceMax),
+                "REDUCE_SUM" => Some(Self::ReduceSum),
+                "REDUCE_STDDEV" => Some(Self::ReduceStddev),
+                "REDUCE_COUNT" => Some(Self::ReduceCount),
+                "REDUCE_COUNT_TRUE" => Some(Self::ReduceCountTrue),
+                "REDUCE_COUNT_FALSE" => Some(Self::ReduceCountFalse),
+                "REDUCE_FRACTION_TRUE" => Some(Self::ReduceFractionTrue),
+                "REDUCE_PERCENTILE_99" => Some(Self::ReducePercentile99),
+                "REDUCE_PERCENTILE_95" => Some(Self::ReducePercentile95),
+                "REDUCE_PERCENTILE_50" => Some(Self::ReducePercentile50),
+                "REDUCE_PERCENTILE_05" => Some(Self::ReducePercentile05),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies an ordering relationship on two arguments, called `left` and
@@ -503,6 +548,19 @@ impl ComparisonType {
             ComparisonType::ComparisonNe => "COMPARISON_NE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPARISON_UNSPECIFIED" => Some(Self::ComparisonUnspecified),
+            "COMPARISON_GT" => Some(Self::ComparisonGt),
+            "COMPARISON_GE" => Some(Self::ComparisonGe),
+            "COMPARISON_LT" => Some(Self::ComparisonLt),
+            "COMPARISON_LE" => Some(Self::ComparisonLe),
+            "COMPARISON_EQ" => Some(Self::ComparisonEq),
+            "COMPARISON_NE" => Some(Self::ComparisonNe),
+            _ => None,
+        }
+    }
 }
 /// The tier of service for a Workspace. Please see the
 /// [service tiers
@@ -537,6 +595,15 @@ impl ServiceTier {
             ServiceTier::Unspecified => "SERVICE_TIER_UNSPECIFIED",
             ServiceTier::Basic => "SERVICE_TIER_BASIC",
             ServiceTier::Premium => "SERVICE_TIER_PREMIUM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SERVICE_TIER_UNSPECIFIED" => Some(Self::Unspecified),
+            "SERVICE_TIER_BASIC" => Some(Self::Basic),
+            "SERVICE_TIER_PREMIUM" => Some(Self::Premium),
+            _ => None,
         }
     }
 }
@@ -979,6 +1046,16 @@ pub mod alert_policy {
                     EvaluationMissingData::NoOp => "EVALUATION_MISSING_DATA_NO_OP",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "EVALUATION_MISSING_DATA_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EVALUATION_MISSING_DATA_INACTIVE" => Some(Self::Inactive),
+                    "EVALUATION_MISSING_DATA_ACTIVE" => Some(Self::Active),
+                    "EVALUATION_MISSING_DATA_NO_OP" => Some(Self::NoOp),
+                    _ => None,
+                }
+            }
         }
         /// Only one of the following condition types will be specified.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1072,6 +1149,16 @@ pub mod alert_policy {
                 ConditionCombinerType::AndWithMatchingResource => {
                     "AND_WITH_MATCHING_RESOURCE"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMBINE_UNSPECIFIED" => Some(Self::CombineUnspecified),
+                "AND" => Some(Self::And),
+                "OR" => Some(Self::Or),
+                "AND_WITH_MATCHING_RESOURCE" => Some(Self::AndWithMatchingResource),
+                _ => None,
             }
         }
     }
@@ -2350,6 +2437,14 @@ pub mod list_time_series_request {
                 TimeSeriesView::Headers => "HEADERS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FULL" => Some(Self::Full),
+                "HEADERS" => Some(Self::Headers),
+                _ => None,
+            }
+        }
     }
 }
 /// The `ListTimeSeries` response.
@@ -2961,6 +3056,15 @@ pub mod notification_channel {
                 VerificationStatus::Unspecified => "VERIFICATION_STATUS_UNSPECIFIED",
                 VerificationStatus::Unverified => "UNVERIFIED",
                 VerificationStatus::Verified => "VERIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VERIFICATION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNVERIFIED" => Some(Self::Unverified),
+                "VERIFIED" => Some(Self::Verified),
+                _ => None,
             }
         }
     }
@@ -3865,6 +3969,15 @@ pub mod service_level_objective {
                 View::Explicit => "EXPLICIT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL" => Some(Self::Full),
+                "EXPLICIT" => Some(Self::Explicit),
+                _ => None,
+            }
+        }
     }
     /// The time period over which the objective will be evaluated.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4740,6 +4853,15 @@ pub mod internal_checker {
                 State::Running => "RUNNING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "RUNNING" => Some(Self::Running),
+                _ => None,
+            }
+        }
     }
 }
 /// This message configures which resources and services to monitor for
@@ -4952,6 +5074,15 @@ pub mod uptime_check_config {
                     RequestMethod::Post => "POST",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "METHOD_UNSPECIFIED" => Some(Self::MethodUnspecified),
+                    "GET" => Some(Self::Get),
+                    "POST" => Some(Self::Post),
+                    _ => None,
+                }
+            }
         }
         /// Header options corresponding to the content type of a HTTP request body.
         #[derive(
@@ -4982,6 +5113,14 @@ pub mod uptime_check_config {
                 match self {
                     ContentType::TypeUnspecified => "TYPE_UNSPECIFIED",
                     ContentType::UrlEncoded => "URL_ENCODED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
+                    "URL_ENCODED" => Some(Self::UrlEncoded),
+                    _ => None,
                 }
             }
         }
@@ -5065,6 +5204,17 @@ pub mod uptime_check_config {
                     ContentMatcherOption::NotContainsString => "NOT_CONTAINS_STRING",
                     ContentMatcherOption::MatchesRegex => "MATCHES_REGEX",
                     ContentMatcherOption::NotMatchesRegex => "NOT_MATCHES_REGEX",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CONTENT_MATCHER_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CONTAINS_STRING" => Some(Self::ContainsString),
+                    "NOT_CONTAINS_STRING" => Some(Self::NotContainsString),
+                    "MATCHES_REGEX" => Some(Self::MatchesRegex),
+                    "NOT_MATCHES_REGEX" => Some(Self::NotMatchesRegex),
+                    _ => None,
                 }
             }
         }
@@ -5154,6 +5304,17 @@ impl UptimeCheckRegion {
             UptimeCheckRegion::AsiaPacific => "ASIA_PACIFIC",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "REGION_UNSPECIFIED" => Some(Self::RegionUnspecified),
+            "USA" => Some(Self::Usa),
+            "EUROPE" => Some(Self::Europe),
+            "SOUTH_AMERICA" => Some(Self::SouthAmerica),
+            "ASIA_PACIFIC" => Some(Self::AsiaPacific),
+            _ => None,
+        }
+    }
 }
 /// The supported resource types that can be used as values of
 /// `group_resource.resource_type`.
@@ -5181,6 +5342,15 @@ impl GroupResourceType {
             GroupResourceType::ResourceTypeUnspecified => "RESOURCE_TYPE_UNSPECIFIED",
             GroupResourceType::Instance => "INSTANCE",
             GroupResourceType::AwsElbLoadBalancer => "AWS_ELB_LOAD_BALANCER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESOURCE_TYPE_UNSPECIFIED" => Some(Self::ResourceTypeUnspecified),
+            "INSTANCE" => Some(Self::Instance),
+            "AWS_ELB_LOAD_BALANCER" => Some(Self::AwsElbLoadBalancer),
+            _ => None,
         }
     }
 }

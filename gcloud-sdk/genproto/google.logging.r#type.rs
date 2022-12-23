@@ -54,6 +54,21 @@ impl LogSeverity {
             LogSeverity::Emergency => "EMERGENCY",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEFAULT" => Some(Self::Default),
+            "DEBUG" => Some(Self::Debug),
+            "INFO" => Some(Self::Info),
+            "NOTICE" => Some(Self::Notice),
+            "WARNING" => Some(Self::Warning),
+            "ERROR" => Some(Self::Error),
+            "CRITICAL" => Some(Self::Critical),
+            "ALERT" => Some(Self::Alert),
+            "EMERGENCY" => Some(Self::Emergency),
+            _ => None,
+        }
+    }
 }
 /// A common proto for logging HTTP requests. Only contains semantics
 /// defined by the HTTP specification. Product-specific logging

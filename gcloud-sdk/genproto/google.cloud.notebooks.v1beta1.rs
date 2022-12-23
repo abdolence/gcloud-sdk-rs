@@ -135,6 +135,16 @@ pub mod reservation_affinity {
                 Type::SpecificReservation => "SPECIFIC_RESERVATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_RESERVATION" => Some(Self::NoReservation),
+                "ANY_RESERVATION" => Some(Self::AnyReservation),
+                "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
+                _ => None,
+            }
+        }
     }
 }
 /// The definition of a notebook instance.
@@ -353,6 +363,23 @@ pub mod instance {
                 AcceleratorType::TpuV3 => "TPU_V3",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCELERATOR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NVIDIA_TESLA_K80" => Some(Self::NvidiaTeslaK80),
+                "NVIDIA_TESLA_P100" => Some(Self::NvidiaTeslaP100),
+                "NVIDIA_TESLA_V100" => Some(Self::NvidiaTeslaV100),
+                "NVIDIA_TESLA_P4" => Some(Self::NvidiaTeslaP4),
+                "NVIDIA_TESLA_T4" => Some(Self::NvidiaTeslaT4),
+                "NVIDIA_TESLA_T4_VWS" => Some(Self::NvidiaTeslaT4Vws),
+                "NVIDIA_TESLA_P100_VWS" => Some(Self::NvidiaTeslaP100Vws),
+                "NVIDIA_TESLA_P4_VWS" => Some(Self::NvidiaTeslaP4Vws),
+                "TPU_V2" => Some(Self::TpuV2),
+                "TPU_V3" => Some(Self::TpuV3),
+                _ => None,
+            }
+        }
     }
     /// The definition of the states of this instance.
     #[derive(
@@ -415,6 +442,24 @@ pub mod instance {
                 State::Suspended => "SUSPENDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTING" => Some(Self::Starting),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "ACTIVE" => Some(Self::Active),
+                "STOPPING" => Some(Self::Stopping),
+                "STOPPED" => Some(Self::Stopped),
+                "DELETED" => Some(Self::Deleted),
+                "UPGRADING" => Some(Self::Upgrading),
+                "INITIALIZING" => Some(Self::Initializing),
+                "REGISTERING" => Some(Self::Registering),
+                "SUSPENDING" => Some(Self::Suspending),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
+            }
+        }
     }
     /// Possible disk types for notebook instances.
     #[derive(
@@ -452,6 +497,16 @@ pub mod instance {
                 DiskType::PdBalanced => "PD_BALANCED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PD_STANDARD" => Some(Self::PdStandard),
+                "PD_SSD" => Some(Self::PdSsd),
+                "PD_BALANCED" => Some(Self::PdBalanced),
+                _ => None,
+            }
+        }
     }
     /// Definition of the disk encryption options.
     #[derive(
@@ -484,6 +539,15 @@ pub mod instance {
                 DiskEncryption::Unspecified => "DISK_ENCRYPTION_UNSPECIFIED",
                 DiskEncryption::Gmek => "GMEK",
                 DiskEncryption::Cmek => "CMEK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISK_ENCRYPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "GMEK" => Some(Self::Gmek),
+                "CMEK" => Some(Self::Cmek),
+                _ => None,
             }
         }
     }
@@ -519,6 +583,15 @@ pub mod instance {
                 NicType::UnspecifiedNicType => "UNSPECIFIED_NIC_TYPE",
                 NicType::VirtioNet => "VIRTIO_NET",
                 NicType::Gvnic => "GVNIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED_NIC_TYPE" => Some(Self::UnspecifiedNicType),
+                "VIRTIO_NET" => Some(Self::VirtioNet),
+                "GVNIC" => Some(Self::Gvnic),
+                _ => None,
             }
         }
     }

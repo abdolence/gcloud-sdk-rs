@@ -56,6 +56,20 @@ pub mod policy_topic_entry_type_enum {
                 PolicyTopicEntryType::AreaOfInterestOnly => "AREA_OF_INTEREST_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROHIBITED" => Some(Self::Prohibited),
+                "LIMITED" => Some(Self::Limited),
+                "FULLY_LIMITED" => Some(Self::FullyLimited),
+                "DESCRIPTIVE" => Some(Self::Descriptive),
+                "BROADENING" => Some(Self::Broadening),
+                "AREA_OF_INTEREST_ONLY" => Some(Self::AreaOfInterestOnly),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible policy topic evidence destination
@@ -122,6 +136,19 @@ pub mod policy_topic_evidence_destination_mismatch_url_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DISPLAY_URL" => Some(Self::DisplayUrl),
+                "FINAL_URL" => Some(Self::FinalUrl),
+                "FINAL_MOBILE_URL" => Some(Self::FinalMobileUrl),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "MOBILE_TRACKING_URL" => Some(Self::MobileTrackingUrl),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible policy topic evidence destination not
@@ -172,6 +199,17 @@ pub mod policy_topic_evidence_destination_not_working_device_enum {
                 PolicyTopicEvidenceDestinationNotWorkingDevice::Desktop => "DESKTOP",
                 PolicyTopicEvidenceDestinationNotWorkingDevice::Android => "ANDROID",
                 PolicyTopicEvidenceDestinationNotWorkingDevice::Ios => "IOS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DESKTOP" => Some(Self::Desktop),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                _ => None,
             }
         }
     }
@@ -231,6 +269,16 @@ pub mod policy_topic_evidence_destination_not_working_dns_error_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HOSTNAME_NOT_FOUND" => Some(Self::HostnameNotFound),
+                "GOOGLE_CRAWLER_DNS_ISSUE" => Some(Self::GoogleCrawlerDnsIssue),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible policy approval statuses.
@@ -286,6 +334,18 @@ pub mod policy_approval_status_enum {
                 PolicyApprovalStatus::AreaOfInterestOnly => "AREA_OF_INTEREST_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DISAPPROVED" => Some(Self::Disapproved),
+                "APPROVED_LIMITED" => Some(Self::ApprovedLimited),
+                "APPROVED" => Some(Self::Approved),
+                "AREA_OF_INTEREST_ONLY" => Some(Self::AreaOfInterestOnly),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible policy review statuses.
@@ -338,6 +398,18 @@ pub mod policy_review_status_enum {
                 PolicyReviewStatus::Reviewed => "REVIEWED",
                 PolicyReviewStatus::UnderAppeal => "UNDER_APPEAL",
                 PolicyReviewStatus::EligibleMayServe => "ELIGIBLE_MAY_SERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REVIEW_IN_PROGRESS" => Some(Self::ReviewInProgress),
+                "REVIEWED" => Some(Self::Reviewed),
+                "UNDER_APPEAL" => Some(Self::UnderAppeal),
+                "ELIGIBLE_MAY_SERVE" => Some(Self::EligibleMayServe),
+                _ => None,
             }
         }
     }
@@ -396,6 +468,19 @@ pub mod asset_performance_label_enum {
                 AssetPerformanceLabel::Best => "BEST",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "LEARNING" => Some(Self::Learning),
+                "LOW" => Some(Self::Low),
+                "GOOD" => Some(Self::Good),
+                "BEST" => Some(Self::Best),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible asset field types.
@@ -449,6 +534,19 @@ pub mod served_asset_field_type_enum {
                 ServedAssetFieldType::Headline3 => "HEADLINE_3",
                 ServedAssetFieldType::Description1 => "DESCRIPTION_1",
                 ServedAssetFieldType::Description2 => "DESCRIPTION_2",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HEADLINE_1" => Some(Self::Headline1),
+                "HEADLINE_2" => Some(Self::Headline2),
+                "HEADLINE_3" => Some(Self::Headline3),
+                "DESCRIPTION_1" => Some(Self::Description1),
+                "DESCRIPTION_2" => Some(Self::Description2),
+                _ => None,
             }
         }
     }
@@ -505,6 +603,21 @@ pub mod call_conversion_reporting_state_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DISABLED" => Some(Self::Disabled),
+                "USE_ACCOUNT_LEVEL_CALL_CONVERSION_ACTION" => {
+                    Some(Self::UseAccountLevelCallConversionAction)
+                }
+                "USE_RESOURCE_LEVEL_CALL_CONVERSION_ACTION" => {
+                    Some(Self::UseResourceLevelCallConversionAction)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Container for display ad format settings.
@@ -551,6 +664,17 @@ pub mod display_ad_format_setting_enum {
                 DisplayAdFormatSetting::AllFormats => "ALL_FORMATS",
                 DisplayAdFormatSetting::NonNative => "NON_NATIVE",
                 DisplayAdFormatSetting::Native => "NATIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL_FORMATS" => Some(Self::AllFormats),
+                "NON_NATIVE" => Some(Self::NonNative),
+                "NATIVE" => Some(Self::Native),
+                _ => None,
             }
         }
     }
@@ -656,6 +780,24 @@ pub mod display_upload_product_type_enum {
                 DisplayUploadProductType::DynamicHtml5HotelAd => "DYNAMIC_HTML5_HOTEL_AD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HTML5_UPLOAD_AD" => Some(Self::Html5UploadAd),
+                "DYNAMIC_HTML5_EDUCATION_AD" => Some(Self::DynamicHtml5EducationAd),
+                "DYNAMIC_HTML5_FLIGHT_AD" => Some(Self::DynamicHtml5FlightAd),
+                "DYNAMIC_HTML5_HOTEL_RENTAL_AD" => Some(Self::DynamicHtml5HotelRentalAd),
+                "DYNAMIC_HTML5_JOB_AD" => Some(Self::DynamicHtml5JobAd),
+                "DYNAMIC_HTML5_LOCAL_AD" => Some(Self::DynamicHtml5LocalAd),
+                "DYNAMIC_HTML5_REAL_ESTATE_AD" => Some(Self::DynamicHtml5RealEstateAd),
+                "DYNAMIC_HTML5_CUSTOM_AD" => Some(Self::DynamicHtml5CustomAd),
+                "DYNAMIC_HTML5_TRAVEL_AD" => Some(Self::DynamicHtml5TravelAd),
+                "DYNAMIC_HTML5_HOTEL_AD" => Some(Self::DynamicHtml5HotelAd),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing app store type in a legacy app install ad.
@@ -707,6 +849,19 @@ pub mod legacy_app_install_ad_app_store_enum {
                 LegacyAppInstallAdAppStore::WindowsStore => "WINDOWS_STORE",
                 LegacyAppInstallAdAppStore::WindowsPhoneStore => "WINDOWS_PHONE_STORE",
                 LegacyAppInstallAdAppStore::CnAppStore => "CN_APP_STORE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_APP_STORE" => Some(Self::AppleAppStore),
+                "GOOGLE_PLAY" => Some(Self::GooglePlay),
+                "WINDOWS_STORE" => Some(Self::WindowsStore),
+                "WINDOWS_PHONE_STORE" => Some(Self::WindowsPhoneStore),
+                "CN_APP_STORE" => Some(Self::CnAppStore),
+                _ => None,
             }
         }
     }
@@ -785,6 +940,26 @@ pub mod mime_type_enum {
                 MimeType::Html5AdZip => "HTML5_AD_ZIP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMAGE_JPEG" => Some(Self::ImageJpeg),
+                "IMAGE_GIF" => Some(Self::ImageGif),
+                "IMAGE_PNG" => Some(Self::ImagePng),
+                "FLASH" => Some(Self::Flash),
+                "TEXT_HTML" => Some(Self::TextHtml),
+                "PDF" => Some(Self::Pdf),
+                "MSWORD" => Some(Self::Msword),
+                "MSEXCEL" => Some(Self::Msexcel),
+                "RTF" => Some(Self::Rtf),
+                "AUDIO_WAV" => Some(Self::AudioWav),
+                "AUDIO_MP3" => Some(Self::AudioMp3),
+                "HTML5_AD_ZIP" => Some(Self::Html5AdZip),
+                _ => None,
+            }
+        }
     }
 }
 /// Defines the thumbnail to use for In-Display video ads. Note that
@@ -838,6 +1013,18 @@ pub mod video_thumbnail_enum {
                 VideoThumbnail::Thumbnail3 => "THUMBNAIL_3",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEFAULT_THUMBNAIL" => Some(Self::DefaultThumbnail),
+                "THUMBNAIL_1" => Some(Self::Thumbnail1),
+                "THUMBNAIL_2" => Some(Self::Thumbnail2),
+                "THUMBNAIL_3" => Some(Self::Thumbnail3),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible types of a relationship.
@@ -880,6 +1067,16 @@ pub mod chain_relationship_type_enum {
                 ChainRelationshipType::Unknown => "UNKNOWN",
                 ChainRelationshipType::AutoDealers => "AUTO_DEALERS",
                 ChainRelationshipType::GeneralRetailers => "GENERAL_RETAILERS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AUTO_DEALERS" => Some(Self::AutoDealers),
+                "GENERAL_RETAILERS" => Some(Self::GeneralRetailers),
+                _ => None,
             }
         }
     }
@@ -926,6 +1123,16 @@ pub mod location_ownership_type_enum {
                 LocationOwnershipType::Affiliate => "AFFILIATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BUSINESS_OWNER" => Some(Self::BusinessOwner),
+                "AFFILIATE" => Some(Self::Affiliate),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible types of a location string filter.
@@ -965,6 +1172,15 @@ pub mod location_string_filter_type_enum {
                 LocationStringFilterType::Unspecified => "UNSPECIFIED",
                 LocationStringFilterType::Unknown => "UNKNOWN",
                 LocationStringFilterType::Exact => "EXACT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXACT" => Some(Self::Exact),
+                _ => None,
             }
         }
     }
@@ -1027,6 +1243,21 @@ pub mod age_range_type_enum {
                 AgeRangeType::AgeRangeUndetermined => "AGE_RANGE_UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AGE_RANGE_18_24" => Some(Self::AgeRange1824),
+                "AGE_RANGE_25_34" => Some(Self::AgeRange2534),
+                "AGE_RANGE_35_44" => Some(Self::AgeRange3544),
+                "AGE_RANGE_45_54" => Some(Self::AgeRange4554),
+                "AGE_RANGE_55_64" => Some(Self::AgeRange5564),
+                "AGE_RANGE_65_UP" => Some(Self::AgeRange65Up),
+                "AGE_RANGE_UNDETERMINED" => Some(Self::AgeRangeUndetermined),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a criterion for targeting paid apps.
@@ -1066,6 +1297,15 @@ pub mod app_payment_model_type_enum {
                 AppPaymentModelType::Unspecified => "UNSPECIFIED",
                 AppPaymentModelType::Unknown => "UNKNOWN",
                 AppPaymentModelType::Paid => "PAID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PAID" => Some(Self::Paid),
+                _ => None,
             }
         }
     }
@@ -1151,6 +1391,29 @@ pub mod content_label_type_enum {
                 ContentLabelType::SocialIssues => "SOCIAL_ISSUES",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEXUALLY_SUGGESTIVE" => Some(Self::SexuallySuggestive),
+                "BELOW_THE_FOLD" => Some(Self::BelowTheFold),
+                "PARKED_DOMAIN" => Some(Self::ParkedDomain),
+                "JUVENILE" => Some(Self::Juvenile),
+                "PROFANITY" => Some(Self::Profanity),
+                "TRAGEDY" => Some(Self::Tragedy),
+                "VIDEO" => Some(Self::Video),
+                "VIDEO_RATING_DV_G" => Some(Self::VideoRatingDvG),
+                "VIDEO_RATING_DV_PG" => Some(Self::VideoRatingDvPg),
+                "VIDEO_RATING_DV_T" => Some(Self::VideoRatingDvT),
+                "VIDEO_RATING_DV_MA" => Some(Self::VideoRatingDvMa),
+                "VIDEO_NOT_YET_RATED" => Some(Self::VideoNotYetRated),
+                "EMBEDDED_VIDEO" => Some(Self::EmbeddedVideo),
+                "LIVE_STREAMING_VIDEO" => Some(Self::LiveStreamingVideo),
+                "SOCIAL_ISSUES" => Some(Self::SocialIssues),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of days of the week, for example, "Monday".
@@ -1210,6 +1473,21 @@ pub mod day_of_week_enum {
                 DayOfWeek::Sunday => "SUNDAY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MONDAY" => Some(Self::Monday),
+                "TUESDAY" => Some(Self::Tuesday),
+                "WEDNESDAY" => Some(Self::Wednesday),
+                "THURSDAY" => Some(Self::Thursday),
+                "FRIDAY" => Some(Self::Friday),
+                "SATURDAY" => Some(Self::Saturday),
+                "SUNDAY" => Some(Self::Sunday),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of Google Ads devices available for targeting.
@@ -1263,6 +1541,19 @@ pub mod device_enum {
                 Device::Other => "OTHER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "TABLET" => Some(Self::Tablet),
+                "DESKTOP" => Some(Self::Desktop),
+                "CONNECTED_TV" => Some(Self::ConnectedTv),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of demographic genders.
@@ -1310,6 +1601,17 @@ pub mod gender_type_enum {
                 GenderType::Undetermined => "UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MALE" => Some(Self::Male),
+                "FEMALE" => Some(Self::Female),
+                "UNDETERMINED" => Some(Self::Undetermined),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible hotel date selection types
@@ -1352,6 +1654,16 @@ pub mod hotel_date_selection_type_enum {
                 HotelDateSelectionType::Unknown => "UNKNOWN",
                 HotelDateSelectionType::DefaultSelection => "DEFAULT_SELECTION",
                 HotelDateSelectionType::UserSelected => "USER_SELECTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEFAULT_SELECTION" => Some(Self::DefaultSelection),
+                "USER_SELECTED" => Some(Self::UserSelected),
+                _ => None,
             }
         }
     }
@@ -1413,6 +1725,21 @@ pub mod income_range_type_enum {
                 IncomeRangeType::IncomeRangeUndetermined => "INCOME_RANGE_UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INCOME_RANGE_0_50" => Some(Self::IncomeRange050),
+                "INCOME_RANGE_50_60" => Some(Self::IncomeRange5060),
+                "INCOME_RANGE_60_70" => Some(Self::IncomeRange6070),
+                "INCOME_RANGE_70_80" => Some(Self::IncomeRange7080),
+                "INCOME_RANGE_80_90" => Some(Self::IncomeRange8090),
+                "INCOME_RANGE_90_UP" => Some(Self::IncomeRange90Up),
+                "INCOME_RANGE_UNDETERMINED" => Some(Self::IncomeRangeUndetermined),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible interaction types.
@@ -1452,6 +1779,15 @@ pub mod interaction_type_enum {
                 InteractionType::Unspecified => "UNSPECIFIED",
                 InteractionType::Unknown => "UNKNOWN",
                 InteractionType::Calls => "CALLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CALLS" => Some(Self::Calls),
+                _ => None,
             }
         }
     }
@@ -1501,6 +1837,17 @@ pub mod keyword_match_type_enum {
                 KeywordMatchType::Broad => "BROAD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXACT" => Some(Self::Exact),
+                "PHRASE" => Some(Self::Phrase),
+                "BROAD" => Some(Self::Broad),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of the listing group.
@@ -1545,6 +1892,16 @@ pub mod listing_group_type_enum {
                 ListingGroupType::Unknown => "UNKNOWN",
                 ListingGroupType::Subdivision => "SUBDIVISION",
                 ListingGroupType::Unit => "UNIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SUBDIVISION" => Some(Self::Subdivision),
+                "UNIT" => Some(Self::Unit),
+                _ => None,
             }
         }
     }
@@ -1592,6 +1949,17 @@ pub mod location_group_radius_units_enum {
                 LocationGroupRadiusUnits::Meters => "METERS",
                 LocationGroupRadiusUnits::Miles => "MILES",
                 LocationGroupRadiusUnits::MilliMiles => "MILLI_MILES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "METERS" => Some(Self::Meters),
+                "MILES" => Some(Self::Miles),
+                "MILLI_MILES" => Some(Self::MilliMiles),
+                _ => None,
             }
         }
     }
@@ -1644,6 +2012,18 @@ pub mod minute_of_hour_enum {
                 MinuteOfHour::FortyFive => "FORTY_FIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ZERO" => Some(Self::Zero),
+                "FIFTEEN" => Some(Self::Fifteen),
+                "THIRTY" => Some(Self::Thirty),
+                "FORTY_FIVE" => Some(Self::FortyFive),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of demographic parental statuses.
@@ -1691,6 +2071,17 @@ pub mod parental_status_type_enum {
                 ParentalStatusType::Undetermined => "UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PARENT" => Some(Self::Parent),
+                "NOT_A_PARENT" => Some(Self::NotAParent),
+                "UNDETERMINED" => Some(Self::Undetermined),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of preferred content criterion type.
@@ -1730,6 +2121,15 @@ pub mod preferred_content_type_enum {
                 PreferredContentType::Unspecified => "UNSPECIFIED",
                 PreferredContentType::Unknown => "UNKNOWN",
                 PreferredContentType::YoutubeTopContent => "YOUTUBE_TOP_CONTENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "YOUTUBE_TOP_CONTENT" => Some(Self::YoutubeTopContent),
+                _ => None,
             }
         }
     }
@@ -1785,6 +2185,19 @@ pub mod product_bidding_category_level_enum {
                 ProductBiddingCategoryLevel::Level5 => "LEVEL5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
+            }
+        }
     }
 }
 /// Locality of a product offer.
@@ -1827,6 +2240,16 @@ pub mod product_channel_enum {
                 ProductChannel::Unknown => "UNKNOWN",
                 ProductChannel::Online => "ONLINE",
                 ProductChannel::Local => "LOCAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ONLINE" => Some(Self::Online),
+                "LOCAL" => Some(Self::Local),
+                _ => None,
             }
         }
     }
@@ -1875,6 +2298,16 @@ pub mod product_channel_exclusivity_enum {
                 ProductChannelExclusivity::MultiChannel => "MULTI_CHANNEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SINGLE_CHANNEL" => Some(Self::SingleChannel),
+                "MULTI_CHANNEL" => Some(Self::MultiChannel),
+                _ => None,
+            }
+        }
     }
 }
 /// Condition of a product offer.
@@ -1920,6 +2353,17 @@ pub mod product_condition_enum {
                 ProductCondition::New => "NEW",
                 ProductCondition::Refurbished => "REFURBISHED",
                 ProductCondition::Used => "USED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW" => Some(Self::New),
+                "REFURBISHED" => Some(Self::Refurbished),
+                "USED" => Some(Self::Used),
+                _ => None,
             }
         }
     }
@@ -1975,6 +2419,19 @@ pub mod product_custom_attribute_index_enum {
                 ProductCustomAttributeIndex::Index4 => "INDEX4",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INDEX0" => Some(Self::Index0),
+                "INDEX1" => Some(Self::Index1),
+                "INDEX2" => Some(Self::Index2),
+                "INDEX3" => Some(Self::Index3),
+                "INDEX4" => Some(Self::Index4),
+                _ => None,
+            }
+        }
     }
 }
 /// Level of the type of a product offer.
@@ -2028,6 +2485,19 @@ pub mod product_type_level_enum {
                 ProductTypeLevel::Level5 => "LEVEL5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing unit of radius in proximity.
@@ -2070,6 +2540,16 @@ pub mod proximity_radius_units_enum {
                 ProximityRadiusUnits::Unknown => "UNKNOWN",
                 ProximityRadiusUnits::Miles => "MILES",
                 ProximityRadiusUnits::Kilometers => "KILOMETERS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MILES" => Some(Self::Miles),
+                "KILOMETERS" => Some(Self::Kilometers),
+                _ => None,
             }
         }
     }
@@ -2125,6 +2605,19 @@ pub mod webpage_condition_operand_enum {
                 WebpageConditionOperand::CustomLabel => "CUSTOM_LABEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "URL" => Some(Self::Url),
+                "CATEGORY" => Some(Self::Category),
+                "PAGE_TITLE" => Some(Self::PageTitle),
+                "PAGE_CONTENT" => Some(Self::PageContent),
+                "CUSTOM_LABEL" => Some(Self::CustomLabel),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing webpage condition operator in webpage
@@ -2168,6 +2661,16 @@ pub mod webpage_condition_operator_enum {
                 WebpageConditionOperator::Unknown => "UNKNOWN",
                 WebpageConditionOperator::Equals => "EQUALS",
                 WebpageConditionOperator::Contains => "CONTAINS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EQUALS" => Some(Self::Equals),
+                "CONTAINS" => Some(Self::Contains),
+                _ => None,
             }
         }
     }
@@ -2233,6 +2736,23 @@ pub mod call_to_action_type_enum {
                 CallToActionType::Download => "DOWNLOAD",
                 CallToActionType::BookNow => "BOOK_NOW",
                 CallToActionType::ShopNow => "SHOP_NOW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEARN_MORE" => Some(Self::LearnMore),
+                "GET_QUOTE" => Some(Self::GetQuote),
+                "APPLY_NOW" => Some(Self::ApplyNow),
+                "SIGN_UP" => Some(Self::SignUp),
+                "CONTACT_US" => Some(Self::ContactUs),
+                "SUBSCRIBE" => Some(Self::Subscribe),
+                "DOWNLOAD" => Some(Self::Download),
+                "BOOK_NOW" => Some(Self::BookNow),
+                "SHOP_NOW" => Some(Self::ShopNow),
+                _ => None,
             }
         }
     }
@@ -2315,6 +2835,28 @@ pub mod lead_form_call_to_action_type_enum {
                 LeadFormCallToActionType::GetStarted => "GET_STARTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEARN_MORE" => Some(Self::LearnMore),
+                "GET_QUOTE" => Some(Self::GetQuote),
+                "APPLY_NOW" => Some(Self::ApplyNow),
+                "SIGN_UP" => Some(Self::SignUp),
+                "CONTACT_US" => Some(Self::ContactUs),
+                "SUBSCRIBE" => Some(Self::Subscribe),
+                "DOWNLOAD" => Some(Self::Download),
+                "BOOK_NOW" => Some(Self::BookNow),
+                "GET_OFFER" => Some(Self::GetOffer),
+                "REGISTER" => Some(Self::Register),
+                "GET_INFO" => Some(Self::GetInfo),
+                "REQUEST_DEMO" => Some(Self::RequestDemo),
+                "JOIN_NOW" => Some(Self::JoinNow),
+                "GET_STARTED" => Some(Self::GetStarted),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes the chosen level of intent of generated leads.
@@ -2357,6 +2899,16 @@ pub mod lead_form_desired_intent_enum {
                 LeadFormDesiredIntent::Unknown => "UNKNOWN",
                 LeadFormDesiredIntent::LowIntent => "LOW_INTENT",
                 LeadFormDesiredIntent::HighIntent => "HIGH_INTENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOW_INTENT" => Some(Self::LowIntent),
+                "HIGH_INTENT" => Some(Self::HighIntent),
+                _ => None,
             }
         }
     }
@@ -2876,6 +3428,132 @@ pub mod lead_form_field_user_input_type_enum {
                 LeadFormFieldUserInputType::TravelAccommodation => "TRAVEL_ACCOMMODATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FULL_NAME" => Some(Self::FullName),
+                "EMAIL" => Some(Self::Email),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "STREET_ADDRESS" => Some(Self::StreetAddress),
+                "CITY" => Some(Self::City),
+                "REGION" => Some(Self::Region),
+                "COUNTRY" => Some(Self::Country),
+                "WORK_EMAIL" => Some(Self::WorkEmail),
+                "COMPANY_NAME" => Some(Self::CompanyName),
+                "WORK_PHONE" => Some(Self::WorkPhone),
+                "JOB_TITLE" => Some(Self::JobTitle),
+                "GOVERNMENT_ISSUED_ID_CPF_BR" => Some(Self::GovernmentIssuedIdCpfBr),
+                "GOVERNMENT_ISSUED_ID_DNI_AR" => Some(Self::GovernmentIssuedIdDniAr),
+                "GOVERNMENT_ISSUED_ID_DNI_PE" => Some(Self::GovernmentIssuedIdDniPe),
+                "GOVERNMENT_ISSUED_ID_RUT_CL" => Some(Self::GovernmentIssuedIdRutCl),
+                "GOVERNMENT_ISSUED_ID_CC_CO" => Some(Self::GovernmentIssuedIdCcCo),
+                "GOVERNMENT_ISSUED_ID_CI_EC" => Some(Self::GovernmentIssuedIdCiEc),
+                "GOVERNMENT_ISSUED_ID_RFC_MX" => Some(Self::GovernmentIssuedIdRfcMx),
+                "FIRST_NAME" => Some(Self::FirstName),
+                "LAST_NAME" => Some(Self::LastName),
+                "VEHICLE_MODEL" => Some(Self::VehicleModel),
+                "VEHICLE_TYPE" => Some(Self::VehicleType),
+                "PREFERRED_DEALERSHIP" => Some(Self::PreferredDealership),
+                "VEHICLE_PURCHASE_TIMELINE" => Some(Self::VehiclePurchaseTimeline),
+                "VEHICLE_OWNERSHIP" => Some(Self::VehicleOwnership),
+                "VEHICLE_PAYMENT_TYPE" => Some(Self::VehiclePaymentType),
+                "VEHICLE_CONDITION" => Some(Self::VehicleCondition),
+                "COMPANY_SIZE" => Some(Self::CompanySize),
+                "ANNUAL_SALES" => Some(Self::AnnualSales),
+                "YEARS_IN_BUSINESS" => Some(Self::YearsInBusiness),
+                "JOB_DEPARTMENT" => Some(Self::JobDepartment),
+                "JOB_ROLE" => Some(Self::JobRole),
+                "OVER_18_AGE" => Some(Self::Over18Age),
+                "OVER_19_AGE" => Some(Self::Over19Age),
+                "OVER_20_AGE" => Some(Self::Over20Age),
+                "OVER_21_AGE" => Some(Self::Over21Age),
+                "OVER_22_AGE" => Some(Self::Over22Age),
+                "OVER_23_AGE" => Some(Self::Over23Age),
+                "OVER_24_AGE" => Some(Self::Over24Age),
+                "OVER_25_AGE" => Some(Self::Over25Age),
+                "OVER_26_AGE" => Some(Self::Over26Age),
+                "OVER_27_AGE" => Some(Self::Over27Age),
+                "OVER_28_AGE" => Some(Self::Over28Age),
+                "OVER_29_AGE" => Some(Self::Over29Age),
+                "OVER_30_AGE" => Some(Self::Over30Age),
+                "OVER_31_AGE" => Some(Self::Over31Age),
+                "OVER_32_AGE" => Some(Self::Over32Age),
+                "OVER_33_AGE" => Some(Self::Over33Age),
+                "OVER_34_AGE" => Some(Self::Over34Age),
+                "OVER_35_AGE" => Some(Self::Over35Age),
+                "OVER_36_AGE" => Some(Self::Over36Age),
+                "OVER_37_AGE" => Some(Self::Over37Age),
+                "OVER_38_AGE" => Some(Self::Over38Age),
+                "OVER_39_AGE" => Some(Self::Over39Age),
+                "OVER_40_AGE" => Some(Self::Over40Age),
+                "OVER_41_AGE" => Some(Self::Over41Age),
+                "OVER_42_AGE" => Some(Self::Over42Age),
+                "OVER_43_AGE" => Some(Self::Over43Age),
+                "OVER_44_AGE" => Some(Self::Over44Age),
+                "OVER_45_AGE" => Some(Self::Over45Age),
+                "OVER_46_AGE" => Some(Self::Over46Age),
+                "OVER_47_AGE" => Some(Self::Over47Age),
+                "OVER_48_AGE" => Some(Self::Over48Age),
+                "OVER_49_AGE" => Some(Self::Over49Age),
+                "OVER_50_AGE" => Some(Self::Over50Age),
+                "OVER_51_AGE" => Some(Self::Over51Age),
+                "OVER_52_AGE" => Some(Self::Over52Age),
+                "OVER_53_AGE" => Some(Self::Over53Age),
+                "OVER_54_AGE" => Some(Self::Over54Age),
+                "OVER_55_AGE" => Some(Self::Over55Age),
+                "OVER_56_AGE" => Some(Self::Over56Age),
+                "OVER_57_AGE" => Some(Self::Over57Age),
+                "OVER_58_AGE" => Some(Self::Over58Age),
+                "OVER_59_AGE" => Some(Self::Over59Age),
+                "OVER_60_AGE" => Some(Self::Over60Age),
+                "OVER_61_AGE" => Some(Self::Over61Age),
+                "OVER_62_AGE" => Some(Self::Over62Age),
+                "OVER_63_AGE" => Some(Self::Over63Age),
+                "OVER_64_AGE" => Some(Self::Over64Age),
+                "OVER_65_AGE" => Some(Self::Over65Age),
+                "EDUCATION_PROGRAM" => Some(Self::EducationProgram),
+                "EDUCATION_COURSE" => Some(Self::EducationCourse),
+                "PRODUCT" => Some(Self::Product),
+                "SERVICE" => Some(Self::Service),
+                "OFFER" => Some(Self::Offer),
+                "CATEGORY" => Some(Self::Category),
+                "PREFERRED_CONTACT_METHOD" => Some(Self::PreferredContactMethod),
+                "PREFERRED_LOCATION" => Some(Self::PreferredLocation),
+                "PREFERRED_CONTACT_TIME" => Some(Self::PreferredContactTime),
+                "PURCHASE_TIMELINE" => Some(Self::PurchaseTimeline),
+                "YEARS_OF_EXPERIENCE" => Some(Self::YearsOfExperience),
+                "JOB_INDUSTRY" => Some(Self::JobIndustry),
+                "LEVEL_OF_EDUCATION" => Some(Self::LevelOfEducation),
+                "PROPERTY_TYPE" => Some(Self::PropertyType),
+                "REALTOR_HELP_GOAL" => Some(Self::RealtorHelpGoal),
+                "PROPERTY_COMMUNITY" => Some(Self::PropertyCommunity),
+                "PRICE_RANGE" => Some(Self::PriceRange),
+                "NUMBER_OF_BEDROOMS" => Some(Self::NumberOfBedrooms),
+                "FURNISHED_PROPERTY" => Some(Self::FurnishedProperty),
+                "PETS_ALLOWED_PROPERTY" => Some(Self::PetsAllowedProperty),
+                "NEXT_PLANNED_PURCHASE" => Some(Self::NextPlannedPurchase),
+                "EVENT_SIGNUP_INTEREST" => Some(Self::EventSignupInterest),
+                "PREFERRED_SHOPPING_PLACES" => Some(Self::PreferredShoppingPlaces),
+                "FAVORITE_BRAND" => Some(Self::FavoriteBrand),
+                "TRANSPORTATION_COMMERCIAL_LICENSE_TYPE" => {
+                    Some(Self::TransportationCommercialLicenseType)
+                }
+                "EVENT_BOOKING_INTEREST" => Some(Self::EventBookingInterest),
+                "DESTINATION_COUNTRY" => Some(Self::DestinationCountry),
+                "DESTINATION_CITY" => Some(Self::DestinationCity),
+                "DEPARTURE_COUNTRY" => Some(Self::DepartureCountry),
+                "DEPARTURE_CITY" => Some(Self::DepartureCity),
+                "DEPARTURE_DATE" => Some(Self::DepartureDate),
+                "RETURN_DATE" => Some(Self::ReturnDate),
+                "NUMBER_OF_TRAVELERS" => Some(Self::NumberOfTravelers),
+                "TRAVEL_BUDGET" => Some(Self::TravelBudget),
+                "TRAVEL_ACCOMMODATION" => Some(Self::TravelAccommodation),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes the type of post-submit call-to-action phrases for a lead form.
@@ -2927,6 +3605,18 @@ pub mod lead_form_post_submit_call_to_action_type_enum {
                 LeadFormPostSubmitCallToActionType::ShopNow => "SHOP_NOW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "VISIT_SITE" => Some(Self::VisitSite),
+                "DOWNLOAD" => Some(Self::Download),
+                "LEARN_MORE" => Some(Self::LearnMore),
+                "SHOP_NOW" => Some(Self::ShopNow),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing different types of mobile app vendors.
@@ -2969,6 +3659,16 @@ pub mod mobile_app_vendor_enum {
                 MobileAppVendor::Unknown => "UNKNOWN",
                 MobileAppVendor::AppleAppStore => "APPLE_APP_STORE",
                 MobileAppVendor::GoogleAppStore => "GOOGLE_APP_STORE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_APP_STORE" => Some(Self::AppleAppStore),
+                "GOOGLE_APP_STORE" => Some(Self::GoogleAppStore),
+                _ => None,
             }
         }
     }
@@ -3016,6 +3716,17 @@ pub mod price_extension_price_qualifier_enum {
                 PriceExtensionPriceQualifier::From => "FROM",
                 PriceExtensionPriceQualifier::UpTo => "UP_TO",
                 PriceExtensionPriceQualifier::Average => "AVERAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FROM" => Some(Self::From),
+                "UP_TO" => Some(Self::UpTo),
+                "AVERAGE" => Some(Self::Average),
+                _ => None,
             }
         }
     }
@@ -3072,6 +3783,20 @@ pub mod price_extension_price_unit_enum {
                 PriceExtensionPriceUnit::PerMonth => "PER_MONTH",
                 PriceExtensionPriceUnit::PerYear => "PER_YEAR",
                 PriceExtensionPriceUnit::PerNight => "PER_NIGHT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PER_HOUR" => Some(Self::PerHour),
+                "PER_DAY" => Some(Self::PerDay),
+                "PER_WEEK" => Some(Self::PerWeek),
+                "PER_MONTH" => Some(Self::PerMonth),
+                "PER_YEAR" => Some(Self::PerYear),
+                "PER_NIGHT" => Some(Self::PerNight),
+                _ => None,
             }
         }
     }
@@ -3139,6 +3864,23 @@ pub mod price_extension_type_enum {
                 PriceExtensionType::ServiceTiers => "SERVICE_TIERS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BRANDS" => Some(Self::Brands),
+                "EVENTS" => Some(Self::Events),
+                "LOCATIONS" => Some(Self::Locations),
+                "NEIGHBORHOODS" => Some(Self::Neighborhoods),
+                "PRODUCT_CATEGORIES" => Some(Self::ProductCategories),
+                "PRODUCT_TIERS" => Some(Self::ProductTiers),
+                "SERVICES" => Some(Self::Services),
+                "SERVICE_CATEGORIES" => Some(Self::ServiceCategories),
+                "SERVICE_TIERS" => Some(Self::ServiceTiers),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible a promotion extension
@@ -3179,6 +3921,15 @@ pub mod promotion_extension_discount_modifier_enum {
                 PromotionExtensionDiscountModifier::Unspecified => "UNSPECIFIED",
                 PromotionExtensionDiscountModifier::Unknown => "UNKNOWN",
                 PromotionExtensionDiscountModifier::UpTo => "UP_TO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UP_TO" => Some(Self::UpTo),
+                _ => None,
             }
         }
     }
@@ -3332,6 +4083,51 @@ pub mod promotion_extension_occasion_enum {
                 PromotionExtensionOccasion::YearEndGift => "YEAR_END_GIFT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW_YEARS" => Some(Self::NewYears),
+                "CHINESE_NEW_YEAR" => Some(Self::ChineseNewYear),
+                "VALENTINES_DAY" => Some(Self::ValentinesDay),
+                "EASTER" => Some(Self::Easter),
+                "MOTHERS_DAY" => Some(Self::MothersDay),
+                "FATHERS_DAY" => Some(Self::FathersDay),
+                "LABOR_DAY" => Some(Self::LaborDay),
+                "BACK_TO_SCHOOL" => Some(Self::BackToSchool),
+                "HALLOWEEN" => Some(Self::Halloween),
+                "BLACK_FRIDAY" => Some(Self::BlackFriday),
+                "CYBER_MONDAY" => Some(Self::CyberMonday),
+                "CHRISTMAS" => Some(Self::Christmas),
+                "BOXING_DAY" => Some(Self::BoxingDay),
+                "INDEPENDENCE_DAY" => Some(Self::IndependenceDay),
+                "NATIONAL_DAY" => Some(Self::NationalDay),
+                "END_OF_SEASON" => Some(Self::EndOfSeason),
+                "WINTER_SALE" => Some(Self::WinterSale),
+                "SUMMER_SALE" => Some(Self::SummerSale),
+                "FALL_SALE" => Some(Self::FallSale),
+                "SPRING_SALE" => Some(Self::SpringSale),
+                "RAMADAN" => Some(Self::Ramadan),
+                "EID_AL_FITR" => Some(Self::EidAlFitr),
+                "EID_AL_ADHA" => Some(Self::EidAlAdha),
+                "SINGLES_DAY" => Some(Self::SinglesDay),
+                "WOMENS_DAY" => Some(Self::WomensDay),
+                "HOLI" => Some(Self::Holi),
+                "PARENTS_DAY" => Some(Self::ParentsDay),
+                "ST_NICHOLAS_DAY" => Some(Self::StNicholasDay),
+                "CARNIVAL" => Some(Self::Carnival),
+                "EPIPHANY" => Some(Self::Epiphany),
+                "ROSH_HASHANAH" => Some(Self::RoshHashanah),
+                "PASSOVER" => Some(Self::Passover),
+                "HANUKKAH" => Some(Self::Hanukkah),
+                "DIWALI" => Some(Self::Diwali),
+                "NAVRATRI" => Some(Self::Navratri),
+                "SONGKRAN" => Some(Self::Songkran),
+                "YEAR_END_GIFT" => Some(Self::YearEndGift),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing where on the first search results page the
@@ -3381,6 +4177,17 @@ pub mod target_impression_share_location_enum {
                 TargetImpressionShareLocation::AbsoluteTopOfPage => {
                     "ABSOLUTE_TOP_OF_PAGE"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ANYWHERE_ON_PAGE" => Some(Self::AnywhereOnPage),
+                "TOP_OF_PAGE" => Some(Self::TopOfPage),
+                "ABSOLUTE_TOP_OF_PAGE" => Some(Self::AbsoluteTopOfPage),
+                _ => None,
             }
         }
     }
@@ -3488,6 +4295,35 @@ pub mod advertising_channel_sub_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH_MOBILE_APP" => Some(Self::SearchMobileApp),
+                "DISPLAY_MOBILE_APP" => Some(Self::DisplayMobileApp),
+                "SEARCH_EXPRESS" => Some(Self::SearchExpress),
+                "DISPLAY_EXPRESS" => Some(Self::DisplayExpress),
+                "SHOPPING_SMART_ADS" => Some(Self::ShoppingSmartAds),
+                "DISPLAY_GMAIL_AD" => Some(Self::DisplayGmailAd),
+                "DISPLAY_SMART_CAMPAIGN" => Some(Self::DisplaySmartCampaign),
+                "VIDEO_OUTSTREAM" => Some(Self::VideoOutstream),
+                "VIDEO_ACTION" => Some(Self::VideoAction),
+                "VIDEO_NON_SKIPPABLE" => Some(Self::VideoNonSkippable),
+                "APP_CAMPAIGN" => Some(Self::AppCampaign),
+                "APP_CAMPAIGN_FOR_ENGAGEMENT" => Some(Self::AppCampaignForEngagement),
+                "LOCAL_CAMPAIGN" => Some(Self::LocalCampaign),
+                "SHOPPING_COMPARISON_LISTING_ADS" => {
+                    Some(Self::ShoppingComparisonListingAds)
+                }
+                "SMART_CAMPAIGN" => Some(Self::SmartCampaign),
+                "VIDEO_SEQUENCE" => Some(Self::VideoSequence),
+                "APP_CAMPAIGN_FOR_PRE_REGISTRATION" => {
+                    Some(Self::AppCampaignForPreRegistration)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// The channel type a campaign may target to serve on.
@@ -3561,6 +4397,25 @@ pub mod advertising_channel_type_enum {
                 AdvertisingChannelType::Discovery => "DISCOVERY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH" => Some(Self::Search),
+                "DISPLAY" => Some(Self::Display),
+                "SHOPPING" => Some(Self::Shopping),
+                "HOTEL" => Some(Self::Hotel),
+                "VIDEO" => Some(Self::Video),
+                "MULTI_CHANNEL" => Some(Self::MultiChannel),
+                "LOCAL" => Some(Self::Local),
+                "SMART" => Some(Self::Smart),
+                "PERFORMANCE_MAX" => Some(Self::PerformanceMax),
+                "LOCAL_SERVICES" => Some(Self::LocalServices),
+                "DISCOVERY" => Some(Self::Discovery),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes channel availability mode for a criterion availability - whether
@@ -3615,6 +4470,19 @@ pub mod criterion_category_channel_availability_mode_enum {
                 CriterionCategoryChannelAvailabilityMode::ChannelTypeAndSubsetSubtypes => {
                     "CHANNEL_TYPE_AND_SUBSET_SUBTYPES"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL_CHANNELS" => Some(Self::AllChannels),
+                "CHANNEL_TYPE_AND_ALL_SUBTYPES" => Some(Self::ChannelTypeAndAllSubtypes),
+                "CHANNEL_TYPE_AND_SUBSET_SUBTYPES" => {
+                    Some(Self::ChannelTypeAndSubsetSubtypes)
+                }
+                _ => None,
             }
         }
     }
@@ -3678,6 +4546,18 @@ pub mod criterion_category_locale_availability_mode_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL_LOCALES" => Some(Self::AllLocales),
+                "COUNTRY_AND_ALL_LANGUAGES" => Some(Self::CountryAndAllLanguages),
+                "LANGUAGE_AND_ALL_COUNTRIES" => Some(Self::LanguageAndAllCountries),
+                "COUNTRY_AND_LANGUAGE" => Some(Self::CountryAndLanguage),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible types of a customizer attribute.
@@ -3726,6 +4606,18 @@ pub mod customizer_attribute_type_enum {
                 CustomizerAttributeType::Number => "NUMBER",
                 CustomizerAttributeType::Price => "PRICE",
                 CustomizerAttributeType::Percent => "PERCENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT" => Some(Self::Text),
+                "NUMBER" => Some(Self::Number),
+                "PRICE" => Some(Self::Price),
+                "PERCENT" => Some(Self::Percent),
+                _ => None,
             }
         }
     }
@@ -3802,6 +4694,26 @@ pub mod month_of_year_enum {
                 MonthOfYear::December => "DECEMBER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "JANUARY" => Some(Self::January),
+                "FEBRUARY" => Some(Self::February),
+                "MARCH" => Some(Self::March),
+                "APRIL" => Some(Self::April),
+                "MAY" => Some(Self::May),
+                "JUNE" => Some(Self::June),
+                "JULY" => Some(Self::July),
+                "AUGUST" => Some(Self::August),
+                "SEPTEMBER" => Some(Self::September),
+                "OCTOBER" => Some(Self::October),
+                "NOVEMBER" => Some(Self::November),
+                "DECEMBER" => Some(Self::December),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing app store type in an app extension.
@@ -3846,6 +4758,16 @@ pub mod app_store_enum {
                 AppStore::GooglePlay => "GOOGLE_PLAY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_ITUNES" => Some(Self::AppleItunes),
+                "GOOGLE_PLAY" => Some(Self::GooglePlay),
+                _ => None,
+            }
+        }
     }
 }
 /// The type of string matching to be used for a dynamic FeedItemSet filter.
@@ -3885,6 +4807,15 @@ pub mod feed_item_set_string_filter_type_enum {
                 FeedItemSetStringFilterType::Unspecified => "UNSPECIFIED",
                 FeedItemSetStringFilterType::Unknown => "UNKNOWN",
                 FeedItemSetStringFilterType::Exact => "EXACT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXACT" => Some(Self::Exact),
+                _ => None,
             }
         }
     }
@@ -3931,6 +4862,16 @@ pub mod app_url_operating_system_type_enum {
                 AppUrlOperatingSystemType::Android => "ANDROID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IOS" => Some(Self::Ios),
+                "ANDROID" => Some(Self::Android),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of event that the cap applies to.
@@ -3973,6 +4914,16 @@ pub mod frequency_cap_event_type_enum {
                 FrequencyCapEventType::Unknown => "UNKNOWN",
                 FrequencyCapEventType::Impression => "IMPRESSION",
                 FrequencyCapEventType::VideoView => "VIDEO_VIEW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMPRESSION" => Some(Self::Impression),
+                "VIDEO_VIEW" => Some(Self::VideoView),
+                _ => None,
             }
         }
     }
@@ -4023,6 +4974,17 @@ pub mod frequency_cap_level_enum {
                 FrequencyCapLevel::Campaign => "CAMPAIGN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_GROUP_AD" => Some(Self::AdGroupAd),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "CAMPAIGN" => Some(Self::Campaign),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the unit of time the cap is defined at.
@@ -4070,6 +5032,17 @@ pub mod frequency_cap_time_unit_enum {
                 FrequencyCapTimeUnit::Month => "MONTH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DAY" => Some(Self::Day),
+                "WEEK" => Some(Self::Week),
+                "MONTH" => Some(Self::Month),
+                _ => None,
+            }
+        }
     }
 }
 /// The enumeration of keyword plan aggregate metric types.
@@ -4109,6 +5082,15 @@ pub mod keyword_plan_aggregate_metric_type_enum {
                 KeywordPlanAggregateMetricType::Unspecified => "UNSPECIFIED",
                 KeywordPlanAggregateMetricType::Unknown => "UNKNOWN",
                 KeywordPlanAggregateMetricType::Device => "DEVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEVICE" => Some(Self::Device),
+                _ => None,
             }
         }
     }
@@ -4160,6 +5142,17 @@ pub mod keyword_plan_competition_level_enum {
                 KeywordPlanCompetitionLevel::Low => "LOW",
                 KeywordPlanCompetitionLevel::Medium => "MEDIUM",
                 KeywordPlanCompetitionLevel::High => "HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                _ => None,
             }
         }
     }
@@ -4214,6 +5207,17 @@ pub mod keyword_plan_concept_group_type_enum {
                 KeywordPlanConceptGroupType::NonBrand => "NON_BRAND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BRAND" => Some(Self::Brand),
+                "OTHER_BRANDS" => Some(Self::OtherBrands),
+                "NON_BRAND" => Some(Self::NonBrand),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for context types for an operand in a matching function.
@@ -4259,6 +5263,17 @@ pub mod matching_function_context_type_enum {
                 MatchingFunctionContextType::FeedItemId => "FEED_ITEM_ID",
                 MatchingFunctionContextType::DeviceName => "DEVICE_NAME",
                 MatchingFunctionContextType::FeedItemSetId => "FEED_ITEM_SET_ID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FEED_ITEM_ID" => Some(Self::FeedItemId),
+                "DEVICE_NAME" => Some(Self::DeviceName),
+                "FEED_ITEM_SET_ID" => Some(Self::FeedItemSetId),
+                _ => None,
             }
         }
     }
@@ -4318,6 +5333,19 @@ pub mod matching_function_operator_enum {
                 MatchingFunctionOperator::Equals => "EQUALS",
                 MatchingFunctionOperator::And => "AND",
                 MatchingFunctionOperator::ContainsAny => "CONTAINS_ANY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IN" => Some(Self::In),
+                "IDENTITY" => Some(Self::Identity),
+                "EQUALS" => Some(Self::Equals),
+                "AND" => Some(Self::And),
+                "CONTAINS_ANY" => Some(Self::ContainsAny),
+                _ => None,
             }
         }
     }
@@ -4399,6 +5427,29 @@ pub mod experiment_metric_enum {
                 ExperimentMetric::ConversionValue => "CONVERSION_VALUE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CLICKS" => Some(Self::Clicks),
+                "IMPRESSIONS" => Some(Self::Impressions),
+                "COST" => Some(Self::Cost),
+                "CONVERSIONS_PER_INTERACTION_RATE" => {
+                    Some(Self::ConversionsPerInteractionRate)
+                }
+                "COST_PER_CONVERSION" => Some(Self::CostPerConversion),
+                "CONVERSIONS_VALUE_PER_COST" => Some(Self::ConversionsValuePerCost),
+                "AVERAGE_CPC" => Some(Self::AverageCpc),
+                "CTR" => Some(Self::Ctr),
+                "INCREMENTAL_CONVERSIONS" => Some(Self::IncrementalConversions),
+                "COMPLETED_VIDEO_VIEWS" => Some(Self::CompletedVideoViews),
+                "CUSTOM_ALGORITHMS" => Some(Self::CustomAlgorithms),
+                "CONVERSIONS" => Some(Self::Conversions),
+                "CONVERSION_VALUE" => Some(Self::ConversionValue),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of experiment metric direction.
@@ -4452,6 +5503,19 @@ pub mod experiment_metric_direction_enum {
                 ExperimentMetricDirection::Decrease => "DECREASE",
                 ExperimentMetricDirection::NoChangeOrIncrease => "NO_CHANGE_OR_INCREASE",
                 ExperimentMetricDirection::NoChangeOrDecrease => "NO_CHANGE_OR_DECREASE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NO_CHANGE" => Some(Self::NoChange),
+                "INCREASE" => Some(Self::Increase),
+                "DECREASE" => Some(Self::Decrease),
+                "NO_CHANGE_OR_INCREASE" => Some(Self::NoChangeOrIncrease),
+                "NO_CHANGE_OR_DECREASE" => Some(Self::NoChangeOrDecrease),
+                _ => None,
             }
         }
     }
@@ -4510,6 +5574,18 @@ pub mod interaction_event_type_enum {
                 InteractionEventType::None => "NONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CLICK" => Some(Self::Click),
+                "ENGAGEMENT" => Some(Self::Engagement),
+                "VIDEO_VIEW" => Some(Self::VideoView),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
     }
 }
 /// The relative performance compared to other advertisers.
@@ -4555,6 +5631,17 @@ pub mod quality_score_bucket_enum {
                 QualityScoreBucket::BelowAverage => "BELOW_AVERAGE",
                 QualityScoreBucket::Average => "AVERAGE",
                 QualityScoreBucket::AboveAverage => "ABOVE_AVERAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BELOW_AVERAGE" => Some(Self::BelowAverage),
+                "AVERAGE" => Some(Self::Average),
+                "ABOVE_AVERAGE" => Some(Self::AboveAverage),
+                _ => None,
             }
         }
     }
@@ -4603,6 +5690,16 @@ pub mod user_identifier_source_enum {
                 UserIdentifierSource::Unknown => "UNKNOWN",
                 UserIdentifierSource::FirstParty => "FIRST_PARTY",
                 UserIdentifierSource::ThirdParty => "THIRD_PARTY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FIRST_PARTY" => Some(Self::FirstParty),
+                "THIRD_PARTY" => Some(Self::ThirdParty),
+                _ => None,
             }
         }
     }
@@ -4676,6 +5773,25 @@ pub mod ad_destination_type_enum {
                 AdDestinationType::UnmodeledForConversions => "UNMODELED_FOR_CONVERSIONS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOT_APPLICABLE" => Some(Self::NotApplicable),
+                "WEBSITE" => Some(Self::Website),
+                "APP_DEEP_LINK" => Some(Self::AppDeepLink),
+                "APP_STORE" => Some(Self::AppStore),
+                "PHONE_CALL" => Some(Self::PhoneCall),
+                "MAP_DIRECTIONS" => Some(Self::MapDirections),
+                "LOCATION_LISTING" => Some(Self::LocationListing),
+                "MESSAGE" => Some(Self::Message),
+                "LEAD_FORM" => Some(Self::LeadForm),
+                "YOUTUBE" => Some(Self::Youtube),
+                "UNMODELED_FOR_CONVERSIONS" => Some(Self::UnmodeledForConversions),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of Google Ads network types.
@@ -4732,6 +5848,20 @@ pub mod ad_network_type_enum {
                 AdNetworkType::Mixed => "MIXED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH" => Some(Self::Search),
+                "SEARCH_PARTNERS" => Some(Self::SearchPartners),
+                "CONTENT" => Some(Self::Content),
+                "YOUTUBE_SEARCH" => Some(Self::YoutubeSearch),
+                "YOUTUBE_WATCH" => Some(Self::YoutubeWatch),
+                "MIXED" => Some(Self::Mixed),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing the status of the association between the Budget and the
@@ -4775,6 +5905,16 @@ pub mod budget_campaign_association_status_enum {
                 BudgetCampaignAssociationStatus::Unknown => "UNKNOWN",
                 BudgetCampaignAssociationStatus::Enabled => "ENABLED",
                 BudgetCampaignAssociationStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -5001,6 +6141,94 @@ pub mod click_type_enum {
                 ClickType::CrossNetwork => "CROSS_NETWORK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APP_DEEPLINK" => Some(Self::AppDeeplink),
+                "BREADCRUMBS" => Some(Self::Breadcrumbs),
+                "BROADBAND_PLAN" => Some(Self::BroadbandPlan),
+                "CALL_TRACKING" => Some(Self::CallTracking),
+                "CALLS" => Some(Self::Calls),
+                "CLICK_ON_ENGAGEMENT_AD" => Some(Self::ClickOnEngagementAd),
+                "GET_DIRECTIONS" => Some(Self::GetDirections),
+                "LOCATION_EXPANSION" => Some(Self::LocationExpansion),
+                "LOCATION_FORMAT_CALL" => Some(Self::LocationFormatCall),
+                "LOCATION_FORMAT_DIRECTIONS" => Some(Self::LocationFormatDirections),
+                "LOCATION_FORMAT_IMAGE" => Some(Self::LocationFormatImage),
+                "LOCATION_FORMAT_LANDING_PAGE" => Some(Self::LocationFormatLandingPage),
+                "LOCATION_FORMAT_MAP" => Some(Self::LocationFormatMap),
+                "LOCATION_FORMAT_STORE_INFO" => Some(Self::LocationFormatStoreInfo),
+                "LOCATION_FORMAT_TEXT" => Some(Self::LocationFormatText),
+                "MOBILE_CALL_TRACKING" => Some(Self::MobileCallTracking),
+                "OFFER_PRINTS" => Some(Self::OfferPrints),
+                "OTHER" => Some(Self::Other),
+                "PRODUCT_EXTENSION_CLICKS" => Some(Self::ProductExtensionClicks),
+                "PRODUCT_LISTING_AD_CLICKS" => Some(Self::ProductListingAdClicks),
+                "SITELINKS" => Some(Self::Sitelinks),
+                "STORE_LOCATOR" => Some(Self::StoreLocator),
+                "URL_CLICKS" => Some(Self::UrlClicks),
+                "VIDEO_APP_STORE_CLICKS" => Some(Self::VideoAppStoreClicks),
+                "VIDEO_CALL_TO_ACTION_CLICKS" => Some(Self::VideoCallToActionClicks),
+                "VIDEO_CARD_ACTION_HEADLINE_CLICKS" => {
+                    Some(Self::VideoCardActionHeadlineClicks)
+                }
+                "VIDEO_END_CAP_CLICKS" => Some(Self::VideoEndCapClicks),
+                "VIDEO_WEBSITE_CLICKS" => Some(Self::VideoWebsiteClicks),
+                "VISUAL_SITELINKS" => Some(Self::VisualSitelinks),
+                "WIRELESS_PLAN" => Some(Self::WirelessPlan),
+                "PRODUCT_LISTING_AD_LOCAL" => Some(Self::ProductListingAdLocal),
+                "PRODUCT_LISTING_AD_MULTICHANNEL_LOCAL" => {
+                    Some(Self::ProductListingAdMultichannelLocal)
+                }
+                "PRODUCT_LISTING_AD_MULTICHANNEL_ONLINE" => {
+                    Some(Self::ProductListingAdMultichannelOnline)
+                }
+                "PRODUCT_LISTING_ADS_COUPON" => Some(Self::ProductListingAdsCoupon),
+                "PRODUCT_LISTING_AD_TRANSACTABLE" => {
+                    Some(Self::ProductListingAdTransactable)
+                }
+                "PRODUCT_AD_APP_DEEPLINK" => Some(Self::ProductAdAppDeeplink),
+                "SHOWCASE_AD_CATEGORY_LINK" => Some(Self::ShowcaseAdCategoryLink),
+                "SHOWCASE_AD_LOCAL_STOREFRONT_LINK" => {
+                    Some(Self::ShowcaseAdLocalStorefrontLink)
+                }
+                "SHOWCASE_AD_ONLINE_PRODUCT_LINK" => {
+                    Some(Self::ShowcaseAdOnlineProductLink)
+                }
+                "SHOWCASE_AD_LOCAL_PRODUCT_LINK" => {
+                    Some(Self::ShowcaseAdLocalProductLink)
+                }
+                "PROMOTION_EXTENSION" => Some(Self::PromotionExtension),
+                "SWIPEABLE_GALLERY_AD_HEADLINE" => Some(Self::SwipeableGalleryAdHeadline),
+                "SWIPEABLE_GALLERY_AD_SWIPES" => Some(Self::SwipeableGalleryAdSwipes),
+                "SWIPEABLE_GALLERY_AD_SEE_MORE" => Some(Self::SwipeableGalleryAdSeeMore),
+                "SWIPEABLE_GALLERY_AD_SITELINK_ONE" => {
+                    Some(Self::SwipeableGalleryAdSitelinkOne)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_TWO" => {
+                    Some(Self::SwipeableGalleryAdSitelinkTwo)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_THREE" => {
+                    Some(Self::SwipeableGalleryAdSitelinkThree)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_FOUR" => {
+                    Some(Self::SwipeableGalleryAdSitelinkFour)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_FIVE" => {
+                    Some(Self::SwipeableGalleryAdSitelinkFive)
+                }
+                "HOTEL_PRICE" => Some(Self::HotelPrice),
+                "PRICE_EXTENSION" => Some(Self::PriceExtension),
+                "HOTEL_BOOK_ON_GOOGLE_ROOM_SELECTION" => {
+                    Some(Self::HotelBookOnGoogleRoomSelection)
+                }
+                "SHOPPING_COMPARISON_LISTING" => Some(Self::ShoppingComparisonListing),
+                "CROSS_NETWORK" => Some(Self::CrossNetwork),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the category of conversions that are associated
@@ -5113,6 +6341,35 @@ pub mod conversion_action_category_enum {
                 ConversionActionCategory::ConvertedLead => "CONVERTED_LEAD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEFAULT" => Some(Self::Default),
+                "PAGE_VIEW" => Some(Self::PageView),
+                "PURCHASE" => Some(Self::Purchase),
+                "SIGNUP" => Some(Self::Signup),
+                "DOWNLOAD" => Some(Self::Download),
+                "ADD_TO_CART" => Some(Self::AddToCart),
+                "BEGIN_CHECKOUT" => Some(Self::BeginCheckout),
+                "SUBSCRIBE_PAID" => Some(Self::SubscribePaid),
+                "PHONE_CALL_LEAD" => Some(Self::PhoneCallLead),
+                "IMPORTED_LEAD" => Some(Self::ImportedLead),
+                "SUBMIT_LEAD_FORM" => Some(Self::SubmitLeadForm),
+                "BOOK_APPOINTMENT" => Some(Self::BookAppointment),
+                "REQUEST_QUOTE" => Some(Self::RequestQuote),
+                "GET_DIRECTIONS" => Some(Self::GetDirections),
+                "OUTBOUND_CLICK" => Some(Self::OutboundClick),
+                "CONTACT" => Some(Self::Contact),
+                "ENGAGEMENT" => Some(Self::Engagement),
+                "STORE_VISIT" => Some(Self::StoreVisit),
+                "STORE_SALE" => Some(Self::StoreSale),
+                "QUALIFIED_LEAD" => Some(Self::QualifiedLead),
+                "CONVERTED_LEAD" => Some(Self::ConvertedLead),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum indicating the event type the conversion is attributed to.
@@ -5155,6 +6412,16 @@ pub mod conversion_attribution_event_type_enum {
                 ConversionAttributionEventType::Unknown => "UNKNOWN",
                 ConversionAttributionEventType::Impression => "IMPRESSION",
                 ConversionAttributionEventType::Interaction => "INTERACTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMPRESSION" => Some(Self::Impression),
+                "INTERACTION" => Some(Self::Interaction),
+                _ => None,
             }
         }
     }
@@ -5272,6 +6539,33 @@ pub mod conversion_lag_bucket_enum {
                 ConversionLagBucket::ThirtyToFortyFiveDays => "THIRTY_TO_FORTY_FIVE_DAYS",
                 ConversionLagBucket::FortyFiveToSixtyDays => "FORTY_FIVE_TO_SIXTY_DAYS",
                 ConversionLagBucket::SixtyToNinetyDays => "SIXTY_TO_NINETY_DAYS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LESS_THAN_ONE_DAY" => Some(Self::LessThanOneDay),
+                "ONE_TO_TWO_DAYS" => Some(Self::OneToTwoDays),
+                "TWO_TO_THREE_DAYS" => Some(Self::TwoToThreeDays),
+                "THREE_TO_FOUR_DAYS" => Some(Self::ThreeToFourDays),
+                "FOUR_TO_FIVE_DAYS" => Some(Self::FourToFiveDays),
+                "FIVE_TO_SIX_DAYS" => Some(Self::FiveToSixDays),
+                "SIX_TO_SEVEN_DAYS" => Some(Self::SixToSevenDays),
+                "SEVEN_TO_EIGHT_DAYS" => Some(Self::SevenToEightDays),
+                "EIGHT_TO_NINE_DAYS" => Some(Self::EightToNineDays),
+                "NINE_TO_TEN_DAYS" => Some(Self::NineToTenDays),
+                "TEN_TO_ELEVEN_DAYS" => Some(Self::TenToElevenDays),
+                "ELEVEN_TO_TWELVE_DAYS" => Some(Self::ElevenToTwelveDays),
+                "TWELVE_TO_THIRTEEN_DAYS" => Some(Self::TwelveToThirteenDays),
+                "THIRTEEN_TO_FOURTEEN_DAYS" => Some(Self::ThirteenToFourteenDays),
+                "FOURTEEN_TO_TWENTY_ONE_DAYS" => Some(Self::FourteenToTwentyOneDays),
+                "TWENTY_ONE_TO_THIRTY_DAYS" => Some(Self::TwentyOneToThirtyDays),
+                "THIRTY_TO_FORTY_FIVE_DAYS" => Some(Self::ThirtyToFortyFiveDays),
+                "FORTY_FIVE_TO_SIXTY_DAYS" => Some(Self::FortyFiveToSixtyDays),
+                "SIXTY_TO_NINETY_DAYS" => Some(Self::SixtyToNinetyDays),
+                _ => None,
             }
         }
     }
@@ -5558,6 +6852,93 @@ pub mod conversion_or_adjustment_lag_bucket_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CONVERSION_LESS_THAN_ONE_DAY" => Some(Self::ConversionLessThanOneDay),
+                "CONVERSION_ONE_TO_TWO_DAYS" => Some(Self::ConversionOneToTwoDays),
+                "CONVERSION_TWO_TO_THREE_DAYS" => Some(Self::ConversionTwoToThreeDays),
+                "CONVERSION_THREE_TO_FOUR_DAYS" => Some(Self::ConversionThreeToFourDays),
+                "CONVERSION_FOUR_TO_FIVE_DAYS" => Some(Self::ConversionFourToFiveDays),
+                "CONVERSION_FIVE_TO_SIX_DAYS" => Some(Self::ConversionFiveToSixDays),
+                "CONVERSION_SIX_TO_SEVEN_DAYS" => Some(Self::ConversionSixToSevenDays),
+                "CONVERSION_SEVEN_TO_EIGHT_DAYS" => {
+                    Some(Self::ConversionSevenToEightDays)
+                }
+                "CONVERSION_EIGHT_TO_NINE_DAYS" => Some(Self::ConversionEightToNineDays),
+                "CONVERSION_NINE_TO_TEN_DAYS" => Some(Self::ConversionNineToTenDays),
+                "CONVERSION_TEN_TO_ELEVEN_DAYS" => Some(Self::ConversionTenToElevenDays),
+                "CONVERSION_ELEVEN_TO_TWELVE_DAYS" => {
+                    Some(Self::ConversionElevenToTwelveDays)
+                }
+                "CONVERSION_TWELVE_TO_THIRTEEN_DAYS" => {
+                    Some(Self::ConversionTwelveToThirteenDays)
+                }
+                "CONVERSION_THIRTEEN_TO_FOURTEEN_DAYS" => {
+                    Some(Self::ConversionThirteenToFourteenDays)
+                }
+                "CONVERSION_FOURTEEN_TO_TWENTY_ONE_DAYS" => {
+                    Some(Self::ConversionFourteenToTwentyOneDays)
+                }
+                "CONVERSION_TWENTY_ONE_TO_THIRTY_DAYS" => {
+                    Some(Self::ConversionTwentyOneToThirtyDays)
+                }
+                "CONVERSION_THIRTY_TO_FORTY_FIVE_DAYS" => {
+                    Some(Self::ConversionThirtyToFortyFiveDays)
+                }
+                "CONVERSION_FORTY_FIVE_TO_SIXTY_DAYS" => {
+                    Some(Self::ConversionFortyFiveToSixtyDays)
+                }
+                "CONVERSION_SIXTY_TO_NINETY_DAYS" => {
+                    Some(Self::ConversionSixtyToNinetyDays)
+                }
+                "ADJUSTMENT_LESS_THAN_ONE_DAY" => Some(Self::AdjustmentLessThanOneDay),
+                "ADJUSTMENT_ONE_TO_TWO_DAYS" => Some(Self::AdjustmentOneToTwoDays),
+                "ADJUSTMENT_TWO_TO_THREE_DAYS" => Some(Self::AdjustmentTwoToThreeDays),
+                "ADJUSTMENT_THREE_TO_FOUR_DAYS" => Some(Self::AdjustmentThreeToFourDays),
+                "ADJUSTMENT_FOUR_TO_FIVE_DAYS" => Some(Self::AdjustmentFourToFiveDays),
+                "ADJUSTMENT_FIVE_TO_SIX_DAYS" => Some(Self::AdjustmentFiveToSixDays),
+                "ADJUSTMENT_SIX_TO_SEVEN_DAYS" => Some(Self::AdjustmentSixToSevenDays),
+                "ADJUSTMENT_SEVEN_TO_EIGHT_DAYS" => {
+                    Some(Self::AdjustmentSevenToEightDays)
+                }
+                "ADJUSTMENT_EIGHT_TO_NINE_DAYS" => Some(Self::AdjustmentEightToNineDays),
+                "ADJUSTMENT_NINE_TO_TEN_DAYS" => Some(Self::AdjustmentNineToTenDays),
+                "ADJUSTMENT_TEN_TO_ELEVEN_DAYS" => Some(Self::AdjustmentTenToElevenDays),
+                "ADJUSTMENT_ELEVEN_TO_TWELVE_DAYS" => {
+                    Some(Self::AdjustmentElevenToTwelveDays)
+                }
+                "ADJUSTMENT_TWELVE_TO_THIRTEEN_DAYS" => {
+                    Some(Self::AdjustmentTwelveToThirteenDays)
+                }
+                "ADJUSTMENT_THIRTEEN_TO_FOURTEEN_DAYS" => {
+                    Some(Self::AdjustmentThirteenToFourteenDays)
+                }
+                "ADJUSTMENT_FOURTEEN_TO_TWENTY_ONE_DAYS" => {
+                    Some(Self::AdjustmentFourteenToTwentyOneDays)
+                }
+                "ADJUSTMENT_TWENTY_ONE_TO_THIRTY_DAYS" => {
+                    Some(Self::AdjustmentTwentyOneToThirtyDays)
+                }
+                "ADJUSTMENT_THIRTY_TO_FORTY_FIVE_DAYS" => {
+                    Some(Self::AdjustmentThirtyToFortyFiveDays)
+                }
+                "ADJUSTMENT_FORTY_FIVE_TO_SIXTY_DAYS" => {
+                    Some(Self::AdjustmentFortyFiveToSixtyDays)
+                }
+                "ADJUSTMENT_SIXTY_TO_NINETY_DAYS" => {
+                    Some(Self::AdjustmentSixtyToNinetyDays)
+                }
+                "ADJUSTMENT_NINETY_TO_ONE_HUNDRED_AND_FORTY_FIVE_DAYS" => {
+                    Some(Self::AdjustmentNinetyToOneHundredAndFortyFiveDays)
+                }
+                "CONVERSION_UNKNOWN" => Some(Self::ConversionUnknown),
+                "ADJUSTMENT_UNKNOWN" => Some(Self::AdjustmentUnknown),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing value rule primary dimension for stats.
@@ -5618,6 +6999,21 @@ pub mod conversion_value_rule_primary_dimension_enum {
                 ConversionValueRulePrimaryDimension::Device => "DEVICE",
                 ConversionValueRulePrimaryDimension::Audience => "AUDIENCE",
                 ConversionValueRulePrimaryDimension::Multiple => "MULTIPLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NO_RULE_APPLIED" => Some(Self::NoRuleApplied),
+                "ORIGINAL" => Some(Self::Original),
+                "NEW_VS_RETURNING_USER" => Some(Self::NewVsReturningUser),
+                "GEO_LOCATION" => Some(Self::GeoLocation),
+                "DEVICE" => Some(Self::Device),
+                "AUDIENCE" => Some(Self::Audience),
+                "MULTIPLE" => Some(Self::Multiple),
+                _ => None,
             }
         }
     }
@@ -5783,6 +7179,44 @@ pub mod external_conversion_source_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBPAGE" => Some(Self::Webpage),
+                "ANALYTICS" => Some(Self::Analytics),
+                "UPLOAD" => Some(Self::Upload),
+                "AD_CALL_METRICS" => Some(Self::AdCallMetrics),
+                "WEBSITE_CALL_METRICS" => Some(Self::WebsiteCallMetrics),
+                "STORE_VISITS" => Some(Self::StoreVisits),
+                "ANDROID_IN_APP" => Some(Self::AndroidInApp),
+                "IOS_IN_APP" => Some(Self::IosInApp),
+                "IOS_FIRST_OPEN" => Some(Self::IosFirstOpen),
+                "APP_UNSPECIFIED" => Some(Self::AppUnspecified),
+                "ANDROID_FIRST_OPEN" => Some(Self::AndroidFirstOpen),
+                "UPLOAD_CALLS" => Some(Self::UploadCalls),
+                "FIREBASE" => Some(Self::Firebase),
+                "CLICK_TO_CALL" => Some(Self::ClickToCall),
+                "SALESFORCE" => Some(Self::Salesforce),
+                "STORE_SALES_CRM" => Some(Self::StoreSalesCrm),
+                "STORE_SALES_PAYMENT_NETWORK" => Some(Self::StoreSalesPaymentNetwork),
+                "GOOGLE_PLAY" => Some(Self::GooglePlay),
+                "THIRD_PARTY_APP_ANALYTICS" => Some(Self::ThirdPartyAppAnalytics),
+                "GOOGLE_ATTRIBUTION" => Some(Self::GoogleAttribution),
+                "STORE_SALES_DIRECT_UPLOAD" => Some(Self::StoreSalesDirectUpload),
+                "STORE_SALES" => Some(Self::StoreSales),
+                "SEARCH_ADS_360" => Some(Self::SearchAds360),
+                "GOOGLE_HOSTED" => Some(Self::GoogleHosted),
+                "FLOODLIGHT" => Some(Self::Floodlight),
+                "ANALYTICS_SEARCH_ADS_360" => Some(Self::AnalyticsSearchAds360),
+                "FIREBASE_SEARCH_ADS_360" => Some(Self::FirebaseSearchAds360),
+                "DISPLAY_AND_VIDEO_360_FLOODLIGHT" => {
+                    Some(Self::DisplayAndVideo360Floodlight)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing hotel price bucket for a hotel itinerary.
@@ -5834,6 +7268,18 @@ pub mod hotel_price_bucket_enum {
                 HotelPriceBucket::LowestTied => "LOWEST_TIED",
                 HotelPriceBucket::NotLowest => "NOT_LOWEST",
                 HotelPriceBucket::OnlyPartnerShown => "ONLY_PARTNER_SHOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOWEST_UNIQUE" => Some(Self::LowestUnique),
+                "LOWEST_TIED" => Some(Self::LowestTied),
+                "NOT_LOWEST" => Some(Self::NotLowest),
+                "ONLY_PARTNER_SHOWN" => Some(Self::OnlyPartnerShown),
+                _ => None,
             }
         }
     }
@@ -5890,6 +7336,18 @@ pub mod hotel_rate_type_enum {
                 HotelRateType::PublicRate => "PUBLIC_RATE",
                 HotelRateType::QualifiedRate => "QUALIFIED_RATE",
                 HotelRateType::PrivateRate => "PRIVATE_RATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "PUBLIC_RATE" => Some(Self::PublicRate),
+                "QUALIFIED_RATE" => Some(Self::QualifiedRate),
+                "PRIVATE_RATE" => Some(Self::PrivateRate),
+                _ => None,
             }
         }
     }
@@ -6008,6 +7466,34 @@ pub mod placeholder_type_enum {
                 PlaceholderType::DynamicLocal => "DYNAMIC_LOCAL",
                 PlaceholderType::DynamicJob => "DYNAMIC_JOB",
                 PlaceholderType::Image => "IMAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SITELINK" => Some(Self::Sitelink),
+                "CALL" => Some(Self::Call),
+                "APP" => Some(Self::App),
+                "LOCATION" => Some(Self::Location),
+                "AFFILIATE_LOCATION" => Some(Self::AffiliateLocation),
+                "CALLOUT" => Some(Self::Callout),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "MESSAGE" => Some(Self::Message),
+                "PRICE" => Some(Self::Price),
+                "PROMOTION" => Some(Self::Promotion),
+                "AD_CUSTOMIZER" => Some(Self::AdCustomizer),
+                "DYNAMIC_EDUCATION" => Some(Self::DynamicEducation),
+                "DYNAMIC_FLIGHT" => Some(Self::DynamicFlight),
+                "DYNAMIC_CUSTOM" => Some(Self::DynamicCustom),
+                "DYNAMIC_HOTEL" => Some(Self::DynamicHotel),
+                "DYNAMIC_REAL_ESTATE" => Some(Self::DynamicRealEstate),
+                "DYNAMIC_TRAVEL" => Some(Self::DynamicTravel),
+                "DYNAMIC_LOCAL" => Some(Self::DynamicLocal),
+                "DYNAMIC_JOB" => Some(Self::DynamicJob),
+                "IMAGE" => Some(Self::Image),
+                _ => None,
             }
         }
     }
@@ -6166,6 +7652,46 @@ pub mod recommendation_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN_BUDGET" => Some(Self::CampaignBudget),
+                "KEYWORD" => Some(Self::Keyword),
+                "TEXT_AD" => Some(Self::TextAd),
+                "TARGET_CPA_OPT_IN" => Some(Self::TargetCpaOptIn),
+                "MAXIMIZE_CONVERSIONS_OPT_IN" => Some(Self::MaximizeConversionsOptIn),
+                "ENHANCED_CPC_OPT_IN" => Some(Self::EnhancedCpcOptIn),
+                "SEARCH_PARTNERS_OPT_IN" => Some(Self::SearchPartnersOptIn),
+                "MAXIMIZE_CLICKS_OPT_IN" => Some(Self::MaximizeClicksOptIn),
+                "OPTIMIZE_AD_ROTATION" => Some(Self::OptimizeAdRotation),
+                "CALLOUT_EXTENSION" => Some(Self::CalloutExtension),
+                "SITELINK_EXTENSION" => Some(Self::SitelinkExtension),
+                "CALL_EXTENSION" => Some(Self::CallExtension),
+                "KEYWORD_MATCH_TYPE" => Some(Self::KeywordMatchType),
+                "MOVE_UNUSED_BUDGET" => Some(Self::MoveUnusedBudget),
+                "FORECASTING_CAMPAIGN_BUDGET" => Some(Self::ForecastingCampaignBudget),
+                "TARGET_ROAS_OPT_IN" => Some(Self::TargetRoasOptIn),
+                "RESPONSIVE_SEARCH_AD" => Some(Self::ResponsiveSearchAd),
+                "MARGINAL_ROI_CAMPAIGN_BUDGET" => Some(Self::MarginalRoiCampaignBudget),
+                "USE_BROAD_MATCH_KEYWORD" => Some(Self::UseBroadMatchKeyword),
+                "RESPONSIVE_SEARCH_AD_ASSET" => Some(Self::ResponsiveSearchAdAsset),
+                "UPGRADE_SMART_SHOPPING_CAMPAIGN_TO_PERFORMANCE_MAX" => {
+                    Some(Self::UpgradeSmartShoppingCampaignToPerformanceMax)
+                }
+                "RESPONSIVE_SEARCH_AD_IMPROVE_AD_STRENGTH" => {
+                    Some(Self::ResponsiveSearchAdImproveAdStrength)
+                }
+                "DISPLAY_EXPANSION_OPT_IN" => Some(Self::DisplayExpansionOptIn),
+                "UPGRADE_LOCAL_CAMPAIGN_TO_PERFORMANCE_MAX" => {
+                    Some(Self::UpgradeLocalCampaignToPerformanceMax)
+                }
+                "RAISE_TARGET_CPA_BID_TOO_LOW" => Some(Self::RaiseTargetCpaBidTooLow),
+                "FORECASTING_SET_TARGET_ROAS" => Some(Self::ForecastingSetTargetRoas),
+                _ => None,
+            }
+        }
     }
 }
 /// The type of the search engine results page.
@@ -6212,6 +7738,17 @@ pub mod search_engine_results_page_type_enum {
                 SearchEngineResultsPageType::AdsOnly => "ADS_ONLY",
                 SearchEngineResultsPageType::OrganicOnly => "ORGANIC_ONLY",
                 SearchEngineResultsPageType::AdsAndOrganic => "ADS_AND_ORGANIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADS_ONLY" => Some(Self::AdsOnly),
+                "ORGANIC_ONLY" => Some(Self::OrganicOnly),
+                "ADS_AND_ORGANIC" => Some(Self::AdsAndOrganic),
+                _ => None,
             }
         }
     }
@@ -6267,6 +7804,19 @@ pub mod search_term_match_type_enum {
                 SearchTermMatchType::NearPhrase => "NEAR_PHRASE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BROAD" => Some(Self::Broad),
+                "EXACT" => Some(Self::Exact),
+                "PHRASE" => Some(Self::Phrase),
+                "NEAR_EXACT" => Some(Self::NearExact),
+                "NEAR_PHRASE" => Some(Self::NearPhrase),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of SkAdNetwork ad event types.
@@ -6313,6 +7863,17 @@ pub mod sk_ad_network_ad_event_type_enum {
                 SkAdNetworkAdEventType::Unavailable => "UNAVAILABLE",
                 SkAdNetworkAdEventType::Interaction => "INTERACTION",
                 SkAdNetworkAdEventType::View => "VIEW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "INTERACTION" => Some(Self::Interaction),
+                "VIEW" => Some(Self::View),
+                _ => None,
             }
         }
     }
@@ -6364,6 +7925,17 @@ pub mod sk_ad_network_attribution_credit_enum {
                 SkAdNetworkAttributionCredit::Contributed => "CONTRIBUTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "WON" => Some(Self::Won),
+                "CONTRIBUTED" => Some(Self::Contributed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of SkAdNetwork user types.
@@ -6410,6 +7982,17 @@ pub mod sk_ad_network_user_type_enum {
                 SkAdNetworkUserType::Unavailable => "UNAVAILABLE",
                 SkAdNetworkUserType::NewInstaller => "NEW_INSTALLER",
                 SkAdNetworkUserType::Reinstaller => "REINSTALLER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "NEW_INSTALLER" => Some(Self::NewInstaller),
+                "REINSTALLER" => Some(Self::Reinstaller),
+                _ => None,
             }
         }
     }
@@ -6471,6 +8054,21 @@ pub mod slot_enum {
                 Slot::Mixed => "MIXED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH_SIDE" => Some(Self::SearchSide),
+                "SEARCH_TOP" => Some(Self::SearchTop),
+                "SEARCH_OTHER" => Some(Self::SearchOther),
+                "CONTENT" => Some(Self::Content),
+                "SEARCH_PARTNER_TOP" => Some(Self::SearchPartnerTop),
+                "SEARCH_PARTNER_OTHER" => Some(Self::SearchPartnerOther),
+                "MIXED" => Some(Self::Mixed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the format of the web page where the tracking
@@ -6515,6 +8113,16 @@ pub mod tracking_code_page_format_enum {
                 TrackingCodePageFormat::Unknown => "UNKNOWN",
                 TrackingCodePageFormat::Html => "HTML",
                 TrackingCodePageFormat::Amp => "AMP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HTML" => Some(Self::Html),
+                "AMP" => Some(Self::Amp),
+                _ => None,
             }
         }
     }
@@ -6570,6 +8178,18 @@ pub mod tracking_code_type_enum {
                 TrackingCodeType::WebpageOnclick => "WEBPAGE_ONCLICK",
                 TrackingCodeType::ClickToCall => "CLICK_TO_CALL",
                 TrackingCodeType::WebsiteCall => "WEBSITE_CALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBPAGE" => Some(Self::Webpage),
+                "WEBPAGE_ONCLICK" => Some(Self::WebpageOnclick),
+                "CLICK_TO_CALL" => Some(Self::ClickToCall),
+                "WEBSITE_CALL" => Some(Self::WebsiteCall),
+                _ => None,
             }
         }
     }
@@ -6640,6 +8260,22 @@ pub mod targeting_dimension_enum {
                 TargetingDimension::IncomeRange => "INCOME_RANGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "AUDIENCE" => Some(Self::Audience),
+                "TOPIC" => Some(Self::Topic),
+                "GENDER" => Some(Self::Gender),
+                "AGE_RANGE" => Some(Self::AgeRange),
+                "PLACEMENT" => Some(Self::Placement),
+                "PARENTAL_STATUS" => Some(Self::ParentalStatus),
+                "INCOME_RANGE" => Some(Self::IncomeRange),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates what type of data are the user list's members matched from.
@@ -6691,6 +8327,17 @@ pub mod customer_match_upload_key_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CONTACT_INFO" => Some(Self::ContactInfo),
+                "CRM_ID" => Some(Self::CrmId),
+                "MOBILE_ADVERTISING_ID" => Some(Self::MobileAdvertisingId),
+                _ => None,
+            }
+        }
     }
 }
 /// Logical operator connecting two rules.
@@ -6733,6 +8380,16 @@ pub mod user_list_combined_rule_operator_enum {
                 UserListCombinedRuleOperator::Unknown => "UNKNOWN",
                 UserListCombinedRuleOperator::And => "AND",
                 UserListCombinedRuleOperator::AndNot => "AND_NOT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AND" => Some(Self::And),
+                "AND_NOT" => Some(Self::AndNot),
+                _ => None,
             }
         }
     }
@@ -6786,6 +8443,17 @@ pub mod user_list_crm_data_source_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FIRST_PARTY" => Some(Self::FirstParty),
+                "THIRD_PARTY_CREDIT_BUREAU" => Some(Self::ThirdPartyCreditBureau),
+                "THIRD_PARTY_VOTER_FILE" => Some(Self::ThirdPartyVoterFile),
+                _ => None,
+            }
+        }
     }
 }
 /// Supported rule operator for date type.
@@ -6836,6 +8504,18 @@ pub mod user_list_date_rule_item_operator_enum {
                 UserListDateRuleItemOperator::After => "AFTER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EQUALS" => Some(Self::Equals),
+                "NOT_EQUALS" => Some(Self::NotEquals),
+                "BEFORE" => Some(Self::Before),
+                "AFTER" => Some(Self::After),
+                _ => None,
+            }
+        }
     }
 }
 /// Logical operator connecting two rules.
@@ -6878,6 +8558,16 @@ pub mod user_list_flexible_rule_operator_enum {
                 UserListFlexibleRuleOperator::Unknown => "UNKNOWN",
                 UserListFlexibleRuleOperator::And => "AND",
                 UserListFlexibleRuleOperator::Or => "OR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AND" => Some(Self::And),
+                "OR" => Some(Self::Or),
+                _ => None,
             }
         }
     }
@@ -6925,6 +8615,17 @@ pub mod user_list_logical_rule_operator_enum {
                 UserListLogicalRuleOperator::All => "ALL",
                 UserListLogicalRuleOperator::Any => "ANY",
                 UserListLogicalRuleOperator::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL" => Some(Self::All),
+                "ANY" => Some(Self::Any),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -6985,6 +8686,20 @@ pub mod user_list_number_rule_item_operator_enum {
                 UserListNumberRuleItemOperator::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GREATER_THAN" => Some(Self::GreaterThan),
+                "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                "EQUALS" => Some(Self::Equals),
+                "NOT_EQUALS" => Some(Self::NotEquals),
+                "LESS_THAN" => Some(Self::LessThan),
+                "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates status of prepopulation based on the rule.
@@ -7032,6 +8747,17 @@ pub mod user_list_prepopulation_status_enum {
                 UserListPrepopulationStatus::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REQUESTED" => Some(Self::Requested),
+                "FINISHED" => Some(Self::Finished),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
 /// Rule based user list rule type.
@@ -7074,6 +8800,16 @@ pub mod user_list_rule_type_enum {
                 UserListRuleType::Unknown => "UNKNOWN",
                 UserListRuleType::AndOfOrs => "AND_OF_ORS",
                 UserListRuleType::OrOfAnds => "OR_OF_ANDS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AND_OF_ORS" => Some(Self::AndOfOrs),
+                "OR_OF_ANDS" => Some(Self::OrOfAnds),
+                _ => None,
             }
         }
     }
@@ -7138,6 +8874,22 @@ pub mod user_list_string_rule_item_operator_enum {
                 UserListStringRuleItemOperator::NotEndsWith => "NOT_ENDS_WITH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CONTAINS" => Some(Self::Contains),
+                "EQUALS" => Some(Self::Equals),
+                "STARTS_WITH" => Some(Self::StartsWith),
+                "ENDS_WITH" => Some(Self::EndsWith),
+                "NOT_EQUALS" => Some(Self::NotEquals),
+                "NOT_CONTAINS" => Some(Self::NotContains),
+                "NOT_STARTS_WITH" => Some(Self::NotStartsWith),
+                "NOT_ENDS_WITH" => Some(Self::NotEndsWith),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum for identifying the status of access invitation
@@ -7185,6 +8937,17 @@ pub mod access_invitation_status_enum {
                 AccessInvitationStatus::Pending => "PENDING",
                 AccessInvitationStatus::Declined => "DECLINED",
                 AccessInvitationStatus::Expired => "EXPIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "DECLINED" => Some(Self::Declined),
+                "EXPIRED" => Some(Self::Expired),
+                _ => None,
             }
         }
     }
@@ -7240,6 +9003,19 @@ pub mod access_reason_enum {
                 AccessReason::Affiliated => "AFFILIATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OWNED" => Some(Self::Owned),
+                "SHARED" => Some(Self::Shared),
+                "LICENSED" => Some(Self::Licensed),
+                "SUBSCRIBED" => Some(Self::Subscribed),
+                "AFFILIATED" => Some(Self::Affiliated),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible access role for user.
@@ -7289,6 +9065,18 @@ pub mod access_role_enum {
                 AccessRole::Standard => "STANDARD",
                 AccessRole::ReadOnly => "READ_ONLY",
                 AccessRole::EmailOnly => "EMAIL_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADMIN" => Some(Self::Admin),
+                "STANDARD" => Some(Self::Standard),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "EMAIL_ONLY" => Some(Self::EmailOnly),
+                _ => None,
             }
         }
     }
@@ -7348,6 +9136,19 @@ pub mod account_budget_proposal_status_enum {
                 AccountBudgetProposalStatus::Rejected => "REJECTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "APPROVED_HELD" => Some(Self::ApprovedHeld),
+                "APPROVED" => Some(Self::Approved),
+                "CANCELLED" => Some(Self::Cancelled),
+                "REJECTED" => Some(Self::Rejected),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing AccountBudgetProposal types.
@@ -7398,6 +9199,18 @@ pub mod account_budget_proposal_type_enum {
                 AccountBudgetProposalType::Remove => "REMOVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "END" => Some(Self::End),
+                "REMOVE" => Some(Self::Remove),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing AccountBudget statuses.
@@ -7443,6 +9256,17 @@ pub mod account_budget_status_enum {
                 AccountBudgetStatus::Pending => "PENDING",
                 AccountBudgetStatus::Approved => "APPROVED",
                 AccountBudgetStatus::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "APPROVED" => Some(Self::Approved),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -7504,6 +9328,20 @@ pub mod account_link_status_enum {
                 AccountLinkStatus::Revoked => "REVOKED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "REQUESTED" => Some(Self::Requested),
+                "PENDING_APPROVAL" => Some(Self::PendingApproval),
+                "REJECTED" => Some(Self::Rejected),
+                "REVOKED" => Some(Self::Revoked),
+                _ => None,
+            }
+        }
     }
 }
 /// Values for Ad Customizer placeholder fields.
@@ -7554,6 +9392,18 @@ pub mod ad_customizer_placeholder_field_enum {
                 AdCustomizerPlaceholderField::String => "STRING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INTEGER" => Some(Self::Integer),
+                "PRICE" => Some(Self::Price),
+                "DATE" => Some(Self::Date),
+                "STRING" => Some(Self::String),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible ad rotation modes of ads within an
@@ -7599,6 +9449,16 @@ pub mod ad_group_ad_rotation_mode_enum {
                 AdGroupAdRotationMode::Unknown => "UNKNOWN",
                 AdGroupAdRotationMode::Optimize => "OPTIMIZE",
                 AdGroupAdRotationMode::RotateForever => "ROTATE_FOREVER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPTIMIZE" => Some(Self::Optimize),
+                "ROTATE_FOREVER" => Some(Self::RotateForever),
+                _ => None,
             }
         }
     }
@@ -7648,6 +9508,17 @@ pub mod ad_group_ad_status_enum {
                 AdGroupAdStatus::Enabled => "ENABLED",
                 AdGroupAdStatus::Paused => "PAUSED",
                 AdGroupAdStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -7700,6 +9571,18 @@ pub mod ad_group_criterion_approval_status_enum {
                 AdGroupCriterionApprovalStatus::UnderReview => "UNDER_REVIEW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPROVED" => Some(Self::Approved),
+                "DISAPPROVED" => Some(Self::Disapproved),
+                "PENDING_REVIEW" => Some(Self::PendingReview),
+                "UNDER_REVIEW" => Some(Self::UnderReview),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing AdGroupCriterion statuses.
@@ -7749,6 +9632,17 @@ pub mod ad_group_criterion_status_enum {
                 AdGroupCriterionStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of an ad group.
@@ -7796,6 +9690,17 @@ pub mod ad_group_status_enum {
                 AdGroupStatus::Enabled => "ENABLED",
                 AdGroupStatus::Paused => "PAUSED",
                 AdGroupStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -7890,6 +9795,32 @@ pub mod ad_group_type_enum {
                 AdGroupType::SmartCampaignAds => "SMART_CAMPAIGN_ADS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH_STANDARD" => Some(Self::SearchStandard),
+                "DISPLAY_STANDARD" => Some(Self::DisplayStandard),
+                "SHOPPING_PRODUCT_ADS" => Some(Self::ShoppingProductAds),
+                "HOTEL_ADS" => Some(Self::HotelAds),
+                "SHOPPING_SMART_ADS" => Some(Self::ShoppingSmartAds),
+                "VIDEO_BUMPER" => Some(Self::VideoBumper),
+                "VIDEO_TRUE_VIEW_IN_STREAM" => Some(Self::VideoTrueViewInStream),
+                "VIDEO_TRUE_VIEW_IN_DISPLAY" => Some(Self::VideoTrueViewInDisplay),
+                "VIDEO_NON_SKIPPABLE_IN_STREAM" => Some(Self::VideoNonSkippableInStream),
+                "VIDEO_OUTSTREAM" => Some(Self::VideoOutstream),
+                "SEARCH_DYNAMIC_ADS" => Some(Self::SearchDynamicAds),
+                "SHOPPING_COMPARISON_LISTING_ADS" => {
+                    Some(Self::ShoppingComparisonListingAds)
+                }
+                "PROMOTED_HOTEL_ADS" => Some(Self::PromotedHotelAds),
+                "VIDEO_RESPONSIVE" => Some(Self::VideoResponsive),
+                "VIDEO_EFFICIENT_REACH" => Some(Self::VideoEfficientReach),
+                "SMART_CAMPAIGN_ADS" => Some(Self::SmartCampaignAds),
+                _ => None,
+            }
+        }
     }
 }
 /// Possible ad serving statuses of a campaign.
@@ -7948,6 +9879,19 @@ pub mod ad_serving_optimization_status_enum {
                 AdServingOptimizationStatus::Unavailable => "UNAVAILABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPTIMIZE" => Some(Self::Optimize),
+                "CONVERSION_OPTIMIZE" => Some(Self::ConversionOptimize),
+                "ROTATE" => Some(Self::Rotate),
+                "ROTATE_INDEFINITELY" => Some(Self::RotateIndefinitely),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible ad strengths.
@@ -8002,6 +9946,20 @@ pub mod ad_strength_enum {
                 AdStrength::Average => "AVERAGE",
                 AdStrength::Good => "GOOD",
                 AdStrength::Excellent => "EXCELLENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "NO_ADS" => Some(Self::NoAds),
+                "POOR" => Some(Self::Poor),
+                "AVERAGE" => Some(Self::Average),
+                "GOOD" => Some(Self::Good),
+                "EXCELLENT" => Some(Self::Excellent),
+                _ => None,
             }
         }
     }
@@ -8132,6 +10090,47 @@ pub mod ad_type_enum {
                 AdType::DiscoveryCarouselAd => "DISCOVERY_CAROUSEL_AD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT_AD" => Some(Self::TextAd),
+                "EXPANDED_TEXT_AD" => Some(Self::ExpandedTextAd),
+                "EXPANDED_DYNAMIC_SEARCH_AD" => Some(Self::ExpandedDynamicSearchAd),
+                "HOTEL_AD" => Some(Self::HotelAd),
+                "SHOPPING_SMART_AD" => Some(Self::ShoppingSmartAd),
+                "SHOPPING_PRODUCT_AD" => Some(Self::ShoppingProductAd),
+                "VIDEO_AD" => Some(Self::VideoAd),
+                "IMAGE_AD" => Some(Self::ImageAd),
+                "RESPONSIVE_SEARCH_AD" => Some(Self::ResponsiveSearchAd),
+                "LEGACY_RESPONSIVE_DISPLAY_AD" => Some(Self::LegacyResponsiveDisplayAd),
+                "APP_AD" => Some(Self::AppAd),
+                "LEGACY_APP_INSTALL_AD" => Some(Self::LegacyAppInstallAd),
+                "RESPONSIVE_DISPLAY_AD" => Some(Self::ResponsiveDisplayAd),
+                "LOCAL_AD" => Some(Self::LocalAd),
+                "HTML5_UPLOAD_AD" => Some(Self::Html5UploadAd),
+                "DYNAMIC_HTML5_AD" => Some(Self::DynamicHtml5Ad),
+                "APP_ENGAGEMENT_AD" => Some(Self::AppEngagementAd),
+                "SHOPPING_COMPARISON_LISTING_AD" => {
+                    Some(Self::ShoppingComparisonListingAd)
+                }
+                "VIDEO_BUMPER_AD" => Some(Self::VideoBumperAd),
+                "VIDEO_NON_SKIPPABLE_IN_STREAM_AD" => {
+                    Some(Self::VideoNonSkippableInStreamAd)
+                }
+                "VIDEO_OUTSTREAM_AD" => Some(Self::VideoOutstreamAd),
+                "VIDEO_TRUEVIEW_IN_STREAM_AD" => Some(Self::VideoTrueviewInStreamAd),
+                "VIDEO_RESPONSIVE_AD" => Some(Self::VideoResponsiveAd),
+                "SMART_CAMPAIGN_AD" => Some(Self::SmartCampaignAd),
+                "CALL_AD" => Some(Self::CallAd),
+                "APP_PRE_REGISTRATION_AD" => Some(Self::AppPreRegistrationAd),
+                "IN_FEED_VIDEO_AD" => Some(Self::InFeedVideoAd),
+                "DISCOVERY_MULTI_ASSET_AD" => Some(Self::DiscoveryMultiAssetAd),
+                "DISCOVERY_CAROUSEL_AD" => Some(Self::DiscoveryCarouselAd),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible values for a relationship type for
@@ -8174,6 +10173,15 @@ pub mod affiliate_location_feed_relationship_type_enum {
                 AffiliateLocationFeedRelationshipType::GeneralRetailer => {
                     "GENERAL_RETAILER"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GENERAL_RETAILER" => Some(Self::GeneralRetailer),
+                _ => None,
             }
         }
     }
@@ -8247,6 +10255,25 @@ pub mod affiliate_location_placeholder_field_enum {
                 AffiliateLocationPlaceholderField::ChainName => "CHAIN_NAME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "ADDRESS_LINE_1" => Some(Self::AddressLine1),
+                "ADDRESS_LINE_2" => Some(Self::AddressLine2),
+                "CITY" => Some(Self::City),
+                "PROVINCE" => Some(Self::Province),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "LANGUAGE_CODE" => Some(Self::LanguageCode),
+                "CHAIN_ID" => Some(Self::ChainId),
+                "CHAIN_NAME" => Some(Self::ChainName),
+                _ => None,
+            }
+        }
     }
 }
 /// The application store that distributes mobile applications.
@@ -8289,6 +10316,16 @@ pub mod app_campaign_app_store_enum {
                 AppCampaignAppStore::Unknown => "UNKNOWN",
                 AppCampaignAppStore::AppleAppStore => "APPLE_APP_STORE",
                 AppCampaignAppStore::GoogleAppStore => "GOOGLE_APP_STORE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_APP_STORE" => Some(Self::AppleAppStore),
+                "GOOGLE_APP_STORE" => Some(Self::GoogleAppStore),
+                _ => None,
             }
         }
     }
@@ -8367,6 +10404,32 @@ pub mod app_campaign_bidding_strategy_goal_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPTIMIZE_INSTALLS_TARGET_INSTALL_COST" => {
+                    Some(Self::OptimizeInstallsTargetInstallCost)
+                }
+                "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_INSTALL_COST" => {
+                    Some(Self::OptimizeInAppConversionsTargetInstallCost)
+                }
+                "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_CONVERSION_COST" => {
+                    Some(Self::OptimizeInAppConversionsTargetConversionCost)
+                }
+                "OPTIMIZE_RETURN_ON_ADVERTISING_SPEND" => {
+                    Some(Self::OptimizeReturnOnAdvertisingSpend)
+                }
+                "OPTIMIZE_PRE_REGISTRATION_CONVERSION_VOLUME" => {
+                    Some(Self::OptimizePreRegistrationConversionVolume)
+                }
+                "OPTIMIZE_INSTALLS_WITHOUT_TARGET_INSTALL_COST" => {
+                    Some(Self::OptimizeInstallsWithoutTargetInstallCost)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Values for App placeholder fields.
@@ -8434,6 +10497,22 @@ pub mod app_placeholder_field_enum {
                 AppPlaceholderField::FinalMobileUrls => "FINAL_MOBILE_URLS",
                 AppPlaceholderField::TrackingUrl => "TRACKING_URL",
                 AppPlaceholderField::FinalUrlSuffix => "FINAL_URL_SUFFIX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STORE" => Some(Self::Store),
+                "ID" => Some(Self::Id),
+                "LINK_TEXT" => Some(Self::LinkText),
+                "URL" => Some(Self::Url),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                _ => None,
             }
         }
     }
@@ -8550,6 +10629,39 @@ pub mod asset_field_type_enum {
                 AssetFieldType::AdImage => "AD_IMAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HEADLINE" => Some(Self::Headline),
+                "DESCRIPTION" => Some(Self::Description),
+                "MANDATORY_AD_TEXT" => Some(Self::MandatoryAdText),
+                "MARKETING_IMAGE" => Some(Self::MarketingImage),
+                "MEDIA_BUNDLE" => Some(Self::MediaBundle),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "BOOK_ON_GOOGLE" => Some(Self::BookOnGoogle),
+                "LEAD_FORM" => Some(Self::LeadForm),
+                "PROMOTION" => Some(Self::Promotion),
+                "CALLOUT" => Some(Self::Callout),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "SITELINK" => Some(Self::Sitelink),
+                "MOBILE_APP" => Some(Self::MobileApp),
+                "HOTEL_CALLOUT" => Some(Self::HotelCallout),
+                "CALL" => Some(Self::Call),
+                "PRICE" => Some(Self::Price),
+                "LONG_HEADLINE" => Some(Self::LongHeadline),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "SQUARE_MARKETING_IMAGE" => Some(Self::SquareMarketingImage),
+                "PORTRAIT_MARKETING_IMAGE" => Some(Self::PortraitMarketingImage),
+                "LOGO" => Some(Self::Logo),
+                "LANDSCAPE_LOGO" => Some(Self::LandscapeLogo),
+                "VIDEO" => Some(Self::Video),
+                "CALL_TO_ACTION_SELECTION" => Some(Self::CallToActionSelection),
+                "AD_IMAGE" => Some(Self::AdImage),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of an asset group.
@@ -8595,6 +10707,17 @@ pub mod asset_group_status_enum {
                 AssetGroupStatus::Enabled => "ENABLED",
                 AssetGroupStatus::Paused => "PAUSED",
                 AssetGroupStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -8644,6 +10767,17 @@ pub mod asset_link_status_enum {
                 AssetLinkStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of an asset set asset.
@@ -8687,6 +10821,16 @@ pub mod asset_set_asset_status_enum {
                 AssetSetAssetStatus::Unknown => "UNKNOWN",
                 AssetSetAssetStatus::Enabled => "ENABLED",
                 AssetSetAssetStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -8735,6 +10879,16 @@ pub mod asset_set_link_status_enum {
                 AssetSetLinkStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of an asset set.
@@ -8778,6 +10932,16 @@ pub mod asset_set_status_enum {
                 AssetSetStatus::Unknown => "UNKNOWN",
                 AssetSetStatus::Enabled => "ENABLED",
                 AssetSetStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -8864,6 +11028,30 @@ pub mod asset_set_type_enum {
                 AssetSetType::StaticLocationGroup => "STATIC_LOCATION_GROUP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PAGE_FEED" => Some(Self::PageFeed),
+                "DYNAMIC_EDUCATION" => Some(Self::DynamicEducation),
+                "MERCHANT_CENTER_FEED" => Some(Self::MerchantCenterFeed),
+                "DYNAMIC_REAL_ESTATE" => Some(Self::DynamicRealEstate),
+                "DYNAMIC_CUSTOM" => Some(Self::DynamicCustom),
+                "DYNAMIC_HOTELS_AND_RENTALS" => Some(Self::DynamicHotelsAndRentals),
+                "DYNAMIC_FLIGHTS" => Some(Self::DynamicFlights),
+                "DYNAMIC_TRAVEL" => Some(Self::DynamicTravel),
+                "DYNAMIC_LOCAL" => Some(Self::DynamicLocal),
+                "DYNAMIC_JOBS" => Some(Self::DynamicJobs),
+                "LOCATION_SYNC" => Some(Self::LocationSync),
+                "BUSINESS_PROFILE_DYNAMIC_LOCATION_GROUP" => {
+                    Some(Self::BusinessProfileDynamicLocationGroup)
+                }
+                "CHAIN_DYNAMIC_LOCATION_GROUP" => Some(Self::ChainDynamicLocationGroup),
+                "STATIC_LOCATION_GROUP" => Some(Self::StaticLocationGroup),
+                _ => None,
+            }
+        }
     }
 }
 /// Source of the asset or asset link for who generated the entity.
@@ -8907,6 +11095,16 @@ pub mod asset_source_enum {
                 AssetSource::Unknown => "UNKNOWN",
                 AssetSource::Advertiser => "ADVERTISER",
                 AssetSource::AutomaticallyCreated => "AUTOMATICALLY_CREATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADVERTISER" => Some(Self::Advertiser),
+                "AUTOMATICALLY_CREATED" => Some(Self::AutomaticallyCreated),
+                _ => None,
             }
         }
     }
@@ -9025,6 +11223,40 @@ pub mod asset_type_enum {
                 AssetType::Location => "LOCATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "MEDIA_BUNDLE" => Some(Self::MediaBundle),
+                "IMAGE" => Some(Self::Image),
+                "TEXT" => Some(Self::Text),
+                "LEAD_FORM" => Some(Self::LeadForm),
+                "BOOK_ON_GOOGLE" => Some(Self::BookOnGoogle),
+                "PROMOTION" => Some(Self::Promotion),
+                "CALLOUT" => Some(Self::Callout),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "SITELINK" => Some(Self::Sitelink),
+                "PAGE_FEED" => Some(Self::PageFeed),
+                "DYNAMIC_EDUCATION" => Some(Self::DynamicEducation),
+                "MOBILE_APP" => Some(Self::MobileApp),
+                "HOTEL_CALLOUT" => Some(Self::HotelCallout),
+                "CALL" => Some(Self::Call),
+                "PRICE" => Some(Self::Price),
+                "CALL_TO_ACTION" => Some(Self::CallToAction),
+                "DYNAMIC_REAL_ESTATE" => Some(Self::DynamicRealEstate),
+                "DYNAMIC_CUSTOM" => Some(Self::DynamicCustom),
+                "DYNAMIC_HOTELS_AND_RENTALS" => Some(Self::DynamicHotelsAndRentals),
+                "DYNAMIC_FLIGHTS" => Some(Self::DynamicFlights),
+                "DISCOVERY_CAROUSEL_CARD" => Some(Self::DiscoveryCarouselCard),
+                "DYNAMIC_TRAVEL" => Some(Self::DynamicTravel),
+                "DYNAMIC_LOCAL" => Some(Self::DynamicLocal),
+                "DYNAMIC_JOBS" => Some(Self::DynamicJobs),
+                "LOCATION" => Some(Self::Location),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the experiment async action status.
@@ -9076,6 +11308,19 @@ pub mod async_action_status_enum {
                 AsyncActionStatus::Completed => "COMPLETED",
                 AsyncActionStatus::Failed => "FAILED",
                 AsyncActionStatus::CompletedWithWarning => "COMPLETED_WITH_WARNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOT_STARTED" => Some(Self::NotStarted),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "COMPLETED" => Some(Self::Completed),
+                "FAILED" => Some(Self::Failed),
+                "COMPLETED_WITH_WARNING" => Some(Self::CompletedWithWarning),
+                _ => None,
             }
         }
     }
@@ -9154,6 +11399,31 @@ pub mod attribution_model_enum {
                 AttributionModel::GoogleSearchAttributionDataDriven => {
                     "GOOGLE_SEARCH_ATTRIBUTION_DATA_DRIVEN"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXTERNAL" => Some(Self::External),
+                "GOOGLE_ADS_LAST_CLICK" => Some(Self::GoogleAdsLastClick),
+                "GOOGLE_SEARCH_ATTRIBUTION_FIRST_CLICK" => {
+                    Some(Self::GoogleSearchAttributionFirstClick)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_LINEAR" => {
+                    Some(Self::GoogleSearchAttributionLinear)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_TIME_DECAY" => {
+                    Some(Self::GoogleSearchAttributionTimeDecay)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_POSITION_BASED" => {
+                    Some(Self::GoogleSearchAttributionPositionBased)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_DATA_DRIVEN" => {
+                    Some(Self::GoogleSearchAttributionDataDriven)
+                }
+                _ => None,
             }
         }
     }
@@ -9236,6 +11506,26 @@ pub mod audience_insights_dimension_enum {
                 AudienceInsightsDimension::Gender => "GENDER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CATEGORY" => Some(Self::Category),
+                "KNOWLEDGE_GRAPH" => Some(Self::KnowledgeGraph),
+                "GEO_TARGET_COUNTRY" => Some(Self::GeoTargetCountry),
+                "SUB_COUNTRY_LOCATION" => Some(Self::SubCountryLocation),
+                "YOUTUBE_CHANNEL" => Some(Self::YoutubeChannel),
+                "YOUTUBE_DYNAMIC_LINEUP" => Some(Self::YoutubeDynamicLineup),
+                "AFFINITY_USER_INTEREST" => Some(Self::AffinityUserInterest),
+                "IN_MARKET_USER_INTEREST" => Some(Self::InMarketUserInterest),
+                "PARENTAL_STATUS" => Some(Self::ParentalStatus),
+                "INCOME_RANGE" => Some(Self::IncomeRange),
+                "AGE_RANGE" => Some(Self::AgeRange),
+                "GENDER" => Some(Self::Gender),
+                _ => None,
+            }
+        }
     }
 }
 /// The status of audience.
@@ -9279,6 +11569,16 @@ pub mod audience_status_enum {
                 AudienceStatus::Unknown => "UNKNOWN",
                 AudienceStatus::Enabled => "ENABLED",
                 AudienceStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -9328,6 +11628,17 @@ pub mod batch_job_status_enum {
                 BatchJobStatus::Done => "DONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible bid modifier sources.
@@ -9371,6 +11682,16 @@ pub mod bid_modifier_source_enum {
                 BidModifierSource::Unknown => "UNKNOWN",
                 BidModifierSource::Campaign => "CAMPAIGN",
                 BidModifierSource::AdGroup => "AD_GROUP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "AD_GROUP" => Some(Self::AdGroup),
+                _ => None,
             }
         }
     }
@@ -9422,6 +11743,17 @@ pub mod bidding_source_enum {
                 BiddingSource::AdGroupCriterion => "AD_GROUP_CRITERION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN_BIDDING_STRATEGY" => Some(Self::CampaignBiddingStrategy),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "AD_GROUP_CRITERION" => Some(Self::AdGroupCriterion),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing BiddingStrategy statuses.
@@ -9466,6 +11798,16 @@ pub mod bidding_strategy_status_enum {
                 BiddingStrategyStatus::Unknown => "UNKNOWN",
                 BiddingStrategyStatus::Enabled => "ENABLED",
                 BiddingStrategyStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -9633,6 +11975,49 @@ pub mod bidding_strategy_system_status_enum {
                 BiddingStrategySystemStatus::Multiple => "MULTIPLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "LEARNING_NEW" => Some(Self::LearningNew),
+                "LEARNING_SETTING_CHANGE" => Some(Self::LearningSettingChange),
+                "LEARNING_BUDGET_CHANGE" => Some(Self::LearningBudgetChange),
+                "LEARNING_COMPOSITION_CHANGE" => Some(Self::LearningCompositionChange),
+                "LEARNING_CONVERSION_TYPE_CHANGE" => {
+                    Some(Self::LearningConversionTypeChange)
+                }
+                "LEARNING_CONVERSION_SETTING_CHANGE" => {
+                    Some(Self::LearningConversionSettingChange)
+                }
+                "LIMITED_BY_CPC_BID_CEILING" => Some(Self::LimitedByCpcBidCeiling),
+                "LIMITED_BY_CPC_BID_FLOOR" => Some(Self::LimitedByCpcBidFloor),
+                "LIMITED_BY_DATA" => Some(Self::LimitedByData),
+                "LIMITED_BY_BUDGET" => Some(Self::LimitedByBudget),
+                "LIMITED_BY_LOW_PRIORITY_SPEND" => Some(Self::LimitedByLowPrioritySpend),
+                "LIMITED_BY_LOW_QUALITY" => Some(Self::LimitedByLowQuality),
+                "LIMITED_BY_INVENTORY" => Some(Self::LimitedByInventory),
+                "MISCONFIGURED_ZERO_ELIGIBILITY" => {
+                    Some(Self::MisconfiguredZeroEligibility)
+                }
+                "MISCONFIGURED_CONVERSION_TYPES" => {
+                    Some(Self::MisconfiguredConversionTypes)
+                }
+                "MISCONFIGURED_CONVERSION_SETTINGS" => {
+                    Some(Self::MisconfiguredConversionSettings)
+                }
+                "MISCONFIGURED_SHARED_BUDGET" => Some(Self::MisconfiguredSharedBudget),
+                "MISCONFIGURED_STRATEGY_TYPE" => Some(Self::MisconfiguredStrategyType),
+                "PAUSED" => Some(Self::Paused),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "MULTIPLE_LEARNING" => Some(Self::MultipleLearning),
+                "MULTIPLE_LIMITED" => Some(Self::MultipleLimited),
+                "MULTIPLE_MISCONFIGURED" => Some(Self::MultipleMisconfigured),
+                "MULTIPLE" => Some(Self::Multiple),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible bidding strategy types.
@@ -9752,6 +12137,31 @@ pub mod bidding_strategy_type_enum {
                 BiddingStrategyType::TargetSpend => "TARGET_SPEND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "COMMISSION" => Some(Self::Commission),
+                "ENHANCED_CPC" => Some(Self::EnhancedCpc),
+                "INVALID" => Some(Self::Invalid),
+                "MANUAL_CPA" => Some(Self::ManualCpa),
+                "MANUAL_CPC" => Some(Self::ManualCpc),
+                "MANUAL_CPM" => Some(Self::ManualCpm),
+                "MANUAL_CPV" => Some(Self::ManualCpv),
+                "MAXIMIZE_CONVERSIONS" => Some(Self::MaximizeConversions),
+                "MAXIMIZE_CONVERSION_VALUE" => Some(Self::MaximizeConversionValue),
+                "PAGE_ONE_PROMOTED" => Some(Self::PageOnePromoted),
+                "PERCENT_CPC" => Some(Self::PercentCpc),
+                "TARGET_CPA" => Some(Self::TargetCpa),
+                "TARGET_CPM" => Some(Self::TargetCpm),
+                "TARGET_IMPRESSION_SHARE" => Some(Self::TargetImpressionShare),
+                "TARGET_OUTRANK_SHARE" => Some(Self::TargetOutrankShare),
+                "TARGET_ROAS" => Some(Self::TargetRoas),
+                "TARGET_SPEND" => Some(Self::TargetSpend),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing BillingSetup statuses.
@@ -9802,6 +12212,18 @@ pub mod billing_setup_status_enum {
                 BillingSetupStatus::ApprovedHeld => "APPROVED_HELD",
                 BillingSetupStatus::Approved => "APPROVED",
                 BillingSetupStatus::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "APPROVED_HELD" => Some(Self::ApprovedHeld),
+                "APPROVED" => Some(Self::Approved),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -9871,6 +12293,17 @@ pub mod brand_safety_suitability_enum {
                 BrandSafetySuitability::LimitedInventory => "LIMITED_INVENTORY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXPANDED_INVENTORY" => Some(Self::ExpandedInventory),
+                "STANDARD_INVENTORY" => Some(Self::StandardInventory),
+                "LIMITED_INVENTORY" => Some(Self::LimitedInventory),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing Budget delivery methods. A delivery method determines the
@@ -9916,6 +12349,16 @@ pub mod budget_delivery_method_enum {
                 BudgetDeliveryMethod::Unknown => "UNKNOWN",
                 BudgetDeliveryMethod::Standard => "STANDARD",
                 BudgetDeliveryMethod::Accelerated => "ACCELERATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STANDARD" => Some(Self::Standard),
+                "ACCELERATED" => Some(Self::Accelerated),
+                _ => None,
             }
         }
     }
@@ -9965,6 +12408,16 @@ pub mod budget_period_enum {
                 BudgetPeriod::CustomPeriod => "CUSTOM_PERIOD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DAILY" => Some(Self::Daily),
+                "CUSTOM_PERIOD" => Some(Self::CustomPeriod),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing a Budget status
@@ -10007,6 +12460,16 @@ pub mod budget_status_enum {
                 BudgetStatus::Unknown => "UNKNOWN",
                 BudgetStatus::Enabled => "ENABLED",
                 BudgetStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -10076,6 +12539,18 @@ pub mod budget_type_enum {
                 BudgetType::LocalServices => "LOCAL_SERVICES",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STANDARD" => Some(Self::Standard),
+                "FIXED_CPA" => Some(Self::FixedCpa),
+                "SMART_CAMPAIGN" => Some(Self::SmartCampaign),
+                "LOCAL_SERVICES" => Some(Self::LocalServices),
+                _ => None,
+            }
+        }
     }
 }
 /// Values for Call placeholder fields.
@@ -10138,6 +12613,19 @@ pub mod call_placeholder_field_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "TRACKED" => Some(Self::Tracked),
+                "CONVERSION_TYPE_ID" => Some(Self::ConversionTypeId),
+                "CONVERSION_REPORTING_STATE" => Some(Self::ConversionReportingState),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible call tracking display locations.
@@ -10180,6 +12668,16 @@ pub mod call_tracking_display_location_enum {
                 CallTrackingDisplayLocation::Unknown => "UNKNOWN",
                 CallTrackingDisplayLocation::Ad => "AD",
                 CallTrackingDisplayLocation::LandingPage => "LANDING_PAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD" => Some(Self::Ad),
+                "LANDING_PAGE" => Some(Self::LandingPage),
+                _ => None,
             }
         }
     }
@@ -10227,6 +12725,16 @@ pub mod call_type_enum {
                 CallType::HighEndMobileSearch => "HIGH_END_MOBILE_SEARCH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MANUALLY_DIALED" => Some(Self::ManuallyDialed),
+                "HIGH_END_MOBILE_SEARCH" => Some(Self::HighEndMobileSearch),
+                _ => None,
+            }
+        }
     }
 }
 /// Values for Callout placeholder fields.
@@ -10266,6 +12774,15 @@ pub mod callout_placeholder_field_enum {
                 CalloutPlaceholderField::Unspecified => "UNSPECIFIED",
                 CalloutPlaceholderField::Unknown => "UNKNOWN",
                 CalloutPlaceholderField::CalloutText => "CALLOUT_TEXT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CALLOUT_TEXT" => Some(Self::CalloutText),
+                _ => None,
             }
         }
     }
@@ -10315,6 +12832,17 @@ pub mod campaign_criterion_status_enum {
                 CampaignCriterionStatus::Enabled => "ENABLED",
                 CampaignCriterionStatus::Paused => "PAUSED",
                 CampaignCriterionStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -10376,6 +12904,19 @@ pub mod campaign_draft_status_enum {
                 CampaignDraftStatus::PromoteFailed => "PROMOTE_FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROPOSED" => Some(Self::Proposed),
+                "REMOVED" => Some(Self::Removed),
+                "PROMOTING" => Some(Self::Promoting),
+                "PROMOTED" => Some(Self::Promoted),
+                "PROMOTE_FAILED" => Some(Self::PromoteFailed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing campaign experiment type.
@@ -10429,6 +12970,17 @@ pub mod campaign_experiment_type_enum {
                 CampaignExperimentType::Experiment => "EXPERIMENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BASE" => Some(Self::Base),
+                "DRAFT" => Some(Self::Draft),
+                "EXPERIMENT" => Some(Self::Experiment),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing CampaignGroup statuses.
@@ -10471,6 +13023,16 @@ pub mod campaign_group_status_enum {
                 CampaignGroupStatus::Unknown => "UNKNOWN",
                 CampaignGroupStatus::Enabled => "ENABLED",
                 CampaignGroupStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -10542,6 +13104,23 @@ pub mod campaign_primary_status_enum {
                 CampaignPrimaryStatus::Limited => "LIMITED",
                 CampaignPrimaryStatus::Learning => "LEARNING",
                 CampaignPrimaryStatus::NotEligible => "NOT_ELIGIBLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ELIGIBLE" => Some(Self::Eligible),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                "ENDED" => Some(Self::Ended),
+                "PENDING" => Some(Self::Pending),
+                "MISCONFIGURED" => Some(Self::Misconfigured),
+                "LIMITED" => Some(Self::Limited),
+                "LEARNING" => Some(Self::Learning),
+                "NOT_ELIGIBLE" => Some(Self::NotEligible),
+                _ => None,
             }
         }
     }
@@ -10723,6 +13302,56 @@ pub mod campaign_primary_status_reason_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN_REMOVED" => Some(Self::CampaignRemoved),
+                "CAMPAIGN_PAUSED" => Some(Self::CampaignPaused),
+                "CAMPAIGN_PENDING" => Some(Self::CampaignPending),
+                "CAMPAIGN_ENDED" => Some(Self::CampaignEnded),
+                "CAMPAIGN_DRAFT" => Some(Self::CampaignDraft),
+                "BIDDING_STRATEGY_MISCONFIGURED" => {
+                    Some(Self::BiddingStrategyMisconfigured)
+                }
+                "BIDDING_STRATEGY_LIMITED" => Some(Self::BiddingStrategyLimited),
+                "BIDDING_STRATEGY_LEARNING" => Some(Self::BiddingStrategyLearning),
+                "BIDDING_STRATEGY_CONSTRAINED" => Some(Self::BiddingStrategyConstrained),
+                "BUDGET_CONSTRAINED" => Some(Self::BudgetConstrained),
+                "BUDGET_MISCONFIGURED" => Some(Self::BudgetMisconfigured),
+                "SEARCH_VOLUME_LIMITED" => Some(Self::SearchVolumeLimited),
+                "AD_GROUPS_PAUSED" => Some(Self::AdGroupsPaused),
+                "NO_AD_GROUPS" => Some(Self::NoAdGroups),
+                "KEYWORDS_PAUSED" => Some(Self::KeywordsPaused),
+                "NO_KEYWORDS" => Some(Self::NoKeywords),
+                "AD_GROUP_ADS_PAUSED" => Some(Self::AdGroupAdsPaused),
+                "NO_AD_GROUP_ADS" => Some(Self::NoAdGroupAds),
+                "HAS_ADS_LIMITED_BY_POLICY" => Some(Self::HasAdsLimitedByPolicy),
+                "HAS_ADS_DISAPPROVED" => Some(Self::HasAdsDisapproved),
+                "MOST_ADS_UNDER_REVIEW" => Some(Self::MostAdsUnderReview),
+                "MISSING_LEAD_FORM_EXTENSION" => Some(Self::MissingLeadFormExtension),
+                "MISSING_CALL_EXTENSION" => Some(Self::MissingCallExtension),
+                "LEAD_FORM_EXTENSION_UNDER_REVIEW" => {
+                    Some(Self::LeadFormExtensionUnderReview)
+                }
+                "LEAD_FORM_EXTENSION_DISAPPROVED" => {
+                    Some(Self::LeadFormExtensionDisapproved)
+                }
+                "CALL_EXTENSION_UNDER_REVIEW" => Some(Self::CallExtensionUnderReview),
+                "CALL_EXTENSION_DISAPPROVED" => Some(Self::CallExtensionDisapproved),
+                "NO_MOBILE_APPLICATION_AD_GROUP_CRITERIA" => {
+                    Some(Self::NoMobileApplicationAdGroupCriteria)
+                }
+                "CAMPAIGN_GROUP_PAUSED" => Some(Self::CampaignGroupPaused),
+                "CAMPAIGN_GROUP_ALL_GROUP_BUDGETS_ENDED" => {
+                    Some(Self::CampaignGroupAllGroupBudgetsEnded)
+                }
+                "APP_NOT_RELEASED" => Some(Self::AppNotReleased),
+                "APP_PARTIALLY_RELEASED" => Some(Self::AppPartiallyReleased),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing Campaign serving statuses.
@@ -10778,6 +13407,19 @@ pub mod campaign_serving_status_enum {
                 CampaignServingStatus::Suspended => "SUSPENDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SERVING" => Some(Self::Serving),
+                "NONE" => Some(Self::None),
+                "ENDED" => Some(Self::Ended),
+                "PENDING" => Some(Self::Pending),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing types of campaign shared set statuses.
@@ -10820,6 +13462,16 @@ pub mod campaign_shared_set_status_enum {
                 CampaignSharedSetStatus::Unknown => "UNKNOWN",
                 CampaignSharedSetStatus::Enabled => "ENABLED",
                 CampaignSharedSetStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -10867,6 +13519,17 @@ pub mod campaign_status_enum {
                 CampaignStatus::Enabled => "ENABLED",
                 CampaignStatus::Paused => "PAUSED",
                 CampaignStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -10949,6 +13612,26 @@ pub mod change_client_type_enum {
                 ChangeClientType::SearchAds360Post => "SEARCH_ADS_360_POST",
                 ChangeClientType::InternalTool => "INTERNAL_TOOL",
                 ChangeClientType::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GOOGLE_ADS_WEB_CLIENT" => Some(Self::GoogleAdsWebClient),
+                "GOOGLE_ADS_AUTOMATED_RULE" => Some(Self::GoogleAdsAutomatedRule),
+                "GOOGLE_ADS_SCRIPTS" => Some(Self::GoogleAdsScripts),
+                "GOOGLE_ADS_BULK_UPLOAD" => Some(Self::GoogleAdsBulkUpload),
+                "GOOGLE_ADS_API" => Some(Self::GoogleAdsApi),
+                "GOOGLE_ADS_EDITOR" => Some(Self::GoogleAdsEditor),
+                "GOOGLE_ADS_MOBILE_APP" => Some(Self::GoogleAdsMobileApp),
+                "GOOGLE_ADS_RECOMMENDATIONS" => Some(Self::GoogleAdsRecommendations),
+                "SEARCH_ADS_360_SYNC" => Some(Self::SearchAds360Sync),
+                "SEARCH_ADS_360_POST" => Some(Self::SearchAds360Post),
+                "INTERNAL_TOOL" => Some(Self::InternalTool),
+                "OTHER" => Some(Self::Other),
+                _ => None,
             }
         }
     }
@@ -11048,6 +13731,33 @@ pub mod change_event_resource_type_enum {
                 ChangeEventResourceType::CampaignAssetSet => "CAMPAIGN_ASSET_SET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD" => Some(Self::Ad),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "AD_GROUP_CRITERION" => Some(Self::AdGroupCriterion),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "CAMPAIGN_BUDGET" => Some(Self::CampaignBudget),
+                "AD_GROUP_BID_MODIFIER" => Some(Self::AdGroupBidModifier),
+                "CAMPAIGN_CRITERION" => Some(Self::CampaignCriterion),
+                "FEED" => Some(Self::Feed),
+                "FEED_ITEM" => Some(Self::FeedItem),
+                "CAMPAIGN_FEED" => Some(Self::CampaignFeed),
+                "AD_GROUP_FEED" => Some(Self::AdGroupFeed),
+                "AD_GROUP_AD" => Some(Self::AdGroupAd),
+                "ASSET" => Some(Self::Asset),
+                "CUSTOMER_ASSET" => Some(Self::CustomerAsset),
+                "CAMPAIGN_ASSET" => Some(Self::CampaignAsset),
+                "AD_GROUP_ASSET" => Some(Self::AdGroupAsset),
+                "ASSET_SET" => Some(Self::AssetSet),
+                "ASSET_SET_ASSET" => Some(Self::AssetSetAsset),
+                "CAMPAIGN_ASSET_SET" => Some(Self::CampaignAssetSet),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing operations for the ChangeStatus resource.
@@ -11094,6 +13804,17 @@ pub mod change_status_operation_enum {
                 ChangeStatusOperation::Added => "ADDED",
                 ChangeStatusOperation::Changed => "CHANGED",
                 ChangeStatusOperation::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADDED" => Some(Self::Added),
+                "CHANGED" => Some(Self::Changed),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -11184,6 +13905,30 @@ pub mod change_status_resource_type_enum {
                 ChangeStatusResourceType::AdGroupAsset => "AD_GROUP_ASSET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "AD_GROUP_AD" => Some(Self::AdGroupAd),
+                "AD_GROUP_CRITERION" => Some(Self::AdGroupCriterion),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "CAMPAIGN_CRITERION" => Some(Self::CampaignCriterion),
+                "FEED" => Some(Self::Feed),
+                "FEED_ITEM" => Some(Self::FeedItem),
+                "AD_GROUP_FEED" => Some(Self::AdGroupFeed),
+                "CAMPAIGN_FEED" => Some(Self::CampaignFeed),
+                "AD_GROUP_BID_MODIFIER" => Some(Self::AdGroupBidModifier),
+                "SHARED_SET" => Some(Self::SharedSet),
+                "CAMPAIGN_SHARED_SET" => Some(Self::CampaignSharedSet),
+                "ASSET" => Some(Self::Asset),
+                "CUSTOMER_ASSET" => Some(Self::CustomerAsset),
+                "CAMPAIGN_ASSET" => Some(Self::CampaignAsset),
+                "AD_GROUP_ASSET" => Some(Self::AdGroupAsset),
+                _ => None,
+            }
+        }
     }
 }
 /// The status of combined audience.
@@ -11227,6 +13972,16 @@ pub mod combined_audience_status_enum {
                 CombinedAudienceStatus::Unknown => "UNKNOWN",
                 CombinedAudienceStatus::Enabled => "ENABLED",
                 CombinedAudienceStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -11275,6 +14030,16 @@ pub mod conversion_action_counting_type_enum {
                 ConversionActionCountingType::ManyPerClick => "MANY_PER_CLICK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ONE_PER_CLICK" => Some(Self::OnePerClick),
+                "MANY_PER_CLICK" => Some(Self::ManyPerClick),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a conversion action.
@@ -11321,6 +14086,17 @@ pub mod conversion_action_status_enum {
                 ConversionActionStatus::Enabled => "ENABLED",
                 ConversionActionStatus::Removed => "REMOVED",
                 ConversionActionStatus::Hidden => "HIDDEN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "HIDDEN" => Some(Self::Hidden),
+                _ => None,
             }
         }
     }
@@ -11526,6 +14302,69 @@ pub mod conversion_action_type_enum {
                 ConversionActionType::StoreVisits => "STORE_VISITS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_CALL" => Some(Self::AdCall),
+                "CLICK_TO_CALL" => Some(Self::ClickToCall),
+                "GOOGLE_PLAY_DOWNLOAD" => Some(Self::GooglePlayDownload),
+                "GOOGLE_PLAY_IN_APP_PURCHASE" => Some(Self::GooglePlayInAppPurchase),
+                "UPLOAD_CALLS" => Some(Self::UploadCalls),
+                "UPLOAD_CLICKS" => Some(Self::UploadClicks),
+                "WEBPAGE" => Some(Self::Webpage),
+                "WEBSITE_CALL" => Some(Self::WebsiteCall),
+                "STORE_SALES_DIRECT_UPLOAD" => Some(Self::StoreSalesDirectUpload),
+                "STORE_SALES" => Some(Self::StoreSales),
+                "FIREBASE_ANDROID_FIRST_OPEN" => Some(Self::FirebaseAndroidFirstOpen),
+                "FIREBASE_ANDROID_IN_APP_PURCHASE" => {
+                    Some(Self::FirebaseAndroidInAppPurchase)
+                }
+                "FIREBASE_ANDROID_CUSTOM" => Some(Self::FirebaseAndroidCustom),
+                "FIREBASE_IOS_FIRST_OPEN" => Some(Self::FirebaseIosFirstOpen),
+                "FIREBASE_IOS_IN_APP_PURCHASE" => Some(Self::FirebaseIosInAppPurchase),
+                "FIREBASE_IOS_CUSTOM" => Some(Self::FirebaseIosCustom),
+                "THIRD_PARTY_APP_ANALYTICS_ANDROID_FIRST_OPEN" => {
+                    Some(Self::ThirdPartyAppAnalyticsAndroidFirstOpen)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_ANDROID_IN_APP_PURCHASE" => {
+                    Some(Self::ThirdPartyAppAnalyticsAndroidInAppPurchase)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_ANDROID_CUSTOM" => {
+                    Some(Self::ThirdPartyAppAnalyticsAndroidCustom)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_IOS_FIRST_OPEN" => {
+                    Some(Self::ThirdPartyAppAnalyticsIosFirstOpen)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_IOS_IN_APP_PURCHASE" => {
+                    Some(Self::ThirdPartyAppAnalyticsIosInAppPurchase)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_IOS_CUSTOM" => {
+                    Some(Self::ThirdPartyAppAnalyticsIosCustom)
+                }
+                "ANDROID_APP_PRE_REGISTRATION" => Some(Self::AndroidAppPreRegistration),
+                "ANDROID_INSTALLS_ALL_OTHER_APPS" => {
+                    Some(Self::AndroidInstallsAllOtherApps)
+                }
+                "FLOODLIGHT_ACTION" => Some(Self::FloodlightAction),
+                "FLOODLIGHT_TRANSACTION" => Some(Self::FloodlightTransaction),
+                "GOOGLE_HOSTED" => Some(Self::GoogleHosted),
+                "LEAD_FORM_SUBMIT" => Some(Self::LeadFormSubmit),
+                "SALESFORCE" => Some(Self::Salesforce),
+                "SEARCH_ADS_360" => Some(Self::SearchAds360),
+                "SMART_CAMPAIGN_AD_CLICKS_TO_CALL" => {
+                    Some(Self::SmartCampaignAdClicksToCall)
+                }
+                "SMART_CAMPAIGN_MAP_CLICKS_TO_CALL" => {
+                    Some(Self::SmartCampaignMapClicksToCall)
+                }
+                "SMART_CAMPAIGN_MAP_DIRECTIONS" => Some(Self::SmartCampaignMapDirections),
+                "SMART_CAMPAIGN_TRACKED_CALLS" => Some(Self::SmartCampaignTrackedCalls),
+                "STORE_VISITS" => Some(Self::StoreVisits),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing conversion adjustment types.
@@ -11574,6 +14413,17 @@ pub mod conversion_adjustment_type_enum {
                 ConversionAdjustmentType::Retraction => "RETRACTION",
                 ConversionAdjustmentType::Restatement => "RESTATEMENT",
                 ConversionAdjustmentType::Enhancement => "ENHANCEMENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "RETRACTION" => Some(Self::Retraction),
+                "RESTATEMENT" => Some(Self::Restatement),
+                "ENHANCEMENT" => Some(Self::Enhancement),
+                _ => None,
             }
         }
     }
@@ -11628,6 +14478,17 @@ pub mod conversion_custom_variable_status_enum {
                 ConversionCustomVariableStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVATION_NEEDED" => Some(Self::ActivationNeeded),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum representing the conversion environment an uploaded
@@ -11671,6 +14532,16 @@ pub mod conversion_environment_enum {
                 ConversionEnvironment::Unknown => "UNKNOWN",
                 ConversionEnvironment::App => "APP",
                 ConversionEnvironment::Web => "WEB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APP" => Some(Self::App),
+                "WEB" => Some(Self::Web),
+                _ => None,
             }
         }
     }
@@ -11732,6 +14603,20 @@ pub mod conversion_origin_enum {
                 ConversionOrigin::CallFromAds => "CALL_FROM_ADS",
                 ConversionOrigin::Store => "STORE",
                 ConversionOrigin::YoutubeHosted => "YOUTUBE_HOSTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBSITE" => Some(Self::Website),
+                "GOOGLE_HOSTED" => Some(Self::GoogleHosted),
+                "APP" => Some(Self::App),
+                "CALL_FROM_ADS" => Some(Self::CallFromAds),
+                "STORE" => Some(Self::Store),
+                "YOUTUBE_HOSTED" => Some(Self::YoutubeHosted),
+                _ => None,
             }
         }
     }
@@ -11796,6 +14681,24 @@ pub mod conversion_tracking_status_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOT_CONVERSION_TRACKED" => Some(Self::NotConversionTracked),
+                "CONVERSION_TRACKING_MANAGED_BY_SELF" => {
+                    Some(Self::ConversionTrackingManagedBySelf)
+                }
+                "CONVERSION_TRACKING_MANAGED_BY_THIS_MANAGER" => {
+                    Some(Self::ConversionTrackingManagedByThisManager)
+                }
+                "CONVERSION_TRACKING_MANAGED_BY_ANOTHER_MANAGER" => {
+                    Some(Self::ConversionTrackingManagedByAnotherManager)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a conversion value rule
@@ -11845,6 +14748,17 @@ pub mod conversion_value_rule_set_status_enum {
                 ConversionValueRuleSetStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a conversion value rule.
@@ -11892,6 +14806,17 @@ pub mod conversion_value_rule_status_enum {
                 ConversionValueRuleStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible criterion system serving statuses.
@@ -11934,6 +14859,16 @@ pub mod criterion_system_serving_status_enum {
                 CriterionSystemServingStatus::Unknown => "UNKNOWN",
                 CriterionSystemServingStatus::Eligible => "ELIGIBLE",
                 CriterionSystemServingStatus::RarelyServed => "RARELY_SERVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ELIGIBLE" => Some(Self::Eligible),
+                "RARELY_SERVED" => Some(Self::RarelyServed),
+                _ => None,
             }
         }
     }
@@ -12076,6 +15011,48 @@ pub mod criterion_type_enum {
                 CriterionType::Audience => "AUDIENCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "PLACEMENT" => Some(Self::Placement),
+                "MOBILE_APP_CATEGORY" => Some(Self::MobileAppCategory),
+                "MOBILE_APPLICATION" => Some(Self::MobileApplication),
+                "DEVICE" => Some(Self::Device),
+                "LOCATION" => Some(Self::Location),
+                "LISTING_GROUP" => Some(Self::ListingGroup),
+                "AD_SCHEDULE" => Some(Self::AdSchedule),
+                "AGE_RANGE" => Some(Self::AgeRange),
+                "GENDER" => Some(Self::Gender),
+                "INCOME_RANGE" => Some(Self::IncomeRange),
+                "PARENTAL_STATUS" => Some(Self::ParentalStatus),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "YOUTUBE_CHANNEL" => Some(Self::YoutubeChannel),
+                "USER_LIST" => Some(Self::UserList),
+                "PROXIMITY" => Some(Self::Proximity),
+                "TOPIC" => Some(Self::Topic),
+                "LISTING_SCOPE" => Some(Self::ListingScope),
+                "LANGUAGE" => Some(Self::Language),
+                "IP_BLOCK" => Some(Self::IpBlock),
+                "CONTENT_LABEL" => Some(Self::ContentLabel),
+                "CARRIER" => Some(Self::Carrier),
+                "USER_INTEREST" => Some(Self::UserInterest),
+                "WEBPAGE" => Some(Self::Webpage),
+                "OPERATING_SYSTEM_VERSION" => Some(Self::OperatingSystemVersion),
+                "APP_PAYMENT_MODEL" => Some(Self::AppPaymentModel),
+                "MOBILE_DEVICE" => Some(Self::MobileDevice),
+                "CUSTOM_AFFINITY" => Some(Self::CustomAffinity),
+                "CUSTOM_INTENT" => Some(Self::CustomIntent),
+                "LOCATION_GROUP" => Some(Self::LocationGroup),
+                "CUSTOM_AUDIENCE" => Some(Self::CustomAudience),
+                "COMBINED_AUDIENCE" => Some(Self::CombinedAudience),
+                "KEYWORD_THEME" => Some(Self::KeywordTheme),
+                "AUDIENCE" => Some(Self::Audience),
+                _ => None,
+            }
+        }
     }
 }
 /// The type of custom audience member.
@@ -12126,6 +15103,18 @@ pub mod custom_audience_member_type_enum {
                 CustomAudienceMemberType::App => "APP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "URL" => Some(Self::Url),
+                "PLACE_CATEGORY" => Some(Self::PlaceCategory),
+                "APP" => Some(Self::App),
+                _ => None,
+            }
+        }
     }
 }
 /// The status of custom audience.
@@ -12169,6 +15158,16 @@ pub mod custom_audience_status_enum {
                 CustomAudienceStatus::Unknown => "UNKNOWN",
                 CustomAudienceStatus::Enabled => "ENABLED",
                 CustomAudienceStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -12223,6 +15222,18 @@ pub mod custom_audience_type_enum {
                 CustomAudienceType::Search => "SEARCH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AUTO" => Some(Self::Auto),
+                "INTEREST" => Some(Self::Interest),
+                "PURCHASE_INTENT" => Some(Self::PurchaseIntent),
+                "SEARCH" => Some(Self::Search),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a custom conversion goal.
@@ -12267,6 +15278,16 @@ pub mod custom_conversion_goal_status_enum {
                 CustomConversionGoalStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// The types of custom interest member, either KEYWORD or URL.
@@ -12309,6 +15330,16 @@ pub mod custom_interest_member_type_enum {
                 CustomInterestMemberType::Unknown => "UNKNOWN",
                 CustomInterestMemberType::Keyword => "KEYWORD",
                 CustomInterestMemberType::Url => "URL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "URL" => Some(Self::Url),
+                _ => None,
             }
         }
     }
@@ -12356,6 +15387,16 @@ pub mod custom_interest_status_enum {
                 CustomInterestStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// The types of custom interest.
@@ -12398,6 +15439,16 @@ pub mod custom_interest_type_enum {
                 CustomInterestType::Unknown => "UNKNOWN",
                 CustomInterestType::CustomAffinity => "CUSTOM_AFFINITY",
                 CustomInterestType::CustomIntent => "CUSTOM_INTENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOM_AFFINITY" => Some(Self::CustomAffinity),
+                "CUSTOM_INTENT" => Some(Self::CustomIntent),
+                _ => None,
             }
         }
     }
@@ -12523,6 +15574,34 @@ pub mod custom_placeholder_field_enum {
                 CustomPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ID" => Some(Self::Id),
+                "ID2" => Some(Self::Id2),
+                "ITEM_TITLE" => Some(Self::ItemTitle),
+                "ITEM_SUBTITLE" => Some(Self::ItemSubtitle),
+                "ITEM_DESCRIPTION" => Some(Self::ItemDescription),
+                "ITEM_ADDRESS" => Some(Self::ItemAddress),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "ITEM_CATEGORY" => Some(Self::ItemCategory),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_IDS" => Some(Self::SimilarIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing reasons why a customer is not eligible to use
@@ -12599,6 +15678,23 @@ pub mod customer_pay_per_conversion_eligibility_failure_reason_enum {
                 CustomerPayPerConversionEligibilityFailureReason::Other => "OTHER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOT_ENOUGH_CONVERSIONS" => Some(Self::NotEnoughConversions),
+                "CONVERSION_LAG_TOO_HIGH" => Some(Self::ConversionLagTooHigh),
+                "HAS_CAMPAIGN_WITH_SHARED_BUDGET" => {
+                    Some(Self::HasCampaignWithSharedBudget)
+                }
+                "HAS_UPLOAD_CLICKS_CONVERSION" => Some(Self::HasUploadClicksConversion),
+                "AVERAGE_DAILY_SPEND_TOO_HIGH" => Some(Self::AverageDailySpendTooHigh),
+                "ANALYSIS_NOT_COMPLETE" => Some(Self::AnalysisNotComplete),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a customer.
@@ -12653,6 +15749,18 @@ pub mod customer_status_enum {
                 CustomerStatus::Closed => "CLOSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "CANCELED" => Some(Self::Canceled),
+                "SUSPENDED" => Some(Self::Suspended),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a customizer attribute.
@@ -12697,6 +15805,16 @@ pub mod customizer_attribute_status_enum {
                 CustomizerAttributeStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a customizer value.
@@ -12739,6 +15857,16 @@ pub mod customizer_value_status_enum {
                 CustomizerValueStatus::Unknown => "UNKNOWN",
                 CustomizerValueStatus::Enabled => "ENABLED",
                 CustomizerValueStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -12795,6 +15923,18 @@ pub mod data_driven_model_status_enum {
                 DataDrivenModelStatus::Stale => "STALE",
                 DataDrivenModelStatus::Expired => "EXPIRED",
                 DataDrivenModelStatus::NeverGenerated => "NEVER_GENERATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AVAILABLE" => Some(Self::Available),
+                "STALE" => Some(Self::Stale),
+                "EXPIRED" => Some(Self::Expired),
+                "NEVER_GENERATED" => Some(Self::NeverGenerated),
+                _ => None,
             }
         }
     }
@@ -12918,6 +16058,41 @@ pub mod distance_bucket_enum {
                 DistanceBucket::Beyond40miles => "BEYOND_40MILES",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WITHIN_700M" => Some(Self::Within700m),
+                "WITHIN_1KM" => Some(Self::Within1km),
+                "WITHIN_5KM" => Some(Self::Within5km),
+                "WITHIN_10KM" => Some(Self::Within10km),
+                "WITHIN_15KM" => Some(Self::Within15km),
+                "WITHIN_20KM" => Some(Self::Within20km),
+                "WITHIN_25KM" => Some(Self::Within25km),
+                "WITHIN_30KM" => Some(Self::Within30km),
+                "WITHIN_35KM" => Some(Self::Within35km),
+                "WITHIN_40KM" => Some(Self::Within40km),
+                "WITHIN_45KM" => Some(Self::Within45km),
+                "WITHIN_50KM" => Some(Self::Within50km),
+                "WITHIN_55KM" => Some(Self::Within55km),
+                "WITHIN_60KM" => Some(Self::Within60km),
+                "WITHIN_65KM" => Some(Self::Within65km),
+                "BEYOND_65KM" => Some(Self::Beyond65km),
+                "WITHIN_0_7MILES" => Some(Self::Within07miles),
+                "WITHIN_1MILE" => Some(Self::Within1mile),
+                "WITHIN_5MILES" => Some(Self::Within5miles),
+                "WITHIN_10MILES" => Some(Self::Within10miles),
+                "WITHIN_15MILES" => Some(Self::Within15miles),
+                "WITHIN_20MILES" => Some(Self::Within20miles),
+                "WITHIN_25MILES" => Some(Self::Within25miles),
+                "WITHIN_30MILES" => Some(Self::Within30miles),
+                "WITHIN_35MILES" => Some(Self::Within35miles),
+                "WITHIN_40MILES" => Some(Self::Within40miles),
+                "BEYOND_40MILES" => Some(Self::Beyond40miles),
+                _ => None,
+            }
+        }
     }
 }
 /// Values for Dynamic Search Ad Page Feed criterion fields.
@@ -12961,6 +16136,16 @@ pub mod dsa_page_feed_criterion_field_enum {
                 DsaPageFeedCriterionField::Unknown => "UNKNOWN",
                 DsaPageFeedCriterionField::PageUrl => "PAGE_URL",
                 DsaPageFeedCriterionField::Label => "LABEL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PAGE_URL" => Some(Self::PageUrl),
+                "LABEL" => Some(Self::Label),
+                _ => None,
             }
         }
     }
@@ -13070,6 +16255,33 @@ pub mod education_placeholder_field_enum {
                 EducationPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROGRAM_ID" => Some(Self::ProgramId),
+                "LOCATION_ID" => Some(Self::LocationId),
+                "PROGRAM_NAME" => Some(Self::ProgramName),
+                "AREA_OF_STUDY" => Some(Self::AreaOfStudy),
+                "PROGRAM_DESCRIPTION" => Some(Self::ProgramDescription),
+                "SCHOOL_NAME" => Some(Self::SchoolName),
+                "ADDRESS" => Some(Self::Address),
+                "THUMBNAIL_IMAGE_URL" => Some(Self::ThumbnailImageUrl),
+                "ALTERNATIVE_THUMBNAIL_IMAGE_URL" => {
+                    Some(Self::AlternativeThumbnailImageUrl)
+                }
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_PROGRAM_IDS" => Some(Self::SimilarProgramIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the experiment status.
@@ -13129,6 +16341,21 @@ pub mod experiment_status_enum {
                 ExperimentStatus::Setup => "SETUP",
                 ExperimentStatus::Initiated => "INITIATED",
                 ExperimentStatus::Graduated => "GRADUATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "HALTED" => Some(Self::Halted),
+                "PROMOTED" => Some(Self::Promoted),
+                "SETUP" => Some(Self::Setup),
+                "INITIATED" => Some(Self::Initiated),
+                "GRADUATED" => Some(Self::Graduated),
+                _ => None,
             }
         }
     }
@@ -13205,6 +16432,30 @@ pub mod experiment_type_enum {
                 ExperimentType::HotelCustom => "HOTEL_CUSTOM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DISPLAY_AND_VIDEO_360" => Some(Self::DisplayAndVideo360),
+                "AD_VARIATION" => Some(Self::AdVariation),
+                "YOUTUBE_CUSTOM" => Some(Self::YoutubeCustom),
+                "DISPLAY_CUSTOM" => Some(Self::DisplayCustom),
+                "SEARCH_CUSTOM" => Some(Self::SearchCustom),
+                "DISPLAY_AUTOMATED_BIDDING_STRATEGY" => {
+                    Some(Self::DisplayAutomatedBiddingStrategy)
+                }
+                "SEARCH_AUTOMATED_BIDDING_STRATEGY" => {
+                    Some(Self::SearchAutomatedBiddingStrategy)
+                }
+                "SHOPPING_AUTOMATED_BIDDING_STRATEGY" => {
+                    Some(Self::ShoppingAutomatedBiddingStrategy)
+                }
+                "SMART_MATCHING" => Some(Self::SmartMatching),
+                "HOTEL_CUSTOM" => Some(Self::HotelCustom),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing extension setting device types.
@@ -13249,6 +16500,16 @@ pub mod extension_setting_device_enum {
                 ExtensionSettingDevice::Unknown => "UNKNOWN",
                 ExtensionSettingDevice::Mobile => "MOBILE",
                 ExtensionSettingDevice::Desktop => "DESKTOP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "DESKTOP" => Some(Self::Desktop),
+                _ => None,
             }
         }
     }
@@ -13329,6 +16590,27 @@ pub mod extension_type_enum {
                 ExtensionType::Image => "IMAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NONE" => Some(Self::None),
+                "APP" => Some(Self::App),
+                "CALL" => Some(Self::Call),
+                "CALLOUT" => Some(Self::Callout),
+                "MESSAGE" => Some(Self::Message),
+                "PRICE" => Some(Self::Price),
+                "PROMOTION" => Some(Self::Promotion),
+                "SITELINK" => Some(Self::Sitelink),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "LOCATION" => Some(Self::Location),
+                "AFFILIATE_LOCATION" => Some(Self::AffiliateLocation),
+                "HOTEL_CALLOUT" => Some(Self::HotelCallout),
+                "IMAGE" => Some(Self::Image),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible data types for a feed attribute.
@@ -13406,6 +16688,27 @@ pub mod feed_attribute_type_enum {
                 FeedAttributeType::Price => "PRICE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INT64" => Some(Self::Int64),
+                "DOUBLE" => Some(Self::Double),
+                "STRING" => Some(Self::String),
+                "BOOLEAN" => Some(Self::Boolean),
+                "URL" => Some(Self::Url),
+                "DATE_TIME" => Some(Self::DateTime),
+                "INT64_LIST" => Some(Self::Int64List),
+                "DOUBLE_LIST" => Some(Self::DoubleList),
+                "STRING_LIST" => Some(Self::StringList),
+                "BOOLEAN_LIST" => Some(Self::BooleanList),
+                "URL_LIST" => Some(Self::UrlList),
+                "DATE_TIME_LIST" => Some(Self::DateTimeList),
+                "PRICE" => Some(Self::Price),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible quality evaluation approval statuses
@@ -13450,6 +16753,16 @@ pub mod feed_item_quality_approval_status_enum {
                 FeedItemQualityApprovalStatus::Unknown => "UNKNOWN",
                 FeedItemQualityApprovalStatus::Approved => "APPROVED",
                 FeedItemQualityApprovalStatus::Disapproved => "DISAPPROVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPROVED" => Some(Self::Approved),
+                "DISAPPROVED" => Some(Self::Disapproved),
+                _ => None,
             }
         }
     }
@@ -13581,6 +16894,58 @@ pub mod feed_item_quality_disapproval_reason_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRICE_TABLE_REPETITIVE_HEADERS" => {
+                    Some(Self::PriceTableRepetitiveHeaders)
+                }
+                "PRICE_TABLE_REPETITIVE_DESCRIPTION" => {
+                    Some(Self::PriceTableRepetitiveDescription)
+                }
+                "PRICE_TABLE_INCONSISTENT_ROWS" => Some(Self::PriceTableInconsistentRows),
+                "PRICE_DESCRIPTION_HAS_PRICE_QUALIFIERS" => {
+                    Some(Self::PriceDescriptionHasPriceQualifiers)
+                }
+                "PRICE_UNSUPPORTED_LANGUAGE" => Some(Self::PriceUnsupportedLanguage),
+                "PRICE_TABLE_ROW_HEADER_TABLE_TYPE_MISMATCH" => {
+                    Some(Self::PriceTableRowHeaderTableTypeMismatch)
+                }
+                "PRICE_TABLE_ROW_HEADER_HAS_PROMOTIONAL_TEXT" => {
+                    Some(Self::PriceTableRowHeaderHasPromotionalText)
+                }
+                "PRICE_TABLE_ROW_DESCRIPTION_NOT_RELEVANT" => {
+                    Some(Self::PriceTableRowDescriptionNotRelevant)
+                }
+                "PRICE_TABLE_ROW_DESCRIPTION_HAS_PROMOTIONAL_TEXT" => {
+                    Some(Self::PriceTableRowDescriptionHasPromotionalText)
+                }
+                "PRICE_TABLE_ROW_HEADER_DESCRIPTION_REPETITIVE" => {
+                    Some(Self::PriceTableRowHeaderDescriptionRepetitive)
+                }
+                "PRICE_TABLE_ROW_UNRATEABLE" => Some(Self::PriceTableRowUnrateable),
+                "PRICE_TABLE_ROW_PRICE_INVALID" => Some(Self::PriceTableRowPriceInvalid),
+                "PRICE_TABLE_ROW_URL_INVALID" => Some(Self::PriceTableRowUrlInvalid),
+                "PRICE_HEADER_OR_DESCRIPTION_HAS_PRICE" => {
+                    Some(Self::PriceHeaderOrDescriptionHasPrice)
+                }
+                "STRUCTURED_SNIPPETS_HEADER_POLICY_VIOLATED" => {
+                    Some(Self::StructuredSnippetsHeaderPolicyViolated)
+                }
+                "STRUCTURED_SNIPPETS_REPEATED_VALUES" => {
+                    Some(Self::StructuredSnippetsRepeatedValues)
+                }
+                "STRUCTURED_SNIPPETS_EDITORIAL_GUIDELINES" => {
+                    Some(Self::StructuredSnippetsEditorialGuidelines)
+                }
+                "STRUCTURED_SNIPPETS_HAS_PROMOTIONAL_TEXT" => {
+                    Some(Self::StructuredSnippetsHasPromotionalText)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a feed item set.
@@ -13623,6 +16988,16 @@ pub mod feed_item_set_status_enum {
                 FeedItemSetStatus::Unknown => "UNKNOWN",
                 FeedItemSetStatus::Enabled => "ENABLED",
                 FeedItemSetStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -13669,6 +17044,16 @@ pub mod feed_item_status_enum {
                 FeedItemStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible data types for a feed item target
@@ -13709,6 +17094,15 @@ pub mod feed_item_target_device_enum {
                 FeedItemTargetDevice::Unspecified => "UNSPECIFIED",
                 FeedItemTargetDevice::Unknown => "UNKNOWN",
                 FeedItemTargetDevice::Mobile => "MOBILE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                _ => None,
             }
         }
     }
@@ -13753,6 +17147,16 @@ pub mod feed_item_target_status_enum {
                 FeedItemTargetStatus::Unknown => "UNKNOWN",
                 FeedItemTargetStatus::Enabled => "ENABLED",
                 FeedItemTargetStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -13802,6 +17206,17 @@ pub mod feed_item_target_type_enum {
                 FeedItemTargetType::Criterion => "CRITERION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "CRITERION" => Some(Self::Criterion),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible validation statuses of a feed item.
@@ -13849,6 +17264,17 @@ pub mod feed_item_validation_status_enum {
                 FeedItemValidationStatus::Valid => "VALID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "INVALID" => Some(Self::Invalid),
+                "VALID" => Some(Self::Valid),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for an enum describing possible statuses of a feed link.
@@ -13891,6 +17317,16 @@ pub mod feed_link_status_enum {
                 FeedLinkStatus::Unknown => "UNKNOWN",
                 FeedLinkStatus::Enabled => "ENABLED",
                 FeedLinkStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -13939,6 +17375,16 @@ pub mod feed_mapping_criterion_type_enum {
                 FeedMappingCriterionType::DsaPageFeed => "DSA_PAGE_FEED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOCATION_EXTENSION_TARGETING" => Some(Self::LocationExtensionTargeting),
+                "DSA_PAGE_FEED" => Some(Self::DsaPageFeed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a feed mapping.
@@ -13981,6 +17427,16 @@ pub mod feed_mapping_status_enum {
                 FeedMappingStatus::Unknown => "UNKNOWN",
                 FeedMappingStatus::Enabled => "ENABLED",
                 FeedMappingStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -14030,6 +17486,16 @@ pub mod feed_origin_enum {
                 FeedOrigin::Google => "GOOGLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "USER" => Some(Self::User),
+                "GOOGLE" => Some(Self::Google),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a feed.
@@ -14072,6 +17538,16 @@ pub mod feed_status_enum {
                 FeedStatus::Unknown => "UNKNOWN",
                 FeedStatus::Enabled => "ENABLED",
                 FeedStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -14188,6 +17664,31 @@ pub mod flight_placeholder_field_enum {
                 FlightPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DESTINATION_ID" => Some(Self::DestinationId),
+                "ORIGIN_ID" => Some(Self::OriginId),
+                "FLIGHT_DESCRIPTION" => Some(Self::FlightDescription),
+                "ORIGIN_NAME" => Some(Self::OriginName),
+                "DESTINATION_NAME" => Some(Self::DestinationName),
+                "FLIGHT_PRICE" => Some(Self::FlightPrice),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "FLIGHT_SALE_PRICE" => Some(Self::FlightSalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_DESTINATION_IDS" => Some(Self::SimilarDestinationIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for describing the status of a geo target constant.
@@ -14234,6 +17735,16 @@ pub mod geo_target_constant_status_enum {
                 GeoTargetConstantStatus::RemovalPlanned => "REMOVAL_PLANNED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVAL_PLANNED" => Some(Self::RemovalPlanned),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing feed item geo targeting restriction.
@@ -14275,6 +17786,15 @@ pub mod geo_targeting_restriction_enum {
                 GeoTargetingRestriction::Unspecified => "UNSPECIFIED",
                 GeoTargetingRestriction::Unknown => "UNKNOWN",
                 GeoTargetingRestriction::LocationOfPresence => "LOCATION_OF_PRESENCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOCATION_OF_PRESENCE" => Some(Self::LocationOfPresence),
+                _ => None,
             }
         }
     }
@@ -14321,6 +17841,16 @@ pub mod geo_targeting_type_enum {
                 GeoTargetingType::LocationOfPresence => "LOCATION_OF_PRESENCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AREA_OF_INTEREST" => Some(Self::AreaOfInterest),
+                "LOCATION_OF_PRESENCE" => Some(Self::LocationOfPresence),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible goal config levels.
@@ -14365,6 +17895,16 @@ pub mod goal_config_level_enum {
                 GoalConfigLevel::Unknown => "UNKNOWN",
                 GoalConfigLevel::Customer => "CUSTOMER",
                 GoalConfigLevel::Campaign => "CAMPAIGN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOMER" => Some(Self::Customer),
+                "CAMPAIGN" => Some(Self::Campaign),
+                _ => None,
             }
         }
     }
@@ -14420,6 +17960,18 @@ pub mod google_ads_field_category_enum {
                 GoogleAdsFieldCategory::Attribute => "ATTRIBUTE",
                 GoogleAdsFieldCategory::Segment => "SEGMENT",
                 GoogleAdsFieldCategory::Metric => "METRIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "RESOURCE" => Some(Self::Resource),
+                "ATTRIBUTE" => Some(Self::Attribute),
+                "SEGMENT" => Some(Self::Segment),
+                "METRIC" => Some(Self::Metric),
+                _ => None,
             }
         }
     }
@@ -14518,6 +18070,25 @@ pub mod google_ads_field_data_type_enum {
                 GoogleAdsFieldDataType::Uint64 => "UINT64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BOOLEAN" => Some(Self::Boolean),
+                "DATE" => Some(Self::Date),
+                "DOUBLE" => Some(Self::Double),
+                "ENUM" => Some(Self::Enum),
+                "FLOAT" => Some(Self::Float),
+                "INT32" => Some(Self::Int32),
+                "INT64" => Some(Self::Int64),
+                "MESSAGE" => Some(Self::Message),
+                "RESOURCE_NAME" => Some(Self::ResourceName),
+                "STRING" => Some(Self::String),
+                "UINT64" => Some(Self::Uint64),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a google voice call.
@@ -14560,6 +18131,16 @@ pub mod google_voice_call_status_enum {
                 GoogleVoiceCallStatus::Unknown => "UNKNOWN",
                 GoogleVoiceCallStatus::Missed => "MISSED",
                 GoogleVoiceCallStatus::Received => "RECEIVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MISSED" => Some(Self::Missed),
+                "RECEIVED" => Some(Self::Received),
+                _ => None,
             }
         }
     }
@@ -14680,6 +18261,34 @@ pub mod hotel_placeholder_field_enum {
                 HotelPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROPERTY_ID" => Some(Self::PropertyId),
+                "PROPERTY_NAME" => Some(Self::PropertyName),
+                "DESTINATION_NAME" => Some(Self::DestinationName),
+                "DESCRIPTION" => Some(Self::Description),
+                "ADDRESS" => Some(Self::Address),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "CATEGORY" => Some(Self::Category),
+                "STAR_RATING" => Some(Self::StarRating),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_PROPERTY_IDS" => Some(Self::SimilarPropertyIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for HotelReconciliationStatus.
@@ -14738,6 +18347,18 @@ pub mod hotel_reconciliation_status_enum {
                 HotelReconciliationStatus::Canceled => "CANCELED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "RESERVATION_ENABLED" => Some(Self::ReservationEnabled),
+                "RECONCILIATION_NEEDED" => Some(Self::ReconciliationNeeded),
+                "RECONCILED" => Some(Self::Reconciled),
+                "CANCELED" => Some(Self::Canceled),
+                _ => None,
+            }
+        }
     }
 }
 /// Values for Advertiser Provided Image placeholder fields.
@@ -14777,6 +18398,15 @@ pub mod image_placeholder_field_enum {
                 ImagePlaceholderField::Unspecified => "UNSPECIFIED",
                 ImagePlaceholderField::Unknown => "UNKNOWN",
                 ImagePlaceholderField::AssetId => "ASSET_ID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ASSET_ID" => Some(Self::AssetId),
+                _ => None,
             }
         }
     }
@@ -14821,6 +18451,16 @@ pub mod invoice_type_enum {
                 InvoiceType::Unknown => "UNKNOWN",
                 InvoiceType::CreditMemo => "CREDIT_MEMO",
                 InvoiceType::Invoice => "INVOICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CREDIT_MEMO" => Some(Self::CreditMemo),
+                "INVOICE" => Some(Self::Invoice),
+                _ => None,
             }
         }
     }
@@ -14932,6 +18572,31 @@ pub mod job_placeholder_field_enum {
                 JobPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "JOB_ID" => Some(Self::JobId),
+                "LOCATION_ID" => Some(Self::LocationId),
+                "TITLE" => Some(Self::Title),
+                "SUBTITLE" => Some(Self::Subtitle),
+                "DESCRIPTION" => Some(Self::Description),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "CATEGORY" => Some(Self::Category),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "ADDRESS" => Some(Self::Address),
+                "SALARY" => Some(Self::Salary),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_JOB_IDS" => Some(Self::SimilarJobIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of forecast intervals.
@@ -14982,6 +18647,17 @@ pub mod keyword_plan_forecast_interval_enum {
                 KeywordPlanForecastInterval::NextQuarter => "NEXT_QUARTER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEXT_WEEK" => Some(Self::NextWeek),
+                "NEXT_MONTH" => Some(Self::NextMonth),
+                "NEXT_QUARTER" => Some(Self::NextQuarter),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enumeration of keyword plan keyword annotations.
@@ -15021,6 +18697,15 @@ pub mod keyword_plan_keyword_annotation_enum {
                 KeywordPlanKeywordAnnotation::Unspecified => "UNSPECIFIED",
                 KeywordPlanKeywordAnnotation::Unknown => "UNKNOWN",
                 KeywordPlanKeywordAnnotation::KeywordConcept => "KEYWORD_CONCEPT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD_CONCEPT" => Some(Self::KeywordConcept),
+                _ => None,
             }
         }
     }
@@ -15069,6 +18754,16 @@ pub mod keyword_plan_network_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GOOGLE_SEARCH" => Some(Self::GoogleSearch),
+                "GOOGLE_SEARCH_AND_PARTNERS" => Some(Self::GoogleSearchAndPartners),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible status of a label.
@@ -15111,6 +18806,16 @@ pub mod label_status_enum {
                 LabelStatus::Unknown => "UNKNOWN",
                 LabelStatus::Enabled => "ENABLED",
                 LabelStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
             }
         }
     }
@@ -15169,6 +18874,19 @@ pub mod linked_account_type_enum {
                 LinkedAccountType::AdvertisingPartner => "ADVERTISING_PARTNER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "THIRD_PARTY_APP_ANALYTICS" => Some(Self::ThirdPartyAppAnalytics),
+                "DATA_PARTNER" => Some(Self::DataPartner),
+                "GOOGLE_ADS" => Some(Self::GoogleAds),
+                "HOTEL_CENTER" => Some(Self::HotelCenter),
+                "ADVERTISING_PARTNER" => Some(Self::AdvertisingPartner),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the levels of bidding category used in
@@ -15221,6 +18939,19 @@ pub mod listing_group_filter_bidding_category_level_enum {
                 ListingGroupFilterBiddingCategoryLevel::Level3 => "LEVEL3",
                 ListingGroupFilterBiddingCategoryLevel::Level4 => "LEVEL4",
                 ListingGroupFilterBiddingCategoryLevel::Level5 => "LEVEL5",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
             }
         }
     }
@@ -15277,6 +19008,19 @@ pub mod listing_group_filter_custom_attribute_index_enum {
                 ListingGroupFilterCustomAttributeIndex::Index4 => "INDEX4",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INDEX0" => Some(Self::Index0),
+                "INDEX1" => Some(Self::Index1),
+                "INDEX2" => Some(Self::Index2),
+                "INDEX3" => Some(Self::Index3),
+                "INDEX4" => Some(Self::Index4),
+                _ => None,
+            }
+        }
     }
 }
 /// Locality of a product offer.
@@ -15319,6 +19063,16 @@ pub mod listing_group_filter_product_channel_enum {
                 ListingGroupFilterProductChannel::Unknown => "UNKNOWN",
                 ListingGroupFilterProductChannel::Online => "ONLINE",
                 ListingGroupFilterProductChannel::Local => "LOCAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ONLINE" => Some(Self::Online),
+                "LOCAL" => Some(Self::Local),
+                _ => None,
             }
         }
     }
@@ -15366,6 +19120,17 @@ pub mod listing_group_filter_product_condition_enum {
                 ListingGroupFilterProductCondition::New => "NEW",
                 ListingGroupFilterProductCondition::Refurbished => "REFURBISHED",
                 ListingGroupFilterProductCondition::Used => "USED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW" => Some(Self::New),
+                "REFURBISHED" => Some(Self::Refurbished),
+                "USED" => Some(Self::Used),
+                _ => None,
             }
         }
     }
@@ -15421,6 +19186,19 @@ pub mod listing_group_filter_product_type_level_enum {
                 ListingGroupFilterProductTypeLevel::Level5 => "LEVEL5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of the listing group filter node.
@@ -15468,6 +19246,17 @@ pub mod listing_group_filter_type_enum {
                 ListingGroupFilterType::UnitExcluded => "UNIT_EXCLUDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SUBDIVISION" => Some(Self::Subdivision),
+                "UNIT_INCLUDED" => Some(Self::UnitIncluded),
+                "UNIT_EXCLUDED" => Some(Self::UnitExcluded),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of the vertical a listing group filter
@@ -15508,6 +19297,15 @@ pub mod listing_group_filter_vertical_enum {
                 ListingGroupFilterVertical::Unspecified => "UNSPECIFIED",
                 ListingGroupFilterVertical::Unknown => "UNKNOWN",
                 ListingGroupFilterVertical::Shopping => "SHOPPING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SHOPPING" => Some(Self::Shopping),
+                _ => None,
             }
         }
     }
@@ -15623,6 +19421,33 @@ pub mod local_placeholder_field_enum {
                 LocalPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEAL_ID" => Some(Self::DealId),
+                "DEAL_NAME" => Some(Self::DealName),
+                "SUBTITLE" => Some(Self::Subtitle),
+                "DESCRIPTION" => Some(Self::Description),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "ADDRESS" => Some(Self::Address),
+                "CATEGORY" => Some(Self::Category),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_DEAL_IDS" => Some(Self::SimilarDealIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Values for Location Extension Targeting criterion fields.
@@ -15681,6 +19506,20 @@ pub mod location_extension_targeting_criterion_field_enum {
                 LocationExtensionTargetingCriterionField::Province => "PROVINCE",
                 LocationExtensionTargetingCriterionField::PostalCode => "POSTAL_CODE",
                 LocationExtensionTargetingCriterionField::CountryCode => "COUNTRY_CODE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADDRESS_LINE_1" => Some(Self::AddressLine1),
+                "ADDRESS_LINE_2" => Some(Self::AddressLine2),
+                "CITY" => Some(Self::City),
+                "PROVINCE" => Some(Self::Province),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                _ => None,
             }
         }
     }
@@ -15745,6 +19584,22 @@ pub mod location_placeholder_field_enum {
                 LocationPlaceholderField::PhoneNumber => "PHONE_NUMBER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "ADDRESS_LINE_1" => Some(Self::AddressLine1),
+                "ADDRESS_LINE_2" => Some(Self::AddressLine2),
+                "CITY" => Some(Self::City),
+                "PROVINCE" => Some(Self::Province),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                _ => None,
+            }
+        }
     }
 }
 /// Used to distinguish the location source type.
@@ -15787,6 +19642,16 @@ pub mod location_source_type_enum {
                 LocationSourceType::Unknown => "UNKNOWN",
                 LocationSourceType::GoogleMyBusiness => "GOOGLE_MY_BUSINESS",
                 LocationSourceType::Affiliate => "AFFILIATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GOOGLE_MY_BUSINESS" => Some(Self::GoogleMyBusiness),
+                "AFFILIATE" => Some(Self::Affiliate),
+                _ => None,
             }
         }
     }
@@ -15842,6 +19707,19 @@ pub mod manager_link_status_enum {
                 ManagerLinkStatus::Pending => "PENDING",
                 ManagerLinkStatus::Refused => "REFUSED",
                 ManagerLinkStatus::Canceled => "CANCELED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                "PENDING" => Some(Self::Pending),
+                "REFUSED" => Some(Self::Refused),
+                "CANCELED" => Some(Self::Canceled),
+                _ => None,
             }
         }
     }
@@ -15902,6 +19780,20 @@ pub mod media_type_enum {
                 MediaType::DynamicImage => "DYNAMIC_IMAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMAGE" => Some(Self::Image),
+                "ICON" => Some(Self::Icon),
+                "MEDIA_BUNDLE" => Some(Self::MediaBundle),
+                "AUDIO" => Some(Self::Audio),
+                "VIDEO" => Some(Self::Video),
+                "DYNAMIC_IMAGE" => Some(Self::DynamicImage),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of a Google Merchant Center
@@ -15947,6 +19839,16 @@ pub mod merchant_center_link_status_enum {
                 MerchantCenterLinkStatus::Unknown => "UNKNOWN",
                 MerchantCenterLinkStatus::Enabled => "ENABLED",
                 MerchantCenterLinkStatus::Pending => "PENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PENDING" => Some(Self::Pending),
+                _ => None,
             }
         }
     }
@@ -16004,6 +19906,19 @@ pub mod message_placeholder_field_enum {
                 MessagePlaceholderField::MessageText => "MESSAGE_TEXT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "MESSAGE_EXTENSION_TEXT" => Some(Self::MessageExtensionText),
+                "MESSAGE_TEXT" => Some(Self::MessageText),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the types of mobile device.
@@ -16046,6 +19961,16 @@ pub mod mobile_device_type_enum {
                 MobileDeviceType::Unknown => "UNKNOWN",
                 MobileDeviceType::Mobile => "MOBILE",
                 MobileDeviceType::Tablet => "TABLET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "TABLET" => Some(Self::Tablet),
+                _ => None,
             }
         }
     }
@@ -16092,6 +20017,16 @@ pub mod negative_geo_target_type_enum {
                 NegativeGeoTargetType::Unknown => "UNKNOWN",
                 NegativeGeoTargetType::PresenceOrInterest => "PRESENCE_OR_INTEREST",
                 NegativeGeoTargetType::Presence => "PRESENCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRESENCE_OR_INTEREST" => Some(Self::PresenceOrInterest),
+                "PRESENCE" => Some(Self::Presence),
+                _ => None,
             }
         }
     }
@@ -16159,6 +20094,23 @@ pub mod offline_user_data_job_failure_reason_enum {
                 OfflineUserDataJobFailureReason::NewlyObservedCurrencyCode => {
                     "NEWLY_OBSERVED_CURRENCY_CODE"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INSUFFICIENT_MATCHED_TRANSACTIONS" => {
+                    Some(Self::InsufficientMatchedTransactions)
+                }
+                "INSUFFICIENT_TRANSACTIONS" => Some(Self::InsufficientTransactions),
+                "HIGH_AVERAGE_TRANSACTION_VALUE" => {
+                    Some(Self::HighAverageTransactionValue)
+                }
+                "LOW_AVERAGE_TRANSACTION_VALUE" => Some(Self::LowAverageTransactionValue),
+                "NEWLY_OBSERVED_CURRENCY_CODE" => Some(Self::NewlyObservedCurrencyCode),
+                _ => None,
             }
         }
     }
@@ -16246,6 +20198,23 @@ pub mod offline_user_data_job_match_rate_range_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MATCH_RANGE_LESS_THAN_20" => Some(Self::MatchRangeLessThan20),
+                "MATCH_RANGE_20_TO_30" => Some(Self::MatchRange20To30),
+                "MATCH_RANGE_31_TO_40" => Some(Self::MatchRange31To40),
+                "MATCH_RANGE_41_TO_50" => Some(Self::MatchRange41To50),
+                "MATCH_RANGE_51_TO_60" => Some(Self::MatchRange51To60),
+                "MATCH_RANGE_61_TO_70" => Some(Self::MatchRange61To70),
+                "MATCH_RANGE_71_TO_80" => Some(Self::MatchRange71To80),
+                "MATCH_RANGE_81_TO_90" => Some(Self::MatchRange81To90),
+                "MATCH_RANGE_91_TO_100" => Some(Self::MatchRange91To100),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing status of an offline user data job.
@@ -16294,6 +20263,18 @@ pub mod offline_user_data_job_status_enum {
                 OfflineUserDataJobStatus::Running => "RUNNING",
                 OfflineUserDataJobStatus::Success => "SUCCESS",
                 OfflineUserDataJobStatus::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCESS" => Some(Self::Success),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -16354,6 +20335,24 @@ pub mod offline_user_data_job_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STORE_SALES_UPLOAD_FIRST_PARTY" => {
+                    Some(Self::StoreSalesUploadFirstParty)
+                }
+                "STORE_SALES_UPLOAD_THIRD_PARTY" => {
+                    Some(Self::StoreSalesUploadThirdParty)
+                }
+                "CUSTOMER_MATCH_USER_LIST" => Some(Self::CustomerMatchUserList),
+                "CUSTOMER_MATCH_WITH_ATTRIBUTES" => {
+                    Some(Self::CustomerMatchWithAttributes)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of OS operators.
@@ -16398,6 +20397,16 @@ pub mod operating_system_version_operator_type_enum {
                 OperatingSystemVersionOperatorType::GreaterThanEqualsTo => {
                     "GREATER_THAN_EQUALS_TO"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EQUALS_TO" => Some(Self::EqualsTo),
+                "GREATER_THAN_EQUALS_TO" => Some(Self::GreaterThanEqualsTo),
+                _ => None,
             }
         }
     }
@@ -16450,6 +20459,17 @@ pub mod optimization_goal_type_enum {
                 OptimizationGoalType::CallClicks => "CALL_CLICKS",
                 OptimizationGoalType::DrivingDirections => "DRIVING_DIRECTIONS",
                 OptimizationGoalType::AppPreRegistration => "APP_PRE_REGISTRATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CALL_CLICKS" => Some(Self::CallClicks),
+                "DRIVING_DIRECTIONS" => Some(Self::DrivingDirections),
+                "APP_PRE_REGISTRATION" => Some(Self::AppPreRegistration),
+                _ => None,
             }
         }
     }
@@ -16510,6 +20530,18 @@ pub mod payment_mode_enum {
                 PaymentMode::GuestStay => "GUEST_STAY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CLICKS" => Some(Self::Clicks),
+                "CONVERSION_VALUE" => Some(Self::ConversionValue),
+                "CONVERSIONS" => Some(Self::Conversions),
+                "GUEST_STAY" => Some(Self::GuestStay),
+                _ => None,
+            }
+        }
     }
 }
 /// Performance Max Upgrade status for campaign.
@@ -16559,6 +20591,18 @@ pub mod performance_max_upgrade_status_enum {
                 PerformanceMaxUpgradeStatus::UpgradeInProgress => "UPGRADE_IN_PROGRESS",
                 PerformanceMaxUpgradeStatus::UpgradeComplete => "UPGRADE_COMPLETE",
                 PerformanceMaxUpgradeStatus::UpgradeFailed => "UPGRADE_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UPGRADE_ELIBIGLE" => Some(Self::UpgradeElibigle),
+                "UPGRADE_IN_PROGRESS" => Some(Self::UpgradeInProgress),
+                "UPGRADE_COMPLETE" => Some(Self::UpgradeComplete),
+                "UPGRADE_FAILED" => Some(Self::UpgradeFailed),
+                _ => None,
             }
         }
     }
@@ -16614,6 +20658,19 @@ pub mod placement_type_enum {
                 PlacementType::YoutubeChannel => "YOUTUBE_CHANNEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBSITE" => Some(Self::Website),
+                "MOBILE_APP_CATEGORY" => Some(Self::MobileAppCategory),
+                "MOBILE_APPLICATION" => Some(Self::MobileApplication),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "YOUTUBE_CHANNEL" => Some(Self::YoutubeChannel),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible positive geo target types.
@@ -16664,6 +20721,17 @@ pub mod positive_geo_target_type_enum {
                 PositiveGeoTargetType::PresenceOrInterest => "PRESENCE_OR_INTEREST",
                 PositiveGeoTargetType::SearchInterest => "SEARCH_INTEREST",
                 PositiveGeoTargetType::Presence => "PRESENCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRESENCE_OR_INTEREST" => Some(Self::PresenceOrInterest),
+                "SEARCH_INTEREST" => Some(Self::SearchInterest),
+                "PRESENCE" => Some(Self::Presence),
+                _ => None,
             }
         }
     }
@@ -16908,6 +20976,67 @@ pub mod price_placeholder_field_enum {
                 PricePlaceholderField::Item8FinalMobileUrls => "ITEM_8_FINAL_MOBILE_URLS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TYPE" => Some(Self::Type),
+                "PRICE_QUALIFIER" => Some(Self::PriceQualifier),
+                "TRACKING_TEMPLATE" => Some(Self::TrackingTemplate),
+                "LANGUAGE" => Some(Self::Language),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                "ITEM_1_HEADER" => Some(Self::Item1Header),
+                "ITEM_1_DESCRIPTION" => Some(Self::Item1Description),
+                "ITEM_1_PRICE" => Some(Self::Item1Price),
+                "ITEM_1_UNIT" => Some(Self::Item1Unit),
+                "ITEM_1_FINAL_URLS" => Some(Self::Item1FinalUrls),
+                "ITEM_1_FINAL_MOBILE_URLS" => Some(Self::Item1FinalMobileUrls),
+                "ITEM_2_HEADER" => Some(Self::Item2Header),
+                "ITEM_2_DESCRIPTION" => Some(Self::Item2Description),
+                "ITEM_2_PRICE" => Some(Self::Item2Price),
+                "ITEM_2_UNIT" => Some(Self::Item2Unit),
+                "ITEM_2_FINAL_URLS" => Some(Self::Item2FinalUrls),
+                "ITEM_2_FINAL_MOBILE_URLS" => Some(Self::Item2FinalMobileUrls),
+                "ITEM_3_HEADER" => Some(Self::Item3Header),
+                "ITEM_3_DESCRIPTION" => Some(Self::Item3Description),
+                "ITEM_3_PRICE" => Some(Self::Item3Price),
+                "ITEM_3_UNIT" => Some(Self::Item3Unit),
+                "ITEM_3_FINAL_URLS" => Some(Self::Item3FinalUrls),
+                "ITEM_3_FINAL_MOBILE_URLS" => Some(Self::Item3FinalMobileUrls),
+                "ITEM_4_HEADER" => Some(Self::Item4Header),
+                "ITEM_4_DESCRIPTION" => Some(Self::Item4Description),
+                "ITEM_4_PRICE" => Some(Self::Item4Price),
+                "ITEM_4_UNIT" => Some(Self::Item4Unit),
+                "ITEM_4_FINAL_URLS" => Some(Self::Item4FinalUrls),
+                "ITEM_4_FINAL_MOBILE_URLS" => Some(Self::Item4FinalMobileUrls),
+                "ITEM_5_HEADER" => Some(Self::Item5Header),
+                "ITEM_5_DESCRIPTION" => Some(Self::Item5Description),
+                "ITEM_5_PRICE" => Some(Self::Item5Price),
+                "ITEM_5_UNIT" => Some(Self::Item5Unit),
+                "ITEM_5_FINAL_URLS" => Some(Self::Item5FinalUrls),
+                "ITEM_5_FINAL_MOBILE_URLS" => Some(Self::Item5FinalMobileUrls),
+                "ITEM_6_HEADER" => Some(Self::Item6Header),
+                "ITEM_6_DESCRIPTION" => Some(Self::Item6Description),
+                "ITEM_6_PRICE" => Some(Self::Item6Price),
+                "ITEM_6_UNIT" => Some(Self::Item6Unit),
+                "ITEM_6_FINAL_URLS" => Some(Self::Item6FinalUrls),
+                "ITEM_6_FINAL_MOBILE_URLS" => Some(Self::Item6FinalMobileUrls),
+                "ITEM_7_HEADER" => Some(Self::Item7Header),
+                "ITEM_7_DESCRIPTION" => Some(Self::Item7Description),
+                "ITEM_7_PRICE" => Some(Self::Item7Price),
+                "ITEM_7_UNIT" => Some(Self::Item7Unit),
+                "ITEM_7_FINAL_URLS" => Some(Self::Item7FinalUrls),
+                "ITEM_7_FINAL_MOBILE_URLS" => Some(Self::Item7FinalMobileUrls),
+                "ITEM_8_HEADER" => Some(Self::Item8Header),
+                "ITEM_8_DESCRIPTION" => Some(Self::Item8Description),
+                "ITEM_8_PRICE" => Some(Self::Item8Price),
+                "ITEM_8_UNIT" => Some(Self::Item8Unit),
+                "ITEM_8_FINAL_URLS" => Some(Self::Item8FinalUrls),
+                "ITEM_8_FINAL_MOBILE_URLS" => Some(Self::Item8FinalMobileUrls),
+                _ => None,
+            }
+        }
     }
 }
 /// Status of the product bidding category.
@@ -16950,6 +21079,16 @@ pub mod product_bidding_category_status_enum {
                 ProductBiddingCategoryStatus::Unknown => "UNKNOWN",
                 ProductBiddingCategoryStatus::Active => "ACTIVE",
                 ProductBiddingCategoryStatus::Obsolete => "OBSOLETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVE" => Some(Self::Active),
+                "OBSOLETE" => Some(Self::Obsolete),
+                _ => None,
             }
         }
     }
@@ -17039,6 +21178,28 @@ pub mod promotion_placeholder_field_enum {
                 PromotionPlaceholderField::TrackingUrl => "TRACKING_URL",
                 PromotionPlaceholderField::Language => "LANGUAGE",
                 PromotionPlaceholderField::FinalUrlSuffix => "FINAL_URL_SUFFIX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROMOTION_TARGET" => Some(Self::PromotionTarget),
+                "DISCOUNT_MODIFIER" => Some(Self::DiscountModifier),
+                "PERCENT_OFF" => Some(Self::PercentOff),
+                "MONEY_AMOUNT_OFF" => Some(Self::MoneyAmountOff),
+                "PROMOTION_CODE" => Some(Self::PromotionCode),
+                "ORDERS_OVER_AMOUNT" => Some(Self::OrdersOverAmount),
+                "PROMOTION_START" => Some(Self::PromotionStart),
+                "PROMOTION_END" => Some(Self::PromotionEnd),
+                "OCCASION" => Some(Self::Occasion),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "LANGUAGE" => Some(Self::Language),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                _ => None,
             }
         }
     }
@@ -17157,6 +21318,40 @@ pub mod reach_plan_age_range_enum {
                 ReachPlanAgeRange::AgeRange65Up => "AGE_RANGE_65_UP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AGE_RANGE_18_24" => Some(Self::AgeRange1824),
+                "AGE_RANGE_18_34" => Some(Self::AgeRange1834),
+                "AGE_RANGE_18_44" => Some(Self::AgeRange1844),
+                "AGE_RANGE_18_49" => Some(Self::AgeRange1849),
+                "AGE_RANGE_18_54" => Some(Self::AgeRange1854),
+                "AGE_RANGE_18_64" => Some(Self::AgeRange1864),
+                "AGE_RANGE_18_65_UP" => Some(Self::AgeRange1865Up),
+                "AGE_RANGE_21_34" => Some(Self::AgeRange2134),
+                "AGE_RANGE_25_34" => Some(Self::AgeRange2534),
+                "AGE_RANGE_25_44" => Some(Self::AgeRange2544),
+                "AGE_RANGE_25_49" => Some(Self::AgeRange2549),
+                "AGE_RANGE_25_54" => Some(Self::AgeRange2554),
+                "AGE_RANGE_25_64" => Some(Self::AgeRange2564),
+                "AGE_RANGE_25_65_UP" => Some(Self::AgeRange2565Up),
+                "AGE_RANGE_35_44" => Some(Self::AgeRange3544),
+                "AGE_RANGE_35_49" => Some(Self::AgeRange3549),
+                "AGE_RANGE_35_54" => Some(Self::AgeRange3554),
+                "AGE_RANGE_35_64" => Some(Self::AgeRange3564),
+                "AGE_RANGE_35_65_UP" => Some(Self::AgeRange3565Up),
+                "AGE_RANGE_45_54" => Some(Self::AgeRange4554),
+                "AGE_RANGE_45_64" => Some(Self::AgeRange4564),
+                "AGE_RANGE_45_65_UP" => Some(Self::AgeRange4565Up),
+                "AGE_RANGE_50_65_UP" => Some(Self::AgeRange5065Up),
+                "AGE_RANGE_55_64" => Some(Self::AgeRange5564),
+                "AGE_RANGE_55_65_UP" => Some(Self::AgeRange5565Up),
+                "AGE_RANGE_65_UP" => Some(Self::AgeRange65Up),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing plannable networks.
@@ -17205,6 +21400,19 @@ pub mod reach_plan_network_enum {
                 ReachPlanNetwork::YoutubeAndGoogleVideoPartners => {
                     "YOUTUBE_AND_GOOGLE_VIDEO_PARTNERS"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "YOUTUBE" => Some(Self::Youtube),
+                "GOOGLE_VIDEO_PARTNERS" => Some(Self::GoogleVideoPartners),
+                "YOUTUBE_AND_GOOGLE_VIDEO_PARTNERS" => {
+                    Some(Self::YoutubeAndGoogleVideoPartners)
+                }
+                _ => None,
             }
         }
     }
@@ -17316,6 +21524,32 @@ pub mod real_estate_placeholder_field_enum {
                 RealEstatePlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LISTING_ID" => Some(Self::ListingId),
+                "LISTING_NAME" => Some(Self::ListingName),
+                "CITY_NAME" => Some(Self::CityName),
+                "DESCRIPTION" => Some(Self::Description),
+                "ADDRESS" => Some(Self::Address),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "PROPERTY_TYPE" => Some(Self::PropertyType),
+                "LISTING_TYPE" => Some(Self::ListingType),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_LISTING_IDS" => Some(Self::SimilarListingIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing resource change operations
@@ -17363,6 +21597,17 @@ pub mod resource_change_operation_enum {
                 ResourceChangeOperation::Create => "CREATE",
                 ResourceChangeOperation::Update => "UPDATE",
                 ResourceChangeOperation::Remove => "REMOVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "REMOVE" => Some(Self::Remove),
+                _ => None,
             }
         }
     }
@@ -18054,6 +22299,338 @@ pub mod resource_limit_type_enum {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGNS_PER_CUSTOMER" => Some(Self::CampaignsPerCustomer),
+                "BASE_CAMPAIGNS_PER_CUSTOMER" => Some(Self::BaseCampaignsPerCustomer),
+                "EXPERIMENT_CAMPAIGNS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentCampaignsPerCustomer)
+                }
+                "HOTEL_CAMPAIGNS_PER_CUSTOMER" => Some(Self::HotelCampaignsPerCustomer),
+                "SMART_SHOPPING_CAMPAIGNS_PER_CUSTOMER" => {
+                    Some(Self::SmartShoppingCampaignsPerCustomer)
+                }
+                "AD_GROUPS_PER_CAMPAIGN" => Some(Self::AdGroupsPerCampaign),
+                "AD_GROUPS_PER_SHOPPING_CAMPAIGN" => {
+                    Some(Self::AdGroupsPerShoppingCampaign)
+                }
+                "AD_GROUPS_PER_HOTEL_CAMPAIGN" => Some(Self::AdGroupsPerHotelCampaign),
+                "REPORTING_AD_GROUPS_PER_LOCAL_CAMPAIGN" => {
+                    Some(Self::ReportingAdGroupsPerLocalCampaign)
+                }
+                "REPORTING_AD_GROUPS_PER_APP_CAMPAIGN" => {
+                    Some(Self::ReportingAdGroupsPerAppCampaign)
+                }
+                "MANAGED_AD_GROUPS_PER_SMART_CAMPAIGN" => {
+                    Some(Self::ManagedAdGroupsPerSmartCampaign)
+                }
+                "AD_GROUP_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::AdGroupCriteriaPerCustomer)
+                }
+                "BASE_AD_GROUP_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::BaseAdGroupCriteriaPerCustomer)
+                }
+                "EXPERIMENT_AD_GROUP_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::ExperimentAdGroupCriteriaPerCustomer)
+                }
+                "AD_GROUP_CRITERIA_PER_CAMPAIGN" => {
+                    Some(Self::AdGroupCriteriaPerCampaign)
+                }
+                "CAMPAIGN_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::CampaignCriteriaPerCustomer)
+                }
+                "BASE_CAMPAIGN_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::BaseCampaignCriteriaPerCustomer)
+                }
+                "EXPERIMENT_CAMPAIGN_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::ExperimentCampaignCriteriaPerCustomer)
+                }
+                "WEBPAGE_CRITERIA_PER_CUSTOMER" => Some(Self::WebpageCriteriaPerCustomer),
+                "BASE_WEBPAGE_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::BaseWebpageCriteriaPerCustomer)
+                }
+                "EXPERIMENT_WEBPAGE_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::ExperimentWebpageCriteriaPerCustomer)
+                }
+                "COMBINED_AUDIENCE_CRITERIA_PER_AD_GROUP" => {
+                    Some(Self::CombinedAudienceCriteriaPerAdGroup)
+                }
+                "CUSTOMER_NEGATIVE_PLACEMENT_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::CustomerNegativePlacementCriteriaPerCustomer)
+                }
+                "CUSTOMER_NEGATIVE_YOUTUBE_CHANNEL_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::CustomerNegativeYoutubeChannelCriteriaPerCustomer)
+                }
+                "CRITERIA_PER_AD_GROUP" => Some(Self::CriteriaPerAdGroup),
+                "LISTING_GROUPS_PER_AD_GROUP" => Some(Self::ListingGroupsPerAdGroup),
+                "EXPLICITLY_SHARED_BUDGETS_PER_CUSTOMER" => {
+                    Some(Self::ExplicitlySharedBudgetsPerCustomer)
+                }
+                "IMPLICITLY_SHARED_BUDGETS_PER_CUSTOMER" => {
+                    Some(Self::ImplicitlySharedBudgetsPerCustomer)
+                }
+                "COMBINED_AUDIENCE_CRITERIA_PER_CAMPAIGN" => {
+                    Some(Self::CombinedAudienceCriteriaPerCampaign)
+                }
+                "NEGATIVE_KEYWORDS_PER_CAMPAIGN" => {
+                    Some(Self::NegativeKeywordsPerCampaign)
+                }
+                "NEGATIVE_PLACEMENTS_PER_CAMPAIGN" => {
+                    Some(Self::NegativePlacementsPerCampaign)
+                }
+                "GEO_TARGETS_PER_CAMPAIGN" => Some(Self::GeoTargetsPerCampaign),
+                "NEGATIVE_IP_BLOCKS_PER_CAMPAIGN" => {
+                    Some(Self::NegativeIpBlocksPerCampaign)
+                }
+                "PROXIMITIES_PER_CAMPAIGN" => Some(Self::ProximitiesPerCampaign),
+                "LISTING_SCOPES_PER_SHOPPING_CAMPAIGN" => {
+                    Some(Self::ListingScopesPerShoppingCampaign)
+                }
+                "LISTING_SCOPES_PER_NON_SHOPPING_CAMPAIGN" => {
+                    Some(Self::ListingScopesPerNonShoppingCampaign)
+                }
+                "NEGATIVE_KEYWORDS_PER_SHARED_SET" => {
+                    Some(Self::NegativeKeywordsPerSharedSet)
+                }
+                "NEGATIVE_PLACEMENTS_PER_SHARED_SET" => {
+                    Some(Self::NegativePlacementsPerSharedSet)
+                }
+                "SHARED_SETS_PER_CUSTOMER_FOR_TYPE_DEFAULT" => {
+                    Some(Self::SharedSetsPerCustomerForTypeDefault)
+                }
+                "SHARED_SETS_PER_CUSTOMER_FOR_NEGATIVE_PLACEMENT_LIST_LOWER" => {
+                    Some(Self::SharedSetsPerCustomerForNegativePlacementListLower)
+                }
+                "HOTEL_ADVANCE_BOOKING_WINDOW_BID_MODIFIERS_PER_AD_GROUP" => {
+                    Some(Self::HotelAdvanceBookingWindowBidModifiersPerAdGroup)
+                }
+                "BIDDING_STRATEGIES_PER_CUSTOMER" => {
+                    Some(Self::BiddingStrategiesPerCustomer)
+                }
+                "BASIC_USER_LISTS_PER_CUSTOMER" => Some(Self::BasicUserListsPerCustomer),
+                "LOGICAL_USER_LISTS_PER_CUSTOMER" => {
+                    Some(Self::LogicalUserListsPerCustomer)
+                }
+                "RULE_BASED_USER_LISTS_PER_CUSTOMER" => {
+                    Some(Self::RuleBasedUserListsPerCustomer)
+                }
+                "BASE_AD_GROUP_ADS_PER_CUSTOMER" => Some(Self::BaseAdGroupAdsPerCustomer),
+                "EXPERIMENT_AD_GROUP_ADS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentAdGroupAdsPerCustomer)
+                }
+                "AD_GROUP_ADS_PER_CAMPAIGN" => Some(Self::AdGroupAdsPerCampaign),
+                "TEXT_AND_OTHER_ADS_PER_AD_GROUP" => {
+                    Some(Self::TextAndOtherAdsPerAdGroup)
+                }
+                "IMAGE_ADS_PER_AD_GROUP" => Some(Self::ImageAdsPerAdGroup),
+                "SHOPPING_SMART_ADS_PER_AD_GROUP" => {
+                    Some(Self::ShoppingSmartAdsPerAdGroup)
+                }
+                "RESPONSIVE_SEARCH_ADS_PER_AD_GROUP" => {
+                    Some(Self::ResponsiveSearchAdsPerAdGroup)
+                }
+                "APP_ADS_PER_AD_GROUP" => Some(Self::AppAdsPerAdGroup),
+                "APP_ENGAGEMENT_ADS_PER_AD_GROUP" => {
+                    Some(Self::AppEngagementAdsPerAdGroup)
+                }
+                "LOCAL_ADS_PER_AD_GROUP" => Some(Self::LocalAdsPerAdGroup),
+                "VIDEO_ADS_PER_AD_GROUP" => Some(Self::VideoAdsPerAdGroup),
+                "LEAD_FORM_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::LeadFormCampaignAssetsPerCampaign)
+                }
+                "PROMOTION_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::PromotionCustomerAssetsPerCustomer)
+                }
+                "PROMOTION_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::PromotionCampaignAssetsPerCampaign)
+                }
+                "PROMOTION_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::PromotionAdGroupAssetsPerAdGroup)
+                }
+                "CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::CalloutCustomerAssetsPerCustomer)
+                }
+                "CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::CalloutCampaignAssetsPerCampaign)
+                }
+                "CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::CalloutAdGroupAssetsPerAdGroup)
+                }
+                "SITELINK_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::SitelinkCustomerAssetsPerCustomer)
+                }
+                "SITELINK_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::SitelinkCampaignAssetsPerCampaign)
+                }
+                "SITELINK_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::SitelinkAdGroupAssetsPerAdGroup)
+                }
+                "STRUCTURED_SNIPPET_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::StructuredSnippetCustomerAssetsPerCustomer)
+                }
+                "STRUCTURED_SNIPPET_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::StructuredSnippetCampaignAssetsPerCampaign)
+                }
+                "STRUCTURED_SNIPPET_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::StructuredSnippetAdGroupAssetsPerAdGroup)
+                }
+                "MOBILE_APP_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::MobileAppCustomerAssetsPerCustomer)
+                }
+                "MOBILE_APP_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::MobileAppCampaignAssetsPerCampaign)
+                }
+                "MOBILE_APP_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::MobileAppAdGroupAssetsPerAdGroup)
+                }
+                "HOTEL_CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::HotelCalloutCustomerAssetsPerCustomer)
+                }
+                "HOTEL_CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::HotelCalloutCampaignAssetsPerCampaign)
+                }
+                "HOTEL_CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::HotelCalloutAdGroupAssetsPerAdGroup)
+                }
+                "CALL_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::CallCustomerAssetsPerCustomer)
+                }
+                "CALL_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::CallCampaignAssetsPerCampaign)
+                }
+                "CALL_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::CallAdGroupAssetsPerAdGroup)
+                }
+                "PRICE_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::PriceCustomerAssetsPerCustomer)
+                }
+                "PRICE_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::PriceCampaignAssetsPerCampaign)
+                }
+                "PRICE_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::PriceAdGroupAssetsPerAdGroup)
+                }
+                "AD_IMAGE_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::AdImageCampaignAssetsPerCampaign)
+                }
+                "AD_IMAGE_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::AdImageAdGroupAssetsPerAdGroup)
+                }
+                "PAGE_FEED_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::PageFeedAssetSetsPerCustomer)
+                }
+                "DYNAMIC_EDUCATION_FEED_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicEducationFeedAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_PAGE_FEED_ASSET_SET" => Some(Self::AssetsPerPageFeedAssetSet),
+                "ASSETS_PER_DYNAMIC_EDUCATION_FEED_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicEducationFeedAssetSet)
+                }
+                "DYNAMIC_REAL_ESTATE_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicRealEstateAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_DYNAMIC_REAL_ESTATE_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicRealEstateAssetSet)
+                }
+                "DYNAMIC_CUSTOM_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicCustomAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_DYNAMIC_CUSTOM_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicCustomAssetSet)
+                }
+                "DYNAMIC_HOTELS_AND_RENTALS_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicHotelsAndRentalsAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_DYNAMIC_HOTELS_AND_RENTALS_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicHotelsAndRentalsAssetSet)
+                }
+                "DYNAMIC_LOCAL_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicLocalAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_DYNAMIC_LOCAL_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicLocalAssetSet)
+                }
+                "DYNAMIC_FLIGHTS_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicFlightsAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_DYNAMIC_FLIGHTS_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicFlightsAssetSet)
+                }
+                "DYNAMIC_TRAVEL_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicTravelAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_DYNAMIC_TRAVEL_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicTravelAssetSet)
+                }
+                "DYNAMIC_JOBS_ASSET_SETS_PER_CUSTOMER" => {
+                    Some(Self::DynamicJobsAssetSetsPerCustomer)
+                }
+                "ASSETS_PER_DYNAMIC_JOBS_ASSET_SET" => {
+                    Some(Self::AssetsPerDynamicJobsAssetSet)
+                }
+                "VERSIONS_PER_AD" => Some(Self::VersionsPerAd),
+                "USER_FEEDS_PER_CUSTOMER" => Some(Self::UserFeedsPerCustomer),
+                "SYSTEM_FEEDS_PER_CUSTOMER" => Some(Self::SystemFeedsPerCustomer),
+                "FEED_ATTRIBUTES_PER_FEED" => Some(Self::FeedAttributesPerFeed),
+                "FEED_ITEMS_PER_CUSTOMER" => Some(Self::FeedItemsPerCustomer),
+                "CAMPAIGN_FEEDS_PER_CUSTOMER" => Some(Self::CampaignFeedsPerCustomer),
+                "BASE_CAMPAIGN_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::BaseCampaignFeedsPerCustomer)
+                }
+                "EXPERIMENT_CAMPAIGN_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentCampaignFeedsPerCustomer)
+                }
+                "AD_GROUP_FEEDS_PER_CUSTOMER" => Some(Self::AdGroupFeedsPerCustomer),
+                "BASE_AD_GROUP_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::BaseAdGroupFeedsPerCustomer)
+                }
+                "EXPERIMENT_AD_GROUP_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentAdGroupFeedsPerCustomer)
+                }
+                "AD_GROUP_FEEDS_PER_CAMPAIGN" => Some(Self::AdGroupFeedsPerCampaign),
+                "FEED_ITEM_SETS_PER_CUSTOMER" => Some(Self::FeedItemSetsPerCustomer),
+                "FEED_ITEMS_PER_FEED_ITEM_SET" => Some(Self::FeedItemsPerFeedItemSet),
+                "CAMPAIGN_EXPERIMENTS_PER_CUSTOMER" => {
+                    Some(Self::CampaignExperimentsPerCustomer)
+                }
+                "EXPERIMENT_ARMS_PER_VIDEO_EXPERIMENT" => {
+                    Some(Self::ExperimentArmsPerVideoExperiment)
+                }
+                "OWNED_LABELS_PER_CUSTOMER" => Some(Self::OwnedLabelsPerCustomer),
+                "LABELS_PER_CAMPAIGN" => Some(Self::LabelsPerCampaign),
+                "LABELS_PER_AD_GROUP" => Some(Self::LabelsPerAdGroup),
+                "LABELS_PER_AD_GROUP_AD" => Some(Self::LabelsPerAdGroupAd),
+                "LABELS_PER_AD_GROUP_CRITERION" => Some(Self::LabelsPerAdGroupCriterion),
+                "TARGET_CUSTOMERS_PER_LABEL" => Some(Self::TargetCustomersPerLabel),
+                "KEYWORD_PLANS_PER_USER_PER_CUSTOMER" => {
+                    Some(Self::KeywordPlansPerUserPerCustomer)
+                }
+                "KEYWORD_PLAN_AD_GROUP_KEYWORDS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanAdGroupKeywordsPerKeywordPlan)
+                }
+                "KEYWORD_PLAN_AD_GROUPS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanAdGroupsPerKeywordPlan)
+                }
+                "KEYWORD_PLAN_NEGATIVE_KEYWORDS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanNegativeKeywordsPerKeywordPlan)
+                }
+                "KEYWORD_PLAN_CAMPAIGNS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanCampaignsPerKeywordPlan)
+                }
+                "CONVERSION_ACTIONS_PER_CUSTOMER" => {
+                    Some(Self::ConversionActionsPerCustomer)
+                }
+                "BATCH_JOB_OPERATIONS_PER_JOB" => Some(Self::BatchJobOperationsPerJob),
+                "BATCH_JOBS_PER_CUSTOMER" => Some(Self::BatchJobsPerCustomer),
+                "HOTEL_CHECK_IN_DATE_RANGE_BID_MODIFIERS_PER_AD_GROUP" => {
+                    Some(Self::HotelCheckInDateRangeBidModifiersPerAdGroup)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Container for possible response content types.
@@ -18094,6 +22671,15 @@ pub mod response_content_type_enum {
                 ResponseContentType::Unspecified => "UNSPECIFIED",
                 ResponseContentType::ResourceNameOnly => "RESOURCE_NAME_ONLY",
                 ResponseContentType::MutableResource => "MUTABLE_RESOURCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "RESOURCE_NAME_ONLY" => Some(Self::ResourceNameOnly),
+                "MUTABLE_RESOURCE" => Some(Self::MutableResource),
+                _ => None,
             }
         }
     }
@@ -18146,6 +22732,18 @@ pub mod search_term_targeting_status_enum {
                 SearchTermTargetingStatus::Excluded => "EXCLUDED",
                 SearchTermTargetingStatus::AddedExcluded => "ADDED_EXCLUDED",
                 SearchTermTargetingStatus::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADDED" => Some(Self::Added),
+                "EXCLUDED" => Some(Self::Excluded),
+                "ADDED_EXCLUDED" => Some(Self::AddedExcluded),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -18201,6 +22799,17 @@ pub mod seasonality_event_scope_enum {
                 SeasonalityEventScope::Channel => "CHANNEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOMER" => Some(Self::Customer),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "CHANNEL" => Some(Self::Channel),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing seasonality event statuses. The two types of seasonality
@@ -18248,6 +22857,16 @@ pub mod seasonality_event_status_enum {
                 SeasonalityEventStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing types of shared set statuses.
@@ -18292,6 +22911,16 @@ pub mod shared_set_status_enum {
                 SharedSetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing types of shared sets.
@@ -18334,6 +22963,16 @@ pub mod shared_set_type_enum {
                 SharedSetType::Unknown => "UNKNOWN",
                 SharedSetType::NegativeKeywords => "NEGATIVE_KEYWORDS",
                 SharedSetType::NegativePlacements => "NEGATIVE_PLACEMENTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEGATIVE_KEYWORDS" => Some(Self::NegativeKeywords),
+                "NEGATIVE_PLACEMENTS" => Some(Self::NegativePlacements),
+                _ => None,
             }
         }
     }
@@ -18387,6 +23026,17 @@ pub mod simulation_modification_method_enum {
                 SimulationModificationMethod::Uniform => "UNIFORM",
                 SimulationModificationMethod::Default => "DEFAULT",
                 SimulationModificationMethod::Scaling => "SCALING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNIFORM" => Some(Self::Uniform),
+                "DEFAULT" => Some(Self::Default),
+                "SCALING" => Some(Self::Scaling),
+                _ => None,
             }
         }
     }
@@ -18449,6 +23099,22 @@ pub mod simulation_type_enum {
                 SimulationType::PercentCpcBid => "PERCENT_CPC_BID",
                 SimulationType::TargetImpressionShare => "TARGET_IMPRESSION_SHARE",
                 SimulationType::Budget => "BUDGET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CPC_BID" => Some(Self::CpcBid),
+                "CPV_BID" => Some(Self::CpvBid),
+                "TARGET_CPA" => Some(Self::TargetCpa),
+                "BID_MODIFIER" => Some(Self::BidModifier),
+                "TARGET_ROAS" => Some(Self::TargetRoas),
+                "PERCENT_CPC_BID" => Some(Self::PercentCpcBid),
+                "TARGET_IMPRESSION_SHARE" => Some(Self::TargetImpressionShare),
+                "BUDGET" => Some(Self::Budget),
+                _ => None,
             }
         }
     }
@@ -18514,6 +23180,21 @@ pub mod sitelink_placeholder_field_enum {
                 SitelinkPlaceholderField::FinalUrlSuffix => "FINAL_URL_SUFFIX",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT" => Some(Self::Text),
+                "LINE_1" => Some(Self::Line1),
+                "LINE_2" => Some(Self::Line2),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing spending limit types.
@@ -18554,6 +23235,15 @@ pub mod spending_limit_type_enum {
                 SpendingLimitType::Unspecified => "UNSPECIFIED",
                 SpendingLimitType::Unknown => "UNKNOWN",
                 SpendingLimitType::Infinite => "INFINITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INFINITE" => Some(Self::Infinite),
+                _ => None,
             }
         }
     }
@@ -18605,6 +23295,16 @@ pub mod structured_snippet_placeholder_field_enum {
                 StructuredSnippetPlaceholderField::Snippets => "SNIPPETS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HEADER" => Some(Self::Header),
+                "SNIPPETS" => Some(Self::Snippets),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates summary row setting in request parameter.
@@ -18653,6 +23353,17 @@ pub mod summary_row_setting_enum {
                 SummaryRowSetting::SummaryRowOnly => "SUMMARY_ROW_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NO_SUMMARY_ROW" => Some(Self::NoSummaryRow),
+                "SUMMARY_ROW_WITH_RESULTS" => Some(Self::SummaryRowWithResults),
+                "SUMMARY_ROW_ONLY" => Some(Self::SummaryRowOnly),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible system managed entity sources.
@@ -18692,6 +23403,15 @@ pub mod system_managed_resource_source_enum {
                 SystemManagedResourceSource::Unspecified => "UNSPECIFIED",
                 SystemManagedResourceSource::Unknown => "UNKNOWN",
                 SystemManagedResourceSource::AdVariations => "AD_VARIATIONS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_VARIATIONS" => Some(Self::AdVariations),
+                _ => None,
             }
         }
     }
@@ -18745,6 +23465,18 @@ pub mod target_cpa_opt_in_recommendation_goal_enum {
                 TargetCpaOptInRecommendationGoal::ClosestCpa => "CLOSEST_CPA",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SAME_COST" => Some(Self::SameCost),
+                "SAME_CONVERSIONS" => Some(Self::SameConversions),
+                "SAME_CPA" => Some(Self::SameCpa),
+                "CLOSEST_CPA" => Some(Self::ClosestCpa),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing time types.
@@ -18788,6 +23520,16 @@ pub mod time_type_enum {
                 TimeType::Unknown => "UNKNOWN",
                 TimeType::Now => "NOW",
                 TimeType::Forever => "FOREVER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOW" => Some(Self::Now),
+                "FOREVER" => Some(Self::Forever),
+                _ => None,
             }
         }
     }
@@ -18914,6 +23656,34 @@ pub mod travel_placeholder_field_enum {
                 TravelPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DESTINATION_ID" => Some(Self::DestinationId),
+                "ORIGIN_ID" => Some(Self::OriginId),
+                "TITLE" => Some(Self::Title),
+                "DESTINATION_NAME" => Some(Self::DestinationName),
+                "ORIGIN_NAME" => Some(Self::OriginName),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "CATEGORY" => Some(Self::Category),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "DESTINATION_ADDRESS" => Some(Self::DestinationAddress),
+                "FINAL_URL" => Some(Self::FinalUrl),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_DESTINATION_IDS" => Some(Self::SimilarDestinationIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
 /// Message describing a UserInterestTaxonomyType.
@@ -18969,6 +23739,19 @@ pub mod user_interest_taxonomy_type_enum {
                 UserInterestTaxonomyType::NewSmartPhoneUser => "NEW_SMART_PHONE_USER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AFFINITY" => Some(Self::Affinity),
+                "IN_MARKET" => Some(Self::InMarket),
+                "MOBILE_APP_INSTALL_USER" => Some(Self::MobileAppInstallUser),
+                "VERTICAL_GEO" => Some(Self::VerticalGeo),
+                "NEW_SMART_PHONE_USER" => Some(Self::NewSmartPhoneUser),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates if this client still has access to the list.
@@ -19013,6 +23796,16 @@ pub mod user_list_access_status_enum {
                 UserListAccessStatus::Disabled => "DISABLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates the reason why the userlist was closed.
@@ -19053,6 +23846,15 @@ pub mod user_list_closing_reason_enum {
                 UserListClosingReason::Unspecified => "UNSPECIFIED",
                 UserListClosingReason::Unknown => "UNKNOWN",
                 UserListClosingReason::Unused => "UNUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNUSED" => Some(Self::Unused),
+                _ => None,
             }
         }
     }
@@ -19099,6 +23901,16 @@ pub mod user_list_membership_status_enum {
                 UserListMembershipStatus::Unknown => "UNKNOWN",
                 UserListMembershipStatus::Open => "OPEN",
                 UserListMembershipStatus::Closed => "CLOSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPEN" => Some(Self::Open),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
             }
         }
     }
@@ -19211,6 +24023,44 @@ pub mod user_list_size_range_enum {
                 UserListSizeRange::OverFiftyMillion => "OVER_FIFTY_MILLION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LESS_THAN_FIVE_HUNDRED" => Some(Self::LessThanFiveHundred),
+                "LESS_THAN_ONE_THOUSAND" => Some(Self::LessThanOneThousand),
+                "ONE_THOUSAND_TO_TEN_THOUSAND" => Some(Self::OneThousandToTenThousand),
+                "TEN_THOUSAND_TO_FIFTY_THOUSAND" => {
+                    Some(Self::TenThousandToFiftyThousand)
+                }
+                "FIFTY_THOUSAND_TO_ONE_HUNDRED_THOUSAND" => {
+                    Some(Self::FiftyThousandToOneHundredThousand)
+                }
+                "ONE_HUNDRED_THOUSAND_TO_THREE_HUNDRED_THOUSAND" => {
+                    Some(Self::OneHundredThousandToThreeHundredThousand)
+                }
+                "THREE_HUNDRED_THOUSAND_TO_FIVE_HUNDRED_THOUSAND" => {
+                    Some(Self::ThreeHundredThousandToFiveHundredThousand)
+                }
+                "FIVE_HUNDRED_THOUSAND_TO_ONE_MILLION" => {
+                    Some(Self::FiveHundredThousandToOneMillion)
+                }
+                "ONE_MILLION_TO_TWO_MILLION" => Some(Self::OneMillionToTwoMillion),
+                "TWO_MILLION_TO_THREE_MILLION" => Some(Self::TwoMillionToThreeMillion),
+                "THREE_MILLION_TO_FIVE_MILLION" => Some(Self::ThreeMillionToFiveMillion),
+                "FIVE_MILLION_TO_TEN_MILLION" => Some(Self::FiveMillionToTenMillion),
+                "TEN_MILLION_TO_TWENTY_MILLION" => Some(Self::TenMillionToTwentyMillion),
+                "TWENTY_MILLION_TO_THIRTY_MILLION" => {
+                    Some(Self::TwentyMillionToThirtyMillion)
+                }
+                "THIRTY_MILLION_TO_FIFTY_MILLION" => {
+                    Some(Self::ThirtyMillionToFiftyMillion)
+                }
+                "OVER_FIFTY_MILLION" => Some(Self::OverFiftyMillion),
+                _ => None,
+            }
+        }
     }
 }
 /// The user list types.
@@ -19268,6 +24118,20 @@ pub mod user_list_type_enum {
                 UserListType::CrmBased => "CRM_BASED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REMARKETING" => Some(Self::Remarketing),
+                "LOGICAL" => Some(Self::Logical),
+                "EXTERNAL_REMARKETING" => Some(Self::ExternalRemarketing),
+                "RULE_BASED" => Some(Self::RuleBased),
+                "SIMILAR" => Some(Self::Similar),
+                "CRM_BASED" => Some(Self::CrmBased),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible device types used in a conversion
@@ -19316,6 +24180,17 @@ pub mod value_rule_device_type_enum {
                 ValueRuleDeviceType::Tablet => "TABLET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "DESKTOP" => Some(Self::Desktop),
+                "TABLET" => Some(Self::Tablet),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible geographic location matching types
@@ -19361,6 +24236,16 @@ pub mod value_rule_geo_location_match_type_enum {
                 ValueRuleGeoLocationMatchType::LocationOfPresence => {
                     "LOCATION_OF_PRESENCE"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ANY" => Some(Self::Any),
+                "LOCATION_OF_PRESENCE" => Some(Self::LocationOfPresence),
+                _ => None,
             }
         }
     }
@@ -19411,6 +24296,17 @@ pub mod value_rule_operation_enum {
                 ValueRuleOperation::Set => "SET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADD" => Some(Self::Add),
+                "MULTIPLY" => Some(Self::Multiply),
+                "SET" => Some(Self::Set),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing where a value rule set is attached.
@@ -19453,6 +24349,16 @@ pub mod value_rule_set_attachment_type_enum {
                 ValueRuleSetAttachmentType::Unknown => "UNKNOWN",
                 ValueRuleSetAttachmentType::Customer => "CUSTOMER",
                 ValueRuleSetAttachmentType::Campaign => "CAMPAIGN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOMER" => Some(Self::Customer),
+                "CAMPAIGN" => Some(Self::Campaign),
+                _ => None,
             }
         }
     }
@@ -19506,6 +24412,18 @@ pub mod value_rule_set_dimension_enum {
                 ValueRuleSetDimension::NoCondition => "NO_CONDITION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GEO_LOCATION" => Some(Self::GeoLocation),
+                "DEVICE" => Some(Self::Device),
+                "AUDIENCE" => Some(Self::Audience),
+                "NO_CONDITION" => Some(Self::NoCondition),
+                _ => None,
+            }
+        }
     }
 }
 /// The display mode for vanity pharma URLs.
@@ -19550,6 +24468,16 @@ pub mod vanity_pharma_display_url_mode_enum {
                     "MANUFACTURER_WEBSITE_URL"
                 }
                 VanityPharmaDisplayUrlMode::WebsiteDescription => "WEBSITE_DESCRIPTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MANUFACTURER_WEBSITE_URL" => Some(Self::ManufacturerWebsiteUrl),
+                "WEBSITE_DESCRIPTION" => Some(Self::WebsiteDescription),
+                _ => None,
             }
         }
     }
@@ -19651,6 +24579,46 @@ pub mod vanity_pharma_text_enum {
                 VanityPharmaText::PrescriptionVaccineWebsiteEs => {
                     "PRESCRIPTION_VACCINE_WEBSITE_ES"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRESCRIPTION_TREATMENT_WEBSITE_EN" => {
+                    Some(Self::PrescriptionTreatmentWebsiteEn)
+                }
+                "PRESCRIPTION_TREATMENT_WEBSITE_ES" => {
+                    Some(Self::PrescriptionTreatmentWebsiteEs)
+                }
+                "PRESCRIPTION_DEVICE_WEBSITE_EN" => {
+                    Some(Self::PrescriptionDeviceWebsiteEn)
+                }
+                "PRESCRIPTION_DEVICE_WEBSITE_ES" => {
+                    Some(Self::PrescriptionDeviceWebsiteEs)
+                }
+                "MEDICAL_DEVICE_WEBSITE_EN" => Some(Self::MedicalDeviceWebsiteEn),
+                "MEDICAL_DEVICE_WEBSITE_ES" => Some(Self::MedicalDeviceWebsiteEs),
+                "PREVENTATIVE_TREATMENT_WEBSITE_EN" => {
+                    Some(Self::PreventativeTreatmentWebsiteEn)
+                }
+                "PREVENTATIVE_TREATMENT_WEBSITE_ES" => {
+                    Some(Self::PreventativeTreatmentWebsiteEs)
+                }
+                "PRESCRIPTION_CONTRACEPTION_WEBSITE_EN" => {
+                    Some(Self::PrescriptionContraceptionWebsiteEn)
+                }
+                "PRESCRIPTION_CONTRACEPTION_WEBSITE_ES" => {
+                    Some(Self::PrescriptionContraceptionWebsiteEs)
+                }
+                "PRESCRIPTION_VACCINE_WEBSITE_EN" => {
+                    Some(Self::PrescriptionVaccineWebsiteEn)
+                }
+                "PRESCRIPTION_VACCINE_WEBSITE_ES" => {
+                    Some(Self::PrescriptionVaccineWebsiteEs)
+                }
+                _ => None,
             }
         }
     }

@@ -100,6 +100,18 @@ pub mod threat_log {
                 Severity::Informational => "INFORMATIONAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                "CRITICAL" => Some(Self::Critical),
+                "INFORMATIONAL" => Some(Self::Informational),
+                _ => None,
+            }
+        }
     }
     #[derive(
         Clone,
@@ -131,6 +143,15 @@ pub mod threat_log {
                 Direction::Undefined => "DIRECTION_UNDEFINED",
                 Direction::ClientToServer => "CLIENT_TO_SERVER",
                 Direction::ServerToClient => "SERVER_TO_CLIENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNDEFINED" => Some(Self::Undefined),
+                "CLIENT_TO_SERVER" => Some(Self::ClientToServer),
+                "SERVER_TO_CLIENT" => Some(Self::ServerToClient),
+                _ => None,
             }
         }
     }

@@ -197,6 +197,29 @@ impl Code {
             Code::DataLoss => "DATA_LOSS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OK" => Some(Self::Ok),
+            "CANCELLED" => Some(Self::Cancelled),
+            "UNKNOWN" => Some(Self::Unknown),
+            "INVALID_ARGUMENT" => Some(Self::InvalidArgument),
+            "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
+            "NOT_FOUND" => Some(Self::NotFound),
+            "ALREADY_EXISTS" => Some(Self::AlreadyExists),
+            "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+            "UNAUTHENTICATED" => Some(Self::Unauthenticated),
+            "RESOURCE_EXHAUSTED" => Some(Self::ResourceExhausted),
+            "FAILED_PRECONDITION" => Some(Self::FailedPrecondition),
+            "ABORTED" => Some(Self::Aborted),
+            "OUT_OF_RANGE" => Some(Self::OutOfRange),
+            "UNIMPLEMENTED" => Some(Self::Unimplemented),
+            "INTERNAL" => Some(Self::Internal),
+            "UNAVAILABLE" => Some(Self::Unavailable),
+            "DATA_LOSS" => Some(Self::DataLoss),
+            _ => None,
+        }
+    }
 }
 /// Describes the cause of the error with structured details.
 ///

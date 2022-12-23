@@ -132,6 +132,15 @@ pub mod system_event {
                 Type::TrashAutoPurge => "TRASH_AUTO_PURGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "USER_DELETION" => Some(Self::UserDeletion),
+                "TRASH_AUTO_PURGE" => Some(Self::TrashAutoPurge),
+                _ => None,
+            }
+        }
     }
 }
 /// Empty message representing an administrator.
@@ -330,6 +339,16 @@ pub mod drive_item {
                     Type::StandardFolder => "STANDARD_FOLDER",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MY_DRIVE_ROOT" => Some(Self::MyDriveRoot),
+                    "TEAM_DRIVE_ROOT" => Some(Self::TeamDriveRoot),
+                    "STANDARD_FOLDER" => Some(Self::StandardFolder),
+                    _ => None,
+                }
+            }
         }
     }
     /// A Drive item which is a file.
@@ -380,6 +399,16 @@ pub mod drive_item {
                     Type::MyDriveRoot => "MY_DRIVE_ROOT",
                     Type::SharedDriveRoot => "SHARED_DRIVE_ROOT",
                     Type::StandardFolder => "STANDARD_FOLDER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MY_DRIVE_ROOT" => Some(Self::MyDriveRoot),
+                    "SHARED_DRIVE_ROOT" => Some(Self::SharedDriveRoot),
+                    "STANDARD_FOLDER" => Some(Self::StandardFolder),
+                    _ => None,
                 }
             }
         }
@@ -718,6 +747,15 @@ pub mod delete {
                 Type::PermanentDelete => "PERMANENT_DELETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRASH" => Some(Self::Trash),
+                "PERMANENT_DELETE" => Some(Self::PermanentDelete),
+                _ => None,
+            }
+        }
     }
 }
 /// A deleted object was restored.
@@ -758,6 +796,14 @@ pub mod restore {
             match self {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Untrash => "UNTRASH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNTRASH" => Some(Self::Untrash),
+                _ => None,
             }
         }
     }
@@ -851,6 +897,20 @@ pub mod permission {
                 Role::PublishedViewer => "PUBLISHED_VIEWER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OWNER" => Some(Self::Owner),
+                "ORGANIZER" => Some(Self::Organizer),
+                "FILE_ORGANIZER" => Some(Self::FileOrganizer),
+                "EDITOR" => Some(Self::Editor),
+                "COMMENTER" => Some(Self::Commenter),
+                "VIEWER" => Some(Self::Viewer),
+                "PUBLISHED_VIEWER" => Some(Self::PublishedViewer),
+                _ => None,
+            }
+        }
     }
     /// The entity granted the role.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -938,6 +998,19 @@ pub mod comment {
                     Subtype::Reopened => "REOPENED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SUBTYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADDED" => Some(Self::Added),
+                    "DELETED" => Some(Self::Deleted),
+                    "REPLY_ADDED" => Some(Self::ReplyAdded),
+                    "REPLY_DELETED" => Some(Self::ReplyDeleted),
+                    "RESOLVED" => Some(Self::Resolved),
+                    "REOPENED" => Some(Self::Reopened),
+                    _ => None,
+                }
+            }
         }
     }
     /// A comment with an assignment.
@@ -999,6 +1072,20 @@ pub mod comment {
                     Subtype::Resolved => "RESOLVED",
                     Subtype::Reopened => "REOPENED",
                     Subtype::Reassigned => "REASSIGNED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SUBTYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADDED" => Some(Self::Added),
+                    "DELETED" => Some(Self::Deleted),
+                    "REPLY_ADDED" => Some(Self::ReplyAdded),
+                    "REPLY_DELETED" => Some(Self::ReplyDeleted),
+                    "RESOLVED" => Some(Self::Resolved),
+                    "REOPENED" => Some(Self::Reopened),
+                    "REASSIGNED" => Some(Self::Reassigned),
+                    _ => None,
                 }
             }
         }
@@ -1064,6 +1151,21 @@ pub mod comment {
                     Subtype::RejectDeleted => "REJECT_DELETED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SUBTYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADDED" => Some(Self::Added),
+                    "DELETED" => Some(Self::Deleted),
+                    "REPLY_ADDED" => Some(Self::ReplyAdded),
+                    "REPLY_DELETED" => Some(Self::ReplyDeleted),
+                    "ACCEPTED" => Some(Self::Accepted),
+                    "REJECTED" => Some(Self::Rejected),
+                    "ACCEPT_DELETED" => Some(Self::AcceptDeleted),
+                    "REJECT_DELETED" => Some(Self::RejectDeleted),
+                    _ => None,
+                }
+            }
         }
     }
     /// The type of changed comment.
@@ -1124,6 +1226,15 @@ pub mod data_leak_prevention_change {
                 Type::Cleared => "CLEARED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FLAGGED" => Some(Self::Flagged),
+                "CLEARED" => Some(Self::Cleared),
+                _ => None,
+            }
+        }
     }
 }
 /// Activity in applications other than Drive.
@@ -1167,6 +1278,15 @@ pub mod application_reference {
                 Type::UnspecifiedReferenceType => "UNSPECIFIED_REFERENCE_TYPE",
                 Type::Link => "LINK",
                 Type::Discuss => "DISCUSS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED_REFERENCE_TYPE" => Some(Self::UnspecifiedReferenceType),
+                "LINK" => Some(Self::Link),
+                "DISCUSS" => Some(Self::Discuss),
+                _ => None,
             }
         }
     }
@@ -1237,6 +1357,17 @@ pub mod settings_change {
                     Feature::DriveFileStream => "DRIVE_FILE_STREAM",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SHARING_OUTSIDE_DOMAIN" => Some(Self::SharingOutsideDomain),
+                    "DIRECT_SHARING" => Some(Self::DirectSharing),
+                    "ITEM_DUPLICATION" => Some(Self::ItemDuplication),
+                    "DRIVE_FILE_STREAM" => Some(Self::DriveFileStream),
+                    _ => None,
+                }
+            }
         }
         /// The restriction applicable to a feature.
         #[derive(
@@ -1269,6 +1400,15 @@ pub mod settings_change {
                     Restriction::Unspecified => "RESTRICTION_UNSPECIFIED",
                     Restriction::Unrestricted => "UNRESTRICTED",
                     Restriction::FullyRestricted => "FULLY_RESTRICTED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "RESTRICTION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "UNRESTRICTED" => Some(Self::Unrestricted),
+                    "FULLY_RESTRICTED" => Some(Self::FullyRestricted),
+                    _ => None,
                 }
             }
         }
@@ -1481,6 +1621,19 @@ pub mod applied_label_change {
                     Type::LabelRemoved => "LABEL_REMOVED",
                     Type::LabelFieldValueChanged => "LABEL_FIELD_VALUE_CHANGED",
                     Type::LabelAppliedByItemCreate => "LABEL_APPLIED_BY_ITEM_CREATE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LABEL_ADDED" => Some(Self::LabelAdded),
+                    "LABEL_REMOVED" => Some(Self::LabelRemoved),
+                    "LABEL_FIELD_VALUE_CHANGED" => Some(Self::LabelFieldValueChanged),
+                    "LABEL_APPLIED_BY_ITEM_CREATE" => {
+                        Some(Self::LabelAppliedByItemCreate)
+                    }
+                    _ => None,
                 }
             }
         }

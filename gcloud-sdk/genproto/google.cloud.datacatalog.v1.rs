@@ -46,6 +46,14 @@ pub mod big_query_connection_spec {
                 ConnectionType::CloudSql => "CLOUD_SQL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_SQL" => Some(Self::CloudSql),
+                _ => None,
+            }
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -107,6 +115,15 @@ pub mod cloud_sql_big_query_connection_spec {
                 DatabaseType::Mysql => "MYSQL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "POSTGRES" => Some(Self::Postgres),
+                "MYSQL" => Some(Self::Mysql),
+                _ => None,
+            }
+        }
     }
 }
 /// Fields specific for BigQuery routines.
@@ -155,6 +172,17 @@ impl IntegratedSystem {
             IntegratedSystem::CloudPubsub => "CLOUD_PUBSUB",
             IntegratedSystem::DataprocMetastore => "DATAPROC_METASTORE",
             IntegratedSystem::Dataplex => "DATAPLEX",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INTEGRATED_SYSTEM_UNSPECIFIED" => Some(Self::Unspecified),
+            "BIGQUERY" => Some(Self::Bigquery),
+            "CLOUD_PUBSUB" => Some(Self::CloudPubsub),
+            "DATAPROC_METASTORE" => Some(Self::DataprocMetastore),
+            "DATAPLEX" => Some(Self::Dataplex),
+            _ => None,
         }
     }
 }
@@ -209,6 +237,15 @@ pub mod data_source {
                 Service::Unspecified => "SERVICE_UNSPECIFIED",
                 Service::CloudStorage => "CLOUD_STORAGE",
                 Service::Bigquery => "BIGQUERY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_STORAGE" => Some(Self::CloudStorage),
+                "BIGQUERY" => Some(Self::Bigquery),
+                _ => None,
             }
         }
     }
@@ -620,6 +657,16 @@ impl SearchResultType {
             SearchResultType::EntryGroup => "ENTRY_GROUP",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEARCH_RESULT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENTRY" => Some(Self::Entry),
+            "TAG_TEMPLATE" => Some(Self::TagTemplate),
+            "ENTRY_GROUP" => Some(Self::EntryGroup),
+            _ => None,
+        }
+    }
 }
 /// Describes a BigQuery table.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -722,6 +769,16 @@ impl TableSourceType {
             TableSourceType::BigqueryView => "BIGQUERY_VIEW",
             TableSourceType::BigqueryTable => "BIGQUERY_TABLE",
             TableSourceType::BigqueryMaterializedView => "BIGQUERY_MATERIALIZED_VIEW",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TABLE_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BIGQUERY_VIEW" => Some(Self::BigqueryView),
+            "BIGQUERY_TABLE" => Some(Self::BigqueryTable),
+            "BIGQUERY_MATERIALIZED_VIEW" => Some(Self::BigqueryMaterializedView),
+            _ => None,
         }
     }
 }
@@ -1019,6 +1076,18 @@ pub mod field_type {
                 PrimitiveType::Bool => "BOOL",
                 PrimitiveType::Timestamp => "TIMESTAMP",
                 PrimitiveType::Richtext => "RICHTEXT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIMITIVE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DOUBLE" => Some(Self::Double),
+                "STRING" => Some(Self::String),
+                "BOOL" => Some(Self::Bool),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                "RICHTEXT" => Some(Self::Richtext),
+                _ => None,
             }
         }
     }
@@ -1719,6 +1788,15 @@ pub mod database_table_spec {
                 TableType::External => "EXTERNAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TABLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NATIVE" => Some(Self::Native),
+                "EXTERNAL" => Some(Self::External),
+                _ => None,
+            }
+        }
     }
 }
 /// Specification that applies to a fileset. Valid only for entries with the
@@ -1827,6 +1905,16 @@ pub mod routine_spec {
                     Mode::Inout => "INOUT",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IN" => Some(Self::In),
+                    "OUT" => Some(Self::Out),
+                    "INOUT" => Some(Self::Inout),
+                    _ => None,
+                }
+            }
         }
     }
     /// The fine-grained type of the routine.
@@ -1860,6 +1948,15 @@ pub mod routine_spec {
                 RoutineType::Unspecified => "ROUTINE_TYPE_UNSPECIFIED",
                 RoutineType::ScalarFunction => "SCALAR_FUNCTION",
                 RoutineType::Procedure => "PROCEDURE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROUTINE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCALAR_FUNCTION" => Some(Self::ScalarFunction),
+                "PROCEDURE" => Some(Self::Procedure),
+                _ => None,
             }
         }
     }
@@ -2325,6 +2422,24 @@ impl EntryType {
             EntryType::Lake => "LAKE",
             EntryType::Zone => "ZONE",
             EntryType::Service => "SERVICE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENTRY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TABLE" => Some(Self::Table),
+            "MODEL" => Some(Self::Model),
+            "DATA_STREAM" => Some(Self::DataStream),
+            "FILESET" => Some(Self::Fileset),
+            "CLUSTER" => Some(Self::Cluster),
+            "DATABASE" => Some(Self::Database),
+            "DATA_SOURCE_CONNECTION" => Some(Self::DataSourceConnection),
+            "ROUTINE" => Some(Self::Routine),
+            "LAKE" => Some(Self::Lake),
+            "ZONE" => Some(Self::Zone),
+            "SERVICE" => Some(Self::Service),
+            _ => None,
         }
     }
 }
@@ -3341,6 +3456,14 @@ pub mod taxonomy {
             match self {
                 PolicyType::Unspecified => "POLICY_TYPE_UNSPECIFIED",
                 PolicyType::FineGrainedAccessControl => "FINE_GRAINED_ACCESS_CONTROL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FINE_GRAINED_ACCESS_CONTROL" => Some(Self::FineGrainedAccessControl),
+                _ => None,
             }
         }
     }

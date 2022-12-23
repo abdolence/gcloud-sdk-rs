@@ -215,6 +215,14 @@ pub mod listing {
                 State::Active => "ACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
+            }
+        }
     }
     /// Listing categories.
     #[derive(
@@ -282,6 +290,38 @@ pub mod listing {
                     "CATEGORY_TRANSPORTATION_AND_LOGISTICS"
                 }
                 Category::TravelAndTourism => "CATEGORY_TRAVEL_AND_TOURISM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "CATEGORY_OTHERS" => Some(Self::Others),
+                "CATEGORY_ADVERTISING_AND_MARKETING" => {
+                    Some(Self::AdvertisingAndMarketing)
+                }
+                "CATEGORY_COMMERCE" => Some(Self::Commerce),
+                "CATEGORY_CLIMATE_AND_ENVIRONMENT" => Some(Self::ClimateAndEnvironment),
+                "CATEGORY_DEMOGRAPHICS" => Some(Self::Demographics),
+                "CATEGORY_ECONOMICS" => Some(Self::Economics),
+                "CATEGORY_EDUCATION" => Some(Self::Education),
+                "CATEGORY_ENERGY" => Some(Self::Energy),
+                "CATEGORY_FINANCIAL" => Some(Self::Financial),
+                "CATEGORY_GAMING" => Some(Self::Gaming),
+                "CATEGORY_GEOSPATIAL" => Some(Self::Geospatial),
+                "CATEGORY_HEALTHCARE_AND_LIFE_SCIENCE" => {
+                    Some(Self::HealthcareAndLifeScience)
+                }
+                "CATEGORY_MEDIA" => Some(Self::Media),
+                "CATEGORY_PUBLIC_SECTOR" => Some(Self::PublicSector),
+                "CATEGORY_RETAIL" => Some(Self::Retail),
+                "CATEGORY_SPORTS" => Some(Self::Sports),
+                "CATEGORY_SCIENCE_AND_RESEARCH" => Some(Self::ScienceAndResearch),
+                "CATEGORY_TRANSPORTATION_AND_LOGISTICS" => {
+                    Some(Self::TransportationAndLogistics)
+                }
+                "CATEGORY_TRAVEL_AND_TOURISM" => Some(Self::TravelAndTourism),
+                _ => None,
             }
         }
     }

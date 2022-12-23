@@ -139,6 +139,18 @@ pub mod text_annotation {
                     BreakType::LineBreak => "LINE_BREAK",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNKNOWN" => Some(Self::Unknown),
+                    "SPACE" => Some(Self::Space),
+                    "SURE_SPACE" => Some(Self::SureSpace),
+                    "EOL_SURE_SPACE" => Some(Self::EolSureSpace),
+                    "HYPHEN" => Some(Self::Hyphen),
+                    "LINE_BREAK" => Some(Self::LineBreak),
+                    _ => None,
+                }
+            }
         }
     }
     /// Additional information detected on the structural component.
@@ -256,6 +268,18 @@ pub mod block {
                 BlockType::Picture => "PICTURE",
                 BlockType::Ruler => "RULER",
                 BlockType::Barcode => "BARCODE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT" => Some(Self::Text),
+                "TABLE" => Some(Self::Table),
+                "PICTURE" => Some(Self::Picture),
+                "RULER" => Some(Self::Ruler),
+                "BARCODE" => Some(Self::Barcode),
+                _ => None,
             }
         }
     }
@@ -530,6 +554,23 @@ pub mod feature {
                 Type::WebDetection => "WEB_DETECTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FACE_DETECTION" => Some(Self::FaceDetection),
+                "LANDMARK_DETECTION" => Some(Self::LandmarkDetection),
+                "LOGO_DETECTION" => Some(Self::LogoDetection),
+                "LABEL_DETECTION" => Some(Self::LabelDetection),
+                "TEXT_DETECTION" => Some(Self::TextDetection),
+                "DOCUMENT_TEXT_DETECTION" => Some(Self::DocumentTextDetection),
+                "SAFE_SEARCH_DETECTION" => Some(Self::SafeSearchDetection),
+                "IMAGE_PROPERTIES" => Some(Self::ImageProperties),
+                "CROP_HINTS" => Some(Self::CropHints),
+                "WEB_DETECTION" => Some(Self::WebDetection),
+                _ => None,
+            }
+        }
     }
 }
 /// External image source (Google Cloud Storage or web URL image location).
@@ -790,6 +831,49 @@ pub mod face_annotation {
                     Type::ChinGnathion => "CHIN_GNATHION",
                     Type::ChinLeftGonion => "CHIN_LEFT_GONION",
                     Type::ChinRightGonion => "CHIN_RIGHT_GONION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNKNOWN_LANDMARK" => Some(Self::UnknownLandmark),
+                    "LEFT_EYE" => Some(Self::LeftEye),
+                    "RIGHT_EYE" => Some(Self::RightEye),
+                    "LEFT_OF_LEFT_EYEBROW" => Some(Self::LeftOfLeftEyebrow),
+                    "RIGHT_OF_LEFT_EYEBROW" => Some(Self::RightOfLeftEyebrow),
+                    "LEFT_OF_RIGHT_EYEBROW" => Some(Self::LeftOfRightEyebrow),
+                    "RIGHT_OF_RIGHT_EYEBROW" => Some(Self::RightOfRightEyebrow),
+                    "MIDPOINT_BETWEEN_EYES" => Some(Self::MidpointBetweenEyes),
+                    "NOSE_TIP" => Some(Self::NoseTip),
+                    "UPPER_LIP" => Some(Self::UpperLip),
+                    "LOWER_LIP" => Some(Self::LowerLip),
+                    "MOUTH_LEFT" => Some(Self::MouthLeft),
+                    "MOUTH_RIGHT" => Some(Self::MouthRight),
+                    "MOUTH_CENTER" => Some(Self::MouthCenter),
+                    "NOSE_BOTTOM_RIGHT" => Some(Self::NoseBottomRight),
+                    "NOSE_BOTTOM_LEFT" => Some(Self::NoseBottomLeft),
+                    "NOSE_BOTTOM_CENTER" => Some(Self::NoseBottomCenter),
+                    "LEFT_EYE_TOP_BOUNDARY" => Some(Self::LeftEyeTopBoundary),
+                    "LEFT_EYE_RIGHT_CORNER" => Some(Self::LeftEyeRightCorner),
+                    "LEFT_EYE_BOTTOM_BOUNDARY" => Some(Self::LeftEyeBottomBoundary),
+                    "LEFT_EYE_LEFT_CORNER" => Some(Self::LeftEyeLeftCorner),
+                    "RIGHT_EYE_TOP_BOUNDARY" => Some(Self::RightEyeTopBoundary),
+                    "RIGHT_EYE_RIGHT_CORNER" => Some(Self::RightEyeRightCorner),
+                    "RIGHT_EYE_BOTTOM_BOUNDARY" => Some(Self::RightEyeBottomBoundary),
+                    "RIGHT_EYE_LEFT_CORNER" => Some(Self::RightEyeLeftCorner),
+                    "LEFT_EYEBROW_UPPER_MIDPOINT" => Some(Self::LeftEyebrowUpperMidpoint),
+                    "RIGHT_EYEBROW_UPPER_MIDPOINT" => {
+                        Some(Self::RightEyebrowUpperMidpoint)
+                    }
+                    "LEFT_EAR_TRAGION" => Some(Self::LeftEarTragion),
+                    "RIGHT_EAR_TRAGION" => Some(Self::RightEarTragion),
+                    "LEFT_EYE_PUPIL" => Some(Self::LeftEyePupil),
+                    "RIGHT_EYE_PUPIL" => Some(Self::RightEyePupil),
+                    "FOREHEAD_GLABELLA" => Some(Self::ForeheadGlabella),
+                    "CHIN_GNATHION" => Some(Self::ChinGnathion),
+                    "CHIN_LEFT_GONION" => Some(Self::ChinLeftGonion),
+                    "CHIN_RIGHT_GONION" => Some(Self::ChinRightGonion),
+                    _ => None,
                 }
             }
         }
@@ -1288,6 +1372,17 @@ pub mod operation_metadata {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATED" => Some(Self::Created),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// A bucketized representation of likelihood, which is intended to give clients
@@ -1321,6 +1416,18 @@ impl Likelihood {
             Likelihood::Possible => "POSSIBLE",
             Likelihood::Likely => "LIKELY",
             Likelihood::VeryLikely => "VERY_LIKELY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN" => Some(Self::Unknown),
+            "VERY_UNLIKELY" => Some(Self::VeryUnlikely),
+            "UNLIKELY" => Some(Self::Unlikely),
+            "POSSIBLE" => Some(Self::Possible),
+            "LIKELY" => Some(Self::Likely),
+            "VERY_LIKELY" => Some(Self::VeryLikely),
+            _ => None,
         }
     }
 }

@@ -367,6 +367,15 @@ impl State {
             State::Enabled => "ENABLED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DISABLED" => Some(Self::Disabled),
+            "ENABLED" => Some(Self::Enabled),
+            _ => None,
+        }
+    }
 }
 /// Selected view of quota. Can be used to request more detailed quota
 /// information when retrieving quota metrics and limits.
@@ -398,6 +407,15 @@ impl QuotaView {
             QuotaView::Full => "FULL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "QUOTA_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
 }
 /// Enumerations of quota safety checks.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -424,6 +442,17 @@ impl QuotaSafetyCheck {
             QuotaSafetyCheck::LimitDecreasePercentageTooHigh => {
                 "LIMIT_DECREASE_PERCENTAGE_TOO_HIGH"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "QUOTA_SAFETY_CHECK_UNSPECIFIED" => Some(Self::Unspecified),
+            "LIMIT_DECREASE_BELOW_USAGE" => Some(Self::LimitDecreaseBelowUsage),
+            "LIMIT_DECREASE_PERCENTAGE_TOO_HIGH" => {
+                Some(Self::LimitDecreasePercentageTooHigh)
+            }
+            _ => None,
         }
     }
 }
@@ -1025,6 +1054,14 @@ pub mod get_service_identity_response {
             match self {
                 IdentityState::Unspecified => "IDENTITY_STATE_UNSPECIFIED",
                 IdentityState::Active => "ACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IDENTITY_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
             }
         }
     }

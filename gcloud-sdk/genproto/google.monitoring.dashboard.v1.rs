@@ -293,6 +293,31 @@ pub mod aggregation {
                 Aligner::AlignPercentChange => "ALIGN_PERCENT_CHANGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ALIGN_NONE" => Some(Self::AlignNone),
+                "ALIGN_DELTA" => Some(Self::AlignDelta),
+                "ALIGN_RATE" => Some(Self::AlignRate),
+                "ALIGN_INTERPOLATE" => Some(Self::AlignInterpolate),
+                "ALIGN_NEXT_OLDER" => Some(Self::AlignNextOlder),
+                "ALIGN_MIN" => Some(Self::AlignMin),
+                "ALIGN_MAX" => Some(Self::AlignMax),
+                "ALIGN_MEAN" => Some(Self::AlignMean),
+                "ALIGN_COUNT" => Some(Self::AlignCount),
+                "ALIGN_SUM" => Some(Self::AlignSum),
+                "ALIGN_STDDEV" => Some(Self::AlignStddev),
+                "ALIGN_COUNT_TRUE" => Some(Self::AlignCountTrue),
+                "ALIGN_COUNT_FALSE" => Some(Self::AlignCountFalse),
+                "ALIGN_FRACTION_TRUE" => Some(Self::AlignFractionTrue),
+                "ALIGN_PERCENTILE_99" => Some(Self::AlignPercentile99),
+                "ALIGN_PERCENTILE_95" => Some(Self::AlignPercentile95),
+                "ALIGN_PERCENTILE_50" => Some(Self::AlignPercentile50),
+                "ALIGN_PERCENTILE_05" => Some(Self::AlignPercentile05),
+                "ALIGN_PERCENT_CHANGE" => Some(Self::AlignPercentChange),
+                _ => None,
+            }
+        }
     }
     /// A Reducer operation describes how to aggregate data points from multiple
     /// time series into a single time series, where the value of each data point
@@ -410,6 +435,26 @@ pub mod aggregation {
                 Reducer::ReducePercentile05 => "REDUCE_PERCENTILE_05",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REDUCE_NONE" => Some(Self::ReduceNone),
+                "REDUCE_MEAN" => Some(Self::ReduceMean),
+                "REDUCE_MIN" => Some(Self::ReduceMin),
+                "REDUCE_MAX" => Some(Self::ReduceMax),
+                "REDUCE_SUM" => Some(Self::ReduceSum),
+                "REDUCE_STDDEV" => Some(Self::ReduceStddev),
+                "REDUCE_COUNT" => Some(Self::ReduceCount),
+                "REDUCE_COUNT_TRUE" => Some(Self::ReduceCountTrue),
+                "REDUCE_COUNT_FALSE" => Some(Self::ReduceCountFalse),
+                "REDUCE_FRACTION_TRUE" => Some(Self::ReduceFractionTrue),
+                "REDUCE_PERCENTILE_99" => Some(Self::ReducePercentile99),
+                "REDUCE_PERCENTILE_95" => Some(Self::ReducePercentile95),
+                "REDUCE_PERCENTILE_50" => Some(Self::ReducePercentile50),
+                "REDUCE_PERCENTILE_05" => Some(Self::ReducePercentile05),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes a ranking-based time series filter. Each input time series is
@@ -479,6 +524,18 @@ pub mod pick_time_series_filter {
                 Method::Latest => "METHOD_LATEST",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "METHOD_MEAN" => Some(Self::Mean),
+                "METHOD_MAX" => Some(Self::Max),
+                "METHOD_MIN" => Some(Self::Min),
+                "METHOD_SUM" => Some(Self::Sum),
+                "METHOD_LATEST" => Some(Self::Latest),
+                _ => None,
+            }
+        }
     }
     /// Describes the ranking directions.
     #[derive(
@@ -512,6 +569,15 @@ pub mod pick_time_series_filter {
                 Direction::Unspecified => "DIRECTION_UNSPECIFIED",
                 Direction::Top => "TOP",
                 Direction::Bottom => "BOTTOM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "TOP" => Some(Self::Top),
+                "BOTTOM" => Some(Self::Bottom),
+                _ => None,
             }
         }
     }
@@ -563,6 +629,14 @@ pub mod statistical_time_series_filter {
             match self {
                 Method::Unspecified => "METHOD_UNSPECIFIED",
                 Method::ClusterOutlier => "METHOD_CLUSTER_OUTLIER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "METHOD_CLUSTER_OUTLIER" => Some(Self::ClusterOutlier),
+                _ => None,
             }
         }
     }
@@ -628,6 +702,18 @@ pub mod dashboard_filter {
                 FilterType::UserMetadataLabel => "USER_METADATA_LABEL",
                 FilterType::SystemMetadataLabel => "SYSTEM_METADATA_LABEL",
                 FilterType::Group => "GROUP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FILTER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RESOURCE_LABEL" => Some(Self::ResourceLabel),
+                "METRIC_LABEL" => Some(Self::MetricLabel),
+                "USER_METADATA_LABEL" => Some(Self::UserMetadataLabel),
+                "SYSTEM_METADATA_LABEL" => Some(Self::SystemMetadataLabel),
+                "GROUP" => Some(Self::Group),
+                _ => None,
             }
         }
     }
@@ -841,6 +927,15 @@ pub mod threshold {
                 Color::Red => "RED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COLOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "YELLOW" => Some(Self::Yellow),
+                "RED" => Some(Self::Red),
+                _ => None,
+            }
+        }
     }
     /// Whether the threshold is considered crossed by an actual value above or
     /// below its threshold value.
@@ -878,6 +973,15 @@ pub mod threshold {
                 Direction::Below => "BELOW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ABOVE" => Some(Self::Above),
+                "BELOW" => Some(Self::Below),
+                _ => None,
+            }
+        }
     }
     /// An axis identifier.
     #[derive(
@@ -912,6 +1016,15 @@ pub mod threshold {
                 TargetAxis::Y2 => "Y2",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TARGET_AXIS_UNSPECIFIED" => Some(Self::Unspecified),
+                "Y1" => Some(Self::Y1),
+                "Y2" => Some(Self::Y2),
+                _ => None,
+            }
+        }
     }
 }
 /// Defines the possible types of spark chart supported by the `Scorecard`.
@@ -935,6 +1048,15 @@ impl SparkChartType {
             SparkChartType::Unspecified => "SPARK_CHART_TYPE_UNSPECIFIED",
             SparkChartType::SparkLine => "SPARK_LINE",
             SparkChartType::SparkBar => "SPARK_BAR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SPARK_CHART_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SPARK_LINE" => Some(Self::SparkLine),
+            "SPARK_BAR" => Some(Self::SparkBar),
+            _ => None,
         }
     }
 }
@@ -1132,6 +1254,15 @@ pub mod text {
                 Format::Raw => "RAW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "MARKDOWN" => Some(Self::Markdown),
+                "RAW" => Some(Self::Raw),
+                _ => None,
+            }
+        }
     }
 }
 /// A chart that displays data on a 2D (X and Y axes) plane.
@@ -1243,6 +1374,17 @@ pub mod xy_chart {
                     PlotType::Heatmap => "HEATMAP",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PLOT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LINE" => Some(Self::Line),
+                    "STACKED_AREA" => Some(Self::StackedArea),
+                    "STACKED_BAR" => Some(Self::StackedBar),
+                    "HEATMAP" => Some(Self::Heatmap),
+                    _ => None,
+                }
+            }
         }
         /// An axis identifier.
         #[derive(
@@ -1275,6 +1417,15 @@ pub mod xy_chart {
                     TargetAxis::Unspecified => "TARGET_AXIS_UNSPECIFIED",
                     TargetAxis::Y1 => "Y1",
                     TargetAxis::Y2 => "Y2",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TARGET_AXIS_UNSPECIFIED" => Some(Self::Unspecified),
+                    "Y1" => Some(Self::Y1),
+                    "Y2" => Some(Self::Y2),
+                    _ => None,
                 }
             }
         }
@@ -1323,6 +1474,15 @@ pub mod xy_chart {
                     Scale::Unspecified => "SCALE_UNSPECIFIED",
                     Scale::Linear => "LINEAR",
                     Scale::Log10 => "LOG10",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SCALE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LINEAR" => Some(Self::Linear),
+                    "LOG10" => Some(Self::Log10),
+                    _ => None,
                 }
             }
         }
@@ -1375,6 +1535,16 @@ pub mod chart_options {
                 Mode::Color => "COLOR",
                 Mode::XRay => "X_RAY",
                 Mode::Stats => "STATS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COLOR" => Some(Self::Color),
+                "X_RAY" => Some(Self::XRay),
+                "STATS" => Some(Self::Stats),
+                _ => None,
             }
         }
     }

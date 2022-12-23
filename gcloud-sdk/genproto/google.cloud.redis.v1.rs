@@ -243,6 +243,21 @@ pub mod instance {
                 State::FailingOver => "FAILING_OVER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "REPAIRING" => Some(Self::Repairing),
+                "MAINTENANCE" => Some(Self::Maintenance),
+                "IMPORTING" => Some(Self::Importing),
+                "FAILING_OVER" => Some(Self::FailingOver),
+                _ => None,
+            }
+        }
     }
     /// Available service tiers to choose from
     #[derive(
@@ -275,6 +290,15 @@ pub mod instance {
                 Tier::Unspecified => "TIER_UNSPECIFIED",
                 Tier::Basic => "BASIC",
                 Tier::StandardHa => "STANDARD_HA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "STANDARD_HA" => Some(Self::StandardHa),
+                _ => None,
             }
         }
     }
@@ -313,6 +337,15 @@ pub mod instance {
                 ConnectMode::PrivateServiceAccess => "PRIVATE_SERVICE_ACCESS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIRECT_PEERING" => Some(Self::DirectPeering),
+                "PRIVATE_SERVICE_ACCESS" => Some(Self::PrivateServiceAccess),
+                _ => None,
+            }
+        }
     }
     /// Available TLS modes.
     #[derive(
@@ -347,6 +380,15 @@ pub mod instance {
                 }
                 TransitEncryptionMode::ServerAuthentication => "SERVER_AUTHENTICATION",
                 TransitEncryptionMode::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRANSIT_ENCRYPTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SERVER_AUTHENTICATION" => Some(Self::ServerAuthentication),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
             }
         }
     }
@@ -384,6 +426,15 @@ pub mod instance {
                 ReadReplicasMode::Unspecified => "READ_REPLICAS_MODE_UNSPECIFIED",
                 ReadReplicasMode::ReadReplicasDisabled => "READ_REPLICAS_DISABLED",
                 ReadReplicasMode::ReadReplicasEnabled => "READ_REPLICAS_ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "READ_REPLICAS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_REPLICAS_DISABLED" => Some(Self::ReadReplicasDisabled),
+                "READ_REPLICAS_ENABLED" => Some(Self::ReadReplicasEnabled),
+                _ => None,
             }
         }
     }
@@ -443,6 +494,16 @@ pub mod reschedule_maintenance_request {
                 RescheduleType::Immediate => "IMMEDIATE",
                 RescheduleType::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
                 RescheduleType::SpecificTime => "SPECIFIC_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "NEXT_AVAILABLE_WINDOW" => Some(Self::NextAvailableWindow),
+                "SPECIFIC_TIME" => Some(Self::SpecificTime),
+                _ => None,
             }
         }
     }
@@ -776,6 +837,15 @@ pub mod failover_instance_request {
                 DataProtectionMode::Unspecified => "DATA_PROTECTION_MODE_UNSPECIFIED",
                 DataProtectionMode::LimitedDataLoss => "LIMITED_DATA_LOSS",
                 DataProtectionMode::ForceDataLoss => "FORCE_DATA_LOSS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_PROTECTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LIMITED_DATA_LOSS" => Some(Self::LimitedDataLoss),
+                "FORCE_DATA_LOSS" => Some(Self::ForceDataLoss),
+                _ => None,
             }
         }
     }

@@ -77,6 +77,18 @@ pub mod api {
                 State::Updating => "UPDATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
+            }
+        }
     }
 }
 /// An API Configuration is a combination of settings for both the Managed
@@ -232,6 +244,19 @@ pub mod api_config {
                 State::Activating => "ACTIVATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "UPDATING" => Some(Self::Updating),
+                "ACTIVATING" => Some(Self::Activating),
+                _ => None,
+            }
+        }
     }
 }
 /// A Gateway is an API-aware HTTP proxy. It performs API-Method and/or
@@ -315,6 +340,18 @@ pub mod gateway {
                 State::Failed => "FAILED",
                 State::Deleting => "DELETING",
                 State::Updating => "UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
             }
         }
     }
@@ -567,6 +604,15 @@ pub mod get_api_config_request {
                 ConfigView::Unspecified => "CONFIG_VIEW_UNSPECIFIED",
                 ConfigView::Basic => "BASIC",
                 ConfigView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONFIG_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
             }
         }
     }

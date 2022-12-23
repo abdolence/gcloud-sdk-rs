@@ -110,6 +110,15 @@ pub mod constraint {
                 ConstraintDefault::Deny => "DENY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONSTRAINT_DEFAULT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOW" => Some(Self::Allow),
+                "DENY" => Some(Self::Deny),
+                _ => None,
+            }
+        }
     }
     /// The type of restrictions for this `Constraint`.
     ///

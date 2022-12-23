@@ -166,6 +166,16 @@ pub mod node_taint {
                 Effect::NoExecute => "NO_EXECUTE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EFFECT_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_SCHEDULE" => Some(Self::NoSchedule),
+                "PREFER_NO_SCHEDULE" => Some(Self::PreferNoSchedule),
+                "NO_EXECUTE" => Some(Self::NoExecute),
+                _ => None,
+            }
+        }
     }
 }
 /// The authentication information for accessing the master endpoint.
@@ -347,6 +357,14 @@ pub mod network_policy {
             match self {
                 Provider::Unspecified => "PROVIDER_UNSPECIFIED",
                 Provider::Calico => "CALICO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+                "CALICO" => Some(Self::Calico),
+                _ => None,
             }
         }
     }
@@ -687,6 +705,18 @@ pub mod cluster {
                 Status::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "RECONCILING" => Some(Self::Reconciling),
+                "STOPPING" => Some(Self::Stopping),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// ClusterUpdate describes an update to the cluster. Exactly one update can
@@ -839,6 +869,17 @@ pub mod operation {
                 Status::Aborting => "ABORTING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                "ABORTING" => Some(Self::Aborting),
+                _ => None,
+            }
+        }
     }
     /// Operation type.
     #[derive(
@@ -913,6 +954,29 @@ pub mod operation {
                 Type::SetNodePoolSize => "SET_NODE_POOL_SIZE",
                 Type::SetNetworkPolicy => "SET_NETWORK_POLICY",
                 Type::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE_CLUSTER" => Some(Self::CreateCluster),
+                "DELETE_CLUSTER" => Some(Self::DeleteCluster),
+                "UPGRADE_MASTER" => Some(Self::UpgradeMaster),
+                "UPGRADE_NODES" => Some(Self::UpgradeNodes),
+                "REPAIR_CLUSTER" => Some(Self::RepairCluster),
+                "UPDATE_CLUSTER" => Some(Self::UpdateCluster),
+                "CREATE_NODE_POOL" => Some(Self::CreateNodePool),
+                "DELETE_NODE_POOL" => Some(Self::DeleteNodePool),
+                "SET_NODE_POOL_MANAGEMENT" => Some(Self::SetNodePoolManagement),
+                "AUTO_REPAIR_NODES" => Some(Self::AutoRepairNodes),
+                "AUTO_UPGRADE_NODES" => Some(Self::AutoUpgradeNodes),
+                "SET_LABELS" => Some(Self::SetLabels),
+                "SET_MASTER_AUTH" => Some(Self::SetMasterAuth),
+                "SET_NODE_POOL_SIZE" => Some(Self::SetNodePoolSize),
+                "SET_NETWORK_POLICY" => Some(Self::SetNetworkPolicy),
+                "SET_MAINTENANCE_POLICY" => Some(Self::SetMaintenancePolicy),
+                _ => None,
             }
         }
     }
@@ -1279,6 +1343,16 @@ pub mod set_master_auth_request {
                 Action::SetPassword => "SET_PASSWORD",
                 Action::GeneratePassword => "GENERATE_PASSWORD",
                 Action::SetUsername => "SET_USERNAME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "SET_PASSWORD" => Some(Self::SetPassword),
+                "GENERATE_PASSWORD" => Some(Self::GeneratePassword),
+                "SET_USERNAME" => Some(Self::SetUsername),
+                _ => None,
             }
         }
     }
@@ -1665,6 +1739,19 @@ pub mod node_pool {
                 Status::Reconciling => "RECONCILING",
                 Status::Stopping => "STOPPING",
                 Status::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "RUNNING_WITH_ERROR" => Some(Self::RunningWithError),
+                "RECONCILING" => Some(Self::Reconciling),
+                "STOPPING" => Some(Self::Stopping),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }

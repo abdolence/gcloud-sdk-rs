@@ -34,4 +34,13 @@ impl Billing {
             Billing::AnthosLicense => "ANTHOS_LICENSE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BILLING_UNSPECIFIED" => Some(Self::Unspecified),
+            "PAY_AS_YOU_GO" => Some(Self::PayAsYouGo),
+            "ANTHOS_LICENSE" => Some(Self::AnthosLicense),
+            _ => None,
+        }
+    }
 }

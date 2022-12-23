@@ -86,6 +86,18 @@ pub mod function {
                 State::Unknown => "UNKNOWN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "DEPLOYING" => Some(Self::Deploying),
+                "DELETING" => Some(Self::Deleting),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
+            }
+        }
     }
 }
 /// Informational messages about the state of the Cloud Function or Operation.
@@ -138,6 +150,16 @@ pub mod state_message {
                 Severity::Error => "ERROR",
                 Severity::Warning => "WARNING",
                 Severity::Info => "INFO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ERROR" => Some(Self::Error),
+                "WARNING" => Some(Self::Warning),
+                "INFO" => Some(Self::Info),
+                _ => None,
             }
         }
     }
@@ -448,6 +470,15 @@ pub mod service_config {
                 VpcConnectorEgressSettings::AllTraffic => "ALL_TRAFFIC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIVATE_RANGES_ONLY" => Some(Self::PrivateRangesOnly),
+                "ALL_TRAFFIC" => Some(Self::AllTraffic),
+                _ => None,
+            }
+        }
     }
     /// Available ingress settings.
     ///
@@ -487,6 +518,16 @@ pub mod service_config {
                 IngressSettings::AllowAll => "ALLOW_ALL",
                 IngressSettings::AllowInternalOnly => "ALLOW_INTERNAL_ONLY",
                 IngressSettings::AllowInternalAndGclb => "ALLOW_INTERNAL_AND_GCLB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INGRESS_SETTINGS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOW_ALL" => Some(Self::AllowAll),
+                "ALLOW_INTERNAL_ONLY" => Some(Self::AllowInternalOnly),
+                "ALLOW_INTERNAL_AND_GCLB" => Some(Self::AllowInternalAndGclb),
+                _ => None,
             }
         }
     }
@@ -644,6 +685,15 @@ pub mod event_trigger {
                 RetryPolicy::Unspecified => "RETRY_POLICY_UNSPECIFIED",
                 RetryPolicy::DoNotRetry => "RETRY_POLICY_DO_NOT_RETRY",
                 RetryPolicy::Retry => "RETRY_POLICY_RETRY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETRY_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "RETRY_POLICY_DO_NOT_RETRY" => Some(Self::DoNotRetry),
+                "RETRY_POLICY_RETRY" => Some(Self::Retry),
+                _ => None,
             }
         }
     }
@@ -896,6 +946,19 @@ pub mod list_runtimes_response {
                 RuntimeStage::Decommissioned => "DECOMMISSIONED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RUNTIME_STAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEVELOPMENT" => Some(Self::Development),
+                "ALPHA" => Some(Self::Alpha),
+                "BETA" => Some(Self::Beta),
+                "GA" => Some(Self::Ga),
+                "DEPRECATED" => Some(Self::Deprecated),
+                "DECOMMISSIONED" => Some(Self::Decommissioned),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents the metadata of the long-running operation.
@@ -1003,6 +1066,19 @@ pub mod stage {
                 Name::TriggerRollback => "TRIGGER_ROLLBACK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NAME_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARTIFACT_REGISTRY" => Some(Self::ArtifactRegistry),
+                "BUILD" => Some(Self::Build),
+                "SERVICE" => Some(Self::Service),
+                "TRIGGER" => Some(Self::Trigger),
+                "SERVICE_ROLLBACK" => Some(Self::ServiceRollback),
+                "TRIGGER_ROLLBACK" => Some(Self::TriggerRollback),
+                _ => None,
+            }
+        }
     }
     /// Possible states for a Stage
     #[derive(
@@ -1040,6 +1116,16 @@ pub mod stage {
                 State::Complete => "COMPLETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_STARTED" => Some(Self::NotStarted),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "COMPLETE" => Some(Self::Complete),
+                _ => None,
+            }
+        }
     }
 }
 /// The environment the function is hosted on.
@@ -1063,6 +1149,15 @@ impl Environment {
             Environment::Unspecified => "ENVIRONMENT_UNSPECIFIED",
             Environment::Gen1 => "GEN_1",
             Environment::Gen2 => "GEN_2",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENVIRONMENT_UNSPECIFIED" => Some(Self::Unspecified),
+            "GEN_1" => Some(Self::Gen1),
+            "GEN_2" => Some(Self::Gen2),
+            _ => None,
         }
     }
 }

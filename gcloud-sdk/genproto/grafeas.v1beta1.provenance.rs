@@ -132,6 +132,14 @@ pub mod hash {
                 HashType::Sha256 => "SHA256",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HASH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SHA256" => Some(Self::Sha256),
+                _ => None,
+            }
+        }
     }
 }
 /// Command describes a step performed as part of the build pipeline.

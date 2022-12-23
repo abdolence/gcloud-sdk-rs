@@ -49,6 +49,21 @@ impl NotificationCategory {
             NotificationCategory::TechnicalIncidents => "TECHNICAL_INCIDENTS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NOTIFICATION_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "ALL" => Some(Self::All),
+            "SUSPENSION" => Some(Self::Suspension),
+            "SECURITY" => Some(Self::Security),
+            "TECHNICAL" => Some(Self::Technical),
+            "BILLING" => Some(Self::Billing),
+            "LEGAL" => Some(Self::Legal),
+            "PRODUCT_UPDATES" => Some(Self::ProductUpdates),
+            "TECHNICAL_INCIDENTS" => Some(Self::TechnicalIncidents),
+            _ => None,
+        }
+    }
 }
 /// A contact's validation state indicates whether or not it is the correct
 /// contact to be receiving notifications for a particular resource.
@@ -74,6 +89,15 @@ impl ValidationState {
             ValidationState::Unspecified => "VALIDATION_STATE_UNSPECIFIED",
             ValidationState::Valid => "VALID",
             ValidationState::Invalid => "INVALID",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "VALIDATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "VALID" => Some(Self::Valid),
+            "INVALID" => Some(Self::Invalid),
+            _ => None,
         }
     }
 }

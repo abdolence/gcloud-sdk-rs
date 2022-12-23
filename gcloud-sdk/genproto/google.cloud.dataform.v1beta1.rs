@@ -69,6 +69,16 @@ pub mod repository {
                     TokenStatus::Valid => "VALID",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TOKEN_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NOT_FOUND" => Some(Self::NotFound),
+                    "INVALID" => Some(Self::Invalid),
+                    "VALID" => Some(Self::Valid),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -375,6 +385,17 @@ pub mod fetch_file_git_statuses_response {
                     State::Deleted => "DELETED",
                     State::Modified => "MODIFIED",
                     State::HasConflicts => "HAS_CONFLICTS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ADDED" => Some(Self::Added),
+                    "DELETED" => Some(Self::Deleted),
+                    "MODIFIED" => Some(Self::Modified),
+                    "HAS_CONFLICTS" => Some(Self::HasConflicts),
+                    _ => None,
                 }
             }
         }
@@ -1009,6 +1030,17 @@ pub mod compilation_result_action {
                     RelationType::MaterializedView => "MATERIALIZED_VIEW",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "RELATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TABLE" => Some(Self::Table),
+                    "VIEW" => Some(Self::View),
+                    "INCREMENTAL_TABLE" => Some(Self::IncrementalTable),
+                    "MATERIALIZED_VIEW" => Some(Self::MaterializedView),
+                    _ => None,
+                }
+            }
         }
     }
     /// Represents a list of arbitrary database operations.
@@ -1217,6 +1249,18 @@ pub mod workflow_invocation {
                 State::Canceling => "CANCELING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                "CANCELING" => Some(Self::Canceling),
+                _ => None,
+            }
+        }
     }
 }
 /// `ListWorkflowInvocations` request message.
@@ -1376,6 +1420,19 @@ pub mod workflow_invocation_action {
                 State::Succeeded => "SUCCEEDED",
                 State::Cancelled => "CANCELLED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SKIPPED" => Some(Self::Skipped),
+                "DISABLED" => Some(Self::Disabled),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }

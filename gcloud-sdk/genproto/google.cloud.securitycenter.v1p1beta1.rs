@@ -277,6 +277,15 @@ pub mod finding {
                 State::Inactive => "INACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                _ => None,
+            }
+        }
     }
     /// The severity of the finding. This field is managed by the source that
     /// writes the finding.
@@ -316,6 +325,17 @@ pub mod finding {
                 Severity::High => "HIGH",
                 Severity::Medium => "MEDIUM",
                 Severity::Low => "LOW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "CRITICAL" => Some(Self::Critical),
+                "HIGH" => Some(Self::High),
+                "MEDIUM" => Some(Self::Medium),
+                "LOW" => Some(Self::Low),
+                _ => None,
             }
         }
     }
@@ -411,6 +431,14 @@ pub mod notification_config {
             match self {
                 EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
                 EventType::Finding => "FINDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FINDING" => Some(Self::Finding),
+                _ => None,
             }
         }
     }
@@ -560,6 +588,15 @@ pub mod organization_settings {
                     InclusionMode::Exclude => "EXCLUDE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "INCLUSION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INCLUDE_ONLY" => Some(Self::IncludeOnly),
+                    "EXCLUDE" => Some(Self::Exclude),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -611,6 +648,16 @@ pub mod run_asset_discovery_response {
                 State::Completed => "COMPLETED",
                 State::Superseded => "SUPERSEDED",
                 State::Terminated => "TERMINATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETED" => Some(Self::Completed),
+                "SUPERSEDED" => Some(Self::Superseded),
+                "TERMINATED" => Some(Self::Terminated),
+                _ => None,
             }
         }
     }
@@ -1339,6 +1386,16 @@ pub mod list_assets_response {
                     StateChange::Active => "ACTIVE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNUSED" => Some(Self::Unused),
+                    "ADDED" => Some(Self::Added),
+                    "REMOVED" => Some(Self::Removed),
+                    "ACTIVE" => Some(Self::Active),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -1591,6 +1648,17 @@ pub mod list_findings_response {
                     StateChange::Unchanged => "UNCHANGED",
                     StateChange::Added => "ADDED",
                     StateChange::Removed => "REMOVED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNUSED" => Some(Self::Unused),
+                    "CHANGED" => Some(Self::Changed),
+                    "UNCHANGED" => Some(Self::Unchanged),
+                    "ADDED" => Some(Self::Added),
+                    "REMOVED" => Some(Self::Removed),
+                    _ => None,
                 }
             }
         }

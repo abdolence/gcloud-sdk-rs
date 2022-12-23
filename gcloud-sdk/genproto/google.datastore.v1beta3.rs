@@ -270,6 +270,16 @@ pub mod entity_result {
                 ResultType::KeyOnly => "KEY_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL" => Some(Self::Full),
+                "PROJECTION" => Some(Self::Projection),
+                "KEY_ONLY" => Some(Self::KeyOnly),
+                _ => None,
+            }
+        }
     }
 }
 /// A query for entities.
@@ -388,6 +398,15 @@ pub mod property_order {
                 Direction::Descending => "DESCENDING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASCENDING" => Some(Self::Ascending),
+                "DESCENDING" => Some(Self::Descending),
+                _ => None,
+            }
+        }
     }
 }
 /// A holder for any type of filter.
@@ -456,6 +475,14 @@ pub mod composite_filter {
                 Operator::And => "AND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "AND" => Some(Self::And),
+                _ => None,
+            }
+        }
     }
 }
 /// A filter on a specific property.
@@ -517,6 +544,19 @@ pub mod property_filter {
                 Operator::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
                 Operator::Equal => "EQUAL",
                 Operator::HasAncestor => "HAS_ANCESTOR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "LESS_THAN" => Some(Self::LessThan),
+                "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                "GREATER_THAN" => Some(Self::GreaterThan),
+                "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                "EQUAL" => Some(Self::Equal),
+                "HAS_ANCESTOR" => Some(Self::HasAncestor),
+                _ => None,
             }
         }
     }
@@ -652,6 +692,17 @@ pub mod query_result_batch {
                 MoreResultsType::MoreResultsAfterLimit => "MORE_RESULTS_AFTER_LIMIT",
                 MoreResultsType::MoreResultsAfterCursor => "MORE_RESULTS_AFTER_CURSOR",
                 MoreResultsType::NoMoreResults => "NO_MORE_RESULTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MORE_RESULTS_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_FINISHED" => Some(Self::NotFinished),
+                "MORE_RESULTS_AFTER_LIMIT" => Some(Self::MoreResultsAfterLimit),
+                "MORE_RESULTS_AFTER_CURSOR" => Some(Self::MoreResultsAfterCursor),
+                "NO_MORE_RESULTS" => Some(Self::NoMoreResults),
+                _ => None,
             }
         }
     }
@@ -846,6 +897,15 @@ pub mod commit_request {
                 Mode::Unspecified => "MODE_UNSPECIFIED",
                 Mode::Transactional => "TRANSACTIONAL",
                 Mode::NonTransactional => "NON_TRANSACTIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRANSACTIONAL" => Some(Self::Transactional),
+                "NON_TRANSACTIONAL" => Some(Self::NonTransactional),
+                _ => None,
             }
         }
     }
@@ -1045,6 +1105,15 @@ pub mod read_options {
                 ReadConsistency::Unspecified => "READ_CONSISTENCY_UNSPECIFIED",
                 ReadConsistency::Strong => "STRONG",
                 ReadConsistency::Eventual => "EVENTUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "READ_CONSISTENCY_UNSPECIFIED" => Some(Self::Unspecified),
+                "STRONG" => Some(Self::Strong),
+                "EVENTUAL" => Some(Self::Eventual),
+                _ => None,
             }
         }
     }

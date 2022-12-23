@@ -103,6 +103,19 @@ pub mod annotated_string {
                 SemanticMarkupType::Row => "ROW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MARKUP_TYPE_UNSPECIFIED" => Some(Self::MarkupTypeUnspecified),
+                "METRIC" => Some(Self::Metric),
+                "DIMENSION" => Some(Self::Dimension),
+                "FILTER" => Some(Self::Filter),
+                "UNUSED" => Some(Self::Unused),
+                "BLOCKED" => Some(Self::Blocked),
+                "ROW" => Some(Self::Row),
+                _ => None,
+            }
+        }
     }
 }
 /// Request for query suggestions.
@@ -226,6 +239,15 @@ impl SuggestionType {
             SuggestionType::Unspecified => "SUGGESTION_TYPE_UNSPECIFIED",
             SuggestionType::Entity => "ENTITY",
             SuggestionType::Template => "TEMPLATE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SUGGESTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENTITY" => Some(Self::Entity),
+            "TEMPLATE" => Some(Self::Template),
+            _ => None,
         }
     }
 }
@@ -540,6 +562,16 @@ pub mod interpret_error {
                 InterpretErrorCode::FailedToAnswer => "FAILED_TO_ANSWER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTERPRET_ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INVALID_QUERY" => Some(Self::InvalidQuery),
+                "FAILED_TO_UNDERSTAND" => Some(Self::FailedToUnderstand),
+                "FAILED_TO_ANSWER" => Some(Self::FailedToAnswer),
+                _ => None,
+            }
+        }
     }
 }
 /// Information about the backend status (such as BigQuery) of the execution.
@@ -600,6 +632,17 @@ pub mod execution_info {
                 JobExecutionState::Running => "RUNNING",
                 JobExecutionState::Succeeded => "SUCCEEDED",
                 JobExecutionState::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JOB_EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_EXECUTED" => Some(Self::NotExecuted),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -784,6 +827,25 @@ pub mod interpretation_structure {
                 VisualizationType::ChartNotUnderstood => "CHART_NOT_UNDERSTOOD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VISUALIZATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLE" => Some(Self::Table),
+                "BAR_CHART" => Some(Self::BarChart),
+                "COLUMN_CHART" => Some(Self::ColumnChart),
+                "TIMELINE" => Some(Self::Timeline),
+                "SCATTER_PLOT" => Some(Self::ScatterPlot),
+                "PIE_CHART" => Some(Self::PieChart),
+                "LINE_CHART" => Some(Self::LineChart),
+                "AREA_CHART" => Some(Self::AreaChart),
+                "COMBO_CHART" => Some(Self::ComboChart),
+                "HISTOGRAM" => Some(Self::Histogram),
+                "GENERIC_CHART" => Some(Self::GenericChart),
+                "CHART_NOT_UNDERSTOOD" => Some(Self::ChartNotUnderstood),
+                _ => None,
+            }
+        }
     }
 }
 /// Configuriation of debug flags.
@@ -858,6 +920,15 @@ impl InterpretEntity {
             InterpretEntity::Metric => "METRIC",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INTERPRET_ENTITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "DIMENSION" => Some(Self::Dimension),
+            "METRIC" => Some(Self::Metric),
+            _ => None,
+        }
+    }
 }
 /// Feedback provided by a user.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -908,6 +979,15 @@ pub mod user_feedback {
                 UserFeedbackRating::Unspecified => "USER_FEEDBACK_RATING_UNSPECIFIED",
                 UserFeedbackRating::Positive => "POSITIVE",
                 UserFeedbackRating::Negative => "NEGATIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_FEEDBACK_RATING_UNSPECIFIED" => Some(Self::Unspecified),
+                "POSITIVE" => Some(Self::Positive),
+                "NEGATIVE" => Some(Self::Negative),
+                _ => None,
             }
         }
     }

@@ -476,6 +476,20 @@ impl HttpMethod {
             HttpMethod::Options => "OPTIONS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HTTP_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "POST" => Some(Self::Post),
+            "GET" => Some(Self::Get),
+            "HEAD" => Some(Self::Head),
+            "PUT" => Some(Self::Put),
+            "DELETE" => Some(Self::Delete),
+            "PATCH" => Some(Self::Patch),
+            "OPTIONS" => Some(Self::Options),
+            _ => None,
+        }
+    }
 }
 /// A queue is a container of related tasks. Queues are configured to manage
 /// how those tasks are dispatched. Configurable properties include rate limits,
@@ -670,6 +684,16 @@ pub mod queue {
                 State::Disabled => "DISABLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
     }
     /// The type of the queue.
     #[derive(
@@ -702,6 +726,15 @@ pub mod queue {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Pull => "PULL",
                 Type::Push => "PUSH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PULL" => Some(Self::Pull),
+                "PUSH" => Some(Self::Push),
+                _ => None,
             }
         }
     }
@@ -1086,6 +1119,15 @@ pub mod task {
                 View::Unspecified => "VIEW_UNSPECIFIED",
                 View::Basic => "BASIC",
                 View::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
             }
         }
     }

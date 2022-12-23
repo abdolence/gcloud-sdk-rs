@@ -88,6 +88,16 @@ pub mod replica_info {
                 ReplicaType::Witness => "WITNESS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "WITNESS" => Some(Self::Witness),
+                _ => None,
+            }
+        }
     }
 }
 /// A possible configuration for a Cloud Spanner instance. Configurations
@@ -206,6 +216,15 @@ pub mod instance_config {
                 Type::UserManaged => "USER_MANAGED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_MANAGED" => Some(Self::GoogleManaged),
+                "USER_MANAGED" => Some(Self::UserManaged),
+                _ => None,
+            }
+        }
     }
     /// Indicates the current state of the instance config.
     #[derive(
@@ -239,6 +258,15 @@ pub mod instance_config {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Creating => "CREATING",
                 State::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -361,6 +389,15 @@ pub mod instance {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Creating => "CREATING",
                 State::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }

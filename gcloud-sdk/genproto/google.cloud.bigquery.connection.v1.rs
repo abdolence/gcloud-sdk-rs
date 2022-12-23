@@ -182,6 +182,15 @@ pub mod cloud_sql_properties {
                 DatabaseType::Mysql => "MYSQL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "POSTGRES" => Some(Self::Postgres),
+                "MYSQL" => Some(Self::Mysql),
+                _ => None,
+            }
+        }
     }
 }
 /// Credential info for the Cloud SQL.

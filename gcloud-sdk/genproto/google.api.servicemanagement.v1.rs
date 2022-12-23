@@ -86,6 +86,18 @@ pub mod operation_metadata {
                 Status::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "DONE" => Some(Self::Done),
+                "NOT_STARTED" => Some(Self::NotStarted),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a diagnostic message (error or warning)
@@ -132,6 +144,14 @@ pub mod diagnostic {
             match self {
                 Kind::Warning => "WARNING",
                 Kind::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }
@@ -216,6 +236,18 @@ pub mod config_file {
                 FileType::OpenApiYaml => "OPEN_API_YAML",
                 FileType::FileDescriptorSetProto => "FILE_DESCRIPTOR_SET_PROTO",
                 FileType::ProtoFile => "PROTO_FILE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FILE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SERVICE_CONFIG_YAML" => Some(Self::ServiceConfigYaml),
+                "OPEN_API_JSON" => Some(Self::OpenApiJson),
+                "OPEN_API_YAML" => Some(Self::OpenApiYaml),
+                "FILE_DESCRIPTOR_SET_PROTO" => Some(Self::FileDescriptorSetProto),
+                "PROTO_FILE" => Some(Self::ProtoFile),
+                _ => None,
             }
         }
     }
@@ -377,6 +409,19 @@ pub mod rollout {
                 RolloutStatus::FailedRolledBack => "FAILED_ROLLED_BACK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLLOUT_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCESS" => Some(Self::Success),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                "PENDING" => Some(Self::Pending),
+                "FAILED_ROLLED_BACK" => Some(Self::FailedRolledBack),
+                _ => None,
+            }
+        }
     }
     /// Strategy that defines which versions of service configurations should be
     /// pushed
@@ -526,6 +571,14 @@ pub mod get_service_config_request {
             match self {
                 ConfigView::Basic => "BASIC",
                 ConfigView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
             }
         }
     }

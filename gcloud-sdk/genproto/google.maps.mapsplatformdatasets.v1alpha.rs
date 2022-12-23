@@ -53,6 +53,18 @@ impl FileFormat {
             FileFormat::Kmz => "FILE_FORMAT_KMZ",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FILE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "FILE_FORMAT_GEOJSON" => Some(Self::Geojson),
+            "FILE_FORMAT_KML" => Some(Self::Kml),
+            "FILE_FORMAT_CSV" => Some(Self::Csv),
+            "FILE_FORMAT_PROTO" => Some(Self::Proto),
+            "FILE_FORMAT_KMZ" => Some(Self::Kmz),
+            _ => None,
+        }
+    }
 }
 /// A representation of a maps platform dataset.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -136,6 +148,16 @@ impl Usage {
             Usage::AssistedDriving => "USAGE_ASSISTED_DRIVING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "USAGE_UNSPECIFIED" => Some(Self::Unspecified),
+            "USAGE_DATA_DRIVEN_STYLING" => Some(Self::DataDrivenStyling),
+            "USAGE_AREA_AFFORDANCES" => Some(Self::AreaAffordances),
+            "USAGE_ASSISTED_DRIVING" => Some(Self::AssistedDriving),
+            _ => None,
+        }
+    }
 }
 /// State specifies the status of the import of the latest dataset version.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -161,6 +183,16 @@ impl State {
             State::Importing => "STATE_IMPORTING",
             State::ImportSucceeded => "STATE_IMPORT_SUCCEEDED",
             State::ImportFailed => "STATE_IMPORT_FAILED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "STATE_IMPORTING" => Some(Self::Importing),
+            "STATE_IMPORT_SUCCEEDED" => Some(Self::ImportSucceeded),
+            "STATE_IMPORT_FAILED" => Some(Self::ImportFailed),
+            _ => None,
         }
     }
 }

@@ -915,6 +915,22 @@ impl Feature {
             Feature::PersonDetection => "PERSON_DETECTION",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+            "LABEL_DETECTION" => Some(Self::LabelDetection),
+            "SHOT_CHANGE_DETECTION" => Some(Self::ShotChangeDetection),
+            "EXPLICIT_CONTENT_DETECTION" => Some(Self::ExplicitContentDetection),
+            "FACE_DETECTION" => Some(Self::FaceDetection),
+            "SPEECH_TRANSCRIPTION" => Some(Self::SpeechTranscription),
+            "TEXT_DETECTION" => Some(Self::TextDetection),
+            "OBJECT_TRACKING" => Some(Self::ObjectTracking),
+            "LOGO_RECOGNITION" => Some(Self::LogoRecognition),
+            "PERSON_DETECTION" => Some(Self::PersonDetection),
+            _ => None,
+        }
+    }
 }
 /// Label detection mode.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -940,6 +956,16 @@ impl LabelDetectionMode {
             LabelDetectionMode::ShotMode => "SHOT_MODE",
             LabelDetectionMode::FrameMode => "FRAME_MODE",
             LabelDetectionMode::ShotAndFrameMode => "SHOT_AND_FRAME_MODE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LABEL_DETECTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SHOT_MODE" => Some(Self::ShotMode),
+            "FRAME_MODE" => Some(Self::FrameMode),
+            "SHOT_AND_FRAME_MODE" => Some(Self::ShotAndFrameMode),
+            _ => None,
         }
     }
 }
@@ -973,6 +999,18 @@ impl Likelihood {
             Likelihood::Possible => "POSSIBLE",
             Likelihood::Likely => "LIKELY",
             Likelihood::VeryLikely => "VERY_LIKELY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LIKELIHOOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "VERY_UNLIKELY" => Some(Self::VeryUnlikely),
+            "UNLIKELY" => Some(Self::Unlikely),
+            "POSSIBLE" => Some(Self::Possible),
+            "LIKELY" => Some(Self::Likely),
+            "VERY_LIKELY" => Some(Self::VeryLikely),
+            _ => None,
         }
     }
 }

@@ -156,6 +156,17 @@ pub mod operation_metadata {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATED" => Some(Self::Created),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// Generated client implementations.

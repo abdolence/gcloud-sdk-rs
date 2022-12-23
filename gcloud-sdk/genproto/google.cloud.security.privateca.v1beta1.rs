@@ -311,6 +311,15 @@ pub mod certificate_authority {
                 Type::Subordinate => "SUBORDINATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SELF_SIGNED" => Some(Self::SelfSigned),
+                "SUBORDINATE" => Some(Self::Subordinate),
+                _ => None,
+            }
+        }
     }
     /// The tier of a \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\], indicating its supported
     /// functionality and/or billing SKU.
@@ -344,6 +353,15 @@ pub mod certificate_authority {
                 Tier::Unspecified => "TIER_UNSPECIFIED",
                 Tier::Enterprise => "ENTERPRISE",
                 Tier::Devops => "DEVOPS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENTERPRISE" => Some(Self::Enterprise),
+                "DEVOPS" => Some(Self::Devops),
+                _ => None,
             }
         }
     }
@@ -385,6 +403,17 @@ pub mod certificate_authority {
                 State::Disabled => "DISABLED",
                 State::PendingActivation => "PENDING_ACTIVATION",
                 State::PendingDeletion => "PENDING_DELETION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "PENDING_ACTIVATION" => Some(Self::PendingActivation),
+                "PENDING_DELETION" => Some(Self::PendingDeletion),
+                _ => None,
             }
         }
     }
@@ -445,6 +474,21 @@ pub mod certificate_authority {
                 SignHashAlgorithm::RsaPkcs14096Sha256 => "RSA_PKCS1_4096_SHA256",
                 SignHashAlgorithm::EcP256Sha256 => "EC_P256_SHA256",
                 SignHashAlgorithm::EcP384Sha384 => "EC_P384_SHA384",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SIGN_HASH_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "RSA_PSS_2048_SHA256" => Some(Self::RsaPss2048Sha256),
+                "RSA_PSS_3072_SHA256" => Some(Self::RsaPss3072Sha256),
+                "RSA_PSS_4096_SHA256" => Some(Self::RsaPss4096Sha256),
+                "RSA_PKCS1_2048_SHA256" => Some(Self::RsaPkcs12048Sha256),
+                "RSA_PKCS1_3072_SHA256" => Some(Self::RsaPkcs13072Sha256),
+                "RSA_PKCS1_4096_SHA256" => Some(Self::RsaPkcs14096Sha256),
+                "EC_P256_SHA256" => Some(Self::EcP256Sha256),
+                "EC_P384_SHA384" => Some(Self::EcP384Sha384),
+                _ => None,
             }
         }
     }
@@ -539,6 +583,15 @@ pub mod certificate_revocation_list {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Superseded => "SUPERSEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "SUPERSEDED" => Some(Self::Superseded),
+                _ => None,
             }
         }
     }
@@ -798,6 +851,15 @@ pub mod public_key {
                 KeyType::Unspecified => "KEY_TYPE_UNSPECIFIED",
                 KeyType::PemRsaKey => "PEM_RSA_KEY",
                 KeyType::PemEcKey => "PEM_EC_KEY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PEM_RSA_KEY" => Some(Self::PemRsaKey),
+                "PEM_EC_KEY" => Some(Self::PemEcKey),
+                _ => None,
             }
         }
     }
@@ -1144,6 +1206,23 @@ impl RevocationReason {
             RevocationReason::AttributeAuthorityCompromise => {
                 "ATTRIBUTE_AUTHORITY_COMPROMISE"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "REVOCATION_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "KEY_COMPROMISE" => Some(Self::KeyCompromise),
+            "CERTIFICATE_AUTHORITY_COMPROMISE" => {
+                Some(Self::CertificateAuthorityCompromise)
+            }
+            "AFFILIATION_CHANGED" => Some(Self::AffiliationChanged),
+            "SUPERSEDED" => Some(Self::Superseded),
+            "CESSATION_OF_OPERATION" => Some(Self::CessationOfOperation),
+            "CERTIFICATE_HOLD" => Some(Self::CertificateHold),
+            "PRIVILEGE_WITHDRAWN" => Some(Self::PrivilegeWithdrawn),
+            "ATTRIBUTE_AUTHORITY_COMPROMISE" => Some(Self::AttributeAuthorityCompromise),
+            _ => None,
         }
     }
 }

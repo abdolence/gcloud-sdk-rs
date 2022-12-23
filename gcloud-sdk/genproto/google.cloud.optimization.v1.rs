@@ -122,6 +122,17 @@ pub mod async_model_metadata {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
 /// Data formats for input and output files.
@@ -145,6 +156,15 @@ impl DataFormat {
             DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
             DataFormat::Json => "JSON",
             DataFormat::String => "STRING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "JSON" => Some(Self::Json),
+            "STRING" => Some(Self::String),
+            _ => None,
         }
     }
 }
@@ -410,6 +430,17 @@ pub mod optimize_tours_request {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEFAULT_SOLVE" => Some(Self::DefaultSolve),
+                "VALIDATE_ONLY" => Some(Self::ValidateOnly),
+                "DETECT_SOME_INFEASIBLE_SHIPMENTS" => {
+                    Some(Self::DetectSomeInfeasibleShipments)
+                }
+                _ => None,
+            }
+        }
     }
     /// Mode defining the behavior of the search, trading off latency versus
     /// solution quality. In all modes, the global request deadline is enforced.
@@ -443,6 +474,15 @@ pub mod optimize_tours_request {
                 SearchMode::Unspecified => "SEARCH_MODE_UNSPECIFIED",
                 SearchMode::ReturnFast => "RETURN_FAST",
                 SearchMode::ConsumeAllAvailableTime => "CONSUME_ALL_AVAILABLE_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RETURN_FAST" => Some(Self::ReturnFast),
+                "CONSUME_ALL_AVAILABLE_TIME" => Some(Self::ConsumeAllAvailableTime),
+                _ => None,
             }
         }
     }
@@ -1263,6 +1303,17 @@ pub mod shipment_type_incompatibility {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INCOMPATIBILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_PERFORMED_BY_SAME_VEHICLE" => Some(Self::NotPerformedBySameVehicle),
+                "NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY" => {
+                    Some(Self::NotInSameVehicleSimultaneously)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies requirements between shipments based on their shipment_type.
@@ -1341,6 +1392,18 @@ pub mod shipment_type_requirement {
                 RequirementMode::InSameVehicleAtDeliveryTime => {
                     "IN_SAME_VEHICLE_AT_DELIVERY_TIME"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REQUIREMENT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PERFORMED_BY_SAME_VEHICLE" => Some(Self::PerformedBySameVehicle),
+                "IN_SAME_VEHICLE_AT_PICKUP_TIME" => Some(Self::InSameVehicleAtPickupTime),
+                "IN_SAME_VEHICLE_AT_DELIVERY_TIME" => {
+                    Some(Self::InSameVehicleAtDeliveryTime)
+                }
+                _ => None,
             }
         }
     }
@@ -1708,6 +1771,14 @@ pub mod vehicle {
                 TravelMode::Driving => "DRIVING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRAVEL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DRIVING" => Some(Self::Driving),
+                _ => None,
+            }
+        }
     }
     /// Policy on how a vehicle can be unloaded. Applies only to shipments having
     /// both a pickup and a delivery.
@@ -1745,6 +1816,15 @@ pub mod vehicle {
                 UnloadingPolicy::Unspecified => "UNLOADING_POLICY_UNSPECIFIED",
                 UnloadingPolicy::LastInFirstOut => "LAST_IN_FIRST_OUT",
                 UnloadingPolicy::FirstInFirstOut => "FIRST_IN_FIRST_OUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNLOADING_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "LAST_IN_FIRST_OUT" => Some(Self::LastInFirstOut),
+                "FIRST_IN_FIRST_OUT" => Some(Self::FirstInFirstOut),
+                _ => None,
             }
         }
     }
@@ -2636,6 +2716,30 @@ pub mod skipped_shipment {
                     Code::VehicleNotAllowed => "VEHICLE_NOT_ALLOWED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NO_VEHICLE" => Some(Self::NoVehicle),
+                    "DEMAND_EXCEEDS_VEHICLE_CAPACITY" => {
+                        Some(Self::DemandExceedsVehicleCapacity)
+                    }
+                    "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DISTANCE_LIMIT" => {
+                        Some(Self::CannotBePerformedWithinVehicleDistanceLimit)
+                    }
+                    "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DURATION_LIMIT" => {
+                        Some(Self::CannotBePerformedWithinVehicleDurationLimit)
+                    }
+                    "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TRAVEL_DURATION_LIMIT" => {
+                        Some(Self::CannotBePerformedWithinVehicleTravelDurationLimit)
+                    }
+                    "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TIME_WINDOWS" => {
+                        Some(Self::CannotBePerformedWithinVehicleTimeWindows)
+                    }
+                    "VEHICLE_NOT_ALLOWED" => Some(Self::VehicleNotAllowed),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -2859,6 +2963,20 @@ pub mod injected_solution_constraint {
                             "RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD"
                         }
                         Level::RelaxAllAfterThreshold => "RELAX_ALL_AFTER_THRESHOLD",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                        "RELAX_VISIT_TIMES_AFTER_THRESHOLD" => {
+                            Some(Self::RelaxVisitTimesAfterThreshold)
+                        }
+                        "RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD" => {
+                            Some(Self::RelaxVisitTimesAndSequenceAfterThreshold)
+                        }
+                        "RELAX_ALL_AFTER_THRESHOLD" => Some(Self::RelaxAllAfterThreshold),
+                        _ => None,
                     }
                 }
             }

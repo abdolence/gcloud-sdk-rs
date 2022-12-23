@@ -73,6 +73,15 @@ pub mod discovered {
                 ContinuousAnalysis::Inactive => "INACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONTINUOUS_ANALYSIS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                _ => None,
+            }
+        }
     }
     /// Analysis status for a resource. Currently for initial analysis only (not
     /// updated in continuous analysis).
@@ -116,6 +125,18 @@ pub mod discovered {
                 AnalysisStatus::FinishedSuccess => "FINISHED_SUCCESS",
                 AnalysisStatus::FinishedFailed => "FINISHED_FAILED",
                 AnalysisStatus::FinishedUnsupported => "FINISHED_UNSUPPORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANALYSIS_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "SCANNING" => Some(Self::Scanning),
+                "FINISHED_SUCCESS" => Some(Self::FinishedSuccess),
+                "FINISHED_FAILED" => Some(Self::FinishedFailed),
+                "FINISHED_UNSUPPORTED" => Some(Self::FinishedUnsupported),
+                _ => None,
             }
         }
     }

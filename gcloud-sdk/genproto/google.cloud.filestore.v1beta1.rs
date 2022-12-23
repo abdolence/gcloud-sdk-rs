@@ -74,6 +74,14 @@ pub mod network_config {
                 AddressMode::ModeIpv4 => "MODE_IPV4",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADDRESS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODE_IPV4" => Some(Self::ModeIpv4),
+                _ => None,
+            }
+        }
     }
     /// Available connection modes.
     #[derive(
@@ -108,6 +116,15 @@ pub mod network_config {
                 ConnectMode::Unspecified => "CONNECT_MODE_UNSPECIFIED",
                 ConnectMode::DirectPeering => "DIRECT_PEERING",
                 ConnectMode::PrivateServiceAccess => "PRIVATE_SERVICE_ACCESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIRECT_PEERING" => Some(Self::DirectPeering),
+                "PRIVATE_SERVICE_ACCESS" => Some(Self::PrivateServiceAccess),
+                _ => None,
             }
         }
     }
@@ -220,6 +237,15 @@ pub mod nfs_export_options {
                 AccessMode::ReadWrite => "READ_WRITE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCESS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
+            }
+        }
     }
     /// The squash mode.
     #[derive(
@@ -252,6 +278,15 @@ pub mod nfs_export_options {
                 SquashMode::Unspecified => "SQUASH_MODE_UNSPECIFIED",
                 SquashMode::NoRootSquash => "NO_ROOT_SQUASH",
                 SquashMode::RootSquash => "ROOT_SQUASH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQUASH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_ROOT_SQUASH" => Some(Self::NoRootSquash),
+                "ROOT_SQUASH" => Some(Self::RootSquash),
+                _ => None,
             }
         }
     }
@@ -395,6 +430,23 @@ pub mod instance {
                 State::Resuming => "RESUMING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "REPAIRING" => Some(Self::Repairing),
+                "DELETING" => Some(Self::Deleting),
+                "ERROR" => Some(Self::Error),
+                "RESTORING" => Some(Self::Restoring),
+                "SUSPENDED" => Some(Self::Suspended),
+                "REVERTING" => Some(Self::Reverting),
+                "SUSPENDING" => Some(Self::Suspending),
+                "RESUMING" => Some(Self::Resuming),
+                _ => None,
+            }
+        }
     }
     /// Available service tiers.
     #[derive(
@@ -447,6 +499,19 @@ pub mod instance {
                 Tier::Enterprise => "ENTERPRISE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "PREMIUM" => Some(Self::Premium),
+                "BASIC_HDD" => Some(Self::BasicHdd),
+                "BASIC_SSD" => Some(Self::BasicSsd),
+                "HIGH_SCALE_SSD" => Some(Self::HighScaleSsd),
+                "ENTERPRISE" => Some(Self::Enterprise),
+                _ => None,
+            }
+        }
     }
     /// SuspensionReason contains the possible reasons for a suspension.
     #[derive(
@@ -476,6 +541,14 @@ pub mod instance {
             match self {
                 SuspensionReason::Unspecified => "SUSPENSION_REASON_UNSPECIFIED",
                 SuspensionReason::KmsKeyIssue => "KMS_KEY_ISSUE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SUSPENSION_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "KMS_KEY_ISSUE" => Some(Self::KmsKeyIssue),
+                _ => None,
             }
         }
     }
@@ -696,6 +769,16 @@ pub mod snapshot {
                 State::Deleting => "DELETING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
     }
 }
 /// CreateSnapshotRequest creates a snapshot.
@@ -878,6 +961,17 @@ pub mod backup {
                 State::Deleting => "DELETING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "FINALIZING" => Some(Self::Finalizing),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
     }
 }
 /// CreateBackupRequest creates a backup.
@@ -1050,6 +1144,16 @@ pub mod share {
                 State::Creating => "CREATING",
                 State::Ready => "READY",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }

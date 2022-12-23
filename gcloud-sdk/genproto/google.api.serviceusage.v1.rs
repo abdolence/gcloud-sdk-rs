@@ -104,6 +104,15 @@ impl State {
             State::Enabled => "ENABLED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DISABLED" => Some(Self::Disabled),
+            "ENABLED" => Some(Self::Enabled),
+            _ => None,
+        }
+    }
 }
 /// Request message for the `EnableService` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -195,6 +204,15 @@ pub mod disable_service_request {
                 }
                 CheckIfServiceHasUsage::Skip => "SKIP",
                 CheckIfServiceHasUsage::Check => "CHECK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SKIP" => Some(Self::Skip),
+                "CHECK" => Some(Self::Check),
+                _ => None,
             }
         }
     }

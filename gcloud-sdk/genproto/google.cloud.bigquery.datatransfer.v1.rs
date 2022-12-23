@@ -279,6 +279,16 @@ pub mod transfer_message {
                 MessageSeverity::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MESSAGE_SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "INFO" => Some(Self::Info),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// DEPRECATED. Represents data transfer type.
@@ -303,6 +313,15 @@ impl TransferType {
             TransferType::Unspecified => "TRANSFER_TYPE_UNSPECIFIED",
             TransferType::Batch => "BATCH",
             TransferType::Streaming => "STREAMING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSFER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BATCH" => Some(Self::Batch),
+            "STREAMING" => Some(Self::Streaming),
+            _ => None,
         }
     }
 }
@@ -337,6 +356,18 @@ impl TransferState {
             TransferState::Succeeded => "SUCCEEDED",
             TransferState::Failed => "FAILED",
             TransferState::Cancelled => "CANCELLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSFER_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PENDING" => Some(Self::Pending),
+            "RUNNING" => Some(Self::Running),
+            "SUCCEEDED" => Some(Self::Succeeded),
+            "FAILED" => Some(Self::Failed),
+            "CANCELLED" => Some(Self::Cancelled),
+            _ => None,
         }
     }
 }
@@ -441,6 +472,19 @@ pub mod data_source_parameter {
                 Type::Boolean => "BOOLEAN",
                 Type::Record => "RECORD",
                 Type::PlusPage => "PLUS_PAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STRING" => Some(Self::String),
+                "INTEGER" => Some(Self::Integer),
+                "DOUBLE" => Some(Self::Double),
+                "BOOLEAN" => Some(Self::Boolean),
+                "RECORD" => Some(Self::Record),
+                "PLUS_PAGE" => Some(Self::PlusPage),
+                _ => None,
             }
         }
     }
@@ -562,6 +606,18 @@ pub mod data_source {
                 AuthorizationType::FirstPartyOauth => "FIRST_PARTY_OAUTH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTHORIZATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTHORIZATION_CODE" => Some(Self::AuthorizationCode),
+                "GOOGLE_PLUS_AUTHORIZATION_CODE" => {
+                    Some(Self::GooglePlusAuthorizationCode)
+                }
+                "FIRST_PARTY_OAUTH" => Some(Self::FirstPartyOauth),
+                _ => None,
+            }
+        }
     }
     /// Represents how the data source supports data auto refresh.
     #[derive(
@@ -598,6 +654,15 @@ pub mod data_source {
                 DataRefreshType::Unspecified => "DATA_REFRESH_TYPE_UNSPECIFIED",
                 DataRefreshType::SlidingWindow => "SLIDING_WINDOW",
                 DataRefreshType::CustomSlidingWindow => "CUSTOM_SLIDING_WINDOW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_REFRESH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SLIDING_WINDOW" => Some(Self::SlidingWindow),
+                "CUSTOM_SLIDING_WINDOW" => Some(Self::CustomSlidingWindow),
+                _ => None,
             }
         }
     }
@@ -898,6 +963,14 @@ pub mod list_transfer_runs_request {
             match self {
                 RunAttempt::Unspecified => "RUN_ATTEMPT_UNSPECIFIED",
                 RunAttempt::Latest => "LATEST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RUN_ATTEMPT_UNSPECIFIED" => Some(Self::Unspecified),
+                "LATEST" => Some(Self::Latest),
+                _ => None,
             }
         }
     }

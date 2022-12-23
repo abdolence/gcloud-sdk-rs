@@ -214,6 +214,15 @@ pub mod custom_voice_params {
                 ReportedUsage::Offline => "OFFLINE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REPORTED_USAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REALTIME" => Some(Self::Realtime),
+                "OFFLINE" => Some(Self::Offline),
+                _ => None,
+            }
+        }
     }
 }
 /// The message returned to the client by the `SynthesizeSpeech` method.
@@ -259,6 +268,16 @@ impl SsmlVoiceGender {
             SsmlVoiceGender::Neutral => "NEUTRAL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SSML_VOICE_GENDER_UNSPECIFIED" => Some(Self::Unspecified),
+            "MALE" => Some(Self::Male),
+            "FEMALE" => Some(Self::Female),
+            "NEUTRAL" => Some(Self::Neutral),
+            _ => None,
+        }
+    }
 }
 /// Configuration to set up audio encoder. The encoding determines the output
 /// audio format that we'd like.
@@ -298,6 +317,18 @@ impl AudioEncoding {
             AudioEncoding::OggOpus => "OGG_OPUS",
             AudioEncoding::Mulaw => "MULAW",
             AudioEncoding::Alaw => "ALAW",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+            "LINEAR16" => Some(Self::Linear16),
+            "MP3" => Some(Self::Mp3),
+            "OGG_OPUS" => Some(Self::OggOpus),
+            "MULAW" => Some(Self::Mulaw),
+            "ALAW" => Some(Self::Alaw),
+            _ => None,
         }
     }
 }

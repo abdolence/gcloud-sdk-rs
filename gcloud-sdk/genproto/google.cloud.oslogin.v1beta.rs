@@ -189,6 +189,15 @@ impl LoginProfileView {
             LoginProfileView::SecurityKey => "SECURITY_KEY",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LOGIN_PROFILE_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "SECURITY_KEY" => Some(Self::SecurityKey),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod os_login_service_client {

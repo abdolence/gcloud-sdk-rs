@@ -80,6 +80,15 @@ pub mod build_signature {
                 KeyType::PkixPem => "PKIX_PEM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PGP_ASCII_ARMORED" => Some(Self::PgpAsciiArmored),
+                "PKIX_PEM" => Some(Self::PkixPem),
+                _ => None,
+            }
+        }
     }
 }
 /// Details of a build occurrence.

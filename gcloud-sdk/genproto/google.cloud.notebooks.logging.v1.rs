@@ -44,5 +44,13 @@ pub mod runtime_event {
                 EventType::RuntimeStateChangeEvent => "RUNTIME_STATE_CHANGE_EVENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNTIME_STATE_CHANGE_EVENT" => Some(Self::RuntimeStateChangeEvent),
+                _ => None,
+            }
+        }
     }
 }

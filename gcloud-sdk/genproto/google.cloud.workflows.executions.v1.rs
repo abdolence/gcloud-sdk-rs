@@ -139,6 +139,17 @@ pub mod execution {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
     /// Describes the level of platform logging to apply to calls and call
     /// responses during workflow executions.
@@ -173,6 +184,15 @@ pub mod execution {
                 CallLogLevel::Unspecified => "CALL_LOG_LEVEL_UNSPECIFIED",
                 CallLogLevel::LogAllCalls => "LOG_ALL_CALLS",
                 CallLogLevel::LogErrorsOnly => "LOG_ERRORS_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CALL_LOG_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOG_ALL_CALLS" => Some(Self::LogAllCalls),
+                "LOG_ERRORS_ONLY" => Some(Self::LogErrorsOnly),
+                _ => None,
             }
         }
     }
@@ -286,6 +306,15 @@ impl ExecutionView {
             ExecutionView::Unspecified => "EXECUTION_VIEW_UNSPECIFIED",
             ExecutionView::Basic => "BASIC",
             ExecutionView::Full => "FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXECUTION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }

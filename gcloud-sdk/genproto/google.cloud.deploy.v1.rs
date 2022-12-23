@@ -511,6 +511,16 @@ pub mod execution_config {
                 ExecutionEnvironmentUsage::Verify => "VERIFY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RENDER" => Some(Self::Render),
+                "DEPLOY" => Some(Self::Deploy),
+                "VERIFY" => Some(Self::Verify),
+                _ => None,
+            }
+        }
     }
     /// Details of the environment.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -920,6 +930,16 @@ pub mod release {
                     TargetRenderState::InProgress => "IN_PROGRESS",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TARGET_RENDER_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SUCCEEDED" => Some(Self::Succeeded),
+                    "FAILED" => Some(Self::Failed),
+                    "IN_PROGRESS" => Some(Self::InProgress),
+                    _ => None,
+                }
+            }
         }
         /// Well-known rendering failures.
         #[derive(
@@ -955,6 +975,15 @@ pub mod release {
                     FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
                     FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
                     FailureCause::ExecutionFailed => "EXECUTION_FAILED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FAILURE_CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CLOUD_BUILD_UNAVAILABLE" => Some(Self::CloudBuildUnavailable),
+                    "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
+                    _ => None,
                 }
             }
         }
@@ -993,6 +1022,16 @@ pub mod release {
                 RenderState::Succeeded => "SUCCEEDED",
                 RenderState::Failed => "FAILED",
                 RenderState::InProgress => "IN_PROGRESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RENDER_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                _ => None,
             }
         }
     }
@@ -1254,6 +1293,17 @@ pub mod rollout {
                 ApprovalState::Rejected => "REJECTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "APPROVAL_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEEDS_APPROVAL" => Some(Self::NeedsApproval),
+                "DOES_NOT_NEED_APPROVAL" => Some(Self::DoesNotNeedApproval),
+                "APPROVED" => Some(Self::Approved),
+                "REJECTED" => Some(Self::Rejected),
+                _ => None,
+            }
+        }
     }
     /// Valid states of a `Rollout`.
     #[derive(
@@ -1302,6 +1352,20 @@ pub mod rollout {
                 State::ApprovalRejected => "APPROVAL_REJECTED",
                 State::Pending => "PENDING",
                 State::PendingRelease => "PENDING_RELEASE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "PENDING_APPROVAL" => Some(Self::PendingApproval),
+                "APPROVAL_REJECTED" => Some(Self::ApprovalRejected),
+                "PENDING" => Some(Self::Pending),
+                "PENDING_RELEASE" => Some(Self::PendingRelease),
+                _ => None,
             }
         }
     }
@@ -1353,6 +1417,19 @@ pub mod rollout {
                 FailureCause::VerificationConfigNotFound => {
                     "VERIFICATION_CONFIG_NOT_FOUND"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FAILURE_CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_BUILD_UNAVAILABLE" => Some(Self::CloudBuildUnavailable),
+                "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
+                "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
+                "RELEASE_FAILED" => Some(Self::ReleaseFailed),
+                "RELEASE_ABANDONED" => Some(Self::ReleaseAbandoned),
+                "VERIFICATION_CONFIG_NOT_FOUND" => Some(Self::VerificationConfigNotFound),
+                _ => None,
             }
         }
     }
@@ -1448,6 +1525,18 @@ pub mod phase {
                 State::Aborted => "ABORTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "ABORTED" => Some(Self::Aborted),
+                _ => None,
+            }
+        }
     }
     /// The job composition of this Phase.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1532,6 +1621,19 @@ pub mod job {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Aborted => "ABORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "DISABLED" => Some(Self::Disabled),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "ABORTED" => Some(Self::Aborted),
+                _ => None,
             }
         }
     }
@@ -1800,6 +1902,16 @@ pub mod job_run {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
     /// The `JobRun` type and the information for that type.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1873,6 +1985,16 @@ pub mod deploy_job_run {
                 FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FAILURE_CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_BUILD_UNAVAILABLE" => Some(Self::CloudBuildUnavailable),
+                "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
+                "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
+                _ => None,
+            }
+        }
     }
 }
 /// VerifyJobRun contains information specific to a verify `JobRun`.
@@ -1942,6 +2064,17 @@ pub mod verify_job_run {
                 FailureCause::VerificationConfigNotFound => {
                     "VERIFICATION_CONFIG_NOT_FOUND"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FAILURE_CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_BUILD_UNAVAILABLE" => Some(Self::CloudBuildUnavailable),
+                "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
+                "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
+                "VERIFICATION_CONFIG_NOT_FOUND" => Some(Self::VerificationConfigNotFound),
+                _ => None,
             }
         }
     }
@@ -2592,6 +2725,15 @@ impl Type {
             Type::Unspecified => "TYPE_UNSPECIFIED",
             Type::PubsubNotificationFailure => "TYPE_PUBSUB_NOTIFICATION_FAILURE",
             Type::RenderStatuesChange => "TYPE_RENDER_STATUES_CHANGE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TYPE_PUBSUB_NOTIFICATION_FAILURE" => Some(Self::PubsubNotificationFailure),
+            "TYPE_RENDER_STATUES_CHANGE" => Some(Self::RenderStatuesChange),
+            _ => None,
         }
     }
 }

@@ -75,6 +75,17 @@ pub mod lun {
                 State::Deleting => "DELETING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
     }
     /// Display the operating systems present for the LUN multiprotocol type.
     #[derive(
@@ -104,6 +115,14 @@ pub mod lun {
             match self {
                 MultiprotocolType::Unspecified => "MULTIPROTOCOL_TYPE_UNSPECIFIED",
                 MultiprotocolType::Linux => "LINUX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MULTIPROTOCOL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINUX" => Some(Self::Linux),
+                _ => None,
             }
         }
     }
@@ -138,6 +157,15 @@ pub mod lun {
                 StorageType::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
                 StorageType::Ssd => "SSD",
                 StorageType::Hdd => "HDD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SSD" => Some(Self::Ssd),
+                "HDD" => Some(Self::Hdd),
+                _ => None,
             }
         }
     }
@@ -264,6 +292,15 @@ pub mod network {
                 Type::Private => "PRIVATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLIENT" => Some(Self::Client),
+                "PRIVATE" => Some(Self::Private),
+                _ => None,
+            }
+        }
     }
     /// The possible states for this Network.
     #[derive(
@@ -296,6 +333,15 @@ pub mod network {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Provisioning => "PROVISIONING",
                 State::Provisioned => "PROVISIONED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "PROVISIONED" => Some(Self::Provisioned),
+                _ => None,
             }
         }
     }
@@ -390,6 +436,15 @@ pub mod vrf {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Provisioning => "PROVISIONING",
                 State::Provisioned => "PROVISIONED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "PROVISIONED" => Some(Self::Provisioned),
+                _ => None,
             }
         }
     }
@@ -633,6 +688,16 @@ pub mod instance {
                 State::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// Message for requesting server information.
@@ -804,6 +869,15 @@ pub mod server_network_template {
                     InterfaceType::Nic => "NIC",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "INTERFACE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "BOND" => Some(Self::Bond),
+                    "NIC" => Some(Self::Nic),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -901,6 +975,14 @@ pub mod nfs_share {
                 State::Provisioned => "PROVISIONED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONED" => Some(Self::Provisioned),
+                _ => None,
+            }
+        }
     }
     /// The possible mount permissions.
     #[derive(
@@ -933,6 +1015,15 @@ pub mod nfs_share {
                 MountPermissions::Unspecified => "MOUNT_PERMISSIONS_UNSPECIFIED",
                 MountPermissions::Read => "READ",
                 MountPermissions::ReadWrite => "READ_WRITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MOUNT_PERMISSIONS_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ" => Some(Self::Read),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
             }
         }
     }
@@ -1114,6 +1205,15 @@ pub mod volume {
                 StorageType::Hdd => "HDD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SSD" => Some(Self::Ssd),
+                "HDD" => Some(Self::Hdd),
+                _ => None,
+            }
+        }
     }
     /// The possible states for a storage volume.
     #[derive(
@@ -1149,6 +1249,16 @@ pub mod volume {
                 State::Creating => "CREATING",
                 State::Ready => "READY",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }
@@ -1190,6 +1300,16 @@ pub mod volume {
                 SnapshotAutoDeleteBehavior::Disabled => "DISABLED",
                 SnapshotAutoDeleteBehavior::OldestFirst => "OLDEST_FIRST",
                 SnapshotAutoDeleteBehavior::NewestFirst => "NEWEST_FIRST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SNAPSHOT_AUTO_DELETE_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "OLDEST_FIRST" => Some(Self::OldestFirst),
+                "NEWEST_FIRST" => Some(Self::NewestFirst),
+                _ => None,
             }
         }
     }

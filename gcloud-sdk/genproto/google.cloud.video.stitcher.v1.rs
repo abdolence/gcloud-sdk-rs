@@ -250,6 +250,37 @@ pub mod event {
                 EventType::AcceptInvitation => "ACCEPT_INVITATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATIVE_VIEW" => Some(Self::CreativeView),
+                "START" => Some(Self::Start),
+                "BREAK_START" => Some(Self::BreakStart),
+                "BREAK_END" => Some(Self::BreakEnd),
+                "IMPRESSION" => Some(Self::Impression),
+                "FIRST_QUARTILE" => Some(Self::FirstQuartile),
+                "MIDPOINT" => Some(Self::Midpoint),
+                "THIRD_QUARTILE" => Some(Self::ThirdQuartile),
+                "COMPLETE" => Some(Self::Complete),
+                "PROGRESS" => Some(Self::Progress),
+                "MUTE" => Some(Self::Mute),
+                "UNMUTE" => Some(Self::Unmute),
+                "PAUSE" => Some(Self::Pause),
+                "CLICK" => Some(Self::Click),
+                "CLICK_THROUGH" => Some(Self::ClickThrough),
+                "REWIND" => Some(Self::Rewind),
+                "RESUME" => Some(Self::Resume),
+                "ERROR" => Some(Self::Error),
+                "EXPAND" => Some(Self::Expand),
+                "COLLAPSE" => Some(Self::Collapse),
+                "CLOSE" => Some(Self::Close),
+                "CLOSE_LINEAR" => Some(Self::CloseLinear),
+                "SKIP" => Some(Self::Skip),
+                "ACCEPT_INVITATION" => Some(Self::AcceptInvitation),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates a time in which a list of events should be triggered
@@ -315,6 +346,16 @@ pub mod companion_ads {
                 DisplayRequirement::All => "ALL",
                 DisplayRequirement::Any => "ANY",
                 DisplayRequirement::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISPLAY_REQUIREMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "ANY" => Some(Self::Any),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -609,6 +650,15 @@ pub mod live_session {
                 StitchingPolicy::CutCurrent => "CUT_CURRENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STITCHING_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETE_AD" => Some(Self::CompleteAd),
+                "CUT_CURRENT" => Some(Self::CutCurrent),
+                _ => None,
+            }
+        }
     }
 }
 /// Metadata of an ad tag.
@@ -665,6 +715,15 @@ pub mod manifest_options {
                 OrderPolicy::Unspecified => "ORDER_POLICY_UNSPECIFIED",
                 OrderPolicy::Ascending => "ASCENDING",
                 OrderPolicy::Descending => "DESCENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ORDER_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASCENDING" => Some(Self::Ascending),
+                "DESCENDING" => Some(Self::Descending),
+                _ => None,
             }
         }
     }

@@ -98,6 +98,17 @@ pub mod build {
                 BuildStatus::Aborted => "ABORTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BUILD_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PASS" => Some(Self::Pass),
+                "FAIL" => Some(Self::Fail),
+                "RUNNING" => Some(Self::Running),
+                "ABORTED" => Some(Self::Aborted),
+                _ => None,
+            }
+        }
     }
     /// The build types.
     #[derive(
@@ -130,6 +141,15 @@ pub mod build {
                 BuildType::Unspecified => "BUILD_TYPE_UNSPECIFIED",
                 BuildType::Release => "RELEASE",
                 BuildType::Firmware => "FIRMWARE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BUILD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RELEASE" => Some(Self::Release),
+                "FIRMWARE" => Some(Self::Firmware),
+                _ => None,
             }
         }
     }

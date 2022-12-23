@@ -204,6 +204,20 @@ pub mod variant_annotation {
                 Type::Cnv => "CNV",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TYPE_OTHER" => Some(Self::Other),
+                "INSERTION" => Some(Self::Insertion),
+                "DELETION" => Some(Self::Deletion),
+                "SUBSTITUTION" => Some(Self::Substitution),
+                "SNP" => Some(Self::Snp),
+                "STRUCTURAL" => Some(Self::Structural),
+                "CNV" => Some(Self::Cnv),
+                _ => None,
+            }
+        }
     }
     #[derive(
         Clone,
@@ -265,6 +279,21 @@ pub mod variant_annotation {
                 Effect::SpliceSiteDisruption => "SPLICE_SITE_DISRUPTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EFFECT_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFFECT_OTHER" => Some(Self::Other),
+                "FRAMESHIFT" => Some(Self::Frameshift),
+                "FRAME_PRESERVING_INDEL" => Some(Self::FramePreservingIndel),
+                "SYNONYMOUS_SNP" => Some(Self::SynonymousSnp),
+                "NONSYNONYMOUS_SNP" => Some(Self::NonsynonymousSnp),
+                "STOP_GAIN" => Some(Self::StopGain),
+                "STOP_LOSS" => Some(Self::StopLoss),
+                "SPLICE_SITE_DISRUPTION" => Some(Self::SpliceSiteDisruption),
+                _ => None,
+            }
+        }
     }
     #[derive(
         Clone,
@@ -320,6 +349,26 @@ pub mod variant_annotation {
                 ClinicalSignificance::Association => "ASSOCIATION",
                 ClinicalSignificance::Protective => "PROTECTIVE",
                 ClinicalSignificance::MultipleReported => "MULTIPLE_REPORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLINICAL_SIGNIFICANCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLINICAL_SIGNIFICANCE_OTHER" => Some(Self::Other),
+                "UNCERTAIN" => Some(Self::Uncertain),
+                "BENIGN" => Some(Self::Benign),
+                "LIKELY_BENIGN" => Some(Self::LikelyBenign),
+                "LIKELY_PATHOGENIC" => Some(Self::LikelyPathogenic),
+                "PATHOGENIC" => Some(Self::Pathogenic),
+                "DRUG_RESPONSE" => Some(Self::DrugResponse),
+                "HISTOCOMPATIBILITY" => Some(Self::Histocompatibility),
+                "CONFERS_SENSITIVITY" => Some(Self::ConfersSensitivity),
+                "RISK_FACTOR" => Some(Self::RiskFactor),
+                "ASSOCIATION" => Some(Self::Association),
+                "PROTECTIVE" => Some(Self::Protective),
+                "MULTIPLE_REPORTED" => Some(Self::MultipleReported),
+                _ => None,
             }
         }
     }
@@ -671,6 +720,17 @@ impl AnnotationType {
             AnnotationType::Variant => "VARIANT",
             AnnotationType::Gene => "GENE",
             AnnotationType::Transcript => "TRANSCRIPT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ANNOTATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "GENERIC" => Some(Self::Generic),
+            "VARIANT" => Some(Self::Variant),
+            "GENE" => Some(Self::Gene),
+            "TRANSCRIPT" => Some(Self::Transcript),
+            _ => None,
         }
     }
 }
@@ -1129,6 +1189,22 @@ pub mod cigar_unit {
                 Operation::Pad => "PAD",
                 Operation::SequenceMatch => "SEQUENCE_MATCH",
                 Operation::SequenceMismatch => "SEQUENCE_MISMATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALIGNMENT_MATCH" => Some(Self::AlignmentMatch),
+                "INSERT" => Some(Self::Insert),
+                "DELETE" => Some(Self::Delete),
+                "SKIP" => Some(Self::Skip),
+                "CLIP_SOFT" => Some(Self::ClipSoft),
+                "CLIP_HARD" => Some(Self::ClipHard),
+                "PAD" => Some(Self::Pad),
+                "SEQUENCE_MATCH" => Some(Self::SequenceMatch),
+                "SEQUENCE_MISMATCH" => Some(Self::SequenceMismatch),
+                _ => None,
             }
         }
     }
@@ -2078,6 +2154,15 @@ pub mod import_read_group_sets_request {
                 PartitionStrategy::Unspecified => "PARTITION_STRATEGY_UNSPECIFIED",
                 PartitionStrategy::PerFilePerSample => "PER_FILE_PER_SAMPLE",
                 PartitionStrategy::MergeAll => "MERGE_ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PARTITION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "PER_FILE_PER_SAMPLE" => Some(Self::PerFilePerSample),
+                "MERGE_ALL" => Some(Self::MergeAll),
+                _ => None,
             }
         }
     }
@@ -3239,6 +3324,18 @@ pub mod variant_set_metadata {
                 Type::String => "STRING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTEGER" => Some(Self::Integer),
+                "FLOAT" => Some(Self::Float),
+                "FLAG" => Some(Self::Flag),
+                "CHARACTER" => Some(Self::Character),
+                "STRING" => Some(Self::String),
+                _ => None,
+            }
+        }
     }
 }
 /// A variant set is a collection of call sets and variants. It contains summary
@@ -3518,6 +3615,15 @@ pub mod import_variants_request {
                 Format::CompleteGenomics => "FORMAT_COMPLETE_GENOMICS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "FORMAT_VCF" => Some(Self::Vcf),
+                "FORMAT_COMPLETE_GENOMICS" => Some(Self::CompleteGenomics),
+                _ => None,
+            }
+        }
     }
 }
 /// The variant data import response.
@@ -3594,6 +3700,14 @@ pub mod export_variant_set_request {
             match self {
                 Format::Unspecified => "FORMAT_UNSPECIFIED",
                 Format::Bigquery => "FORMAT_BIGQUERY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "FORMAT_BIGQUERY" => Some(Self::Bigquery),
+                _ => None,
             }
         }
     }
@@ -3910,6 +4024,15 @@ impl InfoMergeOperation {
             InfoMergeOperation::Unspecified => "INFO_MERGE_OPERATION_UNSPECIFIED",
             InfoMergeOperation::IgnoreNew => "IGNORE_NEW",
             InfoMergeOperation::MoveToCalls => "MOVE_TO_CALLS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INFO_MERGE_OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "IGNORE_NEW" => Some(Self::IgnoreNew),
+            "MOVE_TO_CALLS" => Some(Self::MoveToCalls),
+            _ => None,
         }
     }
 }

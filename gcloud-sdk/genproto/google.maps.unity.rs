@@ -86,5 +86,19 @@ pub mod client_info {
                 Platform::WebGl => "WEB_GL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
+                "EDITOR" => Some(Self::Editor),
+                "MAC_OS" => Some(Self::MacOs),
+                "WINDOWS" => Some(Self::Windows),
+                "LINUX" => Some(Self::Linux),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                "WEB_GL" => Some(Self::WebGl),
+                _ => None,
+            }
+        }
     }
 }

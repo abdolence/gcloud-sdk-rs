@@ -105,6 +105,14 @@ pub mod assist_response {
                 EventType::EndOfUtterance => "END_OF_UTTERANCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "END_OF_UTTERANCE" => Some(Self::EndOfUtterance),
+                _ => None,
+            }
+        }
     }
 }
 /// Debug info for developer. Only returned if request set `return_debug_info`
@@ -220,6 +228,15 @@ pub mod audio_in_config {
                 Encoding::Flac => "FLAC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINEAR16" => Some(Self::Linear16),
+                "FLAC" => Some(Self::Flac),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies the desired format for the server to use when it returns
@@ -282,6 +299,16 @@ pub mod audio_out_config {
                 Encoding::OpusInOgg => "OPUS_IN_OGG",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINEAR16" => Some(Self::Linear16),
+                "MP3" => Some(Self::Mp3),
+                "OPUS_IN_OGG" => Some(Self::OpusInOgg),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies the desired format for the server to use when it returns
@@ -330,6 +357,15 @@ pub mod screen_out_config {
                 ScreenMode::Unspecified => "SCREEN_MODE_UNSPECIFIED",
                 ScreenMode::Off => "OFF",
                 ScreenMode::Playing => "PLAYING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCREEN_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OFF" => Some(Self::Off),
+                "PLAYING" => Some(Self::Playing),
+                _ => None,
             }
         }
     }
@@ -454,6 +490,14 @@ pub mod screen_out {
                 Format::Html => "HTML",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "HTML" => Some(Self::Html),
+                _ => None,
+            }
+        }
     }
 }
 /// The response returned to the device if the user has triggered a Device
@@ -556,6 +600,15 @@ pub mod dialog_state_out {
                 MicrophoneMode::Unspecified => "MICROPHONE_MODE_UNSPECIFIED",
                 MicrophoneMode::CloseMicrophone => "CLOSE_MICROPHONE",
                 MicrophoneMode::DialogFollowOn => "DIALOG_FOLLOW_ON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MICROPHONE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOSE_MICROPHONE" => Some(Self::CloseMicrophone),
+                "DIALOG_FOLLOW_ON" => Some(Self::DialogFollowOn),
+                _ => None,
             }
         }
     }
