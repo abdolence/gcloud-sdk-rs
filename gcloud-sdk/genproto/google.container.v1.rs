@@ -1702,6 +1702,11 @@ pub struct Cluster {
     /// in autopilot clusters and node auto-provisioning enabled clusters.
     #[prost(message, optional, tag = "136")]
     pub node_pool_auto_config: ::core::option::Option<NodePoolAutoConfig>,
+    /// This checksum is computed by the server based on the value of cluster
+    /// fields, and may be sent on update requests to ensure the client has an
+    /// up-to-date value before proceeding.
+    #[prost(string, tag = "139")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -1984,6 +1989,11 @@ pub struct ClusterUpdate {
     /// The desired config of Gateway API on this cluster.
     #[prost(message, optional, tag = "114")]
     pub desired_gateway_api_config: ::core::option::Option<GatewayApiConfig>,
+    /// The current etag of the cluster.
+    /// If an etag is provided and does not match the current etag of the cluster,
+    /// update will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "115")]
+    pub etag: ::prost::alloc::string::String,
     /// The desired node pool logging configuration defaults for the cluster.
     #[prost(message, optional, tag = "116")]
     pub desired_node_pool_logging_config: ::core::option::Option<NodePoolLoggingConfig>,
@@ -2445,6 +2455,11 @@ pub struct UpdateNodePoolRequest {
     /// Enable or disable gvnic on the node pool.
     #[prost(message, optional, tag = "29")]
     pub gvnic: ::core::option::Option<VirtualNic>,
+    /// The current etag of the node pool.
+    /// If an etag is provided and does not match the current etag of the node
+    /// pool, update will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "30")]
+    pub etag: ::prost::alloc::string::String,
     /// Enable or disable NCCL fast socket for the node pool.
     #[prost(message, optional, tag = "31")]
     pub fast_socket: ::core::option::Option<FastSocket>,
@@ -3242,6 +3257,11 @@ pub struct NodePool {
     /// pool update.
     #[prost(message, optional, tag = "109")]
     pub update_info: ::core::option::Option<node_pool::UpdateInfo>,
+    /// This checksum is computed by the server based on the value of node pool
+    /// fields, and may be sent on update requests to ensure the client has an
+    /// up-to-date value before proceeding.
+    #[prost(string, tag = "110")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
