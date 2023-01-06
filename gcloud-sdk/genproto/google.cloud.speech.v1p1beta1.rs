@@ -113,6 +113,22 @@ pub struct SpeechAdaptation {
     /// `custom_class_id`.
     #[prost(message, repeated, tag = "3")]
     pub custom_classes: ::prost::alloc::vec::Vec<CustomClass>,
+    /// Augmented Backus-Naur form (ABNF) is a standardized grammar notation
+    /// comprised by a set of derivation rules.
+    /// See specifications: <https://www.w3.org/TR/speech-grammar>
+    #[prost(message, optional, tag = "4")]
+    pub abnf_grammar: ::core::option::Option<speech_adaptation::AbnfGrammar>,
+}
+/// Nested message and enum types in `SpeechAdaptation`.
+pub mod speech_adaptation {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AbnfGrammar {
+        /// All declarations and rules of an ABNF grammar broken up into multiple
+        /// strings that will end up concatenated.
+        #[prost(string, repeated, tag = "1")]
+        pub abnf_strings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
 }
 /// Transcription normalization configuration. Use transcription normalization
 /// to automatically replace parts of the transcript with phrases of your

@@ -157,7 +157,7 @@ pub struct Instance {
     pub name: ::prost::alloc::string::String,
     /// Path to a Bash script that automatically runs after a notebook instance
     /// fully boots up. The path must be a URL or
-    /// Cloud Storage path (gs://path-to-file/file-name).
+    /// Cloud Storage path (`gs://path-to-file/file-name`).
     #[prost(string, tag = "4")]
     pub post_startup_script: ::prost::alloc::string::String,
     /// Output only. The proxy endpoint that is used to access the Jupyter notebook.
@@ -180,14 +180,15 @@ pub struct Instance {
     /// is used.
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
-    /// Required. The [Compute Engine machine type](/compute/docs/machine-types) of this
+    /// Required. The [Compute Engine machine
+    /// type](<https://cloud.google.com/compute/docs/machine-types>) of this
     /// instance.
     #[prost(string, tag = "8")]
     pub machine_type: ::prost::alloc::string::String,
     /// The hardware accelerator used on this instance. If you use
     /// accelerators, make sure that your configuration has
-    /// [enough vCPUs and memory to support the `machine_type` you
-    /// have selected](/compute/docs/gpus/#gpus-list).
+    /// [enough vCPUs and memory to support the `machine_type` you have
+    /// selected](<https://cloud.google.com/compute/docs/gpus/#gpus-list>).
     #[prost(message, optional, tag = "9")]
     pub accelerator_config: ::core::option::Option<instance::AcceleratorConfig>,
     /// Output only. The state of this instance.
@@ -208,8 +209,8 @@ pub struct Instance {
     #[prost(enumeration = "instance::DiskType", tag = "13")]
     pub boot_disk_type: i32,
     /// Input only. The size of the boot disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value is
-    /// 100&nbsp;GB. If not specified, this defaults to 100.
+    /// of 64000 GB (64 TB). The minimum recommended value is 100 GB. If not
+    /// specified, this defaults to 100.
     #[prost(int64, tag = "14")]
     pub boot_disk_size_gb: i64,
     /// Input only. The type of the data disk attached to this instance, defaults to
@@ -217,9 +218,8 @@ pub struct Instance {
     #[prost(enumeration = "instance::DiskType", tag = "25")]
     pub data_disk_type: i32,
     /// Input only. The size of the data disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the data disk
-    /// based on how big your notebooks and data are. If not specified, this
-    /// defaults to 100.
+    /// of 64000 GB (64 TB). You can choose the size of the data disk based on how
+    /// big your notebooks and data are. If not specified, this defaults to 100.
     #[prost(int64, tag = "26")]
     pub data_disk_size_gb: i64,
     /// Input only. If true, the data disk will not be auto deleted when deleting the instance.
@@ -233,7 +233,8 @@ pub struct Instance {
     /// Format:
     /// `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
     ///
-    /// Learn more about [using your own encryption keys](/kms/docs/quickstart).
+    /// Learn more about [using your own encryption
+    /// keys](<https://cloud.google.com/kms/docs/quickstart>).
     #[prost(string, tag = "16")]
     pub kms_key: ::prost::alloc::string::String,
     /// If true, no public IP will be assigned to this instance.
@@ -292,9 +293,9 @@ pub struct Instance {
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Definition of a hardware accelerator. Note that not all combinations
-    /// of `type` and `core_count` are valid. Check [GPUs on
-    /// Compute Engine](/compute/docs/gpus/#gpus-list) to find a valid
-    /// combination. TPUs are not supported.
+    /// of `type` and `core_count` are valid. Check [GPUs on Compute
+    /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
+    /// valid combination. TPUs are not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AcceleratorConfig {
@@ -667,7 +668,7 @@ pub struct ListInstancesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. For example,
-    /// ['us-west1-a', 'us-central1-b'].
+    /// `['us-west1-a', 'us-central1-b']`.
     /// A ListInstancesResponse will only contain either instances or unreachables,
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
