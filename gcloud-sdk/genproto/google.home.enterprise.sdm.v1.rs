@@ -21,7 +21,7 @@ pub struct Device {
     pub parent_relations: ::prost::alloc::vec::Vec<ParentRelation>,
 }
 /// Represents device relationships, for instance, structure/room to which the
-/// device is assigned to. For now this is only filled in the enterprise flow.
+/// device is assigned to.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParentRelation {
@@ -86,9 +86,8 @@ pub struct ListDevicesRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Optional filter to list devices.
     ///
-    /// Filters can match the exact parent (could be a structure or a room):
-    /// 'parent=enterprises/XYZ/structures/jkl'
-    /// or filter by device custom name (substring match):
+    /// Filters can be done on:
+    /// Device custom name (substring match):
     /// 'customName=wing'
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,

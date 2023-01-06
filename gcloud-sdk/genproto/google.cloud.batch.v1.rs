@@ -439,6 +439,31 @@ pub struct Environment {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// A map of environment variable names to Secret Manager secret names.
+    /// The VM will access the named secrets to set the value of each environment
+    /// variable.
+    #[prost(map = "string, string", tag = "2")]
+    pub secret_variables: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// An encrypted JSON dictionary where the key/value pairs correspond to
+    /// environment variable names and their values.
+    #[prost(message, optional, tag = "3")]
+    pub encrypted_variables: ::core::option::Option<environment::KmsEnvMap>,
+}
+/// Nested message and enum types in `Environment`.
+pub mod environment {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KmsEnvMap {
+        /// The name of the KMS key that will be used to decrypt the cipher text.
+        #[prost(string, tag = "1")]
+        pub key_name: ::prost::alloc::string::String,
+        /// The value of the cipherText response from the `encrypt` method.
+        #[prost(string, tag = "2")]
+        pub cipher_text: ::prost::alloc::string::String,
+    }
 }
 /// The Cloud Batch Job description.
 #[allow(clippy::derive_partial_eq_without_eq)]

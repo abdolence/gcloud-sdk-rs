@@ -353,20 +353,21 @@ pub mod execution_template {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VertexAiParameters {
         /// The full name of the Compute Engine
-        /// \[network\](/compute/docs/networks-and-firewalls#networks) to which the Job
-        /// should be peered. For example, `projects/12345/global/networks/myVPC`.
+        /// \[network\](<https://cloud.google.com/compute/docs/networks-and-firewalls#networks>)
+        /// to which the Job should be peered. For example,
+        /// `projects/12345/global/networks/myVPC`.
         /// \[Format\](<https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert>)
         /// is of the form `projects/{project}/global/networks/{network}`.
-        /// Where {project} is a project number, as in `12345`, and {network} is a
-        /// network name.
+        /// Where `{project}` is a project number, as in `12345`, and `{network}` is
+        /// a network name.
         ///
         /// Private services access must already be configured for the network. If
         /// left unspecified, the job is not peered with any network.
         #[prost(string, tag = "1")]
         pub network: ::prost::alloc::string::String,
         /// Environment variables.
-        ///   At most 100 environment variables can be specified and unique.
-        /// Example: GCP_BUCKET=gs://my-bucket/samples/
+        /// At most 100 environment variables can be specified and unique.
+        /// Example: `GCP_BUCKET=gs://my-bucket/samples/`
         #[prost(map = "string, string", tag = "2")]
         pub env: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -789,14 +790,15 @@ pub struct Instance {
     ///     <https://www.googleapis.com/auth/compute>
     #[prost(string, repeated, tag = "31")]
     pub service_account_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Required. The [Compute Engine machine type](/compute/docs/machine-types) of this
+    /// Required. The [Compute Engine machine
+    /// type](<https://cloud.google.com/compute/docs/machine-types>) of this
     /// instance.
     #[prost(string, tag = "8")]
     pub machine_type: ::prost::alloc::string::String,
     /// The hardware accelerator used on this instance. If you use
     /// accelerators, make sure that your configuration has
-    /// [enough vCPUs and memory to support the `machine_type` you
-    /// have selected](/compute/docs/gpus/#gpus-list).
+    /// [enough vCPUs and memory to support the `machine_type` you have
+    /// selected](<https://cloud.google.com/compute/docs/gpus/#gpus-list>).
     #[prost(message, optional, tag = "9")]
     pub accelerator_config: ::core::option::Option<instance::AcceleratorConfig>,
     /// Output only. The state of this instance.
@@ -817,8 +819,8 @@ pub struct Instance {
     #[prost(enumeration = "instance::DiskType", tag = "13")]
     pub boot_disk_type: i32,
     /// Input only. The size of the boot disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value is
-    /// 100&nbsp;GB. If not specified, this defaults to 100.
+    /// of 64000 GB (64 TB). The minimum recommended value is 100 GB. If not
+    /// specified, this defaults to 100.
     #[prost(int64, tag = "14")]
     pub boot_disk_size_gb: i64,
     /// Input only. The type of the data disk attached to this instance, defaults to
@@ -826,9 +828,8 @@ pub struct Instance {
     #[prost(enumeration = "instance::DiskType", tag = "25")]
     pub data_disk_type: i32,
     /// Input only. The size of the data disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the data disk
-    /// based on how big your notebooks and data are. If not specified, this
-    /// defaults to 100.
+    /// of 64000 GB (64 TB). You can choose the size of the data disk based on how
+    /// big your notebooks and data are. If not specified, this defaults to 100.
     #[prost(int64, tag = "26")]
     pub data_disk_size_gb: i64,
     /// Input only. If true, the data disk will not be auto deleted when deleting the instance.
@@ -921,9 +922,9 @@ pub struct Instance {
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Definition of a hardware accelerator. Note that not all combinations
-    /// of `type` and `core_count` are valid. Check [GPUs on
-    /// Compute Engine](/compute/docs/gpus/#gpus-list) to find a valid
-    /// combination. TPUs are not supported.
+    /// of `type` and `core_count` are valid. Check [GPUs on Compute
+    /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
+    /// valid combination. TPUs are not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AcceleratorConfig {
@@ -947,9 +948,9 @@ pub mod instance {
         #[prost(bool, tag = "2")]
         pub boot: bool,
         /// Indicates a unique device name of your choice that is reflected into the
-        /// /dev/disk/by-id/google-* tree of a Linux operating system running within
-        /// the instance. This name can be used to reference the device for mounting,
-        /// resizing, and so on, from within the instance.
+        /// `/dev/disk/by-id/google-*` tree of a Linux operating system running
+        /// within the instance. This name can be used to reference the device for
+        /// mounting, resizing, and so on, from within the instance.
         ///
         /// If not specified, the server chooses a default device name to apply to
         /// this disk, in the form persistent-disk-x, where x is a number assigned by
@@ -977,8 +978,8 @@ pub mod instance {
         /// performance.
         /// Valid values:
         ///
-        /// * NVME
-        /// * SCSI
+        /// * `NVME`
+        /// * `SCSI`
         #[prost(string, tag = "7")]
         pub interface: ::prost::alloc::string::String,
         /// Type of the resource. Always compute#attachedDisk for attached
@@ -990,23 +991,23 @@ pub mod instance {
         /// and marketplace images.
         #[prost(string, repeated, tag = "9")]
         pub licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If
-        /// not specified, the default is to attach the disk in READ_WRITE mode.
-        /// Valid values:
+        /// The mode in which to attach this disk, either `READ_WRITE` or
+        /// `READ_ONLY`. If not specified, the default is to attach the disk in
+        /// `READ_WRITE` mode. Valid values:
         ///
-        /// * READ_ONLY
-        /// * READ_WRITE
+        /// * `READ_ONLY`
+        /// * `READ_WRITE`
         #[prost(string, tag = "10")]
         pub mode: ::prost::alloc::string::String,
         /// Indicates a valid partial or full URL to an existing Persistent Disk
         /// resource.
         #[prost(string, tag = "11")]
         pub source: ::prost::alloc::string::String,
-        /// Indicates the type of the disk, either SCRATCH or PERSISTENT.
+        /// Indicates the type of the disk, either `SCRATCH` or `PERSISTENT`.
         /// Valid values:
         ///
-        /// * PERSISTENT
-        /// * SCRATCH
+        /// * `PERSISTENT`
+        /// * `SCRATCH`
         #[prost(string, tag = "12")]
         pub r#type: ::prost::alloc::string::String,
     }
@@ -1020,18 +1021,19 @@ pub mod instance {
             /// features to see a list of available options.
             /// Valid values:
             ///
-            /// * FEATURE_TYPE_UNSPECIFIED
-            /// * MULTI_IP_SUBNET
-            /// * SECURE_BOOT
-            /// * UEFI_COMPATIBLE
-            /// * VIRTIO_SCSI_MULTIQUEUE
-            /// * WINDOWS
+            /// * `FEATURE_TYPE_UNSPECIFIED`
+            /// * `MULTI_IP_SUBNET`
+            /// * `SECURE_BOOT`
+            /// * `UEFI_COMPATIBLE`
+            /// * `VIRTIO_SCSI_MULTIQUEUE`
+            /// * `WINDOWS`
             #[prost(string, tag = "1")]
             pub r#type: ::prost::alloc::string::String,
         }
     }
     /// A set of Shielded Instance options.
-    /// Check [Images using supported Shielded VM features]
+    /// Check [Images using supported Shielded VM
+    /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
     /// Not all combinations are valid.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1080,7 +1082,7 @@ pub mod instance {
         /// The time that this instance upgrade history entry is created.
         #[prost(message, optional, tag = "7")]
         pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Target VM Image. Format: ainotebooks-vm/project/image-name/name.
+        /// Target VM Image. Format: `ainotebooks-vm/project/image-name/name`.
         #[deprecated]
         #[prost(string, tag = "8")]
         pub target_image: ::prost::alloc::string::String,
@@ -1807,7 +1809,7 @@ pub struct LocalDisk {
     pub boot: bool,
     /// Optional. Output only. Specifies a unique device name
     /// of your choice that is reflected into the
-    /// /dev/disk/by-id/google-* tree of a Linux operating system running within
+    /// `/dev/disk/by-id/google-*` tree of a Linux operating system running within
     /// the instance. This name can be used to reference the device for mounting,
     /// resizing, and so on, from within the instance.
     ///
@@ -1841,8 +1843,8 @@ pub struct LocalDisk {
     /// performance characteristics of SCSI over NVMe, see Local SSD performance.
     /// Valid values:
     ///
-    /// * NVME
-    /// * SCSI
+    /// * `NVME`
+    /// * `SCSI`
     #[prost(string, tag = "7")]
     pub interface: ::prost::alloc::string::String,
     /// Output only. Type of the resource. Always compute#attachedDisk for attached disks.
@@ -1851,24 +1853,24 @@ pub struct LocalDisk {
     /// Output only. Any valid publicly visible licenses.
     #[prost(string, repeated, tag = "9")]
     pub licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If
-    /// not specified, the default is to attach the disk in READ_WRITE mode.
+    /// The mode in which to attach this disk, either `READ_WRITE` or `READ_ONLY`.
+    /// If not specified, the default is to attach the disk in `READ_WRITE` mode.
     /// Valid values:
     ///
-    /// * READ_ONLY
-    /// * READ_WRITE
+    /// * `READ_ONLY`
+    /// * `READ_WRITE`
     #[prost(string, tag = "10")]
     pub mode: ::prost::alloc::string::String,
     /// Specifies a valid partial or full URL to an existing Persistent Disk
     /// resource.
     #[prost(string, tag = "11")]
     pub source: ::prost::alloc::string::String,
-    /// Specifies the type of the disk, either SCRATCH or PERSISTENT. If not
-    /// specified, the default is PERSISTENT.
+    /// Specifies the type of the disk, either `SCRATCH` or `PERSISTENT`. If not
+    /// specified, the default is `PERSISTENT`.
     /// Valid values:
     ///
-    /// * PERSISTENT
-    /// * SCRATCH
+    /// * `PERSISTENT`
+    /// * `SCRATCH`
     #[prost(string, tag = "12")]
     pub r#type: ::prost::alloc::string::String,
 }
@@ -1889,12 +1891,12 @@ pub mod local_disk {
         ///
         /// Valid values:
         ///
-        /// * FEATURE_TYPE_UNSPECIFIED
-        /// * MULTI_IP_SUBNET
-        /// * SECURE_BOOT
-        /// * UEFI_COMPATIBLE
-        /// * VIRTIO_SCSI_MULTIQUEUE
-        /// * WINDOWS
+        /// * `FEATURE_TYPE_UNSPECIFIED`
+        /// * `MULTI_IP_SUBNET`
+        /// * `SECURE_BOOT`
+        /// * `UEFI_COMPATIBLE`
+        /// * `VIRTIO_SCSI_MULTIQUEUE`
+        /// * `WINDOWS`
         #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
     }
@@ -2320,14 +2322,15 @@ pub struct VirtualMachineConfig {
     /// The subnetwork allocation will use the range *name* if it's assigned.
     ///
     /// Example: managed-notebooks-range-c
-    /// PEERING_RANGE_NAME_3=managed-notebooks-range-c
-    /// gcloud compute addresses create $PEERING_RANGE_NAME_3 \
-    ///    --global \
-    ///    --prefix-length=24 \
-    ///    --description="Google Cloud Managed Notebooks Range 24 c" \
-    ///    --network=$NETWORK \
-    ///    --addresses=192.168.0.0 \
-    ///    --purpose=VPC_PEERING
+    ///
+    ///      PEERING_RANGE_NAME_3=managed-notebooks-range-c
+    ///      gcloud compute addresses create $PEERING_RANGE_NAME_3 \
+    ///        --global \
+    ///        --prefix-length=24 \
+    ///        --description="Google Cloud Managed Notebooks Range 24 c" \
+    ///        --network=$NETWORK \
+    ///        --addresses=192.168.0.0 \
+    ///        --purpose=VPC_PEERING
     ///
     /// Field value will be: `managed-notebooks-range-c`
     #[prost(string, tag = "18")]
@@ -2416,7 +2419,7 @@ pub struct ListRuntimesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. For example,
-    /// ['us-west1', 'us-central1'].
+    /// `['us-west1', 'us-central1']`.
     /// A ListRuntimesResponse will only contain either runtimes or unreachables,
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -2568,12 +2571,12 @@ pub struct UpdateRuntimeRequest {
     ///
     ///
     /// Currently, only the following fields can be updated:
-    /// - software_config.kernels
-    /// - software_config.post_startup_script
-    /// - software_config.custom_gpu_driver_path
-    /// - software_config.idle_shutdown
-    /// - software_config.idle_shutdown_timeout
-    /// - software_config.disable_terminal
+    /// - `software_config.kernels`
+    /// - `software_config.post_startup_script`
+    /// - `software_config.custom_gpu_driver_path`
+    /// - `software_config.idle_shutdown`
+    /// - `software_config.idle_shutdown_timeout`
+    /// - `software_config.disable_terminal`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Idempotent request UUID.
@@ -3002,8 +3005,8 @@ pub struct Schedule {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Display name used for UI purposes.
-    /// Name can only contain alphanumeric characters, hyphens '-',
-    /// and underscores '_'.
+    /// Name can only contain alphanumeric characters, hyphens `-`,
+    /// and underscores `_`.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// A brief description of this environment.
@@ -3013,7 +3016,7 @@ pub struct Schedule {
     pub state: i32,
     /// Cron-tab formatted schedule by which the job will execute.
     /// Format: minute, hour, day of month, month, day of week,
-    /// e.g. 0 0 * * WED = every Wednesday
+    /// e.g. `0 0 * * WED` = every Wednesday
     /// More examples: <https://crontab.guru/examples.html>
     #[prost(string, tag = "5")]
     pub cron_schedule: ::prost::alloc::string::String,
@@ -3168,7 +3171,7 @@ pub struct ListInstancesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. For example,
-    /// ['us-west1-a', 'us-central1-b'].
+    /// `['us-west1-a', 'us-central1-b']`.
     /// A ListInstancesResponse will only contain either instances or unreachables,
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -3419,13 +3422,13 @@ pub struct GetInstanceHealthResponse {
     pub health_state: i32,
     /// Output only. Additional information about instance health.
     /// Example:
-    ///   healthInfo": {
-    ///    "docker_proxy_agent_status": "1",
-    ///    "docker_status": "1",
-    ///    "jupyterlab_api_status": "-1",
-    ///    "jupyterlab_status": "-1",
-    ///    "updated": "2020-10-18 09:40:03.573409"
-    ///   }
+    ///      healthInfo": {
+    ///        "docker_proxy_agent_status": "1",
+    ///        "docker_status": "1",
+    ///        "jupyterlab_api_status": "-1",
+    ///        "jupyterlab_status": "-1",
+    ///        "updated": "2020-10-18 09:40:03.573409"
+    ///      }
     #[prost(map = "string, string", tag = "2")]
     pub health_info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3514,7 +3517,7 @@ pub struct RollbackInstanceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The snapshot for rollback.
-    /// Example: "projects/test-project/global/snapshots/krwlzipynril".
+    /// Example: `projects/test-project/global/snapshots/krwlzipynril`.
     #[prost(string, tag = "2")]
     pub target_snapshot: ::prost::alloc::string::String,
 }
@@ -3710,7 +3713,7 @@ pub struct ListExecutionsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter applied to resulting executions. Currently only supports filtering
-    /// executions by a specified schedule_id.
+    /// executions by a specified `schedule_id`.
     /// Format: `schedule_id=<Schedule_ID>`
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
