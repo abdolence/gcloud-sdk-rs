@@ -1020,7 +1020,8 @@ pub mod run_query_request {
         GqlQuery(super::GqlQuery),
     }
 }
-/// The response for \[Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery\].
+/// The response for
+/// \[Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryResponse {
@@ -1031,7 +1032,8 @@ pub struct RunQueryResponse {
     #[prost(message, optional, tag = "2")]
     pub query: ::core::option::Option<Query>,
 }
-/// The request for \[Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery\].
+/// The request for
+/// \[Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAggregationQueryRequest {
@@ -1071,7 +1073,8 @@ pub mod run_aggregation_query_request {
         GqlQuery(super::GqlQuery),
     }
 }
-/// The response for \[Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery\].
+/// The response for
+/// \[Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAggregationQueryResponse {
@@ -1082,7 +1085,8 @@ pub struct RunAggregationQueryResponse {
     #[prost(message, optional, tag = "2")]
     pub query: ::core::option::Option<AggregationQuery>,
 }
-/// The request for \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
+/// The request for
+/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionRequest {
@@ -1099,7 +1103,8 @@ pub struct BeginTransactionRequest {
     #[prost(message, optional, tag = "10")]
     pub transaction_options: ::core::option::Option<TransactionOptions>,
 }
-/// The response for \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
+/// The response for
+/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionResponse {
@@ -1125,8 +1130,9 @@ pub struct RollbackRequest {
     #[prost(bytes = "vec", tag = "1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
-/// The response for \[Datastore.Rollback][google.datastore.v1.Datastore.Rollback\].
-/// (an empty message).
+/// The response for
+/// \[Datastore.Rollback][google.datastore.v1.Datastore.Rollback\]. (an empty
+/// message).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackResponse {}
@@ -1241,7 +1247,8 @@ pub struct CommitResponse {
     #[prost(message, optional, tag = "8")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request for \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].
+/// The request for
+/// \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocateIdsRequest {
@@ -1254,12 +1261,13 @@ pub struct AllocateIdsRequest {
     /// database.
     #[prost(string, tag = "9")]
     pub database_id: ::prost::alloc::string::String,
-    /// Required. A list of keys with incomplete key paths for which to allocate IDs.
-    /// No key may be reserved/read-only.
+    /// Required. A list of keys with incomplete key paths for which to allocate
+    /// IDs. No key may be reserved/read-only.
     #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
-/// The response for \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].
+/// The response for
+/// \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocateIdsResponse {
@@ -1268,7 +1276,8 @@ pub struct AllocateIdsResponse {
     #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
-/// The request for \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].
+/// The request for
+/// \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReserveIdsRequest {
@@ -1281,12 +1290,13 @@ pub struct ReserveIdsRequest {
     /// database.
     #[prost(string, tag = "9")]
     pub database_id: ::prost::alloc::string::String,
-    /// Required. A list of keys with complete key paths whose numeric IDs should not be
-    /// auto-allocated.
+    /// Required. A list of keys with complete key paths whose numeric IDs should
+    /// not be auto-allocated.
     #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
-/// The response for \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].
+/// The response for
+/// \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReserveIdsResponse {}
@@ -1479,8 +1489,10 @@ pub mod read_options {
 /// Options for beginning a new transaction.
 ///
 /// Transactions can be created explicitly with calls to
-/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\] or implicitly by setting
-/// \[ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction\] in read requests.
+/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\]
+/// or implicitly by setting
+/// \[ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction\]
+/// in read requests.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionOptions {

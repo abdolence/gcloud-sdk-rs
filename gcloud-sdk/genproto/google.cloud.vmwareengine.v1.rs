@@ -49,7 +49,7 @@ pub struct PrivateCloud {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Creation time of this resource.
@@ -112,8 +112,8 @@ pub mod private_cloud {
         /// 1034](<https://datatracker.ietf.org/doc/html/rfc1034>) (section 3.5)
         #[prost(string, tag = "1")]
         pub cluster_id: ::prost::alloc::string::String,
-        /// Required. The map of cluster node types in this cluster, where the key is canonical
-        /// identifier of the node type (corresponds to the `NodeType`).
+        /// Required. The map of cluster node types in this cluster, where the key is
+        /// canonical identifier of the node type (corresponds to the `NodeType`).
         #[prost(map = "string, message", tag = "7")]
         pub node_type_configs: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -182,7 +182,8 @@ pub mod private_cloud {
         }
     }
 }
-/// Request message for \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
+/// Request message for
+/// \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateCloudsRequest {
@@ -190,7 +191,7 @@ pub struct ListPrivateCloudsRequest {
     /// clusters. Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a`
+    /// `projects/my-project/locations/us-central1-a`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of private clouds to return in one page.
@@ -242,7 +243,8 @@ pub struct ListPrivateCloudsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
+/// Response message for
+/// \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateCloudsResponse {
@@ -258,7 +260,8 @@ pub struct ListPrivateCloudsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for \[VmwareEngine.GetPrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateCloud\]
+/// Request message for
+/// \[VmwareEngine.GetPrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateCloud\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPrivateCloudRequest {
@@ -266,11 +269,12 @@ pub struct GetPrivateCloudRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.CreatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateCloud\]
+/// Request message for
+/// \[VmwareEngine.CreatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateCloud\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePrivateCloudRequest {
@@ -278,7 +282,7 @@ pub struct CreatePrivateCloudRequest {
     /// private cloud in. Resource names are schemeless URIs that follow the
     /// conventions in <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a`
+    /// `projects/my-project/locations/us-central1-a`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The user-provided identifier of the private cloud to be created.
@@ -297,16 +301,17 @@ pub struct CreatePrivateCloudRequest {
     /// Required. The initial description of the new private cloud.
     #[prost(message, optional, tag = "3")]
     pub private_cloud: ::core::option::Option<PrivateCloud>,
-    /// Optional. The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. True if you want the request to be validated and not executed; false
-    /// otherwise.
+    /// Optional. True if you want the request to be validated and not executed;
+    /// false otherwise.
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
 }
-/// Request message for \[VmwareEngine.UpdatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateCloud\]
+/// Request message for
+/// \[VmwareEngine.UpdatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateCloud\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePrivateCloudRequest {
@@ -320,12 +325,13 @@ pub struct UpdatePrivateCloudRequest {
     /// all fields will be overwritten.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud\]
+/// Request message for
+/// \[VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePrivateCloudRequest {
@@ -333,31 +339,33 @@ pub struct DeletePrivateCloudRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. If set to true, cascade delete is enabled and all children of this private
-    /// cloud resource are also deleted. When this flag is set to false, the
-    /// private cloud will not be deleted if there are any children other than the
-    /// management cluster. The management cluster is always deleted.
+    /// Optional. If set to true, cascade delete is enabled and all children of
+    /// this private cloud resource are also deleted. When this flag is set to
+    /// false, the private cloud will not be deleted if there are any children
+    /// other than the management cluster. The management cluster is always
+    /// deleted.
     #[prost(bool, tag = "3")]
     pub force: bool,
     /// Optional. Time delay of the deletion specified in hours. The default value
     /// is `3`. Specifying a non-zero value for this field changes the value of
     /// `PrivateCloud.state` to `DELETED` and sets `expire_time` to the planned
     /// deletion time. Deletion can be cancelled before `expire_time` elapses using
-    /// \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\]. Specifying a value of `0` for
-    /// this field instead begins the deletion process and ceases billing
-    /// immediately. During the final deletion process, the value of
-    /// `PrivateCloud.state` becomes `PURGING`.
+    /// \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\].
+    /// Specifying a value of `0` for this field instead begins the deletion
+    /// process and ceases billing immediately. During the final deletion process,
+    /// the value of `PrivateCloud.state` becomes `PURGING`.
     #[prost(int32, optional, tag = "4")]
     pub delay_hours: ::core::option::Option<i32>,
 }
-/// Request message for \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\]
+/// Request message for
+/// \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeletePrivateCloudRequest {
@@ -365,11 +373,11 @@ pub struct UndeletePrivateCloudRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
@@ -381,7 +389,7 @@ pub struct Cluster {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Creation time of this resource.
@@ -401,8 +409,8 @@ pub struct Cluster {
     /// Output only. System-generated unique identifier for the resource.
     #[prost(string, tag = "14")]
     pub uid: ::prost::alloc::string::String,
-    /// Required. The map of cluster node types in this cluster, where the key is canonical
-    /// identifier of the node type (corresponds to the `NodeType`).
+    /// Required. The map of cluster node types in this cluster, where the key is
+    /// canonical identifier of the node type (corresponds to the `NodeType`).
     #[prost(map = "string, message", tag = "16")]
     pub node_type_configs: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -469,7 +477,8 @@ pub mod cluster {
         }
     }
 }
-/// Request message for \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
+/// Request message for
+/// \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
@@ -477,7 +486,7 @@ pub struct ListClustersRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of clusters to return in one page.
@@ -517,7 +526,8 @@ pub struct ListClustersRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
+/// Response message for
+/// \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
@@ -533,7 +543,8 @@ pub struct ListClustersResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for \[VmwareEngine.GetCluster][google.cloud.vmwareengine.v1.VmwareEngine.GetCluster\]
+/// Request message for
+/// \[VmwareEngine.GetCluster][google.cloud.vmwareengine.v1.VmwareEngine.GetCluster\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
@@ -541,11 +552,12 @@ pub struct GetClusterRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.CreateCluster][google.cloud.vmwareengine.v1.VmwareEngine.CreateCluster\]
+/// Request message for
+/// \[VmwareEngine.CreateCluster][google.cloud.vmwareengine.v1.VmwareEngine.CreateCluster\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
@@ -553,7 +565,7 @@ pub struct CreateClusterRequest {
     /// in. Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The user-provided identifier of the new `Cluster`.
@@ -572,16 +584,17 @@ pub struct CreateClusterRequest {
     /// Required. The initial description of the new cluster.
     #[prost(message, optional, tag = "3")]
     pub cluster: ::core::option::Option<Cluster>,
-    /// Optional. The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. True if you want the request to be validated and not executed; false
-    /// otherwise.
+    /// Optional. True if you want the request to be validated and not executed;
+    /// false otherwise.
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
 }
-/// Request message for \[VmwareEngine.UpdateCluster][google.cloud.vmwareengine.v1.VmwareEngine.UpdateCluster\]
+/// Request message for
+/// \[VmwareEngine.UpdateCluster][google.cloud.vmwareengine.v1.VmwareEngine.UpdateCluster\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterRequest {
@@ -599,12 +612,13 @@ pub struct UpdateClusterRequest {
     /// zero UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. True if you want the request to be validated and not executed; false
-    /// otherwise.
+    /// Optional. True if you want the request to be validated and not executed;
+    /// false otherwise.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
-/// Request message for \[VmwareEngine.DeleteCluster][google.cloud.vmwareengine.v1.VmwareEngine.DeleteCluster\]
+/// Request message for
+/// \[VmwareEngine.DeleteCluster][google.cloud.vmwareengine.v1.VmwareEngine.DeleteCluster\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
@@ -612,11 +626,11 @@ pub struct DeleteClusterRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud/clusters/my-cluster`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
@@ -629,7 +643,7 @@ pub struct Subnet {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud/subnets/my-subnet`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/subnets/my-subnet`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The IP address range of the subnet in CIDR format '10.0.0.0/24'.
@@ -639,7 +653,8 @@ pub struct Subnet {
     /// Must fall within the IP prefix defined above.
     #[prost(string, tag = "8")]
     pub gateway_ip: ::prost::alloc::string::String,
-    /// Output only. The type of the subnet. For example "management" or "userDefined".
+    /// Output only. The type of the subnet. For example "management" or
+    /// "userDefined".
     #[prost(string, tag = "11")]
     pub r#type: ::prost::alloc::string::String,
     /// Output only. The state of the resource.
@@ -700,7 +715,8 @@ pub mod subnet {
         }
     }
 }
-/// Request message for \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
+/// Request message for
+/// \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubnetsRequest {
@@ -709,7 +725,7 @@ pub struct ListSubnetsRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of subnets to return in one page.
@@ -726,7 +742,8 @@ pub struct ListSubnetsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
+/// Response message for
+/// \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubnetsResponse {
@@ -760,8 +777,9 @@ pub struct OperationMetadata {
     /// Output only. True if the user has requested cancellation
     /// of the operation; false otherwise.
     /// Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -776,7 +794,7 @@ pub struct NodeType {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-proj/locations/us-west1-a/nodeTypes/standard-72`
+    /// `projects/my-proj/locations/us-central1-a/nodeTypes/standard-72`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The canonical identifier of the node type
@@ -803,7 +821,8 @@ pub struct NodeType {
     #[prost(int32, repeated, packed = "false", tag = "11")]
     pub available_custom_core_counts: ::prost::alloc::vec::Vec<i32>,
 }
-/// Request message for \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
+/// Request message for
+/// \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodeTypesRequest {
@@ -811,7 +830,7 @@ pub struct ListNodeTypesRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a`
+    /// `projects/my-project/locations/us-central1-a`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of node types to return in one page.
@@ -855,7 +874,8 @@ pub struct ListNodeTypesRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
-/// Response message for \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
+/// Response message for
+/// \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodeTypesResponse {
@@ -871,7 +891,8 @@ pub struct ListNodeTypesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for \[VmwareEngine.GetNodeType][google.cloud.vmwareengine.v1.VmwareEngine.GetNodeType\]
+/// Request message for
+/// \[VmwareEngine.GetNodeType][google.cloud.vmwareengine.v1.VmwareEngine.GetNodeType\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodeTypeRequest {
@@ -879,7 +900,7 @@ pub struct GetNodeTypeRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-proj/locations/us-west1-a/nodeTypes/standard-72`
+    /// `projects/my-proj/locations/us-central1-a/nodeTypes/standard-72`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -894,7 +915,8 @@ pub struct Credentials {
     #[prost(string, tag = "2")]
     pub password: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.ShowNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowNsxCredentials\]
+/// Request message for
+/// \[VmwareEngine.ShowNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowNsxCredentials\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShowNsxCredentialsRequest {
@@ -903,11 +925,12 @@ pub struct ShowNsxCredentialsRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub private_cloud: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.ShowVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowVcenterCredentials\]
+/// Request message for
+/// \[VmwareEngine.ShowVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowVcenterCredentials\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShowVcenterCredentialsRequest {
@@ -916,11 +939,12 @@ pub struct ShowVcenterCredentialsRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub private_cloud: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.ResetNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetNsxCredentials\]
+/// Request message for
+/// \[VmwareEngine.ResetNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetNsxCredentials\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetNsxCredentialsRequest {
@@ -929,7 +953,7 @@ pub struct ResetNsxCredentialsRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub private_cloud: ::prost::alloc::string::String,
     /// Optional. A request ID to identify requests. Specify a unique request ID
@@ -949,7 +973,8 @@ pub struct ResetNsxCredentialsRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.ResetVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetVcenterCredentials\]
+/// Request message for
+/// \[VmwareEngine.ResetVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetVcenterCredentials\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetVcenterCredentialsRequest {
@@ -958,7 +983,7 @@ pub struct ResetVcenterCredentialsRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
     #[prost(string, tag = "1")]
     pub private_cloud: ::prost::alloc::string::String,
     /// Optional. A request ID to identify requests. Specify a unique request ID
@@ -978,7 +1003,8 @@ pub struct ResetVcenterCredentialsRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Response message for \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
+/// Response message for
+/// \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHcxActivationKeysResponse {
@@ -997,8 +1023,11 @@ pub struct ListHcxActivationKeysResponse {
 /// HCX activation key. A default key is created during
 /// private cloud provisioning, but this behavior is subject to change
 /// and you should always verify active keys.
-/// Use \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\] to retrieve existing keys
-/// and \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\] to create new ones.
+/// Use
+/// \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
+/// to retrieve existing keys and
+/// \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\]
+/// to create new ones.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HcxActivationKey {
@@ -1006,7 +1035,7 @@ pub struct HcxActivationKey {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1/privateClouds/my-cloud/hcxActivationKeys/my-key`
+    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud/hcxActivationKeys/my-key`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Creation time of HCX activation key.
@@ -1072,7 +1101,8 @@ pub mod hcx_activation_key {
         }
     }
 }
-/// Request message for \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
+/// Request message for
+/// \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHcxActivationKeysRequest {
@@ -1107,11 +1137,12 @@ pub struct GetHcxActivationKeyRequest {
     /// Resource names are schemeless URIs that follow the conventions in
     /// <https://cloud.google.com/apis/design/resource_names.>
     /// For example:
-    /// `projects/my-project/locations/us-west1/privateClouds/my-cloud/hcxActivationKeys/my-key`
+    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud/hcxActivationKeys/my-key`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\]
+/// Request message for
+/// \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHcxActivationKeyRequest {
@@ -1468,7 +1499,8 @@ pub mod network_policy {
         }
     }
 }
-/// Request message for \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
+/// Request message for
+/// \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkPoliciesRequest {
@@ -1527,7 +1559,8 @@ pub struct ListNetworkPoliciesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
+/// Response message for
+/// \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkPoliciesResponse {
@@ -1543,7 +1576,8 @@ pub struct ListNetworkPoliciesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for \[VmwareEngine.GetNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPolicy\]
+/// Request message for
+/// \[VmwareEngine.GetNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPolicy\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkPolicyRequest {
@@ -1555,7 +1589,8 @@ pub struct GetNetworkPolicyRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.UpdateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPolicy\]
+/// Request message for
+/// \[VmwareEngine.UpdateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPolicy\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNetworkPolicyRequest {
@@ -1586,7 +1621,8 @@ pub struct UpdateNetworkPolicyRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.CreateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPolicy\]
+/// Request message for
+/// \[VmwareEngine.CreateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPolicy\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNetworkPolicyRequest {
@@ -1632,7 +1668,8 @@ pub struct CreateNetworkPolicyRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.DeleteNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPolicy\]
+/// Request message for
+/// \[VmwareEngine.DeleteNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPolicy\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkPolicyRequest {
@@ -1867,7 +1904,8 @@ pub mod vmware_engine_network {
         }
     }
 }
-/// Request message for \[VmwareEngine.CreateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.CreateVmwareEngineNetwork\]
+/// Request message for
+/// \[VmwareEngine.CreateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.CreateVmwareEngineNetwork\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVmwareEngineNetworkRequest {
@@ -1887,7 +1925,7 @@ pub struct CreateVmwareEngineNetworkRequest {
     ///
     /// * For networks of type LEGACY, adheres to the format:
     /// `{region-id}-default`. Replace `{region-id}` with the region where you want
-    /// to create the VMware Engine network. For example, "us-west1-default".
+    /// to create the VMware Engine network. For example, "us-central1-default".
     /// * Only contains 1-63 alphanumeric characters and hyphens
     /// * Begins with an alphabetical character
     /// * Ends with a non-hyphen character
@@ -1916,7 +1954,8 @@ pub struct CreateVmwareEngineNetworkRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.UpdateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.UpdateVmwareEngineNetwork\]
+/// Request message for
+/// \[VmwareEngine.UpdateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.UpdateVmwareEngineNetwork\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVmwareEngineNetworkRequest {
@@ -1948,7 +1987,8 @@ pub struct UpdateVmwareEngineNetworkRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.DeleteVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.DeleteVmwareEngineNetwork\]
+/// Request message for
+/// \[VmwareEngine.DeleteVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.DeleteVmwareEngineNetwork\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVmwareEngineNetworkRequest {
@@ -1975,14 +2015,15 @@ pub struct DeleteVmwareEngineNetworkRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. Checksum used to ensure that the user-provided value is up to date before
-    /// the server processes the request. The server compares provided checksum
-    /// with the current checksum of the resource. If the user-provided value is
-    /// out of date, this request returns an `ABORTED` error.
+    /// Optional. Checksum used to ensure that the user-provided value is up to
+    /// date before the server processes the request. The server compares provided
+    /// checksum with the current checksum of the resource. If the user-provided
+    /// value is out of date, this request returns an `ABORTED` error.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.GetVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.GetVmwareEngineNetwork\]
+/// Request message for
+/// \[VmwareEngine.GetVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.GetVmwareEngineNetwork\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVmwareEngineNetworkRequest {
@@ -1994,7 +2035,8 @@ pub struct GetVmwareEngineNetworkRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks\]
+/// Request message for
+/// \[VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVmwareEngineNetworksRequest {
@@ -2052,7 +2094,8 @@ pub struct ListVmwareEngineNetworksRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for \[VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks\]
+/// Response message for
+/// \[VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVmwareEngineNetworksResponse {

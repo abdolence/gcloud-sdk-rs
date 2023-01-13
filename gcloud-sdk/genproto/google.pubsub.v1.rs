@@ -14,6 +14,12 @@ pub struct Schema {
     /// the type specified in `type`.
     #[prost(string, tag = "3")]
     pub definition: ::prost::alloc::string::String,
+    /// Output only. Immutable. The revision ID of the schema.
+    #[prost(string, tag = "4")]
+    pub revision_id: ::prost::alloc::string::String,
+    /// Output only. The timestamp that the revision was created.
+    #[prost(message, optional, tag = "6")]
+    pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Schema`.
 pub mod schema {
@@ -93,8 +99,7 @@ pub struct GetSchemaRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The set of fields to return in the response. If not set, returns a Schema
-    /// with `name` and `type`, but not `definition`. Set to `FULL` to retrieve all
-    /// fields.
+    /// with all fields filled out. Set to `BASIC` to omit the `definition`.
     #[prost(enumeration = "SchemaView", tag = "2")]
     pub view: i32,
 }
@@ -131,6 +136,81 @@ pub struct ListSchemasResponse {
     /// request; this value should be passed in a new `ListSchemasRequest`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for the `ListSchemaRevisions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchemaRevisionsRequest {
+    /// Required. The name of the schema to list revisions for.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The set of Schema fields to return in the response. If not set, returns
+    /// Schemas with `name` and `type`, but not `definition`. Set to `FULL` to
+    /// retrieve all fields.
+    #[prost(enumeration = "SchemaView", tag = "2")]
+    pub view: i32,
+    /// The maximum number of revisions to return per page.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// The page token, received from a previous ListSchemaRevisions call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for the `ListSchemaRevisions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchemaRevisionsResponse {
+    /// The revisions of the schema.
+    #[prost(message, repeated, tag = "1")]
+    pub schemas: ::prost::alloc::vec::Vec<Schema>,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is empty, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for CommitSchema method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommitSchemaRequest {
+    /// Required. The name of the schema we are revising.
+    /// Format is `projects/{project}/schemas/{schema}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The schema revision to commit.
+    #[prost(message, optional, tag = "2")]
+    pub schema: ::core::option::Option<Schema>,
+}
+/// Request for the `RollbackSchema` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RollbackSchemaRequest {
+    /// Required. The schema being rolled back with revision id.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The revision ID to roll back to.
+    /// It must be a revision of the same schema.
+    ///
+    ///    Example: c7cfa2a8
+    #[prost(string, tag = "2")]
+    pub revision_id: ::prost::alloc::string::String,
+}
+/// Request for the `DeleteSchemaRevision` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSchemaRevisionRequest {
+    /// Required. The name of the schema revision to be deleted, with a revision ID
+    /// explicitly included.
+    ///
+    /// Example: projects/123/schemas/my-schema@c7cfa2a8
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The revision ID to roll back to.
+    /// It must be a revision of the same schema.
+    ///
+    ///    Example: c7cfa2a8
+    #[prost(string, tag = "2")]
+    pub revision_id: ::prost::alloc::string::String,
 }
 /// Request for the `DeleteSchema` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -393,6 +473,86 @@ pub mod schema_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Lists all schema revisions for the named schema.
+        pub async fn list_schema_revisions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSchemaRevisionsRequest>,
+        ) -> Result<tonic::Response<super::ListSchemaRevisionsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.pubsub.v1.SchemaService/ListSchemaRevisions",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Commits a new schema revision to an existing schema.
+        pub async fn commit_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CommitSchemaRequest>,
+        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.pubsub.v1.SchemaService/CommitSchema",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a new schema revision that is a copy of the provided revision_id.
+        pub async fn rollback_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RollbackSchemaRequest>,
+        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.pubsub.v1.SchemaService/RollbackSchema",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes a specific schema revision.
+        pub async fn delete_schema_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSchemaRevisionRequest>,
+        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.pubsub.v1.SchemaService/DeleteSchemaRevision",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Deletes a schema.
         pub async fn delete_schema(
             &mut self,
@@ -482,6 +642,16 @@ pub struct SchemaSettings {
     /// The encoding of messages validated against `schema`.
     #[prost(enumeration = "Encoding", tag = "2")]
     pub encoding: i32,
+    /// The minimum (inclusive) revision allowed for validating messages. If empty
+    /// or not present, allow any revision to be validated against last_revision or
+    /// any revision created before.
+    #[prost(string, tag = "3")]
+    pub first_revision_id: ::prost::alloc::string::String,
+    /// The maximum (inclusive) revision allowed for validating messages. If empty
+    /// or not present, allow any revision to be validated against first_revision
+    /// or any revision created after.
+    #[prost(string, tag = "4")]
+    pub last_revision_id: ::prost::alloc::string::String,
 }
 /// A topic resource.
 #[allow(clippy::derive_partial_eq_without_eq)]

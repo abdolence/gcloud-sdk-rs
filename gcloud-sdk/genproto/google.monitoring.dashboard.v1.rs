@@ -784,8 +784,9 @@ pub mod time_series_query {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesFilter {
-    /// Required. The [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
-    /// that identifies the metric types, resources, and projects to query.
+    /// Required. The [monitoring
+    /// filter](<https://cloud.google.com/monitoring/api/v3/filters>) that identifies
+    /// the metric types, resources, and projects to query.
     #[prost(string, tag = "1")]
     pub filter: ::prost::alloc::string::String,
     /// By default, the raw time series data is returned.
@@ -1179,6 +1180,12 @@ pub struct TimeSeriesTable {
     /// Required. The data displayed in this table.
     #[prost(message, repeated, tag = "1")]
     pub data_sets: ::prost::alloc::vec::Vec<time_series_table::TableDataSet>,
+    /// Optional. Store rendering strategy
+    #[prost(enumeration = "time_series_table::MetricVisualization", tag = "2")]
+    pub metric_visualization: i32,
+    /// Optional. The list of the persistent column settings for the table.
+    #[prost(message, repeated, tag = "4")]
+    pub column_settings: ::prost::alloc::vec::Vec<time_series_table::ColumnSettings>,
 }
 /// Nested message and enum types in `TimeSeriesTable`.
 pub mod time_series_table {
@@ -1190,22 +1197,77 @@ pub mod time_series_table {
         /// Stackdriver metrics API.
         #[prost(message, optional, tag = "1")]
         pub time_series_query: ::core::option::Option<super::TimeSeriesQuery>,
-        /// Optional. A template string for naming `TimeSeries` in the resulting data set.
-        /// This should be a string with interpolations of the form `${label_name}`,
-        /// which will resolve to the label's value i.e.
+        /// Optional. A template string for naming `TimeSeries` in the resulting data
+        /// set. This should be a string with interpolations of the form
+        /// `${label_name}`, which will resolve to the label's value i.e.
         /// "${resource.labels.project_id}."
         #[prost(string, tag = "2")]
         pub table_template: ::prost::alloc::string::String,
-        /// Optional. The lower bound on data point frequency for this data set, implemented by
-        /// specifying the minimum alignment period to use in a time series query
-        /// For example, if the data is published once every 10 minutes, the
-        /// `min_alignment_period` should be at least 10 minutes. It would not
+        /// Optional. The lower bound on data point frequency for this data set,
+        /// implemented by specifying the minimum alignment period to use in a time
+        /// series query For example, if the data is published once every 10 minutes,
+        /// the `min_alignment_period` should be at least 10 minutes. It would not
         /// make sense to fetch and align data at one minute intervals.
         #[prost(message, optional, tag = "3")]
         pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
-        /// Optional. Table display options for configuring how the table is rendered.
+        /// Optional. Table display options for configuring how the table is
+        /// rendered.
         #[prost(message, optional, tag = "4")]
         pub table_display_options: ::core::option::Option<super::TableDisplayOptions>,
+    }
+    /// The persistent settings for a table's columns.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ColumnSettings {
+        /// Required. The id of the column.
+        #[prost(string, tag = "1")]
+        pub column: ::prost::alloc::string::String,
+        /// Required. Whether the column should be visible on page load.
+        #[prost(bool, tag = "2")]
+        pub visible: bool,
+    }
+    /// Enum for metric metric_visualization
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MetricVisualization {
+        /// Unspecified state
+        Unspecified = 0,
+        /// Default text rendering
+        Number = 1,
+        /// Horizontal bar rendering
+        Bar = 2,
+    }
+    impl MetricVisualization {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MetricVisualization::Unspecified => "METRIC_VISUALIZATION_UNSPECIFIED",
+                MetricVisualization::Number => "NUMBER",
+                MetricVisualization::Bar => "BAR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METRIC_VISUALIZATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "NUMBER" => Some(Self::Number),
+                "BAR" => Some(Self::Bar),
+                _ => None,
+            }
+        }
     }
 }
 /// A widget that displays textual content.
@@ -1313,10 +1375,10 @@ pub mod xy_chart {
         /// which will resolve to the label's value.
         #[prost(string, tag = "3")]
         pub legend_template: ::prost::alloc::string::String,
-        /// Optional. The lower bound on data point frequency for this data set, implemented by
-        /// specifying the minimum alignment period to use in a time series query
-        /// For example, if the data is published once every 10 minutes, the
-        /// `min_alignment_period` should be at least 10 minutes. It would not
+        /// Optional. The lower bound on data point frequency for this data set,
+        /// implemented by specifying the minimum alignment period to use in a time
+        /// series query For example, if the data is published once every 10 minutes,
+        /// the `min_alignment_period` should be at least 10 minutes. It would not
         /// make sense to fetch and align data at one minute intervals.
         #[prost(message, optional, tag = "4")]
         pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
@@ -1915,8 +1977,12 @@ pub mod dashboards_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Creates a new custom dashboard. For examples on how you can use this API to create dashboards, see [Managing dashboards by API](https://cloud.google.com/monitoring/dashboards/api-dashboard).
-        /// This method requires the `monitoring.dashboards.create` permission on the specified project. For more information about permissions, see [Cloud Identity and Access Management](https://cloud.google.com/iam).
+        /// Creates a new custom dashboard. For examples on how you can use this API to
+        /// create dashboards, see [Managing dashboards by
+        /// API](https://cloud.google.com/monitoring/dashboards/api-dashboard). This
+        /// method requires the `monitoring.dashboards.create` permission on the
+        /// specified project. For more information about permissions, see [Cloud
+        /// Identity and Access Management](https://cloud.google.com/iam).
         pub async fn create_dashboard(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDashboardRequest>,
