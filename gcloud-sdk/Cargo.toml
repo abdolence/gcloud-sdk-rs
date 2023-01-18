@@ -15,9 +15,6 @@ exclude = ["*.sh"]
 [lib]
 doctest = false
 
-[package.metadata.docs.rs]
-all-features = true
-
 [features]
 default = ["tls-roots"]
 tls-roots = ["tonic/tls-roots"]
@@ -458,3 +455,7 @@ cargo-audit = "0.17"
 
 [package.metadata.release]
 tag-prefix=""
+
+[package.metadata.docs.rs]
+all-features = false
+features = ["rest", "tls-roots"]
