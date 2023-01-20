@@ -2446,6 +2446,14 @@ pub struct ListProcessorsResponse {
 /// Request message for get processor.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetProcessorTypeRequest {
+    /// Required. The processor type resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for get processor.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProcessorRequest {
     /// Required. The processor resource name.
     #[prost(string, tag = "1")]
@@ -3191,6 +3199,26 @@ pub mod document_processor_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessorTypes",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets a processor type detail.
+        pub async fn get_processor_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetProcessorTypeRequest>,
+        ) -> Result<tonic::Response<super::ProcessorType>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessorType",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -2001,6 +2001,15 @@ pub mod instance_group_config {
         /// (<https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms>)
         /// groups.
         Preemptible = 2,
+        /// Instances are [Spot VMs]
+        /// (<https://cloud.google.com/compute/docs/instances/spot>).
+        ///
+        /// This option is allowed only for [secondary worker]
+        /// (<https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms>)
+        /// groups. Spot VMs are the latest version of [preemptible VMs]
+        /// (<https://cloud.google.com/compute/docs/instances/preemptible>), and
+        /// provide additional features.
+        Spot = 3,
     }
     impl Preemptibility {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2012,6 +2021,7 @@ pub mod instance_group_config {
                 Preemptibility::Unspecified => "PREEMPTIBILITY_UNSPECIFIED",
                 Preemptibility::NonPreemptible => "NON_PREEMPTIBLE",
                 Preemptibility::Preemptible => "PREEMPTIBLE",
+                Preemptibility::Spot => "SPOT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2020,6 +2030,7 @@ pub mod instance_group_config {
                 "PREEMPTIBILITY_UNSPECIFIED" => Some(Self::Unspecified),
                 "NON_PREEMPTIBLE" => Some(Self::NonPreemptible),
                 "PREEMPTIBLE" => Some(Self::Preemptible),
+                "SPOT" => Some(Self::Spot),
                 _ => None,
             }
         }

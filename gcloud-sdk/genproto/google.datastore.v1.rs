@@ -976,6 +976,13 @@ pub struct LookupResponse {
     /// order of the keys in the input.
     #[prost(message, repeated, tag = "3")]
     pub deferred: ::prost::alloc::vec::Vec<Key>,
+    /// The identifier of the transaction that was started as part of this Lookup
+    /// request.
+    ///
+    /// Set only when \[ReadOptions.begin_transaction][\] was set in
+    /// \[LookupRequest.read_options][google.datastore.v1.LookupRequest.read_options\].
+    #[prost(bytes = "vec", tag = "5")]
+    pub transaction: ::prost::alloc::vec::Vec<u8>,
     /// The time at which these entities were read or found missing.
     #[prost(message, optional, tag = "7")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -1031,6 +1038,13 @@ pub struct RunQueryResponse {
     /// The parsed form of the `GqlQuery` from the request, if it was set.
     #[prost(message, optional, tag = "2")]
     pub query: ::core::option::Option<Query>,
+    /// The identifier of the transaction that was started as part of this
+    /// RunQuery request.
+    ///
+    /// Set only when \[ReadOptions.begin_transaction][\] was set in
+    /// \[RunQueryRequest.read_options][google.datastore.v1.RunQueryRequest.read_options\].
+    #[prost(bytes = "vec", tag = "5")]
+    pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request for
 /// \[Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery\].
@@ -1084,6 +1098,13 @@ pub struct RunAggregationQueryResponse {
     /// The parsed form of the `GqlQuery` from the request, if it was set.
     #[prost(message, optional, tag = "2")]
     pub query: ::core::option::Option<AggregationQuery>,
+    /// The identifier of the transaction that was started as part of this
+    /// RunAggregationQuery request.
+    ///
+    /// Set only when \[ReadOptions.begin_transaction][\] was set in
+    /// \[RunAggregationQueryRequest.read_options][google.datastore.v1.RunAggregationQueryRequest.read_options\].
+    #[prost(bytes = "vec", tag = "5")]
+    pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request for
 /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
@@ -1168,7 +1189,7 @@ pub struct CommitRequest {
     #[prost(message, repeated, tag = "6")]
     pub mutations: ::prost::alloc::vec::Vec<Mutation>,
     /// Must be set when mode is `TRANSACTIONAL`.
-    #[prost(oneof = "commit_request::TransactionSelector", tags = "1")]
+    #[prost(oneof = "commit_request::TransactionSelector", tags = "1, 10")]
     pub transaction_selector: ::core::option::Option<
         commit_request::TransactionSelector,
     >,
@@ -1229,6 +1250,13 @@ pub mod commit_request {
         /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
         #[prost(bytes, tag = "1")]
         Transaction(::prost::alloc::vec::Vec<u8>),
+        /// Options for beginning a new transaction for this request.
+        /// The transaction is committed when the request completes. If specified,
+        /// \[TransactionOptions.mode][google.datastore.v1.TransactionOptions.mode\]
+        /// must be
+        /// \[TransactionOptions.ReadWrite][google.datastore.v1.TransactionOptions.ReadWrite\].
+        #[prost(message, tag = "10")]
+        SingleUseTransaction(super::TransactionOptions),
     }
 }
 /// The response for \[Datastore.Commit][google.datastore.v1.Datastore.Commit\].
@@ -1410,7 +1438,7 @@ pub struct ReadOptions {
     /// Explicitly setting `read_consistency`=`EVENTUAL` will result in eventually
     /// consistent lookups & queries in both Cloud Datastore & Cloud Firestore in
     /// Datastore mode.
-    #[prost(oneof = "read_options::ConsistencyType", tags = "1, 2, 4")]
+    #[prost(oneof = "read_options::ConsistencyType", tags = "1, 2, 3, 4")]
     pub consistency_type: ::core::option::Option<read_options::ConsistencyType>,
 }
 /// Nested message and enum types in `ReadOptions`.
@@ -1479,6 +1507,15 @@ pub mod read_options {
         /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
         #[prost(bytes, tag = "2")]
         Transaction(::prost::alloc::vec::Vec<u8>),
+        /// Options for beginning a new transaction for this request.
+        ///
+        /// The new transaction identifier will be returned in the corresponding
+        /// response as either
+        /// \[LookupResponse.transaction][google.datastore.v1.LookupResponse.transaction\]
+        /// or
+        /// \[RunQueryResponse.transaction][google.datastore.v1.RunQueryResponse.transaction\].
+        #[prost(message, tag = "3")]
+        NewTransaction(super::TransactionOptions),
         /// Reads entities as they were at the given time. This may not be older
         /// than 270 seconds.  This value is only supported for Cloud Firestore in
         /// Datastore mode.

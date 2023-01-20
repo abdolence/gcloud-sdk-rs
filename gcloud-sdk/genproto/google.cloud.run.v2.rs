@@ -272,6 +272,9 @@ pub mod condition {
         /// A revision's container has no port specified since the revision is of a
         /// manually scaled service with 0 instance count
         HealthCheckSkipped = 11,
+        /// A revision with min_instance_count > 0 was created and is waiting for
+        /// enough instances to begin a traffic migration.
+        MinInstancesWarming = 12,
     }
     impl RevisionReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -300,6 +303,7 @@ pub mod condition {
                 }
                 RevisionReason::NoDeployment => "NO_DEPLOYMENT",
                 RevisionReason::HealthCheckSkipped => "HEALTH_CHECK_SKIPPED",
+                RevisionReason::MinInstancesWarming => "MIN_INSTANCES_WARMING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -319,6 +323,7 @@ pub mod condition {
                 "ACTIVE_REVISION_LIMIT_REACHED" => Some(Self::ActiveRevisionLimitReached),
                 "NO_DEPLOYMENT" => Some(Self::NoDeployment),
                 "HEALTH_CHECK_SKIPPED" => Some(Self::HealthCheckSkipped),
+                "MIN_INSTANCES_WARMING" => Some(Self::MinInstancesWarming),
                 _ => None,
             }
         }
@@ -400,11 +405,13 @@ pub mod condition {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Container {
-    /// Name of the container specified as a DNS_LABEL.
+    /// Name of the container specified as a DNS_LABEL (RFC 1123).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. URL of the Container image in Google Container Registry or Google Artifact
-    /// Registry. More info: <https://kubernetes.io/docs/concepts/containers/images>
+    /// Required. Name of the container image in Dockerhub, Google Artifact
+    /// Registry, or Google Container Registry. If the host is not provided,
+    /// Dockerhub is assumed. More info:
+    /// <https://kubernetes.io/docs/concepts/containers/images>
     #[prost(string, tag = "2")]
     pub image: ::prost::alloc::string::String,
     /// Entrypoint array. Not executed within a shell.
@@ -490,8 +497,8 @@ pub struct ResourceRequirements {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvVar {
-    /// Required. Name of the environment variable. Must be a C_IDENTIFIER, and mnay not
-    /// exceed 32768 characters.
+    /// Required. Name of the environment variable. Must be a C_IDENTIFIER, and
+    /// mnay not exceed 32768 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     #[prost(oneof = "env_var::Values", tags = "2, 3")]
@@ -561,8 +568,8 @@ pub struct VolumeMount {
     /// Required. This must match the Name of a Volume.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Path within the container at which the volume should be mounted.  Must
-    /// not contain ':'. For Cloud SQL volumes, it can be left empty, or must
+    /// Required. Path within the container at which the volume should be mounted.
+    /// Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must
     /// otherwise be `/cloudsql`. All instances defined in the Volume will be
     /// available as `/cloudsql/\[instance\]`. For more information on Cloud SQL
     /// volumes, visit <https://cloud.google.com/sql/docs/mysql/connect-run>
@@ -666,7 +673,10 @@ pub struct VersionToPath {
     #[prost(int32, tag = "3")]
     pub mode: i32,
 }
-/// Represents a specific Cloud SQL instance.
+/// Represents a set of Cloud SQL instances. Each one will be available under
+/// /cloudsql/\[instance\]. Visit
+/// <https://cloud.google.com/sql/docs/mysql/connect-run> for more information on
+/// how to connect Cloud SQL and Cloud Run.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlInstance {
@@ -944,6 +954,41 @@ impl ExecutionEnvironment {
         }
     }
 }
+/// Specifies behavior if an encryption key used by a resource is revoked.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum EncryptionKeyRevocationAction {
+    /// Unspecified
+    Unspecified = 0,
+    /// Prevents the creation of new instances.
+    PreventNew = 1,
+    /// Shuts down existing instances, and prevents creation of new ones.
+    Shutdown = 2,
+}
+impl EncryptionKeyRevocationAction {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            EncryptionKeyRevocationAction::Unspecified => {
+                "ENCRYPTION_KEY_REVOCATION_ACTION_UNSPECIFIED"
+            }
+            EncryptionKeyRevocationAction::PreventNew => "PREVENT_NEW",
+            EncryptionKeyRevocationAction::Shutdown => "SHUTDOWN",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENCRYPTION_KEY_REVOCATION_ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "PREVENT_NEW" => Some(Self::PreventNew),
+            "SHUTDOWN" => Some(Self::Shutdown),
+            _ => None,
+        }
+    }
+}
 /// TaskTemplate describes the data a task should have when created
 /// from a template.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1064,8 +1109,9 @@ pub struct Execution {
     /// Output only. The unique name of this Execution.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Server assigned unique identifier for the Execution. The value is a UUID4
-    /// string and guaranteed to remain unchanged until the resource is deleted.
+    /// Output only. Server assigned unique identifier for the Execution. The value
+    /// is a UUID4 string and guaranteed to remain unchanged until the resource is
+    /// deleted.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
@@ -1078,9 +1124,6 @@ pub struct Execution {
     /// environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels>
-    /// Cloud Run will populate some labels with 'run.googleapis.com' or
-    /// 'serving.knative.dev' namespaces. Those labels are read-only, and user
-    /// changes will not be preserved.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1092,9 +1135,9 @@ pub struct Execution {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. Represents time when the execution was acknowledged by the execution
-    /// controller. It is not guaranteed to be set in happens-before order across
-    /// separate operations.
+    /// Output only. Represents time when the execution was acknowledged by the
+    /// execution controller. It is not guaranteed to be set in happens-before
+    /// order across separate operations.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Represents time when the execution started to run.
@@ -1102,8 +1145,8 @@ pub struct Execution {
     /// operations.
     #[prost(message, optional, tag = "22")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Represents time when the execution was completed. It is not guaranteed to
-    /// be set in happens-before order across separate operations.
+    /// Output only. Represents time when the execution was completed. It is not
+    /// guaranteed to be set in happens-before order across separate operations.
     #[prost(message, optional, tag = "7")]
     pub completion_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
@@ -1127,16 +1170,16 @@ pub struct Execution {
     /// Output only. The name of the parent Job.
     #[prost(string, tag = "12")]
     pub job: ::prost::alloc::string::String,
-    /// Output only. Specifies the maximum desired number of tasks the execution should
-    /// run at any given time. Must be <= task_count. The actual number of
+    /// Output only. Specifies the maximum desired number of tasks the execution
+    /// should run at any given time. Must be <= task_count. The actual number of
     /// tasks running in steady state will be less than this number when
     /// ((.spec.task_count - .status.successful) < .spec.parallelism), i.e. when
     /// the work left to do is less than max parallelism. More info:
     /// <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
     #[prost(int32, tag = "13")]
     pub parallelism: i32,
-    /// Output only. Specifies the desired number of tasks the execution should run.
-    /// Setting to 1 means that parallelism is limited to 1 and the success of
+    /// Output only. Specifies the desired number of tasks the execution should
+    /// run. Setting to 1 means that parallelism is limited to 1 and the success of
     /// that task signals the success of the execution.
     /// More info:
     /// <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
@@ -1145,17 +1188,19 @@ pub struct Execution {
     /// Output only. The template used to create tasks for this execution.
     #[prost(message, optional, tag = "15")]
     pub template: ::core::option::Option<TaskTemplate>,
-    /// Output only. Indicates whether the resource's reconciliation is still in progress.
-    /// See comments in `Job.reconciling` for additional information on
+    /// Output only. Indicates whether the resource's reconciliation is still in
+    /// progress. See comments in `Job.reconciling` for additional information on
     /// reconciliation process in Cloud Run.
     #[prost(bool, tag = "16")]
     pub reconciling: bool,
-    /// Output only. The Condition of this Execution, containing its readiness status, and
-    /// detailed error information in case it did not reach the desired state.
+    /// Output only. The Condition of this Execution, containing its readiness
+    /// status, and detailed error information in case it did not reach the desired
+    /// state.
     #[prost(message, repeated, tag = "17")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
-    /// Output only. The generation of this Execution. See comments in `reconciling` for
-    /// additional information on reconciliation process in Cloud Run.
+    /// Output only. The generation of this Execution. See comments in
+    /// `reconciling` for additional information on reconciliation process in Cloud
+    /// Run.
     #[prost(int64, tag = "18")]
     pub observed_generation: i64,
     /// Output only. The number of actively running tasks.
@@ -1167,6 +1212,16 @@ pub struct Execution {
     /// Output only. The number of tasks which reached phase Failed.
     #[prost(int32, tag = "21")]
     pub failed_count: i32,
+    /// Output only. The number of tasks which reached phase Cancelled.
+    #[prost(int32, tag = "24")]
+    pub cancelled_count: i32,
+    /// Output only. The number of tasks which have retried at least once.
+    #[prost(int32, tag = "25")]
+    pub retried_count: i32,
+    /// Output only. URI where logs for this execution can be found in Cloud
+    /// Console.
+    #[prost(string, tag = "26")]
+    pub log_uri: ::prost::alloc::string::String,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -1313,12 +1368,22 @@ pub mod executions_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionTemplate {
     /// KRM-style labels for the resource.
+    ///
+    /// <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system labels in v1 now have a
+    /// corresponding field in v2 ExecutionTemplate.
     #[prost(map = "string, string", tag = "1")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
     /// KRM-style annotations for the resource.
+    ///
+    /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system annotations in v1 now
+    /// have a corresponding field in v2 ExecutionTemplate.
     #[prost(map = "string, string", tag = "2")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1340,7 +1405,8 @@ pub struct ExecutionTemplate {
     /// <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
     #[prost(int32, tag = "4")]
     pub task_count: i32,
-    /// Required. Describes the task(s) that will be created when executing an execution.
+    /// Required. Describes the task(s) that will be created when executing an
+    /// execution.
     #[prost(message, optional, tag = "5")]
     pub template: ::core::option::Option<TaskTemplate>,
 }
@@ -1460,8 +1526,8 @@ pub struct RunJobRequest {
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
 }
-/// Job represents the configuration of a single job. A job an immutable resource
-/// that references a container image which is run to completion.
+/// Job represents the configuration of a single job, which references a
+/// container image that is run to completion.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
@@ -1471,8 +1537,9 @@ pub struct Job {
     /// projects/{project}/locations/{location}/jobs/{job}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Server assigned unique identifier for the Execution. The value is a UUID4
-    /// string and guaranteed to remain unchanged until the resource is deleted.
+    /// Output only. Server assigned unique identifier for the Execution. The value
+    /// is a UUID4 string and guaranteed to remain unchanged until the resource is
+    /// deleted.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
@@ -1485,9 +1552,11 @@ pub struct Job {
     /// environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels>
-    /// Cloud Run will populate some labels with 'run.googleapis.com' or
-    /// 'serving.knative.dev' namespaces. Those labels are read-only, and user
-    /// changes will not be preserved.
+    ///
+    /// <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system labels in v1 now have a
+    /// corresponding field in v2 Job.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1496,10 +1565,15 @@ pub struct Job {
     /// KRM-style annotations for the resource. Unstructured key value map that may
     /// be set by external tools to store and arbitrary metadata.
     /// They are not queryable and should be preserved
-    /// when modifying objects. Cloud Run will populate some annotations using
-    /// 'run.googleapis.com' or 'serving.knative.dev' namespaces. This field
-    /// follows Kubernetes annotations' namespacing, limits, and rules. More info:
-    /// <https://kubernetes.io/docs/user-guide/annotations>
+    /// when modifying objects.
+    ///
+    /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system annotations in v1 now
+    /// have a corresponding field in v2 Job.
+    ///
+    /// <p>This field follows Kubernetes annotations' namespacing, limits, and
+    /// rules. More info: <https://kubernetes.io/docs/user-guide/annotations>
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1542,18 +1616,18 @@ pub struct Job {
     /// Required. The template used to create executions for this Job.
     #[prost(message, optional, tag = "16")]
     pub template: ::core::option::Option<ExecutionTemplate>,
-    /// Output only. The generation of this Job. See comments in `reconciling` for additional
-    /// information on reconciliation process in Cloud Run.
+    /// Output only. The generation of this Job. See comments in `reconciling` for
+    /// additional information on reconciliation process in Cloud Run.
     #[prost(int64, tag = "17")]
     pub observed_generation: i64,
-    /// Output only. The Condition of this Job, containing its readiness status, and
-    /// detailed error information in case it did not reach the desired state.
+    /// Output only. The Condition of this Job, containing its readiness status,
+    /// and detailed error information in case it did not reach the desired state.
     #[prost(message, optional, tag = "18")]
     pub terminal_condition: ::core::option::Option<Condition>,
-    /// Output only. The Conditions of all other associated sub-resources. They contain
-    /// additional diagnostics information in case the Job does not reach its
-    /// desired state. See comments in `reconciling` for additional information on
-    /// reconciliation process in Cloud Run.
+    /// Output only. The Conditions of all other associated sub-resources. They
+    /// contain additional diagnostics information in case the Job does not reach
+    /// its desired state. See comments in `reconciling` for additional information
+    /// on reconciliation process in Cloud Run.
     #[prost(message, repeated, tag = "19")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
     /// Output only. Number of executions created for this job.
@@ -1562,8 +1636,8 @@ pub struct Job {
     /// Output only. Name of the last created execution.
     #[prost(message, optional, tag = "22")]
     pub latest_created_execution: ::core::option::Option<ExecutionReference>,
-    /// Output only. Returns true if the Job is currently being acted upon by the system to
-    /// bring it into the desired state.
+    /// Output only. Returns true if the Job is currently being acted upon by the
+    /// system to bring it into the desired state.
     ///
     /// When a new Job is created, or an existing one is updated, Cloud Run
     /// will asynchronously perform all necessary steps to bring the Job to the
@@ -1962,8 +2036,9 @@ pub struct Revision {
     /// Output only. The unique name of this Revision.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Server assigned unique identifier for the Revision. The value is a UUID4
-    /// string and guaranteed to remain unchanged until the resource is deleted.
+    /// Output only. Server assigned unique identifier for the Revision. The value
+    /// is a UUID4 string and guaranteed to remain unchanged until the resource is
+    /// deleted.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
@@ -1976,9 +2051,6 @@ pub struct Revision {
     /// environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels>
-    /// Cloud Run will populate some labels with 'run.googleapis.com' or
-    /// 'serving.knative.dev' namespaces. Those labels are read-only, and user
-    /// changes will not be preserved.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2047,18 +2119,28 @@ pub struct Revision {
     /// <https://cloud.google.com/run/docs/securing/using-cmek>
     #[prost(string, tag = "21")]
     pub encryption_key: ::prost::alloc::string::String,
-    /// Output only. Indicates whether the resource's reconciliation is still in progress.
-    /// See comments in `Service.reconciling` for additional information on
-    /// reconciliation process in Cloud Run.
+    /// The action to take if the encryption key is revoked.
+    #[prost(enumeration = "EncryptionKeyRevocationAction", tag = "23")]
+    pub encryption_key_revocation_action: i32,
+    /// If encryption_key_revocation_action is SHUTDOWN, the duration before
+    /// shutting down all instances. The minimum increment is 1 hour.
+    #[prost(message, optional, tag = "24")]
+    pub encryption_key_shutdown_duration: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
+    /// Output only. Indicates whether the resource's reconciliation is still in
+    /// progress. See comments in `Service.reconciling` for additional information
+    /// on reconciliation process in Cloud Run.
     #[prost(bool, tag = "30")]
     pub reconciling: bool,
-    /// Output only. The Condition of this Revision, containing its readiness status, and
-    /// detailed error information in case it did not reach a serving state.
+    /// Output only. The Condition of this Revision, containing its readiness
+    /// status, and detailed error information in case it did not reach a serving
+    /// state.
     #[prost(message, repeated, tag = "31")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
-    /// Output only. The generation of this Revision currently serving traffic. See comments in
-    /// `reconciling` for additional information on reconciliation process in Cloud
-    /// Run.
+    /// Output only. The generation of this Revision currently serving traffic. See
+    /// comments in `reconciling` for additional information on reconciliation
+    /// process in Cloud Run.
     #[prost(int64, tag = "32")]
     pub observed_generation: i64,
     /// Output only. The Google Console URI to obtain logs for the Revision.
@@ -2214,12 +2296,22 @@ pub struct RevisionTemplate {
     #[prost(string, tag = "1")]
     pub revision: ::prost::alloc::string::String,
     /// KRM-style labels for the resource.
+    ///
+    /// <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system labels in v1 now have a
+    /// corresponding field in v2 RevisionTemplate.
     #[prost(map = "string, string", tag = "2")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
     /// KRM-style annotations for the resource.
+    ///
+    /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system annotations in v1 now
+    /// have a corresponding field in v2 RevisionTemplate.
     #[prost(map = "string, string", tag = "3")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2384,9 +2476,9 @@ pub struct UpdateServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The location and project to list resources on.
-    /// Location must be a valid GCP region, and cannot be the "-" wildcard.
-    /// Format: projects/{project}/locations/{location}, where {project} can be
-    /// project id or number.
+    /// Location must be a valid Google Cloud region, and cannot be the "-"
+    /// wildcard. Format: projects/{project}/locations/{location}, where {project}
+    /// can be project id or number.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of Services to return in this call.
@@ -2460,8 +2552,9 @@ pub struct Service {
     /// 512-character limit.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. Server assigned unique identifier for the trigger. The value is a UUID4
-    /// string and guaranteed to remain unchanged until the resource is deleted.
+    /// Output only. Server assigned unique identifier for the trigger. The value
+    /// is a UUID4 string and guaranteed to remain unchanged until the resource is
+    /// deleted.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
@@ -2477,9 +2570,11 @@ pub struct Service {
     /// environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels>
-    /// Cloud Run will populate some labels with 'run.googleapis.com' or
-    /// 'serving.knative.dev' namespaces. Those labels are read-only, and user
-    /// changes will not be preserved.
+    ///
+    /// <p>Cloud Run API v2 does not support labels with  `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system labels in v1 now have a
+    /// corresponding field in v2 Service.
     #[prost(map = "string, string", tag = "5")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2487,9 +2582,15 @@ pub struct Service {
     >,
     /// Unstructured key value map that may be set by external tools to store and
     /// arbitrary metadata. They are not queryable and should be preserved
-    /// when modifying objects. Cloud Run will populate some annotations using
-    /// 'run.googleapis.com' or 'serving.knative.dev' namespaces. This field
-    /// follows Kubernetes annotations' namespacing, limits, and rules. More info:
+    /// when modifying objects.
+    ///
+    /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+    /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+    /// namespaces, and they will be rejected. All system annotations in v1 now
+    /// have a corresponding field in v2 Service.
+    ///
+    /// <p>This field follows Kubernetes
+    /// annotations' namespacing, limits, and rules. More info:
     /// <https://kubernetes.io/docs/user-guide/annotations>
     #[prost(map = "string, string", tag = "6")]
     pub annotations: ::std::collections::HashMap<
@@ -2543,44 +2644,45 @@ pub struct Service {
     /// 100% traffic to the latest `Ready` Revision.
     #[prost(message, repeated, tag = "19")]
     pub traffic: ::prost::alloc::vec::Vec<TrafficTarget>,
-    /// Output only. The generation of this Service currently serving traffic. See comments in
-    /// `reconciling` for additional information on reconciliation process in Cloud
-    /// Run.
-    /// Please note that unlike v1, this is an int64 value. As with most Google
-    /// APIs, its JSON representation will be a `string` instead of an `integer`.
+    /// Output only. The generation of this Service currently serving traffic. See
+    /// comments in `reconciling` for additional information on reconciliation
+    /// process in Cloud Run. Please note that unlike v1, this is an int64 value.
+    /// As with most Google APIs, its JSON representation will be a `string`
+    /// instead of an `integer`.
     #[prost(int64, tag = "30")]
     pub observed_generation: i64,
-    /// Output only. The Condition of this Service, containing its readiness status, and
-    /// detailed error information in case it did not reach a serving state. See
-    /// comments in `reconciling` for additional information on reconciliation
-    /// process in Cloud Run.
+    /// Output only. The Condition of this Service, containing its readiness
+    /// status, and detailed error information in case it did not reach a serving
+    /// state. See comments in `reconciling` for additional information on
+    /// reconciliation process in Cloud Run.
     #[prost(message, optional, tag = "31")]
     pub terminal_condition: ::core::option::Option<Condition>,
-    /// Output only. The Conditions of all other associated sub-resources. They contain
-    /// additional diagnostics information in case the Service does not reach its
-    /// Serving state. See comments in `reconciling` for additional information on
-    /// reconciliation process in Cloud Run.
+    /// Output only. The Conditions of all other associated sub-resources. They
+    /// contain additional diagnostics information in case the Service does not
+    /// reach its Serving state. See comments in `reconciling` for additional
+    /// information on reconciliation process in Cloud Run.
     #[prost(message, repeated, tag = "32")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
-    /// Output only. Name of the latest revision that is serving traffic. See comments in
-    /// `reconciling` for additional information on reconciliation process in Cloud
-    /// Run.
+    /// Output only. Name of the latest revision that is serving traffic. See
+    /// comments in `reconciling` for additional information on reconciliation
+    /// process in Cloud Run.
     #[prost(string, tag = "33")]
     pub latest_ready_revision: ::prost::alloc::string::String,
-    /// Output only. Name of the last created revision. See comments in `reconciling` for
-    /// additional information on reconciliation process in Cloud Run.
+    /// Output only. Name of the last created revision. See comments in
+    /// `reconciling` for additional information on reconciliation process in Cloud
+    /// Run.
     #[prost(string, tag = "34")]
     pub latest_created_revision: ::prost::alloc::string::String,
-    /// Output only. Detailed status information for corresponding traffic targets. See comments
-    /// in `reconciling` for additional information on reconciliation process in
-    /// Cloud Run.
+    /// Output only. Detailed status information for corresponding traffic targets.
+    /// See comments in `reconciling` for additional information on reconciliation
+    /// process in Cloud Run.
     #[prost(message, repeated, tag = "35")]
     pub traffic_statuses: ::prost::alloc::vec::Vec<TrafficTargetStatus>,
     /// Output only. The main URI in which this Service is serving traffic.
     #[prost(string, tag = "36")]
     pub uri: ::prost::alloc::string::String,
-    /// Output only. Returns true if the Service is currently being acted upon by the system to
-    /// bring it into the desired state.
+    /// Output only. Returns true if the Service is currently being acted upon by
+    /// the system to bring it into the desired state.
     ///
     /// When a new Service is created, or an existing one is updated, Cloud Run
     /// will asynchronously perform all necessary steps to bring the Service to the
@@ -2922,8 +3024,9 @@ pub struct Task {
     /// Output only. The unique name of this Task.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Server assigned unique identifier for the Task. The value is a UUID4
-    /// string and guaranteed to remain unchanged until the resource is deleted.
+    /// Output only. Server assigned unique identifier for the Task. The value is a
+    /// UUID4 string and guaranteed to remain unchanged until the resource is
+    /// deleted.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
@@ -2936,9 +3039,6 @@ pub struct Task {
     /// environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels>
-    /// Cloud Run will populate some labels with 'run.googleapis.com' or
-    /// 'serving.knative.dev' namespaces. Those labels are read-only, and user
-    /// changes will not be preserved.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2950,9 +3050,9 @@ pub struct Task {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. Represents time when the task was created by the job controller.
-    /// It is not guaranteed to be set in happens-before order across separate
-    /// operations.
+    /// Output only. Represents time when the task was created by the job
+    /// controller. It is not guaranteed to be set in happens-before order across
+    /// separate operations.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Represents time when the task started to run.
@@ -2960,8 +3060,8 @@ pub struct Task {
     /// operations.
     #[prost(message, optional, tag = "27")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Represents time when the Task was completed. It is not guaranteed to
-    /// be set in happens-before order across separate operations.
+    /// Output only. Represents time when the Task was completed. It is not
+    /// guaranteed to be set in happens-before order across separate operations.
     #[prost(message, optional, tag = "7")]
     pub completion_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
@@ -3006,13 +3106,13 @@ pub struct Task {
     /// The execution environment being used to host this Task.
     #[prost(enumeration = "ExecutionEnvironment", tag = "20")]
     pub execution_environment: i32,
-    /// Output only. Indicates whether the resource's reconciliation is still in progress.
-    /// See comments in `Job.reconciling` for additional information on
+    /// Output only. Indicates whether the resource's reconciliation is still in
+    /// progress. See comments in `Job.reconciling` for additional information on
     /// reconciliation process in Cloud Run.
     #[prost(bool, tag = "21")]
     pub reconciling: bool,
-    /// Output only. The Condition of this Task, containing its readiness status, and
-    /// detailed error information in case it did not reach the desired state.
+    /// Output only. The Condition of this Task, containing its readiness status,
+    /// and detailed error information in case it did not reach the desired state.
     #[prost(message, repeated, tag = "22")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
     /// Output only. The generation of this Task. See comments in `Job.reconciling`
@@ -3029,15 +3129,20 @@ pub struct Task {
     /// Output only. Result of the last attempt of this Task.
     #[prost(message, optional, tag = "26")]
     pub last_attempt_result: ::core::option::Option<TaskAttemptResult>,
-    /// Output only. A reference to a customer managed encryption key (CMEK) to use to encrypt
-    /// this container image. For more information, go to
+    /// Output only. A reference to a customer managed encryption key (CMEK) to use
+    /// to encrypt this container image. For more information, go to
     /// <https://cloud.google.com/run/docs/securing/using-cmek>
     #[prost(string, tag = "28")]
     pub encryption_key: ::prost::alloc::string::String,
-    /// Output only. VPC Access configuration to use for this Task. For more information,
-    /// visit <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
+    /// Output only. VPC Access configuration to use for this Task. For more
+    /// information, visit
+    /// <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
     #[prost(message, optional, tag = "29")]
     pub vpc_access: ::core::option::Option<VpcAccess>,
+    /// Output only. URI where logs for this execution can be found in Cloud
+    /// Console.
+    #[prost(string, tag = "32")]
+    pub log_uri: ::prost::alloc::string::String,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]

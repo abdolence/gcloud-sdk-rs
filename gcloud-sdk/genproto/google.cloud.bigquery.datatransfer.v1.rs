@@ -127,9 +127,9 @@ pub struct TransferConfig {
     /// to the email address of the user who owns this transfer config.
     #[prost(message, optional, tag = "18")]
     pub email_preferences: ::core::option::Option<EmailPreferences>,
-    /// Output only. Information about the user whose credentials are used to transfer data.
-    /// Populated only for `transferConfigs.get` requests. In case the user
-    /// information is not available, this field will not be populated.
+    /// Output only. Information about the user whose credentials are used to
+    /// transfer data. Populated only for `transferConfigs.get` requests. In case
+    /// the user information is not available, this field will not be populated.
     #[prost(message, optional, tag = "27")]
     pub owner_info: ::core::option::Option<UserInfo>,
     /// The desination of the transfer config.
@@ -178,9 +178,10 @@ pub struct TransferRun {
     /// Output only. Last time the data transfer run state was updated.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Parameters specific to each data source. For more information see the
-    /// bq tab in the 'Setting up a data transfer' section for each data source.
-    /// For example the parameters for Cloud Storage transfers are listed here:
+    /// Output only. Parameters specific to each data source. For more information
+    /// see the bq tab in the 'Setting up a data transfer' section for each data
+    /// source. For example the parameters for Cloud Storage transfers are listed
+    /// here:
     /// <https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq>
     #[prost(message, optional, tag = "9")]
     pub params: ::core::option::Option<::prost_types::Struct>,
@@ -671,8 +672,8 @@ pub mod data_source {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataSourceRequest {
-    /// Required. The field will contain name of the resource requested, for example:
-    /// `projects/{project_id}/dataSources/{data_source_id}` or
+    /// Required. The field will contain name of the resource requested, for
+    /// example: `projects/{project_id}/dataSources/{data_source_id}` or
     /// `projects/{project_id}/locations/{location_id}/dataSources/{data_source_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -681,8 +682,8 @@ pub struct GetDataSourceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSourcesRequest {
-    /// Required. The BigQuery project id for which data sources should be returned.
-    /// Must be in the form: `projects/{project_id}` or
+    /// Required. The BigQuery project id for which data sources should be
+    /// returned. Must be in the form: `projects/{project_id}` or
     /// `projects/{project_id}/locations/{location_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -720,10 +721,11 @@ pub struct ListDataSourcesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTransferConfigRequest {
-    /// Required. The BigQuery project id where the transfer configuration should be created.
-    /// Must be in the format projects/{project_id}/locations/{location_id} or
-    /// projects/{project_id}. If specified location and location of the
-    /// destination bigquery dataset do not match - the request will fail.
+    /// Required. The BigQuery project id where the transfer configuration should
+    /// be created. Must be in the format
+    /// projects/{project_id}/locations/{location_id} or projects/{project_id}. If
+    /// specified location and location of the destination bigquery dataset do not
+    /// match - the request will fail.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Data transfer configuration to create.
@@ -832,8 +834,8 @@ pub struct UpdateTransferConfigRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTransferConfigRequest {
-    /// Required. The field will contain name of the resource requested, for example:
-    /// `projects/{project_id}/transferConfigs/{config_id}` or
+    /// Required. The field will contain name of the resource requested, for
+    /// example: `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -843,8 +845,8 @@ pub struct GetTransferConfigRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTransferConfigRequest {
-    /// Required. The field will contain name of the resource requested, for example:
-    /// `projects/{project_id}/transferConfigs/{config_id}` or
+    /// Required. The field will contain name of the resource requested, for
+    /// example: `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -853,8 +855,9 @@ pub struct DeleteTransferConfigRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTransferRunRequest {
-    /// Required. The field will contain name of the resource requested, for example:
-    /// `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}` or
+    /// Required. The field will contain name of the resource requested, for
+    /// example: `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
+    /// or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -863,8 +866,9 @@ pub struct GetTransferRunRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTransferRunRequest {
-    /// Required. The field will contain name of the resource requested, for example:
-    /// `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}` or
+    /// Required. The field will contain name of the resource requested, for
+    /// example: `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}`
+    /// or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -910,8 +914,8 @@ pub struct ListTransferConfigsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferRunsRequest {
-    /// Required. Name of transfer configuration for which transfer runs should be retrieved.
-    /// Format of transfer configuration resource name is:
+    /// Required. Name of transfer configuration for which transfer runs should be
+    /// retrieved. Format of transfer configuration resource name is:
     /// `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`.
     #[prost(string, tag = "1")]

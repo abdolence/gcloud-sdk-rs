@@ -1438,7 +1438,8 @@ pub struct IpAllocationPolicy {
     /// The ipv6 access type (internal or external) when create_subnetwork is true
     #[prost(enumeration = "ip_allocation_policy::IPv6AccessType", tag = "17")]
     pub ipv6_access_type: i32,
-    /// Output only. [Output only] The subnet's IPv6 CIDR block used by nodes and pods.
+    /// Output only. [Output only] The subnet's IPv6 CIDR block used by nodes and
+    /// pods.
     #[prost(string, tag = "22")]
     pub subnet_ipv6_cidr_block: ::prost::alloc::string::String,
     /// Output only. [Output only] The services IPv6 CIDR block for the cluster.
@@ -3117,8 +3118,8 @@ pub struct SetAddonsConfigRequest {
     #[deprecated]
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
-    /// Required. The desired configurations for the various addons available to run in the
-    /// cluster.
+    /// Required. The desired configurations for the various addons available to
+    /// run in the cluster.
     #[prost(message, optional, tag = "4")]
     pub addons_config: ::core::option::Option<AddonsConfig>,
     /// The name (project, location, cluster) of the cluster to set addons.
@@ -3834,8 +3835,8 @@ pub struct NodePool {
     /// Specifies the node placement policy.
     #[prost(message, optional, tag = "108")]
     pub placement_policy: ::core::option::Option<node_pool::PlacementPolicy>,
-    /// Output only. [Output only] Update info contains relevant information during a node
-    /// pool update.
+    /// Output only. [Output only] Update info contains relevant information during
+    /// a node pool update.
     #[prost(message, optional, tag = "109")]
     pub update_info: ::core::option::Option<node_pool::UpdateInfo>,
     /// This checksum is computed by the server based on the value of node pool

@@ -385,8 +385,8 @@ pub struct PublishLifecycleEventRequest {
     /// The interactivity of this build.
     #[prost(enumeration = "publish_lifecycle_event_request::ServiceLevel", tag = "1")]
     pub service_level: i32,
-    /// Required. The lifecycle build event. If this is a build tool event, the RPC will fail
-    /// with INVALID_REQUEST.
+    /// Required. The lifecycle build event. If this is a build tool event, the RPC
+    /// will fail with INVALID_REQUEST.
     #[prost(message, optional, tag = "2")]
     pub build_event: ::core::option::Option<OrderedBuildEvent>,
     /// If the next event for this build or invocation (depending on the event
