@@ -1407,6 +1407,17 @@ pub struct ComputeRoutesRequest {
         tag = "14"
     )]
     pub requested_reference_routes: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. A list of extra computations which may be used to complete the
+    /// request. Note: These extra computations may return extra fields on the
+    /// response. These extra fields must also be specified in the field mask to be
+    /// returned in the response.
+    #[prost(
+        enumeration = "compute_routes_request::ExtraComputation",
+        repeated,
+        packed = "false",
+        tag = "15"
+    )]
+    pub extra_computations: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `ComputeRoutesRequest`.
 pub mod compute_routes_request {
@@ -1446,6 +1457,53 @@ pub mod compute_routes_request {
             match value {
                 "REFERENCE_ROUTE_UNSPECIFIED" => Some(Self::Unspecified),
                 "FUEL_EFFICIENT" => Some(Self::FuelEfficient),
+                _ => None,
+            }
+        }
+    }
+    /// Extra computations to perform while completing the request.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExtraComputation {
+        /// Not used. Requests containing this value will fail.
+        Unspecified = 0,
+        /// Toll information for the route(s).
+        Tolls = 1,
+        /// Estimated fuel consumption for the route(s).
+        FuelConsumption = 2,
+        /// Traffic aware polylines for the route(s).
+        TrafficOnPolyline = 3,
+    }
+    impl ExtraComputation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ExtraComputation::Unspecified => "EXTRA_COMPUTATION_UNSPECIFIED",
+                ExtraComputation::Tolls => "TOLLS",
+                ExtraComputation::FuelConsumption => "FUEL_CONSUMPTION",
+                ExtraComputation::TrafficOnPolyline => "TRAFFIC_ON_POLYLINE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXTRA_COMPUTATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "TOLLS" => Some(Self::Tolls),
+                "FUEL_CONSUMPTION" => Some(Self::FuelConsumption),
+                "TRAFFIC_ON_POLYLINE" => Some(Self::TrafficOnPolyline),
                 _ => None,
             }
         }
@@ -1504,6 +1562,59 @@ pub struct ComputeRouteMatrixRequest {
     /// has already occurred, the request fails.
     #[prost(message, optional, tag = "5")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A list of extra computations which may be used to complete the
+    /// request. Note: These extra computations may return extra fields on the
+    /// response. These extra fields must also be specified in the field mask to be
+    /// returned in the response.
+    #[prost(
+        enumeration = "compute_route_matrix_request::ExtraComputation",
+        repeated,
+        packed = "false",
+        tag = "8"
+    )]
+    pub extra_computations: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `ComputeRouteMatrixRequest`.
+pub mod compute_route_matrix_request {
+    /// Extra computations to perform while completing the request.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExtraComputation {
+        /// Not used. Requests containing this value will fail.
+        Unspecified = 0,
+        /// Toll information for the matrix element(s).
+        Tolls = 1,
+    }
+    impl ExtraComputation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ExtraComputation::Unspecified => "EXTRA_COMPUTATION_UNSPECIFIED",
+                ExtraComputation::Tolls => "TOLLS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXTRA_COMPUTATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "TOLLS" => Some(Self::Tolls),
+                _ => None,
+            }
+        }
+    }
 }
 /// A single origin for ComputeRouteMatrixRequest
 #[allow(clippy::derive_partial_eq_without_eq)]

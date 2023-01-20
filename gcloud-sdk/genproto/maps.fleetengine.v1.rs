@@ -248,16 +248,17 @@ pub struct VehicleLocation {
     /// Whether `location` is snapped to a road.
     #[prost(message, optional, tag = "27")]
     pub is_road_snapped: ::core::option::Option<bool>,
-    /// Input only. Indicates whether the GPS sensor is enabled on the mobile device.
+    /// Input only. Indicates whether the GPS sensor is enabled on the mobile
+    /// device.
     #[prost(message, optional, tag = "12")]
     pub is_gps_sensor_enabled: ::core::option::Option<bool>,
-    /// Input only. Time (in seconds) since this location was first sent to the server.
-    /// This will be zero for the first update. If the time is unknown
-    /// (for example, when the app restarts), this value resets to zero.
+    /// Input only. Time (in seconds) since this location was first sent to the
+    /// server. This will be zero for the first update. If the time is unknown (for
+    /// example, when the app restarts), this value resets to zero.
     #[prost(message, optional, tag = "14")]
     pub time_since_update: ::core::option::Option<i32>,
-    /// Input only. Number of additional attempts to send this location to the server.
-    /// If this value is zero, then it is not stale.
+    /// Input only. Number of additional attempts to send this location to the
+    /// server. If this value is zero, then it is not stale.
     #[prost(message, optional, tag = "15")]
     pub num_stale_updates: ::core::option::Option<i32>,
     /// Raw vehicle location (unprocessed by road-snapper).
@@ -1115,8 +1116,8 @@ pub struct ReportBillableTripRequest {
     /// member.
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Two letter country code of the country where the trip takes place. Price is
-    /// defined according to country code.
+    /// Required. Two letter country code of the country where the trip takes
+    /// place. Price is defined according to country code.
     #[prost(string, tag = "3")]
     pub country_code: ::prost::alloc::string::String,
     /// The platform upon which the request was issued.
@@ -1479,7 +1480,8 @@ pub struct Vehicle {
     /// Trip types supported by this vehicle.
     #[prost(enumeration = "TripType", repeated, tag = "3")]
     pub supported_trip_types: ::prost::alloc::vec::Vec<i32>,
-    /// Output only. List of `trip_id`'s for trips currently assigned to this vehicle.
+    /// Output only. List of `trip_id`'s for trips currently assigned to this
+    /// vehicle.
     #[prost(string, repeated, tag = "4")]
     pub current_trips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Last reported location of the vehicle.
@@ -1515,9 +1517,9 @@ pub struct Vehicle {
     /// Input only. Fleet Engine uses this information to improve Journey Sharing.
     #[prost(message, optional, tag = "28")]
     pub current_route_segment_traffic: ::core::option::Option<TrafficPolylineData>,
-    /// Output only. Time when `current_route_segment` was set. It can be stored by the client
-    /// and passed in future `GetVehicle` requests to prevent returning routes that
-    /// haven't changed.
+    /// Output only. Time when `current_route_segment` was set. It can be stored by
+    /// the client and passed in future `GetVehicle` requests to prevent returning
+    /// routes that haven't changed.
     #[prost(message, optional, tag = "15")]
     pub current_route_segment_version: ::core::option::Option<::prost_types::Timestamp>,
     /// The waypoint where `current_route_segment` ends. This can be supplied by
@@ -1542,8 +1544,8 @@ pub struct Vehicle {
     /// `eta_to_first_waypoint` in the same request.
     #[prost(message, optional, tag = "19")]
     pub eta_to_first_waypoint: ::core::option::Option<::prost_types::Timestamp>,
-    /// Input only. The remaining driving time for the `current_route_segment`. The value is
-    /// unspecified if the `waypoints` field is empty or the
+    /// Input only. The remaining driving time for the `current_route_segment`. The
+    /// value is unspecified if the `waypoints` field is empty or the
     /// `Vehicle.current_route_segment` field is empty. This value should match
     /// `eta_to_first_waypoint` - `current_time` if all parties are using the same
     /// clock.
@@ -1555,9 +1557,9 @@ pub struct Vehicle {
     /// The remaining waypoints assigned to this Vehicle.
     #[prost(message, repeated, tag = "22")]
     pub waypoints: ::prost::alloc::vec::Vec<TripWaypoint>,
-    /// Output only. Last time the `waypoints` field was updated. Clients should cache this
-    /// value and pass it in `GetVehicleRequest` to ensure the `waypoints` field is
-    /// only returned if it is updated.
+    /// Output only. Last time the `waypoints` field was updated. Clients should
+    /// cache this value and pass it in `GetVehicleRequest` to ensure the
+    /// `waypoints` field is only returned if it is updated.
     #[prost(message, optional, tag = "16")]
     pub waypoints_version: ::core::option::Option<::prost_types::Timestamp>,
     /// Indicates if the driver accepts back-to-back trips. If `true`,
@@ -1568,7 +1570,8 @@ pub struct Vehicle {
     /// The vehicle's navigation status.
     #[prost(enumeration = "NavigationStatus", tag = "26")]
     pub navigation_status: i32,
-    /// Input only. Information about settings in the mobile device being used by the driver.
+    /// Input only. Information about settings in the mobile device being used by
+    /// the driver.
     #[prost(message, optional, tag = "27")]
     pub device_settings: ::core::option::Option<DeviceSettings>,
 }
@@ -1693,15 +1696,11 @@ pub struct LicensePlate {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VisualTrafficReportPolylineRendering {
-    /// Optional. Road stretches that should be rendered along the polyline. Stretches
-    /// <ul>
-    /// <li>are
-    /// guaranteed to not overlap, and</li>
-    /// <li>do not necessarily
-    /// span the full route.</li>
-    /// </ul>
+    /// Optional. Road stretches that should be rendered along the polyline.
+    /// Stretches are guaranteed to not overlap, and do not necessarily span the
+    /// full route.
     ///
-    /// <p>In the absence of a road stretch to style, the client should apply the
+    /// In the absence of a road stretch to style, the client should apply the
     /// default for the route.
     #[prost(message, repeated, tag = "1")]
     pub road_stretch: ::prost::alloc::vec::Vec<
@@ -1717,8 +1716,8 @@ pub mod visual_traffic_report_polyline_rendering {
         /// Required. The style to apply.
         #[prost(enumeration = "road_stretch::Style", tag = "1")]
         pub style: i32,
-        /// Required. The style should be applied between `[offset_meters, offset_meters +
-        /// length_meters)`.
+        /// Required. The style should be applied between `[offset_meters,
+        /// offset_meters + length_meters)`.
         #[prost(int32, tag = "2")]
         pub offset_meters: i32,
         /// Required. The length of the path where to apply the style.
@@ -2125,8 +2124,8 @@ pub struct UpdateVehicleAttributesRequest {
     /// this call is a member.
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The vehicle attributes to update. Unmentioned attributes will not
-    /// be altered or removed.
+    /// Required. The vehicle attributes to update. Unmentioned attributes are not
+    /// altered or removed.
     #[prost(message, repeated, tag = "4")]
     pub attributes: ::prost::alloc::vec::Vec<VehicleAttribute>,
 }
@@ -2134,8 +2133,8 @@ pub struct UpdateVehicleAttributesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVehicleAttributesResponse {
-    /// Required. The updated full list of vehicle attributes, including new, altered, and
-    /// untouched attributes.
+    /// Required. The updated full list of vehicle attributes, including new,
+    /// altered, and untouched attributes.
     #[prost(message, repeated, tag = "1")]
     pub attributes: ::prost::alloc::vec::Vec<VehicleAttribute>,
 }
@@ -2299,7 +2298,10 @@ pub mod search_vehicles_request {
         /// Ascending order by straight-line distance from the vehicle's last
         /// reported location to the pickup point.
         PickupPointStraightDistance = 4,
-        /// Ascending order by the configured match cost.
+        /// Ascending order by the configured match cost. Match cost is defined as a
+        /// weighted calculation between straight-line distance and ETA. Weights are
+        /// set with default values and can be modified per customer. Please contact
+        /// Google support if these weights need to be modified for your project.
         Cost = 5,
     }
     impl VehicleMatchOrder {

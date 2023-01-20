@@ -2177,6 +2177,24 @@ pub struct AliasIpRange {
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AllocationResourceStatus {
+    #[prost(message, optional, tag = "196231151")]
+    pub specific_sku_allocation: ::core::option::Option<
+        AllocationResourceStatusSpecificSkuAllocation,
+    >,
+}
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AllocationResourceStatusSpecificSkuAllocation {
+    #[prost(string, optional, tag = "111196154")]
+    pub source_instance_template_id: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+}
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk {
     /// Specifies the size of the disk in base-2 GB.
     #[prost(int64, optional, tag = "316263735")]
@@ -2270,6 +2288,9 @@ pub struct AllocationSpecificSkuReservation {
     pub instance_properties: ::core::option::Option<
         AllocationSpecificSkuAllocationReservedInstanceProperties,
     >,
+    /// Specifies the instance template to create the reservation. If you use this field, you must exclude the instanceProperties field. This field is optional, and it can be a full or partial URL. For example, the following are all valid URLs to an instance template: - <https://www.googleapis.com/compute/v1/projects/project> /global/instanceTemplates/instanceTemplate - projects/project/global/instanceTemplates/instanceTemplate - global/instanceTemplates/instanceTemplate
+    #[prost(string, optional, tag = "332423616")]
+    pub source_instance_template: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8953,7 +8974,7 @@ pub struct FirewallPolicyList {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyRule {
-    /// The Action to perform when the client connection triggers the rule. Can currently be either "allow" or "deny()" where valid values for status are 403, 404, and 502.
+    /// The Action to perform when the client connection triggers the rule. Valid actions are "allow", "deny" and "goto_next".
     #[prost(string, optional, tag = "187661878")]
     pub action: ::core::option::Option<::prost::alloc::string::String>,
     /// An optional description for this resource.
@@ -9242,7 +9263,7 @@ pub struct ForwardingRule {
     /// This field identifies the subnetwork that the load balanced IP should belong to for this Forwarding Rule, used in internal load balancing and network load balancing with IPv6. If the network specified is in auto subnet mode, this field is optional. However, a subnetwork must be specified if the network is in custom subnet mode or when creating external forwarding rule with IPv6.
     #[prost(string, optional, tag = "307827694")]
     pub subnetwork: ::core::option::Option<::prost::alloc::string::String>,
-    /// The URL of the target resource to receive the matched traffic. For regional forwarding rules, this target must be in the same region as the forwarding rule. For global forwarding rules, this target must be a global load balancing resource. The forwarded traffic must be of a type appropriate to the target object. For more information, see the "Target" column in [Port specifications](<https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>). For Private Service Connect forwarding rules that forward traffic to Google APIs, provide the name of a supported Google API bundle: - vpc-sc - APIs that support VPC Service Controls. - all-apis - All supported Google APIs.
+    /// The URL of the target resource to receive the matched traffic. For regional forwarding rules, this target must be in the same region as the forwarding rule. For global forwarding rules, this target must be a global load balancing resource. The forwarded traffic must be of a type appropriate to the target object. - For load balancers, see the "Target" column in [Port specifications](<https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>). - For Private Service Connect forwarding rules that forward traffic to Google APIs, provide the name of a supported Google API bundle: - vpc-sc - APIs that support VPC Service Controls. - all-apis - All supported Google APIs. - For Private Service Connect forwarding rules that forward traffic to managed services, the target must be a service attachment.
     #[prost(string, optional, tag = "192835985")]
     pub target: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -11596,6 +11617,7 @@ pub mod guest_os_feature {
         MultiIpSubnet = 151776719,
         SecureBoot = 376811194,
         SevCapable = 87083793,
+        SevSnpCapable = 426919,
         UefiCompatible = 195865408,
         VirtioScsiMultiqueue = 201597069,
         Windows = 456863331,
@@ -11613,6 +11635,7 @@ pub mod guest_os_feature {
                 Type::MultiIpSubnet => "MULTI_IP_SUBNET",
                 Type::SecureBoot => "SECURE_BOOT",
                 Type::SevCapable => "SEV_CAPABLE",
+                Type::SevSnpCapable => "SEV_SNP_CAPABLE",
                 Type::UefiCompatible => "UEFI_COMPATIBLE",
                 Type::VirtioScsiMultiqueue => "VIRTIO_SCSI_MULTIQUEUE",
                 Type::Windows => "WINDOWS",
@@ -11627,6 +11650,7 @@ pub mod guest_os_feature {
                 "MULTI_IP_SUBNET" => Some(Self::MultiIpSubnet),
                 "SECURE_BOOT" => Some(Self::SecureBoot),
                 "SEV_CAPABLE" => Some(Self::SevCapable),
+                "SEV_SNP_CAPABLE" => Some(Self::SevSnpCapable),
                 "UEFI_COMPATIBLE" => Some(Self::UefiCompatible),
                 "VIRTIO_SCSI_MULTIQUEUE" => Some(Self::VirtioScsiMultiqueue),
                 "WINDOWS" => Some(Self::Windows),
@@ -16472,7 +16496,7 @@ pub struct Interconnect {
     /// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Email address to contact the customer NOC for operations and maintenance notifications regarding this Interconnect. If specified, this will be used for notifications in addition to all other forms described, such as Stackdriver logs alerting and Cloud Notifications.
+    /// Email address to contact the customer NOC for operations and maintenance notifications regarding this Interconnect. If specified, this will be used for notifications in addition to all other forms described, such as Cloud Monitoring logs alerting and Cloud Notifications. This field is required for users who sign up for Cloud Interconnect using workforce identity federation.
     #[prost(string, optional, tag = "14072832")]
     pub noc_contact_email: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] The current status of this Interconnect's functionality, which can take one of the following values: - OS_ACTIVE: A valid Interconnect, which is turned up and is ready to use. Attachments may be provisioned on this Interconnect. - OS_UNPROVISIONED: An Interconnect that has not completed turnup. No attachments may be provisioned on this Interconnect. - OS_UNDER_MAINTENANCE: An Interconnect that is undergoing internal maintenance. No attachments may be provisioned or updated on this Interconnect.
@@ -22861,6 +22885,9 @@ pub struct NetworkInterface {
     /// URL of the VPC network resource for this instance. When creating an instance, if neither the network nor the subnetwork is specified, the default network global/networks/default is used. If the selected project doesn't have the default network, you must specify a network or subnet. If the network is not specified but the subnetwork is specified, the network is inferred. If you specify this property, you can specify the network as a full or partial URL. For example, the following are all valid URLs: - <https://www.googleapis.com/compute/v1/projects/project/global/networks/> network - projects/project/global/networks/network - global/networks/default
     #[prost(string, optional, tag = "232872494")]
     pub network: ::core::option::Option<::prost::alloc::string::String>,
+    /// The URL of the network attachment that this interface should connect to in the following format: projects/{project_number}/regions/{region_name}/networkAttachments/{network_attachment_name}.
+    #[prost(string, optional, tag = "224644052")]
+    pub network_attachment: ::core::option::Option<::prost::alloc::string::String>,
     /// An IPv4 internal IP address to assign to the instance for this network interface. If not specified by the user, an unused internal IP is assigned by the system.
     #[prost(string, optional, tag = "207181961")]
     pub network_i_p: ::core::option::Option<::prost::alloc::string::String>,
@@ -28465,12 +28492,14 @@ pub struct Reservation {
     /// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Resource policies to be added to this reservation. The key is defined by user, and the value is resource policy url. This is to define placement policy with reservation.
     #[prost(map = "string, string", tag = "22220385")]
     pub resource_policies: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// [Output Only] Status information for Reservation resource.
+    #[prost(message, optional, tag = "249429315")]
+    pub resource_status: ::core::option::Option<AllocationResourceStatus>,
     /// [Output Only] Reserved for future use.
     #[prost(bool, optional, tag = "480964267")]
     pub satisfies_pzs: ::core::option::Option<bool>,
