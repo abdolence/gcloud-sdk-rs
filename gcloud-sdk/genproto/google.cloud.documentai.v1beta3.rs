@@ -1343,6 +1343,9 @@ pub struct OcrConfig {
     /// in better text extraction quality in such PDF inputs.
     #[prost(bool, tag = "3")]
     pub enable_native_pdf_parsing: bool,
+    /// A list of advanced OCR options to further fine-tune OCR behavior.
+    #[prost(string, repeated, tag = "5")]
+    pub advanced_ocr_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The schema defines the output of the processed document by a processor.
 #[allow(clippy::derive_partial_eq_without_eq)]

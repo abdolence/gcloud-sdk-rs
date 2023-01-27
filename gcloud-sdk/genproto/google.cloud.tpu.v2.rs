@@ -182,8 +182,8 @@ pub struct Node {
     /// Output only. The current state for the TPU Node.
     #[prost(enumeration = "node::State", tag = "9")]
     pub state: i32,
-    /// Output only. If this field is populated, it contains a description of why the TPU Node
-    /// is unhealthy.
+    /// Output only. If this field is populated, it contains a description of why
+    /// the TPU Node is unhealthy.
     #[prost(string, tag = "10")]
     pub health_description: ::prost::alloc::string::String,
     /// Required. The runtime version running in the Node.
@@ -548,7 +548,8 @@ pub struct ServiceIdentity {
     #[prost(string, tag = "1")]
     pub email: ::prost::alloc::string::String,
 }
-/// Request for \[GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity\].
+/// Request for
+/// \[GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateServiceIdentityRequest {
@@ -556,7 +557,8 @@ pub struct GenerateServiceIdentityRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
-/// Response for \[GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity\].
+/// Response for
+/// \[GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateServiceIdentityResponse {
@@ -583,7 +585,8 @@ pub struct GetAcceleratorTypeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes\].
+/// Request for
+/// \[ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesRequest {
@@ -603,7 +606,8 @@ pub struct ListAcceleratorTypesRequest {
     #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for \[ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes\].
+/// Response for
+/// \[ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesResponse {
@@ -636,7 +640,8 @@ pub struct GetRuntimeVersionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions\].
+/// Request for
+/// \[ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuntimeVersionsRequest {
@@ -656,7 +661,8 @@ pub struct ListRuntimeVersionsRequest {
     #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for \[ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions\].
+/// Response for
+/// \[ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuntimeVersionsResponse {
@@ -793,7 +799,8 @@ pub struct GetGuestAttributesRequest {
     #[prost(string, repeated, tag = "3")]
     pub worker_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Response for \[GetGuestAttributes][google.cloud.tpu.v2.Tpu.GetGuestAttributes\].
+/// Response for
+/// \[GetGuestAttributes][google.cloud.tpu.v2.Tpu.GetGuestAttributes\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGuestAttributesResponse {

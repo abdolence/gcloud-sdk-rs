@@ -880,7 +880,7 @@ pub struct CreateQueuedResourceRequest {
     /// Required. The parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The unqualified resource name. Should follow the `^\[A-Za-z0-9_.~+%-\]+$`
+    /// The unqualified resource name. Should follow the ^\[A-Za-z0-9_.~+%-\]+$
     /// regex format.
     #[prost(string, tag = "2")]
     pub queued_resource_id: ::prost::alloc::string::String,

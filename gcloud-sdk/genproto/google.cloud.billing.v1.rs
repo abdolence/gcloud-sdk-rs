@@ -4,15 +4,16 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingAccount {
-    /// Output only. The resource name of the billing account. The resource name has the form
-    /// `billingAccounts/{billing_account_id}`. For example,
+    /// Output only. The resource name of the billing account. The resource name
+    /// has the form `billingAccounts/{billing_account_id}`. For example,
     /// `billingAccounts/012345-567890-ABCDEF` would be the resource name for
     /// billing account `012345-567890-ABCDEF`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. True if the billing account is open, and will therefore be charged for any
-    /// usage on associated projects. False if the billing account is closed, and
-    /// therefore projects associated with it will be unable to use paid services.
+    /// Output only. True if the billing account is open, and will therefore be
+    /// charged for any usage on associated projects. False if the billing account
+    /// is closed, and therefore projects associated with it will be unable to use
+    /// paid services.
     #[prost(bool, tag = "2")]
     pub open: bool,
     /// The display name given to the billing account, such as `My Billing
@@ -59,8 +60,8 @@ pub struct ProjectBillingInfo {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBillingAccountRequest {
-    /// Required. The resource name of the billing account to retrieve. For example,
-    /// `billingAccounts/012345-567890-ABCDEF`.
+    /// Required. The resource name of the billing account to retrieve. For
+    /// example, `billingAccounts/012345-567890-ABCDEF`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -117,7 +118,8 @@ pub struct UpdateBillingAccountRequest {
     /// Required. The name of the billing account resource to be updated.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The billing account resource to replace the resource on the server.
+    /// Required. The billing account resource to replace the resource on the
+    /// server.
     #[prost(message, optional, tag = "2")]
     pub account: ::core::option::Option<BillingAccount>,
     /// The update mask applied to the resource.
@@ -129,8 +131,9 @@ pub struct UpdateBillingAccountRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProjectBillingInfoRequest {
-    /// Required. The resource name of the billing account associated with the projects that
-    /// you want to list. For example, `billingAccounts/012345-567890-ABCDEF`.
+    /// Required. The resource name of the billing account associated with the
+    /// projects that you want to list. For example,
+    /// `billingAccounts/012345-567890-ABCDEF`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Requested page size. The maximum page size is 100; this is also the
@@ -170,8 +173,9 @@ pub struct GetProjectBillingInfoRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProjectBillingInfoRequest {
-    /// Required. The resource name of the project associated with the billing information
-    /// that you want to update. For example, `projects/tokyo-rain-123`.
+    /// Required. The resource name of the project associated with the billing
+    /// information that you want to update. For example,
+    /// `projects/tokyo-rain-123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The new billing information for the project. Read-only fields are ignored;
