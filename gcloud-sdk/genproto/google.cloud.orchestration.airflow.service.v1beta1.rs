@@ -344,10 +344,11 @@ pub struct EnvironmentConfig {
     /// Output only. The Kubernetes Engine cluster used to run this environment.
     #[prost(string, tag = "1")]
     pub gke_cluster: ::prost::alloc::string::String,
-    /// Output only. The Cloud Storage prefix of the DAGs for this environment. Although Cloud
-    /// Storage objects reside in a flat namespace, a hierarchical file tree
-    /// can be simulated using "/"-delimited object name prefixes. DAG objects for
-    /// this environment reside in a simulated directory with the given prefix.
+    /// Output only. The Cloud Storage prefix of the DAGs for this environment.
+    /// Although Cloud Storage objects reside in a flat namespace, a hierarchical
+    /// file tree can be simulated using "/"-delimited object name prefixes. DAG
+    /// objects for this environment reside in a simulated directory with the given
+    /// prefix.
     #[prost(string, tag = "2")]
     pub dag_gcs_prefix: ::prost::alloc::string::String,
     /// The number of nodes in the Kubernetes Engine cluster that will be
@@ -366,24 +367,26 @@ pub struct EnvironmentConfig {
     /// The configuration used for the Private IP Cloud Composer environment.
     #[prost(message, optional, tag = "7")]
     pub private_environment_config: ::core::option::Option<PrivateEnvironmentConfig>,
-    /// Optional. The network-level access control policy for the Airflow web server. If
-    /// unspecified, no network-level access restrictions will be applied.
+    /// Optional. The network-level access control policy for the Airflow web
+    /// server. If unspecified, no network-level access restrictions will be
+    /// applied.
     #[prost(message, optional, tag = "9")]
     pub web_server_network_access_control: ::core::option::Option<
         WebServerNetworkAccessControl,
     >,
-    /// Optional. The configuration settings for Cloud SQL instance used internally by Apache
-    /// Airflow software.
+    /// Optional. The configuration settings for Cloud SQL instance used internally
+    /// by Apache Airflow software.
     #[prost(message, optional, tag = "10")]
     pub database_config: ::core::option::Option<DatabaseConfig>,
-    /// Optional. The configuration settings for the Airflow web server App Engine instance.
+    /// Optional. The configuration settings for the Airflow web server App Engine
+    /// instance.
     ///
     /// This field is supported for Cloud Composer environments in versions
     /// composer-1.*.*-airflow-*.*.*.
     #[prost(message, optional, tag = "11")]
     pub web_server_config: ::core::option::Option<WebServerConfig>,
-    /// Output only. The URI of the Apache Airflow Web UI hosted within this environment (see
-    /// [Airflow web
+    /// Output only. The URI of the Apache Airflow Web UI hosted within this
+    /// environment (see [Airflow web
     /// interface](/composer/docs/how-to/accessing/airflow-web-interface)).
     #[prost(string, tag = "6")]
     pub airflow_uri: ::prost::alloc::string::String,
@@ -391,9 +394,9 @@ pub struct EnvironmentConfig {
     /// dependencies. Cannot be updated.
     #[prost(message, optional, tag = "12")]
     pub encryption_config: ::core::option::Option<EncryptionConfig>,
-    /// Optional. The maintenance window is the period when Cloud Composer components may
-    /// undergo maintenance. It is defined so that maintenance is not executed
-    /// during peak hours or critical time periods.
+    /// Optional. The maintenance window is the period when Cloud Composer
+    /// components may undergo maintenance. It is defined so that maintenance is
+    /// not executed during peak hours or critical time periods.
     ///
     /// The system will not be under maintenance for every occurrence of this
     /// window, but when maintenance is planned, it will be scheduled
@@ -407,9 +410,9 @@ pub struct EnvironmentConfig {
     /// maintenance at any time.
     #[prost(message, optional, tag = "13")]
     pub maintenance_window: ::core::option::Option<MaintenanceWindow>,
-    /// Optional. The workloads configuration settings for the GKE cluster associated with
-    /// the Cloud Composer environment. The GKE cluster runs Airflow scheduler, web
-    /// server and workers workloads.
+    /// Optional. The workloads configuration settings for the GKE cluster
+    /// associated with the Cloud Composer environment. The GKE cluster runs
+    /// Airflow scheduler, web server and workers workloads.
     ///
     /// This field is supported for Cloud Composer environments in versions
     /// composer-2.*.*-airflow-*.*.* and newer.
@@ -421,8 +424,8 @@ pub struct EnvironmentConfig {
     /// composer-2.*.*-airflow-*.*.* and newer.
     #[prost(enumeration = "environment_config::EnvironmentSize", tag = "16")]
     pub environment_size: i32,
-    /// Optional. The configuration options for GKE cluster master authorized networks.
-    /// By default master authorized networks feature is:
+    /// Optional. The configuration options for GKE cluster master authorized
+    /// networks. By default master authorized networks feature is:
     /// - in case of private environment: enabled with no external networks
     /// allowlisted.
     /// - in case of public environment: disabled.
@@ -513,7 +516,8 @@ pub mod web_server_network_access_control {
         /// `2001:db8::1/32` should be truncated to `2001:db8::/32`.
         #[prost(string, tag = "1")]
         pub value: ::prost::alloc::string::String,
-        /// Optional. User-provided description. It must contain at most 300 characters.
+        /// Optional. User-provided description. It must contain at most 300
+        /// characters.
         #[prost(string, tag = "2")]
         pub description: ::prost::alloc::string::String,
     }
@@ -790,9 +794,9 @@ pub struct NodeConfig {
     /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, repeated, tag = "6")]
     pub oauth_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The Google Cloud Platform Service Account to be used by the workloads. If a
-    /// service account is not specified, the "default" Compute Engine service
-    /// account is used. Cannot be updated.
+    /// Optional. The Google Cloud Platform Service Account to be used by the
+    /// workloads. If a service account is not specified, the "default" Compute
+    /// Engine service account is used. Cannot be updated.
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. The list of instance tags applied to all node VMs. Tags are used
@@ -807,14 +811,14 @@ pub struct NodeConfig {
     /// Optional. The IPAllocationPolicy fields for the GKE cluster.
     #[prost(message, optional, tag = "9")]
     pub ip_allocation_policy: ::core::option::Option<IpAllocationPolicy>,
-    /// Optional. The maximum number of pods per node in the Cloud Composer GKE cluster.
-    /// The value must be between 8 and 110 and it can be set only if
-    /// the environment is VPC-native.
-    /// The default value is 32. Values of this field will be propagated both to
-    /// the `default-pool` node pool of the newly created GKE cluster, and to the
-    /// default "Maximum Pods per Node" value which is used for newly created
-    /// node pools if their value is not explicitly set during node pool creation.
-    /// For more information, see [Optimizing IP address allocation]
+    /// Optional. The maximum number of pods per node in the Cloud Composer GKE
+    /// cluster. The value must be between 8 and 110 and it can be set only if the
+    /// environment is VPC-native. The default value is 32. Values of this field
+    /// will be propagated both to the `default-pool` node pool of the newly
+    /// created GKE cluster, and to the default "Maximum Pods per Node" value which
+    /// is used for newly created node pools if their value is not explicitly set
+    /// during node pool creation. For more information, see [Optimizing IP address
+    /// allocation]
     /// (<https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr>).
     /// Cannot be updated.
     ///
@@ -840,15 +844,15 @@ pub struct PrivateClusterConfig {
     /// denied.
     #[prost(bool, tag = "1")]
     pub enable_private_endpoint: bool,
-    /// Optional. The CIDR block from which IPv4 range for GKE master will be reserved. If
-    /// left blank, the default value of '172.16.0.0/23' is used.
+    /// Optional. The CIDR block from which IPv4 range for GKE master will be
+    /// reserved. If left blank, the default value of '172.16.0.0/23' is used.
     #[prost(string, tag = "2")]
     pub master_ipv4_cidr_block: ::prost::alloc::string::String,
-    /// Output only. The IP range in CIDR notation to use for the hosted master network. This
-    /// range is used for assigning internal IP addresses to the cluster
-    /// master or set of masters and to the internal load balancer virtual IP.
-    /// This range must not overlap with any other ranges in use
-    /// within the cluster's network.
+    /// Output only. The IP range in CIDR notation to use for the hosted master
+    /// network. This range is used for assigning internal IP addresses to the
+    /// cluster master or set of masters and to the internal load balancer virtual
+    /// IP. This range must not overlap with any other ranges in use within the
+    /// cluster's network.
     #[prost(string, tag = "3")]
     pub master_ipv4_reserved_range: ::prost::alloc::string::String,
 }
@@ -857,9 +861,9 @@ pub struct PrivateClusterConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkingConfig {
-    /// Optional. Indicates the user requested specifc connection type between Tenant and
-    /// Customer projects.
-    /// You cannot set networking connection type in public IP environment.
+    /// Optional. Indicates the user requested specifc connection type between
+    /// Tenant and Customer projects. You cannot set networking connection type in
+    /// public IP environment.
     #[prost(enumeration = "networking_config::ConnectionType", tag = "1")]
     pub connection_type: i32,
 }
@@ -929,16 +933,18 @@ pub struct PrivateEnvironmentConfig {
     /// Cloud Composer environment.
     #[prost(message, optional, tag = "2")]
     pub private_cluster_config: ::core::option::Option<PrivateClusterConfig>,
-    /// Optional. The CIDR block from which IP range for web server will be reserved. Needs
-    /// to be disjoint from private_cluster_config.master_ipv4_cidr_block and
+    /// Optional. The CIDR block from which IP range for web server will be
+    /// reserved. Needs to be disjoint from
+    /// private_cluster_config.master_ipv4_cidr_block and
     /// cloud_sql_ipv4_cidr_block.
     ///
     /// This field is supported for Cloud Composer environments in versions
     /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, tag = "3")]
     pub web_server_ipv4_cidr_block: ::prost::alloc::string::String,
-    /// Optional. The CIDR block from which IP range in tenant project will be reserved for
-    /// Cloud SQL. Needs to be disjoint from web_server_ipv4_cidr_block
+    /// Optional. The CIDR block from which IP range in tenant project will be
+    /// reserved for Cloud SQL. Needs to be disjoint from
+    /// web_server_ipv4_cidr_block
     #[prost(string, tag = "4")]
     pub cloud_sql_ipv4_cidr_block: ::prost::alloc::string::String,
     /// Output only. The IP range reserved for the tenant project's App Engine VMs.
@@ -947,8 +953,8 @@ pub struct PrivateEnvironmentConfig {
     /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, tag = "5")]
     pub web_server_ipv4_reserved_range: ::prost::alloc::string::String,
-    /// Optional. The CIDR block from which IP range for Cloud Composer Network in tenant
-    /// project will be reserved. Needs to be disjoint from
+    /// Optional. The CIDR block from which IP range for Cloud Composer Network in
+    /// tenant project will be reserved. Needs to be disjoint from
     /// private_cluster_config.master_ipv4_cidr_block and
     /// cloud_sql_ipv4_cidr_block.
     ///
@@ -956,14 +962,15 @@ pub struct PrivateEnvironmentConfig {
     /// composer-2.*.*-airflow-*.*.* and newer.
     #[prost(string, tag = "7")]
     pub cloud_composer_network_ipv4_cidr_block: ::prost::alloc::string::String,
-    /// Output only. The IP range reserved for the tenant project's Cloud Composer network.
+    /// Output only. The IP range reserved for the tenant project's Cloud Composer
+    /// network.
     ///
     /// This field is supported for Cloud Composer environments in versions
     /// composer-2.*.*-airflow-*.*.* and newer.
     #[prost(string, tag = "8")]
     pub cloud_composer_network_ipv4_reserved_range: ::prost::alloc::string::String,
-    /// Optional. When enabled, IPs from public (non-RFC1918) ranges can be used for
-    /// `IPAllocationPolicy.cluster_ipv4_cidr_block` and
+    /// Optional. When enabled, IPs from public (non-RFC1918) ranges can be used
+    /// for `IPAllocationPolicy.cluster_ipv4_cidr_block` and
     /// `IPAllocationPolicy.service_ipv4_cidr_block`.
     #[prost(bool, tag = "6")]
     pub enable_privately_used_public_ips: bool,
@@ -973,7 +980,8 @@ pub struct PrivateEnvironmentConfig {
     /// this subnetwork.
     #[prost(string, tag = "9")]
     pub cloud_composer_connection_subnetwork: ::prost::alloc::string::String,
-    /// Optional. Configuration for the network connections configuration in the environment.
+    /// Optional. Configuration for the network connections configuration in the
+    /// environment.
     #[prost(message, optional, tag = "10")]
     pub networking_config: ::core::option::Option<NetworkingConfig>,
 }
@@ -1011,9 +1019,9 @@ pub struct WebServerConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfig {
-    /// Optional. Customer-managed Encryption Key available through Google's Key Management
-    /// Service. Cannot be updated.
-    /// If not specified, Google-managed key will be used.
+    /// Optional. Customer-managed Encryption Key available through Google's Key
+    /// Management Service. Cannot be updated. If not specified, Google-managed key
+    /// will be used.
     #[prost(string, tag = "1")]
     pub kms_key_name: ::prost::alloc::string::String,
 }
@@ -1036,9 +1044,9 @@ pub struct MaintenanceWindow {
     /// Required. Start time of the first recurrence of the maintenance window.
     #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Maintenance window end time. It is used only to calculate the duration of
-    /// the maintenance window.
-    /// The value for end_time must be in the future, relative to `start_time`.
+    /// Required. Maintenance window end time. It is used only to calculate the
+    /// duration of the maintenance window. The value for end_time must be in the
+    /// future, relative to `start_time`.
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Maintenance window recurrence. Format is a subset of
@@ -1076,10 +1084,12 @@ pub mod workloads_config {
         /// Optional. CPU request and limit for a single Airflow scheduler replica.
         #[prost(float, tag = "1")]
         pub cpu: f32,
-        /// Optional. Memory (GB) request and limit for a single Airflow scheduler replica.
+        /// Optional. Memory (GB) request and limit for a single Airflow scheduler
+        /// replica.
         #[prost(float, tag = "2")]
         pub memory_gb: f32,
-        /// Optional. Storage (GB) request and limit for a single Airflow scheduler replica.
+        /// Optional. Storage (GB) request and limit for a single Airflow scheduler
+        /// replica.
         #[prost(float, tag = "3")]
         pub storage_gb: f32,
         /// Optional. The number of schedulers.
@@ -1107,10 +1117,12 @@ pub mod workloads_config {
         /// Optional. CPU request and limit for a single Airflow worker replica.
         #[prost(float, tag = "1")]
         pub cpu: f32,
-        /// Optional. Memory (GB) request and limit for a single Airflow worker replica.
+        /// Optional. Memory (GB) request and limit for a single Airflow worker
+        /// replica.
         #[prost(float, tag = "2")]
         pub memory_gb: f32,
-        /// Optional. Storage (GB) request and limit for a single Airflow worker replica.
+        /// Optional. Storage (GB) request and limit for a single Airflow worker
+        /// replica.
         #[prost(float, tag = "3")]
         pub storage_gb: f32,
         /// Optional. Minimum number of workers for autoscaling.
@@ -1130,7 +1142,8 @@ pub mod workloads_config {
         /// Optional. CPU request and limit for a single Airflow triggerer replica.
         #[prost(float, tag = "2")]
         pub cpu: f32,
-        /// Optional. Memory (GB) request and limit for a single Airflow triggerer replica.
+        /// Optional. Memory (GB) request and limit for a single Airflow triggerer
+        /// replica.
         #[prost(float, tag = "3")]
         pub memory_gb: f32,
     }
@@ -1150,15 +1163,17 @@ pub struct ScheduledSnapshotsConfig {
     /// Optional. Whether scheduled snapshots creation is enabled.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
-    /// Optional. The Cloud Storage location for storing automatically created snapshots.
+    /// Optional. The Cloud Storage location for storing automatically created
+    /// snapshots.
     #[prost(string, tag = "6")]
     pub snapshot_location: ::prost::alloc::string::String,
-    /// Optional. The cron expression representing the time when snapshots creation mechanism
-    /// runs. This field is subject to additional validation around frequency of
-    /// execution.
+    /// Optional. The cron expression representing the time when snapshots creation
+    /// mechanism runs. This field is subject to additional validation around
+    /// frequency of execution.
     #[prost(string, tag = "3")]
     pub snapshot_creation_schedule: ::prost::alloc::string::String,
-    /// Optional. Time zone that sets the context to interpret snapshot_creation_schedule.
+    /// Optional. Time zone that sets the context to interpret
+    /// snapshot_creation_schedule.
     #[prost(string, tag = "5")]
     pub time_zone: ::prost::alloc::string::String,
 }
@@ -1215,8 +1230,8 @@ pub struct Environment {
     /// Configuration parameters for this environment.
     #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<EnvironmentConfig>,
-    /// Output only. The UUID (Universally Unique IDentifier) associated with this environment.
-    /// This value is generated when the environment is created.
+    /// Output only. The UUID (Universally Unique IDentifier) associated with this
+    /// environment. This value is generated when the environment is created.
     #[prost(string, tag = "3")]
     pub uuid: ::prost::alloc::string::String,
     /// The current state of the environment.
@@ -1348,8 +1363,8 @@ pub struct CheckUpgradeResponse {
     /// Output only. Whether build has succeeded or failed on modules conflicts.
     #[prost(enumeration = "check_upgrade_response::ConflictResult", tag = "4")]
     pub contains_pypi_modules_conflict: i32,
-    /// Output only. Extract from a docker image build log containing information about pypi
-    /// modules conflicts.
+    /// Output only. Extract from a docker image build log containing information
+    /// about pypi modules conflicts.
     #[prost(string, tag = "3")]
     pub pypi_conflict_build_log_extract: ::prost::alloc::string::String,
     /// Composer image for which the build was happening.
@@ -1875,8 +1890,8 @@ pub struct OperationMetadata {
     /// Output only. The time the operation was submitted to the server.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the operation terminated, regardless of its success.
-    /// This field is unset if the operation is still ongoing.
+    /// Output only. The time when the operation terminated, regardless of its
+    /// success. This field is unset if the operation is still ongoing.
     #[prost(message, optional, tag = "6")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
