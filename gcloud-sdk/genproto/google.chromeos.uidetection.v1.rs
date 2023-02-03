@@ -8,6 +8,9 @@ pub struct UiDetectionRequest {
     /// Required. Required field that indicates the detection type.
     #[prost(message, optional, tag = "2")]
     pub request: ::core::option::Option<DetectionRequest>,
+    /// Indicates whether to resize the image when detecting.
+    #[prost(bool, optional, tag = "3")]
+    pub resize_image: ::core::option::Option<bool>,
 }
 /// Detection type specifies what to detect in the image.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -69,6 +72,10 @@ pub struct TextBlockDetectionRequest {
     /// Applicable only if regex_mode is False.
     #[prost(int32, optional, tag = "4")]
     pub max_edit_distance: ::core::option::Option<i32>,
+    /// Indicating whether the detection result should only contain the specified
+    /// words.
+    #[prost(bool, tag = "5")]
+    pub specified_words_only: bool,
 }
 /// Detection type for custom icon detection.
 #[allow(clippy::derive_partial_eq_without_eq)]

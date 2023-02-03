@@ -71,7 +71,7 @@ pub struct PrivateCloud {
     /// Required. Network configuration of the private cloud.
     #[prost(message, optional, tag = "9")]
     pub network_config: ::core::option::Option<NetworkConfig>,
-    /// Input only. The management cluster for this private cloud.
+    /// Required. Input only. The management cluster for this private cloud.
     /// This field is required during creation of the private cloud to provide
     /// details for the default cluster.
     ///
@@ -182,205 +182,6 @@ pub mod private_cloud {
         }
     }
 }
-/// Request message for
-/// \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListPrivateCloudsRequest {
-    /// Required. The resource name of the private cloud to be queried for
-    /// clusters. Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of private clouds to return in one page.
-    /// The service may return fewer than this value.
-    /// The maximum value is coerced to 1000.
-    /// The default value of this field is 500.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListPrivateClouds` call.
-    /// Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to `ListPrivateClouds` must
-    /// match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// A filter expression that matches resources returned in the response.
-    /// The expression must specify the field name, a comparison operator, and the
-    /// value that you want to use for filtering. The value must be a string, a
-    /// number, or a boolean. The comparison operator must be `=`, `!=`, `>`, or
-    /// `<`.
-    ///
-    /// For example, if you are filtering a list of private clouds, you can exclude
-    /// the ones named `example-pc` by specifying `name != "example-pc"`.
-    ///
-    /// You can also filter nested fields. For example, you could specify
-    /// `networkConfig.managementCidr = "192.168.0.0/24"` to include private clouds
-    /// only if they have a matching address in their network configuration.
-    ///
-    /// To filter on multiple expressions, provide each separate expression within
-    /// parentheses. For example:
-    /// ```
-    /// (name = "example-pc")
-    /// (createTime > "2021-04-12T08:15:10.40Z")
-    /// ```
-    ///
-    /// By default, each expression is an `AND` expression. However, you can
-    /// include `AND` and `OR` expressions explicitly. For example:
-    /// ```
-    /// (name = "private-cloud-1") AND
-    /// (createTime > "2021-04-12T08:15:10.40Z") OR
-    /// (name = "private-cloud-2")
-    /// ```
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Sorts list results by a certain order. By default, returned results are
-    /// ordered by `name` in ascending order. You can also sort results in
-    /// descending order based on the `name` value using `orderBy="name desc"`.
-    /// Currently, only ordering by `name` is supported.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListPrivateCloudsResponse {
-    /// A list of private clouds.
-    #[prost(message, repeated, tag = "1")]
-    pub private_clouds: ::prost::alloc::vec::Vec<PrivateCloud>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached when making an aggregated query using
-    /// wildcards.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Request message for
-/// \[VmwareEngine.GetPrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateCloud\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetPrivateCloudRequest {
-    /// Required. The resource name of the private cloud to retrieve.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.CreatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateCloud\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreatePrivateCloudRequest {
-    /// Required. The resource name of the location to create the new
-    /// private cloud in. Resource names are schemeless URIs that follow the
-    /// conventions in <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The user-provided identifier of the private cloud to be created.
-    /// This identifier must be unique among each `PrivateCloud` within the parent
-    /// and becomes the final token in the name URI.
-    /// The identifier must meet the following requirements:
-    ///
-    /// * Only contains 1-63 alphanumeric characters and hyphens
-    /// * Begins with an alphabetical character
-    /// * Ends with a non-hyphen character
-    /// * Not formatted as a UUID
-    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
-    /// (section 3.5)
-    #[prost(string, tag = "2")]
-    pub private_cloud_id: ::prost::alloc::string::String,
-    /// Required. The initial description of the new private cloud.
-    #[prost(message, optional, tag = "3")]
-    pub private_cloud: ::core::option::Option<PrivateCloud>,
-    /// Optional. The request ID must be a valid UUID with the exception that zero
-    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: ::prost::alloc::string::String,
-    /// Optional. True if you want the request to be validated and not executed;
-    /// false otherwise.
-    #[prost(bool, tag = "5")]
-    pub validate_only: bool,
-}
-/// Request message for
-/// \[VmwareEngine.UpdatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateCloud\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdatePrivateCloudRequest {
-    /// Required. Private cloud description.
-    #[prost(message, optional, tag = "1")]
-    pub private_cloud: ::core::option::Option<PrivateCloud>,
-    /// Required. Field mask is used to specify the fields to be overwritten in the
-    /// `PrivateCloud` resource by the update. The fields specified in `updateMask`
-    /// are relative to the resource, not the full request. A field will be
-    /// overwritten if it is in the mask. If the user does not provide a mask then
-    /// all fields will be overwritten.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. The request ID must be a valid UUID with the exception that zero
-    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "3")]
-    pub request_id: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeletePrivateCloudRequest {
-    /// Required. The resource name of the private cloud to delete.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. The request ID must be a valid UUID with the exception that zero
-    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "2")]
-    pub request_id: ::prost::alloc::string::String,
-    /// Optional. If set to true, cascade delete is enabled and all children of
-    /// this private cloud resource are also deleted. When this flag is set to
-    /// false, the private cloud will not be deleted if there are any children
-    /// other than the management cluster. The management cluster is always
-    /// deleted.
-    #[prost(bool, tag = "3")]
-    pub force: bool,
-    /// Optional. Time delay of the deletion specified in hours. The default value
-    /// is `3`. Specifying a non-zero value for this field changes the value of
-    /// `PrivateCloud.state` to `DELETED` and sets `expire_time` to the planned
-    /// deletion time. Deletion can be cancelled before `expire_time` elapses using
-    /// \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\].
-    /// Specifying a value of `0` for this field instead begins the deletion
-    /// process and ceases billing immediately. During the final deletion process,
-    /// the value of `PrivateCloud.state` becomes `PURGING`.
-    #[prost(int32, optional, tag = "4")]
-    pub delay_hours: ::core::option::Option<i32>,
-}
-/// Request message for
-/// \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UndeletePrivateCloudRequest {
-    /// Required. The resource name of the private cloud scheduled for deletion.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. The request ID must be a valid UUID with the exception that zero
-    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "2")]
-    pub request_id: ::prost::alloc::string::String,
-}
 /// A cluster in a private cloud.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -477,163 +278,6 @@ pub mod cluster {
         }
     }
 }
-/// Request message for
-/// \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListClustersRequest {
-    /// Required. The resource name of the private cloud to query for clusters.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of clusters to return in one page.
-    /// The service may return fewer than this value.
-    /// The maximum value is coerced to 1000.
-    /// The default value of this field is 500.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListClusters` call.
-    /// Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to `ListClusters`
-    /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    ///
-    /// To filter on multiple expressions, provide each separate expression within
-    /// parentheses. For example:
-    /// ```
-    /// (name = "example-cluster")
-    /// (nodeCount = "3")
-    /// ```
-    ///
-    /// By default, each expression is an `AND` expression. However, you can
-    /// include `AND` and `OR` expressions explicitly. For example:
-    /// ```
-    /// (name = "example-cluster-1") AND
-    /// (createTime > "2021-04-12T08:15:10.40Z") OR
-    /// (name = "example-cluster-2")
-    /// ```
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Sorts list results by a certain order. By default, returned results are
-    /// ordered by `name` in ascending order. You can also sort results in
-    /// descending order based on the `name` value using `orderBy="name desc"`.
-    /// Currently, only ordering by `name` is supported.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListClustersResponse {
-    /// A list of private cloud clusters.
-    #[prost(message, repeated, tag = "1")]
-    pub clusters: ::prost::alloc::vec::Vec<Cluster>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached when making an aggregated query using
-    /// wildcards.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Request message for
-/// \[VmwareEngine.GetCluster][google.cloud.vmwareengine.v1.VmwareEngine.GetCluster\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetClusterRequest {
-    /// Required. The cluster resource name to retrieve.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.CreateCluster][google.cloud.vmwareengine.v1.VmwareEngine.CreateCluster\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateClusterRequest {
-    /// Required. The resource name of the private cloud to create a new cluster
-    /// in. Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The user-provided identifier of the new `Cluster`.
-    /// This identifier must be unique among clusters within the parent and becomes
-    /// the final token in the name URI.
-    /// The identifier must meet the following requirements:
-    ///
-    /// * Only contains 1-63 alphanumeric characters and hyphens
-    /// * Begins with an alphabetical character
-    /// * Ends with a non-hyphen character
-    /// * Not formatted as a UUID
-    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
-    /// (section 3.5)
-    #[prost(string, tag = "2")]
-    pub cluster_id: ::prost::alloc::string::String,
-    /// Required. The initial description of the new cluster.
-    #[prost(message, optional, tag = "3")]
-    pub cluster: ::core::option::Option<Cluster>,
-    /// Optional. The request ID must be a valid UUID with the exception that zero
-    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: ::prost::alloc::string::String,
-    /// Optional. True if you want the request to be validated and not executed;
-    /// false otherwise.
-    #[prost(bool, tag = "5")]
-    pub validate_only: bool,
-}
-/// Request message for
-/// \[VmwareEngine.UpdateCluster][google.cloud.vmwareengine.v1.VmwareEngine.UpdateCluster\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateClusterRequest {
-    /// Required. Field mask is used to specify the fields to be overwritten in the
-    /// `Cluster` resource by the update. The fields specified in the `updateMask`
-    /// are relative to the resource, not the full request. A field will be
-    /// overwritten if it is in the mask. If the user does not provide a mask then
-    /// all fields will be overwritten.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. The description of the cluster.
-    #[prost(message, optional, tag = "2")]
-    pub cluster: ::core::option::Option<Cluster>,
-    /// Optional. The request ID must be a valid UUID with the exception that
-    /// zero UUID is not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "3")]
-    pub request_id: ::prost::alloc::string::String,
-    /// Optional. True if you want the request to be validated and not executed;
-    /// false otherwise.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// Request message for
-/// \[VmwareEngine.DeleteCluster][google.cloud.vmwareengine.v1.VmwareEngine.DeleteCluster\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteClusterRequest {
-    /// Required. The resource name of the cluster to delete.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. The request ID must be a valid UUID with the exception that zero
-    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "2")]
-    pub request_id: ::prost::alloc::string::String,
-}
 /// Subnet in a private cloud. Either `management` subnets (such as vMotion) that
 /// are read-only, or `userDefined`, which can also be updated.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -715,77 +359,6 @@ pub mod subnet {
         }
     }
 }
-/// Request message for
-/// \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListSubnetsRequest {
-    /// Required. The resource name of the private cloud to be queried for
-    /// subnets.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of subnets to return in one page.
-    /// The service may return fewer than this value.
-    /// The maximum value is coerced to 1000.
-    /// The default value of this field is 500.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListSubnetsRequest` call.
-    /// Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to
-    /// `ListSubnetsRequest` must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListSubnetsResponse {
-    /// A list of subnets.
-    #[prost(message, repeated, tag = "1")]
-    pub subnets: ::prost::alloc::vec::Vec<Subnet>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Represents the metadata of the long-running operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationMetadata {
-    /// Output only. The time the operation was created.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Server-defined resource path for the target of the operation.
-    #[prost(string, tag = "3")]
-    pub target: ::prost::alloc::string::String,
-    /// Output only. Name of the verb executed by the operation.
-    #[prost(string, tag = "4")]
-    pub verb: ::prost::alloc::string::String,
-    /// Output only. Human-readable status of the operation, if any.
-    #[prost(string, tag = "5")]
-    pub status_message: ::prost::alloc::string::String,
-    /// Output only. True if the user has requested cancellation
-    /// of the operation; false otherwise.
-    /// Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
-    /// `Code.CANCELLED`.
-    #[prost(bool, tag = "6")]
-    pub requested_cancellation: bool,
-    /// Output only. API version used to start the operation.
-    #[prost(string, tag = "7")]
-    pub api_version: ::prost::alloc::string::String,
-}
 /// Describes node type.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -821,89 +394,6 @@ pub struct NodeType {
     #[prost(int32, repeated, packed = "false", tag = "11")]
     pub available_custom_core_counts: ::prost::alloc::vec::Vec<i32>,
 }
-/// Request message for
-/// \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNodeTypesRequest {
-    /// Required. The resource name of the location to be queried for node types.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of node types to return in one page.
-    /// The service may return fewer than this value.
-    /// The maximum value is coerced to 1000.
-    /// The default value of this field is 500.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListNodeTypes` call.
-    /// Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to
-    /// `ListNodeTypes` must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// A filter expression that matches resources returned in the response.
-    /// The expression must specify the field name, a comparison
-    /// operator, and the value that you want to use for filtering. The value
-    /// must be a string, a number, or a boolean. The comparison operator
-    /// must be `=`, `!=`, `>`, or `<`.
-    ///
-    /// For example, if you are filtering a list of node types, you can
-    /// exclude the ones named `standard-72` by specifying
-    /// `name != "standard-72"`.
-    ///
-    /// To filter on multiple expressions, provide each separate expression within
-    /// parentheses. For example:
-    /// ```
-    /// (name = "standard-72")
-    /// (virtual_cpu_count > 2)
-    /// ```
-    ///
-    /// By default, each expression is an `AND` expression. However, you
-    /// can include `AND` and `OR` expressions explicitly.
-    /// For example:
-    /// ```
-    /// (name = "standard-96") AND
-    /// (virtual_cpu_count > 2) OR
-    /// (name = "standard-72")
-    /// ```
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNodeTypesResponse {
-    /// A list of Node Types.
-    #[prost(message, repeated, tag = "1")]
-    pub node_types: ::prost::alloc::vec::Vec<NodeType>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached when making an aggregated query using
-    /// wildcards.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Request message for
-/// \[VmwareEngine.GetNodeType][google.cloud.vmwareengine.v1.VmwareEngine.GetNodeType\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetNodeTypeRequest {
-    /// Required. The resource name of the node type to retrieve.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-proj/locations/us-central1-a/nodeTypes/standard-72`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
 /// Credentials for a private cloud.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -914,111 +404,6 @@ pub struct Credentials {
     /// Initial password.
     #[prost(string, tag = "2")]
     pub password: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.ShowNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowNsxCredentials\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ShowNsxCredentialsRequest {
-    /// Required. The resource name of the private cloud
-    /// to be queried for credentials.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub private_cloud: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.ShowVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowVcenterCredentials\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ShowVcenterCredentialsRequest {
-    /// Required. The resource name of the private cloud
-    /// to be queried for credentials.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub private_cloud: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.ResetNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetNsxCredentials\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResetNsxCredentialsRequest {
-    /// Required. The resource name of the private cloud
-    /// to reset credentials for.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub private_cloud: ::prost::alloc::string::String,
-    /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server guarantees that a
-    /// request doesn't result in creation of duplicate commitments for at least 60
-    /// minutes.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "2")]
-    pub request_id: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.ResetVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetVcenterCredentials\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResetVcenterCredentialsRequest {
-    /// Required. The resource name of the private cloud
-    /// to reset credentials for.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub private_cloud: ::prost::alloc::string::String,
-    /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server guarantees that a
-    /// request doesn't result in creation of duplicate commitments for at least 60
-    /// minutes.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "2")]
-    pub request_id: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListHcxActivationKeysResponse {
-    /// List of HCX activation keys.
-    #[prost(message, repeated, tag = "1")]
-    pub hcx_activation_keys: ::prost::alloc::vec::Vec<HcxActivationKey>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached when making an aggregated query using
-    /// wildcards.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// HCX activation key. A default key is created during
 /// private cloud provisioning, but this behavior is subject to change
@@ -1100,92 +485,6 @@ pub mod hcx_activation_key {
             }
         }
     }
-}
-/// Request message for
-/// \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListHcxActivationKeysRequest {
-    /// Required. The resource name of the private cloud
-    /// to be queried for HCX activation keys.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of HCX activation keys to return in one page.
-    /// The service may return fewer than this value.
-    /// The maximum value is coerced to 1000.
-    /// The default value of this field is 500.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListHcxActivationKeys` call.
-    /// Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to
-    /// `ListHcxActivationKeys` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Request message for \[VmwareEngine.GetHcxActivationKeys][\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetHcxActivationKeyRequest {
-    /// Required. The resource name of the HCX activation key to retrieve.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud/hcxActivationKeys/my-key`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateHcxActivationKeyRequest {
-    /// Required. The resource name of the private cloud to create the key for.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The initial description of a new HCX activation key. When
-    /// creating a new key, this field must be an empty object.
-    #[prost(message, optional, tag = "2")]
-    pub hcx_activation_key: ::core::option::Option<HcxActivationKey>,
-    /// Required. The user-provided identifier of the `HcxActivationKey` to be
-    /// created. This identifier must be unique among `HcxActivationKey` resources
-    /// within the parent and becomes the final token in the name URI.
-    /// The identifier must meet the following requirements:
-    ///
-    /// * Only contains 1-63 alphanumeric characters and hyphens
-    /// * Begins with an alphabetical character
-    /// * Ends with a non-hyphen character
-    /// * Not formatted as a UUID
-    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
-    /// (section 3.5)
-    #[prost(string, tag = "3")]
-    pub hcx_activation_key_id: ::prost::alloc::string::String,
-    /// A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server guarantees that a
-    /// request doesn't result in creation of duplicate commitments for at least 60
-    /// minutes.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request ID,
-    /// the server can check if original operation with the same request ID was
-    /// received, and if so, will ignore the second request. This prevents clients
-    /// from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: ::prost::alloc::string::String,
 }
 /// Details about a HCX Cloud Manager appliance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1499,204 +798,6 @@ pub mod network_policy {
         }
     }
 }
-/// Request message for
-/// \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNetworkPoliciesRequest {
-    /// Required. The resource name of the location (region) to query for
-    /// network policies. Resource names are schemeless URIs that follow the
-    /// conventions in <https://cloud.google.com/apis/design/resource_names.> For
-    /// example: `projects/my-project/locations/us-central1`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of network policies to return in one page.
-    /// The service may return fewer than this value.
-    /// The maximum value is coerced to 1000.
-    /// The default value of this field is 500.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListNetworkPolicies` call.
-    /// Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to
-    /// `ListNetworkPolicies` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// A filter expression that matches resources returned in the response.
-    /// The expression must specify the field name, a comparison
-    /// operator, and the value that you want to use for filtering. The value
-    /// must be a string, a number, or a boolean. The comparison operator
-    /// must be `=`, `!=`, `>`, or `<`.
-    ///
-    /// For example, if you are filtering a list of network policies, you can
-    /// exclude the ones named `example-policy` by specifying
-    /// `name != "example-policy"`.
-    ///
-    /// To filter on multiple expressions, provide each separate expression within
-    /// parentheses. For example:
-    /// ```
-    /// (name = "example-policy")
-    /// (createTime > "2021-04-12T08:15:10.40Z")
-    /// ```
-    ///
-    /// By default, each expression is an `AND` expression. However, you
-    /// can include `AND` and `OR` expressions explicitly.
-    /// For example:
-    /// ```
-    /// (name = "example-policy-1") AND
-    /// (createTime > "2021-04-12T08:15:10.40Z") OR
-    /// (name = "example-policy-2")
-    /// ```
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Sorts list results by a certain order. By default, returned results
-    /// are ordered by `name` in ascending order.
-    /// You can also sort results in descending order based on the `name` value
-    /// using `orderBy="name desc"`.
-    /// Currently, only ordering by `name` is supported.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNetworkPoliciesResponse {
-    /// A list of network policies.
-    #[prost(message, repeated, tag = "1")]
-    pub network_policies: ::prost::alloc::vec::Vec<NetworkPolicy>,
-    /// A token, which can be send as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached when making an aggregated query using
-    /// wildcards.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Request message for
-/// \[VmwareEngine.GetNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPolicy\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetNetworkPolicyRequest {
-    /// Required. The resource name of the network policy to retrieve.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1/networkPolicies/my-network-policy`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.UpdateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPolicy\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateNetworkPolicyRequest {
-    /// Required. Network policy description.
-    #[prost(message, optional, tag = "1")]
-    pub network_policy: ::core::option::Option<NetworkPolicy>,
-    /// Required. Field mask is used to specify the fields to be overwritten in the
-    /// `NetworkPolicy` resource by the update.
-    /// The fields specified in the `update_mask` are relative to the resource, not
-    /// the full request. A field will be overwritten if it is in the mask. If the
-    /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server guarantees that a
-    /// request doesn't result in creation of duplicate commitments for at least 60
-    /// minutes.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "3")]
-    pub request_id: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.CreateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPolicy\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateNetworkPolicyRequest {
-    /// Required. The resource name of the location (region)
-    /// to create the new network policy in.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    ///   `projects/my-project/locations/us-central1`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The user-provided identifier of the network policy to be created.
-    /// This identifier must be unique within parent
-    /// `projects/{my-project}/locations/{us-central1}/networkPolicies` and becomes
-    /// the final token in the name URI.
-    /// The identifier must meet the following requirements:
-    ///
-    /// * Only contains 1-63 alphanumeric characters and hyphens
-    /// * Begins with an alphabetical character
-    /// * Ends with a non-hyphen character
-    /// * Not formatted as a UUID
-    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
-    /// (section 3.5)
-    #[prost(string, tag = "2")]
-    pub network_policy_id: ::prost::alloc::string::String,
-    /// Required. The network policy configuration to use in the request.
-    #[prost(message, optional, tag = "3")]
-    pub network_policy: ::core::option::Option<NetworkPolicy>,
-    /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server guarantees that a
-    /// request doesn't result in creation of duplicate commitments for at least 60
-    /// minutes.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: ::prost::alloc::string::String,
-}
-/// Request message for
-/// \[VmwareEngine.DeleteNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPolicy\]
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteNetworkPolicyRequest {
-    /// Required. The resource name of the network policy to delete.
-    /// Resource names are schemeless URIs that follow the conventions in
-    /// <https://cloud.google.com/apis/design/resource_names.>
-    /// For example:
-    /// `projects/my-project/locations/us-central1/networkPolicies/my-network-policy`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server guarantees that a
-    /// request doesn't result in creation of duplicate commitments for at least 60
-    /// minutes.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "2")]
-    pub request_id: ::prost::alloc::string::String,
-}
 /// VMware Engine network resource that provides connectivity for VMware Engine
 /// private clouds.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1903,6 +1004,905 @@ pub mod vmware_engine_network {
             }
         }
     }
+}
+/// Request message for
+/// \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateCloudsRequest {
+    /// Required. The resource name of the private cloud to be queried for
+    /// clusters. Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of private clouds to return in one page.
+    /// The service may return fewer than this value.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListPrivateClouds` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListPrivateClouds` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that matches resources returned in the response.
+    /// The expression must specify the field name, a comparison operator, and the
+    /// value that you want to use for filtering. The value must be a string, a
+    /// number, or a boolean. The comparison operator must be `=`, `!=`, `>`, or
+    /// `<`.
+    ///
+    /// For example, if you are filtering a list of private clouds, you can exclude
+    /// the ones named `example-pc` by specifying `name != "example-pc"`.
+    ///
+    /// You can also filter nested fields. For example, you could specify
+    /// `networkConfig.managementCidr = "192.168.0.0/24"` to include private clouds
+    /// only if they have a matching address in their network configuration.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    /// ```
+    /// (name = "example-pc")
+    /// (createTime > "2021-04-12T08:15:10.40Z")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you can
+    /// include `AND` and `OR` expressions explicitly. For example:
+    /// ```
+    /// (name = "private-cloud-1") AND
+    /// (createTime > "2021-04-12T08:15:10.40Z") OR
+    /// (name = "private-cloud-2")
+    /// ```
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sorts list results by a certain order. By default, returned results are
+    /// ordered by `name` in ascending order. You can also sort results in
+    /// descending order based on the `name` value using `orderBy="name desc"`.
+    /// Currently, only ordering by `name` is supported.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateCloudsResponse {
+    /// A list of private clouds.
+    #[prost(message, repeated, tag = "1")]
+    pub private_clouds: ::prost::alloc::vec::Vec<PrivateCloud>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached when making an aggregated query using
+    /// wildcards.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VmwareEngine.GetPrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPrivateCloudRequest {
+    /// Required. The resource name of the private cloud to retrieve.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.CreatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePrivateCloudRequest {
+    /// Required. The resource name of the location to create the new
+    /// private cloud in. Resource names are schemeless URIs that follow the
+    /// conventions in <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user-provided identifier of the private cloud to be created.
+    /// This identifier must be unique among each `PrivateCloud` within the parent
+    /// and becomes the final token in the name URI.
+    /// The identifier must meet the following requirements:
+    ///
+    /// * Only contains 1-63 alphanumeric characters and hyphens
+    /// * Begins with an alphabetical character
+    /// * Ends with a non-hyphen character
+    /// * Not formatted as a UUID
+    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
+    /// (section 3.5)
+    #[prost(string, tag = "2")]
+    pub private_cloud_id: ::prost::alloc::string::String,
+    /// Required. The initial description of the new private cloud.
+    #[prost(message, optional, tag = "3")]
+    pub private_cloud: ::core::option::Option<PrivateCloud>,
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. True if you want the request to be validated and not executed;
+    /// false otherwise.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
+/// Request message for
+/// \[VmwareEngine.UpdatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePrivateCloudRequest {
+    /// Required. Private cloud description.
+    #[prost(message, optional, tag = "1")]
+    pub private_cloud: ::core::option::Option<PrivateCloud>,
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// `PrivateCloud` resource by the update. The fields specified in `updateMask`
+    /// are relative to the resource, not the full request. A field will be
+    /// overwritten if it is in the mask. If the user does not provide a mask then
+    /// all fields will be overwritten.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePrivateCloudRequest {
+    /// Required. The resource name of the private cloud to delete.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, cascade delete is enabled and all children of
+    /// this private cloud resource are also deleted. When this flag is set to
+    /// false, the private cloud will not be deleted if there are any children
+    /// other than the management cluster. The management cluster is always
+    /// deleted.
+    #[prost(bool, tag = "3")]
+    pub force: bool,
+    /// Optional. Time delay of the deletion specified in hours. The default value
+    /// is `3`. Specifying a non-zero value for this field changes the value of
+    /// `PrivateCloud.state` to `DELETED` and sets `expire_time` to the planned
+    /// deletion time. Deletion can be cancelled before `expire_time` elapses using
+    /// \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\].
+    /// Specifying a value of `0` for this field instead begins the deletion
+    /// process and ceases billing immediately. During the final deletion process,
+    /// the value of `PrivateCloud.state` becomes `PURGING`.
+    #[prost(int32, optional, tag = "4")]
+    pub delay_hours: ::core::option::Option<i32>,
+}
+/// Request message for
+/// \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeletePrivateCloudRequest {
+    /// Required. The resource name of the private cloud scheduled for deletion.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListClustersRequest {
+    /// Required. The resource name of the private cloud to query for clusters.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of clusters to return in one page.
+    /// The service may return fewer than this value.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListClusters` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListClusters`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    /// ```
+    /// (name = "example-cluster")
+    /// (nodeCount = "3")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you can
+    /// include `AND` and `OR` expressions explicitly. For example:
+    /// ```
+    /// (name = "example-cluster-1") AND
+    /// (createTime > "2021-04-12T08:15:10.40Z") OR
+    /// (name = "example-cluster-2")
+    /// ```
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sorts list results by a certain order. By default, returned results are
+    /// ordered by `name` in ascending order. You can also sort results in
+    /// descending order based on the `name` value using `orderBy="name desc"`.
+    /// Currently, only ordering by `name` is supported.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListClustersResponse {
+    /// A list of private cloud clusters.
+    #[prost(message, repeated, tag = "1")]
+    pub clusters: ::prost::alloc::vec::Vec<Cluster>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached when making an aggregated query using
+    /// wildcards.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VmwareEngine.GetCluster][google.cloud.vmwareengine.v1.VmwareEngine.GetCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetClusterRequest {
+    /// Required. The cluster resource name to retrieve.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.CreateCluster][google.cloud.vmwareengine.v1.VmwareEngine.CreateCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateClusterRequest {
+    /// Required. The resource name of the private cloud to create a new cluster
+    /// in. Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user-provided identifier of the new `Cluster`.
+    /// This identifier must be unique among clusters within the parent and becomes
+    /// the final token in the name URI.
+    /// The identifier must meet the following requirements:
+    ///
+    /// * Only contains 1-63 alphanumeric characters and hyphens
+    /// * Begins with an alphabetical character
+    /// * Ends with a non-hyphen character
+    /// * Not formatted as a UUID
+    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
+    /// (section 3.5)
+    #[prost(string, tag = "2")]
+    pub cluster_id: ::prost::alloc::string::String,
+    /// Required. The initial description of the new cluster.
+    #[prost(message, optional, tag = "3")]
+    pub cluster: ::core::option::Option<Cluster>,
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. True if you want the request to be validated and not executed;
+    /// false otherwise.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
+/// Request message for
+/// \[VmwareEngine.UpdateCluster][google.cloud.vmwareengine.v1.VmwareEngine.UpdateCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateClusterRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// `Cluster` resource by the update. The fields specified in the `updateMask`
+    /// are relative to the resource, not the full request. A field will be
+    /// overwritten if it is in the mask. If the user does not provide a mask then
+    /// all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The description of the cluster.
+    #[prost(message, optional, tag = "2")]
+    pub cluster: ::core::option::Option<Cluster>,
+    /// Optional. The request ID must be a valid UUID with the exception that
+    /// zero UUID is not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. True if you want the request to be validated and not executed;
+    /// false otherwise.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Request message for
+/// \[VmwareEngine.DeleteCluster][google.cloud.vmwareengine.v1.VmwareEngine.DeleteCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteClusterRequest {
+    /// Required. The resource name of the cluster to delete.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubnetsRequest {
+    /// Required. The resource name of the private cloud to be queried for
+    /// subnets.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of subnets to return in one page.
+    /// The service may return fewer than this value.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListSubnetsRequest` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListSubnetsRequest` must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubnetsResponse {
+    /// A list of subnets.
+    #[prost(message, repeated, tag = "1")]
+    pub subnets: ::prost::alloc::vec::Vec<Subnet>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. Name of the verb executed by the operation.
+    #[prost(string, tag = "4")]
+    pub verb: ::prost::alloc::string::String,
+    /// Output only. Human-readable status of the operation, if any.
+    #[prost(string, tag = "5")]
+    pub status_message: ::prost::alloc::string::String,
+    /// Output only. True if the user has requested cancellation
+    /// of the operation; false otherwise.
+    /// Operations that have successfully been cancelled
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
+    #[prost(bool, tag = "6")]
+    pub requested_cancellation: bool,
+    /// Output only. API version used to start the operation.
+    #[prost(string, tag = "7")]
+    pub api_version: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNodeTypesRequest {
+    /// Required. The resource name of the location to be queried for node types.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of node types to return in one page.
+    /// The service may return fewer than this value.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListNodeTypes` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListNodeTypes` must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that matches resources returned in the response.
+    /// The expression must specify the field name, a comparison
+    /// operator, and the value that you want to use for filtering. The value
+    /// must be a string, a number, or a boolean. The comparison operator
+    /// must be `=`, `!=`, `>`, or `<`.
+    ///
+    /// For example, if you are filtering a list of node types, you can
+    /// exclude the ones named `standard-72` by specifying
+    /// `name != "standard-72"`.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    /// ```
+    /// (name = "standard-72")
+    /// (virtual_cpu_count > 2)
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you
+    /// can include `AND` and `OR` expressions explicitly.
+    /// For example:
+    /// ```
+    /// (name = "standard-96") AND
+    /// (virtual_cpu_count > 2) OR
+    /// (name = "standard-72")
+    /// ```
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNodeTypesResponse {
+    /// A list of Node Types.
+    #[prost(message, repeated, tag = "1")]
+    pub node_types: ::prost::alloc::vec::Vec<NodeType>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached when making an aggregated query using
+    /// wildcards.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VmwareEngine.GetNodeType][google.cloud.vmwareengine.v1.VmwareEngine.GetNodeType\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNodeTypeRequest {
+    /// Required. The resource name of the node type to retrieve.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-proj/locations/us-central1-a/nodeTypes/standard-72`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ShowNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowNsxCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShowNsxCredentialsRequest {
+    /// Required. The resource name of the private cloud
+    /// to be queried for credentials.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub private_cloud: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ShowVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowVcenterCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShowVcenterCredentialsRequest {
+    /// Required. The resource name of the private cloud
+    /// to be queried for credentials.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub private_cloud: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ResetNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetNsxCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResetNsxCredentialsRequest {
+    /// Required. The resource name of the private cloud
+    /// to reset credentials for.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub private_cloud: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ResetVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetVcenterCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResetVcenterCredentialsRequest {
+    /// Required. The resource name of the private cloud
+    /// to reset credentials for.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub private_cloud: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHcxActivationKeysResponse {
+    /// List of HCX activation keys.
+    #[prost(message, repeated, tag = "1")]
+    pub hcx_activation_keys: ::prost::alloc::vec::Vec<HcxActivationKey>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached when making an aggregated query using
+    /// wildcards.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHcxActivationKeysRequest {
+    /// Required. The resource name of the private cloud
+    /// to be queried for HCX activation keys.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of HCX activation keys to return in one page.
+    /// The service may return fewer than this value.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListHcxActivationKeys` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListHcxActivationKeys` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Request message for \[VmwareEngine.GetHcxActivationKeys][\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetHcxActivationKeyRequest {
+    /// Required. The resource name of the HCX activation key to retrieve.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud/hcxActivationKeys/my-key`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateHcxActivationKeyRequest {
+    /// Required. The resource name of the private cloud to create the key for.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/privateClouds/my-cloud`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The initial description of a new HCX activation key. When
+    /// creating a new key, this field must be an empty object.
+    #[prost(message, optional, tag = "2")]
+    pub hcx_activation_key: ::core::option::Option<HcxActivationKey>,
+    /// Required. The user-provided identifier of the `HcxActivationKey` to be
+    /// created. This identifier must be unique among `HcxActivationKey` resources
+    /// within the parent and becomes the final token in the name URI.
+    /// The identifier must meet the following requirements:
+    ///
+    /// * Only contains 1-63 alphanumeric characters and hyphens
+    /// * Begins with an alphabetical character
+    /// * Ends with a non-hyphen character
+    /// * Not formatted as a UUID
+    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
+    /// (section 3.5)
+    #[prost(string, tag = "3")]
+    pub hcx_activation_key_id: ::prost::alloc::string::String,
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNetworkPoliciesRequest {
+    /// Required. The resource name of the location (region) to query for
+    /// network policies. Resource names are schemeless URIs that follow the
+    /// conventions in <https://cloud.google.com/apis/design/resource_names.> For
+    /// example: `projects/my-project/locations/us-central1`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of network policies to return in one page.
+    /// The service may return fewer than this value.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListNetworkPolicies` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListNetworkPolicies` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that matches resources returned in the response.
+    /// The expression must specify the field name, a comparison
+    /// operator, and the value that you want to use for filtering. The value
+    /// must be a string, a number, or a boolean. The comparison operator
+    /// must be `=`, `!=`, `>`, or `<`.
+    ///
+    /// For example, if you are filtering a list of network policies, you can
+    /// exclude the ones named `example-policy` by specifying
+    /// `name != "example-policy"`.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    /// ```
+    /// (name = "example-policy")
+    /// (createTime > "2021-04-12T08:15:10.40Z")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you
+    /// can include `AND` and `OR` expressions explicitly.
+    /// For example:
+    /// ```
+    /// (name = "example-policy-1") AND
+    /// (createTime > "2021-04-12T08:15:10.40Z") OR
+    /// (name = "example-policy-2")
+    /// ```
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sorts list results by a certain order. By default, returned results
+    /// are ordered by `name` in ascending order.
+    /// You can also sort results in descending order based on the `name` value
+    /// using `orderBy="name desc"`.
+    /// Currently, only ordering by `name` is supported.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNetworkPoliciesResponse {
+    /// A list of network policies.
+    #[prost(message, repeated, tag = "1")]
+    pub network_policies: ::prost::alloc::vec::Vec<NetworkPolicy>,
+    /// A token, which can be send as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached when making an aggregated query using
+    /// wildcards.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VmwareEngine.GetNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNetworkPolicyRequest {
+    /// Required. The resource name of the network policy to retrieve.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/networkPolicies/my-network-policy`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.UpdateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateNetworkPolicyRequest {
+    /// Required. Network policy description.
+    #[prost(message, optional, tag = "1")]
+    pub network_policy: ::core::option::Option<NetworkPolicy>,
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// `NetworkPolicy` resource by the update.
+    /// The fields specified in the `update_mask` are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.CreateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNetworkPolicyRequest {
+    /// Required. The resource name of the location (region)
+    /// to create the new network policy in.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    ///   `projects/my-project/locations/us-central1`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user-provided identifier of the network policy to be created.
+    /// This identifier must be unique within parent
+    /// `projects/{my-project}/locations/{us-central1}/networkPolicies` and becomes
+    /// the final token in the name URI.
+    /// The identifier must meet the following requirements:
+    ///
+    /// * Only contains 1-63 alphanumeric characters and hyphens
+    /// * Begins with an alphabetical character
+    /// * Ends with a non-hyphen character
+    /// * Not formatted as a UUID
+    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
+    /// (section 3.5)
+    #[prost(string, tag = "2")]
+    pub network_policy_id: ::prost::alloc::string::String,
+    /// Required. The network policy configuration to use in the request.
+    #[prost(message, optional, tag = "3")]
+    pub network_policy: ::core::option::Option<NetworkPolicy>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.DeleteNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteNetworkPolicyRequest {
+    /// Required. The resource name of the network policy to delete.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/networkPolicies/my-network-policy`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// \[VmwareEngine.CreateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.CreateVmwareEngineNetwork\]

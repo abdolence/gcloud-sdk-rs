@@ -2506,8 +2506,8 @@ pub mod data_quality_rule {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataScanRequest {
     /// Required. The resource name of the parent location:
-    /// projects/{project}/locations/{location_id}
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}`
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2515,6 +2515,7 @@ pub struct CreateDataScanRequest {
     #[prost(message, optional, tag = "2")]
     pub data_scan: ::core::option::Option<DataScan>,
     /// Required. DataScan identifier.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must end with a number or a letter.
@@ -2527,7 +2528,8 @@ pub struct CreateDataScanRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataScanRequest {
-    /// Required. Update description.
+    /// Required. DataScan resource to be updated.
+    ///
     /// Only fields specified in `update_mask` are updated.
     #[prost(message, optional, tag = "1")]
     pub data_scan: ::core::option::Option<DataScan>,
@@ -2540,8 +2542,8 @@ pub struct UpdateDataScanRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataScanRequest {
     /// Required. The resource name of the dataScan:
-    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2551,19 +2553,18 @@ pub struct DeleteDataScanRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataScanRequest {
     /// Required. The resource name of the dataScan:
-    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Used to select the subset of DataScan information to return.
-    /// Defaults to `BASIC`.
+    /// Optional. Select the DataScan view to return. Defaults to `BASIC`.
     #[prost(enumeration = "get_data_scan_request::DataScanView", tag = "2")]
     pub view: i32,
 }
 /// Nested message and enum types in `GetDataScanRequest`.
 pub mod get_data_scan_request {
-    /// DataScan views for getting a partial dataScan.
+    /// DataScan view options.
     #[derive(
         Clone,
         Copy,
@@ -2579,7 +2580,7 @@ pub mod get_data_scan_request {
     pub enum DataScanView {
         /// The API will default to the `BASIC` view.
         Unspecified = 0,
-        /// Basic view that does not include spec and result.
+        /// Basic view that does not include *spec* and *result*.
         Basic = 1,
         /// Include everything.
         Full = 10,
@@ -2611,8 +2612,9 @@ pub mod get_data_scan_request {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataScansRequest {
-    /// Required. projects/{project}/locations/{location_id}
-    /// where `{project}` refers to a project_id or project_number and
+    /// Required. The resource name of the parent location:
+    /// `projects/{project}/locations/{location_id}`
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2630,7 +2632,7 @@ pub struct ListDataScansRequest {
     /// Optional. Filter request.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Order by fields (name or create_time) for the result.
+    /// Optional. Order by fields (`name` or `create_time`) for the result.
     /// If not specified, the ordering is undefined.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
@@ -2639,7 +2641,7 @@ pub struct ListDataScansRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataScansResponse {
-    /// DataScans (metadata only) under the given parent location.
+    /// DataScans (`BASIC` view only) under the given parent location.
     #[prost(message, repeated, tag = "1")]
     pub data_scans: ::prost::alloc::vec::Vec<DataScan>,
     /// Token to retrieve the next page of results, or empty if there are no more
@@ -2655,10 +2657,11 @@ pub struct ListDataScansResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunDataScanRequest {
     /// Required. The resource name of the DataScan:
-    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}.
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`.
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
-    /// Only on-demand DataScans are allowed.
+    ///
+    /// Only **OnDemand** data scans are allowed.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2666,7 +2669,7 @@ pub struct RunDataScanRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunDataScanResponse {
-    /// DataScanJob created by RunDataScan API.
+    /// DataScanJob created by RunDataScan request.
     #[prost(message, optional, tag = "1")]
     pub job: ::core::option::Option<DataScanJob>,
 }
@@ -2675,19 +2678,18 @@ pub struct RunDataScanResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataScanJobRequest {
     /// Required. The resource name of the DataScanJob:
-    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}`
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Used to select the subset of DataScan information to return.
-    /// Defaults to `BASIC`.
+    /// Optional. Select the DataScanJob view to return. Defaults to `BASIC`.
     #[prost(enumeration = "get_data_scan_job_request::DataScanJobView", tag = "2")]
     pub view: i32,
 }
 /// Nested message and enum types in `GetDataScanJobRequest`.
 pub mod get_data_scan_job_request {
-    /// DataScanJob views for getting a partial dataScanJob.
+    /// DataScanJob view options.
     #[derive(
         Clone,
         Copy,
@@ -2703,7 +2705,7 @@ pub mod get_data_scan_job_request {
     pub enum DataScanJobView {
         /// The API will default to the `BASIC` view.
         Unspecified = 0,
-        /// Basic view that does not include spec and result.
+        /// Basic view that does not include *spec* and *result*.
         Basic = 1,
         /// Include everything.
         Full = 10,
@@ -2736,8 +2738,8 @@ pub mod get_data_scan_job_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataScanJobsRequest {
     /// Required. The resource name of the parent environment:
-    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2758,7 +2760,7 @@ pub struct ListDataScanJobsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataScanJobsResponse {
-    /// DataScanJobs (metadata only) under a given dataScan.
+    /// DataScanJobs (`BASIC` view only) under a given dataScan.
     #[prost(message, repeated, tag = "1")]
     pub data_scan_jobs: ::prost::alloc::vec::Vec<DataScanJob>,
     /// Token to retrieve the next page of results, or empty if there are no more
@@ -2780,8 +2782,8 @@ pub struct ListDataScanJobsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataScan {
     /// Output only. The relative resource name of the scan, of the form:
-    /// projects/{project}/locations/{location_id}/dataScans/{datascan_id}.
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}/dataScans/{datascan_id}`,
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2790,10 +2792,12 @@ pub struct DataScan {
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Optional. Description of the scan.
+    ///
     /// * Must be between 1-1024 characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Optional. User friendly display name.
+    ///
     /// * Must be between 1-256 characters.
     #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
@@ -2816,7 +2820,8 @@ pub struct DataScan {
     #[prost(message, optional, tag = "9")]
     pub data: ::core::option::Option<DataSource>,
     /// Optional. DataScan execution settings.
-    /// If not specified, the fields under it will use their default values.
+    ///
+    /// If not specified, the fields in it will use their default values.
     #[prost(message, optional, tag = "10")]
     pub execution_spec: ::core::option::Option<data_scan::ExecutionSpec>,
     /// Output only. Status of the data scan execution.
@@ -2841,26 +2846,33 @@ pub mod data_scan {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExecutionSpec {
         /// Optional. Spec related to how often and when a scan should be triggered.
-        /// If not specified, the default is OnDemand, which means the scan will not
-        /// run until the user calls RunDataScan API.
+        ///
+        /// If not specified, the default is `OnDemand`, which means the scan will
+        /// not run until the user calls `RunDataScan` API.
         #[prost(message, optional, tag = "1")]
         pub trigger: ::core::option::Option<super::Trigger>,
-        /// If not specified, run a data scan on all data in the table.
-        /// The incremental is immutable, which means once the field is set,
-        /// it cannot be unset, and vice versa.
+        /// Spec related to incremental scan of the data
+        ///
+        /// When an option is selected for incremental scan, it cannot be unset or
+        /// changed. If not specified, a data scan will run for all data in the
+        /// table.
         #[prost(oneof = "execution_spec::Incremental", tags = "100")]
         pub incremental: ::core::option::Option<execution_spec::Incremental>,
     }
     /// Nested message and enum types in `ExecutionSpec`.
     pub mod execution_spec {
-        /// If not specified, run a data scan on all data in the table.
-        /// The incremental is immutable, which means once the field is set,
-        /// it cannot be unset, and vice versa.
+        /// Spec related to incremental scan of the data
+        ///
+        /// When an option is selected for incremental scan, it cannot be unset or
+        /// changed. If not specified, a data scan will run for all data in the
+        /// table.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Incremental {
-            /// Immutable. The unnested field (Date or Timestamp) that contains values
-            /// that monotonically increase over time.
+            /// Immutable. The unnested field (of type *Date* or *Timestamp*) that
+            /// contains values which monotonically increase over time.
+            ///
+            /// If not specified, a data scan will run for all data in the table.
             #[prost(string, tag = "100")]
             Field(::prost::alloc::string::String),
         }
@@ -2901,13 +2913,13 @@ pub mod data_scan {
         DataProfileResult(super::DataProfileResult),
     }
 }
-/// A DataScanJob represents an instance of a data scan.
+/// A DataScanJob represents an instance of DataScan execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataScanJob {
     /// Output only. The relative resource name of the DataScanJob, of the form:
-    /// projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}.
-    /// where `{project}` refers to a project_id or project_number and
+    /// `projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}`,
+    /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -3024,11 +3036,11 @@ pub mod data_scan_job {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DataScanType {
-    /// The DataScan Type is unspecified.
+    /// The DataScan type is unspecified.
     Unspecified = 0,
-    /// Data Quality Scan.
+    /// Data Quality scan.
     DataQuality = 1,
-    /// Data Profile Scan.
+    /// Data Profile scan.
     DataProfile = 2,
 }
 impl DataScanType {
@@ -3058,6 +3070,9 @@ pub mod data_scan_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    /// DataScanService manages DataScan resources which can be configured to run
+    /// various types of data scanning workload and generate enriched metadata (e.g.
+    /// Data Profile, Data Quality) for the data source.
     #[derive(Debug, Clone)]
     pub struct DataScanServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -3122,7 +3137,7 @@ pub mod data_scan_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Creates a dataScan resource.
+        /// Creates a DataScan resource.
         pub async fn create_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDataScanRequest>,
@@ -3145,7 +3160,7 @@ pub mod data_scan_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Update the dataScan resource.
+        /// Updates a DataScan resource.
         pub async fn update_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDataScanRequest>,
@@ -3168,7 +3183,7 @@ pub mod data_scan_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Delete the dataScan resource.
+        /// Deletes a DataScan resource.
         pub async fn delete_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDataScanRequest>,
@@ -3191,7 +3206,7 @@ pub mod data_scan_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Get dataScan resource.
+        /// Gets a DataScan resource.
         pub async fn get_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataScanRequest>,
@@ -3211,7 +3226,7 @@ pub mod data_scan_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Lists dataScans.
+        /// Lists DataScans.
         pub async fn list_data_scans(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataScansRequest>,
@@ -3231,7 +3246,7 @@ pub mod data_scan_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Run an on demand execution of a DataScan.
+        /// Runs an on-demand execution of a DataScan
         pub async fn run_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::RunDataScanRequest>,
@@ -3251,7 +3266,7 @@ pub mod data_scan_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Get DataScanJob resource.
+        /// Gets a DataScanJob resource.
         pub async fn get_data_scan_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataScanJobRequest>,
@@ -3271,7 +3286,7 @@ pub mod data_scan_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Lists DataScanJobs under the given dataScan.
+        /// Lists DataScanJobs under the given DataScan.
         pub async fn list_data_scan_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataScanJobsRequest>,
