@@ -239,7 +239,7 @@ pub struct AttachedCluster {
     /// `projects/<project-number>/locations/<region>/attachedClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A human readable description of this cluster.
@@ -415,9 +415,9 @@ pub struct AttachedClusterUser {
 /// OIDC discovery information of the target cluster.
 ///
 /// Kubernetes Service Account (KSA) tokens are JWT tokens signed by the cluster
-/// API server. This fields indicates how GCP services
+/// API server. This fields indicates how Google Cloud Platform services
 /// validate KSA tokens in order to allow system workloads (such as GKE Connect
-/// and telemetry agents) to authenticate back to GCP.
+/// and telemetry agents) to authenticate back to Google Cloud Platform.
 ///
 /// Both clusters with public and private issuer URLs are supported.
 /// Clusters with public issuers only need to specify the `issuer_url` field
@@ -482,7 +482,7 @@ pub struct GenerateAttachedClusterInstallManifestRequest {
     /// for more details on Google Cloud resource names.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. A client provided ID the resource. Must be unique within the
+    /// Required. A client provided ID of the resource. Must be unique within the
     /// parent resource.
     ///
     /// The provided ID will be part of the
@@ -495,7 +495,7 @@ pub struct GenerateAttachedClusterInstallManifestRequest {
     /// When generating an install manifest for importing an existing Membership
     /// resource, the attached_cluster_id field must be the Membership id.
     ///
-    /// Membership names are formatted as `resource name formatted as
+    /// Membership names are formatted as
     /// `projects/<project-id>/locations/<region>/memberships/<membership-id>`.
     #[prost(string, tag = "2")]
     pub attached_cluster_id: ::prost::alloc::string::String,
@@ -621,7 +621,7 @@ pub struct GetAttachedClusterRequest {
     /// `projects/<project-id>/locations/<region>/attachedClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -635,7 +635,7 @@ pub struct ListAttachedClustersRequest {
     /// Location names are formatted as `projects/<project-id>/locations/<region>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -658,7 +658,7 @@ pub struct ListAttachedClustersRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttachedClustersResponse {
     /// A list of \[AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster\]
-    /// resources in the specified GCP project and region region.
+    /// resources in the specified Google Cloud Platform project and region region.
     #[prost(message, repeated, tag = "1")]
     pub attached_clusters: ::prost::alloc::vec::Vec<AttachedCluster>,
     /// Token to retrieve the next page of results, or empty if there are no more
@@ -677,7 +677,7 @@ pub struct DeleteAttachedClusterRequest {
     /// `projects/<project-id>/locations/<region>/attachedClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If set, only validate the request, but do not actually delete the resource.
@@ -799,7 +799,7 @@ pub mod attached_clusters_client {
         }
         /// Creates a new
         /// [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster] resource
-        /// on a given GCP project and region.
+        /// on a given Google Cloud Platform project and region.
         ///
         /// If successful, the response contains a newly created
         /// [Operation][google.longrunning.Operation] resource that can be
@@ -1013,7 +1013,7 @@ pub struct AwsCluster {
     /// `projects/<project-number>/locations/<region>/awsClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A human readable description of this cluster.
@@ -1854,7 +1854,7 @@ pub struct GetAwsClusterRequest {
     /// `projects/<project-id>/locations/<region>/awsClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1868,7 +1868,7 @@ pub struct ListAwsClustersRequest {
     /// Location names are formatted as `projects/<project-id>/locations/<region>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -1891,7 +1891,7 @@ pub struct ListAwsClustersRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAwsClustersResponse {
     /// A list of \[AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster\] resources
-    /// in the specified GCP project and region region.
+    /// in the specified Google Cloud Platform project and region region.
     #[prost(message, repeated, tag = "1")]
     pub aws_clusters: ::prost::alloc::vec::Vec<AwsCluster>,
     /// Token to retrieve the next page of results, or empty if there are no more
@@ -1910,7 +1910,7 @@ pub struct DeleteAwsClusterRequest {
     /// `projects/<project-id>/locations/<region>/awsClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If set, only validate the request, but do not actually delete the resource.
@@ -2217,7 +2217,7 @@ pub mod aws_clusters_client {
             self
         }
         /// Creates a new [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
-        /// resource on a given GCP project and region.
+        /// resource on a given Google Cloud Platform project and region.
         ///
         /// If successful, the response contains a newly created
         /// [Operation][google.longrunning.Operation] resource that can be
@@ -2519,7 +2519,7 @@ pub struct AzureCluster {
     /// `projects/<project-number>/locations/<region>/azureClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A human readable description of this cluster.
@@ -2539,13 +2539,13 @@ pub struct AzureCluster {
     /// `/subscriptions/<subscription-id>/resourceGroups/<resource-group-name>`
     #[prost(string, tag = "17")]
     pub resource_group_id: ::prost::alloc::string::String,
-    /// Required. Name of the
+    /// Optional. Name of the
     /// \[AzureClient][google.cloud.gkemulticloud.v1.AzureClient\] that contains
     /// authentication configuration for how the Anthos Multi-Cloud API connects to
     /// Azure APIs.
     ///
-    /// The `AzureClient` resource must reside on the same GCP project and region
-    /// as the `AzureCluster`.
+    /// The `AzureClient` resource must reside on the same Google Cloud Platform
+    /// project and region as the `AzureCluster`.
     ///
     /// `AzureClient` names are formatted as
     /// `projects/<project-number>/locations/<region>/azureClients/<client-id>`.
@@ -2563,6 +2563,11 @@ pub struct AzureCluster {
     /// Required. Configuration related to the cluster RBAC settings.
     #[prost(message, optional, tag = "6")]
     pub authorization: ::core::option::Option<AzureAuthorization>,
+    /// Optional. Authentication configuration for management of Azure resources.
+    #[prost(message, optional, tag = "22")]
+    pub azure_services_authentication: ::core::option::Option<
+        AzureServicesAuthentication,
+    >,
     /// Output only. The current state of the cluster.
     #[prost(enumeration = "azure_cluster::State", tag = "7")]
     pub state: i32,
@@ -2932,6 +2937,9 @@ pub struct AzureClient {
     /// Required. The Azure Active Directory Application ID.
     #[prost(string, tag = "3")]
     pub application_id: ::prost::alloc::string::String,
+    /// Output only. If set, there are currently pending changes to the client.
+    #[prost(bool, tag = "9")]
+    pub reconciling: bool,
     /// Optional. Annotations on the resource.
     ///
     /// This field has the same restrictions as Kubernetes annotations.
@@ -2955,6 +2963,9 @@ pub struct AzureClient {
     /// Output only. The time at which this resource was created.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which this client was last updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Configuration related to the cluster RBAC settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2968,6 +2979,17 @@ pub struct AzureAuthorization {
     /// <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles>
     #[prost(message, repeated, tag = "1")]
     pub admin_users: ::prost::alloc::vec::Vec<AzureClusterUser>,
+}
+/// Authentication configuration for the management of Azure resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureServicesAuthentication {
+    /// Required. The Azure Active Directory Tenant ID.
+    #[prost(string, tag = "1")]
+    pub tenant_id: ::prost::alloc::string::String,
+    /// Required. The Azure Active Directory Application ID.
+    #[prost(string, tag = "2")]
+    pub application_id: ::prost::alloc::string::String,
 }
 /// Identities of a user-type subject for Azure clusters.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3204,7 +3226,7 @@ pub struct AzureServerConfig {
     /// `projects/<project-number>/locations/<region>/azureServerConfig`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// List of valid Kubernetes versions.
@@ -3318,6 +3340,9 @@ pub struct UpdateAzureClusterRequest {
     ///   *   `annotations`.
     ///   *   `authorization.admin_users`.
     ///   *   `control_plane.root_volume.size_gib`.
+    ///   *   `azure_services_authentication`.
+    ///   *   `azure_services_authentication.tenant_id`.
+    ///   *   `azure_services_authentication.application_id`.
     ///   *   `control_plane.proxy_config`.
     ///   *   `control_plane.proxy_config.resource_group_id`.
     ///   *   `control_plane.proxy_config.secret_id`.
@@ -3339,7 +3364,7 @@ pub struct GetAzureClusterRequest {
     /// `projects/<project-id>/locations/<region>/azureClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -3353,7 +3378,7 @@ pub struct ListAzureClustersRequest {
     /// Location names are formatted as `projects/<project-id>/locations/<region>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -3376,7 +3401,7 @@ pub struct ListAzureClustersRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAzureClustersResponse {
     /// A list of \[AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster\]
-    /// resources in the specified GCP project and region region.
+    /// resources in the specified Google Cloud Platform project and region region.
     #[prost(message, repeated, tag = "1")]
     pub azure_clusters: ::prost::alloc::vec::Vec<AzureCluster>,
     /// Token to retrieve the next page of results, or empty if there are no more
@@ -3395,7 +3420,7 @@ pub struct DeleteAzureClusterRequest {
     /// `projects/<project-id>/locations/<region>/azureClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If set to true, and the
@@ -3646,7 +3671,7 @@ pub struct ListAzureClientsRequest {
     /// Location names are formatted as `projects/<project-id>/locations/<region>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
-    /// for more details on GCP resource names.
+    /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -3908,7 +3933,7 @@ pub mod azure_clusters_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         /// Creates a new [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
-        /// resource on a given GCP project and region.
+        /// resource on a given Google Cloud Platform project and region.
         ///
         /// If successful, the response contains a newly created
         /// [Operation][google.longrunning.Operation] resource that can be

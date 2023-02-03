@@ -258,7 +258,9 @@ pub struct NodeConfig {
         ::prost::alloc::string::String,
     >,
     /// The image type to use for this node. Note that for a given image type,
-    /// the latest version of it will be used.
+    /// the latest version of it will be used. Please see
+    /// <https://cloud.google.com/kubernetes-engine/docs/concepts/node-images> for
+    /// available image types.
     #[prost(string, tag = "5")]
     pub image_type: ::prost::alloc::string::String,
     /// The map of Kubernetes labels (key/value pairs) to be applied to each node.
@@ -2906,7 +2908,9 @@ pub struct UpdateNodePoolRequest {
     /// - "-": picks the Kubernetes master version
     #[prost(string, tag = "5")]
     pub node_version: ::prost::alloc::string::String,
-    /// Required. The desired image type for the node pool.
+    /// Required. The desired image type for the node pool. Please see
+    /// <https://cloud.google.com/kubernetes-engine/docs/concepts/node-images> for
+    /// available image types.
     #[prost(string, tag = "6")]
     pub image_type: ::prost::alloc::string::String,
     /// The desired list of Google Compute Engine
@@ -3793,7 +3797,9 @@ pub struct NodePool {
     /// [Output only] Server-defined URL for the resource.
     #[prost(string, tag = "100")]
     pub self_link: ::prost::alloc::string::String,
-    /// The version of the Kubernetes of this node.
+    /// The version of Kubernetes running on this NodePool's nodes. If unspecified,
+    /// it defaults as described
+    /// \[here\](<https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version>).
     #[prost(string, tag = "101")]
     pub version: ::prost::alloc::string::String,
     /// [Output only] The resource URLs of the [managed instance
@@ -4581,8 +4587,7 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// information, read [how to specify min CPU
     /// platform](<https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>).
     /// This field is deprecated, min_cpu_platform should be specified using
-    /// <https://cloud.google.com/requested-min-cpu-platform> label selector on the
-    /// pod.
+    /// `cloud.google.com/requested-min-cpu-platform` label selector on the pod.
     /// To unset the min cpu platform field pass "automatic"
     /// as field value.
     #[deprecated]
@@ -4612,7 +4617,9 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// <https://cloud.google.com/compute/docs/disks/customer-managed-encryption>
     #[prost(string, tag = "9")]
     pub boot_disk_kms_key: ::prost::alloc::string::String,
-    /// The image type to use for NAP created node.
+    /// The image type to use for NAP created node. Please see
+    /// <https://cloud.google.com/kubernetes-engine/docs/concepts/node-images> for
+    /// available image types.
     #[prost(string, tag = "10")]
     pub image_type: ::prost::alloc::string::String,
 }
@@ -6580,7 +6587,8 @@ impl UpgradeResourceType {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum NodePoolUpdateStrategy {
-    /// Default value.
+    /// Default value if unset. GKE internally defaults the update strategy to
+    /// SURGE for unspecified strategies.
     Unspecified = 0,
     /// blue-green upgrade.
     BlueGreen = 2,

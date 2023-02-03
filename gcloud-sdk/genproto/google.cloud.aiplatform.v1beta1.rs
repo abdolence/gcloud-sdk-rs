@@ -3137,6 +3137,10 @@ pub struct Model {
     /// custom training pipeline, BigQuery ML, or existing Vertex AI Model.
     #[prost(message, optional, tag = "38")]
     pub model_source_info: ::core::option::Option<ModelSourceInfo>,
+    /// Output only. If this Model is a copy of another Model, this contains info
+    /// about the original.
+    #[prost(message, optional, tag = "34")]
+    pub original_model_info: ::core::option::Option<model::OriginalModelInfo>,
     /// Output only. The resource name of the Artifact that was created in
     /// MetadataStore when creating the Model. The Artifact resource name pattern
     /// is
@@ -3235,6 +3239,16 @@ pub mod model {
                 }
             }
         }
+    }
+    /// Contains information about the original Model if this Model is a copy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OriginalModelInfo {
+        /// Output only. The resource name of the Model this Model is a copy of,
+        /// including the revision. Format:
+        /// `projects/{project}/locations/{location}/models/{model_id}@{version_id}`
+        #[prost(string, tag = "1")]
+        pub model: ::prost::alloc::string::String,
     }
     /// Identifies a type of Model's prediction resources.
     #[derive(
@@ -5828,7 +5842,7 @@ pub struct Endpoint {
     /// this key.
     #[prost(message, optional, tag = "10")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
-    /// The full name of the Google Compute Engine
+    /// Optional. The full name of the Google Compute Engine
     /// \[network\](<https://cloud.google.com//compute/docs/networks-and-firewalls#networks>)
     /// to which the Endpoint should be peered.
     ///
@@ -5914,6 +5928,13 @@ pub struct DeployedModel {
     /// will be used for the explanation configuration.
     #[prost(message, optional, tag = "9")]
     pub explanation_spec: ::core::option::Option<ExplanationSpec>,
+    /// If true, deploy the model without explainable feature, regardless the
+    /// existence of
+    /// \[Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec\]
+    /// or
+    /// \[explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec\].
+    #[prost(bool, tag = "19")]
+    pub disable_explanations: bool,
     /// The service account that the DeployedModel's container runs as. Specify the
     /// email address of the service account. If this service account is not
     /// specified, the container runs as a service account that doesn't have access
@@ -5929,6 +5950,8 @@ pub struct DeployedModel {
     /// Only supported for custom-trained Models and AutoML Tabular Models.
     #[prost(bool, tag = "12")]
     pub enable_container_logging: bool,
+    /// If true, online prediction access logs are sent to StackDriver
+    /// Logging.
     /// These logs are like standard server access logs, containing
     /// information like timestamp and latency for each prediction request.
     ///
@@ -10057,9 +10080,30 @@ pub mod study_spec {
         /// Required. The optimization goal of the metric.
         #[prost(enumeration = "metric_spec::GoalType", tag = "2")]
         pub goal: i32,
+        /// Used for safe search. In the case, the metric will be a safety
+        /// metric. You must provide a separate metric for objective metric.
+        #[prost(message, optional, tag = "3")]
+        pub safety_config: ::core::option::Option<metric_spec::SafetyMetricConfig>,
     }
     /// Nested message and enum types in `MetricSpec`.
     pub mod metric_spec {
+        /// Used in safe optimization to specify threshold levels and risk tolerance.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SafetyMetricConfig {
+            /// Safety threshold (boundary value between safe and unsafe). NOTE that if
+            /// you leave SafetyMetricConfig unset, a default value of 0 will be used.
+            #[prost(double, tag = "1")]
+            pub safety_threshold: f64,
+            /// Desired minimum fraction of safe trials (over total number of trials)
+            /// that should be targeted by the algorithm at any time during the
+            /// study (best effort). This should be between 0.0 and 1.0 and a value of
+            /// 0.0 means that there is no minimum and an algorithm proceeds without
+            /// targeting any specific fraction. A value of 1.0 means that the
+            /// algorithm attempts to only Suggest safe Trials.
+            #[prost(double, optional, tag = "2")]
+            pub desired_min_safe_trials_fraction: ::core::option::Option<f64>,
+        }
         /// The available types of optimization goals.
         #[derive(
             Clone,
@@ -10956,6 +11000,18 @@ pub struct IndexStats {
     #[prost(int32, tag = "2")]
     pub shards_count: i32,
 }
+/// Represents configuration for private service connect.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrivateServiceConnectConfig {
+    /// Required. If true, expose the IndexEndpoint via private service connect.
+    #[prost(bool, tag = "1")]
+    pub enable_private_service_connect: bool,
+    /// A list of Projects from which the forwarding rule will target the service
+    /// attachment.
+    #[prost(string, repeated, tag = "2")]
+    pub project_allowlist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Indexes are deployed into it. An IndexEndpoint can have multiple
 /// DeployedIndexes.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -11027,6 +11083,15 @@ pub struct IndexEndpoint {
     #[deprecated]
     #[prost(bool, tag = "10")]
     pub enable_private_service_connect: bool,
+    /// Optional. Configuration for private service connect.
+    ///
+    /// \[network][google.cloud.aiplatform.v1beta1.IndexEndpoint.network\] and
+    /// \[private_service_connect_config][google.cloud.aiplatform.v1beta1.IndexEndpoint.private_service_connect_config\]
+    /// are mutually exclusive.
+    #[prost(message, optional, tag = "12")]
+    pub private_service_connect_config: ::core::option::Option<
+        PrivateServiceConnectConfig,
+    >,
 }
 /// A deployment of an Index. IndexEndpoints contain one or more DeployedIndexes.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -11095,10 +11160,10 @@ pub struct DeployedIndex {
     /// e2-standard-16 and all machine types available for LARGE shard.
     ///
     /// Available machine types for LARGE shard:
-    /// e2-standard-32, e2-highmem-16, n2d-standard-32.
+    /// e2-highmem-16, n2d-standard-32.
     ///
     /// n1-standard-16 and n1-standard-32 are still available, but we recommend
-    /// e2-standard-16 and e2-standard-32 for cost efficiency.
+    /// e2-standard-16 and e2-highmem-16 for cost efficiency.
     #[prost(message, optional, tag = "16")]
     pub dedicated_resources: ::core::option::Option<DedicatedResources>,
     /// Optional. If true, private endpoint's access logs are sent to StackDriver
@@ -12162,6 +12227,412 @@ pub mod index_service_client {
         }
     }
 }
+/// Represents a Neural Architecture Search (NAS) job.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NasJob {
+    /// Output only. Resource name of the NasJob.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of the NasJob.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. The specification of a NasJob.
+    #[prost(message, optional, tag = "4")]
+    pub nas_job_spec: ::core::option::Option<NasJobSpec>,
+    /// Output only. Output of the NasJob.
+    #[prost(message, optional, tag = "5")]
+    pub nas_job_output: ::core::option::Option<NasJobOutput>,
+    /// Output only. The detailed state of the job.
+    #[prost(enumeration = "JobState", tag = "6")]
+    pub state: i32,
+    /// Output only. Time when the NasJob was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the NasJob for the first time entered the
+    /// `JOB_STATE_RUNNING` state.
+    #[prost(message, optional, tag = "8")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the NasJob entered any of the following states:
+    /// `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`.
+    #[prost(message, optional, tag = "9")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the NasJob was most recently updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Only populated when job's state is JOB_STATE_FAILED or
+    /// JOB_STATE_CANCELLED.
+    #[prost(message, optional, tag = "11")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// The labels with user-defined metadata to organize NasJobs.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map = "string, string", tag = "12")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Customer-managed encryption key options for a NasJob.
+    /// If this is set, then all resources created by the NasJob
+    /// will be encrypted with the provided encryption key.
+    #[prost(message, optional, tag = "13")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Optional. Enable a separation of Custom model training
+    /// and restricted image training for tenant project.
+    #[prost(bool, tag = "14")]
+    pub enable_restricted_image_training: bool,
+}
+/// Represents a NasTrial details along with it's parameters. If there is a
+/// corresponding train NasTrial, the train NasTrial is also returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NasTrialDetail {
+    /// Output only. Resource name of the NasTrialDetail.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The parameters for the NasJob NasTrial.
+    #[prost(string, tag = "2")]
+    pub parameters: ::prost::alloc::string::String,
+    /// The requested search NasTrial.
+    #[prost(message, optional, tag = "3")]
+    pub search_trial: ::core::option::Option<NasTrial>,
+    /// The train NasTrial corresponding to
+    /// \[search_trial][google.cloud.aiplatform.v1beta1.NasTrialDetail.search_trial\].
+    /// Only populated if
+    /// \[search_trial][google.cloud.aiplatform.v1beta1.NasTrialDetail.search_trial\]
+    /// is used for training.
+    #[prost(message, optional, tag = "4")]
+    pub train_trial: ::core::option::Option<NasTrial>,
+}
+/// Represents the spec of a NasJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NasJobSpec {
+    /// The ID of the existing NasJob in the same Project and Location
+    /// which will be used to resume search. search_space_spec and
+    /// nas_algorithm_spec are obtained from previous NasJob hence should not
+    /// provide them again for this NasJob.
+    #[prost(string, tag = "3")]
+    pub resume_nas_job_id: ::prost::alloc::string::String,
+    /// It defines the search space for Neural Architecture Search (NAS).
+    #[prost(string, tag = "1")]
+    pub search_space_spec: ::prost::alloc::string::String,
+    /// The Neural Architecture Search (NAS) algorithm specification.
+    #[prost(oneof = "nas_job_spec::NasAlgorithmSpec", tags = "2")]
+    pub nas_algorithm_spec: ::core::option::Option<nas_job_spec::NasAlgorithmSpec>,
+}
+/// Nested message and enum types in `NasJobSpec`.
+pub mod nas_job_spec {
+    /// The spec of multi-trial Neural Architecture Search (NAS).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MultiTrialAlgorithmSpec {
+        /// The multi-trial Neural Architecture Search (NAS) algorithm
+        /// type. Defaults to `REINFORCEMENT_LEARNING`.
+        #[prost(
+            enumeration = "multi_trial_algorithm_spec::MultiTrialAlgorithm",
+            tag = "1"
+        )]
+        pub multi_trial_algorithm: i32,
+        /// Metric specs for the NAS job.
+        /// Validation for this field is done at `multi_trial_algorithm_spec` field.
+        #[prost(message, optional, tag = "2")]
+        pub metric: ::core::option::Option<multi_trial_algorithm_spec::MetricSpec>,
+        /// Required. Spec for search trials.
+        #[prost(message, optional, tag = "3")]
+        pub search_trial_spec: ::core::option::Option<
+            multi_trial_algorithm_spec::SearchTrialSpec,
+        >,
+        /// Spec for train trials. Top N \[TrainTrialSpec.max_parallel_trial_count\]
+        /// search trials will be trained for every M
+        /// \[TrainTrialSpec.frequency\] trials searched.
+        #[prost(message, optional, tag = "4")]
+        pub train_trial_spec: ::core::option::Option<
+            multi_trial_algorithm_spec::TrainTrialSpec,
+        >,
+    }
+    /// Nested message and enum types in `MultiTrialAlgorithmSpec`.
+    pub mod multi_trial_algorithm_spec {
+        /// Represents a metric to optimize.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MetricSpec {
+            /// Required. The ID of the metric. Must not contain whitespaces.
+            #[prost(string, tag = "1")]
+            pub metric_id: ::prost::alloc::string::String,
+            /// Required. The optimization goal of the metric.
+            #[prost(enumeration = "metric_spec::GoalType", tag = "2")]
+            pub goal: i32,
+        }
+        /// Nested message and enum types in `MetricSpec`.
+        pub mod metric_spec {
+            /// The available types of optimization goals.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum GoalType {
+                /// Goal Type will default to maximize.
+                Unspecified = 0,
+                /// Maximize the goal metric.
+                Maximize = 1,
+                /// Minimize the goal metric.
+                Minimize = 2,
+            }
+            impl GoalType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        GoalType::Unspecified => "GOAL_TYPE_UNSPECIFIED",
+                        GoalType::Maximize => "MAXIMIZE",
+                        GoalType::Minimize => "MINIMIZE",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "GOAL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "MAXIMIZE" => Some(Self::Maximize),
+                        "MINIMIZE" => Some(Self::Minimize),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// Represent spec for search trials.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SearchTrialSpec {
+            /// Required. The spec of a search trial job. The same spec applies to
+            /// all search trials.
+            #[prost(message, optional, tag = "1")]
+            pub search_trial_job_spec: ::core::option::Option<
+                super::super::CustomJobSpec,
+            >,
+            /// Required. The maximum number of Neural Architecture Search (NAS) trials
+            /// to run.
+            #[prost(int32, tag = "2")]
+            pub max_trial_count: i32,
+            /// Required. The maximum number of trials to run in parallel.
+            #[prost(int32, tag = "3")]
+            pub max_parallel_trial_count: i32,
+            /// The number of failed trials that need to be seen before failing
+            /// the NasJob.
+            ///
+            /// If set to 0, Vertex AI decides how many trials must fail
+            /// before the whole job fails.
+            #[prost(int32, tag = "4")]
+            pub max_failed_trial_count: i32,
+        }
+        /// Represent spec for train trials.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TrainTrialSpec {
+            /// Required. The spec of a train trial job. The same spec applies to
+            /// all train trials.
+            #[prost(message, optional, tag = "1")]
+            pub train_trial_job_spec: ::core::option::Option<
+                super::super::CustomJobSpec,
+            >,
+            /// Required. The maximum number of trials to run in parallel.
+            #[prost(int32, tag = "2")]
+            pub max_parallel_trial_count: i32,
+            /// Required. Frequency of search trials to start train stage. Top N
+            /// \[TrainTrialSpec.max_parallel_trial_count\]
+            /// search trials will be trained for every M
+            /// \[TrainTrialSpec.frequency\] trials searched.
+            #[prost(int32, tag = "3")]
+            pub frequency: i32,
+        }
+        /// The available types of multi-trial algorithms.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum MultiTrialAlgorithm {
+            /// Defaults to `REINFORCEMENT_LEARNING`.
+            Unspecified = 0,
+            /// The Reinforcement Learning Algorithm for Multi-trial Neural
+            /// Architecture Search (NAS).
+            ReinforcementLearning = 1,
+            /// The Grid Search Algorithm for Multi-trial Neural
+            /// Architecture Search (NAS).
+            GridSearch = 2,
+        }
+        impl MultiTrialAlgorithm {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    MultiTrialAlgorithm::Unspecified => {
+                        "MULTI_TRIAL_ALGORITHM_UNSPECIFIED"
+                    }
+                    MultiTrialAlgorithm::ReinforcementLearning => {
+                        "REINFORCEMENT_LEARNING"
+                    }
+                    MultiTrialAlgorithm::GridSearch => "GRID_SEARCH",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MULTI_TRIAL_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                    "REINFORCEMENT_LEARNING" => Some(Self::ReinforcementLearning),
+                    "GRID_SEARCH" => Some(Self::GridSearch),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The Neural Architecture Search (NAS) algorithm specification.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum NasAlgorithmSpec {
+        /// The spec of multi-trial algorithms.
+        #[prost(message, tag = "2")]
+        MultiTrialAlgorithmSpec(MultiTrialAlgorithmSpec),
+    }
+}
+/// Represents a uCAIP NasJob output.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NasJobOutput {
+    /// The output of this Neural Architecture Search (NAS) job.
+    #[prost(oneof = "nas_job_output::Output", tags = "1")]
+    pub output: ::core::option::Option<nas_job_output::Output>,
+}
+/// Nested message and enum types in `NasJobOutput`.
+pub mod nas_job_output {
+    /// The output of a multi-trial Neural Architecture Search (NAS) jobs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MultiTrialJobOutput {
+        /// Output only. List of NasTrials that were started as part of search stage.
+        #[prost(message, repeated, tag = "1")]
+        pub search_trials: ::prost::alloc::vec::Vec<super::NasTrial>,
+        /// Output only. List of NasTrials that were started as part of train stage.
+        #[prost(message, repeated, tag = "2")]
+        pub train_trials: ::prost::alloc::vec::Vec<super::NasTrial>,
+    }
+    /// The output of this Neural Architecture Search (NAS) job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Output {
+        /// Output only. The output of this multi-trial Neural Architecture Search
+        /// (NAS) job.
+        #[prost(message, tag = "1")]
+        MultiTrialJobOutput(MultiTrialJobOutput),
+    }
+}
+/// Represents a uCAIP NasJob trial.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NasTrial {
+    /// Output only. The identifier of the NasTrial assigned by the service.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. The detailed state of the NasTrial.
+    #[prost(enumeration = "nas_trial::State", tag = "2")]
+    pub state: i32,
+    /// Output only. The final measurement containing the objective value.
+    #[prost(message, optional, tag = "3")]
+    pub final_measurement: ::core::option::Option<Measurement>,
+    /// Output only. Time when the NasTrial was started.
+    #[prost(message, optional, tag = "4")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the NasTrial's status changed to `SUCCEEDED` or
+    /// `INFEASIBLE`.
+    #[prost(message, optional, tag = "5")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `NasTrial`.
+pub mod nas_trial {
+    /// Describes a NasTrial state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The NasTrial state is unspecified.
+        Unspecified = 0,
+        /// Indicates that a specific NasTrial has been requested, but it has not yet
+        /// been suggested by the service.
+        Requested = 1,
+        /// Indicates that the NasTrial has been suggested.
+        Active = 2,
+        /// Indicates that the NasTrial should stop according to the service.
+        Stopping = 3,
+        /// Indicates that the NasTrial is completed successfully.
+        Succeeded = 4,
+        /// Indicates that the NasTrial should not be attempted again.
+        /// The service will set a NasTrial to INFEASIBLE when it's done but missing
+        /// the final_measurement.
+        Infeasible = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Requested => "REQUESTED",
+                State::Active => "ACTIVE",
+                State::Stopping => "STOPPING",
+                State::Succeeded => "SUCCEEDED",
+                State::Infeasible => "INFEASIBLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUESTED" => Some(Self::Requested),
+                "ACTIVE" => Some(Self::Active),
+                "STOPPING" => Some(Self::Stopping),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "INFEASIBLE" => Some(Self::Infeasible),
+                _ => None,
+            }
+        }
+    }
+}
 /// Request message for
 /// \[JobService.CreateCustomJob][google.cloud.aiplatform.v1beta1.JobService.CreateCustomJob\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -12487,6 +12958,163 @@ pub struct CancelHyperparameterTuningJobRequest {
     /// `projects/{project}/locations/{location}/hyperparameterTuningJobs/{hyperparameter_tuning_job}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[JobService.CreateNasJob][google.cloud.aiplatform.v1beta1.JobService.CreateNasJob\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNasJobRequest {
+    /// Required. The resource name of the Location to create the NasJob in.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The NasJob to create.
+    #[prost(message, optional, tag = "2")]
+    pub nas_job: ::core::option::Option<NasJob>,
+}
+/// Request message for
+/// \[JobService.GetNasJob][google.cloud.aiplatform.v1beta1.JobService.GetNasJob\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNasJobRequest {
+    /// Required. The name of the NasJob resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/nasJobs/{nas_job}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[JobService.ListNasJobs][google.cloud.aiplatform.v1beta1.JobService.ListNasJobs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNasJobsRequest {
+    /// Required. The resource name of the Location to list the NasJobs
+    /// from. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The standard list filter.
+    ///
+    /// Supported fields:
+    ///
+    ///    * `display_name` supports `=`, `!=` comparisons, and `:` wildcard.
+    ///    * `state` supports `=`, `!=` comparisons.
+    ///    * `create_time` supports `=`, `!=`,`<`, `<=`,`>`, `>=` comparisons.
+    ///      `create_time` must be in RFC 3339 format.
+    ///    * `labels` supports general map functions that is:
+    ///      `labels.key=value` - key:value equality
+    ///      `labels.key:* - key existence
+    ///
+    /// Some examples of using the filter are:
+    ///
+    ///    * `state="JOB_STATE_SUCCEEDED" AND display_name:"my_job_*"`
+    ///    * `state!="JOB_STATE_FAILED" OR display_name="my_job"`
+    ///    * `NOT display_name="my_job"`
+    ///    * `create_time>"2021-05-18T00:00:00Z"`
+    ///    * `labels.keyA=valueA`
+    ///    * `labels.keyB:*`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// The standard list page token.
+    /// Typically obtained via
+    /// \[ListNasJobsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListNasJobsResponse.next_page_token\]
+    /// of the previous
+    /// \[JobService.ListNasJobs][google.cloud.aiplatform.v1beta1.JobService.ListNasJobs\]
+    /// call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Mask specifying which fields to read.
+    #[prost(message, optional, tag = "5")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Response message for
+/// \[JobService.ListNasJobs][google.cloud.aiplatform.v1beta1.JobService.ListNasJobs\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNasJobsResponse {
+    /// List of NasJobs in the requested page.
+    /// \[NasJob.nas_job_output][google.cloud.aiplatform.v1beta1.NasJob.nas_job_output\]
+    /// of the jobs will not be returned.
+    #[prost(message, repeated, tag = "1")]
+    pub nas_jobs: ::prost::alloc::vec::Vec<NasJob>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// \[ListNasJobsRequest.page_token][google.cloud.aiplatform.v1beta1.ListNasJobsRequest.page_token\]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[JobService.DeleteNasJob][google.cloud.aiplatform.v1beta1.JobService.DeleteNasJob\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteNasJobRequest {
+    /// Required. The name of the NasJob resource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/nasJobs/{nas_job}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[JobService.CancelNasJob][google.cloud.aiplatform.v1beta1.JobService.CancelNasJob\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelNasJobRequest {
+    /// Required. The name of the NasJob to cancel.
+    /// Format:
+    /// `projects/{project}/locations/{location}/nasJobs/{nas_job}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[JobService.GetNasTrialDetail][google.cloud.aiplatform.v1beta1.JobService.GetNasTrialDetail\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNasTrialDetailRequest {
+    /// Required. The name of the NasTrialDetail resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/nasJobs/{nas_job}/nasTrialDetails/{nas_trial_detail}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[JobService.ListNasTrialDetails][google.cloud.aiplatform.v1beta1.JobService.ListNasTrialDetails\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNasTrialDetailsRequest {
+    /// Required. The name of the NasJob resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/nasJobs/{nas_job}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The standard list page size.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The standard list page token.
+    /// Typically obtained via
+    /// \[ListNasTrialDetailsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListNasTrialDetailsResponse.next_page_token\]
+    /// of the previous
+    /// \[JobService.ListNasTrialDetails][google.cloud.aiplatform.v1beta1.JobService.ListNasTrialDetails\]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[JobService.ListNasTrialDetails][google.cloud.aiplatform.v1beta1.JobService.ListNasTrialDetails\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNasTrialDetailsResponse {
+    /// List of top NasTrials in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub nas_trial_details: ::prost::alloc::vec::Vec<NasTrialDetail>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// \[ListNasTrialDetailsRequest.page_token][google.cloud.aiplatform.v1beta1.ListNasTrialDetailsRequest.page_token\]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
 /// \[JobService.CreateBatchPredictionJob][google.cloud.aiplatform.v1beta1.JobService.CreateBatchPredictionJob\].
@@ -13249,6 +13877,161 @@ pub mod job_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.aiplatform.v1beta1.JobService/CancelHyperparameterTuningJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a NasJob
+        pub async fn create_nas_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateNasJobRequest>,
+        ) -> Result<tonic::Response<super::NasJob>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.JobService/CreateNasJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets a NasJob
+        pub async fn get_nas_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNasJobRequest>,
+        ) -> Result<tonic::Response<super::NasJob>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.JobService/GetNasJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists NasJobs in a Location.
+        pub async fn list_nas_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNasJobsRequest>,
+        ) -> Result<tonic::Response<super::ListNasJobsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.JobService/ListNasJobs",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes a NasJob.
+        pub async fn delete_nas_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteNasJobRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.JobService/DeleteNasJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Cancels a NasJob.
+        /// Starts asynchronous cancellation on the NasJob. The server
+        /// makes a best effort to cancel the job, but success is not
+        /// guaranteed. Clients can use
+        /// [JobService.GetNasJob][google.cloud.aiplatform.v1beta1.JobService.GetNasJob]
+        /// or other methods to check whether the cancellation succeeded or whether the
+        /// job completed despite cancellation. On successful cancellation,
+        /// the NasJob is not deleted; instead it becomes a job with
+        /// a [NasJob.error][google.cloud.aiplatform.v1beta1.NasJob.error] value with a
+        /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+        /// `Code.CANCELLED`, and
+        /// [NasJob.state][google.cloud.aiplatform.v1beta1.NasJob.state] is set to
+        /// `CANCELLED`.
+        pub async fn cancel_nas_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelNasJobRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.JobService/CancelNasJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets a NasTrialDetail.
+        pub async fn get_nas_trial_detail(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNasTrialDetailRequest>,
+        ) -> Result<tonic::Response<super::NasTrialDetail>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.JobService/GetNasTrialDetail",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// List top NasTrialDetails of a NasJob.
+        pub async fn list_nas_trial_details(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNasTrialDetailsRequest>,
+        ) -> Result<tonic::Response<super::ListNasTrialDetailsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.JobService/ListNasTrialDetails",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -16423,6 +17206,72 @@ pub struct UpdateExplanationDatasetResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportModelResponse {}
 /// Request message for
+/// \[ModelService.CopyModel][google.cloud.aiplatform.v1beta1.ModelService.CopyModel\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CopyModelRequest {
+    /// Required. The resource name of the Location into which to copy the Model.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource name of the Model to copy. That Model must be in the
+    /// same Project. Format:
+    /// `projects/{project}/locations/{location}/models/{model}`
+    #[prost(string, tag = "2")]
+    pub source_model: ::prost::alloc::string::String,
+    /// Customer-managed encryption key options. If this is set,
+    /// then the Model copy will be encrypted with the provided encryption key.
+    #[prost(message, optional, tag = "3")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// If both fields are unset, a new Model will be created with a generated ID.
+    #[prost(oneof = "copy_model_request::DestinationModel", tags = "4, 5")]
+    pub destination_model: ::core::option::Option<copy_model_request::DestinationModel>,
+}
+/// Nested message and enum types in `CopyModelRequest`.
+pub mod copy_model_request {
+    /// If both fields are unset, a new Model will be created with a generated ID.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DestinationModel {
+        /// Optional. Copy source_model into a new Model with this ID. The ID will
+        /// become the final component of the model resource name.
+        ///
+        /// This value may be up to 63 characters, and valid characters are
+        /// `\[a-z0-9_-\]`. The first character cannot be a number or hyphen.
+        #[prost(string, tag = "4")]
+        ModelId(::prost::alloc::string::String),
+        /// Optional. Specify this field to copy source_model into this existing
+        /// Model as a new version. Format:
+        /// `projects/{project}/locations/{location}/models/{model}`
+        #[prost(string, tag = "5")]
+        ParentModel(::prost::alloc::string::String),
+    }
+}
+/// Details of
+/// \[ModelService.CopyModel][google.cloud.aiplatform.v1beta1.ModelService.CopyModel\]
+/// operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CopyModelOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Response message of
+/// \[ModelService.CopyModel][google.cloud.aiplatform.v1beta1.ModelService.CopyModel\]
+/// operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CopyModelResponse {
+    /// The name of the copied Model resource.
+    /// Format: `projects/{project}/locations/{location}/models/{model}`
+    #[prost(string, tag = "1")]
+    pub model: ::prost::alloc::string::String,
+    /// Output only. The version ID of the model that is copied.
+    #[prost(string, tag = "2")]
+    pub model_version_id: ::prost::alloc::string::String,
+}
+/// Request message for
 /// \[ModelService.ImportModelEvaluation][google.cloud.aiplatform.v1beta1.ModelService.ImportModelEvaluation\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16867,6 +17716,34 @@ pub mod model_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.aiplatform.v1beta1.ModelService/ExportModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Copies an already existing Vertex AI Model into the specified Location.
+        /// The source Model must exist in the same Project.
+        /// When copying custom Models, the users themselves are responsible for
+        /// [Model.metadata][google.cloud.aiplatform.v1beta1.Model.metadata] content to
+        /// be region-agnostic, as well as making sure that any resources (e.g. files)
+        /// it depends on remain accessible.
+        pub async fn copy_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CopyModelRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ModelService/CopyModel",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -17541,6 +18418,11 @@ pub mod pipeline_task_executor_detail {
         /// \[CustomJob][google.cloud.aiplatform.v1beta1.CustomJob\].
         #[prost(string, tag = "1")]
         pub job: ::prost::alloc::string::String,
+        /// Output only. The names of the previously failed
+        /// \[CustomJob][google.cloud.aiplatform.v1beta1.CustomJob\]. The list includes
+        /// the all attempts in chronological order.
+        #[prost(string, repeated, tag = "3")]
+        pub failed_jobs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
