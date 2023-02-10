@@ -1,4 +1,5 @@
-/// The request for \[ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.CreateConnection\].
+/// The request for
+/// \[ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.CreateConnection\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionRequest {
@@ -13,7 +14,8 @@ pub struct CreateConnectionRequest {
     #[prost(message, optional, tag = "3")]
     pub connection: ::core::option::Option<Connection>,
 }
-/// The request for \[ConnectionService.GetConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.GetConnection\].
+/// The request for
+/// \[ConnectionService.GetConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.GetConnection\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionRequest {
@@ -22,7 +24,8 @@ pub struct GetConnectionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1beta1.ConnectionService.ListConnections\].
+/// The request for
+/// \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1beta1.ConnectionService.ListConnections\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsRequest {
@@ -37,7 +40,8 @@ pub struct ListConnectionsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1beta1.ConnectionService.ListConnections\].
+/// The response for
+/// \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1beta1.ConnectionService.ListConnections\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
@@ -48,7 +52,8 @@ pub struct ListConnectionsResponse {
     #[prost(message, repeated, tag = "2")]
     pub connections: ::prost::alloc::vec::Vec<Connection>,
 }
-/// The request for \[ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.UpdateConnection\].
+/// The request for
+/// \[ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.UpdateConnection\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionRequest {
@@ -63,7 +68,8 @@ pub struct UpdateConnectionRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request for \[ConnectionService.UpdateConnectionCredential][google.cloud.bigquery.connection.v1beta1.ConnectionService.UpdateConnectionCredential\].
+/// The request for
+/// \[ConnectionService.UpdateConnectionCredential][google.cloud.bigquery.connection.v1beta1.ConnectionService.UpdateConnectionCredential\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionCredentialRequest {
@@ -158,10 +164,11 @@ pub struct CloudSqlProperties {
     /// Input only. Cloud SQL credential.
     #[prost(message, optional, tag = "4")]
     pub credential: ::core::option::Option<CloudSqlCredential>,
-    /// Output only. The account ID of the service used for the purpose of this connection.
+    /// Output only. The account ID of the service used for the purpose of this
+    /// connection.
     ///
     /// When the connection is used in the context of an operation in
-    /// BigQuery, this service account will serve as identity being used for
+    /// BigQuery, this service account will serve as the identity being used for
     /// connecting to the CloudSQL instance specified in this connection.
     #[prost(string, tag = "5")]
     pub service_account_id: ::prost::alloc::string::String,

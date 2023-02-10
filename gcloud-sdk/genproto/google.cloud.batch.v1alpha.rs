@@ -768,6 +768,9 @@ pub mod job_status {
         /// The max number of tasks can be assigned to this instance type.
         #[prost(int64, tag = "3")]
         pub task_pack: i64,
+        /// The VM boot disk.
+        #[prost(message, optional, tag = "4")]
+        pub boot_disk: ::core::option::Option<super::allocation_policy::Disk>,
     }
     /// Aggregated task status for a TaskGroup.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1006,14 +1009,21 @@ pub mod allocation_policy {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Disk {
-        /// Disk type as shown in `gcloud compute disk-types list`
-        /// For example, "pd-ssd", "pd-standard", "pd-balanced", "local-ssd".
+        /// Disk type as shown in `gcloud compute disk-types list`.
+        /// For example, local SSD uses type "local-ssd".
+        /// Persistent disks and boot disks use "pd-balanced", "pd-extreme", "pd-ssd"
+        /// or "pd-standard".
         #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
         /// Disk size in GB.
-        /// This field is ignored if `data_source` is `disk` or `image`.
-        /// If `type` is `local-ssd`, size_gb should be a multiple of 375GB,
+        /// For persistent disk, this field is ignored if `data_source` is `image` or
+        /// `snapshot`.
+        /// For local SSD, size_gb should be a multiple of 375GB,
         /// otherwise, the final size will be the next greater multiple of 375 GB.
+        /// For boot disk, Batch will calculate the boot disk size based on source
+        /// image and task requirements if you do not speicify the size.
+        /// If both this field and the boot_disk_mib field in task spec's
+        /// compute_resource are defined, Batch will only honor this field.
         #[prost(int64, tag = "2")]
         pub size_gb: i64,
         /// Local SSDs are available through both "SCSI" and "NVMe" interfaces.
@@ -1032,6 +1042,16 @@ pub mod allocation_policy {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DataSource {
             /// Name of a public or custom image used as the data source.
+            /// For example, the following are all valid URLs:
+            /// (1) Specify the image by its family name:
+            /// projects/{project}/global/images/family/{image_family}
+            /// (2) Specify the image version:
+            /// projects/{project}/global/images/{image_version}
+            /// You can also use Batch customized image in short names.
+            /// The following image values are supported for a boot disk:
+            /// "batch-debian": use Batch Debian images.
+            /// "batch-centos": use Batch CentOS images.
+            /// "batch-cos": use Batch Container-Optimized images.
             #[prost(string, tag = "4")]
             Image(::prost::alloc::string::String),
             /// Name of a snapshot used as the data source.

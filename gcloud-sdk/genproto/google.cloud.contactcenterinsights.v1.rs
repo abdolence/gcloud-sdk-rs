@@ -36,7 +36,8 @@ pub struct Conversation {
     /// Output only. The conversation transcript.
     #[prost(message, optional, tag = "8")]
     pub transcript: ::core::option::Option<conversation::Transcript>,
-    /// Immutable. The conversation medium, if unspecified will default to PHONE_CALL.
+    /// Immutable. The conversation medium, if unspecified will default to
+    /// PHONE_CALL.
     #[prost(enumeration = "conversation::Medium", tag = "9")]
     pub medium: i32,
     /// Output only. The duration of the conversation.
@@ -48,12 +49,12 @@ pub struct Conversation {
     /// Output only. The conversation's latest analysis, if one exists.
     #[prost(message, optional, tag = "12")]
     pub latest_analysis: ::core::option::Option<Analysis>,
-    /// Output only. The annotations that were generated during the customer and agent
-    /// interaction.
+    /// Output only. The annotations that were generated during the customer and
+    /// agent interaction.
     #[prost(message, repeated, tag = "13")]
     pub runtime_annotations: ::prost::alloc::vec::Vec<RuntimeAnnotation>,
-    /// Output only. All the matched Dialogflow intents in the call. The key corresponds to a
-    /// Dialogflow intent, format:
+    /// Output only. All the matched Dialogflow intents in the call. The key
+    /// corresponds to a Dialogflow intent, format:
     /// projects/{project}/agent/{agent}/intents/{intent}
     #[prost(map = "string, message", tag = "18")]
     pub dialogflow_intents: ::std::collections::HashMap<
@@ -251,12 +252,12 @@ pub struct Analysis {
     /// Output only. The time at which the analysis was requested.
     #[prost(message, optional, tag = "2")]
     pub request_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which the analysis was created, which occurs when the
-    /// long-running operation completes.
+    /// Output only. The time at which the analysis was created, which occurs when
+    /// the long-running operation completes.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The result of the analysis, which is populated when the analysis
-    /// finishes.
+    /// Output only. The result of the analysis, which is populated when the
+    /// analysis finishes.
     #[prost(message, optional, tag = "7")]
     pub analysis_result: ::core::option::Option<AnalysisResult>,
     /// To select the annotators to run and the phrase matchers to use
@@ -294,8 +295,8 @@ pub struct GcsSource {
     /// audio.
     #[prost(string, tag = "1")]
     pub audio_uri: ::prost::alloc::string::String,
-    /// Immutable. Cloud Storage URI that points to a file that contains the conversation
-    /// transcript.
+    /// Immutable. Cloud Storage URI that points to a file that contains the
+    /// conversation transcript.
     #[prost(string, tag = "2")]
     pub transcript_uri: ::prost::alloc::string::String,
 }
@@ -401,8 +402,8 @@ pub struct IssueAssignment {
     /// currently bounded on \[0,1\].
     #[prost(double, tag = "2")]
     pub score: f64,
-    /// Immutable. Display name of the assigned issue. This field is set at time of analyis
-    /// and immutable since then.
+    /// Immutable. Display name of the assigned issue. This field is set at time of
+    /// analyis and immutable since then.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
 }
@@ -794,13 +795,17 @@ pub struct IssueModel {
     /// Output only. The most recent time at which the issue model was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Number of issues in this issue model.
+    #[prost(int64, tag = "8")]
+    pub issue_count: i64,
     /// Output only. State of the model.
     #[prost(enumeration = "issue_model::State", tag = "5")]
     pub state: i32,
     /// Configs for the input data that used to create the issue model.
     #[prost(message, optional, tag = "6")]
     pub input_data_config: ::core::option::Option<issue_model::InputDataConfig>,
-    /// Output only. Immutable. The issue model's label statistics on its training data.
+    /// Output only. Immutable. The issue model's label statistics on its training
+    /// data.
     #[prost(message, optional, tag = "7")]
     pub training_stats: ::core::option::Option<IssueModelLabelStats>,
 }
@@ -899,8 +904,8 @@ pub struct Issue {
     /// Output only. The most recent time that this issue was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Resource names of the sample representative utterances that match to this
-    /// issue.
+    /// Output only. Resource names of the sample representative utterances that
+    /// match to this issue.
     #[prost(string, repeated, tag = "6")]
     pub sample_utterances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -960,8 +965,8 @@ pub struct PhraseMatcher {
     /// it will default to `revision_id`.
     #[prost(string, tag = "3")]
     pub version_tag: ::prost::alloc::string::String,
-    /// Output only. The timestamp of when the revision was created. It is also the create time
-    /// when a new matcher is added.
+    /// Output only. The timestamp of when the revision was created. It is also the
+    /// create time when a new matcher is added.
     #[prost(message, optional, tag = "4")]
     pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The human-readable name of the phrase matcher.
@@ -976,7 +981,8 @@ pub struct PhraseMatcher {
     /// A list of phase match rule groups that are included in this matcher.
     #[prost(message, repeated, tag = "8")]
     pub phrase_match_rule_groups: ::prost::alloc::vec::Vec<PhraseMatchRuleGroup>,
-    /// Output only. The most recent time at which the activation status was updated.
+    /// Output only. The most recent time at which the activation status was
+    /// updated.
     #[prost(message, optional, tag = "9")]
     pub activation_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The role whose utterances the phrase matcher should be matched
@@ -1552,7 +1558,7 @@ pub struct View {
     /// Output only. The most recent time at which the view was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// String with specific view properties.
+    /// String with specific view properties, must be non-empty.
     #[prost(string, tag = "5")]
     pub value: ::prost::alloc::string::String,
 }
@@ -1878,10 +1884,38 @@ pub struct IngestConversationsMetadata {
     /// Output only. The original request for ingest.
     #[prost(message, optional, tag = "3")]
     pub request: ::core::option::Option<IngestConversationsRequest>,
-    /// Output only. Partial errors during ingest operation that might cause the operation
-    /// output to be incomplete.
+    /// Output only. Partial errors during ingest operation that might cause the
+    /// operation output to be incomplete.
     #[prost(message, repeated, tag = "4")]
     pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Output only. Statistics for IngestConversations operation.
+    #[prost(message, optional, tag = "5")]
+    pub ingest_conversations_stats: ::core::option::Option<
+        ingest_conversations_metadata::IngestConversationsStats,
+    >,
+}
+/// Nested message and enum types in `IngestConversationsMetadata`.
+pub mod ingest_conversations_metadata {
+    /// Statistics for IngestConversations operation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IngestConversationsStats {
+        /// Output only. The number of objects processed during the ingest operation.
+        #[prost(int32, tag = "1")]
+        pub processed_object_count: i32,
+        /// Output only. The number of objects skipped because another conversation
+        /// with the same transcript uri had already been ingested.
+        #[prost(int32, tag = "2")]
+        pub duplicates_skipped_count: i32,
+        /// Output only. The number of new conversations added during this ingest
+        /// operation.
+        #[prost(int32, tag = "3")]
+        pub successful_ingest_count: i32,
+        /// Output only. The number of objects which were unable to be ingested due
+        /// to errors. The errors are populated in the partial_errors field.
+        #[prost(int32, tag = "4")]
+        pub failed_ingest_count: i32,
+    }
 }
 /// The response to an IngestConversations operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2037,9 +2071,9 @@ pub mod export_insights_data_request {
         /// the resource project will be used.
         #[prost(string, tag = "3")]
         pub project_id: ::prost::alloc::string::String,
-        /// Required. The name of the BigQuery dataset that the snapshot result should be
-        /// exported to. If this dataset does not exist, the export call returns an
-        /// INVALID_ARGUMENT error.
+        /// Required. The name of the BigQuery dataset that the snapshot result
+        /// should be exported to. If this dataset does not exist, the export call
+        /// returns an INVALID_ARGUMENT error.
         #[prost(string, tag = "1")]
         pub dataset: ::prost::alloc::string::String,
         /// The BigQuery table name to which the insights data should be written.
@@ -2321,10 +2355,10 @@ pub struct CalculateIssueModelStatsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhraseMatcherRequest {
-    /// Required. The parent resource of the phrase matcher. Required. The location to create
-    /// a phrase matcher for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>` or
-    /// `projects/<Project Number>/locations/<Location ID>`
+    /// Required. The parent resource of the phrase matcher. Required. The location
+    /// to create a phrase matcher for. Format: `projects/<Project
+    /// ID>/locations/<Location ID>` or `projects/<Project
+    /// Number>/locations/<Location ID>`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The phrase matcher resource to create.

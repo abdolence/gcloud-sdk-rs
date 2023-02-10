@@ -227,6 +227,10 @@ pub struct TableFieldSchema {
     /// Optional. See documentation for precision.
     #[prost(int64, tag = "9")]
     pub scale: i64,
+    /// Optional. A SQL expression to specify the [default value]
+    /// (<https://cloud.google.com/bigquery/docs/default-values>) for this field.
+    #[prost(string, tag = "10")]
+    pub default_value_expression: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TableFieldSchema`.
 pub mod table_field_schema {
