@@ -202,13 +202,13 @@ pub struct DeleteSchemaRevisionRequest {
     /// Required. The name of the schema revision to be deleted, with a revision ID
     /// explicitly included.
     ///
-    /// Example: projects/123/schemas/my-schema@c7cfa2a8
+    /// Example: `projects/123/schemas/my-schema@c7cfa2a8`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The revision ID to roll back to.
-    /// It must be a revision of the same schema.
-    ///
-    ///    Example: c7cfa2a8
+    /// Optional. This field is deprecated and should not be used for specifying
+    /// the revision ID. The revision ID should be specified via the `name`
+    /// parameter.
+    #[deprecated]
     #[prost(string, tag = "2")]
     pub revision_id: ::prost::alloc::string::String,
 }

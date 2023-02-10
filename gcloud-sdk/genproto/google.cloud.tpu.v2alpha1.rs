@@ -253,6 +253,9 @@ pub struct Node {
     /// Node.
     #[prost(string, tag = "43")]
     pub queued_resource: ::prost::alloc::string::String,
+    /// The AccleratorConfig for the TPU Node.
+    #[prost(message, optional, tag = "44")]
+    pub accelerator_config: ::core::option::Option<AcceleratorConfig>,
     /// Shielded Instance options.
     #[prost(message, optional, tag = "45")]
     pub shielded_instance_config: ::core::option::Option<ShieldedInstanceConfig>,
@@ -939,6 +942,9 @@ pub struct AcceleratorType {
     /// The accelerator type.
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
+    /// The accelerator config.
+    #[prost(message, repeated, tag = "3")]
+    pub accelerator_configs: ::prost::alloc::vec::Vec<AcceleratorConfig>,
 }
 /// Request for
 /// \[GetAcceleratorType][google.cloud.tpu.v2alpha1.Tpu.GetAcceleratorType\].
@@ -1188,6 +1194,67 @@ pub struct SimulateMaintenanceEventRequest {
     /// multiple workers.
     #[prost(string, repeated, tag = "2")]
     pub worker_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A TPU accelerator configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AcceleratorConfig {
+    /// Required. Type of TPU.
+    #[prost(enumeration = "accelerator_config::Type", tag = "1")]
+    pub r#type: i32,
+    /// Required. Topology of TPU in chips.
+    #[prost(string, tag = "2")]
+    pub topology: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AcceleratorConfig`.
+pub mod accelerator_config {
+    /// TPU type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified version.
+        Unspecified = 0,
+        /// TPU v2.
+        V2 = 2,
+        /// TPU v3.
+        V3 = 4,
+        /// TPU v4.
+        V4 = 7,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::V2 => "V2",
+                Type::V3 => "V3",
+                Type::V4 => "V4",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "V2" => Some(Self::V2),
+                "V3" => Some(Self::V3),
+                "V4" => Some(Self::V4),
+                _ => None,
+            }
+        }
+    }
 }
 /// A set of Shielded Instance options.
 #[allow(clippy::derive_partial_eq_without_eq)]

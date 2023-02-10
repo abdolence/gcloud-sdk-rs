@@ -1,3 +1,141 @@
+/// Metadata describing an operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// Output only. The current operation state.
+    #[prost(enumeration = "operation_metadata::State", tag = "1")]
+    pub state: i32,
+    /// Output only. The type of operation being performed.
+    #[prost(enumeration = "operation_metadata::Type", tag = "2")]
+    pub operation_type: i32,
+    /// Output only. The resource being operated on, as a [relative resource name](
+    /// /apis/design/resource_names#relative_resource_name).
+    #[prost(string, tag = "3")]
+    pub resource: ::prost::alloc::string::String,
+    /// Output only. The UUID of the resource being operated on.
+    #[prost(string, tag = "4")]
+    pub resource_uuid: ::prost::alloc::string::String,
+    /// Output only. The time the operation was submitted to the server.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the operation terminated, regardless of its
+    /// success. This field is unset if the operation is still ongoing.
+    #[prost(message, optional, tag = "6")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `OperationMetadata`.
+pub mod operation_metadata {
+    /// An enum describing the overall state of an operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unused.
+        Unspecified = 0,
+        /// The operation has been created but is not yet started.
+        Pending = 1,
+        /// The operation is underway.
+        Running = 2,
+        /// The operation completed successfully.
+        Succeeded = 3,
+        /// The operation is no longer running but did not succeed.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Pending => "PENDING",
+                State::Running => "RUNNING",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// Type of longrunning operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unused.
+        Unspecified = 0,
+        /// A resource creation operation.
+        Create = 1,
+        /// A resource deletion operation.
+        Delete = 2,
+        /// A resource update operation.
+        Update = 3,
+        /// A resource check operation.
+        Check = 4,
+        /// Saves snapshot of the resource operation.
+        SaveSnapshot = 5,
+        /// Loads snapshot of the resource operation.
+        LoadSnapshot = 6,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::Create => "CREATE",
+                Type::Delete => "DELETE",
+                Type::Update => "UPDATE",
+                Type::Check => "CHECK",
+                Type::SaveSnapshot => "SAVE_SNAPSHOT",
+                Type::LoadSnapshot => "LOAD_SNAPSHOT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "DELETE" => Some(Self::Delete),
+                "UPDATE" => Some(Self::Update),
+                "CHECK" => Some(Self::Check),
+                "SAVE_SNAPSHOT" => Some(Self::SaveSnapshot),
+                "LOAD_SNAPSHOT" => Some(Self::LoadSnapshot),
+                _ => None,
+            }
+        }
+    }
+}
 /// Create a new environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -795,9 +933,6 @@ pub struct NodeConfig {
     /// to identify valid sources or targets for network firewalls. Each tag within
     /// the list must comply with \[RFC1035\](<https://www.ietf.org/rfc/rfc1035.txt>).
     /// Cannot be updated.
-    ///
-    /// This field is supported for Cloud Composer environments in versions
-    /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The configuration for controlling how IPs are allocated in the
@@ -1660,144 +1795,6 @@ pub mod image_versions_client {
                 "/google.cloud.orchestration.airflow.service.v1.ImageVersions/ListImageVersions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-}
-/// Metadata describing an operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationMetadata {
-    /// Output only. The current operation state.
-    #[prost(enumeration = "operation_metadata::State", tag = "1")]
-    pub state: i32,
-    /// Output only. The type of operation being performed.
-    #[prost(enumeration = "operation_metadata::Type", tag = "2")]
-    pub operation_type: i32,
-    /// Output only. The resource being operated on, as a [relative resource name](
-    /// /apis/design/resource_names#relative_resource_name).
-    #[prost(string, tag = "3")]
-    pub resource: ::prost::alloc::string::String,
-    /// Output only. The UUID of the resource being operated on.
-    #[prost(string, tag = "4")]
-    pub resource_uuid: ::prost::alloc::string::String,
-    /// Output only. The time the operation was submitted to the server.
-    #[prost(message, optional, tag = "5")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the operation terminated, regardless of its
-    /// success. This field is unset if the operation is still ongoing.
-    #[prost(message, optional, tag = "6")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `OperationMetadata`.
-pub mod operation_metadata {
-    /// An enum describing the overall state of an operation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// Unused.
-        Unspecified = 0,
-        /// The operation has been created but is not yet started.
-        Pending = 1,
-        /// The operation is underway.
-        Running = 2,
-        /// The operation completed successfully.
-        Succeeded = 3,
-        /// The operation is no longer running but did not succeed.
-        Failed = 4,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "PENDING" => Some(Self::Pending),
-                "RUNNING" => Some(Self::Running),
-                "SUCCEEDED" => Some(Self::Succeeded),
-                "FAILED" => Some(Self::Failed),
-                _ => None,
-            }
-        }
-    }
-    /// Type of longrunning operation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Type {
-        /// Unused.
-        Unspecified = 0,
-        /// A resource creation operation.
-        Create = 1,
-        /// A resource deletion operation.
-        Delete = 2,
-        /// A resource update operation.
-        Update = 3,
-        /// A resource check operation.
-        Check = 4,
-        /// Saves snapshot of the resource operation.
-        SaveSnapshot = 5,
-        /// Loads snapshot of the resource operation.
-        LoadSnapshot = 6,
-    }
-    impl Type {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Create => "CREATE",
-                Type::Delete => "DELETE",
-                Type::Update => "UPDATE",
-                Type::Check => "CHECK",
-                Type::SaveSnapshot => "SAVE_SNAPSHOT",
-                Type::LoadSnapshot => "LOAD_SNAPSHOT",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "CREATE" => Some(Self::Create),
-                "DELETE" => Some(Self::Delete),
-                "UPDATE" => Some(Self::Update),
-                "CHECK" => Some(Self::Check),
-                "SAVE_SNAPSHOT" => Some(Self::SaveSnapshot),
-                "LOAD_SNAPSHOT" => Some(Self::LoadSnapshot),
-                _ => None,
-            }
         }
     }
 }
