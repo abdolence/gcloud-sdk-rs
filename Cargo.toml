@@ -6,4 +6,5 @@ members = [
     "examples/secrets-manager-client",
     "examples/gcs-rest-client",
     "examples/simple-api-client",
+    "examples/bigquery-storage-write-client",
 ]
