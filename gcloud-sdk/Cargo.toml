@@ -442,7 +442,7 @@ url = { version = "2.3" }
 jsonwebtoken = { version = "8" }
 hyper = { version ="0.14", features = ["client", "http2", "h2"] }
 async-trait = "0.1"
-chrono = { version = "0.4", features = ["serde"] }
+chrono = { version = "0.4", features = ["serde", "clock"], default-features = false }
 tokio= { version =  "1" }
 tracing = "0.1"
 secret-vault-value = { version="0.3", features=["proto", "serde"] }
