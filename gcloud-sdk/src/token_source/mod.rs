@@ -155,7 +155,7 @@ mod test {
         test_token_try_from_token_type,
         TokenResponse {
             token_type: String::new(),
-            access_token: TokenValue("secret".into()),
+            access_token: "secret".into(),
             expires_in: 1,
         },
         false;
@@ -163,7 +163,7 @@ mod test {
         test_token_try_from_access_token,
         TokenResponse {
             token_type: "type".into(),
-            access_token: TokenValue(String::new()),
+            access_token: "".into(),
             expires_in: 1,
         },
         false;
@@ -171,7 +171,7 @@ mod test {
         test_token_try_from_expires_in,
         TokenResponse {
             token_type: "type".into(),
-            access_token: TokenValue("secret".into()),
+            access_token: "secret".into(),
             expires_in: 0,
         },
         false;
@@ -179,7 +179,7 @@ mod test {
         test_token_try_from_ok,
         TokenResponse {
             token_type: "type".into(),
-            access_token: TokenValue("secret".into()),
+            access_token: "secret".into(),
             expires_in: 1,
         },
         true;
