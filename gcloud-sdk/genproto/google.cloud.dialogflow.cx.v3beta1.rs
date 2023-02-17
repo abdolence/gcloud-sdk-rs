@@ -1,3 +1,16 @@
+/// Google Cloud Storage location for a Dialogflow operation that writes or
+/// exports objects (e.g. exported agent or transcripts) outside of Dialogflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsDestination {
+    /// Required. The Google Cloud Storage URI for the exported objects. A URI is
+    /// of the form:
+    ///    gs://bucket/object-name-or-prefix
+    /// Whether a full object name, or just a prefix, its usage depends on the
+    /// Dialogflow operation.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+}
 /// Hierarchical advanced settings for agent/flow/page/fulfillment/parameter.
 /// Settings exposed at lower level overrides the settings exposed at higher
 /// level. Overriding occurs at the sub-setting level. For example, the
@@ -12,6 +25,13 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdvancedSettings {
+    /// If present, incoming audio is exported by Dialogflow to the configured
+    /// Google Cloud Storage destination.
+    /// Exposed at the following levels:
+    /// - Agent level
+    /// - Flow level
+    #[prost(message, optional, tag = "2")]
+    pub audio_export_gcs_destination: ::core::option::Option<GcsDestination>,
     /// Settings for logging.
     /// Settings for Dialogflow History, Contact Center messages, StackDriver logs,
     /// and speech logging.
@@ -32,6 +52,406 @@ pub mod advanced_settings {
         /// If true, DF Interaction logging is currently enabled.
         #[prost(bool, tag = "3")]
         pub enable_interaction_logging: bool,
+    }
+}
+/// Information for a word recognized by the speech recognizer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpeechWordInfo {
+    /// The word this info is for.
+    #[prost(string, tag = "3")]
+    pub word: ::prost::alloc::string::String,
+    /// Time offset relative to the beginning of the audio that corresponds to the
+    /// start of the spoken word. This is an experimental feature and the accuracy
+    /// of the time offset can vary.
+    #[prost(message, optional, tag = "1")]
+    pub start_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Time offset relative to the beginning of the audio that corresponds to the
+    /// end of the spoken word. This is an experimental feature and the accuracy of
+    /// the time offset can vary.
+    #[prost(message, optional, tag = "2")]
+    pub end_offset: ::core::option::Option<::prost_types::Duration>,
+    /// The Speech confidence between 0.0 and 1.0 for this word. A higher number
+    /// indicates an estimated greater likelihood that the recognized word is
+    /// correct. The default of 0.0 is a sentinel value indicating that confidence
+    /// was not set.
+    ///
+    /// This field is not guaranteed to be fully stable over time for the same
+    /// audio input. Users should also not rely on it to always be provided.
+    #[prost(float, tag = "4")]
+    pub confidence: f32,
+}
+/// Instructs the speech recognizer on how to process the audio content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InputAudioConfig {
+    /// Required. Audio encoding of the audio content to process.
+    #[prost(enumeration = "AudioEncoding", tag = "1")]
+    pub audio_encoding: i32,
+    /// Sample rate (in Hertz) of the audio content sent in the query.
+    /// Refer to
+    /// [Cloud Speech API
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics>) for
+    /// more details.
+    #[prost(int32, tag = "2")]
+    pub sample_rate_hertz: i32,
+    /// Optional. If `true`, Dialogflow returns
+    /// \[SpeechWordInfo][google.cloud.dialogflow.cx.v3beta1.SpeechWordInfo\] in
+    /// \[StreamingRecognitionResult][google.cloud.dialogflow.cx.v3beta1.StreamingRecognitionResult\]
+    /// with information about the recognized speech words, e.g. start and end time
+    /// offsets. If false or unspecified, Speech doesn't return any word-level
+    /// information.
+    #[prost(bool, tag = "13")]
+    pub enable_word_info: bool,
+    /// Optional. A list of strings containing words and phrases that the speech
+    /// recognizer should recognize with higher likelihood.
+    ///
+    /// See [the Cloud Speech
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>)
+    /// for more details.
+    #[prost(string, repeated, tag = "4")]
+    pub phrase_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Which Speech model to select for the given request. Select the
+    /// model best suited to your domain to get best results. If a model is not
+    /// explicitly specified, then we auto-select a model based on the parameters
+    /// in the InputAudioConfig.
+    /// If enhanced speech model is enabled for the agent and an enhanced
+    /// version of the specified model for the language does not exist, then the
+    /// speech is recognized using the standard version of the specified model.
+    /// Refer to
+    /// [Cloud Speech API
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
+    /// for more details.
+    #[prost(string, tag = "7")]
+    pub model: ::prost::alloc::string::String,
+    /// Optional. Which variant of the [Speech
+    /// model]\[google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model\] to use.
+    #[prost(enumeration = "SpeechModelVariant", tag = "10")]
+    pub model_variant: i32,
+    /// Optional. If `false` (default), recognition does not cease until the
+    /// client closes the stream.
+    /// If `true`, the recognizer will detect a single spoken utterance in input
+    /// audio. Recognition ceases when it detects the audio's voice has
+    /// stopped or paused. In this case, once a detected intent is received, the
+    /// client should close the stream and start a new request with a new stream as
+    /// needed.
+    /// Note: This setting is relevant only for streaming methods.
+    #[prost(bool, tag = "8")]
+    pub single_utterance: bool,
+}
+/// Description of which voice to use for speech synthesis.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VoiceSelectionParams {
+    /// Optional. The name of the voice. If not set, the service will choose a
+    /// voice based on the other parameters such as language_code and
+    /// \[ssml_gender][google.cloud.dialogflow.cx.v3beta1.VoiceSelectionParams.ssml_gender\].
+    ///
+    /// For the list of available voices, please refer to [Supported voices and
+    /// languages](<https://cloud.google.com/text-to-speech/docs/voices>).
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The preferred gender of the voice. If not set, the service will
+    /// choose a voice based on the other parameters such as language_code and
+    /// \[name][google.cloud.dialogflow.cx.v3beta1.VoiceSelectionParams.name\]. Note
+    /// that this is only a preference, not requirement. If a voice of the
+    /// appropriate gender is not available, the synthesizer should substitute a
+    /// voice with a different gender rather than failing the request.
+    #[prost(enumeration = "SsmlVoiceGender", tag = "2")]
+    pub ssml_gender: i32,
+}
+/// Configuration of how speech should be synthesized.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SynthesizeSpeechConfig {
+    /// Optional. Speaking rate/speed, in the range [0.25, 4.0]. 1.0 is the normal
+    /// native speed supported by the specific voice. 2.0 is twice as fast, and
+    /// 0.5 is half as fast. If unset(0.0), defaults to the native 1.0 speed. Any
+    /// other values < 0.25 or > 4.0 will return an error.
+    #[prost(double, tag = "1")]
+    pub speaking_rate: f64,
+    /// Optional. Speaking pitch, in the range [-20.0, 20.0]. 20 means increase 20
+    /// semitones from the original pitch. -20 means decrease 20 semitones from the
+    /// original pitch.
+    #[prost(double, tag = "2")]
+    pub pitch: f64,
+    /// Optional. Volume gain (in dB) of the normal native volume supported by the
+    /// specific voice, in the range [-96.0, 16.0]. If unset, or set to a value of
+    /// 0.0 (dB), will play at normal native signal amplitude. A value of -6.0 (dB)
+    /// will play at approximately half the amplitude of the normal native signal
+    /// amplitude. A value of +6.0 (dB) will play at approximately twice the
+    /// amplitude of the normal native signal amplitude. We strongly recommend not
+    /// to exceed +10 (dB) as there's usually no effective increase in loudness for
+    /// any value greater than that.
+    #[prost(double, tag = "3")]
+    pub volume_gain_db: f64,
+    /// Optional. An identifier which selects 'audio effects' profiles that are
+    /// applied on (post synthesized) text to speech. Effects are applied on top of
+    /// each other in the order they are given.
+    #[prost(string, repeated, tag = "5")]
+    pub effects_profile_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The desired voice of the synthesized audio.
+    #[prost(message, optional, tag = "4")]
+    pub voice: ::core::option::Option<VoiceSelectionParams>,
+}
+/// Instructs the speech synthesizer how to generate the output audio content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OutputAudioConfig {
+    /// Required. Audio encoding of the synthesized audio content.
+    #[prost(enumeration = "OutputAudioEncoding", tag = "1")]
+    pub audio_encoding: i32,
+    /// Optional. The synthesis sample rate (in hertz) for this audio. If not
+    /// provided, then the synthesizer will use the default sample rate based on
+    /// the audio encoding. If this is different from the voice's natural sample
+    /// rate, then the synthesizer will honor this request by converting to the
+    /// desired sample rate (which might result in worse audio quality).
+    #[prost(int32, tag = "2")]
+    pub sample_rate_hertz: i32,
+    /// Optional. Configuration of how speech should be synthesized.
+    #[prost(message, optional, tag = "3")]
+    pub synthesize_speech_config: ::core::option::Option<SynthesizeSpeechConfig>,
+}
+/// Settings related to speech generating.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextToSpeechSettings {
+    /// Configuration of how speech should be synthesized, mapping from
+    /// language (<https://dialogflow.com/docs/reference/language>) to
+    /// SynthesizeSpeechConfig.
+    #[prost(map = "string, message", tag = "1")]
+    pub synthesize_speech_configs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        SynthesizeSpeechConfig,
+    >,
+}
+/// Audio encoding of the audio content sent in the conversational query request.
+/// Refer to the
+/// [Cloud Speech API
+/// documentation](<https://cloud.google.com/speech-to-text/docs/basics>) for more
+/// details.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AudioEncoding {
+    /// Not specified.
+    Unspecified = 0,
+    /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
+    Linear16 = 1,
+    /// \[`FLAC`\](<https://xiph.org/flac/documentation.html>) (Free Lossless Audio
+    /// Codec) is the recommended encoding because it is lossless (therefore
+    /// recognition is not compromised) and requires only about half the
+    /// bandwidth of `LINEAR16`. `FLAC` stream encoding supports 16-bit and
+    /// 24-bit samples, however, not all fields in `STREAMINFO` are supported.
+    Flac = 2,
+    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
+    Mulaw = 3,
+    /// Adaptive Multi-Rate Narrowband codec. `sample_rate_hertz` must be 8000.
+    Amr = 4,
+    /// Adaptive Multi-Rate Wideband codec. `sample_rate_hertz` must be 16000.
+    AmrWb = 5,
+    /// Opus encoded audio frames in Ogg container
+    /// (\[OggOpus\](<https://wiki.xiph.org/OggOpus>)).
+    /// `sample_rate_hertz` must be 16000.
+    OggOpus = 6,
+    /// Although the use of lossy encodings is not recommended, if a very low
+    /// bitrate encoding is required, `OGG_OPUS` is highly preferred over
+    /// Speex encoding. The \[Speex\](<https://speex.org/>) encoding supported by
+    /// Dialogflow API has a header byte in each block, as in MIME type
+    /// `audio/x-speex-with-header-byte`.
+    /// It is a variant of the RTP Speex encoding defined in
+    /// [RFC 5574](<https://tools.ietf.org/html/rfc5574>).
+    /// The stream is a sequence of blocks, one block per RTP packet. Each block
+    /// starts with a byte containing the length of the block, in bytes, followed
+    /// by one or more frames of Speex data, padded to an integral number of
+    /// bytes (octets) as specified in RFC 5574. In other words, each RTP header
+    /// is replaced with a single byte containing the block length. Only Speex
+    /// wideband is supported. `sample_rate_hertz` must be 16000.
+    SpeexWithHeaderByte = 7,
+}
+impl AudioEncoding {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            AudioEncoding::Unspecified => "AUDIO_ENCODING_UNSPECIFIED",
+            AudioEncoding::Linear16 => "AUDIO_ENCODING_LINEAR_16",
+            AudioEncoding::Flac => "AUDIO_ENCODING_FLAC",
+            AudioEncoding::Mulaw => "AUDIO_ENCODING_MULAW",
+            AudioEncoding::Amr => "AUDIO_ENCODING_AMR",
+            AudioEncoding::AmrWb => "AUDIO_ENCODING_AMR_WB",
+            AudioEncoding::OggOpus => "AUDIO_ENCODING_OGG_OPUS",
+            AudioEncoding::SpeexWithHeaderByte => "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+            "AUDIO_ENCODING_LINEAR_16" => Some(Self::Linear16),
+            "AUDIO_ENCODING_FLAC" => Some(Self::Flac),
+            "AUDIO_ENCODING_MULAW" => Some(Self::Mulaw),
+            "AUDIO_ENCODING_AMR" => Some(Self::Amr),
+            "AUDIO_ENCODING_AMR_WB" => Some(Self::AmrWb),
+            "AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
+            "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE" => Some(Self::SpeexWithHeaderByte),
+            _ => None,
+        }
+    }
+}
+/// Variant of the specified [Speech
+/// model]\[google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model\] to use.
+///
+/// See the [Cloud Speech
+/// documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
+/// for which models have different variants. For example, the "phone_call" model
+/// has both a standard and an enhanced variant. When you use an enhanced model,
+/// you will generally receive higher quality results than for a standard model.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SpeechModelVariant {
+    /// No model variant specified. In this case Dialogflow defaults to
+    /// USE_BEST_AVAILABLE.
+    Unspecified = 0,
+    /// Use the best available variant of the [Speech
+    /// model]\[InputAudioConfig.model\] that the caller is eligible for.
+    ///
+    /// Please see the [Dialogflow
+    /// docs](<https://cloud.google.com/dialogflow/docs/data-logging>) for
+    /// how to make your project eligible for enhanced models.
+    UseBestAvailable = 1,
+    /// Use standard model variant even if an enhanced model is available.  See the
+    /// [Cloud Speech
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
+    /// for details about enhanced models.
+    UseStandard = 2,
+    /// Use an enhanced model variant:
+    ///
+    /// * If an enhanced variant does not exist for the given
+    ///    \[model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model\] and
+    ///    request language, Dialogflow falls back to the standard variant.
+    ///
+    ///    The [Cloud Speech
+    ///    documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
+    ///    describes which models have enhanced variants.
+    ///
+    /// * If the API caller isn't eligible for enhanced models, Dialogflow returns
+    ///    an error.  Please see the [Dialogflow
+    ///    docs](<https://cloud.google.com/dialogflow/docs/data-logging>)
+    ///    for how to make your project eligible.
+    UseEnhanced = 3,
+}
+impl SpeechModelVariant {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            SpeechModelVariant::Unspecified => "SPEECH_MODEL_VARIANT_UNSPECIFIED",
+            SpeechModelVariant::UseBestAvailable => "USE_BEST_AVAILABLE",
+            SpeechModelVariant::UseStandard => "USE_STANDARD",
+            SpeechModelVariant::UseEnhanced => "USE_ENHANCED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SPEECH_MODEL_VARIANT_UNSPECIFIED" => Some(Self::Unspecified),
+            "USE_BEST_AVAILABLE" => Some(Self::UseBestAvailable),
+            "USE_STANDARD" => Some(Self::UseStandard),
+            "USE_ENHANCED" => Some(Self::UseEnhanced),
+            _ => None,
+        }
+    }
+}
+/// Gender of the voice as described in
+/// [SSML voice element](<https://www.w3.org/TR/speech-synthesis11/#edef_voice>).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SsmlVoiceGender {
+    /// An unspecified gender, which means that the client doesn't care which
+    /// gender the selected voice will have.
+    Unspecified = 0,
+    /// A male voice.
+    Male = 1,
+    /// A female voice.
+    Female = 2,
+    /// A gender-neutral voice.
+    Neutral = 3,
+}
+impl SsmlVoiceGender {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            SsmlVoiceGender::Unspecified => "SSML_VOICE_GENDER_UNSPECIFIED",
+            SsmlVoiceGender::Male => "SSML_VOICE_GENDER_MALE",
+            SsmlVoiceGender::Female => "SSML_VOICE_GENDER_FEMALE",
+            SsmlVoiceGender::Neutral => "SSML_VOICE_GENDER_NEUTRAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SSML_VOICE_GENDER_UNSPECIFIED" => Some(Self::Unspecified),
+            "SSML_VOICE_GENDER_MALE" => Some(Self::Male),
+            "SSML_VOICE_GENDER_FEMALE" => Some(Self::Female),
+            "SSML_VOICE_GENDER_NEUTRAL" => Some(Self::Neutral),
+            _ => None,
+        }
+    }
+}
+/// Audio encoding of the output audio format in Text-To-Speech.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum OutputAudioEncoding {
+    /// Not specified.
+    Unspecified = 0,
+    /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
+    /// Audio content returned as LINEAR16 also contains a WAV header.
+    Linear16 = 1,
+    /// MP3 audio at 32kbps.
+    Mp3 = 2,
+    /// MP3 audio at 64kbps.
+    Mp364Kbps = 4,
+    /// Opus encoded audio wrapped in an ogg container. The result will be a
+    /// file which can be played natively on Android, and in browsers (at least
+    /// Chrome and Firefox). The quality of the encoding is considerably higher
+    /// than MP3 while using approximately the same bitrate.
+    OggOpus = 3,
+    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
+    Mulaw = 5,
+}
+impl OutputAudioEncoding {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            OutputAudioEncoding::Unspecified => "OUTPUT_AUDIO_ENCODING_UNSPECIFIED",
+            OutputAudioEncoding::Linear16 => "OUTPUT_AUDIO_ENCODING_LINEAR_16",
+            OutputAudioEncoding::Mp3 => "OUTPUT_AUDIO_ENCODING_MP3",
+            OutputAudioEncoding::Mp364Kbps => "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS",
+            OutputAudioEncoding::OggOpus => "OUTPUT_AUDIO_ENCODING_OGG_OPUS",
+            OutputAudioEncoding::Mulaw => "OUTPUT_AUDIO_ENCODING_MULAW",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OUTPUT_AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+            "OUTPUT_AUDIO_ENCODING_LINEAR_16" => Some(Self::Linear16),
+            "OUTPUT_AUDIO_ENCODING_MP3" => Some(Self::Mp3),
+            "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS" => Some(Self::Mp364Kbps),
+            "OUTPUT_AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
+            "OUTPUT_AUDIO_ENCODING_MULAW" => Some(Self::Mulaw),
+            _ => None,
+        }
     }
 }
 /// Represents a response message that can be returned by a conversational agent.
@@ -2242,6 +2662,10 @@ pub struct Agent {
     /// lower level overrides the settings exposed at the higher level.
     #[prost(message, optional, tag = "22")]
     pub advanced_settings: ::core::option::Option<AdvancedSettings>,
+    /// Settings on instructing the speech synthesizer on how to generate the
+    /// output audio content.
+    #[prost(message, optional, tag = "31")]
+    pub text_to_speech_settings: ::core::option::Option<TextToSpeechSettings>,
 }
 /// The request message for
 /// \[Agents.ListAgents][google.cloud.dialogflow.cx.v3beta1.Agents.ListAgents\].
@@ -2838,393 +3262,6 @@ pub mod agents_client {
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgentValidationResult",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-}
-/// Information for a word recognized by the speech recognizer.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SpeechWordInfo {
-    /// The word this info is for.
-    #[prost(string, tag = "3")]
-    pub word: ::prost::alloc::string::String,
-    /// Time offset relative to the beginning of the audio that corresponds to the
-    /// start of the spoken word. This is an experimental feature and the accuracy
-    /// of the time offset can vary.
-    #[prost(message, optional, tag = "1")]
-    pub start_offset: ::core::option::Option<::prost_types::Duration>,
-    /// Time offset relative to the beginning of the audio that corresponds to the
-    /// end of the spoken word. This is an experimental feature and the accuracy of
-    /// the time offset can vary.
-    #[prost(message, optional, tag = "2")]
-    pub end_offset: ::core::option::Option<::prost_types::Duration>,
-    /// The Speech confidence between 0.0 and 1.0 for this word. A higher number
-    /// indicates an estimated greater likelihood that the recognized word is
-    /// correct. The default of 0.0 is a sentinel value indicating that confidence
-    /// was not set.
-    ///
-    /// This field is not guaranteed to be fully stable over time for the same
-    /// audio input. Users should also not rely on it to always be provided.
-    #[prost(float, tag = "4")]
-    pub confidence: f32,
-}
-/// Instructs the speech recognizer on how to process the audio content.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InputAudioConfig {
-    /// Required. Audio encoding of the audio content to process.
-    #[prost(enumeration = "AudioEncoding", tag = "1")]
-    pub audio_encoding: i32,
-    /// Sample rate (in Hertz) of the audio content sent in the query.
-    /// Refer to
-    /// [Cloud Speech API
-    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics>) for
-    /// more details.
-    #[prost(int32, tag = "2")]
-    pub sample_rate_hertz: i32,
-    /// Optional. If `true`, Dialogflow returns
-    /// \[SpeechWordInfo][google.cloud.dialogflow.cx.v3beta1.SpeechWordInfo\] in
-    /// \[StreamingRecognitionResult][google.cloud.dialogflow.cx.v3beta1.StreamingRecognitionResult\]
-    /// with information about the recognized speech words, e.g. start and end time
-    /// offsets. If false or unspecified, Speech doesn't return any word-level
-    /// information.
-    #[prost(bool, tag = "13")]
-    pub enable_word_info: bool,
-    /// Optional. A list of strings containing words and phrases that the speech
-    /// recognizer should recognize with higher likelihood.
-    ///
-    /// See [the Cloud Speech
-    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>)
-    /// for more details.
-    #[prost(string, repeated, tag = "4")]
-    pub phrase_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Which Speech model to select for the given request. Select the
-    /// model best suited to your domain to get best results. If a model is not
-    /// explicitly specified, then we auto-select a model based on the parameters
-    /// in the InputAudioConfig.
-    /// If enhanced speech model is enabled for the agent and an enhanced
-    /// version of the specified model for the language does not exist, then the
-    /// speech is recognized using the standard version of the specified model.
-    /// Refer to
-    /// [Cloud Speech API
-    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
-    /// for more details.
-    #[prost(string, tag = "7")]
-    pub model: ::prost::alloc::string::String,
-    /// Optional. Which variant of the [Speech
-    /// model]\[google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model\] to use.
-    #[prost(enumeration = "SpeechModelVariant", tag = "10")]
-    pub model_variant: i32,
-    /// Optional. If `false` (default), recognition does not cease until the
-    /// client closes the stream.
-    /// If `true`, the recognizer will detect a single spoken utterance in input
-    /// audio. Recognition ceases when it detects the audio's voice has
-    /// stopped or paused. In this case, once a detected intent is received, the
-    /// client should close the stream and start a new request with a new stream as
-    /// needed.
-    /// Note: This setting is relevant only for streaming methods.
-    #[prost(bool, tag = "8")]
-    pub single_utterance: bool,
-}
-/// Description of which voice to use for speech synthesis.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VoiceSelectionParams {
-    /// Optional. The name of the voice. If not set, the service will choose a
-    /// voice based on the other parameters such as language_code and
-    /// \[ssml_gender][google.cloud.dialogflow.cx.v3beta1.VoiceSelectionParams.ssml_gender\].
-    ///
-    /// For the list of available voices, please refer to [Supported voices and
-    /// languages](<https://cloud.google.com/text-to-speech/docs/voices>).
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. The preferred gender of the voice. If not set, the service will
-    /// choose a voice based on the other parameters such as language_code and
-    /// \[name][google.cloud.dialogflow.cx.v3beta1.VoiceSelectionParams.name\]. Note
-    /// that this is only a preference, not requirement. If a voice of the
-    /// appropriate gender is not available, the synthesizer should substitute a
-    /// voice with a different gender rather than failing the request.
-    #[prost(enumeration = "SsmlVoiceGender", tag = "2")]
-    pub ssml_gender: i32,
-}
-/// Configuration of how speech should be synthesized.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SynthesizeSpeechConfig {
-    /// Optional. Speaking rate/speed, in the range [0.25, 4.0]. 1.0 is the normal
-    /// native speed supported by the specific voice. 2.0 is twice as fast, and
-    /// 0.5 is half as fast. If unset(0.0), defaults to the native 1.0 speed. Any
-    /// other values < 0.25 or > 4.0 will return an error.
-    #[prost(double, tag = "1")]
-    pub speaking_rate: f64,
-    /// Optional. Speaking pitch, in the range [-20.0, 20.0]. 20 means increase 20
-    /// semitones from the original pitch. -20 means decrease 20 semitones from the
-    /// original pitch.
-    #[prost(double, tag = "2")]
-    pub pitch: f64,
-    /// Optional. Volume gain (in dB) of the normal native volume supported by the
-    /// specific voice, in the range [-96.0, 16.0]. If unset, or set to a value of
-    /// 0.0 (dB), will play at normal native signal amplitude. A value of -6.0 (dB)
-    /// will play at approximately half the amplitude of the normal native signal
-    /// amplitude. A value of +6.0 (dB) will play at approximately twice the
-    /// amplitude of the normal native signal amplitude. We strongly recommend not
-    /// to exceed +10 (dB) as there's usually no effective increase in loudness for
-    /// any value greater than that.
-    #[prost(double, tag = "3")]
-    pub volume_gain_db: f64,
-    /// Optional. An identifier which selects 'audio effects' profiles that are
-    /// applied on (post synthesized) text to speech. Effects are applied on top of
-    /// each other in the order they are given.
-    #[prost(string, repeated, tag = "5")]
-    pub effects_profile_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The desired voice of the synthesized audio.
-    #[prost(message, optional, tag = "4")]
-    pub voice: ::core::option::Option<VoiceSelectionParams>,
-}
-/// Instructs the speech synthesizer how to generate the output audio content.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OutputAudioConfig {
-    /// Required. Audio encoding of the synthesized audio content.
-    #[prost(enumeration = "OutputAudioEncoding", tag = "1")]
-    pub audio_encoding: i32,
-    /// Optional. The synthesis sample rate (in hertz) for this audio. If not
-    /// provided, then the synthesizer will use the default sample rate based on
-    /// the audio encoding. If this is different from the voice's natural sample
-    /// rate, then the synthesizer will honor this request by converting to the
-    /// desired sample rate (which might result in worse audio quality).
-    #[prost(int32, tag = "2")]
-    pub sample_rate_hertz: i32,
-    /// Optional. Configuration of how speech should be synthesized.
-    #[prost(message, optional, tag = "3")]
-    pub synthesize_speech_config: ::core::option::Option<SynthesizeSpeechConfig>,
-}
-/// Audio encoding of the audio content sent in the conversational query request.
-/// Refer to the
-/// [Cloud Speech API
-/// documentation](<https://cloud.google.com/speech-to-text/docs/basics>) for more
-/// details.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum AudioEncoding {
-    /// Not specified.
-    Unspecified = 0,
-    /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
-    Linear16 = 1,
-    /// \[`FLAC`\](<https://xiph.org/flac/documentation.html>) (Free Lossless Audio
-    /// Codec) is the recommended encoding because it is lossless (therefore
-    /// recognition is not compromised) and requires only about half the
-    /// bandwidth of `LINEAR16`. `FLAC` stream encoding supports 16-bit and
-    /// 24-bit samples, however, not all fields in `STREAMINFO` are supported.
-    Flac = 2,
-    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
-    Mulaw = 3,
-    /// Adaptive Multi-Rate Narrowband codec. `sample_rate_hertz` must be 8000.
-    Amr = 4,
-    /// Adaptive Multi-Rate Wideband codec. `sample_rate_hertz` must be 16000.
-    AmrWb = 5,
-    /// Opus encoded audio frames in Ogg container
-    /// (\[OggOpus\](<https://wiki.xiph.org/OggOpus>)).
-    /// `sample_rate_hertz` must be 16000.
-    OggOpus = 6,
-    /// Although the use of lossy encodings is not recommended, if a very low
-    /// bitrate encoding is required, `OGG_OPUS` is highly preferred over
-    /// Speex encoding. The \[Speex\](<https://speex.org/>) encoding supported by
-    /// Dialogflow API has a header byte in each block, as in MIME type
-    /// `audio/x-speex-with-header-byte`.
-    /// It is a variant of the RTP Speex encoding defined in
-    /// [RFC 5574](<https://tools.ietf.org/html/rfc5574>).
-    /// The stream is a sequence of blocks, one block per RTP packet. Each block
-    /// starts with a byte containing the length of the block, in bytes, followed
-    /// by one or more frames of Speex data, padded to an integral number of
-    /// bytes (octets) as specified in RFC 5574. In other words, each RTP header
-    /// is replaced with a single byte containing the block length. Only Speex
-    /// wideband is supported. `sample_rate_hertz` must be 16000.
-    SpeexWithHeaderByte = 7,
-}
-impl AudioEncoding {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            AudioEncoding::Unspecified => "AUDIO_ENCODING_UNSPECIFIED",
-            AudioEncoding::Linear16 => "AUDIO_ENCODING_LINEAR_16",
-            AudioEncoding::Flac => "AUDIO_ENCODING_FLAC",
-            AudioEncoding::Mulaw => "AUDIO_ENCODING_MULAW",
-            AudioEncoding::Amr => "AUDIO_ENCODING_AMR",
-            AudioEncoding::AmrWb => "AUDIO_ENCODING_AMR_WB",
-            AudioEncoding::OggOpus => "AUDIO_ENCODING_OGG_OPUS",
-            AudioEncoding::SpeexWithHeaderByte => "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
-            "AUDIO_ENCODING_LINEAR_16" => Some(Self::Linear16),
-            "AUDIO_ENCODING_FLAC" => Some(Self::Flac),
-            "AUDIO_ENCODING_MULAW" => Some(Self::Mulaw),
-            "AUDIO_ENCODING_AMR" => Some(Self::Amr),
-            "AUDIO_ENCODING_AMR_WB" => Some(Self::AmrWb),
-            "AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
-            "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE" => Some(Self::SpeexWithHeaderByte),
-            _ => None,
-        }
-    }
-}
-/// Variant of the specified [Speech
-/// model]\[google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model\] to use.
-///
-/// See the [Cloud Speech
-/// documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
-/// for which models have different variants. For example, the "phone_call" model
-/// has both a standard and an enhanced variant. When you use an enhanced model,
-/// you will generally receive higher quality results than for a standard model.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum SpeechModelVariant {
-    /// No model variant specified. In this case Dialogflow defaults to
-    /// USE_BEST_AVAILABLE.
-    Unspecified = 0,
-    /// Use the best available variant of the [Speech
-    /// model]\[InputAudioConfig.model\] that the caller is eligible for.
-    ///
-    /// Please see the [Dialogflow
-    /// docs](<https://cloud.google.com/dialogflow/docs/data-logging>) for
-    /// how to make your project eligible for enhanced models.
-    UseBestAvailable = 1,
-    /// Use standard model variant even if an enhanced model is available.  See the
-    /// [Cloud Speech
-    /// documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
-    /// for details about enhanced models.
-    UseStandard = 2,
-    /// Use an enhanced model variant:
-    ///
-    /// * If an enhanced variant does not exist for the given
-    ///    \[model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model\] and
-    ///    request language, Dialogflow falls back to the standard variant.
-    ///
-    ///    The [Cloud Speech
-    ///    documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
-    ///    describes which models have enhanced variants.
-    ///
-    /// * If the API caller isn't eligible for enhanced models, Dialogflow returns
-    ///    an error.  Please see the [Dialogflow
-    ///    docs](<https://cloud.google.com/dialogflow/docs/data-logging>)
-    ///    for how to make your project eligible.
-    UseEnhanced = 3,
-}
-impl SpeechModelVariant {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            SpeechModelVariant::Unspecified => "SPEECH_MODEL_VARIANT_UNSPECIFIED",
-            SpeechModelVariant::UseBestAvailable => "USE_BEST_AVAILABLE",
-            SpeechModelVariant::UseStandard => "USE_STANDARD",
-            SpeechModelVariant::UseEnhanced => "USE_ENHANCED",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "SPEECH_MODEL_VARIANT_UNSPECIFIED" => Some(Self::Unspecified),
-            "USE_BEST_AVAILABLE" => Some(Self::UseBestAvailable),
-            "USE_STANDARD" => Some(Self::UseStandard),
-            "USE_ENHANCED" => Some(Self::UseEnhanced),
-            _ => None,
-        }
-    }
-}
-/// Gender of the voice as described in
-/// [SSML voice element](<https://www.w3.org/TR/speech-synthesis11/#edef_voice>).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum SsmlVoiceGender {
-    /// An unspecified gender, which means that the client doesn't care which
-    /// gender the selected voice will have.
-    Unspecified = 0,
-    /// A male voice.
-    Male = 1,
-    /// A female voice.
-    Female = 2,
-    /// A gender-neutral voice.
-    Neutral = 3,
-}
-impl SsmlVoiceGender {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            SsmlVoiceGender::Unspecified => "SSML_VOICE_GENDER_UNSPECIFIED",
-            SsmlVoiceGender::Male => "SSML_VOICE_GENDER_MALE",
-            SsmlVoiceGender::Female => "SSML_VOICE_GENDER_FEMALE",
-            SsmlVoiceGender::Neutral => "SSML_VOICE_GENDER_NEUTRAL",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "SSML_VOICE_GENDER_UNSPECIFIED" => Some(Self::Unspecified),
-            "SSML_VOICE_GENDER_MALE" => Some(Self::Male),
-            "SSML_VOICE_GENDER_FEMALE" => Some(Self::Female),
-            "SSML_VOICE_GENDER_NEUTRAL" => Some(Self::Neutral),
-            _ => None,
-        }
-    }
-}
-/// Audio encoding of the output audio format in Text-To-Speech.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum OutputAudioEncoding {
-    /// Not specified.
-    Unspecified = 0,
-    /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
-    /// Audio content returned as LINEAR16 also contains a WAV header.
-    Linear16 = 1,
-    /// MP3 audio at 32kbps.
-    Mp3 = 2,
-    /// MP3 audio at 64kbps.
-    Mp364Kbps = 4,
-    /// Opus encoded audio wrapped in an ogg container. The result will be a
-    /// file which can be played natively on Android, and in browsers (at least
-    /// Chrome and Firefox). The quality of the encoding is considerably higher
-    /// than MP3 while using approximately the same bitrate.
-    OggOpus = 3,
-    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
-    Mulaw = 5,
-}
-impl OutputAudioEncoding {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            OutputAudioEncoding::Unspecified => "OUTPUT_AUDIO_ENCODING_UNSPECIFIED",
-            OutputAudioEncoding::Linear16 => "OUTPUT_AUDIO_ENCODING_LINEAR_16",
-            OutputAudioEncoding::Mp3 => "OUTPUT_AUDIO_ENCODING_MP3",
-            OutputAudioEncoding::Mp364Kbps => "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS",
-            OutputAudioEncoding::OggOpus => "OUTPUT_AUDIO_ENCODING_OGG_OPUS",
-            OutputAudioEncoding::Mulaw => "OUTPUT_AUDIO_ENCODING_MULAW",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "OUTPUT_AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
-            "OUTPUT_AUDIO_ENCODING_LINEAR_16" => Some(Self::Linear16),
-            "OUTPUT_AUDIO_ENCODING_MP3" => Some(Self::Mp3),
-            "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS" => Some(Self::Mp364Kbps),
-            "OUTPUT_AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
-            "OUTPUT_AUDIO_ENCODING_MULAW" => Some(Self::Mulaw),
-            _ => None,
         }
     }
 }
@@ -8773,8 +8810,8 @@ pub struct Environment {
     /// 500 characters. If exceeded, the request is rejected.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Required. A list of configurations for flow versions. You should include
-    /// version configs for all flows that are reachable from [`Start
+    /// A list of configurations for flow versions. You should include version
+    /// configs for all flows that are reachable from [`Start
     /// Flow`]\[Agent.start_flow\] in the agent. Otherwise, an error will be
     /// returned.
     #[prost(message, repeated, tag = "6")]

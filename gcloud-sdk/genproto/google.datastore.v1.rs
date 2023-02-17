@@ -16,7 +16,8 @@
 ///
 /// Foreign partition IDs (in which the project ID does
 /// not match the context project ID ) are discouraged.
-/// Reads and writes of foreign partition IDs may fail if the project is not in an active state.
+/// Reads and writes of foreign partition IDs may fail if the project is not in
+/// an active state.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionId {
@@ -165,8 +166,8 @@ pub mod value {
         #[prost(message, tag = "5")]
         KeyValue(super::Key),
         /// A UTF-8 encoded string value.
-        /// When `exclude_from_indexes` is false (it is indexed) , may have at most 1500 bytes.
-        /// Otherwise, may be set to at most 1,000,000 bytes.
+        /// When `exclude_from_indexes` is false (it is indexed) , may have at most
+        /// 1500 bytes. Otherwise, may be set to at most 1,000,000 bytes.
         #[prost(string, tag = "17")]
         StringValue(::prost::alloc::string::String),
         /// A blob value.
@@ -228,17 +229,23 @@ pub struct EntityResult {
     /// The version of the entity, a strictly positive number that monotonically
     /// increases with changes to the entity.
     ///
-    /// This field is set for \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity
-    /// results.
+    /// This field is set for
+    /// \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity results.
     ///
-    /// For \[missing][google.datastore.v1.LookupResponse.missing\] entities in `LookupResponse`, this
-    /// is the version of the snapshot that was used to look up the entity, and it
-    /// is always set except for eventually consistent reads.
+    /// For \[missing][google.datastore.v1.LookupResponse.missing\] entities in
+    /// `LookupResponse`, this is the version of the snapshot that was used to look
+    /// up the entity, and it is always set except for eventually consistent reads.
     #[prost(int64, tag = "4")]
     pub version: i64,
+    /// The time at which the entity was created.
+    /// This field is set for
+    /// \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity results.
+    /// If this entity is missing, this field will not be set.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the entity was last changed.
-    /// This field is set for \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity
-    /// results.
+    /// This field is set for
+    /// \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity results.
     /// If this entity is missing, this field will not be set.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -346,11 +353,13 @@ pub struct Query {
     #[prost(message, optional, tag = "12")]
     pub limit: ::core::option::Option<i32>,
 }
-/// Datastore query for running an aggregation over a \[Query][google.datastore.v1.Query\].
+/// Datastore query for running an aggregation over a
+/// \[Query][google.datastore.v1.Query\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregationQuery {
-    /// Optional. Series of aggregations to apply over the results of the `nested_query`.
+    /// Optional. Series of aggregations to apply over the results of the
+    /// `nested_query`.
     ///
     /// Requires:
     ///
@@ -367,7 +376,8 @@ pub mod aggregation_query {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aggregation {
-        /// Optional. Optional name of the property to store the result of the aggregation.
+        /// Optional. Optional name of the property to store the result of the
+        /// aggregation.
         ///
         /// If not provided, Datastore will pick a default name following the format
         /// `property_<incremental_id++>`. For example:
@@ -399,7 +409,8 @@ pub mod aggregation_query {
         /// Requires:
         ///
         /// * Must be unique across all aggregation aliases.
-        /// * Conform to [entity property name]\[google.datastore.v1.Entity.properties\] limitations.
+        /// * Conform to [entity property
+        /// name]\[google.datastore.v1.Entity.properties\] limitations.
         #[prost(string, tag = "7")]
         pub alias: ::prost::alloc::string::String,
         /// The type of aggregation to perform, required.
@@ -415,7 +426,8 @@ pub mod aggregation_query {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Count {
-            /// Optional. Optional constraint on the maximum number of entities to count.
+            /// Optional. Optional constraint on the maximum number of entities to
+            /// count.
             ///
             /// This provides a way to set an upper bound on the number of entities
             /// to scan, limiting latency and cost.
@@ -594,6 +606,8 @@ pub mod composite_filter {
         Unspecified = 0,
         /// The results are required to satisfy each of the combined filters.
         And = 1,
+        /// Documents are required to satisfy at least one of the combined filters.
+        Or = 2,
     }
     impl Operator {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -604,6 +618,7 @@ pub mod composite_filter {
             match self {
                 Operator::Unspecified => "OPERATOR_UNSPECIFIED",
                 Operator::And => "AND",
+                Operator::Or => "OR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -611,6 +626,7 @@ pub mod composite_filter {
             match value {
                 "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
                 "AND" => Some(Self::And),
+                "OR" => Some(Self::Or),
                 _ => None,
             }
         }
@@ -693,6 +709,7 @@ pub mod property_filter {
         /// Requires:
         ///
         /// * That `value` is an entity key.
+        /// * No other `HAS_ANCESTOR` is in the same query.
         HasAncestor = 11,
         /// The value of the `property` is not in the given array.
         ///
@@ -908,9 +925,10 @@ pub mod query_result_batch {
 pub struct AggregationResult {
     /// The result of the aggregation functions, ex: `COUNT(*) AS total_entities`.
     ///
-    /// The key is the \[alias][google.datastore.v1.AggregationQuery.Aggregation.alias\]
-    /// assigned to the aggregation function on input and the size of this map
-    /// equals the number of aggregation functions in the query.
+    /// The key is the
+    /// \[alias][google.datastore.v1.AggregationQuery.Aggregation.alias\] assigned to
+    /// the aggregation function on input and the size of this map equals the
+    /// number of aggregation functions in the query.
     #[prost(map = "string, message", tag = "2")]
     pub aggregate_properties: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -979,7 +997,9 @@ pub struct LookupResponse {
     /// The identifier of the transaction that was started as part of this Lookup
     /// request.
     ///
-    /// Set only when \[ReadOptions.begin_transaction][\] was set in
+    /// Set only when
+    /// \[ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction\]
+    /// was set in
     /// \[LookupRequest.read_options][google.datastore.v1.LookupRequest.read_options\].
     #[prost(bytes = "vec", tag = "5")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
@@ -1041,7 +1061,9 @@ pub struct RunQueryResponse {
     /// The identifier of the transaction that was started as part of this
     /// RunQuery request.
     ///
-    /// Set only when \[ReadOptions.begin_transaction][\] was set in
+    /// Set only when
+    /// \[ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction\]
+    /// was set in
     /// \[RunQueryRequest.read_options][google.datastore.v1.RunQueryRequest.read_options\].
     #[prost(bytes = "vec", tag = "5")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
@@ -1101,7 +1123,9 @@ pub struct RunAggregationQueryResponse {
     /// The identifier of the transaction that was started as part of this
     /// RunAggregationQuery request.
     ///
-    /// Set only when \[ReadOptions.begin_transaction][\] was set in
+    /// Set only when
+    /// \[ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction\]
+    /// was set in
     /// \[RunAggregationQueryRequest.read_options][google.datastore.v1.RunAggregationQueryRequest.read_options\].
     #[prost(bytes = "vec", tag = "5")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
@@ -1252,8 +1276,7 @@ pub mod commit_request {
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Options for beginning a new transaction for this request.
         /// The transaction is committed when the request completes. If specified,
-        /// \[TransactionOptions.mode][google.datastore.v1.TransactionOptions.mode\]
-        /// must be
+        /// \[TransactionOptions.mode][google.datastore.v1.TransactionOptions\] must be
         /// \[TransactionOptions.ReadWrite][google.datastore.v1.TransactionOptions.ReadWrite\].
         #[prost(message, tag = "10")]
         SingleUseTransaction(super::TransactionOptions),
@@ -1413,6 +1436,9 @@ pub struct MutationResult {
     /// than the version of any possible future entity.
     #[prost(int64, tag = "4")]
     pub version: i64,
+    /// The create time of the entity. This field will not be set after a 'delete'.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The update time of the entity on the server after processing the mutation.
     /// If the mutation doesn't change anything on the server, then the timestamp
     /// will be the update timestamp of the current entity. This field will not be

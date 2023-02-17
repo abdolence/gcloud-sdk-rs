@@ -2504,8 +2504,8 @@ pub struct TransactionInfo {
     /// Metadata about the API transaction.
     #[prost(message, optional, tag = "6")]
     pub metadata: ::core::option::Option<transaction_info::TransactionMetadata>,
-    /// Output only. Any error details for the current API transaction, if the state
-    /// is `FAILED`.
+    /// Output only. Any error details for the current API transaction, if the
+    /// state is `FAILED`.
     #[prost(message, optional, tag = "7")]
     pub error_details: ::core::option::Option<transaction_info::TransactionErrorDetails>,
     /// Output only. Information about the bank adapter invocation from the issuer

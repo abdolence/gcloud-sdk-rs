@@ -88,6 +88,11 @@ pub mod workstation_cluster {
         /// Connect](<https://cloud.google.com/vpc/docs/configure-private-service-connect-services>).
         #[prost(string, tag = "3")]
         pub service_attachment_uri: ::prost::alloc::string::String,
+        /// Additional projects that are allowed to attach to the workstation
+        /// cluster's service attachment. By default, the workstation cluster's
+        /// project and the VPC host project (if different) are allowed.
+        #[prost(string, repeated, tag = "4")]
+        pub allowed_projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// A set of configuration options describing how a workstation will be run.
@@ -141,8 +146,8 @@ pub struct WorkstationConfig {
     #[prost(message, optional, tag = "10")]
     pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
     /// How long to wait before automatically stopping a workstation after it
-    /// started. A value of 0 indicates that workstations using this config should
-    /// never time out. Must be greater than 0 and less than 24 hours if
+    /// started. A value of 0 indicates that workstations using this configuration
+    /// should never time out. Must be greater than 0 and less than 24 hours if
     /// encryption_key is set. Defaults to 12 hours.
     #[prost(message, optional, tag = "11")]
     pub running_timeout: ::core::option::Option<::prost_types::Duration>,
@@ -159,15 +164,15 @@ pub struct WorkstationConfig {
     #[prost(message, optional, tag = "14")]
     pub container: ::core::option::Option<workstation_config::Container>,
     /// Encrypts resources of this workstation configuration using a
-    /// customer-specified encryption key.
+    /// customer-managed encryption key.
     ///
     /// If specified, the boot disk of the Compute Engine instance and the
-    /// persistent disk will be encrypted using this encryption key. If
-    /// this field is not set, the disks will be encrypted using a generated
-    /// key. Customer-specified encryption keys do not protect disk metadata.
+    /// persistent disk are encrypted using this encryption key. If
+    /// this field is not set, the disks are encrypted using a generated
+    /// key. Customer-managed encryption keys do not protect disk metadata.
     ///
-    /// If the customer-specified encryption key is rotated, when the workstation
-    /// instance is stopped, the system will attempt to recreate the
+    /// If the customer-managed encryption key is rotated, when the workstation
+    /// instance is stopped, the system attempts to recreate the
     /// persistent disk with the new version of the key. Be sure to keep
     /// older versions of the key until the persistent disk is recreated.
     /// Otherwise, data on the persistent disk will be lost.
@@ -299,6 +304,10 @@ pub mod workstation_config {
             /// Type of the disk to use.
             #[prost(string, tag = "3")]
             pub disk_type: ::prost::alloc::string::String,
+            /// Name of the snapshot to use as the source for the disk. If set,
+            /// size_gb and fs_type must be empty.
+            #[prost(string, tag = "5")]
+            pub source_snapshot: ::prost::alloc::string::String,
             /// What should happen to the disk after the workstation is deleted.
             /// Defaults to DELETE.
             #[prost(
@@ -391,21 +400,22 @@ pub mod workstation_config {
         #[prost(int32, tag = "6")]
         pub run_as_user: i32,
     }
-    /// A customer-specified encryption key for the Compute Engine resources
+    /// A customer-managed encryption key for the Compute Engine resources
     /// of this workstation configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomerEncryptionKey {
-        /// The name of the encryption key that is stored in Google Cloud KMS, for
-        /// example,
+        /// The name of the Google Cloud KMS encryption key. For example,
         /// `projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME`.
         #[prost(string, tag = "1")]
         pub kms_key: ::prost::alloc::string::String,
-        /// The service account being used for the encryption request for the
-        /// given KMS key. If absent, the Compute Engine default service account
-        /// is used. However, it is recommended to use a separate service account
-        /// and to follow KMS best practices mentioned at
-        /// <https://cloud.google.com/kms/docs/separation-of-duties>
+        /// The service account to use with the specified
+        /// KMS key. We recommend that you use a separate service account
+        /// and follow KMS best practices. For more information, see
+        /// [Separation of
+        /// duties](<https://cloud.google.com/kms/docs/separation-of-duties>) and
+        /// `gcloud kms keys add-iam-policy-binding`
+        /// \[`--member`\](<https://cloud.google.com/sdk/gcloud/reference/kms/keys/add-iam-policy-binding#--member>).
         #[prost(string, tag = "2")]
         pub kms_key_service_account: ::prost::alloc::string::String,
     }
@@ -546,7 +556,7 @@ pub struct ListWorkstationClustersRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkstationClustersResponse {
-    /// The requested clusters.
+    /// The requested workstation clusters.
     #[prost(message, repeated, tag = "1")]
     pub workstation_clusters: ::prost::alloc::vec::Vec<WorkstationCluster>,
     /// Token to retrieve the next page of results, or empty if there are no more
@@ -564,10 +574,10 @@ pub struct CreateWorkstationClusterRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. ID to use for the cluster.
+    /// Required. ID to use for the workstation cluster.
     #[prost(string, tag = "2")]
     pub workstation_cluster_id: ::prost::alloc::string::String,
-    /// Required. Cluster to create.
+    /// Required. Workstation cluster to create.
     #[prost(message, optional, tag = "3")]
     pub workstation_cluster: ::core::option::Option<WorkstationCluster>,
     /// If set, validate the request and preview the review, but do not actually
@@ -579,18 +589,19 @@ pub struct CreateWorkstationClusterRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkstationClusterRequest {
-    /// Required. Cluster to update.
+    /// Required. Workstation cluster to update.
     #[prost(message, optional, tag = "1")]
     pub workstation_cluster: ::core::option::Option<WorkstationCluster>,
-    /// Required. Mask specifying which fields in the cluster should be updated.
+    /// Required. Mask that specifies which fields in the workstation cluster
+    /// should be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If set, validate the request and preview the review, but do not actually
     /// apply it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set, and the cluster is not found, a new cluster will be created.
-    /// In this situation, update_mask is ignored.
+    /// If set, and the workstation cluster is not found, a new workstation
+    /// cluster will be created. In this situation, update_mask is ignored.
     #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
@@ -598,20 +609,19 @@ pub struct UpdateWorkstationClusterRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkstationClusterRequest {
-    /// Required. Name of the cluster to delete.
+    /// Required. Name of the workstation cluster to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// If set, validate the request and preview the review, but do not apply it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// If set, the request will be rejected if the latest version of the cluster
-    /// on the server does not have this etag.
+    /// If set, the request will be rejected if the latest version of the
+    /// workstation cluster on the server does not have this etag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
-    /// If set, any workstation configurations and workstations in the cluster will
-    /// also be deleted. Otherwise, the request will work only if the cluster has
-    /// no configurations or workstations.
+    /// If set, any workstation configurations and workstations in the
+    /// workstation cluster are also deleted. Otherwise, the request only
+    /// works if the workstation cluster has no configurations or workstations.
     #[prost(bool, tag = "4")]
     pub force: bool,
 }

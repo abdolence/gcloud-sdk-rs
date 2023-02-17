@@ -7460,6 +7460,9 @@ pub struct SuggestConversationSummaryRequest {
     /// suggestion. By default 500 and at most 1000.
     #[prost(int32, tag = "4")]
     pub context_size: i32,
+    /// Parameters for a human assist query.
+    #[prost(message, optional, tag = "5")]
+    pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
 }
 /// The response message for
 /// \[Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2.Conversations.SuggestConversationSummary\].
@@ -9338,6 +9341,12 @@ pub struct ConversationProfile {
     /// ID>/securitySettings/<Security Settings ID>`.
     #[prost(string, tag = "13")]
     pub security_settings: ::prost::alloc::string::String,
+    /// Configuration for Text-to-Speech synthesization.
+    ///
+    /// Used by Phone Gateway to specify synthesization options. If agent defines
+    /// synthesization options as well, agent settings overrides the option here.
+    #[prost(message, optional, tag = "18")]
+    pub tts_config: ::core::option::Option<SynthesizeSpeechConfig>,
 }
 /// The request message for
 /// \[ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles\].
