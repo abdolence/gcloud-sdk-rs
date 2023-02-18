@@ -5,7 +5,7 @@
 ![security audit](https://github.com/abdolence/gcloud-sdk-rs/workflows/security%20audit/badge.svg)
 ![unsafe](https://img.shields.io/badge/unsafe-forbidden-success.svg)
 
-Async Google gRPC/REST APIs and the client implementation hiding complexity of GCP authentication based on Tonic middleware and Reqwest.
+Async Google Cloud Platform (GCP) gRPC/REST APIs client implementation based on Tonic middleware and Reqwest.
 
 ## Disclaimer
 This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time this page updated).
