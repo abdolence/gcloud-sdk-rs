@@ -12,6 +12,8 @@ use prost_types::{field_descriptor_proto, DescriptorProto, FieldDescriptorProto}
 struct MySchemaRow {
     #[prost(string, tag = "1")]
     test_column: String,
+    #[prost(int64, tag = "2")]
+    test_num: i64,
 }
 
 #[tokio::main]
@@ -40,12 +42,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rows_schema = ProtoSchema {
         proto_descriptor: Some(DescriptorProto {
             name: Some("test_schema".to_string()),
-            field: vec![FieldDescriptorProto {
-                name: Some("test_column".to_string()),
-                number: Some(1),
-                r#type: Some(field_descriptor_proto::Type::String.into()),
-                ..Default::default()
-            }],
+            field: vec![
+                FieldDescriptorProto {
+                    name: Some("test_column".to_string()),
+                    number: Some(1),
+                    r#type: Some(field_descriptor_proto::Type::String.into()),
+                    ..Default::default()
+                },
+                FieldDescriptorProto {
+                    name: Some("test_num".to_string()),
+                    number: Some(2),
+                    r#type: Some(field_descriptor_proto::Type::Int64.into()),
+                    ..Default::default()
+                },
+            ],
             ..Default::default()
         }),
     };
@@ -60,10 +70,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         rows: Some(append_rows_request::Rows::ProtoRows(ProtoData {
             writer_schema: Some(rows_schema),
             rows: Some(ProtoRows {
-                serialized_rows: vec![MySchemaRow {
-                    test_column: "test".to_string(),
-                }
-                .encode_to_vec()],
+                serialized_rows: vec![
+                    MySchemaRow {
+                        test_column: "test-1".to_string(),
+                        test_num: 42,
+                    }
+                    .encode_to_vec(),
+                    MySchemaRow {
+                        test_column: "test-2".to_string(),
+                        test_num: 42,
+                    }
+                    .encode_to_vec(),
+                ],
             }),
         })),
     }]);
