@@ -22,8 +22,6 @@ When using each product API, you must explicitly include it in your build using 
 For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub), write `features = ["google-pubsub-v1"]` to Cargo.toml.
 
 The feature name is the period of the package name of each proto file, replaced by a hyphen.
-If you specify a package, it will automatically load the dependent packages and include them in the build.
-It means that `features = ["google-firestore-v1"]`.
 
 In addition, multiple features can be specified.
 
