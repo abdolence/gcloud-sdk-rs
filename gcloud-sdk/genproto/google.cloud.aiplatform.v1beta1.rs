@@ -14373,6 +14373,251 @@ pub struct LineageSubgraph {
     #[prost(message, repeated, tag = "3")]
     pub events: ::prost::alloc::vec::Vec<Event>,
 }
+/// The request message for
+/// \[MatchService.FindNeighbors][google.cloud.aiplatform.v1beta1.MatchService.FindNeighbors\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindNeighborsRequest {
+    /// Required. The name of the index endpoint.
+    /// Format:
+    /// `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}`
+    #[prost(string, tag = "1")]
+    pub index_endpoint: ::prost::alloc::string::String,
+    /// The ID of the DeploydIndex that will serve the request. This request is
+    /// sent to a specific IndexEndpoint, as per the IndexEndpoint.network. That
+    /// IndexEndpoint also has IndexEndpoint.deployed_indexes, and each such index
+    /// has a DeployedIndex.id field.
+    /// The value of the field below must equal one of the DeployedIndex.id
+    /// fields of the IndexEndpoint that is being called for this request.
+    #[prost(string, tag = "2")]
+    pub deployed_index_id: ::prost::alloc::string::String,
+    /// The list of queries.
+    #[prost(message, repeated, tag = "3")]
+    pub queries: ::prost::alloc::vec::Vec<find_neighbors_request::Query>,
+    /// If set to true, the full datapoints (including all vector values and
+    /// restricts) of the nearest neighbors are returned.
+    /// Note that returning full datapoint will significantly increase the
+    /// latency and cost of the query.
+    #[prost(bool, tag = "4")]
+    pub return_full_datapoint: bool,
+}
+/// Nested message and enum types in `FindNeighborsRequest`.
+pub mod find_neighbors_request {
+    /// A query to find a number of the nearest neighbors (most similar vectors)
+    /// of a vector.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Query {
+        /// Required. The datapoint/vector whose nearest neighbors should be searched
+        /// for.
+        #[prost(message, optional, tag = "1")]
+        pub datapoint: ::core::option::Option<super::IndexDatapoint>,
+        /// The number of nearest neighbors to be retrieved from database for each
+        /// query. If not set, will use the default from the service configuration
+        /// (<https://cloud.google.com/vertex-ai/docs/matching-engine/configuring-indexes#nearest-neighbor-search-config>).
+        #[prost(int32, tag = "2")]
+        pub neighbor_count: i32,
+        /// Crowding is a constraint on a neighbor list produced by nearest neighbor
+        /// search requiring that no more than some value k' of the k neighbors
+        /// returned have the same value of crowding_attribute.
+        /// It's used for improving result diversity.
+        /// This field is the maximum number of matches with the same crowding tag.
+        #[prost(int32, tag = "3")]
+        pub per_crowding_attribute_neighbor_count: i32,
+        /// The number of neighbors to find via approximate search before
+        /// exact reordering is performed. If not set, the default value from scam
+        /// config is used; if set, this value must be > 0.
+        #[prost(int32, tag = "4")]
+        pub approximate_neighbor_count: i32,
+        /// The fraction of the number of leaves to search, set at query time allows
+        /// user to tune search performance. This value increase result in both
+        /// search accuracy and latency increase. The value should be between 0.0
+        /// and 1.0. If not set or set to 0.0, query uses the default value specified
+        /// in
+        /// NearestNeighborSearchConfig.TreeAHConfig.fraction_leaf_nodes_to_search.
+        #[prost(double, tag = "5")]
+        pub fraction_leaf_nodes_to_search_override: f64,
+    }
+}
+/// The response message for
+/// \[MatchService.FindNeighbors][google.cloud.aiplatform.v1beta1.MatchService.FindNeighbors\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindNeighborsResponse {
+    /// The nearest neighbors of the query datapoints.
+    #[prost(message, repeated, tag = "1")]
+    pub nearest_neighbors: ::prost::alloc::vec::Vec<
+        find_neighbors_response::NearestNeighbors,
+    >,
+}
+/// Nested message and enum types in `FindNeighborsResponse`.
+pub mod find_neighbors_response {
+    /// A neighbor of the query vector.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Neighbor {
+        /// The datapoint of the neighbor.
+        /// Note that full datapoints are returned only when "return_full_datapoint"
+        /// is set to true. Otherwise, only the "datapoint_id" and "crowding_tag"
+        /// fields are populated.
+        #[prost(message, optional, tag = "1")]
+        pub datapoint: ::core::option::Option<super::IndexDatapoint>,
+        /// The distance between the neighbor and the query vector.
+        #[prost(double, tag = "2")]
+        pub distance: f64,
+    }
+    /// Nearest neighbors for one query.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NearestNeighbors {
+        /// The ID of the query datapoint.
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// All its neighbors.
+        #[prost(message, repeated, tag = "2")]
+        pub neighbors: ::prost::alloc::vec::Vec<Neighbor>,
+    }
+}
+/// The request message for
+/// \[MatchService.ReadIndexDatapoints][google.cloud.aiplatform.v1beta1.MatchService.ReadIndexDatapoints\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadIndexDatapointsRequest {
+    /// Required. The name of the index endpoint.
+    /// Format:
+    /// `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}`
+    #[prost(string, tag = "1")]
+    pub index_endpoint: ::prost::alloc::string::String,
+    /// The ID of the DeploydIndex that will serve the request.
+    #[prost(string, tag = "2")]
+    pub deployed_index_id: ::prost::alloc::string::String,
+    /// IDs of the datapoints to be searched for.
+    #[prost(string, repeated, tag = "3")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The response message for
+/// \[MatchService.ReadIndexDatapoints][google.cloud.aiplatform.v1beta1.MatchService.ReadIndexDatapoints\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadIndexDatapointsResponse {
+    /// The result list of datapoints.
+    #[prost(message, repeated, tag = "1")]
+    pub datapoints: ::prost::alloc::vec::Vec<IndexDatapoint>,
+}
+/// Generated client implementations.
+pub mod match_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// MatchService is a Google managed service for efficient vector similarity
+    /// search at scale.
+    #[derive(Debug, Clone)]
+    pub struct MatchServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl MatchServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> MatchServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> MatchServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            MatchServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Finds the nearest neighbors of each vector within the request.
+        pub async fn find_neighbors(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FindNeighborsRequest>,
+        ) -> Result<tonic::Response<super::FindNeighborsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.MatchService/FindNeighbors",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Reads the datapoints/vectors of the given IDs.
+        /// A maximum of 1000 datapoints can be retrieved in a batch.
+        pub async fn read_index_datapoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReadIndexDatapointsRequest>,
+        ) -> Result<tonic::Response<super::ReadIndexDatapointsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.MatchService/ReadIndexDatapoints",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
 /// Instance of a general MetadataSchema.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

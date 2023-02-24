@@ -1,4 +1,5 @@
-/// The request for \[ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1.ConnectionService.CreateConnection\].
+/// The request for
+/// \[ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1.ConnectionService.CreateConnection\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionRequest {
@@ -13,7 +14,8 @@ pub struct CreateConnectionRequest {
     #[prost(message, optional, tag = "3")]
     pub connection: ::core::option::Option<Connection>,
 }
-/// The request for \[ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection\].
+/// The request for
+/// \[ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionRequest {
@@ -22,7 +24,8 @@ pub struct GetConnectionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections\].
+/// The request for
+/// \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsRequest {
@@ -37,7 +40,8 @@ pub struct ListConnectionsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections\].
+/// The response for
+/// \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
@@ -48,7 +52,8 @@ pub struct ListConnectionsResponse {
     #[prost(message, repeated, tag = "2")]
     pub connections: ::prost::alloc::vec::Vec<Connection>,
 }
-/// The request for \[ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection\].
+/// The request for
+/// \[ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionRequest {
@@ -139,10 +144,11 @@ pub struct CloudSqlProperties {
     /// Input only. Cloud SQL credential.
     #[prost(message, optional, tag = "4")]
     pub credential: ::core::option::Option<CloudSqlCredential>,
-    /// Output only. The account ID of the service used for the purpose of this connection.
+    /// Output only. The account ID of the service used for the purpose of this
+    /// connection.
     ///
     /// When the connection is used in the context of an operation in
-    /// BigQuery, this service account will serve as identity being used for
+    /// BigQuery, this service account will serve as the identity being used for
     /// connecting to the CloudSQL instance specified in this connection.
     #[prost(string, tag = "5")]
     pub service_account_id: ::prost::alloc::string::String,
@@ -214,6 +220,25 @@ pub struct CloudSpannerProperties {
     /// If parallelism should be used when reading from Cloud Spanner
     #[prost(bool, tag = "2")]
     pub use_parallelism: bool,
+    /// If the serverless analytics service should be used to read data from Cloud
+    /// Spanner.
+    /// Note: `use_parallelism` must be set when using serverless analytics.
+    #[prost(bool, tag = "3")]
+    pub use_serverless_analytics: bool,
+    /// Optional. Cloud Spanner database role for fine-grained access control.
+    /// A database role is a collection of fine-grained access privileges. Example:
+    /// Admin predefines roles that provides user a set of permissions {`SELECT`,
+    /// `INSERT`, ..}. The user can then specify a predefined role on a connection to
+    /// execute their Cloud Spanner query. The role is passthrough here. If the
+    /// user is not authorized to use the specified role, they get an error. This
+    /// validation happens on Cloud Spanner.
+    ///
+    /// See <https://cloud.google.com/spanner/docs/fgac-about> for more details.
+    ///
+    /// REQUIRES: database role name must start with uppercase/lowercase letter
+    /// and only contain uppercase/lowercase letters, numbers, and underscores.
+    #[prost(string, tag = "4")]
+    pub database_role: ::prost::alloc::string::String,
 }
 /// Connection properties specific to Amazon Web Services (AWS).
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -254,8 +279,9 @@ pub struct AwsCrossAccountRole {
     /// Output only. Google-owned AWS IAM User for a Connection.
     #[prost(string, tag = "2")]
     pub iam_user_id: ::prost::alloc::string::String,
-    /// Output only. A Google-generated id for representing Connection’s identity in AWS.
-    /// External Id is also used for preventing the Confused Deputy Problem. See
+    /// Output only. A Google-generated id for representing Connection’s identity
+    /// in AWS. External Id is also used for preventing the Confused Deputy
+    /// Problem. See
     /// <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html>
     #[prost(string, tag = "3")]
     pub external_id: ::prost::alloc::string::String,
@@ -294,13 +320,13 @@ pub struct AzureProperties {
     /// setup.
     #[prost(string, tag = "5")]
     pub redirect_uri: ::prost::alloc::string::String,
-    /// The client id of the user's Azure Active Directory Application used for a
+    /// The client ID of the user's Azure Active Directory Application used for a
     /// federated connection.
     #[prost(string, tag = "6")]
     pub federated_application_client_id: ::prost::alloc::string::String,
-    /// Output only. A unique Google-owned and Google-generated identity for the Connection.
-    /// This identity will be used to access the user's Azure Active Directory
-    /// Application.
+    /// Output only. A unique Google-owned and Google-generated identity for the
+    /// Connection. This identity will be used to access the user's Azure Active
+    /// Directory Application.
     #[prost(string, tag = "7")]
     pub identity: ::prost::alloc::string::String,
 }
@@ -309,7 +335,8 @@ pub struct AzureProperties {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudResourceProperties {
-    /// Output only. The account ID of the service created for the purpose of this connection.
+    /// Output only. The account ID of the service created for the purpose of this
+    /// connection.
     ///
     /// The service account does not have any permissions associated with it
     /// when it is created. After creation, customers delegate permissions

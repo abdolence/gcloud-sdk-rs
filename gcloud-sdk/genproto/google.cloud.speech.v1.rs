@@ -252,6 +252,31 @@ pub struct StreamingRecognitionConfig {
     /// If `false` or omitted, only `is_final=true` result(s) are returned.
     #[prost(bool, tag = "3")]
     pub interim_results: bool,
+    /// If `true`, responses with voice activity speech events will be returned as
+    /// they are detected.
+    #[prost(bool, tag = "5")]
+    pub enable_voice_activity_events: bool,
+    /// If set, the server will automatically close the stream after the specified
+    /// duration has elapsed after the last VOICE_ACTIVITY speech event has been
+    /// sent. The field `voice_activity_events` must also be set to true.
+    #[prost(message, optional, tag = "6")]
+    pub voice_activity_timeout: ::core::option::Option<
+        streaming_recognition_config::VoiceActivityTimeout,
+    >,
+}
+/// Nested message and enum types in `StreamingRecognitionConfig`.
+pub mod streaming_recognition_config {
+    /// Events that a timeout can be set on for voice activity.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VoiceActivityTimeout {
+        /// Duration to timeout the stream if no speech begins.
+        #[prost(message, optional, tag = "1")]
+        pub speech_start_timeout: ::core::option::Option<::prost_types::Duration>,
+        /// Duration to timeout the stream after speech ends.
+        #[prost(message, optional, tag = "2")]
+        pub speech_end_timeout: ::core::option::Option<::prost_types::Duration>,
+    }
 }
 /// Provides information to the recognizer that specifies how to process the
 /// request.
@@ -260,7 +285,8 @@ pub struct StreamingRecognitionConfig {
 pub struct RecognitionConfig {
     /// Encoding of audio data sent in all `RecognitionAudio` messages.
     /// This field is optional for `FLAC` and `WAV` audio files and required
-    /// for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
+    /// for all other audio formats. For details, see
+    /// \[AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
     #[prost(enumeration = "recognition_config::AudioEncoding", tag = "1")]
     pub encoding: i32,
     /// Sample rate in Hertz of the audio data sent in all
@@ -269,7 +295,8 @@ pub struct RecognitionConfig {
     /// source to 16000 Hz. If that's not possible, use the native sample rate of
     /// the audio source (instead of re-sampling).
     /// This field is optional for FLAC and WAV audio files, but is
-    /// required for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
+    /// required for all other audio formats. For details, see
+    /// \[AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
     /// The number of channels in the input audio data.
@@ -476,7 +503,8 @@ pub mod recognition_config {
     /// an `AudioEncoding` when you send  send `FLAC` or `WAV` audio, the
     /// encoding configuration must match the encoding described in the audio
     /// header; otherwise the request returns an
-    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error code.
+    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error
+    /// code.
     #[derive(
         Clone,
         Copy,
@@ -888,8 +916,8 @@ pub struct SpeechContext {
 }
 /// Contains audio data in the encoding specified in the `RecognitionConfig`.
 /// Either `content` or `uri` must be supplied. Supplying both or neither
-/// returns \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]. See
-/// [content limits](<https://cloud.google.com/speech-to-text/quotas#content>).
+/// returns \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\].
+/// See [content limits](<https://cloud.google.com/speech-to-text/quotas#content>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionAudio {
@@ -915,8 +943,9 @@ pub mod recognition_audio {
         /// Currently, only Google Cloud Storage URIs are
         /// supported, which must be specified in the following format:
         /// `gs://bucket_name/object_name` (other URI formats return
-        /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see
-        /// [Request URIs](<https://cloud.google.com/storage/docs/reference-uris>).
+        /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]).
+        /// For more information, see [Request
+        /// URIs](<https://cloud.google.com/storage/docs/reference-uris>).
         #[prost(string, tag = "2")]
         Uri(::prost::alloc::string::String),
     }
@@ -987,8 +1016,8 @@ pub struct LongRunningRecognizeMetadata {
     /// Time of the most recent processing update.
     #[prost(message, optional, tag = "3")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The URI of the audio file being transcribed. Empty if the audio was sent
-    /// as byte content.
+    /// Output only. The URI of the audio file being transcribed. Empty if the
+    /// audio was sent as byte content.
     #[prost(string, tag = "4")]
     pub uri: ::prost::alloc::string::String,
 }
@@ -1057,6 +1086,9 @@ pub struct StreamingRecognizeResponse {
     /// Indicates the type of speech event.
     #[prost(enumeration = "streaming_recognize_response::SpeechEventType", tag = "4")]
     pub speech_event_type: i32,
+    /// Time offset between the beginning of the audio and event emission.
+    #[prost(message, optional, tag = "8")]
+    pub speech_event_time: ::core::option::Option<::prost_types::Duration>,
     /// When available, billed audio seconds for the stream.
     /// Set only if this is the last response in the stream.
     #[prost(message, optional, tag = "5")]
@@ -1095,6 +1127,20 @@ pub mod streaming_recognize_response {
         /// until the server closes the gRPC connection. This event is only sent if
         /// `single_utterance` was set to `true`, and is not used otherwise.
         EndOfSingleUtterance = 1,
+        /// This event indicates that the server has detected the beginning of human
+        /// voice activity in the stream. This event can be returned multiple times
+        /// if speech starts and stops repeatedly throughout the stream. This event
+        /// is only sent if `voice_activity_events` is set to true.
+        SpeechActivityBegin = 2,
+        /// This event indicates that the server has detected the end of human voice
+        /// activity in the stream. This event can be returned multiple times if
+        /// speech starts and stops repeatedly throughout the stream. This event is
+        /// only sent if `voice_activity_events` is set to true.
+        SpeechActivityEnd = 3,
+        /// This event indicates that the user-set timeout for speech activity begin
+        /// or end has exceeded. Upon receiving this event, the client is expected to
+        /// send a half close. Further audio will not be processed.
+        SpeechActivityTimeout = 4,
     }
     impl SpeechEventType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1105,6 +1151,9 @@ pub mod streaming_recognize_response {
             match self {
                 SpeechEventType::SpeechEventUnspecified => "SPEECH_EVENT_UNSPECIFIED",
                 SpeechEventType::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
+                SpeechEventType::SpeechActivityBegin => "SPEECH_ACTIVITY_BEGIN",
+                SpeechEventType::SpeechActivityEnd => "SPEECH_ACTIVITY_END",
+                SpeechEventType::SpeechActivityTimeout => "SPEECH_ACTIVITY_TIMEOUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1112,6 +1161,9 @@ pub mod streaming_recognize_response {
             match value {
                 "SPEECH_EVENT_UNSPECIFIED" => Some(Self::SpeechEventUnspecified),
                 "END_OF_SINGLE_UTTERANCE" => Some(Self::EndOfSingleUtterance),
+                "SPEECH_ACTIVITY_BEGIN" => Some(Self::SpeechActivityBegin),
+                "SPEECH_ACTIVITY_END" => Some(Self::SpeechActivityEnd),
+                "SPEECH_ACTIVITY_TIMEOUT" => Some(Self::SpeechActivityTimeout),
                 _ => None,
             }
         }
@@ -1151,9 +1203,9 @@ pub struct StreamingRecognitionResult {
     /// For audio_channel_count = N, its output values can range from '1' to 'N'.
     #[prost(int32, tag = "5")]
     pub channel_tag: i32,
-    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag
-    /// of the language in this result. This language code was detected to have
-    /// the most likelihood of being spoken in the audio.
+    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
+    /// language tag of the language in this result. This language code was
+    /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "6")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -1176,9 +1228,9 @@ pub struct SpeechRecognitionResult {
     /// beginning of the audio.
     #[prost(message, optional, tag = "4")]
     pub result_end_time: ::core::option::Option<::prost_types::Duration>,
-    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag
-    /// of the language in this result. This language code was detected to have
-    /// the most likelihood of being spoken in the audio.
+    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
+    /// language tag of the language in this result. This language code was
+    /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "5")]
     pub language_code: ::prost::alloc::string::String,
 }
