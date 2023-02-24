@@ -121,6 +121,17 @@ pub struct DeliveryVehicleLocation {
     #[prost(bool, tag = "26")]
     pub road_snapped: bool,
 }
+/// A time range.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeWindow {
+    /// Required. The start time of the time window (inclusive).
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. The end time of the time window (inclusive).
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// The sensor or methodology used to determine the location.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -314,7 +325,8 @@ pub struct DeliveryVehicle {
     #[prost(message, optional, tag = "7")]
     pub remaining_duration: ::core::option::Option<::prost_types::Duration>,
     /// The journey segments assigned to this Delivery Vehicle, starting from the
-    /// Vehicle's most recently reported location.
+    /// Vehicle's most recently reported location. This field won't be populated
+    /// in the response of `ListDeliveryVehicles`.
     #[prost(message, repeated, tag = "8")]
     pub remaining_vehicle_journey_segments: ::prost::alloc::vec::Vec<
         VehicleJourneySegment,
@@ -423,7 +435,7 @@ pub mod vehicle_stop {
         /// ',', or '#'.
         #[prost(string, tag = "1")]
         pub task_id: ::prost::alloc::string::String,
-        /// The time required to perform the Task.
+        /// Output only. The time required to perform the Task.
         #[prost(message, optional, tag = "2")]
         pub task_duration: ::core::option::Option<::prost_types::Duration>,
     }
@@ -696,6 +708,9 @@ pub struct Task {
     /// Required. Immutable. The time needed to execute a Task at this location.
     #[prost(message, optional, tag = "7")]
     pub task_duration: ::core::option::Option<::prost_types::Duration>,
+    /// The time window during which the task should be completed.
+    #[prost(message, optional, tag = "14")]
+    pub target_time_window: ::core::option::Option<TimeWindow>,
     /// Output only. Journey sharing-specific fields. Not populated when state is
     /// `CLOSED`.
     #[prost(message, optional, tag = "8")]
@@ -931,6 +946,67 @@ pub mod task {
             }
         }
     }
+}
+/// The `TaskTrackingInfo` message. The message contains task tracking
+/// information which will be used for display. If a tracking ID is associated
+/// with multiple Tasks, Fleet Engine uses a heuristic to decide which Task's
+/// TaskTrackingInfo to select.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskTrackingInfo {
+    /// Must be in the format `providers/{provider}/taskTrackingInfo/{tracking}`,
+    /// where `tracking` represents the tracking ID.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The tracking ID of a Task.
+    /// * Must be a valid Unicode string.
+    /// * Limited to a maximum length of 64 characters.
+    /// * Normalized according to [Unicode Normalization Form C]
+    /// (<http://www.unicode.org/reports/tr15/>).
+    /// * May not contain any of the following ASCII characters: '/', ':', '?',
+    /// ',', or '#'.
+    #[prost(string, tag = "2")]
+    pub tracking_id: ::prost::alloc::string::String,
+    /// The vehicle's last location.
+    #[prost(message, optional, tag = "3")]
+    pub vehicle_location: ::core::option::Option<DeliveryVehicleLocation>,
+    /// A list of points which when connected forms a polyline of the vehicle's
+    /// expected route to the location of this task.
+    #[prost(message, repeated, tag = "4")]
+    pub route_polyline_points: ::prost::alloc::vec::Vec<
+        super::super::super::super::google::r#type::LatLng,
+    >,
+    /// Indicates the number of stops the vehicle remaining until the task stop is
+    /// reached, including the task stop. For example, if the vehicle's next stop
+    /// is the task stop, the value will be 1.
+    #[prost(message, optional, tag = "5")]
+    pub remaining_stop_count: ::core::option::Option<i32>,
+    /// The total remaining distance in meters to the `VehicleStop` of interest.
+    #[prost(message, optional, tag = "6")]
+    pub remaining_driving_distance_meters: ::core::option::Option<i32>,
+    /// The timestamp that indicates the estimated arrival time to the stop
+    /// location.
+    #[prost(message, optional, tag = "7")]
+    pub estimated_arrival_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The timestamp that indicates the estimated completion time of a Task.
+    #[prost(message, optional, tag = "8")]
+    pub estimated_task_completion_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The current execution state of the Task.
+    #[prost(enumeration = "task::State", tag = "11")]
+    pub state: i32,
+    /// The outcome of attempting to execute a Task.
+    #[prost(enumeration = "task::TaskOutcome", tag = "9")]
+    pub task_outcome: i32,
+    /// The timestamp that indicates when the Task's outcome was set by the
+    /// provider.
+    #[prost(message, optional, tag = "12")]
+    pub task_outcome_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Immutable. The location where the Task will be completed.
+    #[prost(message, optional, tag = "10")]
+    pub planned_location: ::core::option::Option<LocationInfo>,
+    /// The time window during which the task should be completed.
+    #[prost(message, optional, tag = "13")]
+    pub target_time_window: ::core::option::Option<TimeWindow>,
 }
 /// The `CreateDeliveryVehicle` request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1292,6 +1368,21 @@ pub struct ListTasksResponse {
     #[prost(int64, tag = "3")]
     pub total_size: i64,
 }
+/// The `GetTaskTrackingInfoRequest` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTaskTrackingInfoRequest {
+    /// Optional. The standard Delivery API request header.
+    #[prost(message, optional, tag = "1")]
+    pub header: ::core::option::Option<DeliveryRequestHeader>,
+    /// Required. Must be in the format
+    /// `providers/{provider}/taskTrackingInfo/{tracking_id}`. The `provider`
+    /// must be the Google Cloud Project ID, and the `tracking_id` must be the
+    /// tracking ID associated with the task. An example name can be
+    /// `providers/sample-cloud-project/taskTrackingInfo/sample-tracking-id`.
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod delivery_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -1545,6 +1636,26 @@ pub mod delivery_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/ListTasks",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns the specified `TaskTrackingInfo` instance.
+        pub async fn get_task_tracking_info(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTaskTrackingInfoRequest>,
+        ) -> Result<tonic::Response<super::TaskTrackingInfo>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/maps.fleetengine.delivery.v1.DeliveryService/GetTaskTrackingInfo",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

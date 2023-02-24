@@ -2697,6 +2697,49 @@ pub mod attribution_settings {
         }
     }
 }
+/// A binding of a user to a set of roles.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessBinding {
+    /// Output only. Resource name of this binding.
+    ///
+    /// Format: accounts/{account}/accessBindings/{access_binding} or
+    /// properties/{property}/accessBindings/{access_binding}
+    ///
+    /// Example:
+    /// "accounts/100/accessBindings/200"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// A list of roles for to grant to the parent resource.
+    ///
+    /// Valid values:
+    /// predefinedRoles/viewer
+    /// predefinedRoles/analyst
+    /// predefinedRoles/editor
+    /// predefinedRoles/admin
+    /// predefinedRoles/no-cost-data
+    /// predefinedRoles/no-revenue-data
+    ///
+    /// For users, if an empty list of roles is set, this AccessBinding will be
+    /// deleted.
+    #[prost(string, repeated, tag = "3")]
+    pub roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The target for which to set roles for.
+    #[prost(oneof = "access_binding::AccessTarget", tags = "2")]
+    pub access_target: ::core::option::Option<access_binding::AccessTarget>,
+}
+/// Nested message and enum types in `AccessBinding`.
+pub mod access_binding {
+    /// The target for which to set roles for.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AccessTarget {
+        /// If set, the email address of the user to set roles for.
+        /// Format: "someuser@gmail.com"
+        #[prost(string, tag = "2")]
+        User(::prost::alloc::string::String),
+    }
+}
 /// A link between a GA4 Property and BigQuery project.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3314,7 +3357,7 @@ pub struct RunAccessReportRequest {
     /// to 2 date ranges.
     #[prost(message, repeated, tag = "4")]
     pub date_ranges: ::prost::alloc::vec::Vec<AccessDateRange>,
-    /// Dimension filters allow you to restrict report response to specific
+    /// Dimension filters let you restrict report response to specific
     /// dimension values which match the filter. For example, filtering on access
     /// records of a single user. To learn more, see [Fundamentals of Dimension
     /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
@@ -3460,8 +3503,8 @@ pub struct UpdateAccountRequest {
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Account>,
     /// Required. The list of fields to be updated. Field names must be in snake
-    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
-    /// replace the entire entity, use one path with the string "*" to match all
+    /// case (for example, "field_to_update"). Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match all
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -3474,7 +3517,7 @@ pub struct ProvisionAccountTicketRequest {
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Account>,
     /// Redirect URI where the user will be sent after accepting Terms of Service.
-    /// Must be configured in Developers Console as a Redirect URI
+    /// Must be configured in Developers Console as a Redirect URI.
     #[prost(string, tag = "2")]
     pub redirect_uri: ::prost::alloc::string::String,
 }
@@ -4803,6 +4846,251 @@ pub struct UpdateAttributionSettingsRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// Request message for GetAccessBinding RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAccessBindingRequest {
+    /// Required. The name of the access binding to retrieve.
+    /// Formats:
+    /// - accounts/{account}/accessBindings/{accessBinding}
+    /// - properties/{property}/accessBindings/{accessBinding}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for BatchGetAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchGetAccessBindingsRequest {
+    /// Required. The account or property that owns the access bindings. The parent
+    /// of all provided values for the 'names' field must match this field.
+    /// Formats:
+    /// - accounts/{account}
+    /// - properties/{property}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the access bindings to retrieve.
+    /// A maximum of 1000 access bindings can be retrieved in a batch.
+    /// Formats:
+    /// - accounts/{account}/accessBindings/{accessBinding}
+    /// - properties/{property}/accessBindings/{accessBinding}
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for BatchGetAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchGetAccessBindingsResponse {
+    /// The requested access bindings.
+    #[prost(message, repeated, tag = "1")]
+    pub access_bindings: ::prost::alloc::vec::Vec<AccessBinding>,
+}
+/// Request message for ListAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccessBindingsRequest {
+    /// Required. Formats:
+    /// - accounts/{account}
+    /// - properties/{property}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of access bindings to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 200 access bindings will be returned.
+    /// The maximum value is 500; values above 500 will be coerced to 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListAccessBindings` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListAccessBindings` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccessBindingsResponse {
+    /// List of AccessBindings. These will be ordered stably, but in an arbitrary
+    /// order.
+    #[prost(message, repeated, tag = "1")]
+    pub access_bindings: ::prost::alloc::vec::Vec<AccessBinding>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateAccessBinding RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAccessBindingRequest {
+    /// Required. Formats:
+    /// - accounts/{account}
+    /// - properties/{property}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The access binding to create.
+    #[prost(message, optional, tag = "2")]
+    pub access_binding: ::core::option::Option<AccessBinding>,
+}
+/// Request message for BatchCreateAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateAccessBindingsRequest {
+    /// Required. The account or property that owns the access bindings. The parent
+    /// field in the CreateAccessBindingRequest messages must either be empty or
+    /// match this field. Formats:
+    /// - accounts/{account}
+    /// - properties/{property}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The requests specifying the access bindings to create.
+    /// A maximum of 1000 access bindings can be created in a batch.
+    #[prost(message, repeated, tag = "3")]
+    pub requests: ::prost::alloc::vec::Vec<CreateAccessBindingRequest>,
+}
+/// Response message for BatchCreateAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateAccessBindingsResponse {
+    /// The access bindings created.
+    #[prost(message, repeated, tag = "1")]
+    pub access_bindings: ::prost::alloc::vec::Vec<AccessBinding>,
+}
+/// Request message for UpdateAccessBinding RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAccessBindingRequest {
+    /// Required. The access binding to update.
+    #[prost(message, optional, tag = "1")]
+    pub access_binding: ::core::option::Option<AccessBinding>,
+}
+/// Request message for BatchUpdateAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateAccessBindingsRequest {
+    /// Required. The account or property that owns the access bindings. The parent
+    /// field in the UpdateAccessBindingRequest messages must either be empty or
+    /// match this field. Formats:
+    /// - accounts/{account}
+    /// - properties/{property}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The requests specifying the access bindings to update.
+    /// A maximum of 1000 access bindings can be updated in a batch.
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<UpdateAccessBindingRequest>,
+}
+/// Response message for BatchUpdateAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateAccessBindingsResponse {
+    /// The access bindings updated.
+    #[prost(message, repeated, tag = "1")]
+    pub access_bindings: ::prost::alloc::vec::Vec<AccessBinding>,
+}
+/// Request message for DeleteAccessBinding RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAccessBindingRequest {
+    /// Required. Formats:
+    /// - accounts/{account}/accessBindings/{accessBinding}
+    /// - properties/{property}/accessBindings/{accessBinding}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for BatchDeleteAccessBindings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDeleteAccessBindingsRequest {
+    /// Required. The account or property that owns the access bindings. The parent
+    /// field in the DeleteAccessBindingRequest messages must either be empty or
+    /// match this field. Formats:
+    /// - accounts/{account}
+    /// - properties/{property}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The requests specifying the access bindings to delete.
+    /// A maximum of 1000 access bindings can be deleted in a batch.
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<DeleteAccessBindingRequest>,
+}
+/// Request message for CreateExpandedDataSet RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateExpandedDataSetRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ExpandedDataSet to create.
+    #[prost(message, optional, tag = "2")]
+    pub expanded_data_set: ::core::option::Option<ExpandedDataSet>,
+}
+/// Request message for UpdateExpandedDataSet RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExpandedDataSetRequest {
+    /// Required. The ExpandedDataSet to update.
+    /// The resource's `name` field is used to identify the ExpandedDataSet to be
+    /// updated.
+    #[prost(message, optional, tag = "1")]
+    pub expanded_data_set: ::core::option::Option<ExpandedDataSet>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteExpandedDataSet RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteExpandedDataSetRequest {
+    /// Required. Example format: properties/1234/expandedDataSets/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetExpandedDataSet RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetExpandedDataSetRequest {
+    /// Required. The name of the Audience to get.
+    /// Example format: properties/1234/expandedDataSets/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListExpandedDataSets RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListExpandedDataSetsRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListExpandedDataSets` call. Provide
+    /// this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListExpandedDataSet`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListExpandedDataSets RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListExpandedDataSetsResponse {
+    /// List of ExpandedDataSet. These will be ordered stably, but in an arbitrary
+    /// order.
+    #[prost(message, repeated, tag = "1")]
+    pub expanded_data_sets: ::prost::alloc::vec::Vec<ExpandedDataSet>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Request for setting the opt out status for the automated GA4 setup process.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5732,7 +6020,8 @@ pub mod analytics_admin_service_client {
         /// Acknowledges the terms of user data collection for the specified property.
         ///
         /// This acknowledgement must be completed (either in the Google Analytics UI
-        /// or via this API) before MeasurementProtocolSecret resources may be created.
+        /// or through this API) before MeasurementProtocolSecret resources may be
+        /// created.
         pub async fn acknowledge_user_data_collection(
             &mut self,
             request: impl tonic::IntoRequest<super::AcknowledgeUserDataCollectionRequest>,
@@ -6803,6 +7092,303 @@ pub mod analytics_admin_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/RunAccessReport",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates an access binding on an account or property.
+        pub async fn create_access_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAccessBindingRequest>,
+        ) -> Result<tonic::Response<super::AccessBinding>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateAccessBinding",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets information about an access binding.
+        pub async fn get_access_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAccessBindingRequest>,
+        ) -> Result<tonic::Response<super::AccessBinding>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetAccessBinding",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates an access binding on an account or property.
+        pub async fn update_access_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAccessBindingRequest>,
+        ) -> Result<tonic::Response<super::AccessBinding>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateAccessBinding",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes an access binding on an account or property.
+        pub async fn delete_access_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAccessBindingRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteAccessBinding",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists all access bindings on an account or property.
+        pub async fn list_access_bindings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAccessBindingsRequest>,
+        ) -> Result<tonic::Response<super::ListAccessBindingsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListAccessBindings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates information about multiple access bindings to an account or
+        /// property.
+        ///
+        /// This method is transactional. If any AccessBinding cannot be created, none
+        /// of the AccessBindings will be created.
+        pub async fn batch_create_access_bindings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCreateAccessBindingsRequest>,
+        ) -> Result<
+            tonic::Response<super::BatchCreateAccessBindingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchCreateAccessBindings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets information about multiple access bindings to an account or property.
+        pub async fn batch_get_access_bindings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchGetAccessBindingsRequest>,
+        ) -> Result<
+            tonic::Response<super::BatchGetAccessBindingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchGetAccessBindings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates information about multiple access bindings to an account or
+        /// property.
+        pub async fn batch_update_access_bindings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchUpdateAccessBindingsRequest>,
+        ) -> Result<
+            tonic::Response<super::BatchUpdateAccessBindingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchUpdateAccessBindings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes information about multiple users' links to an account or property.
+        pub async fn batch_delete_access_bindings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchDeleteAccessBindingsRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchDeleteAccessBindings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lookup for a single ExpandedDataSet.
+        pub async fn get_expanded_data_set(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetExpandedDataSetRequest>,
+        ) -> Result<tonic::Response<super::ExpandedDataSet>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetExpandedDataSet",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists ExpandedDataSets on a property.
+        pub async fn list_expanded_data_sets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListExpandedDataSetsRequest>,
+        ) -> Result<
+            tonic::Response<super::ListExpandedDataSetsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListExpandedDataSets",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a ExpandedDataSet.
+        pub async fn create_expanded_data_set(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateExpandedDataSetRequest>,
+        ) -> Result<tonic::Response<super::ExpandedDataSet>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateExpandedDataSet",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates a ExpandedDataSet on a property.
+        pub async fn update_expanded_data_set(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateExpandedDataSetRequest>,
+        ) -> Result<tonic::Response<super::ExpandedDataSet>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateExpandedDataSet",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes a ExpandedDataSet on a property.
+        pub async fn delete_expanded_data_set(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteExpandedDataSetRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteExpandedDataSet",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -5,14 +5,14 @@
 pub struct TranslateTextGlossaryConfig {
     /// Required. The `glossary` to be applied for this translation.
     ///
-    /// The format depends on glossary:
+    /// The format depends on the glossary:
     ///
-    /// - User provided custom glossary:
+    /// - User-provided custom glossary:
     ///    `projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}`
     #[prost(string, tag = "1")]
     pub glossary: ::prost::alloc::string::String,
-    /// Optional. Indicates match is case-insensitive.
-    /// Default value is false if missing.
+    /// Optional. Indicates match is case insensitive. The default value is `false`
+    /// if missing.
     #[prost(bool, tag = "2")]
     pub ignore_case: bool,
 }
@@ -21,23 +21,22 @@ pub struct TranslateTextGlossaryConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextRequest {
     /// Required. The content of the input in string format.
-    /// We recommend the total content be less than 30k codepoints. The max length
-    /// of this field is 1024.
-    /// Use BatchTranslateText for larger text.
+    /// We recommend the total content be less than 30,000 codepoints. The max
+    /// length of this field is 1024. Use BatchTranslateText for larger text.
     #[prost(string, repeated, tag = "1")]
     pub contents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The format of the source text, for example, "text/html",
     ///   "text/plain". If left blank, the MIME type defaults to "text/html".
     #[prost(string, tag = "3")]
     pub mime_type: ::prost::alloc::string::String,
-    /// Optional. The BCP-47 language code of the input text if
+    /// Optional. The ISO-639 language code of the input text if
     /// known, for example, "en-US" or "sr-Latn". Supported language codes are
     /// listed in Language Support. If the source language isn't specified, the API
     /// attempts to identify the source language automatically and returns the
     /// source language within the response.
     #[prost(string, tag = "4")]
     pub source_language_code: ::prost::alloc::string::String,
-    /// Required. The BCP-47 language code to use for translation of the input
+    /// Required. The ISO-639 language code to use for translation of the input
     /// text, set to one of the language codes listed in Language Support.
     #[prost(string, tag = "5")]
     pub target_language_code: ::prost::alloc::string::String,
@@ -130,7 +129,7 @@ pub struct Translation {
     /// `projects/{project-number}/locations/{location-id}/models/general/nmt`.
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
-    /// The BCP-47 language code of source text in the initial request, detected
+    /// The ISO-639 language code of source text in the initial request, detected
     /// automatically, if no source language was passed within the initial
     /// request. If the source language was passed, auto-detection of the language
     /// does not occur and this field is empty.
@@ -205,7 +204,7 @@ pub mod detect_language_request {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectedLanguage {
-    /// The BCP-47 language code of source content in the request, detected
+    /// The ISO-639 language code of the source content in the request, detected
     /// automatically.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
@@ -277,19 +276,19 @@ pub struct SupportedLanguages {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupportedLanguage {
     /// Supported language code, generally consisting of its ISO 639-1
-    /// identifier, for example, 'en', 'ja'. In certain cases, BCP-47 codes
+    /// identifier, for example, 'en', 'ja'. In certain cases, ISO-639 codes
     /// including language and region identifiers are returned (for example,
-    /// 'zh-TW' and 'zh-CN')
+    /// 'zh-TW' and 'zh-CN').
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
-    /// Human readable name of the language localized in the display language
+    /// Human-readable name of the language localized in the display language
     /// specified in the request.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Can be used as source language.
+    /// Can be used as a source language.
     #[prost(bool, tag = "3")]
     pub support_source: bool,
-    /// Can be used as target language.
+    /// Can be used as a target language.
     #[prost(bool, tag = "4")]
     pub support_target: bool,
 }
@@ -404,7 +403,7 @@ pub mod output_config {
         /// Since index.csv will be keeping updated during the process, please make
         /// sure there is no custom retention policy applied on the output bucket
         /// that may avoid file updating.
-        /// (<https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy>)
+        /// (<https://cloud.google.com/storage/docs/bucket-lock#retention-policy>)
         ///
         /// The format of translations_file (for target language code 'trg') is:
         /// `gs://translation_test/a_b_c_'trg'_translations.\[extension\]`
@@ -591,7 +590,7 @@ pub struct TranslateDocumentRequest {
     /// location-id), otherwise an INVALID_ARGUMENT (400) error is returned.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The BCP-47 language code of the input document if known, for
+    /// Optional. The ISO-639 language code of the input document if known, for
     /// example, "en-US" or "sr-Latn". Supported language codes are listed in
     /// Language Support. If the source language isn't specified, the API attempts
     /// to identify the source language automatically and returns the source
@@ -599,7 +598,7 @@ pub struct TranslateDocumentRequest {
     /// request contains a glossary or a custom model.
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
-    /// Required. The BCP-47 language code to use for translation of the input
+    /// Required. The ISO-639 language code to use for translation of the input
     /// document, set to one of the language codes listed in Language Support.
     #[prost(string, tag = "3")]
     pub target_language_code: ::prost::alloc::string::String,
@@ -647,6 +646,22 @@ pub struct TranslateDocumentRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. This flag is to support user customized attribution.
+    /// If not provided, the default is `Machine Translated by Google`.
+    /// Customized attribution should follow rules in
+    /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
+    #[prost(string, tag = "10")]
+    pub customized_attribution: ::prost::alloc::string::String,
+    /// Optional. If true, the page limit of online native pdf translation is 300
+    /// and only native pdf pages will be translated.
+    #[prost(bool, tag = "11")]
+    pub is_translate_native_pdf_only: bool,
+    /// Optional. If true, use the text removal to remove the shadow text on
+    /// background image for native pdf translation.
+    /// Shadow removal feature can only be enabled when
+    /// is_translate_native_pdf_only is false
+    #[prost(bool, tag = "12")]
+    pub enable_shadow_removal_native_pdf: bool,
 }
 /// A translated document message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -900,10 +915,10 @@ pub mod glossary_input_config {
         ///
         /// For unidirectional glossaries:
         ///
-        /// - TSV/CSV (`.tsv`/`.csv`): 2 column file, tab- or comma-separated.
+        /// - TSV/CSV (`.tsv`/`.csv`): Two column file, tab- or comma-separated.
         ///    The first column is source text. The second column is target text.
-        ///    The file must not contain headers. That is, the first row is data, not
-        ///    column names.
+        ///    No headers in this file. The first row contains data and not column
+        ///    names.
         ///
         /// - TMX (`.tmx`): TMX file with parallel data defining source/target term
         /// pairs.
@@ -917,7 +932,7 @@ pub mod glossary_input_config {
         GcsSource(super::GcsSource),
     }
 }
-/// Represents a glossary built from user provided data.
+/// Represents a glossary built from user-provided data.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Glossary {
@@ -938,6 +953,9 @@ pub struct Glossary {
     /// Output only. When the glossary creation was finished.
     #[prost(message, optional, tag = "8")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The display name of the glossary.
+    #[prost(string, tag = "9")]
+    pub display_name: ::prost::alloc::string::String,
     /// Languages supported by the glossary.
     #[prost(oneof = "glossary::Languages", tags = "3, 4")]
     pub languages: ::core::option::Option<glossary::Languages>,
@@ -948,11 +966,11 @@ pub mod glossary {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LanguageCodePair {
-        /// Required. The BCP-47 language code of the input text, for example,
+        /// Required. The ISO-639 language code of the input text, for example,
         /// "en-US". Expected to be an exact match for GlossaryTerm.language_code.
         #[prost(string, tag = "1")]
         pub source_language_code: ::prost::alloc::string::String,
-        /// Required. The BCP-47 language code for translation output, for example,
+        /// Required. The ISO-639 language code for translation output, for example,
         /// "zh-CN". Expected to be an exact match for GlossaryTerm.language_code.
         #[prost(string, tag = "2")]
         pub target_language_code: ::prost::alloc::string::String,
@@ -961,7 +979,7 @@ pub mod glossary {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LanguageCodesSet {
-        /// The BCP-47 language code(s) for terms defined in the glossary.
+        /// The ISO-639 language code(s) for terms defined in the glossary.
         /// All entries are unique. The list contains at least two entries.
         /// Expected to be an exact match for GlossaryTerm.language_code.
         #[prost(string, repeated, tag = "1")]
@@ -1238,12 +1256,12 @@ pub struct BatchTranslateDocumentRequest {
     /// error is returned.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The BCP-47 language code of the input document if known, for
+    /// Required. The ISO-639 language code of the input document if known, for
     /// example, "en-US" or "sr-Latn". Supported language codes are listed in
-    /// Language Support (<https://cloud.google.com/translate/docs/languages>).
+    /// [Language Support](<https://cloud.google.com/translate/docs/languages>).
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
-    /// Required. The BCP-47 language code to use for translation of the input
+    /// Required. The ISO-639 language code to use for translation of the input
     /// document. Specify up to 10 language codes here.
     #[prost(string, repeated, tag = "3")]
     pub target_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -1299,6 +1317,12 @@ pub struct BatchTranslateDocumentRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. This flag is to support user customized attribution.
+    /// If not provided, the default is `Machine Translated by Google`.
+    /// Customized attribution should follow rules in
+    /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
+    #[prost(string, tag = "10")]
+    pub customized_attribution: ::prost::alloc::string::String,
 }
 /// Input configuration for BatchTranslateDocument request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1384,7 +1408,7 @@ pub mod batch_document_output_config {
         /// Since index.csv will be keeping updated during the process, please make
         /// sure there is no custom retention policy applied on the output bucket
         /// that may avoid file updating.
-        /// (<https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy>)
+        /// (<https://cloud.google.com/storage/docs/bucket-lock#retention-policy>)
         ///
         /// The naming format of translation output files follows (for target
         /// language code \[trg\]): `translation_output`:
