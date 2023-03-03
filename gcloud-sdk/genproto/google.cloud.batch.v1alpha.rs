@@ -118,6 +118,9 @@ pub struct StatusEvent {
     /// Task Execution
     #[prost(message, optional, tag = "4")]
     pub task_execution: ::core::option::Option<TaskExecution>,
+    /// Task State
+    #[prost(enumeration = "task_status::State", tag = "5")]
+    pub task_state: i32,
 }
 /// This Task Execution field includes detail information for
 /// task execution procedures, based on StatusEvent types.
@@ -139,6 +142,9 @@ pub struct TaskStatus {
     /// Detailed info about why the state is reached.
     #[prost(message, repeated, tag = "2")]
     pub status_events: ::prost::alloc::vec::Vec<StatusEvent>,
+    /// The resource usage of the task.
+    #[prost(message, optional, tag = "3")]
+    pub resource_usage: ::core::option::Option<TaskResourceUsage>,
 }
 /// Nested message and enum types in `TaskStatus`.
 pub mod task_status {
@@ -197,6 +203,15 @@ pub mod task_status {
             }
         }
     }
+}
+/// TaskResourceUsage describes the resource usage of the task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskResourceUsage {
+    /// The CPU core hours the task consumes based on task requirement and run
+    /// time.
+    #[prost(double, tag = "1")]
+    pub core_hours: f64,
 }
 /// Runnable describes instructions for executing a specific script or container
 /// as part of a Task.
@@ -294,9 +309,23 @@ pub mod runnable {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Command {
             /// Script file path on the host VM.
+            ///
+            /// To specify an interpreter, please add a `#!<interpreter>`(also known as
+            /// [shebang line](<https://en.wikipedia.org/wiki/Shebang_(Unix>))) as the
+            /// first line of the file.(For example, to execute the script using bash,
+            /// `#!/bin/bash` should be the first line of the file. To execute the
+            /// script using`Python3`, `#!/usr/bin/env python3` should be the first
+            /// line of the file.) Otherwise, the file will by default be excuted by
+            /// `/bin/sh`.
             #[prost(string, tag = "1")]
             Path(::prost::alloc::string::String),
             /// Shell script text.
+            ///
+            /// To specify an interpreter, please add a `#!<interpreter>\n` at the
+            /// beginning of the text.(For example, to execute the script using bash,
+            /// `#!/bin/bash\n` should be added. To execute the script using`Python3`,
+            /// `#!/usr/bin/env python3\n` should be added.) Otherwise, the script will
+            /// by default be excuted by `/bin/sh`.
             #[prost(string, tag = "2")]
             Text(::prost::alloc::string::String),
         }
@@ -354,13 +383,12 @@ pub struct TaskSpec {
     #[prost(int32, tag = "5")]
     pub max_retry_count: i32,
     /// Lifecycle management schema when any task in a task group is failed.
-    /// The valid size of lifecycle policies are [0, 10].
-    /// For each lifecycle policy, when the condition is met,
-    /// the action in that policy will execute.
-    /// If there are multiple policies that the task execution result matches,
-    /// we use the action from the first matched policy. If task execution result
-    /// does not meet with any of the defined lifecycle policy, we consider it as
-    /// the default policy. Default policy means if the exit code is 0, exit task.
+    /// Currently we only support one lifecycle policy.
+    /// When the lifecycle policy condition is met,
+    /// the action in the policy will execute.
+    /// If task execution result does not meet with the defined lifecycle
+    /// policy, we consider it as the default policy.
+    /// Default policy means if the exit code is 0, exit task.
     /// If task ends with non-zero exit code, retry the task with max_retry_count.
     #[prost(message, repeated, tag = "9")]
     pub lifecycle_policies: ::prost::alloc::vec::Vec<LifecyclePolicy>,
@@ -383,6 +411,10 @@ pub struct TaskSpec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LifecyclePolicy {
     /// Action to execute when ActionCondition is true.
+    /// When RETRY_TASK is specified, we will retry failed tasks
+    /// if we notice any exit code match and fail tasks if no match is found.
+    /// Likewise, when FAIL_TASK is specified, we will fail tasks
+    /// if we notice any exit code match and retry tasks if no match is found.
     #[prost(enumeration = "lifecycle_policy::Action", tag = "1")]
     pub action: i32,
     /// Conditions that decide why a task failure is dealt with a specific action.
@@ -509,7 +541,8 @@ pub struct Job {
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Priority of the Job.
-    /// The valid value range is [0, 100).
+    /// The valid value range is [0, 100). Default value is 0.
+    /// Higher value indicates higher priority.
     /// A job with higher priority value is more likely to run earlier if all other
     /// requirements are satisfied.
     #[prost(int64, tag = "3")]
@@ -752,6 +785,9 @@ pub struct JobStatus {
     /// The duration of time that the Job spent in status RUNNING.
     #[prost(message, optional, tag = "5")]
     pub run_duration: ::core::option::Option<::prost_types::Duration>,
+    /// The resource usage of the job.
+    #[prost(message, optional, tag = "6")]
+    pub resource_usage: ::core::option::Option<ResourceUsage>,
 }
 /// Nested message and enum types in `JobStatus`.
 pub mod job_status {
@@ -846,6 +882,14 @@ pub mod job_status {
             }
         }
     }
+}
+/// ResourceUsage describes the resource usage of the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceUsage {
+    /// The CPU core hours that the job consumes.
+    #[prost(double, tag = "1")]
+    pub core_hours: f64,
 }
 /// Notification configurations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1412,8 +1456,8 @@ pub struct CreateJobRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -1446,8 +1490,8 @@ pub struct DeleteJobRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.

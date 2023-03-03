@@ -763,7 +763,7 @@ pub struct CreateTransferConfigRequest {
     /// create the transfer config.
     #[prost(string, tag = "5")]
     pub version_info: ::prost::alloc::string::String,
-    /// Optional service account name. If this field is set, the transfer config
+    /// Optional service account email. If this field is set, the transfer config
     /// will be created with this service account's credentials. It requires that
     /// the requesting user calling this API has permissions to act as this service
     /// account.
@@ -818,7 +818,7 @@ pub struct UpdateTransferConfigRequest {
     /// update the transfer config.
     #[prost(string, tag = "5")]
     pub version_info: ::prost::alloc::string::String,
-    /// Optional service account name. If this field is set, the transfer config
+    /// Optional service account email. If this field is set, the transfer config
     /// will be created with this service account's credentials. It requires that
     /// the requesting user calling this API has permissions to act as this service
     /// account.

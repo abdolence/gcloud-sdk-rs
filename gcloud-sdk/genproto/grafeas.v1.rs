@@ -2536,6 +2536,9 @@ pub struct VulnerabilityNote {
     /// CVSS version used to populate cvss_score and severity.
     #[prost(enumeration = "CvssVersion", tag = "7")]
     pub cvss_version: i32,
+    /// The full description of the v2 CVSS for this vulnerability.
+    #[prost(message, optional, tag = "8")]
+    pub cvss_v2: ::core::option::Option<Cvss>,
 }
 /// Nested message and enum types in `VulnerabilityNote`.
 pub mod vulnerability_note {
@@ -2696,6 +2699,9 @@ pub struct VulnerabilityOccurrence {
     /// Output only. CVSS version used to populate cvss_score and severity.
     #[prost(enumeration = "CvssVersion", tag = "11")]
     pub cvss_version: i32,
+    /// The cvss v2 score for the vulnerability.
+    #[prost(message, optional, tag = "12")]
+    pub cvss_v2: ::core::option::Option<Cvss>,
 }
 /// Nested message and enum types in `VulnerabilityOccurrence`.
 pub mod vulnerability_occurrence {
