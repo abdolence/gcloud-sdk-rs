@@ -1068,7 +1068,7 @@ pub struct CertificateMapEntry {
         ::prost::alloc::string::String,
     >,
     /// A set of Certificates defines for the given `hostname`. There can be
-    /// defined up to fifteen certificates in each Certificate Map Entry. Each
+    /// defined up to four certificates in each Certificate Map Entry. Each
     /// certificate must match pattern `projects/*/locations/*/certificates/*`.
     #[prost(string, repeated, tag = "7")]
     pub certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,

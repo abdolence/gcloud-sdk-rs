@@ -2495,7 +2495,7 @@ pub struct TransactionInfo {
     /// Output only. The transaction type.
     #[prost(enumeration = "TransactionType", tag = "3")]
     pub transaction_type: i32,
-    /// Output only. The transaction sub-type.
+    /// Output only. The transaction subtype.
     #[prost(enumeration = "transaction_info::TransactionSubType", tag = "4")]
     pub transaction_sub_type: i32,
     /// Output only. The transaction's state.
@@ -2508,10 +2508,10 @@ pub struct TransactionInfo {
     /// state is `FAILED`.
     #[prost(message, optional, tag = "7")]
     pub error_details: ::core::option::Option<transaction_info::TransactionErrorDetails>,
-    /// Output only. Information about the bank adapter invocation from the issuer
+    /// Output only. Information about the adapter invocation from the issuer
     /// switch for processing this API transaction.
     #[prost(message, optional, tag = "8")]
-    pub bank_adapter_info: ::core::option::Option<transaction_info::BankAdapterInfo>,
+    pub adapter_info: ::core::option::Option<transaction_info::AdapterInfo>,
     /// Risk information as provided by the payments orchestrator.
     #[prost(message, repeated, tag = "9")]
     pub risk_info: ::prost::alloc::vec::Vec<transaction_info::TransactionRiskInfo>,
@@ -2539,6 +2539,14 @@ pub mod transaction_info {
         /// Output only. A descriptive note about this API transaction.
         #[prost(string, tag = "5")]
         pub description: ::prost::alloc::string::String,
+        /// Output only. The initiation mode of this API transaction. In UPI, the
+        /// values are as defined by the UPI API specification.
+        #[prost(string, tag = "6")]
+        pub initiation_mode: ::prost::alloc::string::String,
+        /// Output only. The purpose code of this API transaction. In UPI, the values
+        /// are as defined by the UPI API specification.
+        #[prost(string, tag = "7")]
+        pub purpose_code: ::prost::alloc::string::String,
     }
     /// All details about any error in the processing of an API transaction.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2556,25 +2564,23 @@ pub mod transaction_info {
         #[prost(string, tag = "3")]
         pub upi_error_code: ::prost::alloc::string::String,
     }
-    /// Information about a bank adapter invocation triggered as part of the
+    /// Information about an adapter invocation triggered as part of the
     /// processing of an API transaction.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct BankAdapterInfo {
-        /// Output only. List of Request IDs (colon separated) used when
-        /// invoking the Bank Adapter APIs for fulfilling a transaction request.
+    pub struct AdapterInfo {
+        /// Output only. List of adapter request IDs (colon separated) used when
+        /// invoking the Adapter APIs for fulfilling a transaction request.
         #[prost(string, tag = "1")]
         pub request_ids: ::prost::alloc::string::String,
-        /// Output only. Response metadata included by the bank adapter in its
-        /// response to an API invocation from the issuer switch.
+        /// Output only. Response metadata included by the adapter in its response to
+        /// an API invocation from the issuer switch.
         #[prost(message, optional, tag = "2")]
-        pub response_metadata: ::core::option::Option<
-            bank_adapter_info::ResponseMetadata,
-        >,
+        pub response_metadata: ::core::option::Option<adapter_info::ResponseMetadata>,
     }
-    /// Nested message and enum types in `BankAdapterInfo`.
-    pub mod bank_adapter_info {
-        /// Metadata about a response that the bank adapter includes in its response
+    /// Nested message and enum types in `AdapterInfo`.
+    pub mod adapter_info {
+        /// Metadata about a response that the adapter includes in its response
         /// to the issuer switch.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2651,7 +2657,7 @@ pub mod transaction_info {
             }
         }
     }
-    /// The sub-type of a transaction. This value is used only for certain API type
+    /// The subtype of a transaction. This value is used only for certain API type
     /// and transaction type combinations.
     #[derive(
         Clone,
@@ -2666,19 +2672,20 @@ pub mod transaction_info {
     )]
     #[repr(i32)]
     pub enum TransactionSubType {
-        /// Unspecified transaction sub-type.
+        /// Unspecified transaction subtype.
         Unspecified = 0,
-        /// Collect sub type. This is used in a `SETTLE_PAYMENT` API type
-        /// transaction, with transaction type as either `CREDIT` or `DEBIT` when the
-        /// payment was initiated by a collect request.
+        /// Collect subtype. This is used in a `SETTLE_PAYMENT` API type
+        /// transaction, with the transaction type as either
+        /// `TRANSACTION_TYPE_CREDIT` or `TRANSACTION_TYPE_DEBIT` when the payment
+        /// was initiated by a collect request.
         Collect = 1,
-        /// Debit sub type. This is used in a `SETTLE_PAYMENT` API type transaction,
-        /// with transaction type as `REVERSAL` when the original payment was a
-        /// debit request.
+        /// Debit subtype. This is used in a `SETTLE_PAYMENT` API type transaction,
+        /// with the transaction type as `TRANSACTION_TYPE_REVERSAL` when the
+        /// original payment was a debit request.
         Debit = 2,
-        /// Pay sub type. This is used in a `SETTLE_PAYMENT` API type transaction,
-        /// with transaction type as either `CREDIT` or `DEBIT` when the payment was
-        /// initiated by a pay request.
+        /// Pay subtype. This is used in a `SETTLE_PAYMENT` API type transaction,
+        /// with the transaction type as either `TRANSACTION_TYPE_CREDIT` or
+        /// `TRANSACTION_TYPE_DEBIT` when the payment was initiated by a pay request.
         Pay = 3,
         /// Beneficiary subtype. This is used in a `COMPLAINT` API type transaction,
         /// when the complaint / dispute request is initiated / received by the
@@ -2688,6 +2695,10 @@ pub mod transaction_info {
         /// when the complaint / dispute request is initiated / received by the
         /// remitter bank.
         Remitter = 5,
+        /// Refund subtype. This is used in a `SETTLE_PAYMENT` API type transaction,
+        /// with the transaction type as `TRANSACTION_TYPE_CREDIT` when the payment
+        /// was initiated in response to a refund.
+        Refund = 6,
     }
     impl TransactionSubType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2702,6 +2713,7 @@ pub mod transaction_info {
                 TransactionSubType::Pay => "PAY",
                 TransactionSubType::Beneficiary => "BENEFICIARY",
                 TransactionSubType::Remitter => "REMITTER",
+                TransactionSubType::Refund => "REFUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2713,6 +2725,7 @@ pub mod transaction_info {
                 "PAY" => Some(Self::Pay),
                 "BENEFICIARY" => Some(Self::Beneficiary),
                 "REMITTER" => Some(Self::Remitter),
+                "REFUND" => Some(Self::Refund),
                 _ => None,
             }
         }
@@ -3160,8 +3173,8 @@ pub struct ListMetadataTransactionsRequest {
     ///    * `errorCode` - Use this filter to list financial transactions which
     ///    have failed a particular error code. Allowed comparison operators:
     ///    `=`.
-    ///    * `bankAdapterRequestID` - Request ID used when invoking the Bank
-    ///    Adapter API for fulfilling a transaction request. Allowed comparison
+    ///    * `adapterRequestID` - Adapter request ID used when invoking the Bank or
+    ///    Card Adapter API for fulfilling a transaction request. Allowed comparison
     ///    operators: `=`.
     ///
     /// You can combine multiple expressions by enclosing each expression in
@@ -3242,8 +3255,8 @@ pub struct ListFinancialTransactionsRequest {
     ///    values. Allowed comparison operators: `=`.
     ///    * `errorCode` - Use this filter to list financial transactions which
     ///    have failed a particular error code. Allowed comparison operators: `=`.
-    ///    * `bankAdapterRequestID` - Request ID used when invoking the Bank
-    ///    Adapter API for fulfilling a transaction request. Allowed comparison
+    ///    * `adapterRequestID` - Adapter request ID used when invoking the Bank or
+    ///    Card Adapter API for fulfilling a transaction request. Allowed comparison
     ///    operators: `=`.
     ///
     /// You can combine multiple expressions by enclosing each expression in
@@ -3338,8 +3351,8 @@ pub struct ListMandateTransactionsRequest {
     ///    * `errorCode` - Use this filter to list mandate transactions which
     ///    have failed a particular error code. Allowed comparison
     ///    operators: `=`.
-    ///    * `bankAdapterRequestID` - Request ID used when invoking the Bank
-    ///    Adapter API for fulfilling a transaction request. Allowed comparison
+    ///    * `adapterRequestID` - Adapter request ID used when invoking the Bank or
+    ///    Card Adapter API for fulfilling a transaction request. Allowed comparison
     ///    operators: `=`.
     /// You can combine multiple expressions by enclosing each expression in
     /// parentheses. Expressions are combined with AND logic. No other logical
@@ -3937,11 +3950,11 @@ pub mod issuer_switch_transactions_client {
         ///     The currency codes are defined in ISO 4217.
         /// 1. `Amount`
         ///     * **Description** - Amount involved in the transaction.
-        /// 1. `BankAdapterRequestIDs`
+        /// 1. `AdapterRequestIDs`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 2,000 characters
-        ///     * **Description** - List of Request IDs (colon separated) used when
-        ///     invoking the Bank Adapter APIs for fulfilling a transaction request.
+        ///     * **Description** - List of adapter request IDs (colon separated) used
+        ///     when invoking the Adapter APIs for fulfilling a transaction request.
         /// 1. `ErrorCode`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 255 characters
@@ -4094,11 +4107,11 @@ pub mod issuer_switch_transactions_client {
         ///     * **Max Length** - 255 characters
         ///     * **Description** - Virtual Payment Address (VPA) of the originator of
         ///     the transaction.
-        /// 1. `BankAdapterRequestIDs`
+        /// 1. `AdapterRequestIDs`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 2,000 characters
-        ///     * **Description** - List of Request IDs (colon separated) used when
-        ///     invoking the Bank Adapter APIs for fulfilling a transaction request.
+        ///     * **Description** - List of adapter request IDs (colon separated) used
+        ///     when invoking the Adapter APIs for fulfilling a transaction request.
         /// 1. `ErrorCode`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 255 characters
@@ -4247,11 +4260,11 @@ pub mod issuer_switch_transactions_client {
         ///     * **Description** - Timestamp (in UTC) indicating when was the last
         ///     modification made to the mandate. The format will be as per RFC-3339.
         ///     Example : 2022-11-22T23:00:05Z
-        /// 1. `BankAdapterRequestIDs`
+        /// 1. `AdapterRequestIDs`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 2,000 characters
-        ///     * **Description** - List of Request IDs (colon separated) used when
-        ///     invoking the Bank Adapter APIs for fulfilling a transaction request.
+        ///     * **Description** - List of adapter request IDs (colon separated) used
+        ///     when invoking the Adapter APIs for fulfilling a transaction request.
         /// 1. `ErrorCode`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 255 characters
@@ -4404,11 +4417,11 @@ pub mod issuer_switch_transactions_client {
         ///     * **Max Length** - 255 characters
         ///     * **Description** - Indicates the additional remarks for the complaint
         ///     / dispute.
-        /// 1. `BankAdapterRequestIDs`
+        /// 1. `AdapterRequestIDs`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 2,000 characters
-        ///     * **Description** - List of Request IDs (colon separated) used when
-        ///     invoking the Bank Adapter APIs for fulfilling a transaction request.
+        ///     * **Description** - List of adapter request IDs (colon separated) used
+        ///     when invoking the Adapter APIs for fulfilling a transaction request.
         /// 1. `ErrorCode`
         ///     * **Min Length** - 0 characters
         ///     * **Max Length** - 255 characters

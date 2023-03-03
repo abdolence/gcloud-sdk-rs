@@ -1415,22 +1415,42 @@ pub mod read_change_stream_response {
         pub estimated_low_watermark: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// A message indicating that the client should stop reading from the stream.
-    /// If status is OK and `continuation_tokens` is empty, the stream has finished
-    /// (for example if there was an `end_time` specified).
-    /// If `continuation_tokens` is present, then a change in partitioning requires
-    /// the client to open a new stream for each token to resume reading.
+    /// If status is OK and `continuation_tokens` & `new_partitions` are empty, the
+    /// stream has finished (for example if there was an `end_time` specified).
+    /// If `continuation_tokens` & `new_partitions` are present, then a change in
+    /// partitioning requires the client to open a new stream for each token to
+    /// resume reading. Example:
+    ///                                   [B,      D) ends
+    ///                                        |
+    ///                                        v
+    ///                new_partitions:  [A,  C) [C,  E)
+    /// continuation_tokens.partitions:  [B,C) [C,D)
+    ///                                   ^---^ ^---^
+    ///                                   ^     ^
+    ///                                   |     |
+    ///                                   |     StreamContinuationToken 2
+    ///                                   |
+    ///                                   StreamContinuationToken 1
+    /// To read the new partition [A,C), supply the continuation tokens whose
+    /// ranges cover the new partition, for example ContinuationToken[A,B) &
+    /// ContinuationToken[B,C).
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloseStream {
         /// The status of the stream.
         #[prost(message, optional, tag = "1")]
         pub status: ::core::option::Option<super::super::super::rpc::Status>,
-        /// If non-empty, contains the information needed to start reading the new
-        /// partition(s) that contain segments of this partition's row range.
+        /// If non-empty, contains the information needed to resume reading their
+        /// associated partitions.
         #[prost(message, repeated, tag = "2")]
         pub continuation_tokens: ::prost::alloc::vec::Vec<
             super::StreamContinuationToken,
         >,
+        /// If non-empty, contains the new partitions to start reading from, which
+        /// are related to but not necessarily identical to the partitions for the
+        /// above `continuation_tokens`.
+        #[prost(message, repeated, tag = "3")]
+        pub new_partitions: ::prost::alloc::vec::Vec<super::StreamPartition>,
     }
     /// The data or control message on the stream.
     #[allow(clippy::derive_partial_eq_without_eq)]

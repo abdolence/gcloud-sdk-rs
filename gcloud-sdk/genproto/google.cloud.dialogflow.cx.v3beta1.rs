@@ -5988,6 +5988,9 @@ pub struct MatchIntentRequest {
     /// Required. The input specification.
     #[prost(message, optional, tag = "3")]
     pub query_input: ::core::option::Option<QueryInput>,
+    /// Persist session parameter changes from `query_params`.
+    #[prost(bool, tag = "5")]
+    pub persist_parameter_changes: bool,
 }
 /// Response of \[MatchIntent][\].
 #[allow(clippy::derive_partial_eq_without_eq)]

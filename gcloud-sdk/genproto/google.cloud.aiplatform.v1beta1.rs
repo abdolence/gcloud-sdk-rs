@@ -1,4 +1,5 @@
 /// Represents a hardware accelerator type.
+/// NEXT ID: 11.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AcceleratorType {
@@ -22,6 +23,8 @@ pub enum AcceleratorType {
     TpuV2 = 6,
     /// TPU v3.
     TpuV3 = 7,
+    /// TPU v4.
+    TpuV4Pod = 10,
 }
 impl AcceleratorType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -40,6 +43,7 @@ impl AcceleratorType {
             AcceleratorType::NvidiaA10080gb => "NVIDIA_A100_80GB",
             AcceleratorType::TpuV2 => "TPU_V2",
             AcceleratorType::TpuV3 => "TPU_V3",
+            AcceleratorType::TpuV4Pod => "TPU_V4_POD",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -55,6 +59,7 @@ impl AcceleratorType {
             "NVIDIA_A100_80GB" => Some(Self::NvidiaA10080gb),
             "TPU_V2" => Some(Self::TpuV2),
             "TPU_V3" => Some(Self::TpuV3),
+            "TPU_V4_POD" => Some(Self::TpuV4Pod),
             _ => None,
         }
     }
@@ -1761,11 +1766,8 @@ pub enum JobState {
     Paused = 8,
     /// The job has expired.
     Expired = 9,
-    /// The job is being updated. The job is only able to be updated at RUNNING
-    /// state; if the update operation succeeds, job goes back to RUNNING state; if
-    /// the update operation fails, the job goes back to RUNNING state with error
-    /// messages written to \[ModelDeploymentMonitoringJob.partial_errors][\] field
-    /// if it is a ModelDeploymentMonitoringJob.
+    /// The job is being updated. Only jobs in the `RUNNING` state can be updated.
+    /// After updating, the job goes back to the `RUNNING` state.
     Updating = 10,
 }
 impl JobState {
@@ -2950,11 +2952,11 @@ pub struct Model {
     /// deploying this Model. The specification is ingested upon
     /// \[ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel\],
     /// and all binaries it contains are copied and stored internally by Vertex AI.
-    /// Not present for AutoML Models.
+    /// Not present for AutoML Models or Large Models.
     #[prost(message, optional, tag = "9")]
     pub container_spec: ::core::option::Option<ModelContainerSpec>,
     /// Immutable. The path to the directory containing the Model artifact and any
-    /// of its supporting files. Not present for AutoML Models.
+    /// of its supporting files. Not present for AutoML Models or Large Models.
     #[prost(string, tag = "26")]
     pub artifact_uri: ::prost::alloc::string::String,
     /// Output only. When this Model is deployed, its prediction resources are
@@ -3085,11 +3087,14 @@ pub struct Model {
     pub deployed_models: ::prost::alloc::vec::Vec<DeployedModelRef>,
     /// The default explanation specification for this Model.
     ///
-    /// The Model can be used for [requesting
-    /// explanation]\[PredictionService.Explain\] after being
+    /// The Model can be used for
+    /// [requesting
+    /// explanation]\[google.cloud.aiplatform.v1beta1.PredictionService.Explain\]
+    /// after being
     /// \[deployed][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel\] if
     /// it is populated. The Model can be used for [batch
-    /// explanation]\[BatchPredictionJob.generate_explanation\] if it is populated.
+    /// explanation]\[google.cloud.aiplatform.v1beta1.BatchPredictionJob.generate_explanation\]
+    /// if it is populated.
     ///
     /// All fields of the explanation_spec can be overridden by
     /// \[explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec\]
@@ -3101,13 +3106,16 @@ pub struct Model {
     /// \[BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob\].
     ///
     /// If the default explanation specification is not set for this Model, this
-    /// Model can still be used for [requesting
-    /// explanation]\[PredictionService.Explain\] by setting
+    /// Model can still be used for
+    /// [requesting
+    /// explanation]\[google.cloud.aiplatform.v1beta1.PredictionService.Explain\] by
+    /// setting
     /// \[explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec\]
     /// of
     /// \[DeployModelRequest.deployed_model][google.cloud.aiplatform.v1beta1.DeployModelRequest.deployed_model\]
-    /// and for [batch explanation]\[BatchPredictionJob.generate_explanation\] by
-    /// setting
+    /// and for [batch
+    /// explanation]\[google.cloud.aiplatform.v1beta1.BatchPredictionJob.generate_explanation\]
+    /// by setting
     /// \[explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec\]
     /// of
     /// \[BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob\].
@@ -3147,6 +3155,10 @@ pub struct Model {
     /// `projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}`.
     #[prost(string, tag = "44")]
     pub metadata_artifact: ::prost::alloc::string::String,
+    /// Optional. Used to specify the large model reference.
+    /// Only present for Large Models.
+    #[prost(message, optional, tag = "45")]
+    pub large_model_reference: ::core::option::Option<model::LargeModelReference>,
 }
 /// Nested message and enum types in `Model`.
 pub mod model {
@@ -3249,6 +3261,15 @@ pub mod model {
         /// `projects/{project}/locations/{location}/models/{model_id}@{version_id}`
         #[prost(string, tag = "1")]
         pub model: ::prost::alloc::string::String,
+    }
+    /// Contains information about the Large Model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LargeModelReference {
+        /// Required. The unique name of the large Foundation or pre-built model.
+        /// Like "chat-panda", "text-panda".
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
     }
     /// Identifies a type of Model's prediction resources.
     #[derive(
@@ -3690,7 +3711,11 @@ pub struct BatchPredictionJob {
     /// Exactly one of model and unmanaged_container_model must be set.
     ///
     /// The model resource name may contain version id or version alias to specify
-    /// the version, if no version is specified, the default version will be used.
+    /// the version.
+    ///   Example: `projects/{project}/locations/{location}/models/{model}@2`
+    ///               or
+    ///             `projects/{project}/locations/{location}/models/{model}@golden`
+    /// if no version is specified, the default version will be deployed.
     #[prost(string, tag = "3")]
     pub model: ::prost::alloc::string::String,
     /// Output only. The version ID of the Model that produces the predictions via
@@ -3867,6 +3892,15 @@ pub struct BatchPredictionJob {
     pub model_monitoring_status: ::core::option::Option<
         super::super::super::rpc::Status,
     >,
+    /// For custom-trained Models and AutoML Tabular Models, the container of the
+    /// DeployedModel instances will send `stderr` and `stdout` streams to
+    /// Stackdriver Logging by default. Please note that the logs incur cost,
+    /// which are subject to [Cloud Logging
+    /// pricing](<https://cloud.google.com/stackdriver/pricing>).
+    ///
+    /// User can disable container logging by setting this flag to true.
+    #[prost(bool, tag = "34")]
+    pub disable_container_logging: bool,
 }
 /// Nested message and enum types in `BatchPredictionJob`.
 pub mod batch_prediction_job {
@@ -4921,6 +4955,10 @@ pub struct ExportDataConfig {
     /// The destination of the output.
     #[prost(oneof = "export_data_config::Destination", tags = "1")]
     pub destination: ::core::option::Option<export_data_config::Destination>,
+    /// The instructions how the export data should be split between the
+    /// training, validation and test sets.
+    #[prost(oneof = "export_data_config::Split", tags = "5")]
+    pub split: ::core::option::Option<export_data_config::Split>,
 }
 /// Nested message and enum types in `ExportDataConfig`.
 pub mod export_data_config {
@@ -4940,6 +4978,34 @@ pub mod export_data_config {
         #[prost(message, tag = "1")]
         GcsDestination(super::GcsDestination),
     }
+    /// The instructions how the export data should be split between the
+    /// training, validation and test sets.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Split {
+        /// Split based on fractions defining the size of each set.
+        #[prost(message, tag = "5")]
+        FractionSplit(super::ExportFractionSplit),
+    }
+}
+/// Assigns the input data to training, validation, and test sets as per the
+/// given fractions. Any of `training_fraction`, `validation_fraction` and
+/// `test_fraction` may optionally be provided, they must sum to up to 1. If the
+/// provided ones sum to less than 1, the remainder is assigned to sets as
+/// decided by Vertex AI. If none of the fractions are set, by default roughly
+/// 80% of data is used for training, 10% for validation, and 10% for test.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportFractionSplit {
+    /// The fraction of the input data that is to be used to train the Model.
+    #[prost(double, tag = "1")]
+    pub training_fraction: f64,
+    /// The fraction of the input data that is to be used to validate the Model.
+    #[prost(double, tag = "2")]
+    pub validation_fraction: f64,
+    /// The fraction of the input data that is to be used to evaluate the Model.
+    #[prost(double, tag = "3")]
+    pub test_fraction: f64,
 }
 /// Generic Metadata shared by all operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5896,7 +5962,11 @@ pub struct DeployedModel {
     /// Endpoint.
     ///
     /// The resource name may contain version id or version alias to specify the
-    /// version, if no version is specified, the default version will be deployed.
+    /// version.
+    ///   Example: `projects/{project}/locations/{location}/models/{model}@2`
+    ///               or
+    ///             `projects/{project}/locations/{location}/models/{model}@golden`
+    /// if no version is specified, the default version will be deployed.
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
     /// Output only. The version ID of the model that is deployed.
@@ -6855,18 +6925,17 @@ pub mod featurestore_monitoring_config {
         pub disabled: bool,
         /// Configuration of the snapshot analysis based monitoring pipeline running
         /// interval. The value is rolled up to full day.
+        /// If both
+        /// \[monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days\]
+        /// and the deprecated `monitoring_interval` field
+        /// are set when creating/updating EntityTypes/Features,
+        /// \[monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days\]
+        /// will be used.
         #[deprecated]
         #[prost(message, optional, tag = "2")]
         pub monitoring_interval: ::core::option::Option<::prost_types::Duration>,
         /// Configuration of the snapshot analysis based monitoring pipeline
         /// running interval. The value indicates number of days.
-        /// If both
-        /// \[FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days\]
-        /// and
-        /// \[FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval\]
-        /// are set when creating/updating EntityTypes/Features,
-        /// \[FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days\]
-        /// will be used.
         #[prost(int32, tag = "3")]
         pub monitoring_interval_days: i32,
         /// Customized export features time window for snapshot analysis. Unit is one
@@ -6877,7 +6946,9 @@ pub mod featurestore_monitoring_config {
     }
     /// Configuration of the Featurestore's ImportFeature Analysis Based
     /// Monitoring. This type of analysis generates statistics for values of each
-    /// Feature imported by every \[ImportFeatureValues][\] operation.
+    /// Feature imported by every
+    /// \[ImportFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreService.ImportFeatureValues\]
+    /// operation.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ImportFeaturesAnalysis {
@@ -6949,7 +7020,9 @@ pub mod featurestore_monitoring_config {
             }
         }
         /// Defines the baseline to do anomaly detection for feature values imported
-        /// by each \[ImportFeatureValues][\] operation.
+        /// by each
+        /// \[ImportFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreService.ImportFeatureValues\]
+        /// operation.
         #[derive(
             Clone,
             Copy,
@@ -7093,6 +7166,240 @@ pub struct EntityType {
     /// time. If unset (or explicitly set to 0), default to 4000 days TTL.
     #[prost(int32, tag = "10")]
     pub offline_storage_ttl_days: i32,
+}
+/// True positive, false positive, or false negative.
+///
+/// EvaluatedAnnotation is only available under ModelEvaluationSlice with slice
+/// of `annotationSpec` dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluatedAnnotation {
+    /// Output only. Type of the EvaluatedAnnotation.
+    #[prost(enumeration = "evaluated_annotation::EvaluatedAnnotationType", tag = "1")]
+    pub r#type: i32,
+    /// Output only. The model predicted annotations.
+    ///
+    /// For true positive, there is one and only one prediction, which matches the
+    /// only one ground truth annotation in
+    /// \[ground_truths][google.cloud.aiplatform.v1beta1.EvaluatedAnnotation.ground_truths\].
+    ///
+    /// For false positive, there is one and only one prediction, which doesn't
+    /// match any ground truth annotation of the corresponding
+    /// \[data_item_view_id][EvaluatedAnnotation.data_item_view_id\].
+    ///
+    /// For false negative, there are zero or more predictions which are similar to
+    /// the only ground truth annotation in
+    /// \[ground_truths][google.cloud.aiplatform.v1beta1.EvaluatedAnnotation.ground_truths\]
+    /// but not enough for a match.
+    ///
+    /// The schema of the prediction is stored in
+    /// \[ModelEvaluation.annotation_schema_uri][\]
+    #[prost(message, repeated, tag = "2")]
+    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// Output only. The ground truth Annotations, i.e. the Annotations that exist
+    /// in the test data the Model is evaluated on.
+    ///
+    /// For true positive, there is one and only one ground truth annotation, which
+    /// matches the only prediction in
+    /// \[predictions][google.cloud.aiplatform.v1beta1.EvaluatedAnnotation.predictions\].
+    ///
+    /// For false positive, there are zero or more ground truth annotations that
+    /// are similar to the only prediction in
+    /// \[predictions][google.cloud.aiplatform.v1beta1.EvaluatedAnnotation.predictions\],
+    /// but not enough for a match.
+    ///
+    /// For false negative, there is one and only one ground truth annotation,
+    /// which doesn't match any predictions created by the model.
+    ///
+    /// The schema of the ground truth is stored in
+    /// \[ModelEvaluation.annotation_schema_uri][\]
+    #[prost(message, repeated, tag = "3")]
+    pub ground_truths: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// Output only. The data item payload that the Model predicted this
+    /// EvaluatedAnnotation on.
+    #[prost(message, optional, tag = "5")]
+    pub data_item_payload: ::core::option::Option<::prost_types::Value>,
+    /// Output only. ID of the EvaluatedDataItemView under the same ancestor
+    /// ModelEvaluation. The EvaluatedDataItemView consists of all ground truths
+    /// and predictions on
+    /// \[data_item_payload][google.cloud.aiplatform.v1beta1.EvaluatedAnnotation.data_item_payload\].
+    ///
+    /// Can be passed in
+    /// \[GetEvaluatedDataItemView's][ModelService.GetEvaluatedDataItemView][\]
+    /// \[id][GetEvaluatedDataItemViewRequest.id\].
+    #[prost(string, tag = "6")]
+    pub evaluated_data_item_view_id: ::prost::alloc::string::String,
+    /// Explanations of
+    /// \[predictions][google.cloud.aiplatform.v1beta1.EvaluatedAnnotation.predictions\].
+    /// Each element of the explanations indicates the explanation for one
+    /// explanation Method.
+    ///
+    /// The attributions list in the
+    /// \[EvaluatedAnnotationExplanation.explanation][google.cloud.aiplatform.v1beta1.EvaluatedAnnotationExplanation.explanation\]
+    /// object corresponds to the
+    /// \[predictions][google.cloud.aiplatform.v1beta1.EvaluatedAnnotation.predictions\]
+    /// list. For example, the second element in the attributions list explains the
+    /// second element in the predictions list.
+    #[prost(message, repeated, tag = "8")]
+    pub explanations: ::prost::alloc::vec::Vec<EvaluatedAnnotationExplanation>,
+    /// Annotations of model error analysis results.
+    #[prost(message, repeated, tag = "9")]
+    pub error_analysis_annotations: ::prost::alloc::vec::Vec<ErrorAnalysisAnnotation>,
+}
+/// Nested message and enum types in `EvaluatedAnnotation`.
+pub mod evaluated_annotation {
+    /// Describes the type of the EvaluatedAnnotation. The type is determined
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EvaluatedAnnotationType {
+        /// Invalid value.
+        Unspecified = 0,
+        /// The EvaluatedAnnotation is a true positive. It has a prediction created
+        /// by the Model and a ground truth Annotation which the prediction matches.
+        TruePositive = 1,
+        /// The EvaluatedAnnotation is false positive. It has a prediction created by
+        /// the Model which does not match any ground truth annotation.
+        FalsePositive = 2,
+        /// The EvaluatedAnnotation is false negative. It has a ground truth
+        /// annotation which is not matched by any of the model created predictions.
+        FalseNegative = 3,
+    }
+    impl EvaluatedAnnotationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                EvaluatedAnnotationType::Unspecified => {
+                    "EVALUATED_ANNOTATION_TYPE_UNSPECIFIED"
+                }
+                EvaluatedAnnotationType::TruePositive => "TRUE_POSITIVE",
+                EvaluatedAnnotationType::FalsePositive => "FALSE_POSITIVE",
+                EvaluatedAnnotationType::FalseNegative => "FALSE_NEGATIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVALUATED_ANNOTATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRUE_POSITIVE" => Some(Self::TruePositive),
+                "FALSE_POSITIVE" => Some(Self::FalsePositive),
+                "FALSE_NEGATIVE" => Some(Self::FalseNegative),
+                _ => None,
+            }
+        }
+    }
+}
+/// Explanation result of the prediction produced by the Model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluatedAnnotationExplanation {
+    /// Explanation type.
+    ///
+    /// For AutoML Image Classification models, possible values are:
+    ///
+    ///    * `image-integrated-gradients`
+    ///    * `image-xrai`
+    #[prost(string, tag = "1")]
+    pub explanation_type: ::prost::alloc::string::String,
+    /// Explanation attribution response details.
+    #[prost(message, optional, tag = "2")]
+    pub explanation: ::core::option::Option<Explanation>,
+}
+/// Model error analysis for each annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ErrorAnalysisAnnotation {
+    /// Attributed items for a given annotation, typically representing neighbors
+    /// from the training sets constrained by the query type.
+    #[prost(message, repeated, tag = "1")]
+    pub attributed_items: ::prost::alloc::vec::Vec<
+        error_analysis_annotation::AttributedItem,
+    >,
+    /// The query type used for finding the attributed items.
+    #[prost(enumeration = "error_analysis_annotation::QueryType", tag = "2")]
+    pub query_type: i32,
+    /// The outlier score of this annotated item. Usually defined as the min of all
+    /// distances from attributed items.
+    #[prost(double, tag = "3")]
+    pub outlier_score: f64,
+    /// The threshold used to determine if this annotation is an outlier or not.
+    #[prost(double, tag = "4")]
+    pub outlier_threshold: f64,
+}
+/// Nested message and enum types in `ErrorAnalysisAnnotation`.
+pub mod error_analysis_annotation {
+    /// Attributed items for a given annotation, typically representing neighbors
+    /// from the training sets constrained by the query type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AttributedItem {
+        /// The unique ID for each annotation. Used by FE to allocate the annotation
+        /// in DB.
+        #[prost(string, tag = "1")]
+        pub annotation_resource_name: ::prost::alloc::string::String,
+        /// The distance of this item to the annotation.
+        #[prost(double, tag = "2")]
+        pub distance: f64,
+    }
+    /// The query type used for finding the attributed items.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum QueryType {
+        /// Unspecified query type for model error analysis.
+        Unspecified = 0,
+        /// Query similar samples across all classes in the dataset.
+        AllSimilar = 1,
+        /// Query similar samples from the same class of the input sample.
+        SameClassSimilar = 2,
+        /// Query dissimilar samples from the same class of the input sample.
+        SameClassDissimilar = 3,
+    }
+    impl QueryType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                QueryType::Unspecified => "QUERY_TYPE_UNSPECIFIED",
+                QueryType::AllSimilar => "ALL_SIMILAR",
+                QueryType::SameClassSimilar => "SAME_CLASS_SIMILAR",
+                QueryType::SameClassDissimilar => "SAME_CLASS_DISSIMILAR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUERY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_SIMILAR" => Some(Self::AllSimilar),
+                "SAME_CLASS_SIMILAR" => Some(Self::SameClassSimilar),
+                "SAME_CLASS_DISSIMILAR" => Some(Self::SameClassDissimilar),
+                _ => None,
+            }
+        }
+    }
 }
 /// An edge describing the relationship between an Artifact and an Execution in
 /// a lineage graph.
@@ -7638,6 +7945,15 @@ pub mod featurestore {
             /// min_node_count, and less than or equal to 10 times of 'min_node_count'.
             #[prost(int32, tag = "2")]
             pub max_node_count: i32,
+            /// Optional. The cpu utilization that the Autoscaler should be trying to
+            /// achieve. This number is on a scale from 0 (no utilization) to 100
+            /// (total utilization), and is limited between 10 and 80. When a cluster's
+            /// CPU utilization exceeds the target that you have set, Bigtable
+            /// immediately adds nodes to the cluster. When CPU utilization is
+            /// substantially lower than the target, Bigtable removes nodes. If not set
+            /// or set to 0, default to 50.
+            #[prost(int32, tag = "3")]
+            pub cpu_utilization_target: i32,
         }
     }
     /// Possible states a featurestore can have.
@@ -9220,7 +9536,63 @@ pub mod delete_feature_values_request {
 /// \[FeaturestoreService.DeleteFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreService.DeleteFeatureValues\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteFeatureValuesResponse {}
+pub struct DeleteFeatureValuesResponse {
+    /// Response based on which delete option is specified in the
+    /// request
+    #[prost(oneof = "delete_feature_values_response::Response", tags = "1, 2")]
+    pub response: ::core::option::Option<delete_feature_values_response::Response>,
+}
+/// Nested message and enum types in `DeleteFeatureValuesResponse`.
+pub mod delete_feature_values_response {
+    /// Response message if the request uses the SelectEntity option.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SelectEntity {
+        /// The count of deleted entity rows in the offline storage.
+        /// Each row corresponds to the combination of an entity ID and a timestamp.
+        /// One entity ID can have multiple rows in the offline storage.
+        #[prost(int64, tag = "1")]
+        pub offline_storage_deleted_entity_row_count: i64,
+        /// The count of deleted entities in the online storage.
+        /// Each entity ID corresponds to one entity.
+        #[prost(int64, tag = "2")]
+        pub online_storage_deleted_entity_count: i64,
+    }
+    /// Response message if the request uses the SelectTimeRangeAndFeature option.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SelectTimeRangeAndFeature {
+        /// The count of the features or columns impacted.
+        /// This is the same as the feature count in the request.
+        #[prost(int64, tag = "1")]
+        pub impacted_feature_count: i64,
+        /// The count of modified entity rows in the offline storage.
+        /// Each row corresponds to the combination of an entity ID and a timestamp.
+        /// One entity ID can have multiple rows in the offline storage.
+        /// Within each row, only the features specified in the request are
+        /// deleted.
+        #[prost(int64, tag = "2")]
+        pub offline_storage_modified_entity_row_count: i64,
+        /// The count of modified entities in the online storage.
+        /// Each entity ID corresponds to one entity.
+        /// Within each entity, only the features specified in the request are
+        /// deleted.
+        #[prost(int64, tag = "3")]
+        pub online_storage_modified_entity_count: i64,
+    }
+    /// Response based on which delete option is specified in the
+    /// request
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Response {
+        /// Response for request specifying the entities to delete
+        #[prost(message, tag = "1")]
+        SelectEntity(SelectEntity),
+        /// Response for request specifying time range and feature
+        #[prost(message, tag = "2")]
+        SelectTimeRangeAndFeature(SelectTimeRangeAndFeature),
+    }
+}
 /// Selector for entityId. Getting ids from the given source.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12285,6 +12657,7 @@ pub struct NasJob {
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
     /// Optional. Enable a separation of Custom model training
     /// and restricted image training for tenant project.
+    #[deprecated]
     #[prost(bool, tag = "14")]
     pub enable_restricted_image_training: bool,
 }
@@ -17041,6 +17414,12 @@ pub struct ModelEvaluationSlice {
     /// Output only. Timestamp when this ModelEvaluationSlice was created.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Aggregated explanation metrics for the Model's prediction
+    /// output over the data this ModelEvaluation uses. This field is populated
+    /// only if the Model is evaluated with explanations, and only for tabular
+    /// Models.
+    #[prost(message, optional, tag = "6")]
+    pub model_explanation: ::core::option::Option<ModelExplanation>,
 }
 /// Nested message and enum types in `ModelEvaluationSlice`.
 pub mod model_evaluation_slice {
@@ -17055,11 +17434,150 @@ pub mod model_evaluation_slice {
         ///      \[AnnotationSpec.display_name][google.cloud.aiplatform.v1beta1.AnnotationSpec.display_name\]
         ///      equals to
         ///      \[value][google.cloud.aiplatform.v1beta1.ModelEvaluationSlice.Slice.value\].
+        ///    * `slice`: This slice is a user customized slice defined by its
+        ///      SliceSpec.
         #[prost(string, tag = "1")]
         pub dimension: ::prost::alloc::string::String,
         /// Output only. The value of the dimension in this slice.
         #[prost(string, tag = "2")]
         pub value: ::prost::alloc::string::String,
+        /// Output only. Specification for how the data was sliced.
+        #[prost(message, optional, tag = "3")]
+        pub slice_spec: ::core::option::Option<slice::SliceSpec>,
+    }
+    /// Nested message and enum types in `Slice`.
+    pub mod slice {
+        /// Specification for how the data should be sliced.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SliceSpec {
+            /// Mapping configuration for this SliceSpec.
+            /// The key is the name of the feature.
+            /// By default, the key will be prefixed by "instance" as a dictionary
+            /// prefix for Vertex Batch Predictions output format.
+            #[prost(map = "string, message", tag = "1")]
+            pub configs: ::std::collections::HashMap<
+                ::prost::alloc::string::String,
+                slice_spec::SliceConfig,
+            >,
+        }
+        /// Nested message and enum types in `SliceSpec`.
+        pub mod slice_spec {
+            /// Specification message containing the config for this SliceSpec.
+            /// When `kind` is selected as `value` and/or `range`, only a single slice
+            /// will be computed.
+            /// When `all_values` is present, a separate slice will be computed for
+            /// each possible label/value for the corresponding key in `config`.
+            /// Examples, with feature zip_code with values 12345, 23334, 88888 and
+            /// feature country with values "US", "Canada", "Mexico" in the dataset:
+            ///
+            /// Example 1:
+            ///
+            ///      {
+            ///        "zip_code": { "value": { "float_value": 12345.0 } }
+            ///      }
+            ///
+            /// A single slice for any data with zip_code 12345 in the dataset.
+            ///
+            /// Example 2:
+            ///
+            ///      {
+            ///        "zip_code": { "range": { "low": 12345, "high": 20000 } }
+            ///      }
+            ///
+            /// A single slice containing data where the zip_codes between 12345 and
+            /// 20000 For this example, data with the zip_code of 12345 will be in this
+            /// slice.
+            ///
+            /// Example 3:
+            ///
+            ///      {
+            ///        "zip_code": { "range": { "low": 10000, "high": 20000 } },
+            ///        "country": { "value": { "string_value": "US" } }
+            ///      }
+            ///
+            /// A single slice containing data where the zip_codes between 10000 and
+            /// 20000 has the country "US". For this example, data with the zip_code of
+            /// 12345 and country "US" will be in this slice.
+            ///
+            /// Example 4:
+            ///
+            ///      { "country": {"all_values": { "value": true } } }
+            ///
+            /// Three slices are computed, one for each unique country in the dataset.
+            ///
+            /// Example 5:
+            ///
+            ///      {
+            ///        "country": { "all_values": { "value": true } },
+            ///        "zip_code": { "value": { "float_value": 12345.0 } }
+            ///      }
+            ///
+            /// Three slices are computed, one for each unique country in the dataset
+            /// where the zip_code is also 12345. For this example, data with zip_code
+            /// 12345 and country "US" will be in one slice, zip_code 12345 and country
+            /// "Canada" in another slice, and zip_code 12345 and country "Mexico" in
+            /// another slice, totaling 3 slices.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct SliceConfig {
+                #[prost(oneof = "slice_config::Kind", tags = "1, 2, 3")]
+                pub kind: ::core::option::Option<slice_config::Kind>,
+            }
+            /// Nested message and enum types in `SliceConfig`.
+            pub mod slice_config {
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum Kind {
+                    /// A unique specific value for a given feature.
+                    /// Example: `{ "value": { "string_value": "12345" } }`
+                    #[prost(message, tag = "1")]
+                    Value(super::Value),
+                    /// A range of values for a numerical feature.
+                    /// Example: `{"range":{"low":10000.0,"high":50000.0}}`
+                    /// will capture 12345 and 23334 in the slice.
+                    #[prost(message, tag = "2")]
+                    Range(super::Range),
+                    /// If all_values is set to true, then all possible labels of the keyed
+                    /// feature will have another slice computed.
+                    /// Example: `{"all_values":{"value":true}}`
+                    #[prost(message, tag = "3")]
+                    AllValues(bool),
+                }
+            }
+            /// A range of values for slice(s).
+            /// `low` is inclusive, `high` is exclusive.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Range {
+                /// Inclusive low value for the range.
+                #[prost(float, tag = "1")]
+                pub low: f32,
+                /// Exclusive high value for the range.
+                #[prost(float, tag = "2")]
+                pub high: f32,
+            }
+            /// Single value that supports strings and floats.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Value {
+                #[prost(oneof = "value::Kind", tags = "1, 2")]
+                pub kind: ::core::option::Option<value::Kind>,
+            }
+            /// Nested message and enum types in `Value`.
+            pub mod value {
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum Kind {
+                    /// String type.
+                    #[prost(string, tag = "1")]
+                    StringValue(::prost::alloc::string::String),
+                    /// Float type.
+                    #[prost(float, tag = "2")]
+                    FloatValue(f32),
+                }
+            }
+        }
     }
 }
 /// Request message for
@@ -17556,6 +18074,29 @@ pub struct BatchImportModelEvaluationSlicesResponse {
     >,
 }
 /// Request message for
+/// \[ModelService.BatchImportEvaluatedAnnotations][google.cloud.aiplatform.v1beta1.ModelService.BatchImportEvaluatedAnnotations\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchImportEvaluatedAnnotationsRequest {
+    /// Required. The name of the parent ModelEvaluationSlice resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/models/{model}/evaluations/{evaluation}/slices/{slice}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Evaluated annotations resource to be imported.
+    #[prost(message, repeated, tag = "2")]
+    pub evaluated_annotations: ::prost::alloc::vec::Vec<EvaluatedAnnotation>,
+}
+/// Response message for
+/// \[ModelService.BatchImportEvaluatedAnnotations][google.cloud.aiplatform.v1beta1.ModelService.BatchImportEvaluatedAnnotations\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchImportEvaluatedAnnotationsResponse {
+    /// Output only. Number of EvaluatedAnnotations imported.
+    #[prost(int32, tag = "1")]
+    pub imported_evaluated_annotations_count: i32,
+}
+/// Request message for
 /// \[ModelService.GetModelEvaluation][google.cloud.aiplatform.v1beta1.ModelService.GetModelEvaluation\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -17892,8 +18433,9 @@ pub mod model_service_client {
         }
         /// Deletes a Model version.
         ///
-        /// Model version can only be deleted if there are no [DeployedModels][]
-        /// created from it. Deleting the only version in the Model is not allowed. Use
+        /// Model version can only be deleted if there are no
+        /// [DeployedModels][google.cloud.aiplatform.v1beta1.DeployedModel] created
+        /// from it. Deleting the only version in the Model is not allowed. Use
         /// [DeleteModel][google.cloud.aiplatform.v1beta1.ModelService.DeleteModel] for
         /// deleting the Model instead.
         pub async fn delete_model_version(
@@ -18034,6 +18576,31 @@ pub mod model_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.aiplatform.v1beta1.ModelService/BatchImportModelEvaluationSlices",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Imports a list of externally generated EvaluatedAnnotations.
+        pub async fn batch_import_evaluated_annotations(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::BatchImportEvaluatedAnnotationsRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::BatchImportEvaluatedAnnotationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ModelService/BatchImportEvaluatedAnnotations",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -20728,7 +21295,8 @@ pub struct ReadTensorboardUsageRequest {
     #[prost(string, tag = "1")]
     pub tensorboard: ::prost::alloc::string::String,
 }
-/// Response message for \[TensorboardService.GetTensorboardUsage][\].
+/// Response message for
+/// \[TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1beta1.TensorboardService.ReadTensorboardUsage\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardUsageResponse {
@@ -22777,7 +23345,7 @@ pub mod vizier_service_client {
         /// Checks  whether a Trial should stop or not. Returns a
         /// long-running operation. When the operation is successful,
         /// it will contain a
-        /// [CheckTrialEarlyStoppingStateResponse][google.cloud.ml.v1.CheckTrialEarlyStoppingStateResponse].
+        /// [CheckTrialEarlyStoppingStateResponse][google.cloud.aiplatform.v1beta1.CheckTrialEarlyStoppingStateResponse].
         pub async fn check_trial_early_stopping_state(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckTrialEarlyStoppingStateRequest>,

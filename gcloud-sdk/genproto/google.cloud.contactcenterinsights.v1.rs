@@ -1207,6 +1207,10 @@ pub mod settings {
         /// to analyze automatically, between [0, 100].
         #[prost(double, tag = "1")]
         pub runtime_integration_analysis_percentage: f64,
+        /// Percentage of conversations created using the UploadConversation endpoint
+        /// to analyze automatically, between [0, 100].
+        #[prost(double, tag = "6")]
+        pub upload_conversation_analysis_percentage: f64,
         /// To select the annotators to run and the phrase matchers to use
         /// (if any). If not specified, all annotators will be run.
         #[prost(message, optional, tag = "5")]
