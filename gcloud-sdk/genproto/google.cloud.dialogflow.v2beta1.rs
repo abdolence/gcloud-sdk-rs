@@ -939,6 +939,41 @@ pub struct SpeechWordInfo {
     #[prost(float, tag = "4")]
     pub confidence: f32,
 }
+/// Configuration of the barge-in behavior. Barge-in instructs the API to return
+/// a detected utterance at a proper time while the client is playing back the
+/// response audio from a previous request. When the client sees the
+/// utterance, it should stop the playback and immediately get ready for
+/// receiving the responses for the current request.
+///
+/// The barge-in handling requires the client to start streaming audio input
+/// as soon as it starts playing back the audio from the previous response. The
+/// playback is modeled into two phases:
+///
+/// * No barge-in phase: which goes first and during which speech detection
+///    should not be carried out.
+///
+/// * Barge-in phase: which follows the no barge-in phase and during which
+///    the API starts speech detection and may inform the client that an utterance
+///    has been detected. Note that no-speech event is not expected in this
+///    phase.
+///
+/// The client provides this configuration in terms of the durations of those
+/// two phases. The durations are measured in terms of the audio length fromt the
+/// the start of the input audio.
+///
+/// No-speech event is a response with END_OF_UTTERANCE without any transcript
+/// following up.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BargeInConfig {
+    /// Duration that is not eligible for barge-in at the beginning of the input
+    /// audio.
+    #[prost(message, optional, tag = "1")]
+    pub no_barge_in_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Total duration for the playback at the beginning of the input audio.
+    #[prost(message, optional, tag = "2")]
+    pub total_duration: ::core::option::Option<::prost_types::Duration>,
+}
 /// Instructs the speech recognizer on how to process the audio content.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1025,6 +1060,9 @@ pub struct InputAudioConfig {
     /// `NO_SPEECH_RECOGNIZED` event to Dialogflow agent.
     #[prost(bool, tag = "14")]
     pub disable_no_speech_recognized_event: bool,
+    /// Configuration of barge-in behavior during the streaming of input audio.
+    #[prost(message, optional, tag = "15")]
+    pub barge_in_config: ::core::option::Option<BargeInConfig>,
 }
 /// Description of which voice to use for speech synthesis.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8950,6 +8988,9 @@ pub struct SuggestConversationSummaryRequest {
     /// suggestion. By default 500 and at most 1000.
     #[prost(int32, tag = "4")]
     pub context_size: i32,
+    /// Parameters for a human assist query.
+    #[prost(message, optional, tag = "5")]
+    pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
 }
 /// The response message for
 /// \[Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2beta1.Conversations.SuggestConversationSummary\].
@@ -9404,6 +9445,12 @@ pub struct ConversationProfile {
     /// ID>/securitySettings/<Security Settings ID>`.
     #[prost(string, tag = "13")]
     pub security_settings: ::prost::alloc::string::String,
+    /// Configuration for Text-to-Speech synthesization.
+    ///
+    /// Used by Phone Gateway to specify synthesization options. If agent defines
+    /// synthesization options as well, agent settings overrides the option here.
+    #[prost(message, optional, tag = "18")]
+    pub tts_config: ::core::option::Option<SynthesizeSpeechConfig>,
 }
 /// Defines the Automated Agent to connect to a conversation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9795,9 +9842,9 @@ pub mod notification_config {
     pub enum MessageFormat {
         /// If it is unspecified, PROTO will be used.
         Unspecified = 0,
-        /// Pubsub message will be serialized proto.
+        /// Pub/Sub message will be serialized proto.
         Proto = 1,
-        /// Pubsub message will be json.
+        /// Pub/Sub message will be json.
         Json = 2,
     }
     impl MessageFormat {

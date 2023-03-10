@@ -37,7 +37,7 @@ pub struct ModelReference {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlDataType {
     /// Required. The top level type of this field.
-    /// Can be any standard SQL data type (e.g., "INT64", "DATE", "ARRAY").
+    /// Can be any GoogleSQL data type (e.g., "INT64", "DATE", "ARRAY").
     #[prost(enumeration = "standard_sql_data_type::TypeKind", tag = "1")]
     pub type_kind: i32,
     #[prost(oneof = "standard_sql_data_type::SubType", tags = "2, 3")]

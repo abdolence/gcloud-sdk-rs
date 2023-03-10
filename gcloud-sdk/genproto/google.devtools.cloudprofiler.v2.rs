@@ -2,6 +2,7 @@
 /// The deployment field must be populated. The profile_type specifies the list
 /// of profile types supported by the agent. The creation call will hang until a
 /// profile of one of these types needs to be collected.
+///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProfileRequest {
@@ -16,7 +17,7 @@ pub struct CreateProfileRequest {
     pub profile_type: ::prost::alloc::vec::Vec<i32>,
 }
 /// CreateOfflineProfileRequest describes a profile resource offline creation
-/// request. Profile field must be set.
+/// request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineProfileRequest {
@@ -31,7 +32,7 @@ pub struct CreateOfflineProfileRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProfileRequest {
-    /// Profile to update
+    /// Profile to update.
     #[prost(message, optional, tag = "1")]
     pub profile: ::core::option::Option<Profile>,
     /// Field mask used to specify the fields to be overwritten. Currently only
@@ -69,7 +70,7 @@ pub struct Profile {
     #[prost(bytes = "vec", tag = "5")]
     pub profile_bytes: ::prost::alloc::vec::Vec<u8>,
     /// Input only. Labels associated to this specific profile. These labels will
-    /// get merged with the deployment labels for the final data set.  See
+    /// get merged with the deployment labels for the final data set. See
     /// documentation on deployment labels for validation rules and limits.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
@@ -86,11 +87,11 @@ pub struct Deployment {
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Target is the service name used to group related deployments:
-    /// * Service name for GAE Flex / Standard.
+    /// * Service name for App Engine Flex / Standard.
     /// * Cluster and container name for GKE.
-    /// * User-specified string for direct GCE profiling (e.g. Java).
+    /// * User-specified string for direct Compute Engine profiling (e.g. Java).
     /// * Job name for Dataflow.
-    /// Validation regex: `^\[a-z]([-a-z0-9_.]{0,253}[a-z0-9\])?$`.
+    /// Validation regex: `^\[a-z0-9]([-a-z0-9_.]{0,253}[a-z0-9\])?$`.
     #[prost(string, tag = "2")]
     pub target: ::prost::alloc::string::String,
     /// Labels identify the deployment within the user universe and same target.
@@ -261,6 +262,7 @@ pub mod profiler_service_client {
         /// status. To a gRPC client, the extension will be return as a
         /// binary-serialized proto in the trailing metadata item named
         /// "google.rpc.retryinfo-bin".
+        ///
         pub async fn create_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProfileRequest>,

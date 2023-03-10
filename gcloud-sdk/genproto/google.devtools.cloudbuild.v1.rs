@@ -1904,6 +1904,9 @@ pub struct BuildOptions {
     /// it is indicative of a build request with an incorrect configuration.
     #[prost(message, repeated, tag = "14")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
+    /// Option to specify how default logs buckets are setup.
+    #[prost(enumeration = "build_options::DefaultLogsBucketBehavior", tag = "21")]
+    pub default_logs_bucket_behavior: i32,
 }
 /// Nested message and enum types in `BuildOptions`.
 pub mod build_options {
@@ -2153,6 +2156,51 @@ pub mod build_options {
                 "STACKDRIVER_ONLY" => Some(Self::StackdriverOnly),
                 "CLOUD_LOGGING_ONLY" => Some(Self::CloudLoggingOnly),
                 "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
+    }
+    /// Default GCS log bucket behavior options.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DefaultLogsBucketBehavior {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Bucket is located in user-owned project in the same region as the
+        /// build. The builder service account must have access to create and write
+        /// to GCS buckets in the build project.
+        RegionalUserOwnedBucket = 1,
+    }
+    impl DefaultLogsBucketBehavior {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DefaultLogsBucketBehavior::Unspecified => {
+                    "DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED"
+                }
+                DefaultLogsBucketBehavior::RegionalUserOwnedBucket => {
+                    "REGIONAL_USER_OWNED_BUCKET"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "REGIONAL_USER_OWNED_BUCKET" => Some(Self::RegionalUserOwnedBucket),
                 _ => None,
             }
         }
