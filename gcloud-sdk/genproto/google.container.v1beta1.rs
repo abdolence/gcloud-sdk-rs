@@ -6506,7 +6506,7 @@ pub enum PrivateIPv6GoogleAccess {
     PrivateIpv6GoogleAccessDisabled = 1,
     /// Enables private IPv6 access to Google Services from GKE
     PrivateIpv6GoogleAccessToGoogle = 2,
-    /// Enables priate IPv6 access to and from Google Services
+    /// Enables private IPv6 access to and from Google Services
     PrivateIpv6GoogleAccessBidirectional = 3,
 }
 impl PrivateIPv6GoogleAccess {

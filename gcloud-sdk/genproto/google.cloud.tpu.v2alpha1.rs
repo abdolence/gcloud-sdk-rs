@@ -467,7 +467,7 @@ pub struct QueuedResource {
     /// The queueing policy of the QueuedRequest.
     #[prost(message, optional, tag = "5")]
     pub queueing_policy: ::core::option::Option<queued_resource::QueueingPolicy>,
-    /// Output only. State of the QueuedResource request
+    /// Output only. State of the QueuedResource request.
     #[prost(message, optional, tag = "6")]
     pub state: ::core::option::Option<QueuedResourceState>,
     /// Resource specification.

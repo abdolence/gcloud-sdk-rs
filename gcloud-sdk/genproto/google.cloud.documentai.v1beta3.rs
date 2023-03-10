@@ -1350,13 +1350,40 @@ pub mod document_output_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OcrConfig {
+    /// Hints for the OCR model.
+    #[prost(message, optional, tag = "2")]
+    pub hints: ::core::option::Option<ocr_config::Hints>,
     /// Enables special handling for PDFs with existing text information. Results
     /// in better text extraction quality in such PDF inputs.
     #[prost(bool, tag = "3")]
     pub enable_native_pdf_parsing: bool,
+    /// Enables intelligent document quality scores after OCR. Can help with
+    /// diagnosing why OCR responses are of poor quality for a given input.
+    /// Adds additional latency comparable to regular OCR to the process call.
+    #[prost(bool, tag = "4")]
+    pub enable_image_quality_scores: bool,
     /// A list of advanced OCR options to further fine-tune OCR behavior.
     #[prost(string, repeated, tag = "5")]
     pub advanced_ocr_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Includes symbol level OCR information if set to true.
+    #[prost(bool, tag = "6")]
+    pub enable_symbol: bool,
+}
+/// Nested message and enum types in `OcrConfig`.
+pub mod ocr_config {
+    /// Hints for OCR Engine
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Hints {
+        /// List of BCP-47 language codes to use for OCR. In most cases, not
+        /// specifying it yields the best results since it enables automatic language
+        /// detection. For languages based on the Latin alphabet, setting hints is
+        /// not needed. In rare cases, when the language of the text in the
+        /// image is known, setting a hint will help get better results (although it
+        /// will be a significant hindrance if the hint is wrong).
+        #[prost(string, repeated, tag = "1")]
+        pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
 }
 /// The schema defines the output of the processed document by a processor.
 #[allow(clippy::derive_partial_eq_without_eq)]

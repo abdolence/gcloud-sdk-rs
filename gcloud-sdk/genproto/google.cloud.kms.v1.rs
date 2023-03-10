@@ -392,6 +392,17 @@ pub struct CryptoKeyVersion {
     /// \[IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED\].
     #[prost(string, tag = "16")]
     pub import_failure_reason: ::prost::alloc::string::String,
+    /// Output only. The root cause of the most recent generation failure. Only
+    /// present if \[state][google.cloud.kms.v1.CryptoKeyVersion.state\] is
+    /// \[GENERATION_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.GENERATION_FAILED\].
+    #[prost(string, tag = "19")]
+    pub generation_failure_reason: ::prost::alloc::string::String,
+    /// Output only. The root cause of the most recent external destruction
+    /// failure. Only present if
+    /// \[state][google.cloud.kms.v1.CryptoKeyVersion.state\] is
+    /// \[EXTERNAL_DESTRUCTION_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.EXTERNAL_DESTRUCTION_FAILED\].
+    #[prost(string, tag = "20")]
+    pub external_destruction_failure_reason: ::prost::alloc::string::String,
     /// ExternalProtectionLevelOptions stores a group of additional fields for
     /// configuring a \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] that
     /// are specific to the
@@ -704,6 +715,20 @@ pub mod crypto_key_version {
         /// Additional details can be found in
         /// \[CryptoKeyVersion.import_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.import_failure_reason\].
         ImportFailed = 7,
+        /// This version was not generated successfully. It may not be used, enabled,
+        /// disabled, or destroyed. Additional details can be found in
+        /// \[CryptoKeyVersion.generation_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.generation_failure_reason\].
+        GenerationFailed = 8,
+        /// This version was destroyed, and it may not be used or enabled again.
+        /// Cloud KMS is waiting for the corresponding key material residing in an
+        /// external key manager to be destroyed.
+        PendingExternalDestruction = 9,
+        /// This version was destroyed, and it may not be used or enabled again.
+        /// However, Cloud KMS could not confirm that the corresponding key material
+        /// residing in an external key manager was destroyed. Additional details can
+        /// be found in
+        /// \[CryptoKeyVersion.external_destruction_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.external_destruction_failure_reason\].
+        ExternalDestructionFailed = 10,
     }
     impl CryptoKeyVersionState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -722,6 +747,13 @@ pub mod crypto_key_version {
                 CryptoKeyVersionState::DestroyScheduled => "DESTROY_SCHEDULED",
                 CryptoKeyVersionState::PendingImport => "PENDING_IMPORT",
                 CryptoKeyVersionState::ImportFailed => "IMPORT_FAILED",
+                CryptoKeyVersionState::GenerationFailed => "GENERATION_FAILED",
+                CryptoKeyVersionState::PendingExternalDestruction => {
+                    "PENDING_EXTERNAL_DESTRUCTION"
+                }
+                CryptoKeyVersionState::ExternalDestructionFailed => {
+                    "EXTERNAL_DESTRUCTION_FAILED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -735,6 +767,9 @@ pub mod crypto_key_version {
                 "DESTROY_SCHEDULED" => Some(Self::DestroyScheduled),
                 "PENDING_IMPORT" => Some(Self::PendingImport),
                 "IMPORT_FAILED" => Some(Self::ImportFailed),
+                "GENERATION_FAILED" => Some(Self::GenerationFailed),
+                "PENDING_EXTERNAL_DESTRUCTION" => Some(Self::PendingExternalDestruction),
+                "EXTERNAL_DESTRUCTION_FAILED" => Some(Self::ExternalDestructionFailed),
                 _ => None,
             }
         }
@@ -1244,6 +1279,28 @@ pub struct UpdateEkmConnectionRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// Request message for
+/// \[EkmService.GetEkmConfig][google.cloud.kms.v1.EkmService.GetEkmConfig\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEkmConfigRequest {
+    /// Required. The \[name][google.cloud.kms.v1.EkmConfig.name\] of the
+    /// \[EkmConfig][google.cloud.kms.v1.EkmConfig\] to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[EkmService.UpdateEkmConfig][google.cloud.kms.v1.EkmService.UpdateEkmConfig\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEkmConfigRequest {
+    /// Required. \[EkmConfig][google.cloud.kms.v1.EkmConfig\] with updated values.
+    #[prost(message, optional, tag = "1")]
+    pub ekm_config: ::core::option::Option<EkmConfig>,
+    /// Required. List of fields to be updated in this request.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// A \[Certificate][google.cloud.kms.v1.Certificate\] represents an X.509
 /// certificate used to authenticate HTTPS connections to EKM replicas.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1318,6 +1375,18 @@ pub struct EkmConnection {
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\].
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. Describes who can perform control plane operations on the EKM. If
+    /// unset, this defaults to
+    /// \[MANUAL][google.cloud.kms.v1.EkmConnection.KeyManagementMode.MANUAL\].
+    #[prost(enumeration = "ekm_connection::KeyManagementMode", tag = "6")]
+    pub key_management_mode: i32,
+    /// Optional. Identifies the EKM Crypto Space that this
+    /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] maps to. Note: This
+    /// field is required if
+    /// \[KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode\] is
+    /// \[CLOUD_KMS][google.cloud.kms.v1.EkmConnection.KeyManagementMode.CLOUD_KMS\].
+    #[prost(string, tag = "7")]
+    pub crypto_space_path: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `EkmConnection`.
 pub mod ekm_connection {
@@ -1349,6 +1418,96 @@ pub mod ekm_connection {
         #[prost(message, repeated, tag = "4")]
         pub server_certificates: ::prost::alloc::vec::Vec<super::Certificate>,
     }
+    /// \[KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode\]
+    /// describes who can perform control plane cryptographic operations using this
+    /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\].
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum KeyManagementMode {
+        /// Not specified.
+        Unspecified = 0,
+        /// EKM-side key management operations on
+        /// \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] created with this
+        /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] must be initiated from
+        /// the EKM directly and cannot be performed from Cloud KMS. This means that:
+        /// * When creating a
+        /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] associated with
+        /// this
+        ///    \[EkmConnection][google.cloud.kms.v1.EkmConnection\], the caller must
+        ///    supply the key path of pre-existing external key material that will be
+        ///    linked to the \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\].
+        /// * Destruction of external key material cannot be requested via the
+        ///    Cloud KMS API and must be performed directly in the EKM.
+        /// * Automatic rotation of key material is not supported.
+        Manual = 1,
+        /// All \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] created with this
+        /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] use EKM-side key
+        /// management operations initiated from Cloud KMS. This means that:
+        /// * When a \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]
+        /// associated with this \[EkmConnection][google.cloud.kms.v1.EkmConnection\]
+        /// is
+        ///    created, the EKM automatically generates new key material and a new
+        ///    key path. The caller cannot supply the key path of pre-existing
+        ///    external key material.
+        /// * Destruction of external key material associated with this
+        ///    \[EkmConnection][google.cloud.kms.v1.EkmConnection\] can be requested by
+        ///    calling \[DestroyCryptoKeyVersion][EkmService.DestroyCryptoKeyVersion\].
+        /// * Automatic rotation of key material is supported.
+        CloudKms = 2,
+    }
+    impl KeyManagementMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                KeyManagementMode::Unspecified => "KEY_MANAGEMENT_MODE_UNSPECIFIED",
+                KeyManagementMode::Manual => "MANUAL",
+                KeyManagementMode::CloudKms => "CLOUD_KMS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_MANAGEMENT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MANUAL" => Some(Self::Manual),
+                "CLOUD_KMS" => Some(Self::CloudKms),
+                _ => None,
+            }
+        }
+    }
+}
+/// An \[EkmConfig][google.cloud.kms.v1.EkmConfig\] is a singleton resource that
+/// represents configuration parameters that apply to all
+/// \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] and
+/// \[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion\] with a
+/// \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of
+/// \[EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC\] in a given
+/// project and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EkmConfig {
+    /// Output only. The resource name for the
+    /// \[EkmConfig][google.cloud.kms.v1.EkmConfig\] in the format
+    /// `projects/*/locations/*/ekmConfig`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Resource name of the default
+    /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\]. Setting this field to
+    /// the empty string removes the default.
+    #[prost(string, tag = "2")]
+    pub default_ekm_connection: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod ekm_service_client {
@@ -1503,6 +1662,48 @@ pub mod ekm_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.kms.v1.EkmService/UpdateEkmConnection",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton resource
+        /// for a given project and location.
+        pub async fn get_ekm_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEkmConfigRequest>,
+        ) -> Result<tonic::Response<super::EkmConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.EkmService/GetEkmConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates the [EkmConfig][google.cloud.kms.v1.EkmConfig] singleton resource
+        /// for a given project and location.
+        pub async fn update_ekm_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEkmConfigRequest>,
+        ) -> Result<tonic::Response<super::EkmConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.EkmService/UpdateEkmConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

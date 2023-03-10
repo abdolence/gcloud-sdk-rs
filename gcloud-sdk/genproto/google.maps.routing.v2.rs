@@ -87,6 +87,52 @@ impl FallbackRoutingMode {
         }
     }
 }
+/// Contains GeocodedWaypoints for origin, destination and intermediate
+/// waypoints. Only populated for address waypoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeocodingResults {
+    /// Origin geocoded waypoint.
+    #[prost(message, optional, tag = "1")]
+    pub origin: ::core::option::Option<GeocodedWaypoint>,
+    /// Destination geocoded waypoint.
+    #[prost(message, optional, tag = "2")]
+    pub destination: ::core::option::Option<GeocodedWaypoint>,
+    /// A list of intermediate geocoded waypoints each containing an index field
+    /// that corresponds to the zero-based position of the waypoint in the order
+    /// they were specified in the request.
+    #[prost(message, repeated, tag = "3")]
+    pub intermediates: ::prost::alloc::vec::Vec<GeocodedWaypoint>,
+}
+/// Details about the locations used as waypoints. Only populated for address
+/// waypoints. Includes details about the geocoding results for the purposes of
+/// determining what the address was geocoded to.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeocodedWaypoint {
+    /// Indicates the status code resulting from the geocoding operation.
+    #[prost(message, optional, tag = "1")]
+    pub geocoder_status: ::core::option::Option<super::super::super::rpc::Status>,
+    /// The index of the corresponding intermediate waypoint in the request.
+    /// Only populated if the corresponding waypoint is an intermediate
+    /// waypoint.
+    #[prost(int32, optional, tag = "2")]
+    pub intermediate_waypoint_request_index: ::core::option::Option<i32>,
+    /// The type(s) of the result, in the form of zero or more type tags.
+    /// Supported types:
+    /// <https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types>
+    #[prost(string, repeated, tag = "3")]
+    pub r#type: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Indicates that the geocoder did not return an exact match for the original
+    /// request, though it was able to match part of the requested address. You may
+    /// wish to examine the original request for misspellings and/or an incomplete
+    /// address.
+    #[prost(bool, tag = "4")]
+    pub partial_match: bool,
+    /// The place ID for this result.
+    #[prost(string, tag = "5")]
+    pub place_id: ::prost::alloc::string::String,
+}
 /// Encapsulates a location (a geographic point, and an optional heading).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -549,16 +595,7 @@ pub struct RouteLegTravelAdvisory {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStepTravelAdvisory {
-    /// Speed reading intervals detailing traffic density. Applicable in case of
-    /// `TRAFFIC_AWARE` and `TRAFFIC_AWARE_OPTIMAL` routing preferences.
-    /// The intervals cover the entire polyline of the RouteLegStep without
-    /// overlap. The start point of a specified interval is the same as the end
-    /// point of the preceding interval.
-    ///
-    /// Example:
-    ///
-    ///      polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
-    ///      speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// NOTE: This field is not currently populated.
     #[prost(message, repeated, tag = "1")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
@@ -1318,7 +1355,7 @@ pub struct Waypoint {
     #[prost(bool, tag = "5")]
     pub side_of_road: bool,
     /// Different ways to represent a location.
-    #[prost(oneof = "waypoint::LocationType", tags = "1, 2")]
+    #[prost(oneof = "waypoint::LocationType", tags = "1, 2, 7")]
     pub location_type: ::core::option::Option<waypoint::LocationType>,
 }
 /// Nested message and enum types in `Waypoint`.
@@ -1334,6 +1371,10 @@ pub mod waypoint {
         /// The POI Place ID associated with the waypoint.
         #[prost(string, tag = "2")]
         PlaceId(::prost::alloc::string::String),
+        /// Human readable address or a plus code.
+        /// See <https://plus.codes> for details.
+        #[prost(string, tag = "7")]
+        Address(::prost::alloc::string::String),
     }
 }
 /// ComputeRoutes request message.
@@ -1526,6 +1567,9 @@ pub struct ComputeRoutesResponse {
     /// about the fallback response. Otherwise this field is unset.
     #[prost(message, optional, tag = "2")]
     pub fallback_info: ::core::option::Option<FallbackInfo>,
+    /// Contains geocoding response info for waypoints specified as addresses.
+    #[prost(message, optional, tag = "3")]
+    pub geocoding_results: ::core::option::Option<GeocodingResults>,
 }
 /// ComputeRouteMatrix request message
 #[allow(clippy::derive_partial_eq_without_eq)]
