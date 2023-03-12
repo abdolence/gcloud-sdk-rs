@@ -238,7 +238,7 @@ impl GoogleEnvironment {
         Ok(Channel::from_shared(api_url.as_ref().to_string())?
             .connect_timeout(Duration::from_secs(30))
             .tcp_keepalive(Some(Duration::from_secs(60)))
-            .keep_alive_timeout(Duration::from_secs(60 ))
+            .keep_alive_timeout(Duration::from_secs(60))
             .http2_keep_alive_interval(Duration::from_secs(60))
             .keep_alive_while_idle(true)
             .connect()
