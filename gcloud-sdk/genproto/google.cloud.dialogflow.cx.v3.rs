@@ -3477,7 +3477,7 @@ pub mod changelogs_client {
         }
     }
 }
-/// Represents an deployment in an environment. A deployment happens when a flow
+/// Represents a deployment in an environment. A deployment happens when a flow
 /// version configured to be active in the environment. You can configure running
 /// pre-deployment steps, e.g. running validation test cases, experiment
 /// auto-rollout, etc.
@@ -5825,7 +5825,7 @@ pub struct AudioInput {
     #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<InputAudioConfig>,
     /// The natural language speech audio to be processed.
-    /// A single request can contain up to 1 minute of speech audio data.
+    /// A single request can contain up to 2 minutes of speech audio data.
     /// The [transcribed
     /// text]\[google.cloud.dialogflow.cx.v3.QueryResult.transcript\] cannot contain
     /// more than 256 bytes.

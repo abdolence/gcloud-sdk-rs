@@ -1701,12 +1701,12 @@ pub struct ExecuteSqlRequest {
     /// Common options for this request.
     #[prost(message, optional, tag = "11")]
     pub request_options: ::core::option::Option<RequestOptions>,
-    /// If this is for a partitioned read and this field is set to `true`, the
+    /// If this is for a partitioned query and this field is set to `true`, the
     /// request will be executed via Spanner independent compute resources.
     ///
     /// If the field is set to `true` but the request does not set
     /// `partition_token`, the API will return an `INVALID_ARGUMENT` error.
-    #[prost(bool, tag = "15")]
+    #[prost(bool, tag = "16")]
     pub data_boost_enabled: bool,
 }
 /// Nested message and enum types in `ExecuteSqlRequest`.
@@ -2121,12 +2121,12 @@ pub struct ReadRequest {
     /// Common options for this request.
     #[prost(message, optional, tag = "11")]
     pub request_options: ::core::option::Option<RequestOptions>,
-    /// If this is for a partitioned query and this field is set to `true`, the
+    /// If this is for a partitioned read and this field is set to `true`, the
     /// request will be executed via Spanner independent compute resources.
     ///
     /// If the field is set to `true` but the request does not set
     /// `partition_token`, the API will return an `INVALID_ARGUMENT` error.
-    #[prost(bool, tag = "16")]
+    #[prost(bool, tag = "15")]
     pub data_boost_enabled: bool,
 }
 /// The request for \[BeginTransaction][google.spanner.v1.Spanner.BeginTransaction\].

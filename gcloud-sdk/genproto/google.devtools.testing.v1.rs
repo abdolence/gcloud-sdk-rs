@@ -194,10 +194,15 @@ pub struct TestSetup {
     /// instrumentation tests).
     #[prost(message, repeated, tag = "6")]
     pub environment_variables: ::prost::alloc::vec::Vec<EnvironmentVariable>,
+    /// Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01.
+    /// Support of Systrace may stop at any time, at which point no Systrace file
+    /// will be provided in the results.
+    ///
     /// Systrace configuration for the run.
     /// If set a systrace will be taken, starting on test start and lasting for the
     /// configured duration. The systrace file thus obtained is put in the results
     /// bucket together with the other artifacts from the run.
+    #[deprecated]
     #[prost(message, optional, tag = "9")]
     pub systrace: ::core::option::Option<SystraceSetup>,
     /// Whether to prevent all runtime permissions to be granted at app install
@@ -223,9 +228,9 @@ pub struct IosTestSetup {
     /// List of directories on the device to upload to Cloud Storage at the end of
     /// the test.
     ///
-    /// Directories should either be in a shared directory
-    /// (e.g. /private/var/mobile/Media) or within an accessible directory inside
-    /// the app's filesystem (e.g. /Documents) by specifying the bundle id.
+    /// Directories should either be in a shared directory (such as
+    /// /private/var/mobile/Media) or within an accessible directory inside the
+    /// app's filesystem (such as /Documents) by specifying the bundle ID.
     #[prost(message, repeated, tag = "4")]
     pub pull_directories: ::prost::alloc::vec::Vec<IosDeviceFile>,
 }
@@ -488,7 +493,7 @@ pub struct IosTestLoop {
 /// a test runner class, such as com.google.GoogleTestRunner, which can vary
 /// on the specific instrumentation framework chosen.
 ///
-/// See <<http://developer.android.com/tools/testing/testing_android.html>> for
+/// See <<https://developer.android.com/training/testing/fundamentals>> for
 /// more information on types of Android tests.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -519,7 +524,7 @@ pub struct AndroidInstrumentationTest {
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The option of whether running each test within its own invocation of
     /// instrumentation with Android Test Orchestrator or not.
-    /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or
+    /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
     /// higher! **
     /// Orchestrator offers the following benefits:
     ///   - No shared state
@@ -558,7 +563,6 @@ pub mod android_instrumentation_test {
 }
 /// A test of an android application that explores the application on a virtual
 /// or physical Android Device, finding culprits and crashes as it goes.
-/// Next tag: 30
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidRoboTest {
@@ -585,6 +589,10 @@ pub struct AndroidRoboTest {
     /// password for a test account can be provided.
     #[prost(message, repeated, tag = "11")]
     pub robo_directives: ::prost::alloc::vec::Vec<RoboDirective>,
+    /// The mode in which Robo should run. Most clients should allow the server to
+    /// populate this field automatically.
+    #[prost(enumeration = "RoboMode", tag = "14")]
+    pub robo_mode: i32,
     /// A JSON file with a sequence of actions Robo should perform as a prologue
     /// for the crawl.
     #[prost(message, optional, tag = "13")]
@@ -1040,15 +1048,21 @@ pub mod sharding_option {
 }
 /// Uniformly shards test cases given a total number of shards.
 ///
-/// For Instrumentation test, it will be translated to "-e numShard" "-e
+/// For instrumentation tests, it will be translated to "-e numShard" and "-e
 /// shardIndex" AndroidJUnitRunner arguments. With uniform sharding enabled,
-/// specifying these sharding arguments via environment_variables is invalid.
+/// specifying either of these sharding arguments via `environment_variables` is
+/// invalid.
+///
+/// Based on the sharding mechanism AndroidJUnitRunner uses, there is no
+/// guarantee that test cases will be distributed uniformly across all shards.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UniformSharding {
-    /// Required. Total number of shards. When any physical devices are selected,
-    /// the number must be >= 1 and <= 50. When no physical devices are selected,
-    /// the number must be >= 1 and <= 500.
+    /// Required. The total number of shards to create. This must always be a
+    /// positive number that is no greater than the total number of test cases.
+    /// When you select one or more physical devices, the number of shards must be
+    /// <= 50. When you select one or more ARM virtual devices, it must be <= 100.
+    /// When you select only x86 virtual devices, it must be <= 500.
     #[prost(int32, tag = "1")]
     pub num_shards: i32,
 }
@@ -1061,9 +1075,11 @@ pub struct UniformSharding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualSharding {
     /// Required. Group of packages, classes, and/or test methods to be run for
-    /// each shard. When any physical devices are selected,  the number of
-    /// test_targets_for_shard must be >= 1 and <= 50. When no physical devices are
-    /// selected, the number must be >= 1 and <= 500.
+    /// each manually-created shard. You must specify at least one shard if this
+    /// field is present. When you select one or more physical devices, the number
+    /// of repeated test_targets_for_shard must be <= 50. When you select one or
+    /// more ARM virtual devices, it must be <= 100. When you select only x86
+    /// virtual devices, it must be <= 500.
     #[prost(message, repeated, tag = "1")]
     pub test_targets_for_shard: ::prost::alloc::vec::Vec<TestTargetsForShard>,
 }
@@ -1075,7 +1091,7 @@ pub struct TestTargetsForShard {
     /// The targets need to be specified in AndroidJUnitRunner argument format. For
     /// example, "package com.my.packages" "class com.my.package.MyClass".
     ///
-    /// The number of shard_test_targets must be greater than 0.
+    /// The number of test_targets must be greater than 0.
     #[prost(string, repeated, tag = "1")]
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1089,7 +1105,7 @@ pub struct Shard {
     /// Output only. The total number of shards.
     #[prost(int32, tag = "2")]
     pub num_shards: i32,
-    /// Output only. Test targets for each shard.
+    /// Output only. Test targets for each shard. Only set for manual sharding.
     #[prost(message, optional, tag = "3")]
     pub test_targets_for_shard: ::core::option::Option<TestTargetsForShard>,
 }
@@ -1155,7 +1171,7 @@ pub enum OrchestratorOption {
     /// offers.
     Unspecified = 0,
     /// Run test using orchestrator.
-    /// ** Only compatible with AndroidJUnitRunner version 1.0 or higher! **
+    /// ** Only compatible with AndroidJUnitRunner version 1.1 or higher! **
     /// Recommended.
     UseOrchestrator = 1,
     /// Run test without using orchestrator.
@@ -1179,6 +1195,40 @@ impl OrchestratorOption {
             "ORCHESTRATOR_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
             "USE_ORCHESTRATOR" => Some(Self::UseOrchestrator),
             "DO_NOT_USE_ORCHESTRATOR" => Some(Self::DoNotUseOrchestrator),
+            _ => None,
+        }
+    }
+}
+/// The mode in which Robo should run.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RoboMode {
+    /// This means that the server should choose the mode.
+    /// Recommended.
+    Unspecified = 0,
+    /// Runs Robo in UIAutomator-only mode without app resigning
+    RoboVersion1 = 1,
+    /// Runs Robo in standard Espresso with UIAutomator fallback
+    RoboVersion2 = 2,
+}
+impl RoboMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            RoboMode::Unspecified => "ROBO_MODE_UNSPECIFIED",
+            RoboMode::RoboVersion1 => "ROBO_VERSION_1",
+            RoboMode::RoboVersion2 => "ROBO_VERSION_2",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ROBO_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ROBO_VERSION_1" => Some(Self::RoboVersion1),
+            "ROBO_VERSION_2" => Some(Self::RoboVersion2),
             _ => None,
         }
     }
@@ -1250,7 +1300,7 @@ pub enum InvalidMatrixDetails {
     NoSignature = 20,
     /// The test runner class specified by user or in the test APK's manifest file
     /// is not compatible with Android Test Orchestrator.
-    /// Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or
+    /// Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
     /// higher.
     /// Orchestrator can be disabled by using DO_NOT_USE_ORCHESTRATOR
     /// OrchestratorOption.
@@ -1323,6 +1373,16 @@ pub enum InvalidMatrixDetails {
     InvalidInputApk = 27,
     /// APK is built for a preview SDK which is unsupported
     InvalidApkPreviewSdk = 29,
+    /// The matrix expanded to contain too many executions.
+    MatrixTooLarge = 37,
+    /// Not enough test quota to run the executions in this matrix.
+    TestQuotaExceeded = 39,
+    /// A required cloud service api is not activated.
+    /// See:
+    /// <https://firebase.google.com/docs/test-lab/android/continuous#requirements>
+    ServiceNotActivated = 40,
+    /// There was an unknown permission issue running this test.
+    UnknownPermissionError = 41,
 }
 impl InvalidMatrixDetails {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1372,6 +1432,10 @@ impl InvalidMatrixDetails {
             InvalidMatrixDetails::NoCodeApk => "NO_CODE_APK",
             InvalidMatrixDetails::InvalidInputApk => "INVALID_INPUT_APK",
             InvalidMatrixDetails::InvalidApkPreviewSdk => "INVALID_APK_PREVIEW_SDK",
+            InvalidMatrixDetails::MatrixTooLarge => "MATRIX_TOO_LARGE",
+            InvalidMatrixDetails::TestQuotaExceeded => "TEST_QUOTA_EXCEEDED",
+            InvalidMatrixDetails::ServiceNotActivated => "SERVICE_NOT_ACTIVATED",
+            InvalidMatrixDetails::UnknownPermissionError => "UNKNOWN_PERMISSION_ERROR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1416,6 +1480,10 @@ impl InvalidMatrixDetails {
             "NO_CODE_APK" => Some(Self::NoCodeApk),
             "INVALID_INPUT_APK" => Some(Self::InvalidInputApk),
             "INVALID_APK_PREVIEW_SDK" => Some(Self::InvalidApkPreviewSdk),
+            "MATRIX_TOO_LARGE" => Some(Self::MatrixTooLarge),
+            "TEST_QUOTA_EXCEEDED" => Some(Self::TestQuotaExceeded),
+            "SERVICE_NOT_ACTIVATED" => Some(Self::ServiceNotActivated),
+            "UNKNOWN_PERMISSION_ERROR" => Some(Self::UnknownPermissionError),
             _ => None,
         }
     }
@@ -1771,6 +1839,18 @@ pub struct ApkManifest {
     /// Permissions declared to be used by the application
     #[prost(string, repeated, tag = "7")]
     pub uses_permission: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Version number used internally by the app.
+    #[prost(int64, tag = "8")]
+    pub version_code: i64,
+    /// Version number shown to users.
+    #[prost(string, tag = "9")]
+    pub version_name: ::prost::alloc::string::String,
+    /// Meta-data tags defined in the manifest.
+    #[prost(message, repeated, tag = "10")]
+    pub metadata: ::prost::alloc::vec::Vec<Metadata>,
+    /// Feature usage tags defined in the manifest.
+    #[prost(message, repeated, tag = "11")]
+    pub uses_feature: ::prost::alloc::vec::Vec<UsesFeature>,
 }
 /// The <intent-filter> section of an <activity> tag.
 /// <https://developer.android.com/guide/topics/manifest/intent-filter-element.html>
@@ -1786,6 +1866,30 @@ pub struct IntentFilter {
     /// The android:mimeType value of the <data> tag.
     #[prost(string, tag = "3")]
     pub mime_type: ::prost::alloc::string::String,
+}
+/// A <meta-data> tag within a manifest.
+/// <https://developer.android.com/guide/topics/manifest/meta-data-element.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metadata {
+    /// The android:name value
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The android:value value
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// A <uses-feature> tag within a manifest.
+/// <https://developer.android.com/guide/topics/manifest/uses-feature-element.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsesFeature {
+    /// The android:name value
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The android:required value
+    #[prost(bool, tag = "2")]
+    pub is_required: bool,
 }
 /// A request to get the details of an Android application APK.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2082,6 +2186,9 @@ pub struct AndroidModel {
     /// Whether this device is a phone, tablet, wearable, etc.
     #[prost(enumeration = "DeviceFormFactor", tag = "16")]
     pub form_factor: i32,
+    /// Version-specific information of an Android model.
+    #[prost(message, repeated, tag = "21")]
+    pub per_version_info: ::prost::alloc::vec::Vec<PerAndroidVersionInfo>,
     /// Screen size in the horizontal (X) dimension measured in pixels.
     #[prost(int32, tag = "5")]
     pub screen_x: i32,
@@ -2114,7 +2221,6 @@ pub struct AndroidModel {
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// URL of a thumbnail image (photo) of the device.
-    /// e.g. <https://lh3.googleusercontent.com/90WcauuJiCYABEl8U0lcZeuS5STUbf2yW...>
     #[prost(string, tag = "19")]
     pub thumbnail_url: ::prost::alloc::string::String,
 }
@@ -2148,6 +2254,17 @@ pub struct AndroidVersion {
     /// Examples: "default", "preview", "deprecated".
     #[prost(string, repeated, tag = "7")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A version-specific information of an Android model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PerAndroidVersionInfo {
+    /// An Android version.
+    #[prost(string, tag = "1")]
+    pub version_id: ::prost::alloc::string::String,
+    /// The number of online devices for an Android version.
+    #[prost(enumeration = "DeviceCapacity", tag = "2")]
+    pub device_capacity: i32,
 }
 /// Data about the relative number of devices running a
 /// given configuration of the Android platform.
@@ -2226,6 +2343,9 @@ pub struct IosModel {
     /// Whether this device is a phone, tablet, wearable, etc.
     #[prost(enumeration = "DeviceFormFactor", tag = "6")]
     pub form_factor: i32,
+    /// Version-specific information of an iOS model.
+    #[prost(message, repeated, tag = "14")]
+    pub per_version_info: ::prost::alloc::vec::Vec<PerIosVersionInfo>,
 }
 /// An iOS version.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2252,6 +2372,17 @@ pub struct IosVersion {
     pub supported_xcode_version_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+}
+/// A version-specific information of an iOS model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PerIosVersionInfo {
+    /// An iOS version.
+    #[prost(string, tag = "1")]
+    pub version_id: ::prost::alloc::string::String,
+    /// The number of online devices for an iOS version.
+    #[prost(enumeration = "DeviceCapacity", tag = "2")]
+    pub device_capacity: i32,
 }
 /// A location/region designation for language.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2347,9 +2478,12 @@ pub struct TrafficRule {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvidedSoftwareCatalog {
+    /// Deprecated: Use AndroidX Test Orchestrator going forward.
+    ///
     /// A string representing the current version of Android Test Orchestrator
     /// that is used in the environment. The package is available at
     /// <https://maven.google.com/web/index.html#com.android.support.test:orchestrator.>
+    #[deprecated]
     #[prost(string, tag = "1")]
     pub orchestrator_version: ::prost::alloc::string::String,
     /// A string representing the current version of AndroidX Test Orchestrator
@@ -2430,6 +2564,78 @@ impl DeviceFormFactor {
             "PHONE" => Some(Self::Phone),
             "TABLET" => Some(Self::Tablet),
             "WEARABLE" => Some(Self::Wearable),
+            _ => None,
+        }
+    }
+}
+/// Capacity based on the number of online devices in the lab.
+///
+/// Important: device capacity does not directly reflect the length of the
+/// queue at a moment in time. It does not take into account current traffic or
+/// the state of the devices.
+///
+/// For physical devices, the number is the average of online devices in the last
+/// 30 days.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DeviceCapacity {
+    /// The value of device capacity is unknown or unset.
+    Unspecified = 0,
+    /// Devices that are high in capacity (The lab has a large number of these
+    /// devices).
+    ///
+    /// These devices are generally suggested for running a large number of
+    /// simultaneous tests (e.g. more than 100 tests).
+    ///
+    /// Please note that high capacity devices do not guarantee short wait times
+    /// due to several factors:
+    /// 1. Traffic (how heavily they are used at any given moment)
+    /// 2. High capacity devices are prioritized for certain usages, which may
+    /// cause user tests to be slower than selecting other similar device types.
+    High = 1,
+    /// Devices that are medium in capacity (The lab has a decent number of these
+    /// devices, though not as many as high capacity devices).
+    ///
+    /// These devices are suitable for fewer test runs (e.g. fewer than 100 tests)
+    /// and only for low shard counts (e.g. less than 10 shards).
+    Medium = 2,
+    /// Devices that are low in capacity (The lab has a small number of these
+    /// devices).
+    ///
+    /// These devices may be used if users need to test on this specific device
+    /// model and version. Please note that due to low capacity, the tests may take
+    /// much longer to finish, especially if a large number of tests are invoked at
+    /// once. These devices are not suitable for test sharding.
+    Low = 3,
+    /// Devices that are completely missing from the lab.
+    ///
+    /// These devices are unavailable either temporarily or permanently and should
+    /// not be requested. If the device is also marked as deprecated, this state
+    /// is very likely permanent.
+    None = 4,
+}
+impl DeviceCapacity {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DeviceCapacity::Unspecified => "DEVICE_CAPACITY_UNSPECIFIED",
+            DeviceCapacity::High => "DEVICE_CAPACITY_HIGH",
+            DeviceCapacity::Medium => "DEVICE_CAPACITY_MEDIUM",
+            DeviceCapacity::Low => "DEVICE_CAPACITY_LOW",
+            DeviceCapacity::None => "DEVICE_CAPACITY_NONE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEVICE_CAPACITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "DEVICE_CAPACITY_HIGH" => Some(Self::High),
+            "DEVICE_CAPACITY_MEDIUM" => Some(Self::Medium),
+            "DEVICE_CAPACITY_LOW" => Some(Self::Low),
+            "DEVICE_CAPACITY_NONE" => Some(Self::None),
             _ => None,
         }
     }

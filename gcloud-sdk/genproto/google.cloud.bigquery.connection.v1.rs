@@ -102,7 +102,7 @@ pub struct Connection {
     #[prost(bool, tag = "7")]
     pub has_credential: bool,
     /// Properties specific to the underlying data source.
-    #[prost(oneof = "connection::Properties", tags = "4, 8, 11, 21, 22")]
+    #[prost(oneof = "connection::Properties", tags = "4, 8, 11, 21, 22, 23")]
     pub properties: ::core::option::Option<connection::Properties>,
 }
 /// Nested message and enum types in `Connection`.
@@ -126,6 +126,9 @@ pub mod connection {
         /// Cloud Resource properties.
         #[prost(message, tag = "22")]
         CloudResource(super::CloudResourceProperties),
+        /// Spark properties.
+        #[prost(message, tag = "23")]
+        Spark(super::SparkProperties),
     }
 }
 /// Connection properties specific to the Cloud SQL.
@@ -348,6 +351,56 @@ pub struct CloudResourceProperties {
     ///    <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
     #[prost(string, tag = "1")]
     pub service_account_id: ::prost::alloc::string::String,
+}
+/// Configuration of the Dataproc Metastore Service.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetastoreServiceConfig {
+    /// Optional. Resource name of an existing Dataproc Metastore service.
+    ///
+    /// Example:
+    ///
+    /// * `projects/\[project_id]/locations/[region]/services/[service_id\]`
+    #[prost(string, tag = "1")]
+    pub metastore_service: ::prost::alloc::string::String,
+}
+/// Configuration of the Spark History Server.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SparkHistoryServerConfig {
+    /// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+    /// History Server for the connection.
+    ///
+    /// Example:
+    ///
+    /// * `projects/\[project_id]/regions/[region]/clusters/[cluster_name\]`
+    #[prost(string, tag = "1")]
+    pub dataproc_cluster: ::prost::alloc::string::String,
+}
+/// Container for connection properties to execute stored procedures for Apache
+/// Spark.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SparkProperties {
+    /// Output only. The account ID of the service created for the purpose of this
+    /// connection.
+    ///
+    /// The service account does not have any permissions associated with it when
+    /// it is created. After creation, customers delegate permissions to the
+    /// service account. When the connection is used in the context of a stored
+    /// procedure for Apache Spark in BigQuery, the service account will be used to
+    /// connect to the desired resources in Google Cloud.
+    ///
+    /// The account ID is in the form of:
+    /// bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
+    #[prost(string, tag = "1")]
+    pub service_account_id: ::prost::alloc::string::String,
+    /// Optional. Dataproc Metastore Service configuration for the connection.
+    #[prost(message, optional, tag = "3")]
+    pub metastore_service_config: ::core::option::Option<MetastoreServiceConfig>,
+    /// Optional. Spark History Server configuration for the connection.
+    #[prost(message, optional, tag = "4")]
+    pub spark_history_server_config: ::core::option::Option<SparkHistoryServerConfig>,
 }
 /// Generated client implementations.
 pub mod connection_service_client {

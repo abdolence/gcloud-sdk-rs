@@ -166,7 +166,7 @@ pub struct Accelerators {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessConfig {
-    /// The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. The field is output only, an IPv6 address from a subnetwork associated with the instance will be allocated dynamically.
+    /// The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork.
     #[prost(string, optional, tag = "532703707")]
     pub external_ipv6: ::core::option::Option<::prost::alloc::string::String>,
     /// The prefix length of the external IPv6 range.
@@ -948,7 +948,7 @@ pub mod address {
         DnsResolver = 476114556,
         /// VM internal/alias IP, Internal LB service IP, etc.
         GceEndpoint = 230515243,
-        /// A regional internal IP address range reserved for the VLAN attachment that is used in HA VPN over Cloud Interconnect. This regional internal IP address range must not overlap with any IP address range of subnet/route in the VPC network and its peering networks. After the VLAN attachment is created with the reserved IP address range, when creating a new VPN gateway, its interface IP address is allocated from the associated VLAN attachment���s IP address range.
+        /// A regional internal IP address range reserved for the VLAN attachment that is used in HA VPN over Cloud Interconnect. This regional internal IP address range must not overlap with any IP address range of subnet/route in the VPC network and its peering networks. After the VLAN attachment is created with the reserved IP address range, when creating a new VPN gateway, its interface IP address is allocated from the associated VLAN attachment’s IP address range.
         IpsecInterconnect = 340437251,
         /// External IP automatically reserved for Cloud NAT.
         NatAuto = 163666477,
@@ -1403,6 +1403,32 @@ pub struct AggregatedListInstanceGroupsRequest {
     #[prost(string, optional, tag = "19994697")]
     pub page_token: ::core::option::Option<::prost::alloc::string::String>,
     /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+}
+/// A request message for InstanceTemplates.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregatedListInstanceTemplatesRequest {
+    /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// Indicates whether every visible scope for each scope type (zone, region, global) should be included in the response. For new resource types added after this field, the flag has no effect as new resource types will always include every visible scope for each scope type in response. For resource types which predate this field, if this flag is omitted or false, only scopes of the scope types where the resource type is expected to be found will be included.
+    #[prost(bool, optional, tag = "391327988")]
+    pub include_all_scopes: ::core::option::Option<bool>,
+    /// The maximum number of results per page that should be returned. If the number of available results is larger than `maxResults`, Compute Engine returns a `nextPageToken` that can be used to get the next page of results in subsequent list requests. Acceptable values are `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name. You can also sort results in descending order based on the creation timestamp using `orderBy="creationTimestamp desc"`. This sorts results based on the `creationTimestamp` field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first. Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the project scoping this request.
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
     /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
@@ -2174,19 +2200,21 @@ pub struct AliasIpRange {
     #[prost(string, optional, tag = "387995966")]
     pub subnetwork_range_name: ::core::option::Option<::prost::alloc::string::String>,
 }
-///
+/// [Output Only] Contains output only fields.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationResourceStatus {
+    /// Allocation Properties of this reservation.
     #[prost(message, optional, tag = "196231151")]
     pub specific_sku_allocation: ::core::option::Option<
         AllocationResourceStatusSpecificSkuAllocation,
     >,
 }
-///
+/// Contains Properties set for the reservation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationResourceStatusSpecificSkuAllocation {
+    /// ID of the instance template used to populate reservation properties.
     #[prost(string, optional, tag = "111196154")]
     pub source_instance_template_id: ::core::option::Option<
         ::prost::alloc::string::String,
@@ -3538,7 +3566,7 @@ pub struct AutoscalingPolicyScalingSchedule {
     /// The start timestamps of time intervals when this scaling schedule is to provide a scaling signal. This field uses the extended cron format (with an optional year field). The expression can describe a single timestamp if the optional year is set, in which case the scaling schedule runs once. The schedule is interpreted with respect to time_zone. This field is required. Note: These timestamps only describe when autoscaler starts providing the scaling signal. The VMs need additional time to become serving.
     #[prost(string, optional, tag = "375820951")]
     pub schedule: ::core::option::Option<::prost::alloc::string::String>,
-    /// The time zone to use when interpreting the schedule. The value of this field must be a time zone name from the tz database: <http://en.wikipedia.org/wiki/Tz_database.> This field is assigned a default value of ���UTC��� if left empty.
+    /// The time zone to use when interpreting the schedule. The value of this field must be a time zone name from the tz database: <http://en.wikipedia.org/wiki/Tz_database.> This field is assigned a default value of “UTC” if left empty.
     #[prost(string, optional, tag = "36848094")]
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -3947,7 +3975,7 @@ pub struct BackendService {
     /// Check the LoadBalancingScheme enum for the list of possible values.
     #[prost(string, optional, tag = "363890244")]
     pub load_balancing_scheme: ::core::option::Option<::prost::alloc::string::String>,
-    /// A list of locality load balancing policies to be used in order of preference. Either the policy or the customPolicy field should be set. Overrides any value set in the localityLbPolicy field. localityLbPolicies is only supported when the BackendService is referenced by a URL Map that is referenced by a target gRPC proxy that has the validateForProxyless field set to true.
+    /// A list of locality load-balancing policies to be used in order of preference. When you use localityLbPolicies, you must set at least one value for either the localityLbPolicies[].policy or the localityLbPolicies[].customPolicy field. localityLbPolicies overrides any value set in the localityLbPolicy field. For an example of how to use this field, see Define a list of preferred policies. Caution: This field and its children are intended for use in a service mesh that includes gRPC clients only. Envoy proxies can't use backend services that have this configuration.
     #[prost(message, repeated, tag = "140982557")]
     pub locality_lb_policies: ::prost::alloc::vec::Vec<
         BackendServiceLocalityLoadBalancingPolicyConfig,
@@ -4144,6 +4172,8 @@ pub mod backend_service {
         RingHash = 432795069,
         /// This is a simple policy in which each healthy backend is selected in round robin order. This is the default.
         RoundRobin = 153895801,
+        /// Per-instance weighted Load Balancing via health check reported weights. If set, the Backend Service must configure a non legacy HTTP-based Health Check, and health check replies are expected to contain non-standard HTTP response header field X-Load-Balancing-Endpoint-Weight to specify the per-instance weights. If set, Load Balancing is weighted based on the per-instance weights reported in the last processed health check replies, as long as every instance either reported a valid weight or had UNAVAILABLE_WEIGHT. Otherwise, Load Balancing remains equal-weight. This option is only supported in Network Load Balancing.
+        WeightedMaglev = 254930962,
     }
     impl LocalityLbPolicy {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4162,6 +4192,7 @@ pub mod backend_service {
                 LocalityLbPolicy::Random => "RANDOM",
                 LocalityLbPolicy::RingHash => "RING_HASH",
                 LocalityLbPolicy::RoundRobin => "ROUND_ROBIN",
+                LocalityLbPolicy::WeightedMaglev => "WEIGHTED_MAGLEV",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4175,6 +4206,7 @@ pub mod backend_service {
                 "RANDOM" => Some(Self::Random),
                 "RING_HASH" => Some(Self::RingHash),
                 "ROUND_ROBIN" => Some(Self::RoundRobin),
+                "WEIGHTED_MAGLEV" => Some(Self::WeightedMaglev),
                 _ => None,
             }
         }
@@ -4672,7 +4704,7 @@ pub struct BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
     /// An optional, arbitrary JSON object with configuration data, understood by a locally installed custom policy implementation.
     #[prost(string, optional, tag = "3076010")]
     pub data: ::core::option::Option<::prost::alloc::string::String>,
-    /// Identifies the custom policy. The value should match the type the custom implementation is registered with on the gRPC clients. It should follow protocol buffer message naming conventions and include the full path (e.g. myorg.CustomLbPolicy). The maximum length is 256 characters. Note that specifying the same custom policy more than once for a backend is not a valid configuration and will be rejected.
+    /// Identifies the custom policy. The value should match the name of a custom implementation registered on the gRPC clients. It should follow protocol buffer message naming conventions and include the full path (for example, myorg.CustomLbPolicy). The maximum length is 256 characters. Do not specify the same custom policy more than once for a backend. If you do, the configuration is rejected. For an example of how to use this field, see Use a custom policy.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -4680,14 +4712,14 @@ pub struct BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfigPolicy {
-    /// The name of a locality load balancer policy to be used. The value should be one of the predefined ones as supported by localityLbPolicy, although at the moment only ROUND_ROBIN is supported. This field should only be populated when the customPolicy field is not used. Note that specifying the same policy more than once for a backend is not a valid configuration and will be rejected.
+    /// The name of a locality load-balancing policy. Valid values include ROUND_ROBIN and, for Java clients, LEAST_REQUEST. For information about these values, see the description of localityLbPolicy. Do not specify the same policy more than once for a backend. If you do, the configuration is rejected.
     /// Check the Name enum for the list of possible values.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `BackendServiceLocalityLoadBalancingPolicyConfigPolicy`.
 pub mod backend_service_locality_load_balancing_policy_config_policy {
-    /// The name of a locality load balancer policy to be used. The value should be one of the predefined ones as supported by localityLbPolicy, although at the moment only ROUND_ROBIN is supported. This field should only be populated when the customPolicy field is not used. Note that specifying the same policy more than once for a backend is not a valid configuration and will be rejected.
+    /// The name of a locality load-balancing policy. Valid values include ROUND_ROBIN and, for Java clients, LEAST_REQUEST. For information about these values, see the description of localityLbPolicy. Do not specify the same policy more than once for a backend. If you do, the configuration is rejected.
     #[derive(
         Clone,
         Copy,
@@ -4716,6 +4748,8 @@ pub mod backend_service_locality_load_balancing_policy_config_policy {
         RingHash = 432795069,
         /// This is a simple policy in which each healthy backend is selected in round robin order. This is the default.
         RoundRobin = 153895801,
+        /// Per-instance weighted Load Balancing via health check reported weights. If set, the Backend Service must configure a non legacy HTTP-based Health Check, and health check replies are expected to contain non-standard HTTP response header field X-Load-Balancing-Endpoint-Weight to specify the per-instance weights. If set, Load Balancing is weighted based on the per-instance weights reported in the last processed health check replies, as long as every instance either reported a valid weight or had UNAVAILABLE_WEIGHT. Otherwise, Load Balancing remains equal-weight. This option is only supported in Network Load Balancing.
+        WeightedMaglev = 254930962,
     }
     impl Name {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4732,6 +4766,7 @@ pub mod backend_service_locality_load_balancing_policy_config_policy {
                 Name::Random => "RANDOM",
                 Name::RingHash => "RING_HASH",
                 Name::RoundRobin => "ROUND_ROBIN",
+                Name::WeightedMaglev => "WEIGHTED_MAGLEV",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4745,6 +4780,7 @@ pub mod backend_service_locality_load_balancing_policy_config_policy {
                 "RANDOM" => Some(Self::Random),
                 "RING_HASH" => Some(Self::RingHash),
                 "ROUND_ROBIN" => Some(Self::RoundRobin),
+                "WEIGHTED_MAGLEV" => Some(Self::WeightedMaglev),
                 _ => None,
             }
         }
@@ -4757,9 +4793,66 @@ pub struct BackendServiceLogConfig {
     /// Denotes whether to enable logging for the load balancer traffic served by this backend service. The default value is false.
     #[prost(bool, optional, tag = "311764355")]
     pub enable: ::core::option::Option<bool>,
+    /// This field can only be specified if logging is enabled for this backend service and "logConfig.optionalMode" was set to CUSTOM. Contains a list of optional fields you want to include in the logs. For example: serverInstance, serverGkeDetails.cluster, serverGkeDetails.pod.podNamespace
+    #[prost(string, repeated, tag = "528589944")]
+    pub optional_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// This field can only be specified if logging is enabled for this backend service. Configures whether all, none or a subset of optional fields should be added to the reported logs. One of [INCLUDE_ALL_OPTIONAL, EXCLUDE_ALL_OPTIONAL, CUSTOM]. Default is EXCLUDE_ALL_OPTIONAL.
+    /// Check the OptionalMode enum for the list of possible values.
+    #[prost(string, optional, tag = "128697122")]
+    pub optional_mode: ::core::option::Option<::prost::alloc::string::String>,
     /// This field can only be specified if logging is enabled for this backend service. The value of the field must be in [0, 1]. This configures the sampling rate of requests to the load balancer where 1.0 means all logged requests are reported and 0.0 means no logged requests are reported. The default value is 1.0.
     #[prost(float, optional, tag = "153193045")]
     pub sample_rate: ::core::option::Option<f32>,
+}
+/// Nested message and enum types in `BackendServiceLogConfig`.
+pub mod backend_service_log_config {
+    /// This field can only be specified if logging is enabled for this backend service. Configures whether all, none or a subset of optional fields should be added to the reported logs. One of [INCLUDE_ALL_OPTIONAL, EXCLUDE_ALL_OPTIONAL, CUSTOM]. Default is EXCLUDE_ALL_OPTIONAL.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OptionalMode {
+        /// A value indicating that the enum field is not set.
+        UndefinedOptionalMode = 0,
+        /// A subset of optional fields.
+        Custom = 388595569,
+        /// None optional fields.
+        ExcludeAllOptional = 168636099,
+        /// All optional fields.
+        IncludeAllOptional = 535606965,
+    }
+    impl OptionalMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OptionalMode::UndefinedOptionalMode => "UNDEFINED_OPTIONAL_MODE",
+                OptionalMode::Custom => "CUSTOM",
+                OptionalMode::ExcludeAllOptional => "EXCLUDE_ALL_OPTIONAL",
+                OptionalMode::IncludeAllOptional => "INCLUDE_ALL_OPTIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_OPTIONAL_MODE" => Some(Self::UndefinedOptionalMode),
+                "CUSTOM" => Some(Self::Custom),
+                "EXCLUDE_ALL_OPTIONAL" => Some(Self::ExcludeAllOptional),
+                "INCLUDE_ALL_OPTIONAL" => Some(Self::IncludeAllOptional),
+                _ => None,
+            }
+        }
+    }
 }
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5209,7 +5302,7 @@ pub struct Binding {
     /// The condition that is associated with this binding. If the condition evaluates to `true`, then this binding applies to the current request. If the condition evaluates to `false`, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding. To learn which resources support conditions in their IAM policies, see the [IAM documentation](<https://cloud.google.com/iam/help/conditions/resource-policies>).
     #[prost(message, optional, tag = "212430107")]
     pub condition: ::core::option::Option<Expr>,
-    /// Specifies the principals requesting access for a Google Cloud resource. `members` can have the following values: * `allUsers`: A special identifier that represents anyone who is on the internet; with or without a Google account. * `allAuthenticatedUsers`: A special identifier that represents anyone who is authenticated with a Google account or a service account. Does not include identities that come from external identity providers (IdPs) through identity federation. * `user:{emailid}`: An email address that represents a specific Google account. For example, `alice@example.com` . * `serviceAccount:{emailid}`: An email address that represents a Google service account. For example, `my-other-app@appspot.gserviceaccount.com`. * `serviceAccount:{projectid}.svc.id.goog\[{namespace}/{kubernetes-sa}\]`: An identifier for a [Kubernetes service account](<https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts>). For example, `my-project.svc.id.goog\[my-namespace/my-kubernetes-sa\]`. * `group:{emailid}`: An email address that represents a Google group. For example, `admins@example.com`. * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a user that has been recently deleted. For example, `alice@example.com?uid=123456789012345678901`. If the user is recovered, this value reverts to `user:{emailid}` and the recovered user retains the role in the binding. * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, `my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901`. If the service account is undeleted, this value reverts to `serviceAccount:{emailid}` and the undeleted service account retains the role in the binding. * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, `admins@example.com?uid=123456789012345678901`. If the group is recovered, this value reverts to `group:{emailid}` and the recovered group retains the role in the binding. * `domain:{domain}`: The G Suite domain (primary) that represents all the users of that domain. For example, `google.com` or `example.com`.
+    /// Specifies the principals requesting access for a Google Cloud resource. `members` can have the following values: * `allUsers`: A special identifier that represents anyone who is on the internet; with or without a Google account. * `allAuthenticatedUsers`: A special identifier that represents anyone who is authenticated with a Google account or a service account. Does not include identities that come from external identity providers (IdPs) through identity federation. * `user:{emailid}`: An email address that represents a specific Google account. For example, `alice@example.com` . * `serviceAccount:{emailid}`: An email address that represents a Google service account. For example, `my-other-app@appspot.gserviceaccount.com`. * `serviceAccount:{projectid}.svc.id.goog\[{namespace}/{kubernetes-sa}\]`: An identifier for a [Kubernetes service account](<https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts>). For example, `my-project.svc.id.goog\[my-namespace/my-kubernetes-sa\]`. * `group:{emailid}`: An email address that represents a Google group. For example, `admins@example.com`. * `domain:{domain}`: The G Suite domain (primary) that represents all the users of that domain. For example, `google.com` or `example.com`. * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a user that has been recently deleted. For example, `alice@example.com?uid=123456789012345678901`. If the user is recovered, this value reverts to `user:{emailid}` and the recovered user retains the role in the binding. * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, `my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901`. If the service account is undeleted, this value reverts to `serviceAccount:{emailid}` and the undeleted service account retains the role in the binding. * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, `admins@example.com?uid=123456789012345678901`. If the group is recovered, this value reverts to `group:{emailid}` and the recovered group retains the role in the binding.
     #[prost(string, repeated, tag = "412010777")]
     pub members: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Role that is assigned to the list of `members`, or principals. For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
@@ -5576,6 +5669,7 @@ pub mod commitment {
         /// A value indicating that the enum field is not set.
         UndefinedStatus = 0,
         Active = 314733318,
+        /// Deprecate CANCELED status. Will use separate status to differentiate cancel by mergeCud or manual cancellation.
         Cancelled = 41957681,
         Creating = 455564985,
         Expired = 482489093,
@@ -5628,6 +5722,7 @@ pub mod commitment {
         AcceleratorOptimized = 280848403,
         ComputeOptimized = 158349023,
         ComputeOptimizedC2d = 383246453,
+        ComputeOptimizedC3 = 428004784,
         GeneralPurpose = 299793543,
         GeneralPurposeE2 = 301911877,
         GeneralPurposeN2 = 301912156,
@@ -5648,6 +5743,7 @@ pub mod commitment {
                 Type::AcceleratorOptimized => "ACCELERATOR_OPTIMIZED",
                 Type::ComputeOptimized => "COMPUTE_OPTIMIZED",
                 Type::ComputeOptimizedC2d => "COMPUTE_OPTIMIZED_C2D",
+                Type::ComputeOptimizedC3 => "COMPUTE_OPTIMIZED_C3",
                 Type::GeneralPurpose => "GENERAL_PURPOSE",
                 Type::GeneralPurposeE2 => "GENERAL_PURPOSE_E2",
                 Type::GeneralPurposeN2 => "GENERAL_PURPOSE_N2",
@@ -5665,6 +5761,7 @@ pub mod commitment {
                 "ACCELERATOR_OPTIMIZED" => Some(Self::AcceleratorOptimized),
                 "COMPUTE_OPTIMIZED" => Some(Self::ComputeOptimized),
                 "COMPUTE_OPTIMIZED_C2D" => Some(Self::ComputeOptimizedC2d),
+                "COMPUTE_OPTIMIZED_C3" => Some(Self::ComputeOptimizedC3),
                 "GENERAL_PURPOSE" => Some(Self::GeneralPurpose),
                 "GENERAL_PURPOSE_E2" => Some(Self::GeneralPurposeE2),
                 "GENERAL_PURPOSE_N2" => Some(Self::GeneralPurposeN2),
@@ -6905,6 +7002,23 @@ pub struct DeleteRegionInstanceGroupManagerRequest {
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
     /// Name of the region scoping this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request message for RegionInstanceTemplates.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteRegionInstanceTemplateRequest {
+    /// The name of the instance template to delete.
+    #[prost(string, tag = "309248228")]
+    pub instance_template: ::prost::alloc::string::String,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the region for this request.
     #[prost(string, tag = "138946292")]
     pub region: ::prost::alloc::string::String,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
@@ -9179,6 +9293,9 @@ pub struct ForwardingRule {
     /// Identifies the backend service to which the forwarding rule sends traffic. Required for Internal TCP/UDP Load Balancing and Network Load Balancing; must be omitted for all other load balancer types.
     #[prost(string, optional, tag = "306946058")]
     pub backend_service: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] The URL for the corresponding base Forwarding Rule. By base Forwarding Rule, we mean the Forwarding Rule that has the same IP address, protocol, and port settings with the current Forwarding Rule, but without sourceIPRanges specified. Always empty if the current Forwarding Rule does not have sourceIPRanges specified.
+    #[prost(string, optional, tag = "524873104")]
+    pub base_forwarding_rule: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[prost(string, optional, tag = "30525366")]
     pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
@@ -9260,6 +9377,9 @@ pub struct ForwardingRule {
     /// [Output Only] The internal fully qualified service name for this Forwarding Rule. This field is only used for internal load balancing.
     #[prost(string, optional, tag = "359880149")]
     pub service_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// If not empty, this Forwarding Rule will only forward the traffic when the source IP address matches one of the IP addresses or CIDR ranges set here. Note that a Forwarding Rule can only have up to 64 source IP ranges, and this field can only be used with a regional Forwarding Rule whose scheme is EXTERNAL. Each source_ip_range entry should be either an IP address (for example, 1.2.3.4) or a CIDR range (for example, 1.2.3.0/24).
+    #[prost(string, repeated, tag = "111563210")]
+    pub source_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// This field identifies the subnetwork that the load balanced IP should belong to for this Forwarding Rule, used in internal load balancing and network load balancing with IPv6. If the network specified is in auto subnet mode, this field is optional. However, a subnetwork must be specified if the network is in custom subnet mode or when creating external forwarding rule with IPv6.
     #[prost(string, optional, tag = "307827694")]
     pub subnetwork: ::core::option::Option<::prost::alloc::string::String>,
@@ -9936,7 +10056,7 @@ pub struct GetFromFamilyImageRequest {
     /// Name of the image family to search for.
     #[prost(string, tag = "328751972")]
     pub family: ::prost::alloc::string::String,
-    /// Project ID for this request.
+    /// The image project that the image belongs to. For example, to get a CentOS image, specify centos-cloud as the image project.
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
 }
@@ -10869,6 +10989,20 @@ pub struct GetRegionInstanceGroupRequest {
     #[prost(string, tag = "138946292")]
     pub region: ::prost::alloc::string::String,
 }
+/// A request message for RegionInstanceTemplates.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetRegionInstanceTemplateRequest {
+    /// The name of the instance template.
+    #[prost(string, tag = "309248228")]
+    pub instance_template: ::prost::alloc::string::String,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the region for this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+}
 /// A request message for RegionNetworkEndpointGroups.Get. See the method description for details.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11589,14 +11723,14 @@ pub struct GuestAttributesValue {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GuestOsFeature {
-    /// The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_SNP_CAPABLE For more information, see Enabling guest operating system features.
+    /// The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_SNP_CAPABLE - TDX_CAPABLE For more information, see Enabling guest operating system features.
     /// Check the Type enum for the list of possible values.
     #[prost(string, optional, tag = "3575610")]
     pub r#type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `GuestOsFeature`.
 pub mod guest_os_feature {
-    /// The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_SNP_CAPABLE For more information, see Enabling guest operating system features.
+    /// The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_SNP_CAPABLE - TDX_CAPABLE For more information, see Enabling guest operating system features.
     #[derive(
         Clone,
         Copy,
@@ -12897,7 +13031,7 @@ pub struct Image {
     /// Size of the image when restored onto a persistent disk (in GB).
     #[prost(int64, optional, tag = "316263735")]
     pub disk_size_gb: ::core::option::Option<i64>,
-    /// The name of the image family to which this image belongs. You can create disks by specifying an image family instead of a specific image name. The image family always returns its latest image that is not deprecated. The name of the image family must comply with RFC1035.
+    /// The name of the image family to which this image belongs. The image family name can be from a publicly managed image family provided by Compute Engine, or from a custom image family you create. For example, centos-stream-9 is a publicly available image family. For more information, see Image family best practices. When creating disks, you can specify an image family instead of a specific image name. The image family always returns its latest image that is not deprecated. The name of the image family must comply with RFC1035.
     #[prost(string, optional, tag = "328751972")]
     pub family: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of features to enable on the guest operating system. Applicable only for bootable images. To see a list of available options, see the guestOSfeatures[].type parameter.
@@ -13819,6 +13953,23 @@ pub struct InsertRegionInstanceGroupManagerRequest {
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
     /// Name of the region scoping this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request message for RegionInstanceTemplates.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsertRegionInstanceTemplateRequest {
+    /// The body resource for this request
+    #[prost(message, optional, tag = "10679561")]
+    pub instance_template_resource: ::core::option::Option<InstanceTemplate>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the region for this request.
     #[prost(string, tag = "138946292")]
     pub region: ::prost::alloc::string::String,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
@@ -15375,7 +15526,7 @@ pub struct InstanceGroupManagersAbandonInstancesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersApplyUpdatesRequest {
-    /// Flag to update all instances instead of specified list of ���instances���. If the flag is set to true then the instances may not be specified in the request.
+    /// Flag to update all instances instead of specified list of “instances”. If the flag is set to true then the instances may not be specified in the request.
     #[prost(bool, optional, tag = "403676512")]
     pub all_instances: ::core::option::Option<bool>,
     /// The list of URLs of one or more instances for which you want to apply updates. Each URL can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -16139,6 +16290,9 @@ pub struct InstanceTemplate {
     /// The instance properties for this instance template.
     #[prost(message, optional, tag = "147688755")]
     pub properties: ::core::option::Option<InstanceProperties>,
+    /// [Output Only] URL of the region where the instance template resides. Only applicable for regional resources.
+    #[prost(string, optional, tag = "138946292")]
+    pub region: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] The URL for this instance template. The server defines this URL.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
@@ -16148,6 +16302,32 @@ pub struct InstanceTemplate {
     /// The source instance params to use to create this instance template.
     #[prost(message, optional, tag = "135342156")]
     pub source_instance_params: ::core::option::Option<SourceInstanceParams>,
+}
+/// Contains a list of InstanceTemplatesScopedList.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstanceTemplateAggregatedList {
+    /// [Output Only] Unique identifier for the resource; defined by the server.
+    #[prost(string, optional, tag = "3355")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of InstanceTemplatesScopedList resources.
+    #[prost(map = "string, message", tag = "100526016")]
+    pub items: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        InstanceTemplatesScopedList,
+    >,
+    /// Type of resource.
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] This token allows you to get the next page of results for list requests. If the number of results is larger than maxResults, use the nextPageToken as a value for the query parameter pageToken in the next list request. Subsequent list requests will have their own nextPageToken to continue paging through the results.
+    #[prost(string, optional, tag = "79797525")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Server-defined URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
 }
 /// A list of instance templates.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -16169,6 +16349,17 @@ pub struct InstanceTemplateList {
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
+}
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstanceTemplatesScopedList {
+    /// [Output Only] A list of instance templates that are contained within the specified project and zone.
+    #[prost(message, repeated, tag = "459889679")]
+    pub instance_templates: ::prost::alloc::vec::Vec<InstanceTemplate>,
+    /// [Output Only] An informational warning that replaces the list of instance templates when the list is empty.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -16416,6 +16607,17 @@ pub struct InstancesSetMinCpuPlatformRequest {
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstancesSetNameRequest {
+    /// The current name of this resource, used to prevent conflicts. Provide the latest name when making a request to change name.
+    #[prost(string, optional, tag = "394983825")]
+    pub current_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// The name to be applied to the instance. Needs to be RFC 1035 compliant.
+    #[prost(string, optional, tag = "3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+}
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetServiceAccountRequest {
     /// Email address of the service account.
     #[prost(string, optional, tag = "96619420")]
@@ -16512,7 +16714,7 @@ pub struct Interconnect {
     /// Target number of physical links in the link bundle, as requested by the customer.
     #[prost(int32, optional, tag = "45051387")]
     pub requested_link_count: ::core::option::Option<i32>,
-    /// [Output Only] Set to true if the resource satisfies the zone separation organization policy constraints and false otherwise. Defaults to false if the field is not present.
+    /// [Output Only] Reserved for future use.
     #[prost(bool, optional, tag = "480964267")]
     pub satisfies_pzs: ::core::option::Option<bool>,
     /// [Output Only] Server-defined URL for the resource.
@@ -16815,7 +17017,7 @@ pub struct InterconnectAttachment {
     /// URL of the Cloud Router to be used for dynamic routing. This router must be in the same region as this InterconnectAttachment. The InterconnectAttachment will automatically connect the Interconnect to the network & region within which the Cloud Router is configured.
     #[prost(string, optional, tag = "148608841")]
     pub router: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Set to true if the resource satisfies the zone separation organization policy constraints and false otherwise. Defaults to false if the field is not present.
+    /// [Output Only] Reserved for future use.
     #[prost(bool, optional, tag = "480964267")]
     pub satisfies_pzs: ::core::option::Option<bool>,
     /// [Output Only] Server-defined URL for the resource.
@@ -16833,7 +17035,7 @@ pub struct InterconnectAttachment {
     /// Check the Type enum for the list of possible values.
     #[prost(string, optional, tag = "3575610")]
     pub r#type: ::core::option::Option<::prost::alloc::string::String>,
-    /// The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. Only specified at creation time.
+    /// The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4093. Only specified at creation time.
     #[prost(int32, optional, tag = "119927836")]
     pub vlan_tag8021q: ::core::option::Option<i32>,
 }
@@ -17733,7 +17935,7 @@ pub struct InterconnectLocation {
     /// Check the Status enum for the list of possible values.
     #[prost(string, optional, tag = "181260274")]
     pub status: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Set to true for locations that support physical zone separation. Defaults to false if the field is not present.
+    /// [Output Only] Reserved for future use.
     #[prost(bool, optional, tag = "83983214")]
     pub supports_pzs: ::core::option::Option<bool>,
 }
@@ -18671,7 +18873,7 @@ pub struct ListFirewallPoliciesRequest {
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     #[prost(string, optional, tag = "19994697")]
     pub page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// Parent ID for this request.
+    /// Parent ID for this request. The ID can be either be "folders/\[FOLDER_ID\]" if the parent is a folder or "organizations/\[ORGANIZATION_ID\]" if the parent is an organization.
     #[prost(string, optional, tag = "459714768")]
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
@@ -20042,6 +20244,32 @@ pub struct ListRegionInstanceGroupsRequest {
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
     /// Name of the region scoping this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+}
+/// A request message for RegionInstanceTemplates.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRegionInstanceTemplatesRequest {
+    /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// The maximum number of results per page that should be returned. If the number of available results is larger than `maxResults`, Compute Engine returns a `nextPageToken` that can be used to get the next page of results in subsequent list requests. Acceptable values are `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name. You can also sort results in descending order based on the creation timestamp using `orderBy="creationTimestamp desc"`. This sorts results based on the `creationTimestamp` field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first. Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the regions for this request.
     #[prost(string, tag = "138946292")]
     pub region: ::prost::alloc::string::String,
     /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
@@ -21937,7 +22165,7 @@ pub struct MoveFirewallPolicyRequest {
     /// Name of the firewall policy to update.
     #[prost(string, tag = "498173265")]
     pub firewall_policy: ::prost::alloc::string::String,
-    /// The new parent of the firewall policy.
+    /// The new parent of the firewall policy. The ID can be either be "folders/\[FOLDER_ID\]" if the parent is a folder or "organizations/\[ORGANIZATION_ID\]" if the parent is an organization.
     #[prost(string, tag = "459714768")]
     pub parent_id: ::prost::alloc::string::String,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
@@ -22873,7 +23101,7 @@ pub struct NetworkInterface {
     /// Check the Ipv6AccessType enum for the list of possible values.
     #[prost(string, optional, tag = "504658653")]
     pub ipv6_access_type: ::core::option::Option<::prost::alloc::string::String>,
-    /// An IPv6 internal network address for this network interface.
+    /// An IPv6 internal network address for this network interface. To use a static internal IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an internal IPv6 address from the instance's subnetwork.
     #[prost(string, optional, tag = "341563804")]
     pub ipv6_address: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] Type of the resource. Always compute#networkInterface for network interfaces.
@@ -23955,7 +24183,7 @@ pub struct NodeTemplate {
     /// The node type to use for nodes group that are created from this template.
     #[prost(string, optional, tag = "465832791")]
     pub node_type: ::core::option::Option<::prost::alloc::string::String>,
-    /// The flexible properties of the desired node type. Node groups that use this node template will create nodes of a type that matches these properties. This field is mutually exclusive with the node_type property; you can only define one or the other, but not both.
+    /// Do not use. Instead, use the node_type property.
     #[prost(message, optional, tag = "315257905")]
     pub node_type_flexibility: ::core::option::Option<NodeTemplateNodeTypeFlexibility>,
     /// [Output Only] The name of the region where the node template resides, such as us-central1.
@@ -26926,6 +27154,7 @@ pub mod quota {
         N2dCpus = 351743370,
         N2Cpus = 416465286,
         Networks = 485481477,
+        NetworkAttachments = 149028575,
         NetworkEndpointGroups = 102144909,
         NetworkFirewallPolicies = 101117374,
         NodeGroups = 24624817,
@@ -27099,6 +27328,7 @@ pub mod quota {
                 Metric::N2dCpus => "N2D_CPUS",
                 Metric::N2Cpus => "N2_CPUS",
                 Metric::Networks => "NETWORKS",
+                Metric::NetworkAttachments => "NETWORK_ATTACHMENTS",
                 Metric::NetworkEndpointGroups => "NETWORK_ENDPOINT_GROUPS",
                 Metric::NetworkFirewallPolicies => "NETWORK_FIREWALL_POLICIES",
                 Metric::NodeGroups => "NODE_GROUPS",
@@ -27296,6 +27526,7 @@ pub mod quota {
                 "N2D_CPUS" => Some(Self::N2dCpus),
                 "N2_CPUS" => Some(Self::N2Cpus),
                 "NETWORKS" => Some(Self::Networks),
+                "NETWORK_ATTACHMENTS" => Some(Self::NetworkAttachments),
                 "NETWORK_ENDPOINT_GROUPS" => Some(Self::NetworkEndpointGroups),
                 "NETWORK_FIREWALL_POLICIES" => Some(Self::NetworkFirewallPolicies),
                 "NODE_GROUPS" => Some(Self::NodeGroups),
@@ -27769,7 +28000,7 @@ pub struct RegionInstanceGroupManagersAbandonInstancesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersApplyUpdatesRequest {
-    /// Flag to update all instances instead of specified list of ���instances���. If the flag is set to true then the instances may not be specified in the request.
+    /// Flag to update all instances instead of specified list of “instances”. If the flag is set to true then the instances may not be specified in the request.
     #[prost(bool, optional, tag = "403676512")]
     pub all_instances: ::core::option::Option<bool>,
     /// The list of URLs of one or more instances for which you want to apply updates. Each URL can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -28492,6 +28723,7 @@ pub struct Reservation {
     /// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Resource policies to be added to this reservation. The key is defined by user, and the value is resource policy url. This is to define placement policy with reservation.
     #[prost(map = "string, string", tag = "22220385")]
     pub resource_policies: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -29162,7 +29394,7 @@ pub struct ResourcePolicyInstanceSchedulePolicy {
     /// The start time of the schedule. The timestamp is an RFC3339 string.
     #[prost(string, optional, tag = "37467274")]
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
-    /// Specifies the time zone to be used in interpreting Schedule.schedule. The value of this field must be a time zone name from the tz database: <http://en.wikipedia.org/wiki/Tz_database.>
+    /// Specifies the time zone to be used in interpreting Schedule.schedule. The value of this field must be a time zone name from the tz database: <https://wikipedia.org/wiki/Tz_database.>
     #[prost(string, optional, tag = "36848094")]
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
     /// Specifies the schedule for starting instances.
@@ -29916,7 +30148,7 @@ pub struct RouterBgpPeer {
     /// Check the AdvertiseMode enum for the list of possible values.
     #[prost(string, optional, tag = "312134331")]
     pub advertise_mode: ::core::option::Option<::prost::alloc::string::String>,
-    /// User-specified list of prefix groups to advertise in custom mode, which can take one of the following options: - ALL_SUBNETS: Advertises all available subnets, including peer VPC subnets. - ALL_VPC_SUBNETS: Advertises the router's own VPC subnets. Note that this field can only be populated if advertise_mode is CUSTOM and overrides the list defined for the router (in the "bgp" message). These groups are advertised in addition to any specified prefixes. Leave this field blank to advertise no custom groups.
+    /// User-specified list of prefix groups to advertise in custom mode, which currently supports the following option: - ALL_SUBNETS: Advertises all of the router's own VPC subnets. This excludes any routes learned for subnets that use VPC Network Peering. Note that this field can only be populated if advertise_mode is CUSTOM and overrides the list defined for the router (in the "bgp" message). These groups are advertised in addition to any specified prefixes. Leave this field blank to advertise no custom groups.
     /// Check the AdvertisedGroups enum for the list of possible values.
     #[prost(string, repeated, tag = "21065526")]
     pub advertised_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -31948,14 +32180,14 @@ pub struct SecurityPolicy {
     /// [Output Only] Server-defined URL for the resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_INTERNAL_SERVICE: Cloud Armor internal service policies can be configured to filter HTTP requests targeting services managed by Traffic Director in a service mesh. They filter requests before the request is served from the application. This field can be set only at resource creation time.
+    /// The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_INTERNAL_SERVICE: Cloud Armor internal service policies can be configured to filter HTTP requests targeting services managed by Traffic Director in a service mesh. They filter requests before the request is served from the application. - CLOUD_ARMOR_NETWORK: Cloud Armor network policies can be configured to filter packets targeting network load balancing resources such as backend services, target pools, target instances, and instances with external IPs. They filter requests before the request is served from the application. This field can be set only at resource creation time.
     /// Check the Type enum for the list of possible values.
     #[prost(string, optional, tag = "3575610")]
     pub r#type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `SecurityPolicy`.
 pub mod security_policy {
-    /// The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_INTERNAL_SERVICE: Cloud Armor internal service policies can be configured to filter HTTP requests targeting services managed by Traffic Director in a service mesh. They filter requests before the request is served from the application. This field can be set only at resource creation time.
+    /// The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_INTERNAL_SERVICE: Cloud Armor internal service policies can be configured to filter HTTP requests targeting services managed by Traffic Director in a service mesh. They filter requests before the request is served from the application. - CLOUD_ARMOR_NETWORK: Cloud Armor network policies can be configured to filter packets targeting network load balancing resources such as backend services, target pools, target instances, and instances with external IPs. They filter requests before the request is served from the application. This field can be set only at resource creation time.
     #[derive(
         Clone,
         Copy,
@@ -32269,7 +32501,7 @@ pub struct SecurityPolicyReference {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRule {
-    /// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(): deny access to target, returns the HTTP response code specified (valid values are 403, 404, and 502). - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
+    /// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
     #[prost(string, optional, tag = "187661878")]
     pub action: ::core::option::Option<::prost::alloc::string::String>,
     /// An optional description of this resource. Provide this property when you create the resource.
@@ -32284,6 +32516,11 @@ pub struct SecurityPolicyRule {
     /// A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.
     #[prost(message, optional, tag = "103668165")]
     pub r#match: ::core::option::Option<SecurityPolicyRuleMatcher>,
+    /// Preconfigured WAF configuration to be applied for the rule. If the rule does not evaluate preconfigured WAF rules, i.e., if evaluatePreconfiguredWaf() is not used, this field will have no effect.
+    #[prost(message, optional, tag = "117805027")]
+    pub preconfigured_waf_config: ::core::option::Option<
+        SecurityPolicyRulePreconfiguredWafConfig,
+    >,
     /// If set to true, the specified action is not enforced.
     #[prost(bool, optional, tag = "218686408")]
     pub preview: ::core::option::Option<bool>,
@@ -32386,6 +32623,117 @@ pub struct SecurityPolicyRuleMatcherConfig {
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityPolicyRulePreconfiguredWafConfig {
+    /// A list of exclusions to apply during preconfigured WAF evaluation.
+    #[prost(message, repeated, tag = "208665701")]
+    pub exclusions: ::prost::alloc::vec::Vec<
+        SecurityPolicyRulePreconfiguredWafConfigExclusion,
+    >,
+}
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityPolicyRulePreconfiguredWafConfigExclusion {
+    /// A list of request cookie names whose value will be excluded from inspection during preconfigured WAF evaluation.
+    #[prost(message, repeated, tag = "156757878")]
+    pub request_cookies_to_exclude: ::prost::alloc::vec::Vec<
+        SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams,
+    >,
+    /// A list of request header names whose value will be excluded from inspection during preconfigured WAF evaluation.
+    #[prost(message, repeated, tag = "63230495")]
+    pub request_headers_to_exclude: ::prost::alloc::vec::Vec<
+        SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams,
+    >,
+    /// A list of request query parameter names whose value will be excluded from inspection during preconfigured WAF evaluation. Note that the parameter can be in the query string or in the POST body.
+    #[prost(message, repeated, tag = "340692744")]
+    pub request_query_params_to_exclude: ::prost::alloc::vec::Vec<
+        SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams,
+    >,
+    /// A list of request URIs from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded.
+    #[prost(message, repeated, tag = "90690846")]
+    pub request_uris_to_exclude: ::prost::alloc::vec::Vec<
+        SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams,
+    >,
+    /// A list of target rule IDs under the WAF rule set to apply the preconfigured WAF exclusion. If omitted, it refers to all the rule IDs under the WAF rule set.
+    #[prost(string, repeated, tag = "498430435")]
+    pub target_rule_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Target WAF rule set to apply the preconfigured WAF exclusion.
+    #[prost(string, optional, tag = "498440077")]
+    pub target_rule_set: ::core::option::Option<::prost::alloc::string::String>,
+}
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams {
+    /// The match operator for the field.
+    /// Check the Op enum for the list of possible values.
+    #[prost(string, optional, tag = "3553")]
+    pub op: ::core::option::Option<::prost::alloc::string::String>,
+    /// The value of the field.
+    #[prost(string, optional, tag = "116513")]
+    pub val: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams`.
+pub mod security_policy_rule_preconfigured_waf_config_exclusion_field_params {
+    /// The match operator for the field.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Op {
+        /// A value indicating that the enum field is not set.
+        UndefinedOp = 0,
+        /// The operator matches if the field value contains the specified value.
+        Contains = 215180831,
+        /// The operator matches if the field value ends with the specified value.
+        EndsWith = 490402221,
+        /// The operator matches if the field value equals the specified value.
+        Equals = 442201023,
+        /// The operator matches if the field value is any value.
+        EqualsAny = 337226060,
+        /// The operator matches if the field value starts with the specified value.
+        StartsWith = 139505652,
+    }
+    impl Op {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Op::UndefinedOp => "UNDEFINED_OP",
+                Op::Contains => "CONTAINS",
+                Op::EndsWith => "ENDS_WITH",
+                Op::Equals => "EQUALS",
+                Op::EqualsAny => "EQUALS_ANY",
+                Op::StartsWith => "STARTS_WITH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_OP" => Some(Self::UndefinedOp),
+                "CONTAINS" => Some(Self::Contains),
+                "ENDS_WITH" => Some(Self::EndsWith),
+                "EQUALS" => Some(Self::Equals),
+                "EQUALS_ANY" => Some(Self::EqualsAny),
+                "STARTS_WITH" => Some(Self::StartsWith),
+                _ => None,
+            }
+        }
+    }
+}
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleRateLimitOptions {
     /// Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold.
     #[prost(int32, optional, tag = "42896726")]
@@ -32405,7 +32753,7 @@ pub struct SecurityPolicyRuleRateLimitOptions {
     /// Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.
     #[prost(string, optional, tag = "132555246")]
     pub enforce_on_key_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are "deny(status)", where valid values for status are 403, 404, 429, and 502, and "redirect" where the redirect parameters come from exceedRedirectOptions below.
+    /// Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are `deny(STATUS)`, where valid values for `STATUS` are 403, 404, 429, and 502, and `redirect`, where the redirect parameters come from `exceedRedirectOptions` below.
     #[prost(string, optional, tag = "167159073")]
     pub exceed_action: ::core::option::Option<::prost::alloc::string::String>,
     /// Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect.
@@ -33920,6 +34268,28 @@ pub struct SetMinCpuPlatformInstanceRequest {
     #[prost(message, optional, tag = "148459368")]
     pub instances_set_min_cpu_platform_request_resource: ::core::option::Option<
         InstancesSetMinCpuPlatformRequest,
+    >,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The name of the zone for this request.
+    #[prost(string, tag = "3744684")]
+    pub zone: ::prost::alloc::string::String,
+}
+/// A request message for Instances.SetName. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SetNameInstanceRequest {
+    /// The instance name for this request.
+    #[prost(string, tag = "18257045")]
+    pub instance: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "272080980")]
+    pub instances_set_name_request_resource: ::core::option::Option<
+        InstancesSetNameRequest,
     >,
     /// Project ID for this request.
     #[prost(string, tag = "227560217")]
@@ -38315,6 +38685,31 @@ pub struct UpdateBackendServiceRequest {
     #[prost(string, optional, tag = "37109963")]
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// A request message for Disks.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDiskRequest {
+    /// The disk name for this request.
+    #[prost(string, tag = "3083677")]
+    pub disk: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "25880688")]
+    pub disk_resource: ::core::option::Option<Disk>,
+    #[prost(string, optional, tag = "106438894")]
+    pub paths: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// update_mask indicates fields to be updated as part of this request.
+    #[prost(string, optional, tag = "500079778")]
+    pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
+    /// The name of the zone for this request.
+    #[prost(string, tag = "3744684")]
+    pub zone: ::prost::alloc::string::String,
+}
 /// A request message for Instances.UpdateDisplayDevice. See the method description for details.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -38628,6 +39023,31 @@ pub struct UpdateRegionCommitmentRequest {
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
     /// Name of the region for this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// update_mask indicates fields to be updated as part of this request.
+    #[prost(string, optional, tag = "500079778")]
+    pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request message for RegionDisks.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateRegionDiskRequest {
+    /// The disk name for this request.
+    #[prost(string, tag = "3083677")]
+    pub disk: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "25880688")]
+    pub disk_resource: ::core::option::Option<Disk>,
+    #[prost(string, optional, tag = "106438894")]
+    pub paths: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the region for this request.
     #[prost(string, tag = "138946292")]
     pub region: ::prost::alloc::string::String,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
@@ -39430,7 +39850,7 @@ pub struct VpnGateway {
     /// [Output Only] Type of resource. Always compute#vpnGateway for VPN gateways.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// A fingerprint for the labels being applied to this VpnGateway, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an VpnGateway.
+    /// A fingerprint for the labels being applied to this VpnGateway, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a VpnGateway.
     #[prost(string, optional, tag = "178124825")]
     pub label_fingerprint: ::core::option::Option<::prost::alloc::string::String>,
     /// Labels for this resource. These can only be added or modified by the setLabels method. Each label key/value pair must comply with RFC1035. Label values may be empty.
@@ -39977,6 +40397,9 @@ pub struct WafExpressionSetExpression {
     /// Expression ID should uniquely identify the origin of the expression. E.g. owasp-crs-v020901-id973337 identifies Owasp core rule set version 2.9.1 rule id 973337. The ID could be used to determine the individual attack definition that has been detected. It could also be used to exclude it from the policy in case of false positive. required
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The sensitivity value associated with the WAF rule ID. This corresponds to the ModSecurity paranoia level, ranging from 1 to 4. 0 is reserved for opt-in only rules.
+    #[prost(int32, optional, tag = "27532959")]
+    pub sensitivity: ::core::option::Option<i32>,
 }
 /// A request message for GlobalOperations.Wait. See the method description for details.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -41050,7 +41473,7 @@ pub mod autoscalers_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified autoscaler resource. Gets a list of available autoscalers by making a list() request.
+        /// Returns the specified autoscaler resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAutoscalerRequest>,
@@ -41284,7 +41707,7 @@ pub mod backend_buckets_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified BackendBucket resource. Gets a list of available backend buckets by making a list() request.
+        /// Returns the specified BackendBucket resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackendBucketRequest>,
@@ -41563,7 +41986,7 @@ pub mod backend_services_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified BackendService resource. Gets a list of available backend services.
+        /// Returns the specified BackendService resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackendServiceRequest>,
@@ -41859,7 +42282,7 @@ pub mod disk_types_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified disk type. Gets a list of available disk types by making a list() request.
+        /// Returns the specified disk type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiskTypeRequest>,
@@ -42051,7 +42474,7 @@ pub mod disks_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns a specified persistent disk. Gets a list of available persistent disks by making a list() request.
+        /// Returns the specified persistent disk.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiskRequest>,
@@ -42228,6 +42651,26 @@ pub mod disks_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/TestIamPermissions",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates the specified disk with the data included in the request. The update is performed only on selected fields included as part of update-mask. Only the following fields can be modified: user_license.
+        pub async fn update(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDiskRequest>,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.Disks/Update",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -43385,7 +43828,7 @@ pub mod global_addresses_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified address resource. Gets a list of available addresses by making a list() request.
+        /// Returns the specified address resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGlobalAddressRequest>,
@@ -43817,7 +44260,7 @@ pub mod global_network_endpoint_groups_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified network endpoint group. Gets a list of available network endpoint groups by making a list() request.
+        /// Returns the specified network endpoint group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGlobalNetworkEndpointGroupRequest>,
@@ -44522,7 +44965,7 @@ pub mod health_checks_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified HealthCheck resource. Gets a list of available health checks by making a list() request.
+        /// Returns the specified HealthCheck resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHealthCheckRequest>,
@@ -44826,7 +45269,7 @@ pub mod images_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified image. Gets a list of available images by making a list() request.
+        /// Returns the specified image.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetImageRequest>,
@@ -44846,7 +45289,7 @@ pub mod images_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the latest image that is part of an image family and is not deprecated.
+        /// Returns the latest image that is part of an image family and is not deprecated. For more information on image families, see Public image families documentation.
         pub async fn get_from_family(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFromFamilyImageRequest>,
@@ -45233,7 +45676,7 @@ pub mod instance_group_managers_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns all of the details about the specified managed instance group. Gets a list of available managed instance groups by making a list() request.
+        /// Returns all of the details about the specified managed instance group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceGroupManagerRequest>,
@@ -45842,6 +46285,31 @@ pub mod instance_templates_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Retrieves the list of all InstanceTemplates resources, regional and global, available to the specified project.
+        pub async fn aggregated_list(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::AggregatedListInstanceTemplatesRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::InstanceTemplateAggregatedList>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.InstanceTemplates/AggregatedList",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Deletes the specified instance template. Deleting an instance template is permanent and cannot be undone. It is not possible to delete templates that are already in use by a managed instance group.
         pub async fn delete(
             &mut self,
@@ -45862,7 +46330,7 @@ pub mod instance_templates_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified instance template. Gets a list of available instance templates by making a list() request.
+        /// Returns the specified instance template.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceTemplateRequest>,
@@ -46216,7 +46684,7 @@ pub mod instances_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified Instance resource. Gets a list of available instances by making a list() request.
+        /// Returns the specified Instance resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceRequest>,
@@ -46665,6 +47133,26 @@ pub mod instances_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetMinCpuPlatform",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Sets name of an instance.
+        pub async fn set_name(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetNameInstanceRequest>,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.Instances/SetName",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -47942,7 +48430,7 @@ pub mod machine_images_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified machine image. Gets a list of available machine images by making a list() request.
+        /// Returns the specified machine image.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMachineImageRequest>,
@@ -48156,7 +48644,7 @@ pub mod machine_types_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified machine type. Gets a list of available machine types by making a list() request.
+        /// Returns the specified machine type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMachineTypeRequest>,
@@ -48781,7 +49269,7 @@ pub mod network_endpoint_groups_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified network endpoint group. Gets a list of available network endpoint groups by making a list() request.
+        /// Returns the specified network endpoint group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkEndpointGroupRequest>,
@@ -49412,7 +49900,7 @@ pub mod networks_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified network. Gets a list of available networks by making a list() request.
+        /// Returns the specified network.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkRequest>,
@@ -50039,7 +50527,7 @@ pub mod node_templates_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified node template. Gets a list of available node templates by making a list() request.
+        /// Returns the specified node template.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNodeTemplateRequest>,
@@ -50253,7 +50741,7 @@ pub mod node_types_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified node type. Gets a list of available node types by making a list() request.
+        /// Returns the specified node type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNodeTypeRequest>,
@@ -51761,7 +52249,7 @@ pub mod region_commitments_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified commitment resource. Gets a list of available commitments by making a list() request.
+        /// Returns the specified commitment resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionCommitmentRequest>,
@@ -51913,7 +52401,7 @@ pub mod region_disk_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Returns the specified regional disk type. Gets a list of available disk types by making a list() request.
+        /// Returns the specified regional disk type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionDiskTypeRequest>,
@@ -52267,6 +52755,26 @@ pub mod region_disks_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Update the specified disk with the data included in the request. Update is performed only on selected fields included as part of update-mask. Only the following fields can be modified: user_license.
+        pub async fn update(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateRegionDiskRequest>,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RegionDisks/Update",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 /// Generated client implementations.
@@ -52537,7 +53045,7 @@ pub mod region_health_checks_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified HealthCheck resource. Gets a list of available health checks by making a list() request.
+        /// Returns the specified HealthCheck resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionHealthCheckRequest>,
@@ -53301,6 +53809,160 @@ pub mod region_instance_groups_client {
     }
 }
 /// Generated client implementations.
+pub mod region_instance_templates_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The RegionInstanceTemplates API.
+    #[derive(Debug, Clone)]
+    pub struct RegionInstanceTemplatesClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl RegionInstanceTemplatesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> RegionInstanceTemplatesClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> RegionInstanceTemplatesClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            RegionInstanceTemplatesClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Deletes the specified instance template. Deleting an instance template is permanent and cannot be undone.
+        pub async fn delete(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteRegionInstanceTemplateRequest>,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RegionInstanceTemplates/Delete",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns the specified instance template.
+        pub async fn get(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRegionInstanceTemplateRequest>,
+        ) -> Result<tonic::Response<super::InstanceTemplate>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RegionInstanceTemplates/Get",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates an instance template in the specified project and region using the global instance template whose URL is included in the request.
+        pub async fn insert(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InsertRegionInstanceTemplateRequest>,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RegionInstanceTemplates/Insert",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Retrieves a list of instance templates that are contained within the specified project and region.
+        pub async fn list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRegionInstanceTemplatesRequest>,
+        ) -> Result<tonic::Response<super::InstanceTemplateList>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.RegionInstanceTemplates/List",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
 pub mod region_instances_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
@@ -53486,7 +54148,7 @@ pub mod region_network_endpoint_groups_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified network endpoint group. Gets a list of available network endpoint groups by making a list() request.
+        /// Returns the specified network endpoint group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionNetworkEndpointGroupRequest>,
@@ -54935,7 +55597,7 @@ pub mod region_target_http_proxies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified TargetHttpProxy resource in the specified region. Gets a list of available target HTTP proxies by making a list() request.
+        /// Returns the specified TargetHttpProxy resource in the specified region.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionTargetHttpProxyRequest>,
@@ -55111,7 +55773,7 @@ pub mod region_target_https_proxies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified TargetHttpsProxy resource in the specified region. Gets a list of available target HTTP proxies by making a list() request.
+        /// Returns the specified TargetHttpsProxy resource in the specified region.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionTargetHttpsProxyRequest>,
@@ -55481,7 +56143,7 @@ pub mod region_url_maps_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified UrlMap resource. Gets a list of available URL maps by making a list() request.
+        /// Returns the specified UrlMap resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionUrlMapRequest>,
@@ -55673,7 +56335,7 @@ pub mod regions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Returns the specified Region resource. Gets a list of available regions by making a list() request. To decrease latency for this method, you can optionally omit any unneeded information from the response by using a field mask. This practice is especially recommended for unused quota information (the `quotas` field). To exclude one or more fields, set your request's `fields` query parameter to only include the fields you need. For example, to only include the `id` and `selfLink` fields, add the query parameter `?fields=id,selfLink` to your request.
+        /// Returns the specified Region resource. To decrease latency for this method, you can optionally omit any unneeded information from the response by using a field mask. This practice is especially recommended for unused quota information (the `quotas` field). To exclude one or more fields, set your request's `fields` query parameter to only include the fields you need. For example, to only include the `id` and `selfLink` fields, add the query parameter `?fields=id,selfLink` to your request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionRequest>,
@@ -56336,7 +56998,7 @@ pub mod routers_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified Router resource. Gets a list of available routers by making a list() request.
+        /// Returns the specified Router resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRouterRequest>,
@@ -56588,7 +57250,7 @@ pub mod routes_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified Route resource. Gets a list of available routes by making a list() request.
+        /// Returns the specified Route resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRouteRequest>,
@@ -57323,7 +57985,7 @@ pub mod snapshots_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified Snapshot resource. Gets a list of available snapshots by making a list() request.
+        /// Returns the specified Snapshot resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSnapshotRequest>,
@@ -57578,7 +58240,7 @@ pub mod ssl_certificates_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified SslCertificate resource. Gets a list of available SSL certificates by making a list() request.
+        /// Returns the specified SslCertificate resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSslCertificateRequest>,
@@ -57770,7 +58432,7 @@ pub mod ssl_policies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified SSL policy resource. Gets a list of available SSL policies by making a list() request.
+        /// Returns the specified SSL policy resource.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertSslPolicyRequest>,
@@ -57987,7 +58649,7 @@ pub mod subnetworks_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified subnetwork. Gets a list of available subnetworks list() request.
+        /// Returns the specified subnetwork.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSubnetworkRequest>,
@@ -58461,7 +59123,7 @@ pub mod target_http_proxies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified TargetHttpProxy resource. Gets a list of available target HTTP proxies by making a list() request.
+        /// Returns the specified TargetHttpProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetHttpProxyRequest>,
@@ -58678,7 +59340,7 @@ pub mod target_https_proxies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified TargetHttpsProxy resource. Gets a list of available target HTTPS proxies by making a list() request.
+        /// Returns the specified TargetHttpsProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetHttpsProxyRequest>,
@@ -58979,7 +59641,7 @@ pub mod target_instances_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified TargetInstance resource. Gets a list of available target instances by making a list() request.
+        /// Returns the specified TargetInstance resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetInstanceRequest>,
@@ -59191,7 +59853,7 @@ pub mod target_pools_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified target pool. Gets a list of available target pools by making a list() request.
+        /// Returns the specified target pool.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetPoolRequest>,
@@ -59423,7 +60085,7 @@ pub mod target_ssl_proxies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified TargetSslProxy resource. Gets a list of available target SSL proxies by making a list() request.
+        /// Returns the specified TargetSslProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetSslProxyRequest>,
@@ -59706,7 +60368,7 @@ pub mod target_tcp_proxies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified TargetTcpProxy resource. Gets a list of available target TCP proxies by making a list() request.
+        /// Returns the specified TargetTcpProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetTcpProxyRequest>,
@@ -59925,7 +60587,7 @@ pub mod target_vpn_gateways_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified target VPN gateway. Gets a list of available target VPN gateways by making a list() request.
+        /// Returns the specified target VPN gateway.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetVpnGatewayRequest>,
@@ -60117,7 +60779,7 @@ pub mod url_maps_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified UrlMap resource. Gets a list of available URL maps by making a list() request.
+        /// Returns the specified UrlMap resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetUrlMapRequest>,
@@ -60369,7 +61031,7 @@ pub mod vpn_gateways_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified VPN gateway. Gets a list of available VPN gateways by making a list() request.
+        /// Returns the specified VPN gateway.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVpnGatewayRequest>,
@@ -60604,7 +61266,7 @@ pub mod vpn_tunnels_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified VpnTunnel resource. Gets a list of available VPN tunnels by making a list() request.
+        /// Returns the specified VpnTunnel resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVpnTunnelRequest>,
@@ -60908,7 +61570,7 @@ pub mod zones_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Returns the specified Zone resource. Gets a list of available zones by making a list() request.
+        /// Returns the specified Zone resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetZoneRequest>,
