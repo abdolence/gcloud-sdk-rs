@@ -438,6 +438,10 @@ pub mod vehicle_stop {
         /// Output only. The time required to perform the Task.
         #[prost(message, optional, tag = "2")]
         pub task_duration: ::core::option::Option<::prost_types::Duration>,
+        /// Output only. The time window during which the task should be completed.
+        /// This is only set in the response to `GetDeliveryVehicle`.
+        #[prost(message, optional, tag = "3")]
+        pub target_time_window: ::core::option::Option<super::TimeWindow>,
     }
     /// The current state of a `VehicleStop`.
     #[derive(
@@ -1100,10 +1104,8 @@ pub struct ListDeliveryVehiclesRequest {
     /// is 1 restriction.
     #[prost(string, tag = "6")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. A filter that limits the search area to a rectangle defined by
-    /// the northeast and southwest corner points.
-    ///
-    /// When defined, only vehicles located within the search area are returned.
+    /// Optional. A filter that limits the vehicles returned to those whose last
+    /// known location was in the rectangular area defined by the viewport.
     #[prost(message, optional, tag = "7")]
     pub viewport: ::core::option::Option<
         super::super::super::super::google::geo::r#type::Viewport,

@@ -124,8 +124,11 @@ pub struct UpdateIapSettingsRequest {
     #[prost(message, optional, tag = "1")]
     pub iap_settings: ::core::option::Option<IapSettings>,
     /// The field mask specifying which IAP settings should be updated.
-    /// If omitted, the all of the settings are updated. See
-    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
+    /// If omitted, then all of the settings are updated. See
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.>
+    ///
+    /// Note: All IAP reauth settings must always be set together, using the
+    /// field mask: `iapSettings.accessSettings.reauthSettings`.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -244,6 +247,8 @@ pub mod reauth_settings {
         Password = 2,
         /// User must use their secure key 2nd factor device.
         SecureKey = 3,
+        /// User can use any enabled 2nd factor.
+        EnrolledSecondFactors = 4,
     }
     impl Method {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -256,6 +261,7 @@ pub mod reauth_settings {
                 Method::Login => "LOGIN",
                 Method::Password => "PASSWORD",
                 Method::SecureKey => "SECURE_KEY",
+                Method::EnrolledSecondFactors => "ENROLLED_SECOND_FACTORS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -265,6 +271,7 @@ pub mod reauth_settings {
                 "LOGIN" => Some(Self::Login),
                 "PASSWORD" => Some(Self::Password),
                 "SECURE_KEY" => Some(Self::SecureKey),
+                "ENROLLED_SECOND_FACTORS" => Some(Self::EnrolledSecondFactors),
                 _ => None,
             }
         }

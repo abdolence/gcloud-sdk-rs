@@ -1414,7 +1414,8 @@ pub struct ComputeRoutesRequest {
     #[prost(message, optional, tag = "7")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Specifies whether to calculate alternate routes in addition to
-    /// the route.
+    /// the route. No alternative routes are returned for requests that have
+    /// intermediate waypoints.
     #[prost(bool, tag = "8")]
     pub compute_alternative_routes: bool,
     /// Optional. A set of conditions to satisfy that affect the way routes are
