@@ -10,8 +10,8 @@ pub struct ResourceErrorDetail {
     /// Required. The error details for the resource.
     #[prost(message, repeated, tag = "2")]
     pub error_details: ::prost::alloc::vec::Vec<ErrorDetail>,
-    /// Required. How many errors there are in total for the resource. Truncation can be
-    /// indicated by having an `error_count` that is higher than the size of
+    /// Required. How many errors there are in total for the resource. Truncation
+    /// can be indicated by having an `error_count` that is higher than the size of
     /// `error_details`.
     #[prost(int32, tag = "3")]
     pub error_count: i32,
@@ -32,12 +32,12 @@ pub struct ErrorDetail {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorLocation {
-    /// Optional. If applicable, denotes the line where the error occurred. A zero value
-    /// means that there is no line information.
+    /// Optional. If applicable, denotes the line where the error occurred. A zero
+    /// value means that there is no line information.
     #[prost(int32, tag = "1")]
     pub line: i32,
-    /// Optional. If applicable, denotes the column where the error occurred. A zero value
-    /// means that there is no columns information.
+    /// Optional. If applicable, denotes the column where the error occurred. A
+    /// zero value means that there is no columns information.
     #[prost(int32, tag = "2")]
     pub column: i32,
 }
@@ -67,8 +67,8 @@ pub struct TimeSeries {
         tag = "3"
     )]
     pub metric_kind: i32,
-    /// Required. The data points of this time series. When listing time series, points are
-    /// returned in reverse time order.
+    /// Required. The data points of this time series. When listing time series,
+    /// points are returned in reverse time order.
     ///
     /// When creating a time series, this field must contain exactly one point and
     /// the point's type must be the same as the value type of the associated
@@ -159,6 +159,9 @@ pub struct TranslationConfigDetails {
     /// The default source environment values for the translation.
     #[prost(message, optional, tag = "6")]
     pub source_env: ::core::option::Option<SourceEnv>,
+    /// The indicator to show translation request initiator.
+    #[prost(string, tag = "8")]
+    pub request_source: ::prost::alloc::string::String,
     /// The chosen path where the source for input files will be found.
     #[prost(oneof = "translation_config_details::SourceLocation", tags = "1")]
     pub source_location: ::core::option::Option<
@@ -621,7 +624,8 @@ pub struct MigrationTask {
     /// Translation_Oracle2BQ, Translation_HiveQL2BQ, Translation_SparkSQL2BQ,
     /// Translation_Snowflake2BQ, Translation_Netezza2BQ,
     /// Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
-    /// Translation_SQLServer2BQ, Translation_Presto2BQ, Translation_MySQL2BQ.
+    /// Translation_SQLServer2BQ, Translation_Presto2BQ, Translation_MySQL2BQ,
+    /// Translation_Postgresql2BQ.
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
     /// Output only. The current state of the task.
@@ -794,6 +798,9 @@ pub mod migration_subtask {
         /// The subtask is paused, i.e., it will not be scheduled. If it was already
         /// assigned,it might still finish but no new lease renewals will be granted.
         Paused = 5,
+        /// The subtask is pending a dependency. It will be scheduled once its
+        /// dependencies are done.
+        PendingDependency = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -808,6 +815,7 @@ pub mod migration_subtask {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Paused => "PAUSED",
+                State::PendingDependency => "PENDING_DEPENDENCY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -819,6 +827,7 @@ pub mod migration_subtask {
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
                 "PAUSED" => Some(Self::Paused),
+                "PENDING_DEPENDENCY" => Some(Self::PendingDependency),
                 _ => None,
             }
         }
@@ -924,20 +933,20 @@ pub struct ListMigrationSubtasksRequest {
     /// Optional. The list of fields to be retrieved.
     #[prost(message, optional, tag = "2")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. The maximum number of migration tasks to return. The service may return
-    /// fewer than this number.
+    /// Optional. The maximum number of migration tasks to return. The service may
+    /// return fewer than this number.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Optional. A page token, received from previous `ListMigrationSubtasks` call.
-    /// Provide this to retrieve the subsequent page.
+    /// Optional. A page token, received from previous `ListMigrationSubtasks`
+    /// call. Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListMigrationSubtasks`
     /// must match the call that provided the page token.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to apply. This can be used to get the subtasks of a specific
-    /// tasks in a workflow, e.g. `migration_task = "ab012"` where `"ab012"` is the
-    /// task ID (not the name in the named map).
+    /// Optional. The filter to apply. This can be used to get the subtasks of a
+    /// specific tasks in a workflow, e.g. `migration_task = "ab012"` where
+    /// `"ab012"` is the task ID (not the name in the named map).
     #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
 }

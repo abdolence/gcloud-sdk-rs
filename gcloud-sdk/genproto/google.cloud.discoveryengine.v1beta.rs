@@ -62,7 +62,7 @@ pub struct UserInfo {
 pub struct Document {
     /// Immutable. The full resource name of the document.
     /// Format:
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document_id}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document_id}`.
     ///
     /// This field must be a UTF-8 encoded string with a length limit of 1024
     /// characters.
@@ -74,7 +74,7 @@ pub struct Document {
     /// standard with a length limit of 63 characters.
     #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
-    /// Required. The identifier of the schema located in the same data store.
+    /// The identifier of the schema located in the same data store.
     #[prost(string, tag = "3")]
     pub schema_id: ::prost::alloc::string::String,
     /// The identifier of the parent document. Currently supports at most two level
@@ -110,14 +110,15 @@ pub mod document {
         JsonData(::prost::alloc::string::String),
     }
 }
-/// UserEvent captures all metadata information DiscoveryEngine API needs to know
-/// about how end users interact with customers' website.
+/// UserEvent captures all metadata information Discovery Engine API needs to
+/// know about how end users interact with customers' website.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserEvent {
     /// Required. User event type. Allowed values are:
     ///
     /// Generic values:
+    ///
     /// * `search`: Search for Documents.
     /// * `view-item`: Detailed page view of a Document.
     /// * `view-item-list`: View of a panel or ordered list of Documents.
@@ -125,10 +126,12 @@ pub struct UserEvent {
     /// * `view-category-page`: View of a category page, e.g. Home > Men > Jeans
     ///
     /// Retail-related values:
+    ///
     /// * `add-to-cart`: Add an item(s) to cart, e.g. in Retail online shopping
     /// * `purchase`: Purchase an item(s)
     ///
     /// Media-related values:
+    ///
     /// * `media-play`: Start/resume watching a video, playing a song, etc.
     /// * `media-complete`: Finished or stopped midway through a video, song, etc.
     #[prost(string, tag = "1")]
@@ -177,7 +180,8 @@ pub struct UserEvent {
     /// 128 bytes. A session is an aggregation of an end user behavior in a time
     /// span.
     ///
-    /// A general guideline to populate the sesion_id:
+    /// A general guideline to populate the session_id:
+    ///
     /// 1. If user has no activity for 30 min, a new session_id should be assigned.
     /// 2. The session_id should be unique across users, suggest use uuid or add
     /// \[UserEvent.user_pseudo_id][google.cloud.discoveryengine.v1beta.UserEvent.user_pseudo_id\]
@@ -280,7 +284,7 @@ pub struct UserEvent {
     /// If you provide custom attributes for ingested user events, also include
     /// them in the user events that you associate with prediction requests. Custom
     /// attribute formatting must be consistent between imported events and events
-    /// provided with prediction requests. This lets the DiscoveryEngine API use
+    /// provided with prediction requests. This lets the Discovery Engine API use
     /// those custom attributes when training models and serving predictions, which
     /// helps improve recommendation quality.
     ///
@@ -474,6 +478,7 @@ pub struct DocumentInfo {
     /// are involved in a `add-to-cart` event.
     ///
     /// Required for events of the following event types:
+    ///
     /// * `add-to-cart`
     /// * `purchase`
     #[prost(int32, optional, tag = "3")]
@@ -485,13 +490,14 @@ pub struct DocumentInfo {
     /// A required descriptor of the associated Document.
     ///
     /// * If \[id][google.cloud.discoveryengine.v1beta.DocumentInfo.id\] is
-    /// specified, then the default values for <location>, <data_store_id>, and
-    /// <branch_id> are used when annotating with the stored Document.
+    /// specified, then the default values for {location}, {collection_id},
+    /// {data_store_id}, and {branch_id} are used when annotating with the stored
+    /// Document.
     ///
     /// * If \[name][google.cloud.discoveryengine.v1beta.DocumentInfo.name\] is
     /// specified, then the provided values (default values allowed) for
-    /// <location>, <data_store_id>, and <branch_id> are used when annotating with
-    /// the stored Document.
+    /// {location}, {collection_id}, {data_store_id}, and {branch_id} are used when
+    /// annotating with the stored Document.
     #[prost(oneof = "document_info::DocumentDescriptor", tags = "1, 2")]
     pub document_descriptor: ::core::option::Option<document_info::DocumentDescriptor>,
 }
@@ -500,13 +506,14 @@ pub mod document_info {
     /// A required descriptor of the associated Document.
     ///
     /// * If \[id][google.cloud.discoveryengine.v1beta.DocumentInfo.id\] is
-    /// specified, then the default values for <location>, <data_store_id>, and
-    /// <branch_id> are used when annotating with the stored Document.
+    /// specified, then the default values for {location}, {collection_id},
+    /// {data_store_id}, and {branch_id} are used when annotating with the stored
+    /// Document.
     ///
     /// * If \[name][google.cloud.discoveryengine.v1beta.DocumentInfo.name\] is
     /// specified, then the provided values (default values allowed) for
-    /// <location>, <data_store_id>, and <branch_id> are used when annotating with
-    /// the stored Document.
+    /// {location}, {collection_id}, {data_store_id}, and {branch_id} are used when
+    /// annotating with the stored Document.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DocumentDescriptor {
@@ -514,7 +521,7 @@ pub mod document_info {
         #[prost(string, tag = "1")]
         Id(::prost::alloc::string::String),
         /// Required. The Document resource full name, of the form:
-        /// projects/<project_id>/locations/<location>/dataStores/<data_store_id>/branches/<branch_id>/documents/<document_id>
+        /// projects/{project\_id}/locations/{location}/collections/{collection\_id}/dataStores/{data\_store\_id}/branches/{branch\_id}/documents/{document\_id}
         #[prost(string, tag = "2")]
         Name(::prost::alloc::string::String),
     }
@@ -562,12 +569,11 @@ pub struct MediaInfo {
     #[prost(float, optional, tag = "2")]
     pub media_progress_percentage: ::core::option::Option<f32>,
 }
-/// Google Cloud Storage location for input content.
-/// format.
+/// Cloud Storage location for input content.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
-    /// Required. Google Cloud Storage URIs to input files. URI can be up to
+    /// Required. Cloud Storage URIs to input files. URI can be up to
     /// 2000 characters long. URIs can match the full object path (for example,
     /// `gs://bucket/directory/object.json`) or a pattern matching one or more
     /// files, such as `gs://bucket/directory/*.json`. A request can
@@ -576,16 +582,18 @@ pub struct GcsSource {
     pub input_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The schema to use when parsing the data from the source.
     ///
-    /// Supported values for imports:
-    ///
-    /// * `user_event` (default): One JSON
-    /// \[UserEvent][google.cloud.discoveryengine.v1beta.UserEvent\] per line.
+    /// Supported values for document imports:
     ///
     /// * `document` (default): One JSON
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\] per line. Each
     /// document must
     ///    have a valid
     ///    \[Document.id][google.cloud.discoveryengine.v1beta.Document.id\].
+    ///
+    /// Supported values for user even imports:
+    ///
+    /// * `user_event` (default): One JSON
+    /// \[UserEvent][google.cloud.discoveryengine.v1beta.UserEvent\] per line.
     #[prost(string, tag = "2")]
     pub data_schema: ::prost::alloc::string::String,
 }
@@ -654,7 +662,7 @@ pub mod import_error_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// Google Cloud Storage prefix for import errors. This must be an empty,
+        /// Cloud Storage prefix for import errors. This must be an empty,
         /// existing Cloud Storage directory. Import errors will be written to
         /// sharded files in this directory, one per line, as a JSON-encoded
         /// `google.rpc.Status` message.
@@ -667,7 +675,7 @@ pub mod import_error_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsRequest {
     /// Required. Parent DataStore resource name, of the form
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}`
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The desired location of errors incurred during the Import. Cannot be set
@@ -695,7 +703,7 @@ pub mod import_user_events_request {
         /// Required. The Inline source for the input content for UserEvents.
         #[prost(message, tag = "2")]
         InlineSource(InlineSource),
-        /// Required. Google Cloud Storage location for the input content.
+        /// Required. Cloud Storage location for the input content.
         #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
         /// Required. BigQuery input source.
@@ -767,7 +775,7 @@ pub struct ImportDocumentsMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
     /// Required. The parent branch resource name, such as
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}`.
     /// Requires create/update permission.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -847,7 +855,7 @@ pub mod import_documents_request {
         /// The Inline source for the input content for documents.
         #[prost(message, tag = "2")]
         InlineSource(InlineSource),
-        /// Google Cloud Storage location for the input content.
+        /// Cloud Storage location for the input content.
         #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
         /// BigQuery input source.
@@ -877,7 +885,7 @@ pub struct ImportDocumentsResponse {
 pub struct GetDocumentRequest {
     /// Required. Full resource name of
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\], such as
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}`.
     ///
     /// If the caller does not have permission to access the
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\], regardless of
@@ -895,7 +903,7 @@ pub struct GetDocumentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsRequest {
     /// Required. The parent branch resource name, such as
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}`.
     /// Use `default_branch` as the branch ID, to list documents under the default
     /// branch.
     ///
@@ -947,7 +955,7 @@ pub struct ListDocumentsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
     /// Required. The parent resource name, such as
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The \[Document][google.cloud.discoveryengine.v1beta.Document\] to
@@ -1007,7 +1015,7 @@ pub struct UpdateDocumentRequest {
 pub struct DeleteDocumentRequest {
     /// Required. Full resource name of
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\], such as
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}`.
     ///
     /// If the caller does not have permission to delete the
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\], regardless of
@@ -1226,7 +1234,7 @@ pub mod document_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendRequest {
     /// Required. Full resource name of the format:
-    /// projects/*/locations/global/dataStores/*/servingConfigs/*
+    /// projects/*/locations/global/collections/*/dataStores/*/servingConfigs/*
     ///
     /// Before you can request recommendations from your model, you must create at
     /// least one serving config  for it.
@@ -1325,8 +1333,8 @@ pub struct RecommendRequest {
     ///    key with multiple resources.
     /// * Keys must start with a lowercase letter or international character.
     ///
-    /// See [Google Cloud
-    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
+    /// See [Requirements for
+    /// labels](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
     /// for more details.
     #[prost(map = "string, string", tag = "8")]
     pub user_labels: ::std::collections::HashMap<
@@ -1483,7 +1491,7 @@ pub mod recommendation_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteUserEventRequest {
     /// Required. The parent DataStore resource name, such as
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User event to write.
@@ -1495,7 +1503,7 @@ pub struct WriteUserEventRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CollectUserEventRequest {
     /// Required. The parent DataStore resource name, such as
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}`.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. URL encoded UserEvent proto with a length limit of 2,000,000

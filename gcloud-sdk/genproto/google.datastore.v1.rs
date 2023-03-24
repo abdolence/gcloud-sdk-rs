@@ -214,8 +214,8 @@ pub struct Entity {
     /// The map's keys are property names.
     /// A property name matching regex `__.*__` is reserved.
     /// A reserved property name is forbidden in certain documented contexts.
-    /// The name must not contain more than 500 characters.
-    /// The name cannot be `""`.
+    /// The map keys, represented as UTF-8, must not exceed 1,500 bytes and cannot
+    /// be empty.
     #[prost(map = "string, message", tag = "3")]
     pub properties: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
 }
@@ -328,6 +328,11 @@ pub struct Query {
     /// The properties to make distinct. The query results will contain the first
     /// result for each distinct combination of values for the given properties
     /// (if empty, all results are returned).
+    ///
+    /// Requires:
+    ///
+    /// * If `order` is specified, the set of distinct on properties must appear
+    /// before the non-distinct on properties in `order`.
     #[prost(message, repeated, tag = "6")]
     pub distinct_on: ::prost::alloc::vec::Vec<PropertyReference>,
     /// A starting point for the query results. Query cursors are
@@ -372,7 +377,7 @@ pub struct AggregationQuery {
 }
 /// Nested message and enum types in `AggregationQuery`.
 pub mod aggregation_query {
-    /// Defines a aggregation that produces a single result.
+    /// Defines an aggregation that produces a single result.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aggregation {
@@ -387,7 +392,7 @@ pub mod aggregation_query {
         ///    COUNT_UP_TO(1) AS count_up_to_1,
         ///    COUNT_UP_TO(2),
         ///    COUNT_UP_TO(3) AS count_up_to_3,
-        ///    COUNT_UP_TO(4)
+        ///    COUNT(*)
         /// OVER (
         ///    ...
         /// );
@@ -400,7 +405,7 @@ pub mod aggregation_query {
         ///    COUNT_UP_TO(1) AS count_up_to_1,
         ///    COUNT_UP_TO(2) AS property_1,
         ///    COUNT_UP_TO(3) AS count_up_to_3,
-        ///    COUNT_UP_TO(4) AS property_2
+        ///    COUNT(*) AS property_2
         /// OVER (
         ///    ...
         /// );
@@ -430,7 +435,7 @@ pub mod aggregation_query {
             /// count.
             ///
             /// This provides a way to set an upper bound on the number of entities
-            /// to scan, limiting latency and cost.
+            /// to scan, limiting latency, and cost.
             ///
             /// Unspecified is interpreted as no bound.
             ///

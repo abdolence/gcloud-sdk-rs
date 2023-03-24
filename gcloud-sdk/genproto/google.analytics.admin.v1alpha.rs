@@ -1351,7 +1351,7 @@ pub struct Property {
     /// Immutable. The property type for this Property resource. When creating a
     /// property, if the type is "PROPERTY_TYPE_UNSPECIFIED", then
     /// "ORDINARY_PROPERTY" will be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY"
-    /// types cannot yet be created via Google Analytics Admin API.
+    /// types cannot yet be created with the Google Analytics Admin API.
     #[prost(enumeration = "PropertyType", tag = "14")]
     pub property_type: i32,
     /// Output only. Time when the entity was originally created.
@@ -1831,7 +1831,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 23"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 23, 24"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -1895,6 +1895,9 @@ pub mod change_history_change {
             /// A snapshot of a BigQuery link resource in change history.
             #[prost(message, tag = "23")]
             BigqueryLink(super::super::BigQueryLink),
+            /// A snapshot of EnhancedMeasurementSettings resource in change history.
+            #[prost(message, tag = "24")]
+            EnhancedMeasurementSettings(super::super::EnhancedMeasurementSettings),
         }
     }
 }
@@ -2050,7 +2053,7 @@ pub struct ConversionEvent {
     /// Output only. Time when this conversion event was created in the property.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. If set, this event can currently be deleted via
+    /// Output only. If set, this event can currently be deleted with
     /// DeleteConversionEvent.
     #[prost(bool, tag = "4")]
     pub deletable: bool,
@@ -2766,6 +2769,9 @@ pub struct BigQueryLink {
     /// If set true, enables streaming export to the linked Google Cloud project.
     #[prost(bool, tag = "5")]
     pub streaming_export_enabled: bool,
+    /// If set true, enables intraday export to the linked Google Cloud project.
+    #[prost(bool, tag = "9")]
+    pub intraday_export_enabled: bool,
     /// If set true, exported data will include advertising identifiers for mobile
     /// app streams.
     #[prost(bool, tag = "6")]
@@ -2779,6 +2785,75 @@ pub struct BigQueryLink {
     /// The list of event names that will be excluded from exports.
     #[prost(string, repeated, tag = "8")]
     pub excluded_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Singleton resource under a WebDataStream, configuring measurement of
+/// additional site interactions and content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnhancedMeasurementSettings {
+    /// Output only. Resource name of the Enhanced Measurement Settings.
+    /// Format:
+    /// properties/{property_id}/dataStreams/{data_stream}/enhancedMeasurementSettings
+    /// Example: "properties/1000/dataStreams/2000/enhancedMeasurementSettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Indicates whether Enhanced Measurement Settings will be used to
+    /// automatically measure interactions and content on this web stream.
+    ///
+    /// Changing this value does not affect the settings themselves, but determines
+    /// whether they are respected.
+    #[prost(bool, tag = "2")]
+    pub stream_enabled: bool,
+    /// If enabled, capture scroll events each time a visitor gets to the bottom of
+    /// a page.
+    #[prost(bool, tag = "3")]
+    pub scrolls_enabled: bool,
+    /// If enabled, capture an outbound click event each time a visitor clicks a
+    /// link that leads them away from your domain.
+    #[prost(bool, tag = "4")]
+    pub outbound_clicks_enabled: bool,
+    /// If enabled, capture a view search results event each time a visitor
+    /// performs a search on your site (based on a query parameter).
+    #[prost(bool, tag = "5")]
+    pub site_search_enabled: bool,
+    /// If enabled, capture video play, progress, and complete events as visitors
+    /// view embedded videos on your site.
+    #[prost(bool, tag = "6")]
+    pub video_engagement_enabled: bool,
+    /// If enabled, capture a file download event each time a link is clicked with
+    /// a common document, compressed file, application, video, or audio extension.
+    #[prost(bool, tag = "7")]
+    pub file_downloads_enabled: bool,
+    /// If enabled, capture a page view event each time the website changes the
+    /// browser history state.
+    #[prost(bool, tag = "8")]
+    pub page_changes_enabled: bool,
+    /// If enabled, capture a form interaction event each time a visitor interacts
+    /// with a form on your website.
+    /// False by default.
+    #[prost(bool, tag = "9")]
+    pub form_interactions_enabled: bool,
+    /// Required. URL query parameters to interpret as site search parameters.
+    /// Max length is 1024 characters. Must not be empty.
+    #[prost(string, tag = "10")]
+    pub search_query_parameter: ::prost::alloc::string::String,
+    /// Additional URL query parameters.
+    /// Max length is 1024 characters.
+    #[prost(string, tag = "11")]
+    pub uri_query_parameter: ::prost::alloc::string::String,
+}
+/// Configuration for a specific Connected Site Tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectedSiteTag {
+    /// Required. User-provided display name for the connected site tag. Must be
+    /// less than 256 characters.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. "Tag ID to forward events to. Also known as the Measurement ID,
+    /// or the "G-ID"  (For example: G-12345).
+    #[prost(string, tag = "2")]
+    pub tag_id: ::prost::alloc::string::String,
 }
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3059,6 +3134,8 @@ pub enum ChangeHistoryResourceType {
     ExpandedDataSet = 21,
     /// ChannelGroup resource
     ChannelGroup = 22,
+    /// EnhancedMeasurementSettings resource
+    EnhancedMeasurementSettings = 24,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3093,6 +3170,9 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::AttributionSettings => "ATTRIBUTION_SETTINGS",
             ChangeHistoryResourceType::ExpandedDataSet => "EXPANDED_DATA_SET",
             ChangeHistoryResourceType::ChannelGroup => "CHANNEL_GROUP",
+            ChangeHistoryResourceType::EnhancedMeasurementSettings => {
+                "ENHANCED_MEASUREMENT_SETTINGS"
+            }
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3120,12 +3200,12 @@ impl ChangeHistoryResourceType {
             "ATTRIBUTION_SETTINGS" => Some(Self::AttributionSettings),
             "EXPANDED_DATA_SET" => Some(Self::ExpandedDataSet),
             "CHANNEL_GROUP" => Some(Self::ChannelGroup),
+            "ENHANCED_MEASUREMENT_SETTINGS" => Some(Self::EnhancedMeasurementSettings),
             _ => None,
         }
     }
 }
-/// Status of the Google Signals settings (i.e., whether this feature has been
-/// enabled for the property).
+/// Status of the Google Signals settings.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum GoogleSignalsState {
@@ -3159,8 +3239,7 @@ impl GoogleSignalsState {
         }
     }
 }
-/// Consent field of the Google Signals settings (i.e., whether the user has
-/// consented to the Google Signals terms of service.)
+/// Consent field of the Google Signals settings.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum GoogleSignalsConsent {
@@ -3337,9 +3416,14 @@ impl PropertyType {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAccessReportRequest {
-    /// The Data Access Report is requested for this property.
-    /// For example if "123" is your GA4 property ID, then entity should be
-    /// "properties/123".
+    /// The Data Access Report supports requesting at the property level or account
+    /// level. If requested at the account level, Data Access Reports include all
+    /// access for all properties under that account.
+    ///
+    /// To request at the property level, entity should be for example
+    /// 'properties/123' if "123" is your GA4 property ID. To request at the
+    /// account level, entity should be for example 'accounts/1234' if "1234" is
+    /// your GA4 Account ID.
     #[prost(string, tag = "1")]
     pub entity: ::prost::alloc::string::String,
     /// The dimensions requested and displayed in the response. Requests are
@@ -3405,7 +3489,8 @@ pub struct RunAccessReportRequest {
     #[prost(message, repeated, tag = "10")]
     pub order_bys: ::prost::alloc::vec::Vec<AccessOrderBy>,
     /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in \[AccessQuota\](#AccessQuota).
+    /// quota. Quota is returned in \[AccessQuota\](#AccessQuota). For account-level
+    /// requests, this field must be false.
     #[prost(bool, tag = "11")]
     pub return_entity_quota: bool,
 }
@@ -3436,7 +3521,8 @@ pub struct RunAccessReportResponse {
     /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int32, tag = "4")]
     pub row_count: i32,
-    /// The quota state for this Analytics property including this request.
+    /// The quota state for this Analytics property including this request. This
+    /// field doesn't work with account-level requests.
     #[prost(message, optional, tag = "5")]
     pub quota: ::core::option::Option<AccessQuota>,
 }
@@ -3517,7 +3603,7 @@ pub struct ProvisionAccountTicketRequest {
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Account>,
     /// Redirect URI where the user will be sent after accepting Terms of Service.
-    /// Must be configured in Developers Console as a Redirect URI.
+    /// Must be configured in Cloud Console as a Redirect URI.
     #[prost(string, tag = "2")]
     pub redirect_uri: ::prost::alloc::string::String,
 }
@@ -4969,8 +5055,9 @@ pub struct UpdateAccessBindingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateAccessBindingsRequest {
     /// Required. The account or property that owns the access bindings. The parent
-    /// field in the UpdateAccessBindingRequest messages must either be empty or
-    /// match this field. Formats:
+    /// of all provided AccessBinding in UpdateAccessBindingRequest messages must
+    /// match this field.
+    /// Formats:
     /// - accounts/{account}
     /// - properties/{property}
     #[prost(string, tag = "1")]
@@ -5003,8 +5090,8 @@ pub struct DeleteAccessBindingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteAccessBindingsRequest {
     /// Required. The account or property that owns the access bindings. The parent
-    /// field in the DeleteAccessBindingRequest messages must either be empty or
-    /// match this field. Formats:
+    /// of all provided values for the 'names' field in DeleteAccessBindingRequest
+    /// messages must match this field. Formats:
     /// - accounts/{account}
     /// - properties/{property}
     #[prost(string, tag = "1")]
@@ -5173,6 +5260,87 @@ pub struct ListBigQueryLinksResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for GetEnhancedMeasurementSettings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEnhancedMeasurementSettingsRequest {
+    /// Required. The name of the settings to lookup.
+    /// Format:
+    /// properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings
+    /// Example: "properties/1000/dataStreams/2000/enhancedMeasurementSettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateEnhancedMeasurementSettings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEnhancedMeasurementSettingsRequest {
+    /// Required. The settings to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub enhanced_measurement_settings: ::core::option::Option<
+        EnhancedMeasurementSettings,
+    >,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for CreateConnectedSiteTag RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateConnectedSiteTagRequest {
+    /// The Universal Analytics property to create connected site tags for.
+    /// This API does not support GA4 properties.
+    /// Format: properties/{universalAnalyticsPropertyId}
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+    /// Required. The tag to add to the Universal Analytics property
+    #[prost(message, optional, tag = "2")]
+    pub connected_site_tag: ::core::option::Option<ConnectedSiteTag>,
+}
+/// Response message for CreateConnectedSiteTag RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateConnectedSiteTagResponse {}
+/// Request message for DeleteConnectedSiteTag RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteConnectedSiteTagRequest {
+    /// The Universal Analytics property to delete connected site tags for.
+    /// This API does not support GA4 properties.
+    /// Format: properties/{universalAnalyticsPropertyId}
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+    /// Tag ID to forward events to. Also known as the Measurement ID, or the
+    /// "G-ID"  (For example: G-12345).
+    #[prost(string, tag = "2")]
+    pub tag_id: ::prost::alloc::string::String,
+}
+/// Request message for ListConnectedSiteTags RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectedSiteTagsRequest {
+    /// The Universal Analytics property to fetch connected site tags for.
+    /// This does not work on GA4 properties. A maximum of 20 connected site tags
+    /// will be returned.
+    /// Example Format: `properties/1234`
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+}
+/// Response message for ListConnectedSiteTags RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectedSiteTagsResponse {
+    /// The site tags for the Universal Analytics property. A maximum of 20
+    /// connected site tags will be returned.
+    #[prost(message, repeated, tag = "1")]
+    pub connected_site_tags: ::prost::alloc::vec::Vec<ConnectedSiteTag>,
 }
 /// Generated client implementations.
 pub mod analytics_admin_service_client {
@@ -7483,6 +7651,125 @@ pub mod analytics_admin_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListBigQueryLinks",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns the enhanced measurement settings for this data stream.
+        /// Note that the stream must enable enhanced measurement for these settings to
+        /// take effect.
+        pub async fn get_enhanced_measurement_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetEnhancedMeasurementSettingsRequest,
+            >,
+        ) -> Result<tonic::Response<super::EnhancedMeasurementSettings>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEnhancedMeasurementSettings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates the enhanced measurement settings for this data stream.
+        /// Note that the stream must enable enhanced measurement for these settings to
+        /// take effect.
+        pub async fn update_enhanced_measurement_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateEnhancedMeasurementSettingsRequest,
+            >,
+        ) -> Result<tonic::Response<super::EnhancedMeasurementSettings>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEnhancedMeasurementSettings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a connected site tag for a Universal Analytics property. You can
+        /// create a maximum of 20 connected site tags per property.
+        /// Note: This API cannot be used on GA4 properties.
+        pub async fn create_connected_site_tag(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateConnectedSiteTagRequest>,
+        ) -> Result<
+            tonic::Response<super::CreateConnectedSiteTagResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateConnectedSiteTag",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes a connected site tag for a Universal Analytics property.
+        /// Note: this has no effect on GA4 properties.
+        pub async fn delete_connected_site_tag(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteConnectedSiteTagRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteConnectedSiteTag",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists the connected site tags for a Universal Analytics property. A maximum
+        /// of 20 connected site tags will be returned. Note: this has no effect on GA4
+        /// property.
+        pub async fn list_connected_site_tags(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListConnectedSiteTagsRequest>,
+        ) -> Result<
+            tonic::Response<super::ListConnectedSiteTagsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListConnectedSiteTags",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

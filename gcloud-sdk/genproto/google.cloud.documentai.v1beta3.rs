@@ -3103,6 +3103,54 @@ pub struct ListEvaluationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The request message for the ImportProcessorVersion method.
+/// This method requires Document AI Service Agent of the destination project in
+/// the source project's IAM with [Document AI Editor
+/// role](<https://cloud.google.com/document-ai/docs/access-control/iam-roles>).
+///
+/// The destination project is specified as part of the `parent` field.
+/// The source project is specified as part of `source` field.
+///
+/// The Service Agent for Document AI can be found in
+/// <https://cloud.google.com/iam/docs/service-agents.>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportProcessorVersionRequest {
+    /// Required. The destination processor name to create the processor version
+    /// in. Format:
+    /// `projects/{project}/locations/{location}/processors/{processor}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    #[prost(oneof = "import_processor_version_request::Source", tags = "2")]
+    pub source: ::core::option::Option<import_processor_version_request::Source>,
+}
+/// Nested message and enum types in `ImportProcessorVersionRequest`.
+pub mod import_processor_version_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The source processor version to import from.
+        #[prost(string, tag = "2")]
+        ProcessorVersionSource(::prost::alloc::string::String),
+    }
+}
+/// The response message for the ImportProcessorVersion method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportProcessorVersionResponse {
+    /// The destination processor version name.
+    #[prost(string, tag = "1")]
+    pub processor_version: ::prost::alloc::string::String,
+}
+/// The long running operation metadata for the ImportProcessorVersion
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportProcessorVersionMetadata {
+    /// The basic metadata for the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
+}
 /// Generated client implementations.
 pub mod document_processor_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -3664,6 +3712,29 @@ pub mod document_processor_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListEvaluations",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Imports a processor version from source processor version.
+        pub async fn import_processor_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportProcessorVersionRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ImportProcessorVersion",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

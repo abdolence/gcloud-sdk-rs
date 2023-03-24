@@ -3155,10 +3155,6 @@ pub struct Model {
     /// `projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}`.
     #[prost(string, tag = "44")]
     pub metadata_artifact: ::prost::alloc::string::String,
-    /// Optional. Used to specify the large model reference.
-    /// Only present for Large Models.
-    #[prost(message, optional, tag = "45")]
-    pub large_model_reference: ::core::option::Option<model::LargeModelReference>,
 }
 /// Nested message and enum types in `Model`.
 pub mod model {
@@ -3261,15 +3257,6 @@ pub mod model {
         /// `projects/{project}/locations/{location}/models/{model_id}@{version_id}`
         #[prost(string, tag = "1")]
         pub model: ::prost::alloc::string::String,
-    }
-    /// Contains information about the Large Model.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct LargeModelReference {
-        /// Required. The unique name of the large Foundation or pre-built model.
-        /// Like "chat-panda", "text-panda".
-        #[prost(string, tag = "1")]
-        pub name: ::prost::alloc::string::String,
     }
     /// Identifies a type of Model's prediction resources.
     #[derive(
