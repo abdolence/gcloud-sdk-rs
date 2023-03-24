@@ -11751,6 +11751,7 @@ pub mod guest_os_feature {
         MultiIpSubnet = 151776719,
         SecureBoot = 376811194,
         SevCapable = 87083793,
+        SevLiveMigratable = 392039820,
         SevSnpCapable = 426919,
         UefiCompatible = 195865408,
         VirtioScsiMultiqueue = 201597069,
@@ -11769,6 +11770,7 @@ pub mod guest_os_feature {
                 Type::MultiIpSubnet => "MULTI_IP_SUBNET",
                 Type::SecureBoot => "SECURE_BOOT",
                 Type::SevCapable => "SEV_CAPABLE",
+                Type::SevLiveMigratable => "SEV_LIVE_MIGRATABLE",
                 Type::SevSnpCapable => "SEV_SNP_CAPABLE",
                 Type::UefiCompatible => "UEFI_COMPATIBLE",
                 Type::VirtioScsiMultiqueue => "VIRTIO_SCSI_MULTIQUEUE",
@@ -11784,6 +11786,7 @@ pub mod guest_os_feature {
                 "MULTI_IP_SUBNET" => Some(Self::MultiIpSubnet),
                 "SECURE_BOOT" => Some(Self::SecureBoot),
                 "SEV_CAPABLE" => Some(Self::SevCapable),
+                "SEV_LIVE_MIGRATABLE" => Some(Self::SevLiveMigratable),
                 "SEV_SNP_CAPABLE" => Some(Self::SevSnpCapable),
                 "UEFI_COMPATIBLE" => Some(Self::UefiCompatible),
                 "VIRTIO_SCSI_MULTIQUEUE" => Some(Self::VirtioScsiMultiqueue),
@@ -12646,9 +12649,13 @@ pub mod health_status_for_network_endpoint {
     pub enum HealthState {
         /// A value indicating that the enum field is not set.
         UndefinedHealthState = 0,
+        /// Endpoint is being drained.
         Draining = 480455402,
+        /// Endpoint is healthy.
         Healthy = 439801213,
+        /// Endpoint is unhealthy.
         Unhealthy = 462118084,
+        /// Health status of the endpoint is unknown.
         Unknown = 433141802,
     }
     impl HealthState {
@@ -24147,6 +24154,14 @@ pub struct NodeGroupsSetNodeTemplateRequest {
     #[prost(string, optional, tag = "323154455")]
     pub node_template: ::core::option::Option<::prost::alloc::string::String>,
 }
+///
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeGroupsSimulateMaintenanceEventRequest {
+    /// Names of the nodes to go under maintenance simulation.
+    #[prost(string, repeated, tag = "104993457")]
+    pub nodes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Represent a sole-tenant Node Template resource. You can use a template to define properties for nodes in a node group. For more information, read Creating node groups and instances.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -34957,6 +34972,28 @@ pub struct SimulateMaintenanceEventInstanceRequest {
     /// Project ID for this request.
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
+    /// The name of the zone for this request.
+    #[prost(string, tag = "3744684")]
+    pub zone: ::prost::alloc::string::String,
+}
+/// A request message for NodeGroups.SimulateMaintenanceEvent. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SimulateMaintenanceEventNodeGroupRequest {
+    /// Name of the NodeGroup resource whose nodes will go under maintenance simulation.
+    #[prost(string, tag = "469958146")]
+    pub node_group: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "351468764")]
+    pub node_groups_simulate_maintenance_event_request_resource: ::core::option::Option<
+        NodeGroupsSimulateMaintenanceEventRequest,
+    >,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
     /// The name of the zone for this request.
     #[prost(string, tag = "3744684")]
     pub zone: ::prost::alloc::string::String,
@@ -50392,6 +50429,28 @@ pub mod node_groups_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/SetNodeTemplate",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Simulates maintenance event on specified nodes from the node group.
+        pub async fn simulate_maintenance_event(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SimulateMaintenanceEventNodeGroupRequest,
+            >,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NodeGroups/SimulateMaintenanceEvent",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

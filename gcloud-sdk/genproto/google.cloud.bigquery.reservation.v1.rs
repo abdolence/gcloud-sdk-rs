@@ -15,10 +15,10 @@ pub struct Reservation {
     /// Queries using this reservation might use more slots during runtime if
     /// ignore_idle_slots is set to false.
     ///
-    /// If the new reservation's slot capacity exceeds the project's slot capacity
-    /// or if total slot capacity of the new reservation and its siblings exceeds
-    /// the project's slot capacity, the request will fail with
-    /// `google.rpc.Code.RESOURCE_EXHAUSTED`.
+    /// If total slot_capacity of the reservation and its siblings
+    /// exceeds the total slot_count of all capacity commitments, the request will
+    /// fail with `google.rpc.Code.RESOURCE_EXHAUSTED`.
+    ///
     ///
     /// NOTE: for reservations in US or EU multi-regions, slot capacity constraints
     /// are checked separately for default and auxiliary regions. See
@@ -31,11 +31,18 @@ pub struct Reservation {
     /// capacity specified in the slot_capacity field at most.
     #[prost(bool, tag = "4")]
     pub ignore_idle_slots: bool,
-    /// Maximum number of queries that are allowed to run concurrently in this
-    /// reservation. This is a soft limit due to asynchronous nature of the system
-    /// and various optimizations for small queries.
-    /// Default value is 0 which means that concurrency will be automatically set
-    /// based on the reservation size.
+    /// The configuration parameters for the auto scaling feature. Note this is an
+    /// alpha feature.
+    #[prost(message, optional, tag = "7")]
+    pub autoscale: ::core::option::Option<reservation::Autoscale>,
+    /// Job concurrency target which sets a soft upper bound on the number of jobs
+    /// that can run concurrently in this reservation. This is a soft target due to
+    /// asynchronous nature of the system and various optimizations for small
+    /// queries.
+    /// Default value is 0 which means that concurrency target will be
+    /// automatically computed by the system.
+    /// NOTE: this field is exposed as `target_job_concurrency` in the Information
+    /// Schema, DDL and BQ CLI.
     #[prost(int64, tag = "16")]
     pub concurrency: i64,
     /// Output only. Creation time of the reservation.
@@ -52,6 +59,24 @@ pub struct Reservation {
     /// If false, this reservation is placed in the organization's default region.
     #[prost(bool, tag = "14")]
     pub multi_region_auxiliary: bool,
+    /// Edition of the reservation.
+    #[prost(enumeration = "Edition", tag = "17")]
+    pub edition: i32,
+}
+/// Nested message and enum types in `Reservation`.
+pub mod reservation {
+    /// Auto scaling settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Autoscale {
+        /// Output only. The slot capacity added to this reservation when autoscale
+        /// happens. Will be between [0, max_slots].
+        #[prost(int64, tag = "1")]
+        pub current_slots: i64,
+        /// Number of slots to be scaled when needed.
+        #[prost(int64, tag = "2")]
+        pub max_slots: i64,
+    }
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
 /// (in the form of slots) with some committed period of usage. Annual
@@ -82,12 +107,12 @@ pub struct CapacityCommitment {
     /// Output only. State of the commitment.
     #[prost(enumeration = "capacity_commitment::State", tag = "4")]
     pub state: i32,
-    /// Output only. The start of the current commitment period. It is applicable only for
-    /// ACTIVE capacity commitments.
+    /// Output only. The start of the current commitment period. It is applicable
+    /// only for ACTIVE capacity commitments.
     #[prost(message, optional, tag = "9")]
     pub commitment_start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The end of the current commitment period. It is applicable only for ACTIVE
-    /// capacity commitments.
+    /// Output only. The end of the current commitment period. It is applicable
+    /// only for ACTIVE capacity commitments.
     #[prost(message, optional, tag = "5")]
     pub commitment_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For FAILED commitment plan, provides the reason of failure.
@@ -106,6 +131,9 @@ pub struct CapacityCommitment {
     /// If false, this commitment is placed in the organization's default region.
     #[prost(bool, tag = "10")]
     pub multi_region_auxiliary: bool,
+    /// Edition of the capacity commitment.
+    #[prost(enumeration = "Edition", tag = "12")]
+    pub edition: i32,
 }
 /// Nested message and enum types in `CapacityCommitment`.
 pub mod capacity_commitment {
@@ -131,6 +159,9 @@ pub mod capacity_commitment {
         /// After that, they are not in a committed period anymore and can be removed
         /// any time.
         Flex = 3,
+        /// Same as FLEX, should only be used if flat-rate commitments are still
+        /// available.
+        FlexFlatRate = 7,
         /// Trial commitments have a committed period of 182 days after becoming
         /// ACTIVE. After that, they are converted to a new commitment based on the
         /// `renewal_plan`. Default `renewal_plan` for Trial commitment is Flex so
@@ -140,10 +171,27 @@ pub mod capacity_commitment {
         /// ACTIVE. After that, they are not in a committed period anymore and can be
         /// removed any time.
         Monthly = 2,
+        /// Same as MONTHLY, should only be used if flat-rate commitments are still
+        /// available.
+        MonthlyFlatRate = 8,
         /// Annual commitments have a committed period of 365 days after becoming
         /// ACTIVE. After that they are converted to a new commitment based on the
         /// renewal_plan.
         Annual = 4,
+        /// Same as ANNUAL, should only be used if flat-rate commitments are still
+        /// available.
+        AnnualFlatRate = 9,
+        /// 3-year commitments have a committed period of 1095(3 * 365) days after
+        /// becoming ACTIVE. After that they are converted to a new commitment based
+        /// on the renewal_plan.
+        ThreeYear = 10,
+        /// Should only be used for `renewal_plan` and is only meaningful if
+        /// edition is specified to values other than EDITION_UNSPECIFIED. Otherwise
+        /// CreateCapacityCommitmentRequest or UpdateCapacityCommitmentRequest will
+        /// be rejected with error code `google.rpc.Code.INVALID_ARGUMENT`. If the
+        /// renewal_plan is NONE, capacity commitment will be removed at the end of
+        /// its commitment period.
+        None = 6,
     }
     impl CommitmentPlan {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -154,9 +202,14 @@ pub mod capacity_commitment {
             match self {
                 CommitmentPlan::Unspecified => "COMMITMENT_PLAN_UNSPECIFIED",
                 CommitmentPlan::Flex => "FLEX",
+                CommitmentPlan::FlexFlatRate => "FLEX_FLAT_RATE",
                 CommitmentPlan::Trial => "TRIAL",
                 CommitmentPlan::Monthly => "MONTHLY",
+                CommitmentPlan::MonthlyFlatRate => "MONTHLY_FLAT_RATE",
                 CommitmentPlan::Annual => "ANNUAL",
+                CommitmentPlan::AnnualFlatRate => "ANNUAL_FLAT_RATE",
+                CommitmentPlan::ThreeYear => "THREE_YEAR",
+                CommitmentPlan::None => "NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -164,9 +217,14 @@ pub mod capacity_commitment {
             match value {
                 "COMMITMENT_PLAN_UNSPECIFIED" => Some(Self::Unspecified),
                 "FLEX" => Some(Self::Flex),
+                "FLEX_FLAT_RATE" => Some(Self::FlexFlatRate),
                 "TRIAL" => Some(Self::Trial),
                 "MONTHLY" => Some(Self::Monthly),
+                "MONTHLY_FLAT_RATE" => Some(Self::MonthlyFlatRate),
                 "ANNUAL" => Some(Self::Annual),
+                "ANNUAL_FLAT_RATE" => Some(Self::AnnualFlatRate),
+                "THREE_YEAR" => Some(Self::ThreeYear),
+                "NONE" => Some(Self::None),
                 _ => None,
             }
         }
@@ -222,7 +280,8 @@ pub mod capacity_commitment {
         }
     }
 }
-/// The request for \[ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation\].
+/// The request for
+/// \[ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReservationRequest {
@@ -239,7 +298,8 @@ pub struct CreateReservationRequest {
     #[prost(message, optional, tag = "3")]
     pub reservation: ::core::option::Option<Reservation>,
 }
-/// The request for \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
+/// The request for
+/// \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsRequest {
@@ -254,7 +314,8 @@ pub struct ListReservationsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
+/// The response for
+/// \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsResponse {
@@ -266,7 +327,8 @@ pub struct ListReservationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation\].
+/// The request for
+/// \[ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReservationRequest {
@@ -275,7 +337,8 @@ pub struct GetReservationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation\].
+/// The request for
+/// \[ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReservationRequest {
@@ -284,7 +347,8 @@ pub struct DeleteReservationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation\].
+/// The request for
+/// \[ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
@@ -295,7 +359,8 @@ pub struct UpdateReservationRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request for \[ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
+/// The request for
+/// \[ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCapacityCommitmentRequest {
@@ -318,7 +383,8 @@ pub struct CreateCapacityCommitmentRequest {
     #[prost(string, tag = "5")]
     pub capacity_commitment_id: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
+/// The request for
+/// \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsRequest {
@@ -333,7 +399,8 @@ pub struct ListCapacityCommitmentsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
+/// The response for
+/// \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsResponse {
@@ -345,7 +412,8 @@ pub struct ListCapacityCommitmentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment\].
+/// The request for
+/// \[ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCapacityCommitmentRequest {
@@ -354,7 +422,8 @@ pub struct GetCapacityCommitmentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment\].
+/// The request for
+/// \[ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCapacityCommitmentRequest {
@@ -368,7 +437,8 @@ pub struct DeleteCapacityCommitmentRequest {
     #[prost(bool, tag = "3")]
     pub force: bool,
 }
-/// The request for \[ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment\].
+/// The request for
+/// \[ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCapacityCommitmentRequest {
@@ -379,7 +449,8 @@ pub struct UpdateCapacityCommitmentRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request for \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
+/// The request for
+/// \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentRequest {
@@ -391,7 +462,8 @@ pub struct SplitCapacityCommitmentRequest {
     #[prost(int64, tag = "2")]
     pub slot_count: i64,
 }
-/// The response for \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
+/// The response for
+/// \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentResponse {
@@ -402,7 +474,8 @@ pub struct SplitCapacityCommitmentResponse {
     #[prost(message, optional, tag = "2")]
     pub second: ::core::option::Option<CapacityCommitment>,
 }
-/// The request for \[ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments\].
+/// The request for
+/// \[ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeCapacityCommitmentsRequest {
@@ -468,6 +541,8 @@ pub mod assignment {
         /// BigQuery ML jobs that use services external to BigQuery for model
         /// training. These jobs will not utilize idle slots from other reservations.
         MlExternal = 3,
+        /// Background jobs that BigQuery runs for the customers in the background.
+        Background = 4,
     }
     impl JobType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -480,6 +555,7 @@ pub mod assignment {
                 JobType::Pipeline => "PIPELINE",
                 JobType::Query => "QUERY",
                 JobType::MlExternal => "ML_EXTERNAL",
+                JobType::Background => "BACKGROUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -489,6 +565,7 @@ pub mod assignment {
                 "PIPELINE" => Some(Self::Pipeline),
                 "QUERY" => Some(Self::Query),
                 "ML_EXTERNAL" => Some(Self::MlExternal),
+                "BACKGROUND" => Some(Self::Background),
                 _ => None,
             }
         }
@@ -540,7 +617,8 @@ pub mod assignment {
         }
     }
 }
-/// The request for \[ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment\].
+/// The request for
+/// \[ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment\].
 /// Note: "bigquery.reservationAssignments.create" permission is required on the
 /// related assignee.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -560,7 +638,8 @@ pub struct CreateAssignmentRequest {
     #[prost(string, tag = "4")]
     pub assignment_id: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
+/// The request for
+/// \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsRequest {
@@ -580,7 +659,8 @@ pub struct ListAssignmentsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
+/// The response for
+/// \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsResponse {
@@ -592,7 +672,8 @@ pub struct ListAssignmentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment\].
+/// The request for
+/// \[ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment\].
 /// Note: "bigquery.reservationAssignments.delete" permission is required on the
 /// related assignee.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -610,8 +691,8 @@ pub struct DeleteAssignmentRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsRequest {
-    /// Required. The resource name of the admin project(containing project and location),
-    /// e.g.:
+    /// Required. The resource name of the admin project(containing project and
+    /// location), e.g.:
     ///    `projects/myproject/locations/US`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -638,8 +719,8 @@ pub struct SearchAssignmentsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllAssignmentsRequest {
-    /// Required. The resource name with location (project name could be the wildcard '-'),
-    /// e.g.:
+    /// Required. The resource name with location (project name could be the
+    /// wildcard '-'), e.g.:
     ///    `projects/-/locations/US`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -659,7 +740,8 @@ pub struct SearchAllAssignmentsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
+/// The response for
+/// \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsResponse {
@@ -671,7 +753,8 @@ pub struct SearchAssignmentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The response for \[ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
+/// The response for
+/// \[ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllAssignmentsResponse {
@@ -704,8 +787,16 @@ pub struct MoveAssignmentRequest {
     ///    `projects/myotherproject/locations/US/reservations/team2-prod`
     #[prost(string, tag = "3")]
     pub destination_id: ::prost::alloc::string::String,
+    /// The optional assignment ID. A new assignment name is generated if this
+    /// field is empty.
+    ///
+    /// This field can contain only lowercase alphanumeric characters or dashes.
+    /// Max length is 64 characters.
+    #[prost(string, tag = "5")]
+    pub assignment_id: ::prost::alloc::string::String,
 }
-/// The request for \[ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment\].
+/// The request for
+/// \[ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAssignmentRequest {
@@ -769,6 +860,45 @@ pub struct UpdateBiReservationRequest {
     /// A list of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The type of editions.
+/// Different features and behaviors are provided to different editions
+/// Capacity commitments and reservations are linked to editions.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Edition {
+    /// Default value, which will be treated as ENTERPRISE.
+    Unspecified = 0,
+    /// Standard edition.
+    Standard = 1,
+    /// Enterprise edition.
+    Enterprise = 2,
+    /// Enterprise plus edition.
+    EnterprisePlus = 3,
+}
+impl Edition {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Edition::Unspecified => "EDITION_UNSPECIFIED",
+            Edition::Standard => "STANDARD",
+            Edition::Enterprise => "ENTERPRISE",
+            Edition::EnterprisePlus => "ENTERPRISE_PLUS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EDITION_UNSPECIFIED" => Some(Self::Unspecified),
+            "STANDARD" => Some(Self::Standard),
+            "ENTERPRISE" => Some(Self::Enterprise),
+            "ENTERPRISE_PLUS" => Some(Self::EnterprisePlus),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod reservation_service_client {

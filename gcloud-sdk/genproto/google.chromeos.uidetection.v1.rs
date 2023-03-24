@@ -11,6 +11,10 @@ pub struct UiDetectionRequest {
     /// Indicates whether to resize the image when detecting.
     #[prost(bool, optional, tag = "3")]
     pub resize_image: ::core::option::Option<bool>,
+    /// Name of the calling test, as it should appear in analytics. For example,
+    /// 'tast.uidetection.BasicDetections'.
+    #[prost(string, tag = "4")]
+    pub test_id: ::prost::alloc::string::String,
 }
 /// Detection type specifies what to detect in the image.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -99,6 +103,10 @@ pub struct UiDetectionResponse {
     /// Locations of matching UI elements.
     #[prost(message, repeated, tag = "1")]
     pub bounding_boxes: ::prost::alloc::vec::Vec<BoundingBox>,
+    /// Detection image PNG after all transformations have been applied. If absent,
+    /// assume the image was not transformed.
+    #[prost(bytes = "vec", tag = "2")]
+    pub transformed_image_png: ::prost::alloc::vec::Vec<u8>,
 }
 /// The location of a UI element.
 /// A bounding box is reprensented by its top-left point [left, top]
