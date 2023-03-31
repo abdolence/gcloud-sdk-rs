@@ -1,5 +1,4 @@
 /// Represents a hardware accelerator type.
-/// NEXT ID: 11.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AcceleratorType {
@@ -2622,6 +2621,11 @@ pub struct ModelSourceInfo {
     /// Type of the model source.
     #[prost(enumeration = "model_source_info::ModelSourceType", tag = "1")]
     pub source_type: i32,
+    /// If this Model is copy of another Model. If true then
+    /// \[source_type][google.cloud.aiplatform.v1.ModelSourceInfo.source_type\]
+    /// pertains to the original.
+    #[prost(bool, tag = "2")]
+    pub copy: bool,
 }
 /// Nested message and enum types in `ModelSourceInfo`.
 pub mod model_source_info {
@@ -2647,6 +2651,8 @@ pub mod model_source_info {
         Custom = 2,
         /// The Model is registered and sync'ed from BigQuery ML.
         Bqml = 3,
+        /// The Model is saved or tuned from Model Garden.
+        ModelGarden = 4,
     }
     impl ModelSourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2659,6 +2665,7 @@ pub mod model_source_info {
                 ModelSourceType::Automl => "AUTOML",
                 ModelSourceType::Custom => "CUSTOM",
                 ModelSourceType::Bqml => "BQML",
+                ModelSourceType::ModelGarden => "MODEL_GARDEN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2668,6 +2675,7 @@ pub mod model_source_info {
                 "AUTOML" => Some(Self::Automl),
                 "CUSTOM" => Some(Self::Custom),
                 "BQML" => Some(Self::Bqml),
+                "MODEL_GARDEN" => Some(Self::ModelGarden),
                 _ => None,
             }
         }
@@ -5000,6 +5008,7 @@ pub struct DeployedModel {
     /// even if the DeployedModel receives no traffic.
     /// Not all Models support all resources types. See
     /// \[Model.supported_deployment_resources_types][google.cloud.aiplatform.v1.Model.supported_deployment_resources_types\].
+    /// Required except for Large Model Deploy use cases.
     #[prost(oneof = "deployed_model::PredictionResources", tags = "7, 8")]
     pub prediction_resources: ::core::option::Option<
         deployed_model::PredictionResources,
@@ -5012,6 +5021,7 @@ pub mod deployed_model {
     /// even if the DeployedModel receives no traffic.
     /// Not all Models support all resources types. See
     /// \[Model.supported_deployment_resources_types][google.cloud.aiplatform.v1.Model.supported_deployment_resources_types\].
+    /// Required except for Large Model Deploy use cases.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PredictionResources {
@@ -5083,10 +5093,16 @@ pub struct CreateEndpointRequest {
     /// component of the endpoint resource name.
     /// If not provided, Vertex AI will generate a value for this ID.
     ///
-    /// This value should be 1-10 characters, and valid characters are /\[0-9\]/.
-    /// When using HTTP/JSON, this field is populated based on a query string
-    /// argument, such as `?endpoint_id=12345`. This is the fallback for fields
-    /// that are not included in either the URI or the body.
+    /// If the first character is a letter, this value may be up to 63 characters,
+    /// and valid characters are `\[a-z0-9-\]`. The last character must be a letter
+    /// or number.
+    ///
+    /// If the first character is a number, this value may be up to 9 characters,
+    /// and valid characters are `\[0-9\]` with no leading zeros.
+    ///
+    /// When using HTTP/JSON, this field is populated
+    /// based on a query string argument, such as `?endpoint_id=12345`. This is the
+    /// fallback for fields that are not included in either the URI or the body.
     #[prost(string, tag = "4")]
     pub endpoint_id: ::prost::alloc::string::String,
 }
@@ -7372,10 +7388,7 @@ pub struct BatchReadFeatureValuesRequest {
         batch_read_feature_values_request::PassThroughField,
     >,
     /// Required. Specifies EntityType grouping Features to read values of and
-    /// settings. Each EntityType referenced in
-    /// \[BatchReadFeatureValuesRequest.entity_type_specs\] must have a column
-    /// specifying entity IDs in the EntityType in
-    /// \[BatchReadFeatureValuesRequest.request][\] .
+    /// settings.
     #[prost(message, repeated, tag = "7")]
     pub entity_type_specs: ::prost::alloc::vec::Vec<
         batch_read_feature_values_request::EntityTypeSpec,
@@ -10060,6 +10073,16 @@ pub struct IndexEndpoint {
     pub private_service_connect_config: ::core::option::Option<
         PrivateServiceConnectConfig,
     >,
+    /// Optional. If true, the deployed index will be accessible through public
+    /// endpoint.
+    #[prost(bool, tag = "13")]
+    pub public_endpoint_enabled: bool,
+    /// Output only. If
+    /// \[public_endpoint_enabled][google.cloud.aiplatform.v1.IndexEndpoint.public_endpoint_enabled\]
+    /// is true, this field will be populated with the domain name to use for this
+    /// index endpoint.
+    #[prost(string, tag = "14")]
+    pub public_endpoint_domain_name: ::prost::alloc::string::String,
 }
 /// A deployment of an Index. IndexEndpoints contain one or more DeployedIndexes.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -10154,7 +10177,7 @@ pub struct DeployedIndex {
     /// the index might be deployed to any ip ranges under the provided VPC
     /// network.
     ///
-    /// The value sohuld be the name of the address
+    /// The value should be the name of the address
     /// (<https://cloud.google.com/compute/docs/reference/rest/v1/addresses>)
     /// Example: 'vertex-ai-ip-range'.
     #[prost(string, repeated, tag = "10")]

@@ -11,10 +11,13 @@ pub struct UiDetectionRequest {
     /// Indicates whether to resize the image when detecting.
     #[prost(bool, optional, tag = "3")]
     pub resize_image: ::core::option::Option<bool>,
-    /// Name of the calling test, as it should appear in analytics. For example,
-    /// 'tast.uidetection.BasicDetections'.
+    /// Deprecated as of 2023-03-29. Use test_metadata instead.
+    #[deprecated]
     #[prost(string, tag = "4")]
     pub test_id: ::prost::alloc::string::String,
+    /// Optional. Metadata about the client for analytics.
+    #[prost(message, optional, tag = "5")]
+    pub test_metadata: ::core::option::Option<TestMetadata>,
 }
 /// Detection type specifies what to detect in the image.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -40,6 +43,24 @@ pub mod detection_request {
         #[prost(message, tag = "3")]
         CustomIconDetectionRequest(super::CustomIconDetectionRequest),
     }
+}
+/// Metadata about the client test and test device.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TestMetadata {
+    /// Name of the calling test. For example, 'tast.uidetection.BasicDetections'.
+    #[prost(string, tag = "1")]
+    pub test_id: ::prost::alloc::string::String,
+    /// Board name of the ChromeOS device under test. For example, 'volteer'.
+    #[prost(string, tag = "2")]
+    pub board: ::prost::alloc::string::String,
+    /// Model name of the ChromeOS device under test. For example, 'volet'.
+    #[prost(string, tag = "3")]
+    pub model: ::prost::alloc::string::String,
+    /// ChromeOS build of the device under test.
+    /// For example, 'volteer-release/R110-15275.0.0-75031-8794956681263330561'.
+    #[prost(string, tag = "4")]
+    pub cros_build: ::prost::alloc::string::String,
 }
 /// Detection type for word detection.
 #[allow(clippy::derive_partial_eq_without_eq)]

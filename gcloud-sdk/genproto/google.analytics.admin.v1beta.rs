@@ -1,3 +1,503 @@
+/// Dimensions are attributes of your data. For example, the dimension
+/// `userEmail` indicates the email of the user that accessed reporting data.
+/// Dimension values in report responses are strings.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDimension {
+    /// The API name of the dimension. See [Data Access
+    /// Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
+    /// for the list of dimensions supported in this API.
+    ///
+    /// Dimensions are referenced by name in `dimensionFilter` and `orderBys`.
+    #[prost(string, tag = "1")]
+    pub dimension_name: ::prost::alloc::string::String,
+}
+/// The quantitative measurements of a report. For example, the metric
+/// `accessCount` is the total number of data access records.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessMetric {
+    /// The API name of the metric. See [Data Access
+    /// Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
+    /// for the list of metrics supported in this API.
+    ///
+    /// Metrics are referenced by name in `metricFilter` & `orderBys`.
+    #[prost(string, tag = "1")]
+    pub metric_name: ::prost::alloc::string::String,
+}
+/// A contiguous range of days: startDate, startDate + 1, ..., endDate.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDateRange {
+    /// The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
+    /// be after `endDate`. The format `NdaysAgo`, `yesterday`, or `today` is also
+    /// accepted, and in that case, the date is inferred based on the current time
+    /// in the request's time zone.
+    #[prost(string, tag = "1")]
+    pub start_date: ::prost::alloc::string::String,
+    /// The inclusive end date for the query in the format `YYYY-MM-DD`. Cannot
+    /// be before `startDate`. The format `NdaysAgo`, `yesterday`, or `today` is
+    /// also accepted, and in that case, the date is inferred based on the current
+    /// time in the request's time zone.
+    #[prost(string, tag = "2")]
+    pub end_date: ::prost::alloc::string::String,
+}
+/// Expresses dimension or metric filters. The fields in the same expression need
+/// to be either all dimensions or all metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessFilterExpression {
+    /// Specify one type of filter expression for `FilterExpression`.
+    #[prost(oneof = "access_filter_expression::OneExpression", tags = "1, 2, 3, 4")]
+    pub one_expression: ::core::option::Option<access_filter_expression::OneExpression>,
+}
+/// Nested message and enum types in `AccessFilterExpression`.
+pub mod access_filter_expression {
+    /// Specify one type of filter expression for `FilterExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneExpression {
+        /// Each of the FilterExpressions in the and_group has an AND relationship.
+        #[prost(message, tag = "1")]
+        AndGroup(super::AccessFilterExpressionList),
+        /// Each of the FilterExpressions in the or_group has an OR relationship.
+        #[prost(message, tag = "2")]
+        OrGroup(super::AccessFilterExpressionList),
+        /// The FilterExpression is NOT of not_expression.
+        #[prost(message, tag = "3")]
+        NotExpression(::prost::alloc::boxed::Box<super::AccessFilterExpression>),
+        /// A primitive filter. In the same FilterExpression, all of the filter's
+        /// field names need to be either all dimensions or all metrics.
+        #[prost(message, tag = "4")]
+        AccessFilter(super::AccessFilter),
+    }
+}
+/// A list of filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessFilterExpressionList {
+    /// A list of filter expressions.
+    #[prost(message, repeated, tag = "1")]
+    pub expressions: ::prost::alloc::vec::Vec<AccessFilterExpression>,
+}
+/// An expression to filter dimension or metric values.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessFilter {
+    /// The dimension name or metric name.
+    #[prost(string, tag = "1")]
+    pub field_name: ::prost::alloc::string::String,
+    /// Specify one type of filter for `Filter`.
+    #[prost(oneof = "access_filter::OneFilter", tags = "2, 3, 4, 5")]
+    pub one_filter: ::core::option::Option<access_filter::OneFilter>,
+}
+/// Nested message and enum types in `AccessFilter`.
+pub mod access_filter {
+    /// Specify one type of filter for `Filter`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneFilter {
+        /// Strings related filter.
+        #[prost(message, tag = "2")]
+        StringFilter(super::AccessStringFilter),
+        /// A filter for in list values.
+        #[prost(message, tag = "3")]
+        InListFilter(super::AccessInListFilter),
+        /// A filter for numeric or date values.
+        #[prost(message, tag = "4")]
+        NumericFilter(super::AccessNumericFilter),
+        /// A filter for two values.
+        #[prost(message, tag = "5")]
+        BetweenFilter(super::AccessBetweenFilter),
+    }
+}
+/// The filter for strings.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessStringFilter {
+    /// The match type for this filter.
+    #[prost(enumeration = "access_string_filter::MatchType", tag = "1")]
+    pub match_type: i32,
+    /// The string value used for the matching.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+    /// If true, the string value is case sensitive.
+    #[prost(bool, tag = "3")]
+    pub case_sensitive: bool,
+}
+/// Nested message and enum types in `AccessStringFilter`.
+pub mod access_string_filter {
+    /// The match type of a string filter.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MatchType {
+        /// Unspecified
+        Unspecified = 0,
+        /// Exact match of the string value.
+        Exact = 1,
+        /// Begins with the string value.
+        BeginsWith = 2,
+        /// Ends with the string value.
+        EndsWith = 3,
+        /// Contains the string value.
+        Contains = 4,
+        /// Full match for the regular expression with the string value.
+        FullRegexp = 5,
+        /// Partial match for the regular expression with the string value.
+        PartialRegexp = 6,
+    }
+    impl MatchType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MatchType::Unspecified => "MATCH_TYPE_UNSPECIFIED",
+                MatchType::Exact => "EXACT",
+                MatchType::BeginsWith => "BEGINS_WITH",
+                MatchType::EndsWith => "ENDS_WITH",
+                MatchType::Contains => "CONTAINS",
+                MatchType::FullRegexp => "FULL_REGEXP",
+                MatchType::PartialRegexp => "PARTIAL_REGEXP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MATCH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT" => Some(Self::Exact),
+                "BEGINS_WITH" => Some(Self::BeginsWith),
+                "ENDS_WITH" => Some(Self::EndsWith),
+                "CONTAINS" => Some(Self::Contains),
+                "FULL_REGEXP" => Some(Self::FullRegexp),
+                "PARTIAL_REGEXP" => Some(Self::PartialRegexp),
+                _ => None,
+            }
+        }
+    }
+}
+/// The result needs to be in a list of string values.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessInListFilter {
+    /// The list of string values. Must be non-empty.
+    #[prost(string, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// If true, the string value is case sensitive.
+    #[prost(bool, tag = "2")]
+    pub case_sensitive: bool,
+}
+/// Filters for numeric or date values.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessNumericFilter {
+    /// The operation type for this filter.
+    #[prost(enumeration = "access_numeric_filter::Operation", tag = "1")]
+    pub operation: i32,
+    /// A numeric value or a date value.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::core::option::Option<NumericValue>,
+}
+/// Nested message and enum types in `AccessNumericFilter`.
+pub mod access_numeric_filter {
+    /// The operation applied to a numeric filter.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Operation {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Equal
+        Equal = 1,
+        /// Less than
+        LessThan = 2,
+        /// Less than or equal
+        LessThanOrEqual = 3,
+        /// Greater than
+        GreaterThan = 4,
+        /// Greater than or equal
+        GreaterThanOrEqual = 5,
+    }
+    impl Operation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Operation::Unspecified => "OPERATION_UNSPECIFIED",
+                Operation::Equal => "EQUAL",
+                Operation::LessThan => "LESS_THAN",
+                Operation::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
+                Operation::GreaterThan => "GREATER_THAN",
+                Operation::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "EQUAL" => Some(Self::Equal),
+                "LESS_THAN" => Some(Self::LessThan),
+                "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                "GREATER_THAN" => Some(Self::GreaterThan),
+                "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                _ => None,
+            }
+        }
+    }
+}
+/// To express that the result needs to be between two numbers (inclusive).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessBetweenFilter {
+    /// Begins with this number.
+    #[prost(message, optional, tag = "1")]
+    pub from_value: ::core::option::Option<NumericValue>,
+    /// Ends with this number.
+    #[prost(message, optional, tag = "2")]
+    pub to_value: ::core::option::Option<NumericValue>,
+}
+/// To represent a number.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NumericValue {
+    /// One of a numeric value
+    #[prost(oneof = "numeric_value::OneValue", tags = "1, 2")]
+    pub one_value: ::core::option::Option<numeric_value::OneValue>,
+}
+/// Nested message and enum types in `NumericValue`.
+pub mod numeric_value {
+    /// One of a numeric value
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneValue {
+        /// Integer value
+        #[prost(int64, tag = "1")]
+        Int64Value(i64),
+        /// Double value
+        #[prost(double, tag = "2")]
+        DoubleValue(f64),
+    }
+}
+/// Order bys define how rows will be sorted in the response. For example,
+/// ordering rows by descending access count is one ordering, and ordering rows
+/// by the country string is a different ordering.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessOrderBy {
+    /// If true, sorts by descending order. If false or unspecified, sorts in
+    /// ascending order.
+    #[prost(bool, tag = "3")]
+    pub desc: bool,
+    /// Specify one type of order by for `OrderBy`.
+    #[prost(oneof = "access_order_by::OneOrderBy", tags = "1, 2")]
+    pub one_order_by: ::core::option::Option<access_order_by::OneOrderBy>,
+}
+/// Nested message and enum types in `AccessOrderBy`.
+pub mod access_order_by {
+    /// Sorts by metric values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MetricOrderBy {
+        /// A metric name in the request to order by.
+        #[prost(string, tag = "1")]
+        pub metric_name: ::prost::alloc::string::String,
+    }
+    /// Sorts by dimension values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DimensionOrderBy {
+        /// A dimension name in the request to order by.
+        #[prost(string, tag = "1")]
+        pub dimension_name: ::prost::alloc::string::String,
+        /// Controls the rule for dimension value ordering.
+        #[prost(enumeration = "dimension_order_by::OrderType", tag = "2")]
+        pub order_type: i32,
+    }
+    /// Nested message and enum types in `DimensionOrderBy`.
+    pub mod dimension_order_by {
+        /// Rule to order the string dimension values by.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum OrderType {
+            /// Unspecified.
+            Unspecified = 0,
+            /// Alphanumeric sort by Unicode code point. For example, "2" < "A" < "X" <
+            /// "b" < "z".
+            Alphanumeric = 1,
+            /// Case insensitive alphanumeric sort by lower case Unicode code point.
+            /// For example, "2" < "A" < "b" < "X" < "z".
+            CaseInsensitiveAlphanumeric = 2,
+            /// Dimension values are converted to numbers before sorting. For example
+            /// in NUMERIC sort, "25" < "100", and in `ALPHANUMERIC` sort, "100" <
+            /// "25". Non-numeric dimension values all have equal ordering value below
+            /// all numeric values.
+            Numeric = 3,
+        }
+        impl OrderType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    OrderType::Unspecified => "ORDER_TYPE_UNSPECIFIED",
+                    OrderType::Alphanumeric => "ALPHANUMERIC",
+                    OrderType::CaseInsensitiveAlphanumeric => {
+                        "CASE_INSENSITIVE_ALPHANUMERIC"
+                    }
+                    OrderType::Numeric => "NUMERIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ORDER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ALPHANUMERIC" => Some(Self::Alphanumeric),
+                    "CASE_INSENSITIVE_ALPHANUMERIC" => {
+                        Some(Self::CaseInsensitiveAlphanumeric)
+                    }
+                    "NUMERIC" => Some(Self::Numeric),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Specify one type of order by for `OrderBy`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneOrderBy {
+        /// Sorts results by a metric's values.
+        #[prost(message, tag = "1")]
+        Metric(MetricOrderBy),
+        /// Sorts results by a dimension's values.
+        #[prost(message, tag = "2")]
+        Dimension(DimensionOrderBy),
+    }
+}
+/// Describes a dimension column in the report. Dimensions requested in a report
+/// produce column entries within rows and DimensionHeaders. However, dimensions
+/// used exclusively within filters or expressions do not produce columns in a
+/// report; correspondingly, those dimensions do not produce headers.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDimensionHeader {
+    /// The dimension's name; for example 'userEmail'.
+    #[prost(string, tag = "1")]
+    pub dimension_name: ::prost::alloc::string::String,
+}
+/// Describes a metric column in the report. Visible metrics requested in a
+/// report produce column entries within rows and MetricHeaders. However,
+/// metrics used exclusively within filters or expressions do not produce columns
+/// in a report; correspondingly, those metrics do not produce headers.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessMetricHeader {
+    /// The metric's name; for example 'accessCount'.
+    #[prost(string, tag = "1")]
+    pub metric_name: ::prost::alloc::string::String,
+}
+/// Access report data for each row.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessRow {
+    /// List of dimension values. These values are in the same order as specified
+    /// in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub dimension_values: ::prost::alloc::vec::Vec<AccessDimensionValue>,
+    /// List of metric values. These values are in the same order as specified
+    /// in the request.
+    #[prost(message, repeated, tag = "2")]
+    pub metric_values: ::prost::alloc::vec::Vec<AccessMetricValue>,
+}
+/// The value of a dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDimensionValue {
+    /// The dimension value. For example, this value may be 'France' for the
+    /// 'country' dimension.
+    #[prost(string, tag = "1")]
+    pub value: ::prost::alloc::string::String,
+}
+/// The value of a metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessMetricValue {
+    /// The measurement value. For example, this value may be '13'.
+    #[prost(string, tag = "1")]
+    pub value: ::prost::alloc::string::String,
+}
+/// Current state of all quotas for this Analytics property. If any quota for a
+/// property is exhausted, all requests to that property will return Resource
+/// Exhausted errors.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessQuota {
+    /// Properties can use 250,000 tokens per day. Most requests consume fewer than
+    /// 10 tokens.
+    #[prost(message, optional, tag = "1")]
+    pub tokens_per_day: ::core::option::Option<AccessQuotaStatus>,
+    /// Properties can use 50,000 tokens per hour. An API request consumes a single
+    /// number of tokens, and that number is deducted from all of the hourly,
+    /// daily, and per project hourly quotas.
+    #[prost(message, optional, tag = "2")]
+    pub tokens_per_hour: ::core::option::Option<AccessQuotaStatus>,
+    /// Properties can use up to 50 concurrent requests.
+    #[prost(message, optional, tag = "3")]
+    pub concurrent_requests: ::core::option::Option<AccessQuotaStatus>,
+    /// Properties and cloud project pairs can have up to 50 server errors per
+    /// hour.
+    #[prost(message, optional, tag = "4")]
+    pub server_errors_per_project_per_hour: ::core::option::Option<AccessQuotaStatus>,
+    /// Properties can use up to 25% of their tokens per project per hour. This
+    /// amounts to Analytics 360 Properties can use 12,500 tokens per project per
+    /// hour. An API request consumes a single number of tokens, and that number is
+    /// deducted from all of the hourly, daily, and per project hourly quotas.
+    #[prost(message, optional, tag = "5")]
+    pub tokens_per_project_per_hour: ::core::option::Option<AccessQuotaStatus>,
+}
+/// Current state for a particular quota group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessQuotaStatus {
+    /// Quota consumed by this request.
+    #[prost(int32, tag = "1")]
+    pub consumed: i32,
+    /// Quota remaining after this request.
+    #[prost(int32, tag = "2")]
+    pub remaining: i32,
+}
 /// A resource message representing a Google Analytics account.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -33,10 +533,10 @@ pub struct Property {
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. The property type for this Property resource. When creating a property, if
-    /// the type is "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will be
-    /// implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot yet be created
-    /// via Google Analytics Admin API.
+    /// Immutable. The property type for this Property resource. When creating a
+    /// property, if the type is "PROPERTY_TYPE_UNSPECIFIED", then
+    /// "ORDINARY_PROPERTY" will be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY"
+    /// types cannot yet be created with the Google Analytics Admin API.
     #[prost(enumeration = "PropertyType", tag = "14")]
     pub property_type: i32,
     /// Output only. Time when the entity was originally created.
@@ -61,9 +561,9 @@ pub struct Property {
     /// Example: AUTOMOTIVE, FOOD_AND_DRINK
     #[prost(enumeration = "IndustryCategory", tag = "6")]
     pub industry_category: i32,
-    /// Required. Reporting Time Zone, used as the day boundary for reports, regardless of
-    /// where the data originates. If the time zone honors DST, Analytics will
-    /// automatically adjust for the changes.
+    /// Required. Reporting Time Zone, used as the day boundary for reports,
+    /// regardless of where the data originates. If the time zone honors DST,
+    /// Analytics will automatically adjust for the changes.
     ///
     /// NOTE: Changing the time zone only affects data going forward, and is not
     /// applied retroactively.
@@ -79,16 +579,17 @@ pub struct Property {
     /// Examples: "USD", "EUR", "JPY"
     #[prost(string, tag = "8")]
     pub currency_code: ::prost::alloc::string::String,
-    /// Output only. The Google Analytics service level that applies to this property.
+    /// Output only. The Google Analytics service level that applies to this
+    /// property.
     #[prost(enumeration = "ServiceLevel", tag = "10")]
     pub service_level: i32,
-    /// Output only. If set, the time at which this property was trashed. If not set, then this
-    /// property is not currently in the trash can.
+    /// Output only. If set, the time at which this property was trashed. If not
+    /// set, then this property is not currently in the trash can.
     #[prost(message, optional, tag = "11")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. If set, the time at which this trashed property will be permanently
-    /// deleted. If not set, then this property is not currently in the trash can
-    /// and is not slated to be deleted.
+    /// Output only. If set, the time at which this trashed property will be
+    /// permanently deleted. If not set, then this property is not currently in the
+    /// trash can and is not slated to be deleted.
     #[prost(message, optional, tag = "12")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Immutable. The resource name of the parent account
@@ -245,9 +746,9 @@ pub struct FirebaseLink {
     /// Output only. Example format: properties/1234/firebaseLinks/5678
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. Firebase project resource name. When creating a FirebaseLink, you may
-    /// provide this resource name using either a project number or project ID.
-    /// Once this resource has been created, returned FirebaseLinks will always
+    /// Immutable. Firebase project resource name. When creating a FirebaseLink,
+    /// you may provide this resource name using either a project number or project
+    /// ID. Once this resource has been created, returned FirebaseLinks will always
     /// have a project_name that contains a project number.
     ///
     /// Format: 'projects/{project number}'
@@ -262,7 +763,8 @@ pub struct FirebaseLink {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsLink {
-    /// Output only. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
+    /// Output only. Format:
+    /// properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
     ///
     /// Note: googleAdsLinkId is not the Google Ads customer ID.
     #[prost(string, tag = "1")]
@@ -369,17 +871,16 @@ pub struct PropertySummary {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MeasurementProtocolSecret {
-    /// Output only. Resource name of this secret. This secret may be a child of any type of
-    /// stream.
-    /// Format:
+    /// Output only. Resource name of this secret. This secret may be a child of
+    /// any type of stream. Format:
     /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Human-readable display name for this secret.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. The measurement protocol secret value. Pass this value to the api_secret
-    /// field of the Measurement Protocol API when sending hits to this
+    /// Output only. The measurement protocol secret value. Pass this value to the
+    /// api_secret field of the Measurement Protocol API when sending hits to this
     /// secret's parent property.
     #[prost(string, tag = "3")]
     pub secret_value: ::prost::alloc::string::String,
@@ -497,14 +998,15 @@ pub struct ConversionEvent {
     /// Output only. Time when this conversion event was created in the property.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. If set, this event can currently be deleted via DeleteConversionEvent.
+    /// Output only. If set, this event can currently be deleted with
+    /// DeleteConversionEvent.
     #[prost(bool, tag = "4")]
     pub deletable: bool,
-    /// Output only. If set to true, this conversion event refers to a custom event.  If set to
-    /// false, this conversion event refers to a default event in GA. Default
-    /// events typically have special meaning in GA. Default events are usually
-    /// created for you by the GA system, but in some cases can be created by
-    /// property admins. Custom events count towards the maximum number of
+    /// Output only. If set to true, this conversion event refers to a custom
+    /// event.  If set to false, this conversion event refers to a default event in
+    /// GA. Default events typically have special meaning in GA. Default events are
+    /// usually created for you by the GA system, but in some cases can be created
+    /// by property admins. Custom events count towards the maximum number of
     /// custom conversion events that may be created per property.
     #[prost(bool, tag = "5")]
     pub custom: bool,
@@ -528,21 +1030,22 @@ pub struct CustomDimension {
     /// characters for event-scoped dimensions.
     #[prost(string, tag = "2")]
     pub parameter_name: ::prost::alloc::string::String,
-    /// Required. Display name for this custom dimension as shown in the Analytics UI.
-    /// Max length of 82 characters, alphanumeric plus space and underscore
+    /// Required. Display name for this custom dimension as shown in the Analytics
+    /// UI. Max length of 82 characters, alphanumeric plus space and underscore
     /// starting with a letter. Legacy system-generated display names may contain
     /// square brackets, but updates to this field will never permit square
     /// brackets.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Description for this custom dimension. Max length of 150 characters.
+    /// Optional. Description for this custom dimension. Max length of 150
+    /// characters.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
     /// Required. Immutable. The scope of this dimension.
     #[prost(enumeration = "custom_dimension::DimensionScope", tag = "5")]
     pub scope: i32,
-    /// Optional. If set to true, sets this dimension as NPA and excludes it from ads
-    /// personalization.
+    /// Optional. If set to true, sets this dimension as NPA and excludes it from
+    /// ads personalization.
     ///
     /// This is currently only supported by user-scoped custom dimensions.
     #[prost(bool, tag = "6")]
@@ -628,9 +1131,9 @@ pub struct CustomMetric {
     /// Required. Immutable. The scope of this custom metric.
     #[prost(enumeration = "custom_metric::MetricScope", tag = "6")]
     pub scope: i32,
-    /// Optional. Types of restricted data that this metric may contain. Required for metrics
-    /// with CURRENCY measurement unit. Must be empty for metrics with a
-    /// non-CURRENCY measurement unit.
+    /// Optional. Types of restricted data that this metric may contain. Required
+    /// for metrics with CURRENCY measurement unit. Must be empty for metrics with
+    /// a non-CURRENCY measurement unit.
     #[prost(
         enumeration = "custom_metric::RestrictedMetricType",
         repeated,
@@ -1241,6 +1744,120 @@ impl PropertyType {
         }
     }
 }
+/// The request for a Data Access Record Report.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunAccessReportRequest {
+    /// The Data Access Report supports requesting at the property level or account
+    /// level. If requested at the account level, Data Access Reports include all
+    /// access for all properties under that account.
+    ///
+    /// To request at the property level, entity should be for example
+    /// 'properties/123' if "123" is your GA4 property ID. To request at the
+    /// account level, entity should be for example 'accounts/1234' if "1234" is
+    /// your GA4 Account ID.
+    #[prost(string, tag = "1")]
+    pub entity: ::prost::alloc::string::String,
+    /// The dimensions requested and displayed in the response. Requests are
+    /// allowed up to 9 dimensions.
+    #[prost(message, repeated, tag = "2")]
+    pub dimensions: ::prost::alloc::vec::Vec<AccessDimension>,
+    /// The metrics requested and displayed in the response. Requests are allowed
+    /// up to 10 metrics.
+    #[prost(message, repeated, tag = "3")]
+    pub metrics: ::prost::alloc::vec::Vec<AccessMetric>,
+    /// Date ranges of access records to read. If multiple date ranges are
+    /// requested, each response row will contain a zero based date range index. If
+    /// two date ranges overlap, the access records for the overlapping days is
+    /// included in the response rows for both date ranges. Requests are allowed up
+    /// to 2 date ranges.
+    #[prost(message, repeated, tag = "4")]
+    pub date_ranges: ::prost::alloc::vec::Vec<AccessDateRange>,
+    /// Dimension filters let you restrict report response to specific
+    /// dimension values which match the filter. For example, filtering on access
+    /// records of a single user. To learn more, see [Fundamentals of Dimension
+    /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
+    /// for examples. Metrics cannot be used in this filter.
+    #[prost(message, optional, tag = "5")]
+    pub dimension_filter: ::core::option::Option<AccessFilterExpression>,
+    /// Metric filters allow you to restrict report response to specific metric
+    /// values which match the filter. Metric filters are applied after aggregating
+    /// the report's rows, similar to SQL having-clause. Dimensions cannot be used
+    /// in this filter.
+    #[prost(message, optional, tag = "6")]
+    pub metric_filter: ::core::option::Option<AccessFilterExpression>,
+    /// The row count of the start row. The first row is counted as row 0. If
+    /// offset is unspecified, it is treated as 0. If offset is zero, then this
+    /// method will return the first page of results with `limit` entries.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "7")]
+    pub offset: i64,
+    /// The number of rows to return. If unspecified, 10,000 rows are returned. The
+    /// API returns a maximum of 100,000 rows per request, no matter how many you
+    /// ask for. `limit` must be positive.
+    ///
+    /// The API may return fewer rows than the requested `limit`, if there aren't
+    /// as many remaining rows as the `limit`. For instance, there are fewer than
+    /// 300 possible values for the dimension `country`, so when reporting on only
+    /// `country`, you can't get more than 300 rows, even if you set `limit` to a
+    /// higher value.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "8")]
+    pub limit: i64,
+    /// This request's time zone if specified. If unspecified, the property's time
+    /// zone is used. The request's time zone is used to interpret the start & end
+    /// dates of the report.
+    ///
+    /// Formatted as strings from the IANA Time Zone database
+    /// (<https://www.iana.org/time-zones>); for example "America/New_York" or
+    /// "Asia/Tokyo".
+    #[prost(string, tag = "9")]
+    pub time_zone: ::prost::alloc::string::String,
+    /// Specifies how rows are ordered in the response.
+    #[prost(message, repeated, tag = "10")]
+    pub order_bys: ::prost::alloc::vec::Vec<AccessOrderBy>,
+    /// Toggles whether to return the current state of this Analytics Property's
+    /// quota. Quota is returned in \[AccessQuota\](#AccessQuota). For account-level
+    /// requests, this field must be false.
+    #[prost(bool, tag = "11")]
+    pub return_entity_quota: bool,
+}
+/// The customized Data Access Record Report response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunAccessReportResponse {
+    /// The header for a column in the report that corresponds to a specific
+    /// dimension. The number of DimensionHeaders and ordering of DimensionHeaders
+    /// matches the dimensions present in rows.
+    #[prost(message, repeated, tag = "1")]
+    pub dimension_headers: ::prost::alloc::vec::Vec<AccessDimensionHeader>,
+    /// The header for a column in the report that corresponds to a specific
+    /// metric. The number of MetricHeaders and ordering of MetricHeaders matches
+    /// the metrics present in rows.
+    #[prost(message, repeated, tag = "2")]
+    pub metric_headers: ::prost::alloc::vec::Vec<AccessMetricHeader>,
+    /// Rows of dimension value combinations and metric values in the report.
+    #[prost(message, repeated, tag = "3")]
+    pub rows: ::prost::alloc::vec::Vec<AccessRow>,
+    /// The total number of rows in the query result. `rowCount` is independent of
+    /// the number of rows returned in the response, the `limit` request
+    /// parameter, and the `offset` request parameter. For example if a query
+    /// returns 175 rows and includes `limit` of 50 in the API request, the
+    /// response will contain `rowCount` of 175 but only 50 rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int32, tag = "4")]
+    pub row_count: i32,
+    /// The quota state for this Analytics property including this request. This
+    /// field doesn't work with account-level requests.
+    #[prost(message, optional, tag = "5")]
+    pub quota: ::core::option::Option<AccessQuota>,
+}
 /// Request message for GetAccount RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1303,9 +1920,10 @@ pub struct UpdateAccountRequest {
     /// The account's `name` field is used to identify the account.
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Account>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (for example, "field_to_update"). Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match all
+    /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1317,7 +1935,7 @@ pub struct ProvisionAccountTicketRequest {
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Account>,
     /// Redirect URI where the user will be sent after accepting Terms of Service.
-    /// Must be configured in Developers Console as a Redirect URI
+    /// Must be configured in Cloud Console as a Redirect URI.
     #[prost(string, tag = "2")]
     pub redirect_uri: ::prost::alloc::string::String,
 }
@@ -1400,9 +2018,10 @@ pub struct UpdatePropertyRequest {
     /// updated.
     #[prost(message, optional, tag = "1")]
     pub property: ::core::option::Option<Property>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1462,7 +2081,7 @@ pub struct ListFirebaseLinksRequest {
     pub page_size: i32,
     /// A page token, received from a previous `ListFirebaseLinks` call.
     /// Provide this to retrieve the subsequent page.
-    /// When paginating, all other parameters provided to `ListProperties` must
+    /// When paginating, all other parameters provided to `ListFirebaseLinks` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -1499,9 +2118,10 @@ pub struct UpdateGoogleAdsLinkRequest {
     /// The GoogleAdsLink to update
     #[prost(message, optional, tag = "1")]
     pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1591,8 +2211,8 @@ pub struct AcknowledgeUserDataCollectionRequest {
     /// Required. The property for which to acknowledge user data collection.
     #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
-    /// Required. An acknowledgement that the caller of this method understands the terms
-    /// of user data collection.
+    /// Required. An acknowledgement that the caller of this method understands the
+    /// terms of user data collection.
     ///
     /// This field must contain the exact value:
     /// "I acknowledge that I have the necessary privacy disclosures and rights
@@ -1610,15 +2230,16 @@ pub struct AcknowledgeUserDataCollectionResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
-    /// Required. The account resource for which to return change history resources.
+    /// Required. The account resource for which to return change history
+    /// resources.
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Optional. Resource name for a child property. If set, only return changes
     /// made to this property or its child resources.
     #[prost(string, tag = "2")]
     pub property: ::prost::alloc::string::String,
-    /// Optional. If set, only return changes if they are for a resource that matches at
-    /// least one of these types.
+    /// Optional. If set, only return changes if they are for a resource that
+    /// matches at least one of these types.
     #[prost(
         enumeration = "ChangeHistoryResourceType",
         repeated,
@@ -1626,11 +2247,12 @@ pub struct SearchChangeHistoryEventsRequest {
         tag = "3"
     )]
     pub resource_type: ::prost::alloc::vec::Vec<i32>,
-    /// Optional. If set, only return changes that match one or more of these types of
-    /// actions.
+    /// Optional. If set, only return changes that match one or more of these types
+    /// of actions.
     #[prost(enumeration = "ActionType", repeated, packed = "false", tag = "4")]
     pub action: ::prost::alloc::vec::Vec<i32>,
-    /// Optional. If set, only return changes if they are made by a user in this list.
+    /// Optional. If set, only return changes if they are made by a user in this
+    /// list.
     #[prost(string, repeated, tag = "5")]
     pub actor_email: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If set, only return changes made after this time (inclusive).
@@ -1645,10 +2267,11 @@ pub struct SearchChangeHistoryEventsRequest {
     /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag = "8")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous `SearchChangeHistoryEvents` call.
-    /// Provide this to retrieve the subsequent page. When paginating, all other
-    /// parameters provided to `SearchChangeHistoryEvents` must match the call that
-    /// provided the page token.
+    /// Optional. A page token, received from a previous
+    /// `SearchChangeHistoryEvents` call. Provide this to retrieve the subsequent
+    /// page. When paginating, all other parameters provided to
+    /// `SearchChangeHistoryEvents` must match the call that provided the page
+    /// token.
     #[prost(string, tag = "9")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -1749,8 +2372,8 @@ pub struct CreateConversionEventRequest {
     /// Required. The conversion event to create.
     #[prost(message, optional, tag = "1")]
     pub conversion_event: ::core::option::Option<ConversionEvent>,
-    /// Required. The resource name of the parent property where this conversion event will
-    /// be created. Format: properties/123
+    /// Required. The resource name of the parent property where this conversion
+    /// event will be created. Format: properties/123
     #[prost(string, tag = "2")]
     pub parent: ::prost::alloc::string::String,
 }
@@ -1824,9 +2447,9 @@ pub struct UpdateCustomDimensionRequest {
     /// The CustomDimension to update
     #[prost(message, optional, tag = "1")]
     pub custom_dimension: ::core::option::Option<CustomDimension>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Omitted fields will not be
+    /// updated. To replace the entire entity, use one path with the string "*" to
+    /// match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1898,9 +2521,9 @@ pub struct UpdateCustomMetricRequest {
     /// The CustomMetric to update
     #[prost(message, optional, tag = "1")]
     pub custom_metric: ::core::option::Option<CustomMetric>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Omitted fields will not be
+    /// updated. To replace the entire entity, use one path with the string "*" to
+    /// match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1973,9 +2596,10 @@ pub struct UpdateDataRetentionSettingsRequest {
     /// The `name` field is used to identify the settings to be updated.
     #[prost(message, optional, tag = "1")]
     pub data_retention_settings: ::core::option::Option<DataRetentionSettings>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2006,9 +2630,9 @@ pub struct UpdateDataStreamRequest {
     /// The DataStream to update
     #[prost(message, optional, tag = "1")]
     pub data_stream: ::core::option::Option<DataStream>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Omitted fields will not be
+    /// updated. To replace the entire entity, use one path with the string "*" to
+    /// match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2338,7 +2962,7 @@ pub mod analytics_admin_service_client {
         /// will be permanently purged.
         /// https://support.google.com/analytics/answer/6154772
         ///
-        /// Returns an error if the target is not found, or is not an GA4 Property.
+        /// Returns an error if the target is not found, or is not a GA4 Property.
         pub async fn delete_property(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePropertyRequest>,
@@ -2657,7 +3281,8 @@ pub mod analytics_admin_service_client {
         /// Acknowledges the terms of user data collection for the specified property.
         ///
         /// This acknowledgement must be completed (either in the Google Analytics UI
-        /// or via this API) before MeasurementProtocolSecret resources may be created.
+        /// or through this API) before MeasurementProtocolSecret resources may be
+        /// created.
         pub async fn acknowledge_user_data_collection(
             &mut self,
             request: impl tonic::IntoRequest<super::AcknowledgeUserDataCollectionRequest>,
@@ -3129,6 +3754,38 @@ pub mod analytics_admin_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetDataStream",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns a customized report of data access records. The report provides
+        /// records of each time a user reads Google Analytics reporting data. Access
+        /// records are retained for up to 2 years.
+        ///
+        /// Data Access Reports can be requested for a property. The property must be
+        /// in Google Analytics 360. This method is only available to Administrators.
+        ///
+        /// These data access records include GA4 UI Reporting, GA4 UI Explorations,
+        /// GA4 Data API, and other products like Firebase & Admob that can retrieve
+        /// data from Google Analytics through a linkage. These records don't include
+        /// property configuration changes like adding a stream or changing a
+        /// property's time zone. For configuration change history, see
+        /// [searchChangeHistoryEvents](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents).
+        pub async fn run_access_report(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunAccessReportRequest>,
+        ) -> Result<tonic::Response<super::RunAccessReportResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/RunAccessReport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -57,6 +57,9 @@ pub struct Reservation {
     /// If set to true, this reservation is placed in the organization's
     /// secondary region which is designated for disaster recovery purposes.
     /// If false, this reservation is placed in the organization's default region.
+    ///
+    /// NOTE: this is a preview feature. Project must be allow-listed in order to
+    /// set this field.
     #[prost(bool, tag = "14")]
     pub multi_region_auxiliary: bool,
     /// Edition of the reservation.
@@ -129,6 +132,9 @@ pub struct CapacityCommitment {
     /// If set to true, this commitment is placed in the organization's
     /// secondary region which is designated for disaster recovery purposes.
     /// If false, this commitment is placed in the organization's default region.
+    ///
+    /// NOTE: this is a preview feature. Project must be allow-listed in order to
+    /// set this field.
     #[prost(bool, tag = "10")]
     pub multi_region_auxiliary: bool,
     /// Edition of the capacity commitment.
@@ -905,7 +911,7 @@ pub mod reservation_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// This API allows users to manage their flat-rate BigQuery reservations.
+    /// This API allows users to manage their BigQuery reservations.
     ///
     /// A reservation provides computational resource guarantees, in the form of
     /// [slots](https://cloud.google.com/bigquery/docs/slots), to users. A slot is a

@@ -1,5 +1,4 @@
 /// Represents a hardware accelerator type.
-/// NEXT ID: 11.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AcceleratorType {
@@ -3608,6 +3607,11 @@ pub struct ModelSourceInfo {
     /// Type of the model source.
     #[prost(enumeration = "model_source_info::ModelSourceType", tag = "1")]
     pub source_type: i32,
+    /// If this Model is copy of another Model. If true then
+    /// \[source_type][google.cloud.aiplatform.v1beta1.ModelSourceInfo.source_type\]
+    /// pertains to the original.
+    #[prost(bool, tag = "2")]
+    pub copy: bool,
 }
 /// Nested message and enum types in `ModelSourceInfo`.
 pub mod model_source_info {
@@ -3633,6 +3637,8 @@ pub mod model_source_info {
         Custom = 2,
         /// The Model is registered and sync'ed from BigQuery ML.
         Bqml = 3,
+        /// The Model is saved or tuned from Model Garden.
+        ModelGarden = 4,
     }
     impl ModelSourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3645,6 +3651,7 @@ pub mod model_source_info {
                 ModelSourceType::Automl => "AUTOML",
                 ModelSourceType::Custom => "CUSTOM",
                 ModelSourceType::Bqml => "BQML",
+                ModelSourceType::ModelGarden => "MODEL_GARDEN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3654,6 +3661,7 @@ pub mod model_source_info {
                 "AUTOML" => Some(Self::Automl),
                 "CUSTOM" => Some(Self::Custom),
                 "BQML" => Some(Self::Bqml),
+                "MODEL_GARDEN" => Some(Self::ModelGarden),
                 _ => None,
             }
         }
@@ -6028,6 +6036,7 @@ pub struct DeployedModel {
     /// even if the DeployedModel receives no traffic.
     /// Not all Models support all resources types. See
     /// \[Model.supported_deployment_resources_types][google.cloud.aiplatform.v1beta1.Model.supported_deployment_resources_types\].
+    /// Required except for Large Model Deploy use cases.
     #[prost(oneof = "deployed_model::PredictionResources", tags = "7, 8, 17")]
     pub prediction_resources: ::core::option::Option<
         deployed_model::PredictionResources,
@@ -6040,6 +6049,7 @@ pub mod deployed_model {
     /// even if the DeployedModel receives no traffic.
     /// Not all Models support all resources types. See
     /// \[Model.supported_deployment_resources_types][google.cloud.aiplatform.v1beta1.Model.supported_deployment_resources_types\].
+    /// Required except for Large Model Deploy use cases.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PredictionResources {
@@ -6434,10 +6444,16 @@ pub struct CreateEndpointRequest {
     /// component of the endpoint resource name.
     /// If not provided, Vertex AI will generate a value for this ID.
     ///
-    /// This value should be 1-10 characters, and valid characters are /\[0-9\]/.
-    /// When using HTTP/JSON, this field is populated based on a query string
-    /// argument, such as `?endpoint_id=12345`. This is the fallback for fields
-    /// that are not included in either the URI or the body.
+    /// If the first character is a letter, this value may be up to 63 characters,
+    /// and valid characters are `\[a-z0-9-\]`. The last character must be a letter
+    /// or number.
+    ///
+    /// If the first character is a number, this value may be up to 9 characters,
+    /// and valid characters are `\[0-9\]` with no leading zeros.
+    ///
+    /// When using HTTP/JSON, this field is populated
+    /// based on a query string argument, such as `?endpoint_id=12345`. This is the
+    /// fallback for fields that are not included in either the URI or the body.
     #[prost(string, tag = "4")]
     pub endpoint_id: ::prost::alloc::string::String,
 }
@@ -8699,10 +8715,7 @@ pub struct BatchReadFeatureValuesRequest {
         batch_read_feature_values_request::PassThroughField,
     >,
     /// Required. Specifies EntityType grouping Features to read values of and
-    /// settings. Each EntityType referenced in
-    /// \[BatchReadFeatureValuesRequest.entity_type_specs\] must have a column
-    /// specifying entity IDs in the EntityType in
-    /// \[BatchReadFeatureValuesRequest.request][\] .
+    /// settings.
     #[prost(message, repeated, tag = "7")]
     pub entity_type_specs: ::prost::alloc::vec::Vec<
         batch_read_feature_values_request::EntityTypeSpec,
@@ -11451,6 +11464,16 @@ pub struct IndexEndpoint {
     pub private_service_connect_config: ::core::option::Option<
         PrivateServiceConnectConfig,
     >,
+    /// Optional. If true, the deployed index will be accessible through public
+    /// endpoint.
+    #[prost(bool, tag = "13")]
+    pub public_endpoint_enabled: bool,
+    /// Output only. If
+    /// \[public_endpoint_enabled][google.cloud.aiplatform.v1beta1.IndexEndpoint.public_endpoint_enabled\]
+    /// is true, this field will be populated with the domain name to use for this
+    /// index endpoint.
+    #[prost(string, tag = "14")]
+    pub public_endpoint_domain_name: ::prost::alloc::string::String,
 }
 /// A deployment of an Index. IndexEndpoints contain one or more DeployedIndexes.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -11546,7 +11569,7 @@ pub struct DeployedIndex {
     /// the index might be deployed to any ip ranges under the provided VPC
     /// network.
     ///
-    /// The value sohuld be the name of the address
+    /// The value should be the name of the address
     /// (<https://cloud.google.com/compute/docs/reference/rest/v1/addresses>)
     /// Example: 'vertex-ai-ip-range'.
     #[prost(string, repeated, tag = "10")]
@@ -20552,6 +20575,523 @@ pub mod prediction_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.aiplatform.v1beta1.PredictionService/Explain",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
+/// An instance of a Schedule periodically schedules runs to make API calls based
+/// on user specified time specification and API request type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Schedule {
+    /// Output only. The resource name of the Schedule.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. User provided name of the Schedule.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Timestamp after which the first run can be scheduled.
+    /// Default to Schedule create time if not specified.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Timestamp after which no new runs can be scheduled.
+    /// If specified, The schedule will be completed when either
+    /// end_time is reached or when scheduled_run_count >= max_run_count.
+    /// If not specified, new runs will keep getting scheduled until this Schedule
+    /// is paused or deleted. Already scheduled runs will be allowed to complete.
+    /// Unset if not specified.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Maximum run count of the schedule.
+    /// If specified, The schedule will be completed when either
+    /// started_run_count >= max_run_count or when end_time is reached.
+    /// If not specified, new runs will keep getting scheduled until this Schedule
+    /// is paused or deleted. Already scheduled runs will be allowed to complete.
+    /// Unset if not specified.
+    #[prost(int64, tag = "16")]
+    pub max_run_count: i64,
+    /// Output only. The number of runs started by this schedule.
+    #[prost(int64, tag = "17")]
+    pub started_run_count: i64,
+    /// Output only. The state of this Schedule.
+    #[prost(enumeration = "schedule::State", tag = "5")]
+    pub state: i32,
+    /// Output only. Timestamp when this Schedule was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Schedule should schedule the next run.
+    /// Having a next_run_time in the past means the runs are being started
+    /// behind schedule.
+    #[prost(message, optional, tag = "7")]
+    pub next_run_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Schedule was last paused.
+    /// Unset if never paused.
+    #[prost(message, optional, tag = "8")]
+    pub last_pause_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Schedule was last resumed.
+    /// Unset if never resumed from pause.
+    #[prost(message, optional, tag = "9")]
+    pub last_resume_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Maximum number of runs that can be executed concurrently for this
+    /// Schedule.
+    #[prost(int64, tag = "11")]
+    pub max_concurrent_run_count: i64,
+    /// Optional. Whether new scheduled runs can be queued when max_concurrent_runs
+    /// limit is reached. If set to true, new runs will be queued instead of
+    /// skipped. Default to false.
+    #[prost(bool, tag = "12")]
+    pub allow_queueing: bool,
+    /// Output only. Whether to backfill missed runs when the schedule is resumed
+    /// from PAUSED state. If set to true, all missed runs will be scheduled. New
+    /// runs will be scheduled after the backfill is complete. Default to false.
+    #[prost(bool, tag = "13")]
+    pub catch_up: bool,
+    /// Required.
+    /// The time specification to launch scheduled runs.
+    #[prost(oneof = "schedule::TimeSpecification", tags = "10")]
+    pub time_specification: ::core::option::Option<schedule::TimeSpecification>,
+    /// Required.
+    /// The API request template to launch the scheduled runs.
+    /// User-specified ID is not supported in the request template.
+    #[prost(oneof = "schedule::Request", tags = "14")]
+    pub request: ::core::option::Option<schedule::Request>,
+}
+/// Nested message and enum types in `Schedule`.
+pub mod schedule {
+    /// Possible state of the schedule.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified.
+        Unspecified = 0,
+        /// The Schedule is active. Runs are being scheduled on the user-specified
+        /// timespec.
+        Active = 1,
+        /// The schedule is paused. No new runs will be created until the schedule
+        /// is resumed. Already started runs will be allowed to complete.
+        Paused = 2,
+        /// The Schedule is completed. No new runs will be scheduled. Already started
+        /// runs will be allowed to complete. Schedules in completed state cannot be
+        /// paused or resumed.
+        Completed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Active => "ACTIVE",
+                State::Paused => "PAUSED",
+                State::Completed => "COMPLETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "PAUSED" => Some(Self::Paused),
+                "COMPLETED" => Some(Self::Completed),
+                _ => None,
+            }
+        }
+    }
+    /// Required.
+    /// The time specification to launch scheduled runs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TimeSpecification {
+        /// Cron schedule (<https://en.wikipedia.org/wiki/Cron>) to launch scheduled
+        /// runs. To explicitly set a timezone to the cron tab, apply a prefix in the
+        /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
+        /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+        /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+        /// "TZ=America/New_York 1 * * * *".
+        #[prost(string, tag = "10")]
+        Cron(::prost::alloc::string::String),
+    }
+    /// Required.
+    /// The API request template to launch the scheduled runs.
+    /// User-specified ID is not supported in the request template.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Request {
+        /// Request for
+        /// \[PipelineService.CreatePipelineJob][google.cloud.aiplatform.v1beta1.PipelineService.CreatePipelineJob\].
+        /// CreatePipelineJobRequest.parent field is required (format:
+        /// projects/{project}/locations/{location}).
+        #[prost(message, tag = "14")]
+        CreatePipelineJobRequest(super::CreatePipelineJobRequest),
+    }
+}
+/// Request message for
+/// \[ScheduleService.CreateSchedule][google.cloud.aiplatform.v1beta1.ScheduleService.CreateSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateScheduleRequest {
+    /// Required. The resource name of the Location to create the Schedule in.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Schedule to create.
+    #[prost(message, optional, tag = "2")]
+    pub schedule: ::core::option::Option<Schedule>,
+}
+/// Request message for
+/// \[ScheduleService.GetSchedule][google.cloud.aiplatform.v1beta1.ScheduleService.GetSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetScheduleRequest {
+    /// Required. The name of the Schedule resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.ListSchedules][google.cloud.aiplatform.v1beta1.ScheduleService.ListSchedules\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchedulesRequest {
+    /// Required. The resource name of the Location to list the Schedules from.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Lists the Schedules that match the filter expression. The following
+    /// fields are supported:
+    ///
+    /// * `display_name`: Supports `=`, `!=` comparisons, and `:` wildcard.
+    /// * `state`: Supports `=` and `!=` comparisons.
+    /// * `request`: Supports existence of the <request_type> check.
+    ///        (e.g. `create_pipeline_job_request:*` --> Schedule has
+    ///        create_pipeline_job_request).
+    /// * `create_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    ///        Values must be in RFC 3339 format.
+    /// * `start_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    ///        Values must be in RFC 3339 format.
+    /// * `end_time`: Supports `=`, `!=`, `<`, `>`, `<=`, `>=` comparisons and `:*`
+    ///        existence check. Values must be in RFC 3339 format.
+    /// * `next_run_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=`
+    ///        comparisons. Values must be in RFC 3339 format.
+    ///
+    ///
+    /// Filter expressions can be combined together using logical operators
+    /// (`NOT`, `AND` & `OR`).
+    /// The syntax to define filter expression is based on
+    /// <https://google.aip.dev/160.>
+    ///
+    /// Examples:
+    ///
+    /// * `state="ACTIVE" AND display_name:"my_schedule_*"`
+    /// * `NOT display_name="my_schedule"`
+    /// * `create_time>"2021-05-18T00:00:00Z"`
+    /// * `end_time>"2021-05-18T00:00:00Z" OR NOT end_time:*`
+    /// * `create_pipeline_job_request:*`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The standard list page size.
+    /// Default to 100 if not specified.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// The standard list page token.
+    /// Typically obtained via
+    /// \[ListSchedulesResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListSchedulesResponse.next_page_token\]
+    /// of the previous
+    /// \[ScheduleService.ListSchedules][google.cloud.aiplatform.v1beta1.ScheduleService.ListSchedules\]
+    /// call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A comma-separated list of fields to order by. The default sort order is in
+    /// ascending order. Use "desc" after a field name for descending. You can have
+    /// multiple order_by fields provided.
+    ///
+    /// For example, using "create_time desc, end_time" will order results by
+    /// create time in descending order, and if there are multiple schedules having
+    /// the same create time, order them by the end time in ascending order.
+    ///
+    /// If order_by is not specified, it will order by default with create_time in
+    /// descending order.
+    ///
+    /// Supported fields:
+    ///    * `create_time`
+    ///    * `start_time`
+    ///    * `end_time`
+    ///    * `next_run_time`
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[ScheduleService.ListSchedules][google.cloud.aiplatform.v1beta1.ScheduleService.ListSchedules\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchedulesResponse {
+    /// List of Schedules in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub schedules: ::prost::alloc::vec::Vec<Schedule>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// \[ListSchedulesRequest.page_token][google.cloud.aiplatform.v1beta1.ListSchedulesRequest.page_token\]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.DeleteSchedule][google.cloud.aiplatform.v1beta1.ScheduleService.DeleteSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteScheduleRequest {
+    /// Required. The name of the Schedule resource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.PauseSchedule][google.cloud.aiplatform.v1beta1.ScheduleService.PauseSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PauseScheduleRequest {
+    /// Required. The name of the Schedule resource to be paused.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.ResumeSchedule][google.cloud.aiplatform.v1beta1.ScheduleService.ResumeSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumeScheduleRequest {
+    /// Required. The name of the Schedule resource to be resumed.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Whether to backfill missed runs when the schedule is resumed from
+    /// PAUSED state. If set to true, all missed runs will be scheduled. New runs
+    /// will be scheduled after the backfill is complete. This will also update
+    /// \[Schedule.catch_up][google.cloud.aiplatform.v1beta1.Schedule.catch_up\]
+    /// field. Default to false.
+    #[prost(bool, tag = "2")]
+    pub catch_up: bool,
+}
+/// Generated client implementations.
+pub mod schedule_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for creating and managing Vertex AI's Schedule resources to
+    /// periodically launch shceudled runs to make API calls.
+    #[derive(Debug, Clone)]
+    pub struct ScheduleServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ScheduleServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ScheduleServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ScheduleServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            ScheduleServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Creates a Schedule.
+        pub async fn create_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateScheduleRequest>,
+        ) -> Result<tonic::Response<super::Schedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ScheduleService/CreateSchedule",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes a Schedule.
+        pub async fn delete_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteScheduleRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ScheduleService/DeleteSchedule",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets a Schedule.
+        pub async fn get_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetScheduleRequest>,
+        ) -> Result<tonic::Response<super::Schedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ScheduleService/GetSchedule",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists Schedules in a Location.
+        pub async fn list_schedules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSchedulesRequest>,
+        ) -> Result<tonic::Response<super::ListSchedulesResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ScheduleService/ListSchedules",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Pauses a Schedule. Will mark
+        /// [Schedule.state][google.cloud.aiplatform.v1beta1.Schedule.state] to
+        /// 'PAUSED'. If the schedule is paused, no new runs will be created. Already
+        /// created runs will NOT be paused or canceled.
+        pub async fn pause_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PauseScheduleRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ScheduleService/PauseSchedule",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Resumes a paused Schedule to start scheduling new runs. Will mark
+        /// [Schedule.state][google.cloud.aiplatform.v1beta1.Schedule.state] to
+        /// 'ACTIVE'. Only paused Schedule can be resumed.
+        ///
+        /// When the Schedule is resumed, new runs will be scheduled starting from the
+        /// next execution time after the current time based on the time_specification
+        /// in the Schedule. If [Schedule.catchUp][] is set up true, all
+        /// missed runs will be scheduled for backfill first.
+        pub async fn resume_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumeScheduleRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ScheduleService/ResumeSchedule",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

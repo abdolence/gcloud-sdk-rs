@@ -323,7 +323,7 @@ pub struct RelatedAsset {
     pub relationship_type: ::prost::alloc::string::String,
 }
 /// A result of Resource Search, containing information of a cloud resource.
-/// Next ID: 31
+/// Next ID: 32
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceSearchResult {
@@ -1296,7 +1296,7 @@ pub struct CreateFeedRequest {
     /// Required. The name of the project/folder/organization where this feed
     /// should be created in. It can only be an organization number (such as
     /// "organizations/123"), a folder number (such as "folders/123"), a project ID
-    /// (such as "projects/my-project-id")", or a project number (such as
+    /// (such as "projects/my-project-id"), or a project number (such as
     /// "projects/12345").
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2537,8 +2537,8 @@ pub struct CreateSavedQueryRequest {
     /// Required. The name of the project/folder/organization where this
     /// saved_query should be created in. It can only be an organization number
     /// (such as "organizations/123"), a folder number (such as "folders/123"), a
-    /// project ID (such as "projects/my-project-id")", or a project number (such
-    /// as "projects/12345").
+    /// project ID (such as "projects/my-project-id"), or a project number (such as
+    /// "projects/12345").
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The saved_query details. The `name` field must be empty as it
@@ -2589,8 +2589,8 @@ pub struct ListSavedQueriesRequest {
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of saved queries to return per page. The
     /// service may return fewer than this value. If unspecified, at most 50 will
-    /// be returned.
-    ///   The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. A page token, received from a previous `ListSavedQueries` call.
@@ -3715,19 +3715,19 @@ pub mod analyze_org_policy_governed_assets_response {
         /// \[AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name\].
         #[prost(string, tag = "2")]
         pub parent: ::prost::alloc::string::String,
-        /// The project that this resource belongs to, in the form of
+        /// The project that this resource belongs to, in the format of
         /// projects/{PROJECT_NUMBER}. This field is available when the resource
         /// belongs to a project.
         #[prost(string, tag = "5")]
         pub project: ::prost::alloc::string::String,
-        /// The folder(s) that this resource belongs to, in the form of
+        /// The folder(s) that this resource belongs to, in the format of
         /// folders/{FOLDER_NUMBER}. This field is available when the resource
-        /// belongs(directly or cascadingly) to one or more folders.
+        /// belongs (directly or cascadingly) to one or more folders.
         #[prost(string, repeated, tag = "6")]
         pub folders: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// The organization that this resource belongs to, in the form of
+        /// The organization that this resource belongs to, in the format of
         /// organizations/{ORGANIZATION_NUMBER}. This field is available when the
-        /// resource belongs(directly or cascadingly) to an organization.
+        /// resource belongs (directly or cascadingly) to an organization.
         #[prost(string, tag = "7")]
         pub organization: ::prost::alloc::string::String,
     }
@@ -3747,19 +3747,19 @@ pub mod analyze_org_policy_governed_assets_response {
         /// The IAM policy directly set on the given resource.
         #[prost(message, optional, tag = "2")]
         pub policy: ::core::option::Option<super::super::super::super::iam::v1::Policy>,
-        /// The project that this IAM policy belongs to, in the form of
+        /// The project that this IAM policy belongs to, in the format of
         /// projects/{PROJECT_NUMBER}. This field is available when the IAM policy
         /// belongs to a project.
         #[prost(string, tag = "5")]
         pub project: ::prost::alloc::string::String,
-        /// The folder(s) that this IAM policy belongs to, in the form of
+        /// The folder(s) that this IAM policy belongs to, in the format of
         /// folders/{FOLDER_NUMBER}. This field is available when the IAM policy
-        /// belongs(directly or cascadingly) to one or more folders.
+        /// belongs (directly or cascadingly) to one or more folders.
         #[prost(string, repeated, tag = "6")]
         pub folders: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// The organization that this IAM policy belongs to, in the form of
+        /// The organization that this IAM policy belongs to, in the format of
         /// organizations/{ORGANIZATION_NUMBER}. This field is available when the
-        /// IAM policy belongs(directly or cascadingly) to an organization.
+        /// IAM policy belongs (directly or cascadingly) to an organization.
         #[prost(string, tag = "7")]
         pub organization: ::prost::alloc::string::String,
     }

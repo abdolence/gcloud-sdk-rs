@@ -520,11 +520,17 @@ pub mod crypto_key_version {
         /// RSAES-OAEP 4096 bit key with a SHA1 digest.
         RsaDecryptOaep4096Sha1 = 39,
         /// ECDSA on the NIST P-256 curve with a SHA256 digest.
+        /// Other hash functions can also be used:
+        /// <https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms>
         EcSignP256Sha256 = 12,
         /// ECDSA on the NIST P-384 curve with a SHA384 digest.
+        /// Other hash functions can also be used:
+        /// <https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms>
         EcSignP384Sha384 = 13,
         /// ECDSA on the non-NIST secp256k1 curve. This curve is only supported for
         /// HSM protection level.
+        /// Other hash functions can also be used:
+        /// <https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms>
         EcSignSecp256k1Sha256 = 31,
         /// HMAC-SHA256 signing with a 256 bit key.
         HmacSha256 = 32,
