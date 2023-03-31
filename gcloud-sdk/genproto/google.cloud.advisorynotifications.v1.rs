@@ -17,6 +17,9 @@ pub struct Notification {
     /// Output only. Time the notification was created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Type of notification
+    #[prost(enumeration = "NotificationType", tag = "12")]
+    pub notification_type: i32,
 }
 /// A text object containing the English text and its localized copies.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -251,6 +254,43 @@ impl LocalizationState {
             "LOCALIZATION_STATE_NOT_APPLICABLE" => Some(Self::NotApplicable),
             "LOCALIZATION_STATE_PENDING" => Some(Self::Pending),
             "LOCALIZATION_STATE_COMPLETED" => Some(Self::Completed),
+            _ => None,
+        }
+    }
+}
+/// Type of notification
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum NotificationType {
+    /// Default type
+    Unspecified = 0,
+    /// Security and privacy advisory notifications
+    SecurityPrivacyAdvisory = 1,
+    /// Sensitive action notifications
+    SensitiveActions = 2,
+}
+impl NotificationType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            NotificationType::Unspecified => "NOTIFICATION_TYPE_UNSPECIFIED",
+            NotificationType::SecurityPrivacyAdvisory => {
+                "NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY"
+            }
+            NotificationType::SensitiveActions => "NOTIFICATION_TYPE_SENSITIVE_ACTIONS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NOTIFICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY" => {
+                Some(Self::SecurityPrivacyAdvisory)
+            }
+            "NOTIFICATION_TYPE_SENSITIVE_ACTIONS" => Some(Self::SensitiveActions),
             _ => None,
         }
     }

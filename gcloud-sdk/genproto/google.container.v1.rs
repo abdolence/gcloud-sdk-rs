@@ -1716,6 +1716,9 @@ pub struct Cluster {
     /// up-to-date value before proceeding.
     #[prost(string, tag = "139")]
     pub etag: ::prost::alloc::string::String,
+    /// Fleet information for the cluster.
+    #[prost(message, optional, tag = "140")]
+    pub fleet: ::core::option::Option<Fleet>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -5152,8 +5155,9 @@ pub mod usable_subnetwork_secondary_range {
         Unknown = 0,
         /// UNUSED denotes that this range is unclaimed by any cluster.
         Unused = 1,
-        /// IN_USE_SERVICE denotes that this range is claimed by a cluster for
-        /// services. It cannot be used for other clusters.
+        /// IN_USE_SERVICE denotes that this range is claimed by cluster(s) for
+        /// services. User-managed services range can be shared between clusters
+        /// within the same subnetwork.
         InUseService = 2,
         /// IN_USE_SHAREABLE_POD denotes this range was created by the network admin
         /// and is currently claimed by a cluster for pods. It can only be used by
@@ -5713,6 +5717,25 @@ pub struct ManagedPrometheusConfig {
     /// Enable Managed Collection.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
+}
+/// Fleet is the fleet configuration for the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Fleet {
+    /// The Fleet host project(project ID or project number) where this cluster
+    /// will be registered to. This field cannot be changed after the cluster has
+    /// been registered.
+    #[prost(string, tag = "1")]
+    pub project: ::prost::alloc::string::String,
+    /// [Output only] The full resource name of the registered fleet membership of
+    /// the cluster, in the format
+    /// `//gkehub.googleapis.com/projects/*/locations/*/memberships/*`.
+    #[prost(string, tag = "2")]
+    pub membership: ::prost::alloc::string::String,
+    /// [Output only] Whether the cluster has been registered through the fleet
+    /// API.
+    #[prost(bool, tag = "3")]
+    pub pre_registered: bool,
 }
 /// LocalNvmeSsdBlockConfig contains configuration for using raw-block local
 /// NVMe SSD.

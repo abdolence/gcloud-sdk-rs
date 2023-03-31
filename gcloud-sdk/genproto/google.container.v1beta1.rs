@@ -2058,6 +2058,9 @@ pub struct Cluster {
     /// up-to-date value before proceeding.
     #[prost(string, tag = "139")]
     pub etag: ::prost::alloc::string::String,
+    /// Fleet information for the cluster.
+    #[prost(message, optional, tag = "140")]
+    pub fleet: ::core::option::Option<Fleet>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -6494,6 +6497,25 @@ pub mod monitoring_component_config {
             }
         }
     }
+}
+/// Fleet is the fleet configuration for the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Fleet {
+    /// The Fleet host project(project ID or project number) where this cluster
+    /// will be registered to. This field cannot be changed after the cluster has
+    /// been registered.
+    #[prost(string, tag = "1")]
+    pub project: ::prost::alloc::string::String,
+    /// [Output only] The full resource name of the registered fleet membership of
+    /// the cluster, in the format
+    /// `//gkehub.googleapis.com/projects/*/locations/*/memberships/*`.
+    #[prost(string, tag = "2")]
+    pub membership: ::prost::alloc::string::String,
+    /// [Output only] Whether the cluster has been registered through the fleet
+    /// API.
+    #[prost(bool, tag = "3")]
+    pub pre_registered: bool,
 }
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.

@@ -19,8 +19,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -66,6 +67,9 @@ pub struct ConfigVariableTemplate {
     /// State of the config variable.
     #[prost(enumeration = "config_variable_template::State", tag = "10")]
     pub state: i32,
+    /// Indicates if current template is part of advanced settings
+    #[prost(bool, tag = "11")]
+    pub is_advanced: bool,
 }
 /// Nested message and enum types in `ConfigVariableTemplate`.
 pub mod config_variable_template {
@@ -382,7 +386,7 @@ pub struct AuthorizationCodeLink {
     pub enable_pkce: bool,
 }
 /// LaunchStage is a enum to indicate launch stage:
-/// PREVIEW, GA, DEPRECATED.
+/// PREVIEW, GA, DEPRECATED, PRIVATE_PREVIEW.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LaunchStage {
@@ -394,6 +398,8 @@ pub enum LaunchStage {
     Ga = 2,
     /// DEPRECATED.
     Deprecated = 3,
+    /// PRIVATE_PREVIEW.
+    PrivatePreview = 5,
 }
 impl LaunchStage {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -406,6 +412,7 @@ impl LaunchStage {
             LaunchStage::Preview => "PREVIEW",
             LaunchStage::Ga => "GA",
             LaunchStage::Deprecated => "DEPRECATED",
+            LaunchStage::PrivatePreview => "PRIVATE_PREVIEW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -415,6 +422,7 @@ impl LaunchStage {
             "PREVIEW" => Some(Self::Preview),
             "GA" => Some(Self::Ga),
             "DEPRECATED" => Some(Self::Deprecated),
+            "PRIVATE_PREVIEW" => Some(Self::PrivatePreview),
             _ => None,
         }
     }
@@ -498,10 +506,6 @@ pub mod auth_config {
         /// The user account used to authenticate.
         #[prost(string, tag = "1")]
         pub username: ::prost::alloc::string::String,
-        /// This is an optional field used in case client has enabled multi-factor
-        /// authentication
-        #[prost(message, optional, tag = "2")]
-        pub password: ::core::option::Option<super::Secret>,
         /// SSH Client Cert. It should contain both public and private key.
         #[prost(message, optional, tag = "3")]
         pub ssh_client_cert: ::core::option::Option<super::Secret>,
@@ -540,6 +544,12 @@ pub struct AuthConfigTemplate {
     /// Config variables to describe an `AuthConfig` for a `Connection`.
     #[prost(message, repeated, tag = "2")]
     pub config_variable_templates: ::prost::alloc::vec::Vec<ConfigVariableTemplate>,
+    /// Display name for authentication template.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Connector specific description for an authentication template.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
 }
 /// AuthType defines different authentication types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -556,6 +566,8 @@ pub enum AuthType {
     Oauth2ClientCredentials = 3,
     /// SSH Public Key Authentication
     SshPublicKey = 4,
+    /// Oauth 2.0 Authorization Code Flow
+    Oauth2AuthCodeFlow = 5,
 }
 impl AuthType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -569,6 +581,7 @@ impl AuthType {
             AuthType::Oauth2JwtBearer => "OAUTH2_JWT_BEARER",
             AuthType::Oauth2ClientCredentials => "OAUTH2_CLIENT_CREDENTIALS",
             AuthType::SshPublicKey => "SSH_PUBLIC_KEY",
+            AuthType::Oauth2AuthCodeFlow => "OAUTH2_AUTH_CODE_FLOW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -579,6 +592,7 @@ impl AuthType {
             "OAUTH2_JWT_BEARER" => Some(Self::Oauth2JwtBearer),
             "OAUTH2_CLIENT_CREDENTIALS" => Some(Self::Oauth2ClientCredentials),
             "SSH_PUBLIC_KEY" => Some(Self::SshPublicKey),
+            "OAUTH2_AUTH_CODE_FLOW" => Some(Self::Oauth2AuthCodeFlow),
             _ => None,
         }
     }
@@ -617,6 +631,170 @@ pub mod destination {
         Host(::prost::alloc::string::String),
     }
 }
+/// Ssl config details of a connector version
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SslConfigTemplate {
+    /// Controls the ssl type for the given connector version
+    #[prost(enumeration = "SslType", tag = "1")]
+    pub ssl_type: i32,
+    /// Boolean for determining if the connector version mandates TLS.
+    #[prost(bool, tag = "2")]
+    pub is_tls_mandatory: bool,
+    /// List of supported Server Cert Types
+    #[prost(enumeration = "CertType", repeated, tag = "3")]
+    pub server_cert_type: ::prost::alloc::vec::Vec<i32>,
+    /// List of supported Client Cert Types
+    #[prost(enumeration = "CertType", repeated, tag = "4")]
+    pub client_cert_type: ::prost::alloc::vec::Vec<i32>,
+    /// Any additional fields that need to be rendered
+    #[prost(message, repeated, tag = "5")]
+    pub additional_variables: ::prost::alloc::vec::Vec<ConfigVariableTemplate>,
+}
+/// SSL Configuration of a connection
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SslConfig {
+    /// Controls the ssl type for the given connector version.
+    #[prost(enumeration = "SslType", tag = "1")]
+    pub r#type: i32,
+    /// Trust Model of the SSL connection
+    #[prost(enumeration = "ssl_config::TrustModel", tag = "2")]
+    pub trust_model: i32,
+    /// Private Server Certificate. Needs to be specified if trust model is
+    /// `PRIVATE`.
+    #[prost(message, optional, tag = "3")]
+    pub private_server_certificate: ::core::option::Option<Secret>,
+    /// Client Certificate
+    #[prost(message, optional, tag = "4")]
+    pub client_certificate: ::core::option::Option<Secret>,
+    /// Client Private Key
+    #[prost(message, optional, tag = "5")]
+    pub client_private_key: ::core::option::Option<Secret>,
+    /// Secret containing the passphrase protecting the Client Private Key
+    #[prost(message, optional, tag = "6")]
+    pub client_private_key_pass: ::core::option::Option<Secret>,
+    /// Type of Server Cert (PEM/JKS/.. etc.)
+    #[prost(enumeration = "CertType", tag = "7")]
+    pub server_cert_type: i32,
+    /// Type of Client Cert (PEM/JKS/.. etc.)
+    #[prost(enumeration = "CertType", tag = "8")]
+    pub client_cert_type: i32,
+    /// Bool for enabling SSL
+    #[prost(bool, tag = "9")]
+    pub use_ssl: bool,
+    /// Additional SSL related field values
+    #[prost(message, repeated, tag = "10")]
+    pub additional_variables: ::prost::alloc::vec::Vec<ConfigVariable>,
+}
+/// Nested message and enum types in `SslConfig`.
+pub mod ssl_config {
+    /// Enum for Ttust Model
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TrustModel {
+        /// Public Trust Model. Takes the Default Java trust store.
+        Public = 0,
+        /// Private Trust Model. Takes custom/private trust store.
+        Private = 1,
+        /// Insecure Trust Model. Accept all certificates.
+        Insecure = 2,
+    }
+    impl TrustModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                TrustModel::Public => "PUBLIC",
+                TrustModel::Private => "PRIVATE",
+                TrustModel::Insecure => "INSECURE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PUBLIC" => Some(Self::Public),
+                "PRIVATE" => Some(Self::Private),
+                "INSECURE" => Some(Self::Insecure),
+                _ => None,
+            }
+        }
+    }
+}
+/// Enum for controlling the SSL Type (TLS/MTLS)
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SslType {
+    /// No SSL configuration required.
+    Unspecified = 0,
+    /// TLS Handshake
+    Tls = 1,
+    /// mutual TLS (MTLS) Handshake
+    Mtls = 2,
+}
+impl SslType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            SslType::Unspecified => "SSL_TYPE_UNSPECIFIED",
+            SslType::Tls => "TLS",
+            SslType::Mtls => "MTLS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SSL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TLS" => Some(Self::Tls),
+            "MTLS" => Some(Self::Mtls),
+            _ => None,
+        }
+    }
+}
+/// Enum for Cert Types
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CertType {
+    /// Cert type unspecified.
+    Unspecified = 0,
+    /// Privacy Enhanced Mail (PEM) Type
+    Pem = 1,
+}
+impl CertType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            CertType::Unspecified => "CERT_TYPE_UNSPECIFIED",
+            CertType::Pem => "PEM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CERT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PEM" => Some(Self::Pem),
+            _ => None,
+        }
+    }
+}
 /// Connection represents an instance of connector.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -651,18 +829,20 @@ pub struct Connection {
     /// Output only. Current status of the connection.
     #[prost(message, optional, tag = "7")]
     pub status: ::core::option::Option<ConnectionStatus>,
-    /// Optional. Configuration for configuring the connection with an external system.
+    /// Optional. Configuration for configuring the connection with an external
+    /// system.
     #[prost(message, repeated, tag = "8")]
     pub config_variables: ::prost::alloc::vec::Vec<ConfigVariable>,
-    /// Optional. Configuration for establishing the connection's authentication with an
-    /// external system.
+    /// Optional. Configuration for establishing the connection's authentication
+    /// with an external system.
     #[prost(message, optional, tag = "9")]
     pub auth_config: ::core::option::Option<AuthConfig>,
-    /// Optional. Configuration that indicates whether or not the Connection can be edited.
+    /// Optional. Configuration that indicates whether or not the Connection can be
+    /// edited.
     #[prost(message, optional, tag = "10")]
     pub lock_config: ::core::option::Option<LockConfig>,
-    /// Optional. Configuration of the Connector's destination. Only accepted for Connectors
-    /// that accepts user defined destination(s).
+    /// Optional. Configuration of the Connector's destination. Only accepted for
+    /// Connectors that accepts user defined destination(s).
     #[prost(message, repeated, tag = "18")]
     pub destination_configs: ::prost::alloc::vec::Vec<DestinationConfig>,
     /// Output only. GCR location where the runtime image is stored.
@@ -685,11 +865,14 @@ pub struct Connection {
     /// Optional. Suspended indicates if a user has suspended a connection or not.
     #[prost(bool, tag = "17")]
     pub suspended: bool,
-    /// Optional. Configuration for the connection.
+    /// Optional. Node configuration for the connection.
     #[prost(message, optional, tag = "19")]
     pub node_config: ::core::option::Option<NodeConfig>,
+    /// Optional. Ssl config of a connection
+    #[prost(message, optional, tag = "21")]
+    pub ssl_config: ::core::option::Option<SslConfig>,
 }
-/// Configuration for the connection.
+/// Node configuration for the connection.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeConfig {
@@ -700,7 +883,9 @@ pub struct NodeConfig {
     #[prost(int32, tag = "2")]
     pub max_node_count: i32,
 }
-/// Metadata of connection schema.
+/// ConnectionSchemaMetadata is the singleton resource of each connection.
+/// It includes the entity and action names of runtime resources exposed
+/// by a connection backend.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionSchemaMetadata {
@@ -710,6 +895,67 @@ pub struct ConnectionSchemaMetadata {
     /// Output only. List of actions.
     #[prost(string, repeated, tag = "2")]
     pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Resource name.
+    /// Format:
+    /// projects/{project}/locations/{location}/connections/{connection}/connectionSchemaMetadata
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when the connection runtime schema was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the connection runtime schema refresh was
+    /// triggered.
+    #[prost(message, optional, tag = "5")]
+    pub refresh_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The current state of runtime schema.
+    #[prost(enumeration = "connection_schema_metadata::State", tag = "6")]
+    pub state: i32,
+}
+/// Nested message and enum types in `ConnectionSchemaMetadata`.
+pub mod connection_schema_metadata {
+    /// State of connection runtime schema.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default state.
+        Unspecified = 0,
+        /// Schema refresh is in progress.
+        Refreshing = 1,
+        /// Schema has been updated.
+        Updated = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Refreshing => "REFRESHING",
+                State::Updated => "UPDATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REFRESHING" => Some(Self::Refreshing),
+                "UPDATED" => Some(Self::Updated),
+                _ => None,
+            }
+        }
+    }
 }
 /// Schema of a runtime entity.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -884,8 +1130,8 @@ pub struct CreateConnectionRequest {
     /// `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Identifier to assign to the Connection. Must be unique within scope of
-    /// the parent resource.
+    /// Required. Identifier to assign to the Connection. Must be unique within
+    /// scope of the parent resource.
     #[prost(string, tag = "2")]
     pub connection_id: ::prost::alloc::string::String,
     /// Required. Connection resource.
@@ -899,11 +1145,22 @@ pub struct UpdateConnectionRequest {
     /// Required. Connection resource.
     #[prost(message, optional, tag = "1")]
     pub connection: ::core::option::Option<Connection>,
-    /// Required. Field mask is used to specify the fields to be overwritten in the
-    /// Connection resource by the update.
-    /// The fields specified in the update_mask are relative to the resource, not
-    /// the full request. A field will be overwritten if it is in the mask. If the
-    /// user does not provide a mask then all fields will be overwritten.
+    /// Required. You can modify only the fields listed below.
+    ///
+    /// To lock/unlock a connection:
+    /// * `lock_config`
+    ///
+    /// To suspend/resume a connection:
+    /// * `suspended`
+    ///
+    /// To update the connection details:
+    /// * `description`
+    /// * `labels`
+    /// * `connector_version`
+    /// * `config_variables`
+    /// * `auth_config`
+    /// * `destination_configs`
+    /// * `node_config`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -921,6 +1178,16 @@ pub struct DeleteConnectionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionSchemaMetadataRequest {
     /// Required. Connection name
+    /// Format:
+    /// projects/{project}/locations/{location}/connections/{connection}/connectionSchemaMetadata
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ConnectorsService.RefreshConnectionSchemaMetadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RefreshConnectionSchemaMetadataRequest {
+    /// Required. Resource name.
     /// Format:
     /// projects/{project}/locations/{location}/connections/{connection}/connectionSchemaMetadata
     #[prost(string, tag = "1")]
@@ -1046,6 +1313,9 @@ pub mod connection_status {
         Updating = 5,
         /// Connection is not running due to an error.
         Error = 6,
+        /// Connection is not running due to an auth error for the Oauth2 Auth Code
+        /// based connector.
+        AuthorizationRequired = 7,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1061,6 +1331,7 @@ pub mod connection_status {
                 State::Deleting => "DELETING",
                 State::Updating => "UPDATING",
                 State::Error => "ERROR",
+                State::AuthorizationRequired => "AUTHORIZATION_REQUIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1073,6 +1344,7 @@ pub mod connection_status {
                 "DELETING" => Some(Self::Deleting),
                 "UPDATING" => Some(Self::Updating),
                 "ERROR" => Some(Self::Error),
+                "AUTHORIZATION_REQUIRED" => Some(Self::AuthorizationRequired),
                 _ => None,
             }
         }
@@ -1431,7 +1703,8 @@ pub struct ConnectorVersion {
     /// Output only. List of config variables needed to create a connection.
     #[prost(message, repeated, tag = "9")]
     pub config_variable_templates: ::prost::alloc::vec::Vec<ConfigVariableTemplate>,
-    /// Output only. Information about the runtime features supported by the Connector.
+    /// Output only. Information about the runtime features supported by the
+    /// Connector.
     #[prost(message, optional, tag = "10")]
     pub supported_runtime_features: ::core::option::Option<SupportedRuntimeFeatures>,
     /// Output only. Display name.
@@ -1443,10 +1716,13 @@ pub struct ConnectorVersion {
     /// Output only. Role grant configurations for this connector version.
     #[prost(message, repeated, tag = "14")]
     pub role_grants: ::prost::alloc::vec::Vec<RoleGrant>,
-    /// Output only. Role grant configuration for this config variable. It will be DEPRECATED
-    /// soon.
+    /// Output only. Role grant configuration for this config variable. It will be
+    /// DEPRECATED soon.
     #[prost(message, optional, tag = "15")]
     pub role_grant: ::core::option::Option<RoleGrant>,
+    /// Output only. Ssl configuration supported by the Connector.
+    #[prost(message, optional, tag = "17")]
+    pub ssl_config_template: ::core::option::Option<SslConfigTemplate>,
 }
 /// Request message for Connectors.GetConnectorVersion.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1771,7 +2047,8 @@ pub struct RuntimeConfig {
     /// Output only. The state of the location.
     #[prost(enumeration = "runtime_config::State", tag = "7")]
     pub state: i32,
-    /// Output only. The Cloud Storage bucket that stores connector's schema reports.
+    /// Output only. The Cloud Storage bucket that stores connector's schema
+    /// reports.
     #[prost(string, tag = "8")]
     pub schema_gcs_bucket: ::prost::alloc::string::String,
     /// Output only. The name of the Service Directory service name.
@@ -1843,6 +2120,29 @@ pub mod runtime_config {
             }
         }
     }
+}
+/// Request for \[GetGlobalSettingsRequest\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetGlobalSettingsRequest {
+    /// Required. The resource name of the Settings.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Global Settings details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Settings {
+    /// Output only. Resource name of the Connection.
+    /// Format: projects/{project}/locations/global/settings}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Flag indicates whether vpc-sc is enabled.
+    #[prost(bool, tag = "2")]
+    pub vpcsc: bool,
+    /// Output only. Flag indicates if user is in PayG model
+    #[prost(bool, tag = "3")]
+    pub payg: bool,
 }
 /// Generated client implementations.
 pub mod connectors_client {
@@ -2167,6 +2467,31 @@ pub mod connectors_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Refresh runtime schema of a connection.
+        pub async fn refresh_connection_schema_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::RefreshConnectionSchemaMetadataRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.connectors.v1.Connectors/RefreshConnectionSchemaMetadata",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// List schema of a runtime entities filtered by entity name.
         pub async fn list_runtime_entity_schemas(
             &mut self,
@@ -2231,6 +2556,27 @@ pub mod connectors_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetRuntimeConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// GetGlobalSettings gets settings of a project.
+        /// GlobalSettings is a singleton resource.
+        pub async fn get_global_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGlobalSettingsRequest>,
+        ) -> Result<tonic::Response<super::Settings>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.connectors.v1.Connectors/GetGlobalSettings",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

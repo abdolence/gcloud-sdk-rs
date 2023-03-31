@@ -555,7 +555,7 @@ pub struct DeleteLineageEventRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchLinksRequest {
-    /// Required. The project and location you want search in.
+    /// Required. The project and location you want search in the format `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of links to return in a single page of the
@@ -637,7 +637,7 @@ pub struct Link {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchSearchLinkProcessesRequest {
-    /// Required. The project and location where you want to search.
+    /// Required. The project and location you want search in the format `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. An array of links to check for their associated LineageProcesses.
