@@ -635,7 +635,10 @@ pub struct JobStatistics {
     /// The total number of slot-ms consumed by the query job.
     #[prost(int64, tag = "8")]
     pub total_slot_ms: i64,
-    /// Reservation usage.
+    /// Reservation usage. This field reported misleading information and will
+    /// no longer be populated. Aggregate usage of all jobs submitted to a
+    /// reservation should provide a more reliable indicator of reservation
+    /// imbalance.
     #[prost(message, repeated, tag = "14")]
     pub reservation_usage: ::prost::alloc::vec::Vec<
         job_statistics::ReservationResourceUsage,

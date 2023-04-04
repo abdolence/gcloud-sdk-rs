@@ -243,7 +243,6 @@ pub mod reauth_settings {
         Unspecified = 0,
         /// Prompts the user to log in again.
         Login = 1,
-        /// Deprecated, no longer accepted by IAP APIs.
         Password = 2,
         /// User must use their secure key 2nd factor device.
         SecureKey = 3,
@@ -389,25 +388,31 @@ pub struct AccessDeniedPageSettings {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributePropagationSettings {
-    /// Raw string CEL expression. Must return a list of attributes. Maximum of 45
-    /// attributes can be selected. Expressions can select different attribute
+    /// Raw string CEL expression. Must return a list of attributes. A maximum of
+    /// 45 attributes can be selected. Expressions can select different attribute
     /// types from `attributes`: `attributes.saml_attributes`,
-    /// `attributes.iap_attributes`. Limited functions are supported:
-    ///   - `filter: <list>.filter(<iter_var>, <predicate>)` -> returns a subset of
+    /// `attributes.iap_attributes`. The following functions are supported:
+    ///
+    ///   - filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
     ///   `<list>` where `<predicate>` is true for every item.
-    ///   - `in: <var> in <list>` -> returns true if `<list>` contains `<var>`
-    ///   - `selectByName: <list>.selectByName(<string>)` -> returns the attribute
+    ///
+    ///   - in `<var> in <list>`: Returns true if `<list>` contains `<var>`.
+    ///
+    ///   - selectByName `<list>.selectByName(<string>)`: Returns the attribute
     ///   in
     ///   `<list>` with the given `<string>` name, otherwise returns empty.
-    ///   - `emitAs: <attribute>.emitAs(<string>)` -> sets the `<attribute>` name
+    ///
+    ///   - emitAs `<attribute>.emitAs(<string>)`: Sets the `<attribute>` name
     ///   field to the given `<string>` for propagation in selected output
     ///   credentials.
-    ///   - `strict: <attribute>.strict()` -> ignore the `x-goog-iap-attr-` prefix
-    ///   for the provided `<attribute>` when propagating via the `HEADER` output
-    ///   credential, i.e. request headers.
-    ///   - `append: <target_list>.append(<attribute>)` OR
-    ///   `<target_list>.append(<list>)` -> append the provided `<attribute>` or
-    ///   `<list>` onto the end of `<target_list>`.
+    ///
+    ///   - strict `<attribute>.strict()`: Ignores the `x-goog-iap-attr-` prefix
+    ///   for the provided `<attribute>` when propagating with the `HEADER` output
+    ///   credential, such as request headers.
+    ///
+    ///   - append `<target_list>.append(<attribute>)` OR
+    ///   `<target_list>.append(<list>)`: Appends the provided `<attribute>` or
+    ///   `<list>` to the end of `<target_list>`.
     ///
     /// Example expression: `attributes.saml_attributes.filter(x, x.name in
     /// \['test'\]).append(attributes.iap_attributes.selectByName('exact').emitAs('custom').strict())`
@@ -446,7 +451,7 @@ pub mod attribute_propagation_settings {
     )]
     #[repr(i32)]
     pub enum OutputCredentials {
-        /// No output credential. This is an unsupported default.
+        /// An output credential is required.
         Unspecified = 0,
         /// Propagate attributes in the headers with "x-goog-iap-attr-" prefix.
         Header = 1,

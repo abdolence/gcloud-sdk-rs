@@ -2039,6 +2039,9 @@ pub mod big_query_audit_metadata {
         #[prost(int64, tag = "10")]
         pub total_slot_ms: i64,
         /// Reservation usage attributed from each tier of a reservation hierarchy.
+        /// This field reported misleading information and will no longer be
+        /// populated. Aggregate usage of all jobs submitted to a reservation
+        /// should provide a more reliable indicator of reservation imbalance.
         #[prost(message, repeated, tag = "11")]
         pub reservation_usage: ::prost::alloc::vec::Vec<
             job_stats::ReservationResourceUsage,
