@@ -2042,6 +2042,7 @@ pub mod big_query_audit_metadata {
         /// This field reported misleading information and will no longer be
         /// populated. Aggregate usage of all jobs submitted to a reservation
         /// should provide a more reliable indicator of reservation imbalance.
+        #[deprecated]
         #[prost(message, repeated, tag = "11")]
         pub reservation_usage: ::prost::alloc::vec::Vec<
             job_stats::ReservationResourceUsage,
