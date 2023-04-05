@@ -2,7 +2,7 @@ name: auto create pr google apis
 on:
   workflow_dispatch:
   schedule:
-    - cron: '5 4 */2 * *'
+    - cron: '5 4 2 * *'
 jobs:
   auto_pr:
     permissions:
