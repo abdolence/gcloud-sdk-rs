@@ -6,7 +6,7 @@ edition = "2021"
 
 [dependencies]
 gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-cloud-secretmanager-v1"] }
-tonic = { version = "0.8", features = ["tls"] }
+tonic = { version = "0.9", features = ["tls"] }
 tower = "0.4"
 prost = "0.11"
 prost-types = "0.11"
