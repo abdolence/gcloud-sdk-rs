@@ -584,7 +584,7 @@ pub mod managed_identities_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -642,11 +642,27 @@ pub mod managed_identities_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a Microsoft AD domain.
         pub async fn create_microsoft_ad_domain(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMicrosoftAdDomainRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -663,13 +679,24 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/CreateMicrosoftAdDomain",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "CreateMicrosoftAdDomain",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resets a domain's administrator password.
         pub async fn reset_admin_password(
             &mut self,
             request: impl tonic::IntoRequest<super::ResetAdminPasswordRequest>,
-        ) -> Result<tonic::Response<super::ResetAdminPasswordResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ResetAdminPasswordResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -683,13 +710,24 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/ResetAdminPassword",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "ResetAdminPassword",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists domains in a project.
         pub async fn list_domains(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDomainsRequest>,
-        ) -> Result<tonic::Response<super::ListDomainsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDomainsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -703,13 +741,21 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/ListDomains",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "ListDomains",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets information about a domain.
         pub async fn get_domain(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDomainRequest>,
-        ) -> Result<tonic::Response<super::Domain>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Domain>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -723,13 +769,21 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/GetDomain",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "GetDomain",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the metadata and configuration of a domain.
         pub async fn update_domain(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDomainRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -746,13 +800,21 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/UpdateDomain",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "UpdateDomain",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a domain.
         pub async fn delete_domain(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDomainRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -769,13 +831,21 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/DeleteDomain",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "DeleteDomain",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds an AD trust to a domain.
         pub async fn attach_trust(
             &mut self,
             request: impl tonic::IntoRequest<super::AttachTrustRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -792,13 +862,21 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/AttachTrust",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "AttachTrust",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the DNS conditional forwarder.
         pub async fn reconfigure_trust(
             &mut self,
             request: impl tonic::IntoRequest<super::ReconfigureTrustRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -815,13 +893,21 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/ReconfigureTrust",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "ReconfigureTrust",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes an AD trust.
         pub async fn detach_trust(
             &mut self,
             request: impl tonic::IntoRequest<super::DetachTrustRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -838,14 +924,22 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/DetachTrust",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "DetachTrust",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Validates a trust state, that the target domain is reachable, and that the
         /// target domain is able to accept incoming trust requests.
         pub async fn validate_trust(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateTrustRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -862,7 +956,15 @@ pub mod managed_identities_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.managedidentities.v1.ManagedIdentitiesService/ValidateTrust",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedidentities.v1.ManagedIdentitiesService",
+                        "ValidateTrust",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

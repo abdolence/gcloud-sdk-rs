@@ -84,7 +84,7 @@ pub mod workspaces_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -140,11 +140,30 @@ pub mod workspaces_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// List workspaces.
         pub async fn list_workspaces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkspacesRequest>,
-        ) -> Result<tonic::Response<super::ListWorkspacesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListWorkspacesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -158,13 +177,21 @@ pub mod workspaces_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.endpointsapis.v1.Workspaces/ListWorkspaces",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.endpointsapis.v1.Workspaces",
+                        "ListWorkspaces",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get information about a Workspace.
         pub async fn get_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWorkspaceRequest>,
-        ) -> Result<tonic::Response<super::Workspace>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Workspace>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -178,13 +205,21 @@ pub mod workspaces_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.endpointsapis.v1.Workspaces/GetWorkspace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.endpointsapis.v1.Workspaces",
+                        "GetWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create a Workspace.
         pub async fn create_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWorkspaceRequest>,
-        ) -> Result<tonic::Response<super::Workspace>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Workspace>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -198,13 +233,21 @@ pub mod workspaces_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.endpointsapis.v1.Workspaces/CreateWorkspace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.endpointsapis.v1.Workspaces",
+                        "CreateWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Workspace.
         pub async fn update_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateWorkspaceRequest>,
-        ) -> Result<tonic::Response<super::Workspace>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Workspace>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -218,13 +261,21 @@ pub mod workspaces_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.endpointsapis.v1.Workspaces/UpdateWorkspace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.endpointsapis.v1.Workspaces",
+                        "UpdateWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Workspace.
         pub async fn delete_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkspaceRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -238,7 +289,15 @@ pub mod workspaces_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.endpointsapis.v1.Workspaces/DeleteWorkspace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.endpointsapis.v1.Workspaces",
+                        "DeleteWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

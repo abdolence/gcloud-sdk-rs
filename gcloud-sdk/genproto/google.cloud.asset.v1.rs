@@ -3868,7 +3868,7 @@ pub mod asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3924,6 +3924,22 @@ pub mod asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Exports assets with time and resource types to a given Cloud Storage
         /// location/BigQuery table. For Cloud Storage location destinations, the
         /// output format is newline-delimited JSON. Each line represents a
@@ -3938,7 +3954,7 @@ pub mod asset_service_client {
         pub async fn export_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportAssetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3955,14 +3971,22 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/ExportAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "ExportAssets"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists assets with time and resource types and returns paged results in
         /// response.
         pub async fn list_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssetsRequest>,
-        ) -> Result<tonic::Response<super::ListAssetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAssetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3976,7 +4000,12 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/ListAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "ListAssets"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Batch gets the update history of assets that overlap a time window.
         /// For IAM_POLICY content, this API outputs history when the asset and its
@@ -3988,7 +4017,7 @@ pub mod asset_service_client {
         pub async fn batch_get_assets_history(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchGetAssetsHistoryRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchGetAssetsHistoryResponse>,
             tonic::Status,
         > {
@@ -4005,14 +4034,22 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/BatchGetAssetsHistory",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "BatchGetAssetsHistory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a feed in a parent project/folder/organization to listen to its
         /// asset updates.
         pub async fn create_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFeedRequest>,
-        ) -> Result<tonic::Response<super::Feed>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4026,13 +4063,18 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/CreateFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "CreateFeed"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details about an asset feed.
         pub async fn get_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFeedRequest>,
-        ) -> Result<tonic::Response<super::Feed>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4046,13 +4088,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/GetFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "GetFeed"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all asset feeds in a parent project/folder/organization.
         pub async fn list_feeds(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFeedsRequest>,
-        ) -> Result<tonic::Response<super::ListFeedsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeedsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4066,13 +4116,18 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/ListFeeds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "ListFeeds"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an asset feed configuration.
         pub async fn update_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFeedRequest>,
-        ) -> Result<tonic::Response<super::Feed>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4086,13 +4141,18 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/UpdateFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "UpdateFeed"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an asset feed.
         pub async fn delete_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteFeedRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4106,7 +4166,12 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/DeleteFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "DeleteFeed"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches all Google Cloud resources within the specified scope, such as a
         /// project, folder, or organization. The caller must be granted the
@@ -4115,7 +4180,10 @@ pub mod asset_service_client {
         pub async fn search_all_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAllResourcesRequest>,
-        ) -> Result<tonic::Response<super::SearchAllResourcesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchAllResourcesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4129,7 +4197,15 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/SearchAllResources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "SearchAllResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches all IAM policies within the specified scope, such as a project,
         /// folder, or organization. The caller must be granted the
@@ -4138,7 +4214,7 @@ pub mod asset_service_client {
         pub async fn search_all_iam_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAllIamPoliciesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SearchAllIamPoliciesResponse>,
             tonic::Status,
         > {
@@ -4155,14 +4231,25 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/SearchAllIamPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "SearchAllIamPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyzes IAM policies to answer which identities have what accesses on
         /// which resources.
         pub async fn analyze_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::AnalyzeIamPolicyResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnalyzeIamPolicyResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4176,7 +4263,15 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/AnalyzeIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "AnalyzeIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyzes IAM policies asynchronously to answer which identities have what
         /// accesses on which resources, and writes the analysis results to a Google
@@ -4191,7 +4286,7 @@ pub mod asset_service_client {
         pub async fn analyze_iam_policy_longrunning(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeIamPolicyLongrunningRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4208,7 +4303,15 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/AnalyzeIamPolicyLongrunning",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "AnalyzeIamPolicyLongrunning",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyze moving a resource to a specified destination without kicking off
         /// the actual move. The analysis is best effort depending on the user's
@@ -4218,7 +4321,10 @@ pub mod asset_service_client {
         pub async fn analyze_move(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeMoveRequest>,
-        ) -> Result<tonic::Response<super::AnalyzeMoveResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnalyzeMoveResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4232,7 +4338,12 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/AnalyzeMove",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "AnalyzeMove"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Issue a job that queries assets using a SQL statement compatible with
         /// [BigQuery Standard
@@ -4251,7 +4362,10 @@ pub mod asset_service_client {
         pub async fn query_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryAssetsRequest>,
-        ) -> Result<tonic::Response<super::QueryAssetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::QueryAssetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4265,13 +4379,18 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/QueryAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.asset.v1.AssetService", "QueryAssets"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a saved query in a parent project/folder/organization.
         pub async fn create_saved_query(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSavedQueryRequest>,
-        ) -> Result<tonic::Response<super::SavedQuery>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SavedQuery>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4285,13 +4404,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/CreateSavedQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "CreateSavedQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details about a saved query.
         pub async fn get_saved_query(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSavedQueryRequest>,
-        ) -> Result<tonic::Response<super::SavedQuery>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SavedQuery>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4305,13 +4432,24 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/GetSavedQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "GetSavedQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all saved queries in a parent project/folder/organization.
         pub async fn list_saved_queries(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSavedQueriesRequest>,
-        ) -> Result<tonic::Response<super::ListSavedQueriesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSavedQueriesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4325,13 +4463,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/ListSavedQueries",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "ListSavedQueries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a saved query.
         pub async fn update_saved_query(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSavedQueryRequest>,
-        ) -> Result<tonic::Response<super::SavedQuery>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SavedQuery>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4345,13 +4491,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/UpdateSavedQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "UpdateSavedQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a saved query.
         pub async fn delete_saved_query(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSavedQueryRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4365,13 +4519,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/DeleteSavedQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "DeleteSavedQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets effective IAM policies for a batch of resources.
         pub async fn batch_get_effective_iam_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchGetEffectiveIamPoliciesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchGetEffectiveIamPoliciesResponse>,
             tonic::Status,
         > {
@@ -4388,13 +4550,24 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "BatchGetEffectiveIamPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyzes organization policies under a scope.
         pub async fn analyze_org_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeOrgPoliciesRequest>,
-        ) -> Result<tonic::Response<super::AnalyzeOrgPoliciesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnalyzeOrgPoliciesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4408,7 +4581,15 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "AnalyzeOrgPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyzes organization policies governed containers (projects, folders or
         /// organization) under a scope.
@@ -4417,7 +4598,7 @@ pub mod asset_service_client {
             request: impl tonic::IntoRequest<
                 super::AnalyzeOrgPolicyGovernedContainersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::AnalyzeOrgPolicyGovernedContainersResponse>,
             tonic::Status,
         > {
@@ -4434,7 +4615,15 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedContainers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "AnalyzeOrgPolicyGovernedContainers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyzes organization policies governed assets (Google Cloud resources or
         /// policies) under a scope. This RPC supports custom constraints and the
@@ -4460,7 +4649,7 @@ pub mod asset_service_client {
             request: impl tonic::IntoRequest<
                 super::AnalyzeOrgPolicyGovernedAssetsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::AnalyzeOrgPolicyGovernedAssetsResponse>,
             tonic::Status,
         > {
@@ -4477,7 +4666,15 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1.AssetService",
+                        "AnalyzeOrgPolicyGovernedAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

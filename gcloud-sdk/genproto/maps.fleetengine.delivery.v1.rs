@@ -257,8 +257,8 @@ pub struct DeliveryVehicle {
     pub navigation_status: i32,
     /// The encoded polyline specifying the route that the navigation recommends
     /// taking to the next waypoint. Your driver app updates this when a
-    /// stop is reached or passed, and when the navigation reroutes. These LatLngs
-    /// are returned in
+    /// stop is reached or passed, and when the navigation reroutes. These
+    /// `LatLng`s are returned in
     /// `Task.journey_sharing_info.remaining_vehicle_journey_segments\[0\].path`
     /// (gRPC) or `Task.journeySharingInfo.remainingVehicleJourneySegments\[0\].path`
     /// (REST) for all active Tasks assigned to the Vehicle.
@@ -286,8 +286,8 @@ pub struct DeliveryVehicle {
     pub current_route_segment: ::prost::alloc::vec::Vec<u8>,
     /// The location where the `current_route_segment` ends. This is not currently
     /// populated by the driver app, but you can supply it on
-    /// `UpdateDeliveryVehicle` calls. It is either the LatLng from the upcoming
-    /// vehicle stop, or the last LatLng of the `current_route_segment`. Fleet
+    /// `UpdateDeliveryVehicle` calls. It is either the `LatLng` from the upcoming
+    /// vehicle stop, or the last `LatLng` of the `current_route_segment`. Fleet
     /// Engine will then do its best to interpolate to an actual `VehicleStop`.
     ///
     /// This field is ignored in `UpdateDeliveryVehicle` calls if the
@@ -297,30 +297,30 @@ pub struct DeliveryVehicle {
         super::super::super::super::google::r#type::LatLng,
     >,
     /// The remaining driving distance for the `current_route_segment`.
-    /// This value is usually updated by the driver app because it is considered to
-    /// have more accurate information about the current route than Fleet Engine.
-    /// However, it might be populated by Fleet Engine. For more information, see
+    /// The Driver app typically provides this field, but there are some
+    /// circumstances in which Fleet Engine will override the value sent by the
+    /// app. For more information, see
     /// \[DeliveryVehicle.current_route_segment][maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment\].
     /// This field is returned in
     /// `Task.remaining_vehicle_journey_segments\[0\].driving_distance_meters` (gRPC)
     /// or `Task.remainingVehicleJourneySegments\[0\].drivingDistanceMeters` (REST)
-    /// for all active Tasks assigned to the Delivery Vehicle.
+    /// for all active `Task`s assigned to the Delivery Vehicle.
     ///
-    /// This field is ignored in `UpdateDeliveryVehicle` calls if the
+    /// Fleet Engine ignores this field in `UpdateDeliveryVehicleRequest` if the
     /// `current_route_segment` field is empty.
     #[prost(message, optional, tag = "6")]
     pub remaining_distance_meters: ::core::option::Option<i32>,
     /// The remaining driving time for the `current_route_segment`.
-    /// This value is usually updated by the driver app because it is considered to
-    /// have more accurate information about the current route than Fleet Engine.
-    /// However, it might be populated by Fleet Engine. For more information, see
+    /// The Driver app typically provides this field, but there are some
+    /// circumstances in which Fleet Engine will override the value sent by the
+    /// app.  For more information, see
     /// \[DeliveryVehicle.current_route_segment][maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment\].
     /// This field is returned in
     /// `Task.remaining_vehicle_journey_segments\[0\].driving_duration` (gRPC) or
     /// `Task.remainingVehicleJourneySegments\[0\].drivingDuration` (REST) for all
     /// active tasks assigned to the Delivery Vehicle.
     ///
-    /// This field is ignored in `UpdateDeliveryVehicle` calls if the
+    /// Fleet Engine ignores this field in `UpdateDeliveryVehicleRequest` if the
     /// `current_route_segment` field is empty.
     #[prost(message, optional, tag = "7")]
     pub remaining_duration: ::core::option::Option<::prost_types::Duration>,
@@ -352,7 +352,7 @@ pub struct LocationInfo {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VehicleJourneySegment {
-    /// Specifies the stop location, along with the Tasks associated with
+    /// Specifies the stop location, along with the `Task`s associated with
     /// the stop. Some fields of the VehicleStop might not be present if this
     /// journey segment is part of `JourneySharingInfo`.
     #[prost(message, optional, tag = "1")]
@@ -388,7 +388,7 @@ pub struct VehicleJourneySegment {
     /// If this field is defined in the path
     /// `Task.journey_sharing_info.remaining_vehicle_journey_segments\[0\].path`
     /// (gRPC) or `Task.journeySharingInfo.remainingVehicleJourneySegments\[0\].path`
-    /// (REST), then it may be populated with the LatLngs decoded from
+    /// (REST), then it may be populated with the `LatLng`s decoded from
     /// `DeliveryVehicle.current_route_segment` (gRPC) or
     /// `DeliveryVehicle.currentRouteSegment` (REST). This provides the driving
     /// path from the driver app's latest known location rather than the path from
@@ -398,18 +398,18 @@ pub struct VehicleJourneySegment {
         super::super::super::super::google::r#type::LatLng,
     >,
 }
-/// Describes a point where a Vehicle stops to perform one or more Tasks.
+/// Describes a point where a Vehicle stops to perform one or more `Task`s.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VehicleStop {
-    /// Required. The location of the stop. Note that the locations in the Tasks
+    /// Required. The location of the stop. Note that the locations in the `Task`s
     /// might not exactly match this location, but will be within a short distance
     /// of it. This field won't be populated in the response of either a `GetTask`,
     /// or a `SearchTasks` call.
     #[prost(message, optional, tag = "1")]
     pub planned_location: ::core::option::Option<LocationInfo>,
-    /// The list of Tasks to be performed at this stop. This field won't be
-    /// populated in the response of either a `GetTask`, or a `SearchTasks` call.
+    /// The list of `Task`s to be performed at this stop. This field won't be
+    /// populated in the response of either a `GetTask` or `SearchTasks` call.
     #[prost(message, repeated, tag = "2")]
     pub tasks: ::prost::alloc::vec::Vec<vehicle_stop::TaskInfo>,
     /// The state of the `VehicleStop`. This field won't be populated in the
@@ -668,11 +668,11 @@ pub struct Task {
     /// The outcome of the Task.
     #[prost(enumeration = "task::TaskOutcome", tag = "9")]
     pub task_outcome: i32,
-    /// The timestamp that indicates when the Task's outcome was set by the
+    /// The timestamp that indicates when the `Task`'s outcome was set by the
     /// provider.
     #[prost(message, optional, tag = "10")]
     pub task_outcome_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The location where the Task's outcome was set. This value is updated as
+    /// The location where the `Task`'s outcome was set. This value is updated as
     /// part of `UpdateTask`. If this value isn't explicitly updated by the
     /// provider, then Fleet Engine populates it by default with the last known
     /// vehicle location (the *raw* location).
@@ -833,7 +833,7 @@ pub mod task {
         /// Default. Used for an unspecified or unrecognized Task state.
         Unspecified = 0,
         /// Either the Task has not yet been assigned to a delivery vehicle, or the
-        /// delivery vehicle has not yet passed the Task's assigned vehicle stop.
+        /// delivery vehicle has not yet passed the `Task`'s assigned vehicle stop.
         Open = 1,
         /// When the vehicle passes the vehicle stop for this Task.
         Closed = 2,
@@ -918,7 +918,7 @@ pub mod task {
     )]
     #[repr(i32)]
     pub enum TaskOutcomeLocationSource {
-        /// The Task outcome before it is set.
+        /// The task outcome before it is set.
         Unspecified = 0,
         /// The provider-specified the `task_outcome_location`.
         Provider = 2,
@@ -1399,7 +1399,7 @@ pub mod delivery_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1455,11 +1455,30 @@ pub mod delivery_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates and returns a new `DeliveryVehicle`.
         pub async fn create_delivery_vehicle(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDeliveryVehicleRequest>,
-        ) -> Result<tonic::Response<super::DeliveryVehicle>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeliveryVehicle>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1473,13 +1492,24 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/CreateDeliveryVehicle",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "CreateDeliveryVehicle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified `DeliveryVehicle` instance.
         pub async fn get_delivery_vehicle(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDeliveryVehicleRequest>,
-        ) -> Result<tonic::Response<super::DeliveryVehicle>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeliveryVehicle>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1493,7 +1523,15 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/GetDeliveryVehicle",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "GetDeliveryVehicle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Writes updated `DeliveryVehicle` data to Fleet Engine, and assigns
         /// `Tasks` to the `DeliveryVehicle`. You cannot update the name of the
@@ -1505,7 +1543,10 @@ pub mod delivery_service_client {
         pub async fn update_delivery_vehicle(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDeliveryVehicleRequest>,
-        ) -> Result<tonic::Response<super::DeliveryVehicle>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeliveryVehicle>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1519,13 +1560,24 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/UpdateDeliveryVehicle",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "UpdateDeliveryVehicle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates and returns a batch of new `Task` objects.
         pub async fn batch_create_tasks(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateTasksRequest>,
-        ) -> Result<tonic::Response<super::BatchCreateTasksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BatchCreateTasksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1539,13 +1591,21 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/BatchCreateTasks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "BatchCreateTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates and returns a new `Task` object.
         pub async fn create_task(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1559,13 +1619,21 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/CreateTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "CreateTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets information about a `Task`.
         pub async fn get_task(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1579,13 +1647,24 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/GetTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "GetTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets all `Task`s with a particular `tracking_id`.
         pub async fn search_tasks(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchTasksRequest>,
-        ) -> Result<tonic::Response<super::SearchTasksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchTasksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1599,13 +1678,21 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/SearchTasks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "SearchTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates `Task` data.
         pub async fn update_task(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1619,13 +1706,24 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/UpdateTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "UpdateTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets all `Task`s that meet the specified filtering criteria.
         pub async fn list_tasks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTasksRequest>,
-        ) -> Result<tonic::Response<super::ListTasksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTasksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1639,13 +1737,24 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/ListTasks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "ListTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified `TaskTrackingInfo` instance.
         pub async fn get_task_tracking_info(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTaskTrackingInfoRequest>,
-        ) -> Result<tonic::Response<super::TaskTrackingInfo>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TaskTrackingInfo>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1659,13 +1768,21 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/GetTaskTrackingInfo",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "GetTaskTrackingInfo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets all `DeliveryVehicle`s that meet the specified filtering criteria.
         pub async fn list_delivery_vehicles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDeliveryVehiclesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListDeliveryVehiclesResponse>,
             tonic::Status,
         > {
@@ -1682,7 +1799,15 @@ pub mod delivery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/ListDeliveryVehicles",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.delivery.v1.DeliveryService",
+                        "ListDeliveryVehicles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

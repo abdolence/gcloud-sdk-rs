@@ -4,11 +4,11 @@
 pub struct Access {
     /// Associated email, such as "foo@google.com".
     ///
-    /// The email address of the authenticated user (or service account on behalf
-    /// of third party principal) making the request. For third party identity
-    /// callers, the `principal_subject` field is populated instead of this field.
-    /// For privacy reasons, the principal email address is sometimes redacted.
-    /// For more information, see [Caller identities in audit
+    /// The email address of the authenticated user or a service account acting on
+    /// behalf of a third party principal making the request. For third party
+    /// identity callers, the `principal_subject` field is populated instead of
+    /// this field. For privacy reasons, the principal email address is sometimes
+    /// redacted. For more information, see [Caller identities in audit
     /// logs](<https://cloud.google.com/logging/docs/audit#user-id>).
     #[prost(string, tag = "1")]
     pub principal_email: ::prost::alloc::string::String,
@@ -18,8 +18,8 @@ pub struct Access {
     /// The caller IP's geolocation, which identifies where the call came from.
     #[prost(message, optional, tag = "3")]
     pub caller_ip_geo: ::core::option::Option<Geolocation>,
-    /// What kind of user agent is associated, for example operating system shells,
-    /// embedded or stand-alone applications, etc.
+    /// Type of user agent associated with the finding. For example, an operating
+    /// system shell or an embedded or standalone application.
     #[prost(string, tag = "4")]
     pub user_agent_family: ::prost::alloc::string::String,
     /// This is the API service that the service account made a call to, e.g.
@@ -29,39 +29,38 @@ pub struct Access {
     /// The method that the service account called, e.g. "SetIamPolicy".
     #[prost(string, tag = "6")]
     pub method_name: ::prost::alloc::string::String,
-    /// A string representing the principal_subject associated with the identity.
-    /// As compared to `principal_email`, supports principals that aren't
-    /// associated with email addresses, such as third party principals. For most
-    /// identities, the format will be `principal://iam.googleapis.com/{identity
-    /// pool name}/subjects/{subject}` except for some GKE identities
-    /// (GKE_WORKLOAD, FREEFORM, GKE_HUB_WORKLOAD) that are still in the legacy
-    /// format `serviceAccount:{identity pool name}\[{subject}\]`
+    /// A string that represents the principal_subject that is associated with the
+    /// identity. Unlike `principal_email`, `principal_subject` supports principals
+    /// that aren't associated with email addresses, such as third party
+    /// principals. For most identities, the format is
+    /// `principal://iam.googleapis.com/{identity pool name}/subject/{subject}`.
+    /// Some GKE identities, such as GKE_WORKLOAD, FREEFORM, and GKE_HUB_WORKLOAD,
+    /// still use the legacy format `serviceAccount:{identity pool
+    /// name}\[{subject}\]`.
     #[prost(string, tag = "7")]
     pub principal_subject: ::prost::alloc::string::String,
-    /// The name of the service account key used to create or exchange
-    /// credentials for authenticating the service account making the request.
+    /// The name of the service account key that was used to create or exchange
+    /// credentials when authenticating the service account that made the request.
     /// This is a scheme-less URI full resource name. For example:
     ///
-    /// "//iam.googleapis.com/projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}"
+    /// "//iam.googleapis.com/projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}".
     ///
     #[prost(string, tag = "8")]
     pub service_account_key_name: ::prost::alloc::string::String,
-    /// Identity delegation history of an authenticated service account that makes
-    /// the request. It contains information on the real authorities that try to
-    /// access GCP resources by delegating on a service account. When multiple
-    /// authorities are present, they are guaranteed to be sorted based on the
-    /// original ordering of the identity delegation events.
+    /// The identity delegation history of an authenticated service account that
+    /// made the request. The `serviceAccountDelegationInfo[]` object contains
+    /// information about the real authorities that try to access Google Cloud
+    /// resources by delegating on a service account. When multiple authorities are
+    /// present, they are guaranteed to be sorted based on the original ordering of
+    /// the identity delegation events.
     #[prost(message, repeated, tag = "9")]
     pub service_account_delegation_info: ::prost::alloc::vec::Vec<
         ServiceAccountDelegationInfo,
     >,
-    /// A string that represents the username of a user, user account, or other
-    /// entity involved in the access event. What the entity is and what its role
-    /// in the access event is depends on the finding that this field appears in.
-    /// The entity is likely not an IAM principal, but could be a user that is
-    /// logged into an operating system, if the finding is VM-related, or a user
-    /// that is logged into some type of application that is involved in the
-    /// access event.
+    /// A string that represents a username. The username provided depends on the
+    /// type of the finding and is likely not an IAM principal. For example, this
+    /// can be a system username if the finding is related to a virtual machine, or
+    /// it can be an application login username.
     #[prost(string, tag = "11")]
     pub user_name: ::prost::alloc::string::String,
 }
@@ -297,25 +296,58 @@ pub struct BigQueryExport {
     /// (0-9), or underscores (_).
     #[prost(string, tag = "4")]
     pub dataset: ::prost::alloc::string::String,
-    /// Output only. The time at which the big query export was created.
+    /// Output only. The time at which the BigQuery export was created.
     /// This field is set by the server and will be ignored if provided on export
     /// on creation.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The most recent time at which the big export was updated.
+    /// Output only. The most recent time at which the BigQuery export was updated.
     /// This field is set by the server and will be ignored if provided on export
     /// creation or update.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Email address of the user who last edited the big query export.
+    /// Output only. Email address of the user who last edited the BigQuery export.
     /// This field is set by the server and will be ignored if provided on export
     /// creation or update.
     #[prost(string, tag = "7")]
     pub most_recent_editor: ::prost::alloc::string::String,
-    /// Output only. The service account that needs permission to create table, upload data to
-    /// the big query dataset.
+    /// Output only. The service account that needs permission to create table and
+    /// upload data to the BigQuery dataset.
     #[prost(string, tag = "8")]
     pub principal: ::prost::alloc::string::String,
+}
+/// The [data profile](<https://cloud.google.com/dlp/docs/data-profiles>)
+/// associated with the finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudDlpDataProfile {
+    /// Name of the data profile, for example,
+    /// `projects/123/locations/europe/tableProfiles/8383929`.
+    #[prost(string, tag = "1")]
+    pub data_profile: ::prost::alloc::string::String,
+}
+/// Details about the Cloud Data Loss Prevention (Cloud DLP) [inspection
+/// job](<https://cloud.google.com/dlp/docs/concepts-job-triggers>) that produced
+/// the finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudDlpInspection {
+    /// Name of the inspection job, for example,
+    /// `projects/123/locations/europe/dlpJobs/i-8383929`.
+    #[prost(string, tag = "1")]
+    pub inspect_job: ::prost::alloc::string::String,
+    /// The [type of
+    /// information](<https://cloud.google.com/dlp/docs/infotypes-reference>) found,
+    /// for example, `EMAIL_ADDRESS` or `STREET_ADDRESS`.
+    #[prost(string, tag = "2")]
+    pub info_type: ::prost::alloc::string::String,
+    /// The number of times Cloud DLP found this infoType within this job
+    /// and resource.
+    #[prost(int64, tag = "3")]
+    pub info_type_count: i64,
+    /// Whether Cloud DLP scanned the complete resource or a sampled subset.
+    #[prost(bool, tag = "4")]
+    pub full_scan: bool,
 }
 /// Contains compliance information about a security standard indicating unmet
 /// recommendations.
@@ -421,11 +453,11 @@ pub struct ContactDetails {
     #[prost(message, repeated, tag = "1")]
     pub contacts: ::prost::alloc::vec::Vec<Contact>,
 }
-/// Representa a single contact's email address
+/// The email address of a contact.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Contact {
-    /// An email address e.g. "person123@company.com"
+    /// An email address. For example, "`person123@company.com`".
     #[prost(string, tag = "1")]
     pub email: ::prost::alloc::string::String,
 }
@@ -466,7 +498,7 @@ pub struct Container {
 /// instances or Cloud Spanner instances), or the database instance itself.
 /// Some database resources may not have the full resource name populated
 /// because these resource types are not yet supported by Cloud Asset Inventory
-/// (e.g. CloudSQL databases).  In these cases only the display name will be
+/// (e.g. CloudSQL databases). In these cases only the display name will be
 /// provided.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -490,8 +522,214 @@ pub struct Database {
     #[prost(string, repeated, tag = "5")]
     pub grantees: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Defines the properties in a custom module configuration for Security
+/// Health Analytics. Use the custom module configuration to create custom
+/// detectors that generate custom findings for resources that you specify.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomConfig {
+    /// The CEL expression to evaluate to produce findings. When the expression
+    /// evaluates to true against a resource, a finding is generated.
+    #[prost(message, optional, tag = "1")]
+    pub predicate: ::core::option::Option<super::super::super::r#type::Expr>,
+    /// Custom output properties.
+    #[prost(message, optional, tag = "2")]
+    pub custom_output: ::core::option::Option<custom_config::CustomOutputSpec>,
+    /// The resource types that the custom module operates on. Each custom module
+    /// can specify up to 5 resource types.
+    #[prost(message, optional, tag = "3")]
+    pub resource_selector: ::core::option::Option<custom_config::ResourceSelector>,
+    /// The severity to assign to findings generated by the module.
+    #[prost(enumeration = "custom_config::Severity", tag = "4")]
+    pub severity: i32,
+    /// Text that describes the vulnerability or misconfiguration that the custom
+    /// module detects. This explanation is returned with each finding instance to
+    /// help investigators understand the detected issue. The text must be enclosed
+    /// in quotation marks.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// An explanation of the recommended steps that security teams can take to
+    /// resolve the detected issue. This explanation is returned with each finding
+    /// generated by this module in the `nextSteps` property of the finding JSON.
+    #[prost(string, tag = "6")]
+    pub recommendation: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `CustomConfig`.
+pub mod custom_config {
+    /// A set of optional name-value pairs that define custom source properties to
+    /// return with each finding that is generated by the custom module. The custom
+    /// source properties that are defined here are included in the finding JSON
+    /// under `sourceProperties`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomOutputSpec {
+        /// A list of custom output properties to add to the finding.
+        #[prost(message, repeated, tag = "1")]
+        pub properties: ::prost::alloc::vec::Vec<custom_output_spec::Property>,
+    }
+    /// Nested message and enum types in `CustomOutputSpec`.
+    pub mod custom_output_spec {
+        /// An individual name-value pair that defines a custom source property.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Property {
+            /// Name of the property for the custom output.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// The CEL expression for the custom output. A resource property can be
+            /// specified to return the value of the property or a text string enclosed
+            /// in quotation marks.
+            #[prost(message, optional, tag = "2")]
+            pub value_expression: ::core::option::Option<
+                super::super::super::super::super::r#type::Expr,
+            >,
+        }
+    }
+    /// Resource for selecting resource type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ResourceSelector {
+        /// The resource types to run the detector on.
+        #[prost(string, repeated, tag = "1")]
+        pub resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Defines the valid value options for the severity of a finding.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Severity {
+        /// Unspecified severity.
+        Unspecified = 0,
+        /// Critical severity.
+        Critical = 1,
+        /// High severity.
+        High = 2,
+        /// Medium severity.
+        Medium = 3,
+        /// Low severity.
+        Low = 4,
+    }
+    impl Severity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
+                Severity::Critical => "CRITICAL",
+                Severity::High => "HIGH",
+                Severity::Medium => "MEDIUM",
+                Severity::Low => "LOW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "CRITICAL" => Some(Self::Critical),
+                "HIGH" => Some(Self::High),
+                "MEDIUM" => Some(Self::Medium),
+                "LOW" => Some(Self::Low),
+                _ => None,
+            }
+        }
+    }
+}
+/// An EffectiveSecurityHealthAnalyticsCustomModule is the representation of
+/// a Security Health Analytics custom module at a specified level of the
+/// resource hierarchy: organization, folder, or project. If a custom module is
+/// inherited from a parent organization or folder, the value of the
+/// `enablementState` property in EffectiveSecurityHealthAnalyticsCustomModule is
+/// set to the value that is effective in the parent, instead of  `INHERITED`.
+/// For example, if the module is enabled in a parent organization or folder, the
+/// effective enablement_state for the module in all child folders or projects is
+/// also `enabled`. EffectiveSecurityHealthAnalyticsCustomModule is read-only.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EffectiveSecurityHealthAnalyticsCustomModule {
+    /// Output only. The resource name of the custom module.
+    /// Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+    /// or
+    /// "folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+    /// or
+    /// "projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The user-specified configuration for the module.
+    #[prost(message, optional, tag = "2")]
+    pub custom_config: ::core::option::Option<CustomConfig>,
+    /// Output only. The effective state of enablement for the module at the given
+    /// level of the hierarchy.
+    #[prost(
+        enumeration = "effective_security_health_analytics_custom_module::EnablementState",
+        tag = "3"
+    )]
+    pub enablement_state: i32,
+    /// Output only. The display name for the custom module. The name must be
+    /// between 1 and 128 characters, start with a lowercase letter, and contain
+    /// alphanumeric characters or underscores only.
+    #[prost(string, tag = "4")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `EffectiveSecurityHealthAnalyticsCustomModule`.
+pub mod effective_security_health_analytics_custom_module {
+    /// The enablement state of the module.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EnablementState {
+        /// Unspecified enablement state.
+        Unspecified = 0,
+        /// The module is enabled at the given level.
+        Enabled = 1,
+        /// The module is disabled at the given level.
+        Disabled = 2,
+    }
+    impl EnablementState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                EnablementState::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
+                EnablementState::Enabled => "ENABLED",
+                EnablementState::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENABLEMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
+}
 /// Exfiltration represents a data exfiltration attempt of one or more
-/// sources to one or more targets.  Sources represent the source
+/// sources to one or more targets. Sources represent the source
 /// of data that is exfiltrated, and Targets represents the destination the
 /// data was copied to.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -638,14 +876,15 @@ pub mod iam_binding {
         }
     }
 }
-/// Represents what's commonly known as an Indicator of compromise (IoC) in
+/// Represents what's commonly known as an _indicator of compromise_ (IoC) in
 /// computer forensics. This is an artifact observed on a network or in an
 /// operating system that, with high confidence, indicates a computer intrusion.
-/// Reference: <https://en.wikipedia.org/wiki/Indicator_of_compromise>
+/// For more information, see [Indicator of
+/// compromise](<https://en.wikipedia.org/wiki/Indicator_of_compromise>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Indicator {
-    /// List of ip addresses associated to the Finding.
+    /// The list of IP addresses that are associated with the finding.
     #[prost(string, repeated, tag = "1")]
     pub ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of domains associated to the Finding.
@@ -725,39 +964,39 @@ pub struct KernelRootkit {
     /// Rootkit name when available.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// True if unexpected modifications of kernel code memory are present.
+    /// True when unexpected modifications of kernel code memory are present.
     #[prost(bool, tag = "2")]
     pub unexpected_code_modification: bool,
-    /// True if unexpected modifications of kernel read-only data memory are
+    /// True when unexpected modifications of kernel read-only data memory are
     /// present.
     #[prost(bool, tag = "3")]
     pub unexpected_read_only_data_modification: bool,
-    /// True if `ftrace` points are present with callbacks pointing to regions
+    /// True when `ftrace` points are present with callbacks pointing to regions
     /// that are not in the expected kernel or module code range.
     #[prost(bool, tag = "4")]
     pub unexpected_ftrace_handler: bool,
-    /// True if `kprobe` points are present with callbacks pointing to regions
+    /// True when `kprobe` points are present with callbacks pointing to regions
     /// that are not in the expected kernel or module code range.
     #[prost(bool, tag = "5")]
     pub unexpected_kprobe_handler: bool,
-    /// True if kernel code pages that are not in the expected kernel or module
+    /// True when kernel code pages that are not in the expected kernel or module
     /// code regions are present.
     #[prost(bool, tag = "6")]
     pub unexpected_kernel_code_pages: bool,
-    /// True if system call handlers that are are not in the expected kernel or
+    /// True when system call handlers that are are not in the expected kernel or
     /// module code regions are present.
     #[prost(bool, tag = "7")]
     pub unexpected_system_call_handler: bool,
-    /// True if interrupt handlers that are are not in the expected kernel or
+    /// True when interrupt handlers that are are not in the expected kernel or
     /// module code regions are present.
     #[prost(bool, tag = "8")]
     pub unexpected_interrupt_handler: bool,
-    /// True if unexpected processes in the scheduler run queue are present. Such
+    /// True when unexpected processes in the scheduler run queue are present. Such
     /// processes are in the run queue, but not in the process task list.
     #[prost(bool, tag = "9")]
     pub unexpected_processes_in_runqueue: bool,
 }
-/// Kubernetes related attributes.
+/// Kubernetes-related attributes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Kubernetes {
@@ -898,8 +1137,8 @@ pub mod kubernetes {
         /// The Role or ClusterRole referenced by the binding.
         #[prost(message, optional, tag = "3")]
         pub role: ::core::option::Option<Role>,
-        /// Represents the subjects(s) bound to the role. Not always available
-        /// for PATCH requests.
+        /// Represents one or more subjects that are bound to the role. Not always
+        /// available for PATCH requests.
         #[prost(message, repeated, tag = "4")]
         pub subjects: ::prost::alloc::vec::Vec<Subject>,
     }
@@ -1771,10 +2010,12 @@ pub mod cvssv3 {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
-    /// The relative resource name of this finding. See:
-    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
-    /// Example:
-    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}"
+    /// The [relative resource
+    /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
+    /// of the finding. Example:
+    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+    /// "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+    /// "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The relative resource name of the source the finding belongs to. See:
@@ -1851,14 +2092,14 @@ pub struct Finding {
     /// The class of the finding.
     #[prost(enumeration = "finding::FindingClass", tag = "17")]
     pub finding_class: i32,
-    /// Represents what's commonly known as an Indicator of compromise (IoC) in
+    /// Represents what's commonly known as an *indicator of compromise* (IoC) in
     /// computer forensics. This is an artifact observed on a network or in an
     /// operating system that, with high confidence, indicates a computer
-    /// intrusion.
-    /// Reference: <https://en.wikipedia.org/wiki/Indicator_of_compromise>
+    /// intrusion. For more information, see [Indicator of
+    /// compromise](<https://en.wikipedia.org/wiki/Indicator_of_compromise>).
     #[prost(message, optional, tag = "18")]
     pub indicator: ::core::option::Option<Indicator>,
-    /// Represents vulnerability-specific fields like CVE and CVS scores.
+    /// Represents vulnerability-specific fields like CVE and CVSS scores.
     /// CVE stands for Common Vulnerabilities and Exposures
     /// (<https://cve.mitre.org/about/>)
     #[prost(message, optional, tag = "20")]
@@ -1866,8 +2107,8 @@ pub struct Finding {
     /// Output only. The most recent time this finding was muted or unmuted.
     #[prost(message, optional, tag = "21")]
     pub mute_update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Third party SIEM/SOAR fields within SCC, contains external system
-    /// information and external system finding fields.
+    /// Output only. Third party SIEM/SOAR fields within SCC, contains external
+    /// system information and external system finding fields.
     #[prost(map = "string, message", tag = "22")]
     pub external_systems: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1877,25 +2118,24 @@ pub struct Finding {
     /// See: <https://attack.mitre.org>
     #[prost(message, optional, tag = "25")]
     pub mitre_attack: ::core::option::Option<MitreAttack>,
-    /// Access details associated to the Finding, such as more information on the
-    /// caller, which method was accessed, from where, etc.
+    /// Access details associated with the finding, such as more information on the
+    /// caller, which method was accessed, and from where.
     #[prost(message, optional, tag = "26")]
     pub access: ::core::option::Option<Access>,
     /// Contains information about the IP connection associated with the finding.
     #[prost(message, repeated, tag = "31")]
     pub connections: ::prost::alloc::vec::Vec<Connection>,
-    /// First known as mute_annotation. Records additional information about the
-    /// mute operation e.g. mute config that muted the finding, user who muted the
-    /// finding, etc. Unlike other attributes of a finding, a finding provider
-    /// shouldn't set the value of mute.
+    /// Records additional information about the mute operation, for example, the
+    /// [mute configuration](/security-command-center/docs/how-to-mute-findings)
+    /// that muted the finding and the user who muted the finding.
     #[prost(string, tag = "28")]
     pub mute_initiator: ::prost::alloc::string::String,
     /// Represents operating system processes associated with the Finding.
     #[prost(message, repeated, tag = "30")]
     pub processes: ::prost::alloc::vec::Vec<Process>,
-    /// Output only. Map containing the points of contact for the given finding. The key
-    /// represents the type of contact, while the value contains a list of all the
-    /// contacts that pertain. Please refer to:
+    /// Output only. Map containing the points of contact for the given finding.
+    /// The key represents the type of contact, while the value contains a list of
+    /// all the contacts that pertain. Please refer to:
     /// <https://cloud.google.com/resource-manager/docs/managing-notification-contacts#notification-categories>
     ///
     ///      {
@@ -1923,20 +2163,25 @@ pub struct Finding {
     /// "Event Threat Detection" or "Security Health Analytics".
     #[prost(string, tag = "36")]
     pub parent_display_name: ::prost::alloc::string::String,
-    /// Contains more detail about the finding.
+    /// Contains more details about the finding.
     #[prost(string, tag = "37")]
     pub description: ::prost::alloc::string::String,
-    /// Represents exfiltration associated with the Finding.
+    /// Represents exfiltrations associated with the finding.
     #[prost(message, optional, tag = "38")]
     pub exfiltration: ::core::option::Option<Exfiltration>,
-    /// Represents IAM bindings associated with the Finding.
+    /// Represents IAM bindings associated with the finding.
     #[prost(message, repeated, tag = "39")]
     pub iam_bindings: ::prost::alloc::vec::Vec<IamBinding>,
-    /// Next steps associate to the finding.
+    /// Steps to address the finding.
     #[prost(string, tag = "40")]
     pub next_steps: ::prost::alloc::string::String,
-    /// Containers associated with the finding. containers provides information
-    /// for both Kubernetes and non-Kubernetes containers.
+    /// Unique identifier of the module which generated the finding.
+    /// Example:
+    /// folders/598186756061/securityHealthAnalyticsSettings/customModules/56799441161885
+    #[prost(string, tag = "41")]
+    pub module_name: ::prost::alloc::string::String,
+    /// Containers associated with the finding. This field provides information for
+    /// both Kubernetes and non-Kubernetes containers.
     #[prost(message, repeated, tag = "42")]
     pub containers: ::prost::alloc::vec::Vec<Container>,
     /// Kubernetes resources associated with the finding.
@@ -1948,7 +2193,14 @@ pub struct Finding {
     /// File associated with the finding.
     #[prost(message, repeated, tag = "46")]
     pub files: ::prost::alloc::vec::Vec<File>,
-    /// Kernel Rootkit signature.
+    /// Cloud Data Loss Prevention (Cloud DLP) inspection results that are
+    /// associated with the finding.
+    #[prost(message, optional, tag = "48")]
+    pub cloud_dlp_inspection: ::core::option::Option<CloudDlpInspection>,
+    /// Cloud DLP data profile that is associated with the finding.
+    #[prost(message, optional, tag = "49")]
+    pub cloud_dlp_data_profile: ::core::option::Option<CloudDlpDataProfile>,
+    /// Signature of the kernel rootkit.
     #[prost(message, optional, tag = "50")]
     pub kernel_rootkit: ::core::option::Option<KernelRootkit>,
 }
@@ -2020,7 +2272,8 @@ pub mod finding {
         /// exploitable, and results in the direct ability to execute arbitrary code,
         /// exfiltrate data, and otherwise gain additional access and privileges to
         /// cloud resources and workloads. Examples include publicly accessible
-        /// unprotected user data, public SSH access with weak or no passwords, etc.
+        /// unprotected user data and public SSH access with weak or no
+        /// passwords.
         ///
         /// Threat:
         /// Indicates a threat that is able to access, modify, or delete data or
@@ -2213,11 +2466,11 @@ pub struct MuteConfig {
     /// A description of the mute config.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Required. An expression that defines the filter to apply across create/update events
-    /// of findings. While creating a filter string, be mindful of the
-    /// scope in which the mute configuration is being created. E.g., If a filter
-    /// contains project = X but is created under the project = Y scope, it might
-    /// not match any findings.
+    /// Required. An expression that defines the filter to apply across
+    /// create/update events of findings. While creating a filter string, be
+    /// mindful of the scope in which the mute configuration is being created.
+    /// E.g., If a filter contains project = X but is created under the project = Y
+    /// scope, it might not match any findings.
     ///
     /// The following field and operator combinations are supported:
     ///
@@ -2347,9 +2600,9 @@ pub struct Resource {
     /// The human readable name of resource's parent.
     #[prost(string, tag = "5")]
     pub parent_display_name: ::prost::alloc::string::String,
-    /// Output only. Contains a Folder message for each folder in the assets ancestry.
-    /// The first folder is the deepest nested folder, and the last folder is the
-    /// folder directly under the Organization.
+    /// Output only. Contains a Folder message for each folder in the assets
+    /// ancestry. The first folder is the deepest nested folder, and the last
+    /// folder is the folder directly under the Organization.
     #[prost(message, repeated, tag = "7")]
     pub folders: ::prost::alloc::vec::Vec<Folder>,
 }
@@ -2538,6 +2791,107 @@ pub mod run_asset_discovery_response {
         }
     }
 }
+/// Represents an instance of a Security Health Analytics custom module,
+/// including its full module name, display name, enablement state, and last
+/// updated time. You can create a custom module at the organization, folder, or
+/// project level. Custom modules that you create at the organization or folder
+/// level are inherited by the child folders and projects.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityHealthAnalyticsCustomModule {
+    /// Immutable. The resource name of the custom module.
+    /// Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
+    /// or
+    /// "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+    /// or
+    /// "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}"
+    ///
+    /// The id {customModule} is server-generated and is not user settable.
+    /// It will be a numeric id containing 1-20 digits.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The display name of the Security Health Analytics custom module. This
+    /// display name becomes the finding category for all findings that are
+    /// returned by this custom module. The display name must be between 1 and
+    /// 128 characters, start with a lowercase letter, and contain alphanumeric
+    /// characters or underscores only.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The enablement state of the custom module.
+    #[prost(
+        enumeration = "security_health_analytics_custom_module::EnablementState",
+        tag = "4"
+    )]
+    pub enablement_state: i32,
+    /// Output only. The time at which the custom module was last updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The editor that last updated the custom module.
+    #[prost(string, tag = "6")]
+    pub last_editor: ::prost::alloc::string::String,
+    /// Output only. If empty, indicates that the custom module was created in the
+    /// organization, folder, or project in which you are viewing the custom
+    /// module. Otherwise, `ancestor_module` specifies the organization or folder
+    /// from which the custom module is inherited.
+    #[prost(string, tag = "7")]
+    pub ancestor_module: ::prost::alloc::string::String,
+    /// The user specified custom configuration for the module.
+    #[prost(message, optional, tag = "8")]
+    pub custom_config: ::core::option::Option<CustomConfig>,
+}
+/// Nested message and enum types in `SecurityHealthAnalyticsCustomModule`.
+pub mod security_health_analytics_custom_module {
+    /// Possible enablement states of a custom module.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EnablementState {
+        /// Unspecified enablement state.
+        Unspecified = 0,
+        /// The module is enabled at the given CRM resource.
+        Enabled = 1,
+        /// The module is disabled at the given CRM resource.
+        Disabled = 2,
+        /// State is inherited from an ancestor module. The module will either
+        /// be effectively ENABLED or DISABLED based on its closest non-inherited
+        /// ancestor module in the CRM hierarchy.
+        Inherited = 3,
+    }
+    impl EnablementState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                EnablementState::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
+                EnablementState::Enabled => "ENABLED",
+                EnablementState::Disabled => "DISABLED",
+                EnablementState::Inherited => "INHERITED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENABLEMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "INHERITED" => Some(Self::Inherited),
+                _ => None,
+            }
+        }
+    }
+}
 /// Security Command Center finding source. A finding source
 /// is an entity or a mechanism that can produce a finding. A source is like a
 /// container of findings that come from the same scanner, logger, monitor, and
@@ -2680,6 +3034,24 @@ pub struct CreateNotificationConfigRequest {
     #[prost(message, optional, tag = "3")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
 }
+/// Request message for creating Security Health Analytics custom modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSecurityHealthAnalyticsCustomModuleRequest {
+    /// Required. Resource name of the new custom module's parent. Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings",
+    /// "folders/{folder}/securityHealthAnalyticsSettings", or
+    /// "projects/{project}/securityHealthAnalyticsSettings"
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. SecurityHealthAnalytics custom module to create. The provided
+    /// name is ignored and reset with provided parent information and
+    /// server-generated ID.
+    #[prost(message, optional, tag = "2")]
+    pub security_health_analytics_custom_module: ::core::option::Option<
+        SecurityHealthAnalyticsCustomModule,
+    >,
+}
 /// Request message for creating a source.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2712,6 +3084,18 @@ pub struct DeleteNotificationConfigRequest {
     /// "organizations/\[organization_id]/notificationConfigs/[config_id\]",
     /// "folders/\[folder_id]/notificationConfigs/[config_id\]",
     /// or "projects/\[project_id]/notificationConfigs/[config_id\]".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for deleting Security Health Analytics custom modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSecurityHealthAnalyticsCustomModuleRequest {
+    /// Required. Name of the custom module to delete. Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
+    /// "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+    /// or
+    /// "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2754,6 +3138,31 @@ pub struct GetNotificationConfigRequest {
 pub struct GetOrganizationSettingsRequest {
     /// Required. Name of the organization to get organization settings for. Its
     /// format is "organizations/\[organization_id\]/organizationSettings".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for getting effective Security Health Analytics custom
+/// modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEffectiveSecurityHealthAnalyticsCustomModuleRequest {
+    /// Required. Name of the effective custom module to get. Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+    /// "folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+    /// or
+    /// "projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for getting Security Health Analytics custom modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSecurityHealthAnalyticsCustomModuleRequest {
+    /// Required. Name of the custom module to get. Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
+    /// "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+    /// or
+    /// "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -3099,6 +3508,40 @@ pub struct GroupResult {
     #[prost(int64, tag = "2")]
     pub count: i64,
 }
+/// Request message for listing descendant Security Health Analytics custom
+/// modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDescendantSecurityHealthAnalyticsCustomModulesRequest {
+    /// Required. Name of parent to list descendant custom modules. Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings",
+    /// "folders/{folder}/securityHealthAnalyticsSettings", or
+    /// "projects/{project}/securityHealthAnalyticsSettings"
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results to return in a single response. Default is
+    /// 10, minimum is 1, maximum is 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last call indicating a continuation
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing descendant Security Health Analytics custom
+/// modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDescendantSecurityHealthAnalyticsCustomModulesResponse {
+    /// Custom modules belonging to the requested parent and its descendants.
+    #[prost(message, repeated, tag = "1")]
+    pub security_health_analytics_custom_modules: ::prost::alloc::vec::Vec<
+        SecurityHealthAnalyticsCustomModule,
+    >,
+    /// If not empty, indicates that there may be more custom modules to be
+    /// returned.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Request message for listing  mute configs at a given scope e.g. organization,
 /// folder or project.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3163,6 +3606,72 @@ pub struct ListNotificationConfigsResponse {
     pub notification_configs: ::prost::alloc::vec::Vec<NotificationConfig>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for listing effective Security Health Analytics custom
+/// modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesRequest {
+    /// Required. Name of parent to list effective custom modules. Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings",
+    /// "folders/{folder}/securityHealthAnalyticsSettings", or
+    /// "projects/{project}/securityHealthAnalyticsSettings"
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results to return in a single response. Default is
+    /// 10, minimum is 1, maximum is 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last call indicating a continuation
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing effective Security Health Analytics custom
+/// modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesResponse {
+    /// Effective custom modules belonging to the requested parent.
+    #[prost(message, repeated, tag = "1")]
+    pub effective_security_health_analytics_custom_modules: ::prost::alloc::vec::Vec<
+        EffectiveSecurityHealthAnalyticsCustomModule,
+    >,
+    /// If not empty, indicates that there may be more effective custom modules to
+    /// be returned.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for listing Security Health Analytics custom modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSecurityHealthAnalyticsCustomModulesRequest {
+    /// Required. Name of parent to list custom modules. Its format is
+    /// "organizations/{organization}/securityHealthAnalyticsSettings",
+    /// "folders/{folder}/securityHealthAnalyticsSettings", or
+    /// "projects/{project}/securityHealthAnalyticsSettings"
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results to return in a single response. Default is
+    /// 10, minimum is 1, maximum is 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last call indicating a continuation
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing Security Health Analytics custom modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSecurityHealthAnalyticsCustomModulesResponse {
+    /// Custom modules belonging to the requested parent.
+    #[prost(message, repeated, tag = "1")]
+    pub security_health_analytics_custom_modules: ::prost::alloc::vec::Vec<
+        SecurityHealthAnalyticsCustomModule,
+    >,
+    /// If not empty, indicates that there may be more custom modules to be
+    /// returned.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -3830,6 +4339,19 @@ pub struct UpdateOrganizationSettingsRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// Request message for updating Security Health Analytics custom modules.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSecurityHealthAnalyticsCustomModuleRequest {
+    /// Required. The SecurityHealthAnalytics custom module to update.
+    #[prost(message, optional, tag = "1")]
+    pub security_health_analytics_custom_module: ::core::option::Option<
+        SecurityHealthAnalyticsCustomModule,
+    >,
+    /// The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Request message for updating a source.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3955,7 +4477,7 @@ pub mod security_center_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4011,13 +4533,29 @@ pub mod security_center_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Kicks off an LRO to bulk mute findings for a parent based on a filter. The
         /// parent can be either an organization, folder or project. The findings
         /// matched by the filter will be muted after the LRO is done.
         pub async fn bulk_mute_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::BulkMuteFindingsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4034,13 +4572,57 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/BulkMuteFindings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "BulkMuteFindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a resident SecurityHealthAnalyticsCustomModule at the scope of the
+        /// given CRM parent, and also creates inherited
+        /// SecurityHealthAnalyticsCustomModules for all CRM descendants of the given
+        /// parent. These modules are enabled by default.
+        pub async fn create_security_health_analytics_custom_module(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CreateSecurityHealthAnalyticsCustomModuleRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityHealthAnalyticsCustomModule>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/CreateSecurityHealthAnalyticsCustomModule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "CreateSecurityHealthAnalyticsCustomModule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a source.
         pub async fn create_source(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSourceRequest>,
-        ) -> Result<tonic::Response<super::Source>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Source>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4054,14 +4636,22 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "CreateSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a finding. The corresponding source must exist for finding creation
         /// to succeed.
         pub async fn create_finding(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFindingRequest>,
-        ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Finding>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4075,13 +4665,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateFinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "CreateFinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a mute config.
         pub async fn create_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMuteConfigRequest>,
-        ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MuteConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4095,13 +4693,24 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateMuteConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "CreateMuteConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a notification config.
         pub async fn create_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateNotificationConfigRequest>,
-        ) -> Result<tonic::Response<super::NotificationConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NotificationConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4115,13 +4724,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateNotificationConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "CreateNotificationConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing mute config.
         pub async fn delete_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMuteConfigRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4135,13 +4752,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/DeleteMuteConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "DeleteMuteConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a notification config.
         pub async fn delete_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNotificationConfigRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4155,13 +4780,53 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/DeleteNotificationConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "DeleteNotificationConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified SecurityHealthAnalyticsCustomModule and all of its
+        /// descendants in the CRM hierarchy. This method is only supported for
+        /// resident custom modules.
+        pub async fn delete_security_health_analytics_custom_module(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::DeleteSecurityHealthAnalyticsCustomModuleRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteSecurityHealthAnalyticsCustomModule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "DeleteSecurityHealthAnalyticsCustomModule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a BigQuery export.
         pub async fn get_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBigQueryExportRequest>,
-        ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4175,7 +4840,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetBigQueryExport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetBigQueryExport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy on the specified Source.
         pub async fn get_iam_policy(
@@ -4183,7 +4856,7 @@ pub mod security_center_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -4200,13 +4873,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a mute config.
         pub async fn get_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMuteConfigRequest>,
-        ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MuteConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4220,13 +4901,24 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetMuteConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetMuteConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a notification config.
         pub async fn get_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNotificationConfigRequest>,
-        ) -> Result<tonic::Response<super::NotificationConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NotificationConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4240,13 +4932,24 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetNotificationConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetNotificationConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the settings for an organization.
         pub async fn get_organization_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetOrganizationSettingsRequest>,
-        ) -> Result<tonic::Response<super::OrganizationSettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::OrganizationSettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4260,13 +4963,87 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetOrganizationSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetOrganizationSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves an EffectiveSecurityHealthAnalyticsCustomModule.
+        pub async fn get_effective_security_health_analytics_custom_module(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::EffectiveSecurityHealthAnalyticsCustomModule>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetEffectiveSecurityHealthAnalyticsCustomModule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetEffectiveSecurityHealthAnalyticsCustomModule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a SecurityHealthAnalyticsCustomModule.
+        pub async fn get_security_health_analytics_custom_module(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetSecurityHealthAnalyticsCustomModuleRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityHealthAnalyticsCustomModule>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetSecurityHealthAnalyticsCustomModule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetSecurityHealthAnalyticsCustomModule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a source.
         pub async fn get_source(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSourceRequest>,
-        ) -> Result<tonic::Response<super::Source>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Source>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4280,14 +5057,25 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GetSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Filters an organization's assets and  groups them by their specified
         /// properties.
         pub async fn group_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::GroupAssetsRequest>,
-        ) -> Result<tonic::Response<super::GroupAssetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GroupAssetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4301,7 +5089,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GroupAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GroupAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Filters an organization or source's findings and  groups them by their
         /// specified properties.
@@ -4313,7 +5109,10 @@ pub mod security_center_client {
         pub async fn group_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::GroupFindingsRequest>,
-        ) -> Result<tonic::Response<super::GroupFindingsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GroupFindingsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4327,13 +5126,24 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GroupFindings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "GroupFindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists an organization's assets.
         pub async fn list_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssetsRequest>,
-        ) -> Result<tonic::Response<super::ListAssetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAssetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4347,7 +5157,51 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of all resident SecurityHealthAnalyticsCustomModules under
+        /// the given CRM parent and all of the parent’s CRM descendants.
+        pub async fn list_descendant_security_health_analytics_custom_modules(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListDescendantSecurityHealthAnalyticsCustomModules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListDescendantSecurityHealthAnalyticsCustomModules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists an organization or source's findings.
         ///
@@ -4356,7 +5210,10 @@ pub mod security_center_client {
         pub async fn list_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFindingsRequest>,
-        ) -> Result<tonic::Response<super::ListFindingsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListFindingsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4370,13 +5227,24 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListFindings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListFindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists mute configs.
         pub async fn list_mute_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMuteConfigsRequest>,
-        ) -> Result<tonic::Response<super::ListMuteConfigsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListMuteConfigsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4390,13 +5258,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListMuteConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListMuteConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists notification configs.
         pub async fn list_notification_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNotificationConfigsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListNotificationConfigsResponse>,
             tonic::Status,
         > {
@@ -4413,13 +5289,96 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListNotificationConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListNotificationConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of all EffectiveSecurityHealthAnalyticsCustomModules for the
+        /// given parent. This includes resident modules defined at the scope of the
+        /// parent, and inherited modules, inherited from CRM ancestors.
+        pub async fn list_effective_security_health_analytics_custom_modules(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListEffectiveSecurityHealthAnalyticsCustomModules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListEffectiveSecurityHealthAnalyticsCustomModules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of all SecurityHealthAnalyticsCustomModules for the given
+        /// parent. This includes resident modules defined at the scope of the parent,
+        /// and inherited modules, inherited from CRM ancestors.
+        pub async fn list_security_health_analytics_custom_modules(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListSecurityHealthAnalyticsCustomModulesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSecurityHealthAnalyticsCustomModulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListSecurityHealthAnalyticsCustomModules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListSecurityHealthAnalyticsCustomModules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all sources belonging to an organization.
         pub async fn list_sources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSourcesRequest>,
-        ) -> Result<tonic::Response<super::ListSourcesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSourcesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4433,7 +5392,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListSources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListSources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Runs asset discovery. The discovery is tracked with a long-running
         /// operation.
@@ -4444,7 +5411,7 @@ pub mod security_center_client {
         pub async fn run_asset_discovery(
             &mut self,
             request: impl tonic::IntoRequest<super::RunAssetDiscoveryRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4461,13 +5428,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/RunAssetDiscovery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "RunAssetDiscovery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the state of a finding.
         pub async fn set_finding_state(
             &mut self,
             request: impl tonic::IntoRequest<super::SetFindingStateRequest>,
-        ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Finding>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4481,13 +5456,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/SetFindingState",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "SetFindingState",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the mute state of a finding.
         pub async fn set_mute(
             &mut self,
             request: impl tonic::IntoRequest<super::SetMuteRequest>,
-        ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Finding>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4501,7 +5484,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/SetMute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "SetMute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified Source.
         pub async fn set_iam_policy(
@@ -4509,7 +5500,7 @@ pub mod security_center_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -4526,7 +5517,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the permissions that a caller has on the specified source.
         pub async fn test_iam_permissions(
@@ -4534,7 +5533,7 @@ pub mod security_center_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -4553,13 +5552,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates external system. This is for a given finding.
         pub async fn update_external_system(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateExternalSystemRequest>,
-        ) -> Result<tonic::Response<super::ExternalSystem>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ExternalSystem>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4573,14 +5580,22 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateExternalSystem",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateExternalSystem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates or updates a finding. The corresponding source must exist for a
         /// finding creation to succeed.
         pub async fn update_finding(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFindingRequest>,
-        ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Finding>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4594,13 +5609,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateFinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateFinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a mute config.
         pub async fn update_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMuteConfigRequest>,
-        ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MuteConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4614,7 +5637,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateMuteConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateMuteConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         ///
         /// Updates a notification config. The following update
@@ -4622,7 +5653,10 @@ pub mod security_center_client {
         pub async fn update_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNotificationConfigRequest>,
-        ) -> Result<tonic::Response<super::NotificationConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NotificationConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4636,13 +5670,24 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateNotificationConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateNotificationConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an organization's settings.
         pub async fn update_organization_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateOrganizationSettingsRequest>,
-        ) -> Result<tonic::Response<super::OrganizationSettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::OrganizationSettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4656,13 +5701,58 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateOrganizationSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateOrganizationSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the SecurityHealthAnalyticsCustomModule under the given name based
+        /// on the given update mask. Updating the enablement state is supported on
+        /// both resident and inherited modules (though resident modules cannot have an
+        /// enablement state of "inherited"). Updating the display name and custom
+        /// config of a module is supported on resident modules only.
+        pub async fn update_security_health_analytics_custom_module(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateSecurityHealthAnalyticsCustomModuleRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityHealthAnalyticsCustomModule>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateSecurityHealthAnalyticsCustomModule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateSecurityHealthAnalyticsCustomModule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a source.
         pub async fn update_source(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSourceRequest>,
-        ) -> Result<tonic::Response<super::Source>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Source>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4676,13 +5766,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates security marks.
         pub async fn update_security_marks(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSecurityMarksRequest>,
-        ) -> Result<tonic::Response<super::SecurityMarks>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SecurityMarks>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4696,13 +5794,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateSecurityMarks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateSecurityMarks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a BigQuery export.
         pub async fn create_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBigQueryExportRequest>,
-        ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4716,13 +5822,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateBigQueryExport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "CreateBigQueryExport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing BigQuery export.
         pub async fn delete_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBigQueryExportRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4736,13 +5850,21 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/DeleteBigQueryExport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "DeleteBigQueryExport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a BigQuery export.
         pub async fn update_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBigQueryExportRequest>,
-        ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4756,7 +5878,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateBigQueryExport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "UpdateBigQueryExport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists BigQuery exports. Note that when requesting BigQuery exports at a
         /// given level all exports under that level are also returned e.g. if
@@ -4766,7 +5896,10 @@ pub mod security_center_client {
         pub async fn list_big_query_exports(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBigQueryExportsRequest>,
-        ) -> Result<tonic::Response<super::ListBigQueryExportsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBigQueryExportsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4780,7 +5913,15 @@ pub mod security_center_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListBigQueryExports",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "ListBigQueryExports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

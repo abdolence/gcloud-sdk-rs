@@ -3068,7 +3068,7 @@ pub mod os_config_zonal_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3124,6 +3124,22 @@ pub mod os_config_zonal_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create an OS policy assignment.
         ///
         /// This method also creates the first revision of the OS policy assignment.
@@ -3136,7 +3152,7 @@ pub mod os_config_zonal_service_client {
         pub async fn create_os_policy_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateOsPolicyAssignmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3153,7 +3169,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/CreateOSPolicyAssignment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "CreateOSPolicyAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update an existing OS policy assignment.
         ///
@@ -3167,7 +3191,7 @@ pub mod os_config_zonal_service_client {
         pub async fn update_os_policy_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateOsPolicyAssignmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3184,7 +3208,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/UpdateOSPolicyAssignment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "UpdateOSPolicyAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve an existing OS policy assignment.
         ///
@@ -3194,7 +3226,10 @@ pub mod os_config_zonal_service_client {
         pub async fn get_os_policy_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetOsPolicyAssignmentRequest>,
-        ) -> Result<tonic::Response<super::OsPolicyAssignment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::OsPolicyAssignment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3208,7 +3243,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/GetOSPolicyAssignment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "GetOSPolicyAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List the OS policy assignments under the parent resource.
         ///
@@ -3216,7 +3259,7 @@ pub mod os_config_zonal_service_client {
         pub async fn list_os_policy_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListOsPolicyAssignmentsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListOsPolicyAssignmentsResponse>,
             tonic::Status,
         > {
@@ -3233,7 +3276,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListOSPolicyAssignments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "ListOSPolicyAssignments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List the OS policy assignment revisions for a given OS policy assignment.
         pub async fn list_os_policy_assignment_revisions(
@@ -3241,7 +3292,7 @@ pub mod os_config_zonal_service_client {
             request: impl tonic::IntoRequest<
                 super::ListOsPolicyAssignmentRevisionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListOsPolicyAssignmentRevisionsResponse>,
             tonic::Status,
         > {
@@ -3258,7 +3309,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListOSPolicyAssignmentRevisions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "ListOSPolicyAssignmentRevisions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete the OS policy assignment.
         ///
@@ -3275,7 +3334,7 @@ pub mod os_config_zonal_service_client {
         pub async fn delete_os_policy_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteOsPolicyAssignmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3292,7 +3351,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/DeleteOSPolicyAssignment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "DeleteOSPolicyAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get OS policies compliance data for the specified Compute Engine VM
         /// instance.
@@ -3301,7 +3368,7 @@ pub mod os_config_zonal_service_client {
             request: impl tonic::IntoRequest<
                 super::GetInstanceOsPoliciesComplianceRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstanceOsPoliciesCompliance>,
             tonic::Status,
         > {
@@ -3318,7 +3385,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/GetInstanceOSPoliciesCompliance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "GetInstanceOSPoliciesCompliance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List OS policies compliance data for all Compute Engine VM instances in the
         /// specified zone.
@@ -3327,7 +3402,7 @@ pub mod os_config_zonal_service_client {
             request: impl tonic::IntoRequest<
                 super::ListInstanceOsPoliciesCompliancesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListInstanceOsPoliciesCompliancesResponse>,
             tonic::Status,
         > {
@@ -3344,14 +3419,25 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListInstanceOSPoliciesCompliances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "ListInstanceOSPoliciesCompliances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get the OS policy asssignment report for the specified Compute Engine VM
         /// instance.
         pub async fn get_os_policy_assignment_report(
             &mut self,
             request: impl tonic::IntoRequest<super::GetOsPolicyAssignmentReportRequest>,
-        ) -> Result<tonic::Response<super::OsPolicyAssignmentReport>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::OsPolicyAssignmentReport>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3365,14 +3451,22 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/GetOSPolicyAssignmentReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "GetOSPolicyAssignmentReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List OS policy asssignment reports for all Compute Engine VM instances in
         /// the specified zone.
         pub async fn list_os_policy_assignment_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::ListOsPolicyAssignmentReportsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListOsPolicyAssignmentReportsResponse>,
             tonic::Status,
         > {
@@ -3389,14 +3483,22 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListOSPolicyAssignmentReports",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "ListOSPolicyAssignmentReports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get inventory data for the specified VM instance. If the VM has no
         /// associated inventory, the message `NOT_FOUND` is returned.
         pub async fn get_inventory(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInventoryRequest>,
-        ) -> Result<tonic::Response<super::Inventory>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Inventory>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3410,13 +3512,24 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/GetInventory",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "GetInventory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List inventory data for all VM instances in the specified zone.
         pub async fn list_inventories(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInventoriesRequest>,
-        ) -> Result<tonic::Response<super::ListInventoriesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInventoriesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3430,14 +3543,25 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListInventories",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "ListInventories",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the vulnerability report for the specified VM instance. Only VMs with
         /// inventory data have vulnerability reports associated with them.
         pub async fn get_vulnerability_report(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVulnerabilityReportRequest>,
-        ) -> Result<tonic::Response<super::VulnerabilityReport>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::VulnerabilityReport>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3451,13 +3575,21 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/GetVulnerabilityReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "GetVulnerabilityReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List vulnerability reports for all VM instances in the specified zone.
         pub async fn list_vulnerability_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVulnerabilityReportsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListVulnerabilityReportsResponse>,
             tonic::Status,
         > {
@@ -3474,7 +3606,15 @@ pub mod os_config_zonal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListVulnerabilityReports",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1alpha.OsConfigZonalService",
+                        "ListVulnerabilityReports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

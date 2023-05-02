@@ -8028,8 +8028,8 @@ pub mod recommendation_type_enum {
         /// Budget recommendation for campaigns whose ROI is predicted to increase
         /// with a budget adjustment.
         MarginalRoiCampaignBudget = 19,
-        /// Recommendation to expand keywords to broad match for fully automated
-        /// conversion-based bidding campaigns.
+        /// Recommendation to add broad match versions of keywords for fully
+        /// automated conversion-based bidding campaigns.
         UseBroadMatchKeyword = 20,
         /// Recommendation to add new responsive search ad assets.
         ResponsiveSearchAdAsset = 21,
@@ -8046,7 +8046,7 @@ pub mod recommendation_type_enum {
         /// Recommendation to raise target CPA when it is too low and there are very
         /// few or no conversions.
         /// It is applied asynchronously and can take minutes
-        /// depending on the number of ad groups there is in the related campaign.
+        /// depending on the number of ad groups there are in the related campaign.
         RaiseTargetCpaBidTooLow = 26,
         /// Recommendation to raise the budget in advance of a seasonal event that is
         /// forecasted to increase traffic, and change bidding strategy from maximize
@@ -8058,6 +8058,39 @@ pub mod recommendation_type_enum {
         SitelinkAsset = 29,
         /// Recommendation to add call assets to campaign or customer level.
         CallAsset = 30,
+        /// Recommendation to add the age group attribute to offers that are
+        /// demoted because of a missing age group.
+        ShoppingAddAgeGroup = 31,
+        /// Recommendation to add a color to offers that are demoted
+        /// because of a missing color.
+        ShoppingAddColor = 32,
+        /// Recommendation to add a gender to offers that are demoted
+        /// because of a missing gender.
+        ShoppingAddGender = 33,
+        /// Recommendation to add a GTIN (Global Trade Item Number) to offers
+        /// that are demoted because of a missing GTIN.
+        ShoppingAddGtin = 34,
+        /// Recommendation to add more identifiers to offers that are demoted because
+        /// of missing identifiers.
+        ShoppingAddMoreIdentifiers = 35,
+        /// Recommendation to add the size to offers that are demoted
+        /// because of a missing size.
+        ShoppingAddSize = 36,
+        /// Recommendation informing a customer about a campaign that cannot serve
+        /// because no products are being targeted.
+        ShoppingAddProductsToCampaign = 37,
+        /// The shopping recommendation informing a customer about campaign with a
+        /// high percentage of disapproved products.
+        ShoppingFixDisapprovedProducts = 38,
+        /// Recommendation to create a catch-all campaign that targets all offers.
+        ShoppingTargetAllOffers = 39,
+        /// Recommendation to fix Merchant Center account suspension issues.
+        ShoppingFixSuspendedMerchantCenterAccount = 40,
+        /// Recommendation to fix Merchant Center account suspension warning issues.
+        ShoppingFixMerchantCenterAccountSuspensionWarning = 41,
+        /// Recommendation to migrate offers targeted by Regular Shopping Campaigns
+        /// to existing Performance Max campaigns.
+        ShoppingMigrateRegularShoppingCampaignOffersToPerformanceMax = 42,
     }
     impl RecommendationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8112,6 +8145,32 @@ pub mod recommendation_type_enum {
                 RecommendationType::CalloutAsset => "CALLOUT_ASSET",
                 RecommendationType::SitelinkAsset => "SITELINK_ASSET",
                 RecommendationType::CallAsset => "CALL_ASSET",
+                RecommendationType::ShoppingAddAgeGroup => "SHOPPING_ADD_AGE_GROUP",
+                RecommendationType::ShoppingAddColor => "SHOPPING_ADD_COLOR",
+                RecommendationType::ShoppingAddGender => "SHOPPING_ADD_GENDER",
+                RecommendationType::ShoppingAddGtin => "SHOPPING_ADD_GTIN",
+                RecommendationType::ShoppingAddMoreIdentifiers => {
+                    "SHOPPING_ADD_MORE_IDENTIFIERS"
+                }
+                RecommendationType::ShoppingAddSize => "SHOPPING_ADD_SIZE",
+                RecommendationType::ShoppingAddProductsToCampaign => {
+                    "SHOPPING_ADD_PRODUCTS_TO_CAMPAIGN"
+                }
+                RecommendationType::ShoppingFixDisapprovedProducts => {
+                    "SHOPPING_FIX_DISAPPROVED_PRODUCTS"
+                }
+                RecommendationType::ShoppingTargetAllOffers => {
+                    "SHOPPING_TARGET_ALL_OFFERS"
+                }
+                RecommendationType::ShoppingFixSuspendedMerchantCenterAccount => {
+                    "SHOPPING_FIX_SUSPENDED_MERCHANT_CENTER_ACCOUNT"
+                }
+                RecommendationType::ShoppingFixMerchantCenterAccountSuspensionWarning => {
+                    "SHOPPING_FIX_MERCHANT_CENTER_ACCOUNT_SUSPENSION_WARNING"
+                }
+                RecommendationType::ShoppingMigrateRegularShoppingCampaignOffersToPerformanceMax => {
+                    "SHOPPING_MIGRATE_REGULAR_SHOPPING_CAMPAIGN_OFFERS_TO_PERFORMANCE_MAX"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8151,6 +8210,30 @@ pub mod recommendation_type_enum {
                 "CALLOUT_ASSET" => Some(Self::CalloutAsset),
                 "SITELINK_ASSET" => Some(Self::SitelinkAsset),
                 "CALL_ASSET" => Some(Self::CallAsset),
+                "SHOPPING_ADD_AGE_GROUP" => Some(Self::ShoppingAddAgeGroup),
+                "SHOPPING_ADD_COLOR" => Some(Self::ShoppingAddColor),
+                "SHOPPING_ADD_GENDER" => Some(Self::ShoppingAddGender),
+                "SHOPPING_ADD_GTIN" => Some(Self::ShoppingAddGtin),
+                "SHOPPING_ADD_MORE_IDENTIFIERS" => Some(Self::ShoppingAddMoreIdentifiers),
+                "SHOPPING_ADD_SIZE" => Some(Self::ShoppingAddSize),
+                "SHOPPING_ADD_PRODUCTS_TO_CAMPAIGN" => {
+                    Some(Self::ShoppingAddProductsToCampaign)
+                }
+                "SHOPPING_FIX_DISAPPROVED_PRODUCTS" => {
+                    Some(Self::ShoppingFixDisapprovedProducts)
+                }
+                "SHOPPING_TARGET_ALL_OFFERS" => Some(Self::ShoppingTargetAllOffers),
+                "SHOPPING_FIX_SUSPENDED_MERCHANT_CENTER_ACCOUNT" => {
+                    Some(Self::ShoppingFixSuspendedMerchantCenterAccount)
+                }
+                "SHOPPING_FIX_MERCHANT_CENTER_ACCOUNT_SUSPENSION_WARNING" => {
+                    Some(Self::ShoppingFixMerchantCenterAccountSuspensionWarning)
+                }
+                "SHOPPING_MIGRATE_REGULAR_SHOPPING_CAMPAIGN_OFFERS_TO_PERFORMANCE_MAX" => {
+                    Some(
+                        Self::ShoppingMigrateRegularShoppingCampaignOffersToPerformanceMax,
+                    )
+                }
                 _ => None,
             }
         }
@@ -10980,7 +11063,7 @@ pub mod asset_field_type_enum {
         Callout = 11,
         /// The asset is linked for use as a Structured Snippet extension.
         StructuredSnippet = 12,
-        /// The asset is linked for use as a Sitelink extension.
+        /// The asset is linked for use as a Sitelink.
         Sitelink = 13,
         /// The asset is linked for use as a Mobile App extension.
         MobileApp = 14,
@@ -11862,13 +11945,13 @@ pub mod attribution_model_enum {
         }
     }
 }
-/// Container for enum describing audience insights dimensions.
+/// Container for enum describing insights dimensions.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceInsightsDimensionEnum {}
 /// Nested message and enum types in `AudienceInsightsDimensionEnum`.
 pub mod audience_insights_dimension_enum {
-    /// Possible audience dimensions for use in generating insights.
+    /// Possible dimensions for use in generating insights.
     #[derive(
         Clone,
         Copy,
@@ -19871,6 +19954,56 @@ pub mod listing_group_filter_vertical_enum {
         }
     }
 }
+/// Container for enum describing possible listing types.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingTypeEnum {}
+/// Nested message and enum types in `ListingTypeEnum`.
+pub mod listing_type_enum {
+    /// Possible listing types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ListingType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// This campaign serves vehicle ads.
+        Vehicles = 2,
+    }
+    impl ListingType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ListingType::Unspecified => "UNSPECIFIED",
+                ListingType::Unknown => "UNKNOWN",
+                ListingType::Vehicles => "VEHICLES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "VEHICLES" => Some(Self::Vehicles),
+                _ => None,
+            }
+        }
+    }
+}
 /// Values for Local placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
@@ -23572,6 +23705,89 @@ pub mod shared_set_type_enum {
                 "UNKNOWN" => Some(Self::Unknown),
                 "NEGATIVE_KEYWORDS" => Some(Self::NegativeKeywords),
                 "NEGATIVE_PLACEMENTS" => Some(Self::NegativePlacements),
+                _ => None,
+            }
+        }
+    }
+}
+/// Indicates the key issue that results in a shopping campaign targeting zero
+/// products.
+/// Next Id: 5
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShoppingAddProductsToCampaignRecommendationEnum {}
+/// Nested message and enum types in `ShoppingAddProductsToCampaignRecommendationEnum`.
+pub mod shopping_add_products_to_campaign_recommendation_enum {
+    /// Issues that results in a shopping campaign targeting zero products.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Reason {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The Merchant Center account does not have any submitted products.
+        MerchantCenterAccountHasNoSubmittedProducts = 2,
+        /// The Merchant Center account does not have any submitted products in the
+        /// feed.
+        MerchantCenterAccountHasNoSubmittedProductsInFeed = 3,
+        /// The Google Ads account has active campaign filters that prevents
+        /// inclusion of offers in the campaign.
+        AdsAccountExcludesOffersFromCampaign = 4,
+        /// All products available have been explicitly excluded from
+        /// being targeted by the campaign.
+        AllProductsAreExcludedFromCampaign = 5,
+    }
+    impl Reason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Reason::Unspecified => "UNSPECIFIED",
+                Reason::Unknown => "UNKNOWN",
+                Reason::MerchantCenterAccountHasNoSubmittedProducts => {
+                    "MERCHANT_CENTER_ACCOUNT_HAS_NO_SUBMITTED_PRODUCTS"
+                }
+                Reason::MerchantCenterAccountHasNoSubmittedProductsInFeed => {
+                    "MERCHANT_CENTER_ACCOUNT_HAS_NO_SUBMITTED_PRODUCTS_IN_FEED"
+                }
+                Reason::AdsAccountExcludesOffersFromCampaign => {
+                    "ADS_ACCOUNT_EXCLUDES_OFFERS_FROM_CAMPAIGN"
+                }
+                Reason::AllProductsAreExcludedFromCampaign => {
+                    "ALL_PRODUCTS_ARE_EXCLUDED_FROM_CAMPAIGN"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MERCHANT_CENTER_ACCOUNT_HAS_NO_SUBMITTED_PRODUCTS" => {
+                    Some(Self::MerchantCenterAccountHasNoSubmittedProducts)
+                }
+                "MERCHANT_CENTER_ACCOUNT_HAS_NO_SUBMITTED_PRODUCTS_IN_FEED" => {
+                    Some(Self::MerchantCenterAccountHasNoSubmittedProductsInFeed)
+                }
+                "ADS_ACCOUNT_EXCLUDES_OFFERS_FROM_CAMPAIGN" => {
+                    Some(Self::AdsAccountExcludesOffersFromCampaign)
+                }
+                "ALL_PRODUCTS_ARE_EXCLUDED_FROM_CAMPAIGN" => {
+                    Some(Self::AllProductsAreExcludedFromCampaign)
+                }
                 _ => None,
             }
         }

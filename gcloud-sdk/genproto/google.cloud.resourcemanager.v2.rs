@@ -320,7 +320,7 @@ pub mod folders_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -376,6 +376,22 @@ pub mod folders_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists the Folders that are direct descendants of supplied parent resource.
         /// List provides a strongly consistent view of the Folders underneath
         /// the specified parent resource.
@@ -386,7 +402,10 @@ pub mod folders_client {
         pub async fn list_folders(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFoldersRequest>,
-        ) -> Result<tonic::Response<super::ListFoldersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListFoldersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -400,7 +419,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/ListFolders",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "ListFolders",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Search for folders that match specific filter criteria.
         /// Search provides an eventually consistent view of the folders a user has
@@ -411,7 +438,10 @@ pub mod folders_client {
         pub async fn search_folders(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchFoldersRequest>,
-        ) -> Result<tonic::Response<super::SearchFoldersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchFoldersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -425,7 +455,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/SearchFolders",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "SearchFolders",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a Folder identified by the supplied resource name.
         /// Valid Folder resource names have the format `folders/{folder_id}`
@@ -435,7 +473,7 @@ pub mod folders_client {
         pub async fn get_folder(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFolderRequest>,
-        ) -> Result<tonic::Response<super::Folder>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Folder>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -449,7 +487,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/GetFolder",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "GetFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Folder in the resource hierarchy.
         /// Returns an Operation which can be used to track the progress of the
@@ -481,7 +527,7 @@ pub mod folders_client {
         pub async fn create_folder(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFolderRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -498,7 +544,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/CreateFolder",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "CreateFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Folder, changing its display_name.
         /// Changes to the folder display_name will be rejected if they violate either
@@ -518,7 +572,7 @@ pub mod folders_client {
         pub async fn update_folder(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFolderRequest>,
-        ) -> Result<tonic::Response<super::Folder>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Folder>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -532,7 +586,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/UpdateFolder",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "UpdateFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Moves a Folder under a new resource parent.
         /// Returns an Operation which can be used to track the progress of the
@@ -554,7 +616,7 @@ pub mod folders_client {
         pub async fn move_folder(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveFolderRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -571,7 +633,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/MoveFolder",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "MoveFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Requests deletion of a Folder. The Folder is moved into the
         /// [DELETE_REQUESTED][google.cloud.resourcemanager.v2.Folder.LifecycleState.DELETE_REQUESTED] state
@@ -585,7 +655,7 @@ pub mod folders_client {
         pub async fn delete_folder(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteFolderRequest>,
-        ) -> Result<tonic::Response<super::Folder>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Folder>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -599,7 +669,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/DeleteFolder",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "DeleteFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Cancels the deletion request for a Folder. This method may only be
         /// called on a Folder in the
@@ -614,7 +692,7 @@ pub mod folders_client {
         pub async fn undelete_folder(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeleteFolderRequest>,
-        ) -> Result<tonic::Response<super::Folder>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Folder>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -628,7 +706,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/UndeleteFolder",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "UndeleteFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a Folder. The returned policy may be
         /// empty if no such policy or resource exists. The `resource` field should
@@ -640,7 +726,7 @@ pub mod folders_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -657,7 +743,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on a Folder, replacing any existing policy.
         /// The `resource` field should be the Folder's resource name, e.g.
@@ -669,7 +763,7 @@ pub mod folders_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -686,7 +780,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified Folder.
         /// The `resource` field should be the Folder's resource name,
@@ -698,7 +800,7 @@ pub mod folders_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -717,7 +819,15 @@ pub mod folders_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.resourcemanager.v2.Folders/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.resourcemanager.v2.Folders",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

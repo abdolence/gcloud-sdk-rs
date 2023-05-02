@@ -7391,7 +7391,7 @@ pub mod dlp_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -7447,6 +7447,22 @@ pub mod dlp_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Finds potentially sensitive info in content.
         /// This method has limits on input size, processing time, and output size.
         ///
@@ -7459,7 +7475,10 @@ pub mod dlp_service_client {
         pub async fn inspect_content(
             &mut self,
             request: impl tonic::IntoRequest<super::InspectContentRequest>,
-        ) -> Result<tonic::Response<super::InspectContentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InspectContentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7473,7 +7492,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/InspectContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "InspectContent"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Redacts potentially sensitive info from an image.
         /// This method has limits on input size, processing time, and output size.
@@ -7486,7 +7510,10 @@ pub mod dlp_service_client {
         pub async fn redact_image(
             &mut self,
             request: impl tonic::IntoRequest<super::RedactImageRequest>,
-        ) -> Result<tonic::Response<super::RedactImageResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RedactImageResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7500,7 +7527,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/RedactImage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "RedactImage"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// De-identifies potentially sensitive info from a ContentItem.
         /// This method has limits on input size and output size.
@@ -7513,7 +7545,10 @@ pub mod dlp_service_client {
         pub async fn deidentify_content(
             &mut self,
             request: impl tonic::IntoRequest<super::DeidentifyContentRequest>,
-        ) -> Result<tonic::Response<super::DeidentifyContentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeidentifyContentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7527,7 +7562,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/DeidentifyContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeidentifyContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Re-identifies content that has been de-identified.
         /// See
@@ -7536,7 +7579,10 @@ pub mod dlp_service_client {
         pub async fn reidentify_content(
             &mut self,
             request: impl tonic::IntoRequest<super::ReidentifyContentRequest>,
-        ) -> Result<tonic::Response<super::ReidentifyContentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ReidentifyContentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7550,7 +7596,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ReidentifyContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ReidentifyContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a list of the sensitive information types that DLP API
         /// supports. See https://cloud.google.com/dlp/docs/infotypes-reference to
@@ -7558,7 +7612,10 @@ pub mod dlp_service_client {
         pub async fn list_info_types(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInfoTypesRequest>,
-        ) -> Result<tonic::Response<super::ListInfoTypesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInfoTypesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7572,7 +7629,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ListInfoTypes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "ListInfoTypes"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an InspectTemplate for reusing frequently used configuration
         /// for inspecting content, images, and storage.
@@ -7580,7 +7642,10 @@ pub mod dlp_service_client {
         pub async fn create_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInspectTemplateRequest>,
-        ) -> Result<tonic::Response<super::InspectTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InspectTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7594,14 +7659,25 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/CreateInspectTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "CreateInspectTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the InspectTemplate.
         /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
         pub async fn update_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInspectTemplateRequest>,
-        ) -> Result<tonic::Response<super::InspectTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InspectTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7615,14 +7691,25 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/UpdateInspectTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "UpdateInspectTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an InspectTemplate.
         /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
         pub async fn get_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInspectTemplateRequest>,
-        ) -> Result<tonic::Response<super::InspectTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InspectTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7636,14 +7723,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/GetInspectTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetInspectTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists InspectTemplates.
         /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
         pub async fn list_inspect_templates(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInspectTemplatesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListInspectTemplatesResponse>,
             tonic::Status,
         > {
@@ -7660,14 +7755,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ListInspectTemplates",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListInspectTemplates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an InspectTemplate.
         /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
         pub async fn delete_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInspectTemplateRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7681,7 +7784,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/DeleteInspectTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteInspectTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a DeidentifyTemplate for reusing frequently used configuration
         /// for de-identifying content, images, and storage.
@@ -7690,7 +7801,10 @@ pub mod dlp_service_client {
         pub async fn create_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDeidentifyTemplateRequest>,
-        ) -> Result<tonic::Response<super::DeidentifyTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeidentifyTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7704,7 +7818,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/CreateDeidentifyTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "CreateDeidentifyTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the DeidentifyTemplate.
         /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -7712,7 +7834,10 @@ pub mod dlp_service_client {
         pub async fn update_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDeidentifyTemplateRequest>,
-        ) -> Result<tonic::Response<super::DeidentifyTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeidentifyTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7726,7 +7851,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/UpdateDeidentifyTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "UpdateDeidentifyTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a DeidentifyTemplate.
         /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -7734,7 +7867,10 @@ pub mod dlp_service_client {
         pub async fn get_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDeidentifyTemplateRequest>,
-        ) -> Result<tonic::Response<super::DeidentifyTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeidentifyTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7748,7 +7884,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/GetDeidentifyTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetDeidentifyTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists DeidentifyTemplates.
         /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -7756,7 +7900,7 @@ pub mod dlp_service_client {
         pub async fn list_deidentify_templates(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDeidentifyTemplatesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListDeidentifyTemplatesResponse>,
             tonic::Status,
         > {
@@ -7773,7 +7917,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ListDeidentifyTemplates",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListDeidentifyTemplates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a DeidentifyTemplate.
         /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
@@ -7781,7 +7933,7 @@ pub mod dlp_service_client {
         pub async fn delete_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDeidentifyTemplateRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7795,7 +7947,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/DeleteDeidentifyTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteDeidentifyTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a job trigger to run DLP actions such as scanning storage for
         /// sensitive information on a set schedule.
@@ -7803,7 +7963,7 @@ pub mod dlp_service_client {
         pub async fn create_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobTriggerRequest>,
-        ) -> Result<tonic::Response<super::JobTrigger>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::JobTrigger>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7817,14 +7977,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/CreateJobTrigger",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "CreateJobTrigger",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a job trigger.
         /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
         pub async fn update_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateJobTriggerRequest>,
-        ) -> Result<tonic::Response<super::JobTrigger>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::JobTrigger>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7838,7 +8006,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/UpdateJobTrigger",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "UpdateJobTrigger",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inspect hybrid content and store findings to a trigger. The inspection
         /// will be processed asynchronously. To review the findings monitor the
@@ -7846,7 +8022,10 @@ pub mod dlp_service_client {
         pub async fn hybrid_inspect_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::HybridInspectJobTriggerRequest>,
-        ) -> Result<tonic::Response<super::HybridInspectResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::HybridInspectResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7860,14 +8039,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/HybridInspectJobTrigger",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "HybridInspectJobTrigger",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a job trigger.
         /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
         pub async fn get_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobTriggerRequest>,
-        ) -> Result<tonic::Response<super::JobTrigger>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::JobTrigger>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7881,14 +8068,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/GetJobTrigger",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "GetJobTrigger"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists job triggers.
         /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
         pub async fn list_job_triggers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobTriggersRequest>,
-        ) -> Result<tonic::Response<super::ListJobTriggersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobTriggersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7902,14 +8097,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ListJobTriggers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListJobTriggers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a job trigger.
         /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
         pub async fn delete_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteJobTriggerRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7923,14 +8126,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/DeleteJobTrigger",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteJobTrigger",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Activate a job trigger. Causes the immediate execute of a trigger
         /// instead of waiting on the trigger event to occur.
         pub async fn activate_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::ActivateJobTriggerRequest>,
-        ) -> Result<tonic::Response<super::DlpJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DlpJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7944,7 +8155,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ActivateJobTrigger",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ActivateJobTrigger",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new job to inspect storage or calculate risk metrics.
         /// See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -7956,7 +8175,7 @@ pub mod dlp_service_client {
         pub async fn create_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDlpJobRequest>,
-        ) -> Result<tonic::Response<super::DlpJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DlpJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7970,7 +8189,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/CreateDlpJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "CreateDlpJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists DlpJobs that match the specified filter in the request.
         /// See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -7978,7 +8202,10 @@ pub mod dlp_service_client {
         pub async fn list_dlp_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDlpJobsRequest>,
-        ) -> Result<tonic::Response<super::ListDlpJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDlpJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7992,7 +8219,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ListDlpJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "ListDlpJobs"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the latest state of a long-running DlpJob.
         /// See https://cloud.google.com/dlp/docs/inspecting-storage and
@@ -8000,7 +8232,7 @@ pub mod dlp_service_client {
         pub async fn get_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDlpJobRequest>,
-        ) -> Result<tonic::Response<super::DlpJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DlpJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8014,7 +8246,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/GetDlpJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "GetDlpJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a long-running DlpJob. This method indicates that the client is
         /// no longer interested in the DlpJob result. The job will be canceled if
@@ -8024,7 +8261,7 @@ pub mod dlp_service_client {
         pub async fn delete_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDlpJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8038,7 +8275,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/DeleteDlpJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "DeleteDlpJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts asynchronous cancellation on a long-running DlpJob. The server
         /// makes a best effort to cancel the DlpJob, but success is not
@@ -8048,7 +8290,7 @@ pub mod dlp_service_client {
         pub async fn cancel_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelDlpJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8062,7 +8304,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/CancelDlpJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "CancelDlpJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a pre-built stored infoType to be used for inspection.
         /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -8070,7 +8317,7 @@ pub mod dlp_service_client {
         pub async fn create_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateStoredInfoTypeRequest>,
-        ) -> Result<tonic::Response<super::StoredInfoType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::StoredInfoType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8084,7 +8331,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/CreateStoredInfoType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "CreateStoredInfoType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the stored infoType by creating a new version. The existing version
         /// will continue to be used until the new version is ready.
@@ -8093,7 +8348,7 @@ pub mod dlp_service_client {
         pub async fn update_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateStoredInfoTypeRequest>,
-        ) -> Result<tonic::Response<super::StoredInfoType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::StoredInfoType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8107,7 +8362,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/UpdateStoredInfoType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "UpdateStoredInfoType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a stored infoType.
         /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -8115,7 +8378,7 @@ pub mod dlp_service_client {
         pub async fn get_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::GetStoredInfoTypeRequest>,
-        ) -> Result<tonic::Response<super::StoredInfoType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::StoredInfoType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8129,7 +8392,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/GetStoredInfoType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetStoredInfoType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists stored infoTypes.
         /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -8137,7 +8408,10 @@ pub mod dlp_service_client {
         pub async fn list_stored_info_types(
             &mut self,
             request: impl tonic::IntoRequest<super::ListStoredInfoTypesRequest>,
-        ) -> Result<tonic::Response<super::ListStoredInfoTypesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListStoredInfoTypesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -8151,7 +8425,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/ListStoredInfoTypes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListStoredInfoTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a stored infoType.
         /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
@@ -8159,7 +8441,7 @@ pub mod dlp_service_client {
         pub async fn delete_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteStoredInfoTypeRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8173,7 +8455,15 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/DeleteStoredInfoType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteStoredInfoType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inspect hybrid content and store findings to a job.
         /// To review the findings, inspect the job. Inspection will occur
@@ -8181,7 +8471,10 @@ pub mod dlp_service_client {
         pub async fn hybrid_inspect_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::HybridInspectDlpJobRequest>,
-        ) -> Result<tonic::Response<super::HybridInspectResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::HybridInspectResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -8195,14 +8488,22 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/HybridInspectDlpJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "HybridInspectDlpJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Finish a running hybrid DlpJob. Triggers the finalization steps and running
         /// of any enabled actions that have not yet run.
         pub async fn finish_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::FinishDlpJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8216,7 +8517,12 @@ pub mod dlp_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.privacy.dlp.v2.DlpService/FinishDlpJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "FinishDlpJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

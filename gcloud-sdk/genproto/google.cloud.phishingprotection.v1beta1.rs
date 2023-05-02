@@ -28,7 +28,7 @@ pub mod phishing_protection_service_v1_beta1_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -86,6 +86,22 @@ pub mod phishing_protection_service_v1_beta1_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Reports a URI suspected of containing phishing content to be reviewed. Once
         /// the report review is complete, its result can be found in the Cloud
         /// Security Command Center findings dashboard for Phishing Protection. If the
@@ -96,7 +112,10 @@ pub mod phishing_protection_service_v1_beta1_client {
         pub async fn report_phishing(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportPhishingRequest>,
-        ) -> Result<tonic::Response<super::ReportPhishingResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ReportPhishingResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -110,7 +129,15 @@ pub mod phishing_protection_service_v1_beta1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.phishingprotection.v1beta1.PhishingProtectionServiceV1Beta1/ReportPhishing",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.phishingprotection.v1beta1.PhishingProtectionServiceV1Beta1",
+                        "ReportPhishing",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

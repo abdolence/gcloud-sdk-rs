@@ -756,8 +756,8 @@ pub struct ReadRowsRequest {
     /// `projects/<project>/instances/<instance>/tables/<table>`.
     #[prost(string, tag = "1")]
     pub table_name: ::prost::alloc::string::String,
-    /// This value specifies routing for replication. This API only accepts the
-    /// empty value of app_profile_id.
+    /// This value specifies routing for replication. If not specified, the
+    /// "default" application profile will be used.
     #[prost(string, tag = "5")]
     pub app_profile_id: ::prost::alloc::string::String,
     /// The row keys and/or ranges to read sequentially. If not specified, reads
@@ -778,7 +778,6 @@ pub struct ReadRowsRequest {
 }
 /// Nested message and enum types in `ReadRowsRequest`.
 pub mod read_rows_request {
-    ///
     /// The desired view into RequestStats that should be returned in the response.
     ///
     /// See also: RequestStats message.
@@ -1046,6 +1045,11 @@ pub struct MutateRowsResponse {
     /// One or more results for Entries from the batch request.
     #[prost(message, repeated, tag = "1")]
     pub entries: ::prost::alloc::vec::Vec<mutate_rows_response::Entry>,
+    /// Information about how client should limit the rate (QPS). Primirily used by
+    /// supported official Cloud Bigtable clients. If unset, the rate limit info is
+    /// not provided by the server.
+    #[prost(message, optional, tag = "3")]
+    pub rate_limit_info: ::core::option::Option<RateLimitInfo>,
 }
 /// Nested message and enum types in `MutateRowsResponse`.
 pub mod mutate_rows_response {
@@ -1064,6 +1068,30 @@ pub mod mutate_rows_response {
         #[prost(message, optional, tag = "2")]
         pub status: ::core::option::Option<super::super::super::rpc::Status>,
     }
+}
+/// Information about how client should adjust the load to Bigtable.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RateLimitInfo {
+    /// Time that clients should wait before adjusting the target rate again.
+    /// If clients adjust rate too frequently, the impact of the previous
+    /// adjustment may not have been taken into account and may
+    /// over-throttle or under-throttle. If clients adjust rate too slowly, they
+    /// will not be responsive to load changes on server side, and may
+    /// over-throttle or under-throttle.
+    #[prost(message, optional, tag = "1")]
+    pub period: ::core::option::Option<::prost_types::Duration>,
+    /// If it has been at least one `period` since the last load adjustment, the
+    /// client should multiply the current load by this value to get the new target
+    /// load. For example, if the current load is 100 and `factor` is 0.8, the new
+    /// target load should be 80. After adjusting, the client should ignore
+    /// `factor` until another `period` has passed.
+    ///
+    /// The client can measure its load using any unit that's comparable over time
+    /// For example, QPS can be used as long as each request involves a similar
+    /// amount of work.
+    #[prost(double, tag = "2")]
+    pub factor: f64,
 }
 /// Request message for Bigtable.CheckAndMutateRow.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1481,7 +1509,7 @@ pub mod bigtable_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1537,6 +1565,22 @@ pub mod bigtable_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Streams back the contents of all requested rows in key order, optionally
         /// applying the same Reader filter to each. Depending on their size,
         /// rows and cells may be broken up across multiple responses, but
@@ -1545,7 +1589,7 @@ pub mod bigtable_client {
         pub async fn read_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadRowsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::ReadRowsResponse>>,
             tonic::Status,
         > {
@@ -1562,7 +1606,10 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/ReadRows",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "ReadRows"));
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Returns a sample of row keys in the table. The returned row keys will
         /// delimit contiguous sections of the table of approximately equal size,
@@ -1571,7 +1618,7 @@ pub mod bigtable_client {
         pub async fn sample_row_keys(
             &mut self,
             request: impl tonic::IntoRequest<super::SampleRowKeysRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::SampleRowKeysResponse>>,
             tonic::Status,
         > {
@@ -1588,14 +1635,20 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/SampleRowKeys",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "SampleRowKeys"));
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Mutates a row atomically. Cells already present in the row are left
         /// unchanged unless explicitly changed by `mutation`.
         pub async fn mutate_row(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateRowRequest>,
-        ) -> Result<tonic::Response<super::MutateRowResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateRowResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1609,7 +1662,10 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/MutateRow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "MutateRow"));
+            self.inner.unary(req, path, codec).await
         }
         /// Mutates multiple rows in a batch. Each individual row is mutated
         /// atomically as in MutateRow, but the entire batch is not executed
@@ -1617,7 +1673,7 @@ pub mod bigtable_client {
         pub async fn mutate_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateRowsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::MutateRowsResponse>>,
             tonic::Status,
         > {
@@ -1634,13 +1690,19 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/MutateRows",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "MutateRows"));
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Mutates a row atomically based on the output of a predicate Reader filter.
         pub async fn check_and_mutate_row(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckAndMutateRowRequest>,
-        ) -> Result<tonic::Response<super::CheckAndMutateRowResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CheckAndMutateRowResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1654,14 +1716,22 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/CheckAndMutateRow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.bigtable.v2.Bigtable", "CheckAndMutateRow"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Warm up associated instance metadata for this connection.
         /// This call is not required but may be useful for connection keep-alive.
         pub async fn ping_and_warm(
             &mut self,
             request: impl tonic::IntoRequest<super::PingAndWarmRequest>,
-        ) -> Result<tonic::Response<super::PingAndWarmResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PingAndWarmResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1675,7 +1745,10 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/PingAndWarm",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "PingAndWarm"));
+            self.inner.unary(req, path, codec).await
         }
         /// Modifies a row atomically on the server. The method reads the latest
         /// existing timestamp and value from the specified columns and writes a new
@@ -1685,7 +1758,10 @@ pub mod bigtable_client {
         pub async fn read_modify_write_row(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadModifyWriteRowRequest>,
-        ) -> Result<tonic::Response<super::ReadModifyWriteRowResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ReadModifyWriteRowResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1699,7 +1775,12 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/ReadModifyWriteRow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.bigtable.v2.Bigtable", "ReadModifyWriteRow"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
         /// Returns the current list of partitions that make up the table's
@@ -1710,7 +1791,7 @@ pub mod bigtable_client {
             request: impl tonic::IntoRequest<
                 super::GenerateInitialChangeStreamPartitionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 tonic::codec::Streaming<
                     super::GenerateInitialChangeStreamPartitionsResponse,
@@ -1731,7 +1812,15 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/GenerateInitialChangeStreamPartitions",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.v2.Bigtable",
+                        "GenerateInitialChangeStreamPartitions",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
         /// Reads changes from a table's change stream. Changes will
@@ -1740,7 +1829,7 @@ pub mod bigtable_client {
         pub async fn read_change_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadChangeStreamRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::ReadChangeStreamResponse>>,
             tonic::Status,
         > {
@@ -1757,9 +1846,30 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/ReadChangeStream",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.bigtable.v2.Bigtable", "ReadChangeStream"),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
     }
+}
+/// Feature flags supported by a client.
+/// This is intended to be sent as part of request metadata to assure the server
+/// that certain behaviors are safe to enable. This proto is meant to be
+/// serialized and websafe-base64 encoded under the `bigtable-features` metadata
+/// key. The value will remain constant for the lifetime of a client and due to
+/// HTTP2's HPACK compression, the request overhead will be tiny.
+/// This is an internal implementation detail and should not be used by endusers
+/// directly.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureFlags {
+    /// Notify the server that the client enables batch write flow control by
+    /// requesting RateLimitInfo from MutateRowsResponse.
+    #[prost(bool, tag = "3")]
+    pub mutate_rows_rate_limit: bool,
 }
 /// Response metadata proto
 /// This is an experimental feature that will be used to get zone_id and

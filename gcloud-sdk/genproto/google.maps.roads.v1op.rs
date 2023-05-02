@@ -116,7 +116,7 @@ pub mod roads_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -172,13 +172,32 @@ pub mod roads_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// This method takes a sequence of latitude,longitude points and snaps them to
         /// the most likely road segments. Optionally returns additional points giving
         /// the full road geometry. Also returns a place ID for each snapped point.
         pub async fn snap_to_roads(
             &mut self,
             request: impl tonic::IntoRequest<super::SnapToRoadsRequest>,
-        ) -> Result<tonic::Response<super::SnapToRoadsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SnapToRoadsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -192,14 +211,22 @@ pub mod roads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.roads.v1op.RoadsService/SnapToRoads",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.maps.roads.v1op.RoadsService", "SnapToRoads"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// This method takes a list of latitude,longitude points and snaps them each
         /// to their nearest road. Also returns a place ID for each snapped point.
         pub async fn list_nearest_roads(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNearestRoadsRequest>,
-        ) -> Result<tonic::Response<super::ListNearestRoadsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListNearestRoadsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -213,7 +240,15 @@ pub mod roads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.roads.v1op.RoadsService/ListNearestRoads",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.roads.v1op.RoadsService",
+                        "ListNearestRoads",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

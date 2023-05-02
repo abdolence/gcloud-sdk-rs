@@ -1163,7 +1163,7 @@ pub mod data_transfer_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1219,11 +1219,27 @@ pub mod data_transfer_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves a supported data source and returns its settings.
         pub async fn get_data_source(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataSourceRequest>,
-        ) -> Result<tonic::Response<super::DataSource>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DataSource>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1237,13 +1253,24 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetDataSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "GetDataSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists supported data sources and returns their settings.
         pub async fn list_data_sources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataSourcesRequest>,
-        ) -> Result<tonic::Response<super::ListDataSourcesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataSourcesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1257,13 +1284,21 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListDataSources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "ListDataSources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new data transfer configuration.
         pub async fn create_transfer_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTransferConfigRequest>,
-        ) -> Result<tonic::Response<super::TransferConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TransferConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1277,14 +1312,22 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CreateTransferConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "CreateTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a data transfer configuration.
         /// All fields must be set, even if they are not updated.
         pub async fn update_transfer_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTransferConfigRequest>,
-        ) -> Result<tonic::Response<super::TransferConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TransferConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1298,14 +1341,22 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/UpdateTransferConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "UpdateTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a data transfer configuration, including any associated transfer
         /// runs and logs.
         pub async fn delete_transfer_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTransferConfigRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1319,13 +1370,21 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "DeleteTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information about a data transfer config.
         pub async fn get_transfer_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTransferConfigRequest>,
-        ) -> Result<tonic::Response<super::TransferConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TransferConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1339,14 +1398,25 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "GetTransferConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information about all transfer configs owned by a project in the
         /// specified location.
         pub async fn list_transfer_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferConfigsRequest>,
-        ) -> Result<tonic::Response<super::ListTransferConfigsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTransferConfigsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1360,7 +1430,15 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "ListTransferConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates transfer runs for a time range [start_time, end_time].
         /// For each date - or whatever granularity the data source supports - in the
@@ -1370,7 +1448,7 @@ pub mod data_transfer_service_client {
         pub async fn schedule_transfer_runs(
             &mut self,
             request: impl tonic::IntoRequest<super::ScheduleTransferRunsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ScheduleTransferRunsResponse>,
             tonic::Status,
         > {
@@ -1387,7 +1465,15 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ScheduleTransferRuns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "ScheduleTransferRuns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Start manual transfer runs to be executed now with schedule_time equal to
         /// current time. The transfer runs can be created for a time range where the
@@ -1396,7 +1482,7 @@ pub mod data_transfer_service_client {
         pub async fn start_manual_transfer_runs(
             &mut self,
             request: impl tonic::IntoRequest<super::StartManualTransferRunsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::StartManualTransferRunsResponse>,
             tonic::Status,
         > {
@@ -1413,13 +1499,21 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "StartManualTransferRuns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information about the particular transfer run.
         pub async fn get_transfer_run(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTransferRunRequest>,
-        ) -> Result<tonic::Response<super::TransferRun>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TransferRun>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1433,13 +1527,21 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "GetTransferRun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified transfer run.
         pub async fn delete_transfer_run(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTransferRunRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1453,13 +1555,24 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "DeleteTransferRun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information about running and completed transfer runs.
         pub async fn list_transfer_runs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferRunsRequest>,
-        ) -> Result<tonic::Response<super::ListTransferRunsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTransferRunsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1473,13 +1586,24 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferRuns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "ListTransferRuns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns log messages for the transfer run.
         pub async fn list_transfer_logs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferLogsRequest>,
-        ) -> Result<tonic::Response<super::ListTransferLogsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTransferLogsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1493,14 +1617,25 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferLogs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "ListTransferLogs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns true if valid credentials exist for the given data source and
         /// requesting user.
         pub async fn check_valid_creds(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckValidCredsRequest>,
-        ) -> Result<tonic::Response<super::CheckValidCredsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CheckValidCredsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1514,7 +1649,15 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CheckValidCreds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "CheckValidCreds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enroll data sources in a user project. This allows users to create transfer
         /// configurations for these data sources. They will also appear in the
@@ -1527,7 +1670,7 @@ pub mod data_transfer_service_client {
         pub async fn enroll_data_sources(
             &mut self,
             request: impl tonic::IntoRequest<super::EnrollDataSourcesRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1541,7 +1684,15 @@ pub mod data_transfer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/EnrollDataSources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "EnrollDataSources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

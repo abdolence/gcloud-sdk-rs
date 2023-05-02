@@ -1363,7 +1363,7 @@ pub mod pages_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1419,11 +1419,30 @@ pub mod pages_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all pages in the specified flow.
         pub async fn list_pages(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPagesRequest>,
-        ) -> Result<tonic::Response<super::ListPagesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListPagesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1437,13 +1456,21 @@ pub mod pages_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Pages/ListPages",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Pages",
+                        "ListPages",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified page.
         pub async fn get_page(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPageRequest>,
-        ) -> Result<tonic::Response<super::Page>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Page>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1457,13 +1484,21 @@ pub mod pages_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Pages/GetPage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Pages",
+                        "GetPage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a page in the specified flow.
         pub async fn create_page(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePageRequest>,
-        ) -> Result<tonic::Response<super::Page>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Page>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1477,13 +1512,21 @@ pub mod pages_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Pages/CreatePage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Pages",
+                        "CreatePage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified page.
         pub async fn update_page(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdatePageRequest>,
-        ) -> Result<tonic::Response<super::Page>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Page>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1497,13 +1540,21 @@ pub mod pages_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Pages/UpdatePage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Pages",
+                        "UpdatePage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified page.
         pub async fn delete_page(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePageRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1517,7 +1568,15 @@ pub mod pages_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Pages/DeletePage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Pages",
+                        "DeletePage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2246,7 +2305,7 @@ pub mod flows_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2302,6 +2361,22 @@ pub mod flows_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a flow in the specified agent.
         ///
         /// Note: You should always train a flow prior to sending it queries. See the
@@ -2310,7 +2385,7 @@ pub mod flows_client {
         pub async fn create_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFlowRequest>,
-        ) -> Result<tonic::Response<super::Flow>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Flow>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2324,13 +2399,21 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/CreateFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "CreateFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specified flow.
         pub async fn delete_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteFlowRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2344,13 +2427,24 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/DeleteFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "DeleteFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the list of all flows in the specified agent.
         pub async fn list_flows(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFlowsRequest>,
-        ) -> Result<tonic::Response<super::ListFlowsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListFlowsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2364,13 +2458,21 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/ListFlows",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "ListFlows",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified flow.
         pub async fn get_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFlowRequest>,
-        ) -> Result<tonic::Response<super::Flow>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Flow>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2384,7 +2486,15 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/GetFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "GetFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified flow.
         ///
@@ -2394,7 +2504,7 @@ pub mod flows_client {
         pub async fn update_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFlowRequest>,
-        ) -> Result<tonic::Response<super::Flow>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Flow>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2408,7 +2518,15 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/UpdateFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "UpdateFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Trains the specified flow. Note that only the flow in 'draft' environment
         /// is trained.
@@ -2428,7 +2546,7 @@ pub mod flows_client {
         pub async fn train_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::TrainFlowRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2445,7 +2563,15 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/TrainFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "TrainFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Validates the specified flow and creates or updates validation results.
         /// Please call this API after the training is completed to get the complete
@@ -2453,7 +2579,10 @@ pub mod flows_client {
         pub async fn validate_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateFlowRequest>,
-        ) -> Result<tonic::Response<super::FlowValidationResult>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FlowValidationResult>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2467,14 +2596,25 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/ValidateFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "ValidateFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the latest flow validation result. Flow validation is performed
         /// when ValidateFlow is called.
         pub async fn get_flow_validation_result(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFlowValidationResultRequest>,
-        ) -> Result<tonic::Response<super::FlowValidationResult>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FlowValidationResult>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2488,7 +2628,15 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/GetFlowValidationResult",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "GetFlowValidationResult",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Imports the specified flow to the specified agent from a binary file.
         ///
@@ -2507,7 +2655,7 @@ pub mod flows_client {
         pub async fn import_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportFlowRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2524,7 +2672,15 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/ImportFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "ImportFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports the specified flow to a binary file.
         ///
@@ -2542,7 +2698,7 @@ pub mod flows_client {
         pub async fn export_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportFlowRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2559,7 +2715,15 @@ pub mod flows_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Flows/ExportFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Flows",
+                        "ExportFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2985,7 +3149,7 @@ pub mod agents_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3041,11 +3205,30 @@ pub mod agents_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all agents in the specified location.
         pub async fn list_agents(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAgentsRequest>,
-        ) -> Result<tonic::Response<super::ListAgentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAgentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3059,13 +3242,21 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/ListAgents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "ListAgents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified agent.
         pub async fn get_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAgentRequest>,
-        ) -> Result<tonic::Response<super::Agent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Agent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3079,7 +3270,15 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "GetAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an agent in the specified location.
         ///
@@ -3089,7 +3288,7 @@ pub mod agents_client {
         pub async fn create_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAgentRequest>,
-        ) -> Result<tonic::Response<super::Agent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Agent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3103,7 +3302,15 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/CreateAgent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "CreateAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified agent.
         ///
@@ -3113,7 +3320,7 @@ pub mod agents_client {
         pub async fn update_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAgentRequest>,
-        ) -> Result<tonic::Response<super::Agent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Agent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3127,13 +3334,21 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/UpdateAgent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "UpdateAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified agent.
         pub async fn delete_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAgentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3147,7 +3362,15 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/DeleteAgent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "DeleteAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports the specified agent to a binary file.
         ///
@@ -3162,7 +3385,7 @@ pub mod agents_client {
         pub async fn export_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportAgentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3179,7 +3402,15 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/ExportAgent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "ExportAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restores the specified agent from a binary file.
         ///
@@ -3201,7 +3432,7 @@ pub mod agents_client {
         pub async fn restore_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::RestoreAgentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3218,7 +3449,15 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/RestoreAgent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "RestoreAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Validates the specified agent and creates or updates validation results.
         /// The agent in draft version is validated. Please call this API after the
@@ -3226,7 +3465,10 @@ pub mod agents_client {
         pub async fn validate_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateAgentRequest>,
-        ) -> Result<tonic::Response<super::AgentValidationResult>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AgentValidationResult>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3240,14 +3482,25 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/ValidateAgent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "ValidateAgent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the latest agent validation result. Agent validation is performed
         /// when ValidateAgent is called.
         pub async fn get_agent_validation_result(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAgentValidationResultRequest>,
-        ) -> Result<tonic::Response<super::AgentValidationResult>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AgentValidationResult>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3261,7 +3514,15 @@ pub mod agents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgentValidationResult",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "GetAgentValidationResult",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3373,7 +3634,7 @@ pub mod changelogs_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3429,11 +3690,30 @@ pub mod changelogs_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of Changelogs.
         pub async fn list_changelogs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListChangelogsRequest>,
-        ) -> Result<tonic::Response<super::ListChangelogsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListChangelogsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3447,13 +3727,21 @@ pub mod changelogs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Changelogs/ListChangelogs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Changelogs",
+                        "ListChangelogs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified Changelog.
         pub async fn get_changelog(
             &mut self,
             request: impl tonic::IntoRequest<super::GetChangelogRequest>,
-        ) -> Result<tonic::Response<super::Changelog>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Changelog>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3467,7 +3755,15 @@ pub mod changelogs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Changelogs/GetChangelog",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Changelogs",
+                        "GetChangelog",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3630,7 +3926,7 @@ pub mod deployments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3686,12 +3982,31 @@ pub mod deployments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all deployments in the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
         pub async fn list_deployments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDeploymentsRequest>,
-        ) -> Result<tonic::Response<super::ListDeploymentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDeploymentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3705,14 +4020,22 @@ pub mod deployments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Deployments/ListDeployments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Deployments",
+                        "ListDeployments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified
         /// [Deployment][google.cloud.dialogflow.cx.v3beta1.Deployment].
         pub async fn get_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDeploymentRequest>,
-        ) -> Result<tonic::Response<super::Deployment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Deployment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3726,7 +4049,15 @@ pub mod deployments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Deployments/GetDeployment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Deployments",
+                        "GetDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4091,7 +4422,7 @@ pub mod entity_types_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4147,11 +4478,30 @@ pub mod entity_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all entity types in the specified agent.
         pub async fn list_entity_types(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEntityTypesRequest>,
-        ) -> Result<tonic::Response<super::ListEntityTypesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEntityTypesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4165,13 +4515,21 @@ pub mod entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/ListEntityTypes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+                        "ListEntityTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified entity type.
         pub async fn get_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEntityTypeRequest>,
-        ) -> Result<tonic::Response<super::EntityType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EntityType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4185,13 +4543,21 @@ pub mod entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/GetEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+                        "GetEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an entity type in the specified agent.
         pub async fn create_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEntityTypeRequest>,
-        ) -> Result<tonic::Response<super::EntityType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EntityType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4205,7 +4571,15 @@ pub mod entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/CreateEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+                        "CreateEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified entity type.
         ///
@@ -4215,7 +4589,7 @@ pub mod entity_types_client {
         pub async fn update_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEntityTypeRequest>,
-        ) -> Result<tonic::Response<super::EntityType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EntityType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4229,7 +4603,15 @@ pub mod entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/UpdateEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+                        "UpdateEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified entity type.
         ///
@@ -4239,7 +4621,7 @@ pub mod entity_types_client {
         pub async fn delete_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEntityTypeRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4253,7 +4635,15 @@ pub mod entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/DeleteEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+                        "DeleteEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4586,7 +4976,7 @@ pub mod intents_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4642,11 +5032,30 @@ pub mod intents_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all intents in the specified agent.
         pub async fn list_intents(
             &mut self,
             request: impl tonic::IntoRequest<super::ListIntentsRequest>,
-        ) -> Result<tonic::Response<super::ListIntentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListIntentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4660,13 +5069,21 @@ pub mod intents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Intents/ListIntents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Intents",
+                        "ListIntents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified intent.
         pub async fn get_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIntentRequest>,
-        ) -> Result<tonic::Response<super::Intent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Intent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4680,7 +5097,15 @@ pub mod intents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Intents/GetIntent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Intents",
+                        "GetIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an intent in the specified agent.
         ///
@@ -4690,7 +5115,7 @@ pub mod intents_client {
         pub async fn create_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateIntentRequest>,
-        ) -> Result<tonic::Response<super::Intent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Intent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4704,7 +5129,15 @@ pub mod intents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Intents/CreateIntent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Intents",
+                        "CreateIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified intent.
         ///
@@ -4714,7 +5147,7 @@ pub mod intents_client {
         pub async fn update_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateIntentRequest>,
-        ) -> Result<tonic::Response<super::Intent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Intent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4728,7 +5161,15 @@ pub mod intents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Intents/UpdateIntent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Intents",
+                        "UpdateIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified intent.
         ///
@@ -4738,7 +5179,7 @@ pub mod intents_client {
         pub async fn delete_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteIntentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4752,7 +5193,15 @@ pub mod intents_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Intents/DeleteIntent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Intents",
+                        "DeleteIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4961,7 +5410,7 @@ pub mod session_entity_types_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5017,11 +5466,27 @@ pub mod session_entity_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all session entity types in the specified session.
         pub async fn list_session_entity_types(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSessionEntityTypesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListSessionEntityTypesResponse>,
             tonic::Status,
         > {
@@ -5038,13 +5503,24 @@ pub mod session_entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes/ListSessionEntityTypes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes",
+                        "ListSessionEntityTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified session entity type.
         pub async fn get_session_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSessionEntityTypeRequest>,
-        ) -> Result<tonic::Response<super::SessionEntityType>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SessionEntityType>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5058,13 +5534,24 @@ pub mod session_entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes/GetSessionEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes",
+                        "GetSessionEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a session entity type.
         pub async fn create_session_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSessionEntityTypeRequest>,
-        ) -> Result<tonic::Response<super::SessionEntityType>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SessionEntityType>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5078,13 +5565,24 @@ pub mod session_entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes/CreateSessionEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes",
+                        "CreateSessionEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified session entity type.
         pub async fn update_session_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSessionEntityTypeRequest>,
-        ) -> Result<tonic::Response<super::SessionEntityType>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SessionEntityType>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5098,13 +5596,21 @@ pub mod session_entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes/UpdateSessionEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes",
+                        "UpdateSessionEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified session entity type.
         pub async fn delete_session_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSessionEntityTypeRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5118,7 +5624,15 @@ pub mod session_entity_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes/DeleteSessionEntityType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes",
+                        "DeleteSessionEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -6111,7 +6625,7 @@ pub mod sessions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6167,6 +6681,22 @@ pub mod sessions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Processes a natural language query and returns structured, actionable data
         /// as a result. This method is not idempotent, because it may cause session
         /// entity types to be updated, which in turn might affect results of future
@@ -6178,7 +6708,10 @@ pub mod sessions_client {
         pub async fn detect_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::DetectIntentRequest>,
-        ) -> Result<tonic::Response<super::DetectIntentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DetectIntentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6192,7 +6725,15 @@ pub mod sessions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Sessions/DetectIntent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Sessions",
+                        "DetectIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Processes a natural language query in audio format in a streaming fashion
         /// and returns structured, actionable data as a result. This method is only
@@ -6206,7 +6747,7 @@ pub mod sessions_client {
             request: impl tonic::IntoStreamingRequest<
                 Message = super::StreamingDetectIntentRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 tonic::codec::Streaming<super::StreamingDetectIntentResponse>,
             >,
@@ -6225,14 +6766,25 @@ pub mod sessions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Sessions/StreamingDetectIntent",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Sessions",
+                        "StreamingDetectIntent",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
         /// Returns preliminary intent match results, doesn't change the session
         /// status.
         pub async fn match_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::MatchIntentRequest>,
-        ) -> Result<tonic::Response<super::MatchIntentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MatchIntentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6246,7 +6798,15 @@ pub mod sessions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Sessions/MatchIntent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Sessions",
+                        "MatchIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Fulfills a matched intent returned by
         /// [MatchIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.MatchIntent].
@@ -6258,7 +6818,10 @@ pub mod sessions_client {
         pub async fn fulfill_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::FulfillIntentRequest>,
-        ) -> Result<tonic::Response<super::FulfillIntentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FulfillIntentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6272,7 +6835,15 @@ pub mod sessions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Sessions/FulfillIntent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Sessions",
+                        "FulfillIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -6462,7 +7033,7 @@ pub mod transition_route_groups_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6518,11 +7089,27 @@ pub mod transition_route_groups_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all transition route groups in the specified flow.
         pub async fn list_transition_route_groups(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransitionRouteGroupsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListTransitionRouteGroupsResponse>,
             tonic::Status,
         > {
@@ -6539,14 +7126,25 @@ pub mod transition_route_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups/ListTransitionRouteGroups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups",
+                        "ListTransitionRouteGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified
         /// [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
         pub async fn get_transition_route_group(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTransitionRouteGroupRequest>,
-        ) -> Result<tonic::Response<super::TransitionRouteGroup>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TransitionRouteGroup>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6560,7 +7158,15 @@ pub mod transition_route_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups/GetTransitionRouteGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups",
+                        "GetTransitionRouteGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an
         /// [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
@@ -6572,7 +7178,10 @@ pub mod transition_route_groups_client {
         pub async fn create_transition_route_group(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTransitionRouteGroupRequest>,
-        ) -> Result<tonic::Response<super::TransitionRouteGroup>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TransitionRouteGroup>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6586,7 +7195,15 @@ pub mod transition_route_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups/CreateTransitionRouteGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups",
+                        "CreateTransitionRouteGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified
         /// [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
@@ -6597,7 +7214,10 @@ pub mod transition_route_groups_client {
         pub async fn update_transition_route_group(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTransitionRouteGroupRequest>,
-        ) -> Result<tonic::Response<super::TransitionRouteGroup>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TransitionRouteGroup>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6611,7 +7231,15 @@ pub mod transition_route_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups/UpdateTransitionRouteGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups",
+                        "UpdateTransitionRouteGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified
         /// [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
@@ -6622,7 +7250,7 @@ pub mod transition_route_groups_client {
         pub async fn delete_transition_route_group(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTransitionRouteGroupRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6636,7 +7264,15 @@ pub mod transition_route_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups/DeleteTransitionRouteGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups",
+                        "DeleteTransitionRouteGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -7646,7 +8282,7 @@ pub mod test_cases_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -7702,11 +8338,30 @@ pub mod test_cases_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Fetches a list of test cases for a given agent.
         pub async fn list_test_cases(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTestCasesRequest>,
-        ) -> Result<tonic::Response<super::ListTestCasesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTestCasesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7720,13 +8375,21 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/ListTestCases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "ListTestCases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Batch deletes test cases.
         pub async fn batch_delete_test_cases(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchDeleteTestCasesRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7740,13 +8403,21 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/BatchDeleteTestCases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "BatchDeleteTestCases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a test case.
         pub async fn get_test_case(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTestCaseRequest>,
-        ) -> Result<tonic::Response<super::TestCase>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TestCase>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7760,13 +8431,21 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/GetTestCase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "GetTestCase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a test case for the given agent.
         pub async fn create_test_case(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTestCaseRequest>,
-        ) -> Result<tonic::Response<super::TestCase>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TestCase>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7780,13 +8459,21 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/CreateTestCase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "CreateTestCase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified test case.
         pub async fn update_test_case(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTestCaseRequest>,
-        ) -> Result<tonic::Response<super::TestCase>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TestCase>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7800,7 +8487,15 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/UpdateTestCase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "UpdateTestCase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Kicks off a test case run.
         ///
@@ -7815,7 +8510,7 @@ pub mod test_cases_client {
         pub async fn run_test_case(
             &mut self,
             request: impl tonic::IntoRequest<super::RunTestCaseRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7832,7 +8527,15 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/RunTestCase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "RunTestCase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Kicks off a batch run of test cases.
         ///
@@ -7847,7 +8550,7 @@ pub mod test_cases_client {
         pub async fn batch_run_test_cases(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchRunTestCasesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7864,13 +8567,24 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/BatchRunTestCases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "BatchRunTestCases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Calculates the test coverage for an agent.
         pub async fn calculate_coverage(
             &mut self,
             request: impl tonic::IntoRequest<super::CalculateCoverageRequest>,
-        ) -> Result<tonic::Response<super::CalculateCoverageResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CalculateCoverageResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7884,7 +8598,15 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/CalculateCoverage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "CalculateCoverage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Imports the test cases from a Cloud Storage bucket or a local file. It
         /// always creates new test cases and won't overwrite any existing ones. The
@@ -7901,7 +8623,7 @@ pub mod test_cases_client {
         pub async fn import_test_cases(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportTestCasesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7918,7 +8640,15 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/ImportTestCases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "ImportTestCases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports the test cases under the agent to a Cloud Storage bucket or a local
         /// file. Filter can be applied to export a subset of test cases.
@@ -7934,7 +8664,7 @@ pub mod test_cases_client {
         pub async fn export_test_cases(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportTestCasesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7951,13 +8681,24 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/ExportTestCases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "ExportTestCases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Fetches a list of results for a given test case.
         pub async fn list_test_case_results(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTestCaseResultsRequest>,
-        ) -> Result<tonic::Response<super::ListTestCaseResultsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTestCaseResultsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7971,13 +8712,21 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/ListTestCaseResults",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "ListTestCaseResults",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a test case result.
         pub async fn get_test_case_result(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTestCaseResultRequest>,
-        ) -> Result<tonic::Response<super::TestCaseResult>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TestCaseResult>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7991,7 +8740,15 @@ pub mod test_cases_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/GetTestCaseResult",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.TestCases",
+                        "GetTestCaseResult",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -8631,7 +9388,7 @@ pub mod webhooks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -8687,11 +9444,30 @@ pub mod webhooks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all webhooks in the specified agent.
         pub async fn list_webhooks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWebhooksRequest>,
-        ) -> Result<tonic::Response<super::ListWebhooksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListWebhooksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -8705,13 +9481,21 @@ pub mod webhooks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Webhooks/ListWebhooks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Webhooks",
+                        "ListWebhooks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified webhook.
         pub async fn get_webhook(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWebhookRequest>,
-        ) -> Result<tonic::Response<super::Webhook>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Webhook>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8725,13 +9509,21 @@ pub mod webhooks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Webhooks/GetWebhook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Webhooks",
+                        "GetWebhook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a webhook in the specified agent.
         pub async fn create_webhook(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWebhookRequest>,
-        ) -> Result<tonic::Response<super::Webhook>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Webhook>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8745,13 +9537,21 @@ pub mod webhooks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Webhooks/CreateWebhook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Webhooks",
+                        "CreateWebhook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified webhook.
         pub async fn update_webhook(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateWebhookRequest>,
-        ) -> Result<tonic::Response<super::Webhook>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Webhook>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8765,13 +9565,21 @@ pub mod webhooks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Webhooks/UpdateWebhook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Webhooks",
+                        "UpdateWebhook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified webhook.
         pub async fn delete_webhook(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWebhookRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8785,7 +9593,15 @@ pub mod webhooks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Webhooks/DeleteWebhook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Webhooks",
+                        "DeleteWebhook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -9171,7 +9987,7 @@ pub mod environments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -9227,12 +10043,31 @@ pub mod environments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all environments in the specified
         /// [Agent][google.cloud.dialogflow.cx.v3beta1.Agent].
         pub async fn list_environments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEnvironmentsRequest>,
-        ) -> Result<tonic::Response<super::ListEnvironmentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEnvironmentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -9246,14 +10081,22 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/ListEnvironments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "ListEnvironments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
         pub async fn get_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEnvironmentRequest>,
-        ) -> Result<tonic::Response<super::Environment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Environment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -9267,7 +10110,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/GetEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "GetEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an [Environment][google.cloud.dialogflow.cx.v3beta1.Environment] in
         /// the specified [Agent][google.cloud.dialogflow.cx.v3beta1.Agent].
@@ -9282,7 +10133,7 @@ pub mod environments_client {
         pub async fn create_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -9299,7 +10150,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/CreateEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "CreateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
@@ -9314,7 +10173,7 @@ pub mod environments_client {
         pub async fn update_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -9331,14 +10190,22 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/UpdateEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "UpdateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
         pub async fn delete_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEnvironmentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -9352,14 +10219,22 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/DeleteEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "DeleteEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Looks up the history of the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
         pub async fn lookup_environment_history(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupEnvironmentHistoryRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::LookupEnvironmentHistoryResponse>,
             tonic::Status,
         > {
@@ -9376,7 +10251,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/LookupEnvironmentHistory",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "LookupEnvironmentHistory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Kicks off a continuous test under the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
@@ -9392,7 +10275,7 @@ pub mod environments_client {
         pub async fn run_continuous_test(
             &mut self,
             request: impl tonic::IntoRequest<super::RunContinuousTestRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -9409,13 +10292,21 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/RunContinuousTest",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "RunContinuousTest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Fetches a list of continuous test results for a given environment.
         pub async fn list_continuous_test_results(
             &mut self,
             request: impl tonic::IntoRequest<super::ListContinuousTestResultsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListContinuousTestResultsResponse>,
             tonic::Status,
         > {
@@ -9432,7 +10323,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/ListContinuousTestResults",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "ListContinuousTestResults",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deploys a flow to the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
@@ -9448,7 +10347,7 @@ pub mod environments_client {
         pub async fn deploy_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::DeployFlowRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -9465,7 +10364,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/DeployFlow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Environments",
+                        "DeployFlow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -10039,7 +10946,7 @@ pub mod experiments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -10095,12 +11002,31 @@ pub mod experiments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all experiments in the specified
         /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
         pub async fn list_experiments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExperimentsRequest>,
-        ) -> Result<tonic::Response<super::ListExperimentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListExperimentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -10114,14 +11040,22 @@ pub mod experiments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/ListExperiments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Experiments",
+                        "ListExperiments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified
         /// [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
         pub async fn get_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetExperimentRequest>,
-        ) -> Result<tonic::Response<super::Experiment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Experiment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -10135,7 +11069,15 @@ pub mod experiments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/GetExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Experiments",
+                        "GetExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment] in
         /// the specified
@@ -10143,7 +11085,7 @@ pub mod experiments_client {
         pub async fn create_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateExperimentRequest>,
-        ) -> Result<tonic::Response<super::Experiment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Experiment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -10157,14 +11099,22 @@ pub mod experiments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/CreateExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Experiments",
+                        "CreateExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified
         /// [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
         pub async fn update_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateExperimentRequest>,
-        ) -> Result<tonic::Response<super::Experiment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Experiment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -10178,14 +11128,22 @@ pub mod experiments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/UpdateExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Experiments",
+                        "UpdateExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified
         /// [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
         pub async fn delete_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteExperimentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -10199,7 +11157,15 @@ pub mod experiments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/DeleteExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Experiments",
+                        "DeleteExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts the specified
         /// [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment]. This rpc only
@@ -10207,7 +11173,7 @@ pub mod experiments_client {
         pub async fn start_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::StartExperimentRequest>,
-        ) -> Result<tonic::Response<super::Experiment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Experiment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -10221,7 +11187,15 @@ pub mod experiments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/StartExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Experiments",
+                        "StartExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Stops the specified
         /// [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment]. This rpc only
@@ -10229,7 +11203,7 @@ pub mod experiments_client {
         pub async fn stop_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::StopExperimentRequest>,
-        ) -> Result<tonic::Response<super::Experiment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Experiment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -10243,7 +11217,15 @@ pub mod experiments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/StopExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Experiments",
+                        "StopExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -10666,7 +11648,7 @@ pub mod security_settings_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -10724,11 +11706,30 @@ pub mod security_settings_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create security settings in the specified location.
         pub async fn create_security_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSecuritySettingsRequest>,
-        ) -> Result<tonic::Response<super::SecuritySettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SecuritySettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -10742,7 +11743,15 @@ pub mod security_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/CreateSecuritySettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService",
+                        "CreateSecuritySettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified
         /// [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
@@ -10750,7 +11759,10 @@ pub mod security_settings_service_client {
         pub async fn get_security_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSecuritySettingsRequest>,
-        ) -> Result<tonic::Response<super::SecuritySettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SecuritySettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -10764,14 +11776,25 @@ pub mod security_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/GetSecuritySettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService",
+                        "GetSecuritySettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified
         /// [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
         pub async fn update_security_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSecuritySettingsRequest>,
-        ) -> Result<tonic::Response<super::SecuritySettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SecuritySettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -10785,13 +11808,21 @@ pub mod security_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/UpdateSecuritySettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService",
+                        "UpdateSecuritySettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the list of all security settings in the specified location.
         pub async fn list_security_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSecuritySettingsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListSecuritySettingsResponse>,
             tonic::Status,
         > {
@@ -10808,14 +11839,22 @@ pub mod security_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/ListSecuritySettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService",
+                        "ListSecuritySettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified
         /// [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
         pub async fn delete_security_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSecuritySettingsRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -10829,7 +11868,15 @@ pub mod security_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/DeleteSecuritySettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService",
+                        "DeleteSecuritySettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -11080,7 +12127,7 @@ pub mod versions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -11136,12 +12183,31 @@ pub mod versions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of all versions in the specified
         /// [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
         pub async fn list_versions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVersionsRequest>,
-        ) -> Result<tonic::Response<super::ListVersionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListVersionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -11155,14 +12221,22 @@ pub mod versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/ListVersions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Versions",
+                        "ListVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified
         /// [Version][google.cloud.dialogflow.cx.v3beta1.Version].
         pub async fn get_version(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVersionRequest>,
-        ) -> Result<tonic::Response<super::Version>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Version>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -11176,7 +12250,15 @@ pub mod versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/GetVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Versions",
+                        "GetVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a [Version][google.cloud.dialogflow.cx.v3beta1.Version] in the
         /// specified [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
@@ -11191,7 +12273,7 @@ pub mod versions_client {
         pub async fn create_version(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -11208,14 +12290,22 @@ pub mod versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/CreateVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Versions",
+                        "CreateVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified
         /// [Version][google.cloud.dialogflow.cx.v3beta1.Version].
         pub async fn update_version(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateVersionRequest>,
-        ) -> Result<tonic::Response<super::Version>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Version>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -11229,14 +12319,22 @@ pub mod versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/UpdateVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Versions",
+                        "UpdateVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified
         /// [Version][google.cloud.dialogflow.cx.v3beta1.Version].
         pub async fn delete_version(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteVersionRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -11250,7 +12348,15 @@ pub mod versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/DeleteVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Versions",
+                        "DeleteVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Loads resources in the specified version to the draft flow.
         ///
@@ -11265,7 +12371,7 @@ pub mod versions_client {
         pub async fn load_version(
             &mut self,
             request: impl tonic::IntoRequest<super::LoadVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -11282,13 +12388,24 @@ pub mod versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/LoadVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Versions",
+                        "LoadVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Compares the specified base version with target version.
         pub async fn compare_versions(
             &mut self,
             request: impl tonic::IntoRequest<super::CompareVersionsRequest>,
-        ) -> Result<tonic::Response<super::CompareVersionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CompareVersionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -11302,7 +12419,15 @@ pub mod versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/CompareVersions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Versions",
+                        "CompareVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

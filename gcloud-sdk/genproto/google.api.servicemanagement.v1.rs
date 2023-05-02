@@ -768,7 +768,7 @@ pub mod service_manager_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -824,6 +824,22 @@ pub mod service_manager_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists managed services.
         ///
         /// Returns all public services. For authenticated users, also returns all
@@ -832,7 +848,10 @@ pub mod service_manager_client {
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
-        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -846,14 +865,22 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/ListServices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "ListServices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a managed service. Authentication is required unless the service is
         /// public.
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
-        ) -> Result<tonic::Response<super::ManagedService>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ManagedService>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -867,7 +894,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/GetService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "GetService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new managed service.
         ///
@@ -883,7 +918,7 @@ pub mod service_manager_client {
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -900,7 +935,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/CreateService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "CreateService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a managed service. This method will change the service to the
         /// `Soft-Delete` state for 30 days. Within this period, service producers may
@@ -913,7 +956,7 @@ pub mod service_manager_client {
         pub async fn delete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -930,7 +973,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/DeleteService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "DeleteService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Revives a previously deleted managed service. The method restores the
         /// service using the configuration at the time the service was deleted.
@@ -941,7 +992,7 @@ pub mod service_manager_client {
         pub async fn undelete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeleteServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -958,14 +1009,25 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/UndeleteService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "UndeleteService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the history of the service configuration for a managed service,
         /// from the newest to the oldest.
         pub async fn list_service_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServiceConfigsRequest>,
-        ) -> Result<tonic::Response<super::ListServiceConfigsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceConfigsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -979,13 +1041,24 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/ListServiceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "ListServiceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a service configuration (version) for a managed service.
         pub async fn get_service_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceConfigRequest>,
-        ) -> Result<tonic::Response<super::super::super::Service>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::Service>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -999,7 +1072,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/GetServiceConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "GetServiceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new service configuration (version) for a managed service.
         /// This method only stores the service configuration. To roll out the service
@@ -1012,7 +1093,10 @@ pub mod service_manager_client {
         pub async fn create_service_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceConfigRequest>,
-        ) -> Result<tonic::Response<super::super::super::Service>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::Service>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1026,7 +1110,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/CreateServiceConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "CreateServiceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new service configuration (version) for a managed service based
         /// on
@@ -1045,7 +1137,7 @@ pub mod service_manager_client {
         pub async fn submit_config_source(
             &mut self,
             request: impl tonic::IntoRequest<super::SubmitConfigSourceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1062,14 +1154,25 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/SubmitConfigSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "SubmitConfigSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the history of the service configuration rollouts for a managed
         /// service, from the newest to the oldest.
         pub async fn list_service_rollouts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServiceRolloutsRequest>,
-        ) -> Result<tonic::Response<super::ListServiceRolloutsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceRolloutsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1083,14 +1186,22 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/ListServiceRollouts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "ListServiceRollouts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a service configuration
         /// [rollout][google.api.servicemanagement.v1.Rollout].
         pub async fn get_service_rollout(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRolloutRequest>,
-        ) -> Result<tonic::Response<super::Rollout>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Rollout>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1104,7 +1215,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/GetServiceRollout",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "GetServiceRollout",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new service configuration rollout. Based on rollout, the
         /// Google Service Management will roll out the service configurations to
@@ -1123,7 +1242,7 @@ pub mod service_manager_client {
         pub async fn create_service_rollout(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRolloutRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1140,7 +1259,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/CreateServiceRollout",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "CreateServiceRollout",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates and returns a report (errors, warnings and changes from
         /// existing configurations) associated with
@@ -1156,7 +1283,7 @@ pub mod service_manager_client {
         pub async fn generate_config_report(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateConfigReportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateConfigReportResponse>,
             tonic::Status,
         > {
@@ -1173,7 +1300,15 @@ pub mod service_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicemanagement.v1.ServiceManager/GenerateConfigReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.servicemanagement.v1.ServiceManager",
+                        "GenerateConfigReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

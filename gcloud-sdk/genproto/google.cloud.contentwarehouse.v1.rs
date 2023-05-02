@@ -867,7 +867,7 @@ pub mod document_link_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -923,11 +923,30 @@ pub mod document_link_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Return all target document-links from the document.
         pub async fn list_linked_targets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLinkedTargetsRequest>,
-        ) -> Result<tonic::Response<super::ListLinkedTargetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListLinkedTargetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -941,13 +960,24 @@ pub mod document_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentLinkService/ListLinkedTargets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentLinkService",
+                        "ListLinkedTargets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Return all source document-links from the document.
         pub async fn list_linked_sources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLinkedSourcesRequest>,
-        ) -> Result<tonic::Response<super::ListLinkedSourcesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListLinkedSourcesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -961,13 +991,21 @@ pub mod document_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentLinkService/ListLinkedSources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentLinkService",
+                        "ListLinkedSources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create a link between a source document and a target document.
         pub async fn create_document_link(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDocumentLinkRequest>,
-        ) -> Result<tonic::Response<super::DocumentLink>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DocumentLink>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -981,13 +1019,21 @@ pub mod document_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentLinkService/CreateDocumentLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentLinkService",
+                        "CreateDocumentLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Remove the link between the source and target documents.
         pub async fn delete_document_link(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDocumentLinkRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1001,7 +1047,15 @@ pub mod document_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentLinkService/DeleteDocumentLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentLinkService",
+                        "DeleteDocumentLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1322,7 +1376,7 @@ pub mod document_schema_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1378,11 +1432,27 @@ pub mod document_schema_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a document schema.
         pub async fn create_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDocumentSchemaRequest>,
-        ) -> Result<tonic::Response<super::DocumentSchema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DocumentSchema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1396,7 +1466,15 @@ pub mod document_schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentSchemaService/CreateDocumentSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentSchemaService",
+                        "CreateDocumentSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Document Schema. Returns INVALID_ARGUMENT if the name of the
         /// Document Schema is non-empty and does not equal the existing name.
@@ -1408,7 +1486,7 @@ pub mod document_schema_service_client {
         pub async fn update_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDocumentSchemaRequest>,
-        ) -> Result<tonic::Response<super::DocumentSchema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DocumentSchema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1422,14 +1500,22 @@ pub mod document_schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentSchemaService/UpdateDocumentSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentSchemaService",
+                        "UpdateDocumentSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a document schema. Returns NOT_FOUND if the document schema does not
         /// exist.
         pub async fn get_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDocumentSchemaRequest>,
-        ) -> Result<tonic::Response<super::DocumentSchema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DocumentSchema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1443,7 +1529,15 @@ pub mod document_schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentSchemaService/GetDocumentSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentSchemaService",
+                        "GetDocumentSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a document schema. Returns NOT_FOUND if the document schema does
         /// not exist. Returns BAD_REQUEST if the document schema has documents
@@ -1451,7 +1545,7 @@ pub mod document_schema_service_client {
         pub async fn delete_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDocumentSchemaRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1465,13 +1559,24 @@ pub mod document_schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentSchemaService/DeleteDocumentSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentSchemaService",
+                        "DeleteDocumentSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists document schemas.
         pub async fn list_document_schemas(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDocumentSchemasRequest>,
-        ) -> Result<tonic::Response<super::ListDocumentSchemasResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDocumentSchemasResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1485,7 +1590,15 @@ pub mod document_schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentSchemaService/ListDocumentSchemas",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentSchemaService",
+                        "ListDocumentSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2851,7 +2964,7 @@ pub mod document_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2907,11 +3020,30 @@ pub mod document_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a document.
         pub async fn create_document(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDocumentRequest>,
-        ) -> Result<tonic::Response<super::CreateDocumentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CreateDocumentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2925,13 +3057,21 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/CreateDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "CreateDocument",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a document. Returns NOT_FOUND if the document does not exist.
         pub async fn get_document(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDocumentRequest>,
-        ) -> Result<tonic::Response<super::Document>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Document>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2945,14 +3085,25 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/GetDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "GetDocument",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a document. Returns INVALID_ARGUMENT if the name of the document
         /// is non-empty and does not equal the existing name.
         pub async fn update_document(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDocumentRequest>,
-        ) -> Result<tonic::Response<super::UpdateDocumentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateDocumentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2966,13 +3117,21 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/UpdateDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "UpdateDocument",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a document. Returns NOT_FOUND if the document does not exist.
         pub async fn delete_document(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDocumentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2986,7 +3145,15 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/DeleteDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "DeleteDocument",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for documents using provided
         /// [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
@@ -2995,7 +3162,10 @@ pub mod document_service_client {
         pub async fn search_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchDocumentsRequest>,
-        ) -> Result<tonic::Response<super::SearchDocumentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchDocumentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3009,13 +3179,21 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/SearchDocuments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "SearchDocuments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lock the document so the document cannot be updated by other users.
         pub async fn lock_document(
             &mut self,
             request: impl tonic::IntoRequest<super::LockDocumentRequest>,
-        ) -> Result<tonic::Response<super::Document>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Document>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3029,7 +3207,15 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/LockDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "LockDocument",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. Returns NOT_FOUND error if
         /// the resource does not exist. Returns an empty policy if the resource exists
@@ -3037,7 +3223,10 @@ pub mod document_service_client {
         pub async fn fetch_acl(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchAclRequest>,
-        ) -> Result<tonic::Response<super::FetchAclResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FetchAclResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3051,14 +3240,22 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/FetchAcl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "FetchAcl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy for a resource. Replaces any existing
         /// policy.
         pub async fn set_acl(
             &mut self,
             request: impl tonic::IntoRequest<super::SetAclRequest>,
-        ) -> Result<tonic::Response<super::SetAclResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SetAclResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3072,7 +3269,15 @@ pub mod document_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.DocumentService/SetAcl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "SetAcl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3169,7 +3374,7 @@ pub mod rule_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3225,11 +3430,27 @@ pub mod rule_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a ruleset.
         pub async fn create_rule_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRuleSetRequest>,
-        ) -> Result<tonic::Response<super::RuleSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RuleSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3243,13 +3464,21 @@ pub mod rule_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.RuleSetService/CreateRuleSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "CreateRuleSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a ruleset. Returns NOT_FOUND if the ruleset does not exist.
         pub async fn get_rule_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRuleSetRequest>,
-        ) -> Result<tonic::Response<super::RuleSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RuleSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3263,14 +3492,22 @@ pub mod rule_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.RuleSetService/GetRuleSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "GetRuleSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a ruleset. Returns INVALID_ARGUMENT if the name of the ruleset
         /// is non-empty and does not equal the existing name.
         pub async fn update_rule_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRuleSetRequest>,
-        ) -> Result<tonic::Response<super::RuleSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RuleSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3284,13 +3521,21 @@ pub mod rule_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.RuleSetService/UpdateRuleSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "UpdateRuleSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a ruleset. Returns NOT_FOUND if the document does not exist.
         pub async fn delete_rule_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRuleSetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3304,13 +3549,24 @@ pub mod rule_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.RuleSetService/DeleteRuleSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "DeleteRuleSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists rulesets.
         pub async fn list_rule_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRuleSetsRequest>,
-        ) -> Result<tonic::Response<super::ListRuleSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRuleSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3324,7 +3580,15 @@ pub mod rule_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.RuleSetService/ListRuleSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "ListRuleSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3461,7 +3725,7 @@ pub mod synonym_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3517,13 +3781,29 @@ pub mod synonym_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a SynonymSet for a single context.
         /// Throws an ALREADY_EXISTS exception if a synonymset already exists
         /// for the context.
         pub async fn create_synonym_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSynonymSetRequest>,
-        ) -> Result<tonic::Response<super::SynonymSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SynonymSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3537,7 +3817,15 @@ pub mod synonym_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.SynonymSetService/CreateSynonymSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "CreateSynonymSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a SynonymSet for a particular context.
         /// Throws a NOT_FOUND exception if the Synonymset
@@ -3545,7 +3833,7 @@ pub mod synonym_set_service_client {
         pub async fn get_synonym_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSynonymSetRequest>,
-        ) -> Result<tonic::Response<super::SynonymSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SynonymSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3559,7 +3847,15 @@ pub mod synonym_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "GetSynonymSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Remove the existing SynonymSet for the context and replaces it
         /// with a new one.
@@ -3567,7 +3863,7 @@ pub mod synonym_set_service_client {
         pub async fn update_synonym_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSynonymSetRequest>,
-        ) -> Result<tonic::Response<super::SynonymSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SynonymSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3581,14 +3877,22 @@ pub mod synonym_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.SynonymSetService/UpdateSynonymSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "UpdateSynonymSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a SynonymSet for a given context.
         /// Throws a NOT_FOUND exception if the SynonymSet is not found.
         pub async fn delete_synonym_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSynonymSetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3602,13 +3906,24 @@ pub mod synonym_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.SynonymSetService/DeleteSynonymSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "DeleteSynonymSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all SynonymSets (for all contexts) for the specified location.
         pub async fn list_synonym_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSynonymSetsRequest>,
-        ) -> Result<tonic::Response<super::ListSynonymSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSynonymSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3622,7 +3937,15 @@ pub mod synonym_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contentwarehouse.v1.SynonymSetService/ListSynonymSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "ListSynonymSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

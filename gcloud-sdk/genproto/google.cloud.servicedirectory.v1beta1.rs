@@ -191,7 +191,7 @@ pub mod lookup_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -247,13 +247,32 @@ pub mod lookup_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns a [service][google.cloud.servicedirectory.v1beta1.Service] and its
         /// associated endpoints.
         /// Resolving a service is not considered an active developer method.
         pub async fn resolve_service(
             &mut self,
             request: impl tonic::IntoRequest<super::ResolveServiceRequest>,
-        ) -> Result<tonic::Response<super::ResolveServiceResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ResolveServiceResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -267,7 +286,15 @@ pub mod lookup_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.LookupService/ResolveService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.LookupService",
+                        "ResolveService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -685,7 +712,7 @@ pub mod registration_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -741,11 +768,27 @@ pub mod registration_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a namespace, and returns the new namespace.
         pub async fn create_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateNamespaceRequest>,
-        ) -> Result<tonic::Response<super::Namespace>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Namespace>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -759,13 +802,24 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/CreateNamespace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "CreateNamespace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all namespaces.
         pub async fn list_namespaces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNamespacesRequest>,
-        ) -> Result<tonic::Response<super::ListNamespacesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListNamespacesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -779,13 +833,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/ListNamespaces",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "ListNamespaces",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a namespace.
         pub async fn get_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNamespaceRequest>,
-        ) -> Result<tonic::Response<super::Namespace>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Namespace>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -799,13 +861,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetNamespace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "GetNamespace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a namespace.
         pub async fn update_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNamespaceRequest>,
-        ) -> Result<tonic::Response<super::Namespace>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Namespace>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -819,14 +889,22 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/UpdateNamespace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "UpdateNamespace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a namespace. This also deletes all services and endpoints in
         /// the namespace.
         pub async fn delete_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNamespaceRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -840,13 +918,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteNamespace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "DeleteNamespace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a service, and returns the new service.
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
-        ) -> Result<tonic::Response<super::Service>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Service>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -860,13 +946,24 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/CreateService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "CreateService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all services belonging to a namespace.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
-        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -880,13 +977,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/ListServices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "ListServices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a service.
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
-        ) -> Result<tonic::Response<super::Service>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Service>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -900,13 +1005,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "GetService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a service.
         pub async fn update_service(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServiceRequest>,
-        ) -> Result<tonic::Response<super::Service>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Service>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -920,14 +1033,22 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/UpdateService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "UpdateService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a service. This also deletes all endpoints associated with
         /// the service.
         pub async fn delete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -941,13 +1062,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "DeleteService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an endpoint, and returns the new endpoint.
         pub async fn create_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEndpointRequest>,
-        ) -> Result<tonic::Response<super::Endpoint>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Endpoint>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -961,13 +1090,24 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/CreateEndpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "CreateEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all endpoints.
         pub async fn list_endpoints(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEndpointsRequest>,
-        ) -> Result<tonic::Response<super::ListEndpointsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEndpointsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -981,13 +1121,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/ListEndpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "ListEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an endpoint.
         pub async fn get_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEndpointRequest>,
-        ) -> Result<tonic::Response<super::Endpoint>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Endpoint>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1001,13 +1149,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetEndpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "GetEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an endpoint.
         pub async fn update_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEndpointRequest>,
-        ) -> Result<tonic::Response<super::Endpoint>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Endpoint>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1021,13 +1177,21 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/UpdateEndpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "UpdateEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an endpoint.
         pub async fn delete_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEndpointRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1041,7 +1205,15 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteEndpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "DeleteEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the IAM Policy for a resource (namespace or service only).
         pub async fn get_iam_policy(
@@ -1049,7 +1221,7 @@ pub mod registration_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1066,7 +1238,15 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the IAM Policy for a resource (namespace or service only).
         pub async fn set_iam_policy(
@@ -1074,7 +1254,7 @@ pub mod registration_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1091,7 +1271,15 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Tests IAM permissions for a resource (namespace or service only).
         pub async fn test_iam_permissions(
@@ -1099,7 +1287,7 @@ pub mod registration_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -1118,7 +1306,15 @@ pub mod registration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

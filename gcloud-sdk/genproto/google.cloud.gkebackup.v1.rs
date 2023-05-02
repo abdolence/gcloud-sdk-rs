@@ -1911,7 +1911,7 @@ pub mod backup_for_gke_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1967,11 +1967,27 @@ pub mod backup_for_gke_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new BackupPlan in a given location.
         pub async fn create_backup_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBackupPlanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1988,13 +2004,24 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/CreateBackupPlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "CreateBackupPlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists BackupPlans in a given location.
         pub async fn list_backup_plans(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBackupPlansRequest>,
-        ) -> Result<tonic::Response<super::ListBackupPlansResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupPlansResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2008,13 +2035,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/ListBackupPlans",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "ListBackupPlans",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve the details of a single BackupPlan.
         pub async fn get_backup_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackupPlanRequest>,
-        ) -> Result<tonic::Response<super::BackupPlan>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BackupPlan>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2028,13 +2063,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupPlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "GetBackupPlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update a BackupPlan.
         pub async fn update_backup_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBackupPlanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2051,13 +2094,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/UpdateBackupPlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "UpdateBackupPlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing BackupPlan.
         pub async fn delete_backup_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBackupPlanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2074,13 +2125,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/DeleteBackupPlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "DeleteBackupPlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Backup for the given BackupPlan.
         pub async fn create_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2097,13 +2156,24 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/CreateBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "CreateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the Backups for a given BackupPlan.
         pub async fn list_backups(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBackupsRequest>,
-        ) -> Result<tonic::Response<super::ListBackupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2117,13 +2187,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/ListBackups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve the details of a single Backup.
         pub async fn get_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackupRequest>,
-        ) -> Result<tonic::Response<super::Backup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2137,13 +2215,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/GetBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "GetBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update a Backup.
         pub async fn update_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2160,13 +2246,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/UpdateBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "UpdateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing Backup.
         pub async fn delete_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2183,13 +2277,24 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/DeleteBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the VolumeBackups for a given Backup.
         pub async fn list_volume_backups(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVolumeBackupsRequest>,
-        ) -> Result<tonic::Response<super::ListVolumeBackupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListVolumeBackupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2203,13 +2308,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/ListVolumeBackups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "ListVolumeBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve the details of a single VolumeBackup.
         pub async fn get_volume_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVolumeBackupRequest>,
-        ) -> Result<tonic::Response<super::VolumeBackup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VolumeBackup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2223,13 +2336,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/GetVolumeBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "GetVolumeBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new RestorePlan in a given location.
         pub async fn create_restore_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRestorePlanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2246,13 +2367,24 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/CreateRestorePlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "CreateRestorePlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists RestorePlans in a given location.
         pub async fn list_restore_plans(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRestorePlansRequest>,
-        ) -> Result<tonic::Response<super::ListRestorePlansResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRestorePlansResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2266,13 +2398,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/ListRestorePlans",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "ListRestorePlans",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve the details of a single RestorePlan.
         pub async fn get_restore_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRestorePlanRequest>,
-        ) -> Result<tonic::Response<super::RestorePlan>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RestorePlan>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2286,13 +2426,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/GetRestorePlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "GetRestorePlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update a RestorePlan.
         pub async fn update_restore_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRestorePlanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2309,13 +2457,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/UpdateRestorePlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "UpdateRestorePlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing RestorePlan.
         pub async fn delete_restore_plan(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRestorePlanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2332,13 +2488,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/DeleteRestorePlan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "DeleteRestorePlan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Restore for the given RestorePlan.
         pub async fn create_restore(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRestoreRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2355,13 +2519,24 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/CreateRestore",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "CreateRestore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the Restores for a given RestorePlan.
         pub async fn list_restores(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRestoresRequest>,
-        ) -> Result<tonic::Response<super::ListRestoresResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRestoresResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2375,13 +2550,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/ListRestores",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "ListRestores",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the details of a single Restore.
         pub async fn get_restore(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRestoreRequest>,
-        ) -> Result<tonic::Response<super::Restore>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Restore>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2395,13 +2578,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/GetRestore",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "GetRestore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update a Restore.
         pub async fn update_restore(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRestoreRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2418,13 +2609,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/UpdateRestore",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "UpdateRestore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing Restore.
         pub async fn delete_restore(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRestoreRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2441,13 +2640,24 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/DeleteRestore",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "DeleteRestore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the VolumeRestores for a given Restore.
         pub async fn list_volume_restores(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVolumeRestoresRequest>,
-        ) -> Result<tonic::Response<super::ListVolumeRestoresResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListVolumeRestoresResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2461,13 +2671,21 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/ListVolumeRestores",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "ListVolumeRestores",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve the details of a single VolumeRestore.
         pub async fn get_volume_restore(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVolumeRestoreRequest>,
-        ) -> Result<tonic::Response<super::VolumeRestore>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VolumeRestore>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2481,7 +2699,15 @@ pub mod backup_for_gke_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkebackup.v1.BackupForGKE/GetVolumeRestore",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "GetVolumeRestore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

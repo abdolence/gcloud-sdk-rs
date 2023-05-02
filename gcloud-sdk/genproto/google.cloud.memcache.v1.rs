@@ -663,7 +663,7 @@ pub mod cloud_memcache_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -719,11 +719,30 @@ pub mod cloud_memcache_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists Instances in a given location.
         pub async fn list_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstancesRequest>,
-        ) -> Result<tonic::Response<super::ListInstancesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstancesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -737,13 +756,21 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/ListInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "ListInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Instance.
         pub async fn get_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Instance>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Instance>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -757,13 +784,21 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/GetInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "GetInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Instance in a given location.
         pub async fn create_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -780,13 +815,21 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/CreateInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "CreateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing Instance in a given project and location.
         pub async fn update_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -803,7 +846,15 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/UpdateInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "UpdateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the defined Memcached parameters for an existing instance.
         /// This method only stages the parameters, it must be followed by
@@ -812,7 +863,7 @@ pub mod cloud_memcache_client {
         pub async fn update_parameters(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateParametersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -829,13 +880,21 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/UpdateParameters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "UpdateParameters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Instance.
         pub async fn delete_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -852,14 +911,22 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/DeleteInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "DeleteInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// `ApplyParameters` restarts the set of specified nodes in order to update
         /// them to the current set of parameters for the Memcached Instance.
         pub async fn apply_parameters(
             &mut self,
             request: impl tonic::IntoRequest<super::ApplyParametersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -876,13 +943,21 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/ApplyParameters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "ApplyParameters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Reschedules upcoming maintenance event.
         pub async fn reschedule_maintenance(
             &mut self,
             request: impl tonic::IntoRequest<super::RescheduleMaintenanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -899,7 +974,15 @@ pub mod cloud_memcache_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1.CloudMemcache/RescheduleMaintenance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "RescheduleMaintenance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

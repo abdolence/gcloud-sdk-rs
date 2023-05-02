@@ -1917,7 +1917,7 @@ pub mod beta_analytics_data_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1973,6 +1973,22 @@ pub mod beta_analytics_data_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns a customized report of your Google Analytics event data. Reports
         /// contain statistics derived from data collected by the Google Analytics
         /// tracking code. The data returned from the API is as a table with columns
@@ -1987,7 +2003,10 @@ pub mod beta_analytics_data_client {
         pub async fn run_report(
             &mut self,
             request: impl tonic::IntoRequest<super::RunReportRequest>,
-        ) -> Result<tonic::Response<super::RunReportResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RunReportResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2001,7 +2020,15 @@ pub mod beta_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/RunReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "RunReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a customized pivot report of your Google Analytics event data.
         /// Pivot reports are more advanced and expressive formats than regular
@@ -2011,7 +2038,10 @@ pub mod beta_analytics_data_client {
         pub async fn run_pivot_report(
             &mut self,
             request: impl tonic::IntoRequest<super::RunPivotReportRequest>,
-        ) -> Result<tonic::Response<super::RunPivotReportResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RunPivotReportResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2025,14 +2055,25 @@ pub mod beta_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/RunPivotReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "RunPivotReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns multiple reports in a batch. All reports must be for the same
         /// GA4 Property.
         pub async fn batch_run_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchRunReportsRequest>,
-        ) -> Result<tonic::Response<super::BatchRunReportsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BatchRunReportsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2046,14 +2087,22 @@ pub mod beta_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/BatchRunReports",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "BatchRunReports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns multiple pivot reports in a batch. All reports must be for the same
         /// GA4 Property.
         pub async fn batch_run_pivot_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchRunPivotReportsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchRunPivotReportsResponse>,
             tonic::Status,
         > {
@@ -2070,7 +2119,15 @@ pub mod beta_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/BatchRunPivotReports",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "BatchRunPivotReports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns metadata for dimensions and metrics available in reporting methods.
         /// Used to explore the dimensions and metrics. In this method, a Google
@@ -2085,7 +2142,7 @@ pub mod beta_analytics_data_client {
         pub async fn get_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMetadataRequest>,
-        ) -> Result<tonic::Response<super::Metadata>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Metadata>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2099,7 +2156,15 @@ pub mod beta_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/GetMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "GetMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a customized report of realtime event data for your property.
         /// Events appear in realtime reports seconds after they have been sent to
@@ -2113,7 +2178,10 @@ pub mod beta_analytics_data_client {
         pub async fn run_realtime_report(
             &mut self,
             request: impl tonic::IntoRequest<super::RunRealtimeReportRequest>,
-        ) -> Result<tonic::Response<super::RunRealtimeReportResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RunRealtimeReportResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2127,7 +2195,15 @@ pub mod beta_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/RunRealtimeReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "RunRealtimeReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// This compatibility method lists dimensions and metrics that can be added to
         /// a report request and maintain compatibility. This method fails if the
@@ -2142,7 +2218,10 @@ pub mod beta_analytics_data_client {
         pub async fn check_compatibility(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckCompatibilityRequest>,
-        ) -> Result<tonic::Response<super::CheckCompatibilityResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CheckCompatibilityResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2156,7 +2235,15 @@ pub mod beta_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/CheckCompatibility",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "CheckCompatibility",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

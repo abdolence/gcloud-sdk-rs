@@ -507,7 +507,7 @@ pub mod workload_identity_pools_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -563,6 +563,22 @@ pub mod workload_identity_pools_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all non-deleted
         /// [WorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPool]s in a
         /// project. If `show_deleted` is set to `true`, then deleted pools are also
@@ -570,7 +586,7 @@ pub mod workload_identity_pools_client {
         pub async fn list_workload_identity_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkloadIdentityPoolsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListWorkloadIdentityPoolsResponse>,
             tonic::Status,
         > {
@@ -587,14 +603,25 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/ListWorkloadIdentityPools",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "ListWorkloadIdentityPools",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an individual
         /// [WorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPool].
         pub async fn get_workload_identity_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWorkloadIdentityPoolRequest>,
-        ) -> Result<tonic::Response<super::WorkloadIdentityPool>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::WorkloadIdentityPool>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -608,7 +635,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/GetWorkloadIdentityPool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "GetWorkloadIdentityPool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new
         /// [WorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPool].
@@ -617,7 +652,7 @@ pub mod workload_identity_pools_client {
         pub async fn create_workload_identity_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWorkloadIdentityPoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -634,14 +669,22 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/CreateWorkloadIdentityPool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "CreateWorkloadIdentityPool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing
         /// [WorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPool].
         pub async fn update_workload_identity_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateWorkloadIdentityPoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -658,7 +701,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/UpdateWorkloadIdentityPool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "UpdateWorkloadIdentityPool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a
         /// [WorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPool].
@@ -675,7 +726,7 @@ pub mod workload_identity_pools_client {
         pub async fn delete_workload_identity_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkloadIdentityPoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -692,14 +743,22 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/DeleteWorkloadIdentityPool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "DeleteWorkloadIdentityPool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Undeletes a [WorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPool],
         /// as long as it was deleted fewer than 30 days ago.
         pub async fn undelete_workload_identity_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeleteWorkloadIdentityPoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -716,7 +775,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/UndeleteWorkloadIdentityPool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "UndeleteWorkloadIdentityPool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all non-deleted
         /// [WorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityPoolProvider]s
@@ -727,7 +794,7 @@ pub mod workload_identity_pools_client {
             request: impl tonic::IntoRequest<
                 super::ListWorkloadIdentityPoolProvidersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListWorkloadIdentityPoolProvidersResponse>,
             tonic::Status,
         > {
@@ -744,7 +811,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/ListWorkloadIdentityPoolProviders",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "ListWorkloadIdentityPoolProviders",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an individual
         /// [WorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityPoolProvider].
@@ -753,7 +828,7 @@ pub mod workload_identity_pools_client {
             request: impl tonic::IntoRequest<
                 super::GetWorkloadIdentityPoolProviderRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::WorkloadIdentityPoolProvider>,
             tonic::Status,
         > {
@@ -770,7 +845,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/GetWorkloadIdentityPoolProvider",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "GetWorkloadIdentityPoolProvider",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new
         /// [WorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityProvider]
@@ -783,7 +866,7 @@ pub mod workload_identity_pools_client {
             request: impl tonic::IntoRequest<
                 super::CreateWorkloadIdentityPoolProviderRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -800,7 +883,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/CreateWorkloadIdentityPoolProvider",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "CreateWorkloadIdentityPoolProvider",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing
         /// [WorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityProvider].
@@ -809,7 +900,7 @@ pub mod workload_identity_pools_client {
             request: impl tonic::IntoRequest<
                 super::UpdateWorkloadIdentityPoolProviderRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -826,7 +917,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/UpdateWorkloadIdentityPoolProvider",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "UpdateWorkloadIdentityPoolProvider",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a
         /// [WorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityProvider].
@@ -840,7 +939,7 @@ pub mod workload_identity_pools_client {
             request: impl tonic::IntoRequest<
                 super::DeleteWorkloadIdentityPoolProviderRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -857,7 +956,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/DeleteWorkloadIdentityPoolProvider",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "DeleteWorkloadIdentityPoolProvider",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Undeletes a
         /// [WorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityProvider],
@@ -867,7 +974,7 @@ pub mod workload_identity_pools_client {
             request: impl tonic::IntoRequest<
                 super::UndeleteWorkloadIdentityPoolProviderRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -884,7 +991,15 @@ pub mod workload_identity_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v1beta.WorkloadIdentityPools/UndeleteWorkloadIdentityPoolProvider",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.iam.v1beta.WorkloadIdentityPools",
+                        "UndeleteWorkloadIdentityPoolProvider",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

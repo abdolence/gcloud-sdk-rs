@@ -298,7 +298,7 @@ pub mod essential_contacts_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -356,11 +356,27 @@ pub mod essential_contacts_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds a new contact for a resource.
         pub async fn create_contact(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateContactRequest>,
-        ) -> Result<tonic::Response<super::Contact>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Contact>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -374,14 +390,22 @@ pub mod essential_contacts_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/CreateContact",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "CreateContact",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a contact.
         /// Note: A contact's email address cannot be changed.
         pub async fn update_contact(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateContactRequest>,
-        ) -> Result<tonic::Response<super::Contact>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Contact>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -395,13 +419,24 @@ pub mod essential_contacts_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/UpdateContact",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "UpdateContact",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the contacts that have been set on a resource.
         pub async fn list_contacts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListContactsRequest>,
-        ) -> Result<tonic::Response<super::ListContactsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListContactsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -415,13 +450,21 @@ pub mod essential_contacts_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/ListContacts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "ListContacts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a single contact.
         pub async fn get_contact(
             &mut self,
             request: impl tonic::IntoRequest<super::GetContactRequest>,
-        ) -> Result<tonic::Response<super::Contact>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Contact>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -435,13 +478,21 @@ pub mod essential_contacts_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/GetContact",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "GetContact",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a contact.
         pub async fn delete_contact(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteContactRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -455,7 +506,15 @@ pub mod essential_contacts_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/DeleteContact",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "DeleteContact",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all contacts for the resource that are subscribed to the
         /// specified notification categories, including contacts inherited from
@@ -463,7 +522,10 @@ pub mod essential_contacts_service_client {
         pub async fn compute_contacts(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeContactsRequest>,
-        ) -> Result<tonic::Response<super::ComputeContactsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ComputeContactsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -477,14 +539,22 @@ pub mod essential_contacts_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/ComputeContacts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "ComputeContacts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Allows a contact admin to send a test message to contact to verify that it
         /// has been configured correctly.
         pub async fn send_test_message(
             &mut self,
             request: impl tonic::IntoRequest<super::SendTestMessageRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -498,7 +568,15 @@ pub mod essential_contacts_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/SendTestMessage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "SendTestMessage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

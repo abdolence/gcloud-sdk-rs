@@ -368,7 +368,7 @@ pub mod network_services_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -424,11 +424,27 @@ pub mod network_services_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists EndpointPolicies in a given project and location.
         pub async fn list_endpoint_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEndpointPoliciesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListEndpointPoliciesResponse>,
             tonic::Status,
         > {
@@ -445,13 +461,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1beta1.NetworkServices/ListEndpointPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.NetworkServices",
+                        "ListEndpointPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single EndpointPolicy.
         pub async fn get_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEndpointPolicyRequest>,
-        ) -> Result<tonic::Response<super::EndpointPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EndpointPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -465,13 +489,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1beta1.NetworkServices/GetEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.NetworkServices",
+                        "GetEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new EndpointPolicy in a given project and location.
         pub async fn create_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEndpointPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -488,13 +520,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1beta1.NetworkServices/CreateEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.NetworkServices",
+                        "CreateEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single EndpointPolicy.
         pub async fn update_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEndpointPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -511,13 +551,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1beta1.NetworkServices/UpdateEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.NetworkServices",
+                        "UpdateEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single EndpointPolicy.
         pub async fn delete_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEndpointPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -534,7 +582,15 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1beta1.NetworkServices/DeleteEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1beta1.NetworkServices",
+                        "DeleteEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

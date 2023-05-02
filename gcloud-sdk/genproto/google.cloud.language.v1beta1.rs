@@ -1620,7 +1620,7 @@ pub mod language_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1676,11 +1676,30 @@ pub mod language_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Analyzes the sentiment of the provided text.
         pub async fn analyze_sentiment(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeSentimentRequest>,
-        ) -> Result<tonic::Response<super::AnalyzeSentimentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnalyzeSentimentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1694,7 +1713,15 @@ pub mod language_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.language.v1beta1.LanguageService/AnalyzeSentiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.language.v1beta1.LanguageService",
+                        "AnalyzeSentiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Finds named entities (currently proper names and common nouns) in the text
         /// along with entity types, salience, mentions for each entity, and
@@ -1702,7 +1729,10 @@ pub mod language_service_client {
         pub async fn analyze_entities(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeEntitiesRequest>,
-        ) -> Result<tonic::Response<super::AnalyzeEntitiesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnalyzeEntitiesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1716,7 +1746,15 @@ pub mod language_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.language.v1beta1.LanguageService/AnalyzeEntities",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.language.v1beta1.LanguageService",
+                        "AnalyzeEntities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyzes the syntax of the text and provides sentence boundaries and
         /// tokenization along with part of speech tags, dependency trees, and other
@@ -1724,7 +1762,10 @@ pub mod language_service_client {
         pub async fn analyze_syntax(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeSyntaxRequest>,
-        ) -> Result<tonic::Response<super::AnalyzeSyntaxResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnalyzeSyntaxResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1738,14 +1779,25 @@ pub mod language_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.language.v1beta1.LanguageService/AnalyzeSyntax",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.language.v1beta1.LanguageService",
+                        "AnalyzeSyntax",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// A convenience method that provides all the features that analyzeSentiment,
         /// analyzeEntities, and analyzeSyntax provide in one call.
         pub async fn annotate_text(
             &mut self,
             request: impl tonic::IntoRequest<super::AnnotateTextRequest>,
-        ) -> Result<tonic::Response<super::AnnotateTextResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnnotateTextResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1759,7 +1811,15 @@ pub mod language_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.language.v1beta1.LanguageService/AnnotateText",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.language.v1beta1.LanguageService",
+                        "AnnotateText",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

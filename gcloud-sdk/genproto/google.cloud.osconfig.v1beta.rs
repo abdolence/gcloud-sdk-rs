@@ -2395,7 +2395,7 @@ pub mod os_config_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2451,11 +2451,27 @@ pub mod os_config_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Patch VM instances by creating and running a patch job.
         pub async fn execute_patch_job(
             &mut self,
             request: impl tonic::IntoRequest<super::ExecutePatchJobRequest>,
-        ) -> Result<tonic::Response<super::PatchJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::PatchJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2469,14 +2485,22 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/ExecutePatchJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "ExecutePatchJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get the patch job. This can be used to track the progress of an
         /// ongoing patch job or review the details of completed jobs.
         pub async fn get_patch_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPatchJobRequest>,
-        ) -> Result<tonic::Response<super::PatchJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::PatchJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2490,14 +2514,22 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/GetPatchJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "GetPatchJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Cancel a patch job. The patch job must be active. Canceled patch jobs
         /// cannot be restarted.
         pub async fn cancel_patch_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelPatchJobRequest>,
-        ) -> Result<tonic::Response<super::PatchJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::PatchJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2511,13 +2543,24 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/CancelPatchJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "CancelPatchJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a list of patch jobs.
         pub async fn list_patch_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPatchJobsRequest>,
-        ) -> Result<tonic::Response<super::ListPatchJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListPatchJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2531,13 +2574,21 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/ListPatchJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "ListPatchJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a list of instance details for a given patch job.
         pub async fn list_patch_job_instance_details(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPatchJobInstanceDetailsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPatchJobInstanceDetailsResponse>,
             tonic::Status,
         > {
@@ -2554,13 +2605,24 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/ListPatchJobInstanceDetails",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "ListPatchJobInstanceDetails",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create an OS Config patch deployment.
         pub async fn create_patch_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePatchDeploymentRequest>,
-        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PatchDeployment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2574,13 +2636,24 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/CreatePatchDeployment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "CreatePatchDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get an OS Config patch deployment.
         pub async fn get_patch_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPatchDeploymentRequest>,
-        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PatchDeployment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2594,13 +2667,21 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/GetPatchDeployment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "GetPatchDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a page of OS Config patch deployments.
         pub async fn list_patch_deployments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPatchDeploymentsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPatchDeploymentsResponse>,
             tonic::Status,
         > {
@@ -2617,13 +2698,21 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/ListPatchDeployments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "ListPatchDeployments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete an OS Config patch deployment.
         pub async fn delete_patch_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePatchDeploymentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2637,13 +2726,24 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/DeletePatchDeployment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "DeletePatchDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update an OS Config patch deployment.
         pub async fn update_patch_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdatePatchDeploymentRequest>,
-        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PatchDeployment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2657,14 +2757,25 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/UpdatePatchDeployment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "UpdatePatchDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Change state of patch deployment to "PAUSED".
         /// Patch deployment in paused state doesn't generate patch jobs.
         pub async fn pause_patch_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::PausePatchDeploymentRequest>,
-        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PatchDeployment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2678,14 +2789,25 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/PausePatchDeployment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "PausePatchDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Change state of patch deployment back to "ACTIVE".
         /// Patch deployment in active state continues to generate patch jobs.
         pub async fn resume_patch_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumePatchDeploymentRequest>,
-        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PatchDeployment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2699,13 +2821,21 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/ResumePatchDeployment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "ResumePatchDeployment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create an OS Config guest policy.
         pub async fn create_guest_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateGuestPolicyRequest>,
-        ) -> Result<tonic::Response<super::GuestPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::GuestPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2719,13 +2849,21 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/CreateGuestPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "CreateGuestPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get an OS Config guest policy.
         pub async fn get_guest_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGuestPolicyRequest>,
-        ) -> Result<tonic::Response<super::GuestPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::GuestPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2739,13 +2877,24 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/GetGuestPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "GetGuestPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a page of OS Config guest policies.
         pub async fn list_guest_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGuestPoliciesRequest>,
-        ) -> Result<tonic::Response<super::ListGuestPoliciesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListGuestPoliciesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2759,13 +2908,21 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/ListGuestPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "ListGuestPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update an OS Config guest policy.
         pub async fn update_guest_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateGuestPolicyRequest>,
-        ) -> Result<tonic::Response<super::GuestPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::GuestPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2779,13 +2936,21 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/UpdateGuestPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "UpdateGuestPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete an OS Config guest policy.
         pub async fn delete_guest_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGuestPolicyRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2799,14 +2964,25 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/DeleteGuestPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "DeleteGuestPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lookup the effective guest policy that applies to a VM instance. This
         /// lookup merges all policies that are assigned to the instance ancestry.
         pub async fn lookup_effective_guest_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupEffectiveGuestPolicyRequest>,
-        ) -> Result<tonic::Response<super::EffectiveGuestPolicy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::EffectiveGuestPolicy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2820,7 +2996,15 @@ pub mod os_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/LookupEffectiveGuestPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.osconfig.v1beta.OsConfigService",
+                        "LookupEffectiveGuestPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

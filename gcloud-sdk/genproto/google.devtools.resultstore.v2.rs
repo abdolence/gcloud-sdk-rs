@@ -2504,7 +2504,7 @@ pub mod result_store_download_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2560,6 +2560,22 @@ pub mod result_store_download_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the invocation with the given name.
         ///
         /// An error will be reported in the following cases:
@@ -2569,7 +2585,7 @@ pub mod result_store_download_client {
         pub async fn get_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInvocationRequest>,
-        ) -> Result<tonic::Response<super::Invocation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Invocation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2583,7 +2599,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/GetInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "GetInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for invocations matching the given query parameters. Results will
         /// be ordered by timing.start_time with most recent first, but total ordering
@@ -2597,7 +2621,10 @@ pub mod result_store_download_client {
         pub async fn search_invocations(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchInvocationsRequest>,
-        ) -> Result<tonic::Response<super::SearchInvocationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchInvocationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2611,7 +2638,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/SearchInvocations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "SearchInvocations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports the invocation and its child resources with a given name.
         ///
@@ -2622,7 +2657,10 @@ pub mod result_store_download_client {
         pub async fn export_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportInvocationRequest>,
-        ) -> Result<tonic::Response<super::ExportInvocationResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ExportInvocationResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2636,7 +2674,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/ExportInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "ExportInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the metadata for an invocation with the given name.
         ///
@@ -2646,7 +2692,10 @@ pub mod result_store_download_client {
         pub async fn get_invocation_download_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInvocationDownloadMetadataRequest>,
-        ) -> Result<tonic::Response<super::DownloadMetadata>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DownloadMetadata>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2660,7 +2709,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/GetInvocationDownloadMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "GetInvocationDownloadMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the configuration with the given name.
         ///
@@ -2671,7 +2728,7 @@ pub mod result_store_download_client {
         pub async fn get_configuration(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConfigurationRequest>,
-        ) -> Result<tonic::Response<super::Configuration>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Configuration>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2685,7 +2742,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/GetConfiguration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "GetConfiguration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves all configurations for a parent invocation.
         /// This might be limited by user or server,
@@ -2699,7 +2764,10 @@ pub mod result_store_download_client {
         pub async fn list_configurations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConfigurationsRequest>,
-        ) -> Result<tonic::Response<super::ListConfigurationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListConfigurationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2713,7 +2781,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/ListConfigurations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "ListConfigurations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the target with the given name.
         ///
@@ -2724,7 +2800,7 @@ pub mod result_store_download_client {
         pub async fn get_target(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetRequest>,
-        ) -> Result<tonic::Response<super::Target>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Target>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2738,7 +2814,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/GetTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "GetTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves all targets for a parent invocation.  This might be limited by
         /// user or server, in which case a continuation token is provided.
@@ -2751,7 +2835,10 @@ pub mod result_store_download_client {
         pub async fn list_targets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetsRequest>,
-        ) -> Result<tonic::Response<super::ListTargetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTargetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2765,7 +2852,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/ListTargets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "ListTargets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the configured target with the given name.
         ///
@@ -2776,7 +2871,10 @@ pub mod result_store_download_client {
         pub async fn get_configured_target(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConfiguredTargetRequest>,
-        ) -> Result<tonic::Response<super::ConfiguredTarget>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConfiguredTarget>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2790,7 +2888,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/GetConfiguredTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "GetConfiguredTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves all configured targets for a parent invocation/target.
         /// This might be limited by user or server, in which case a continuation
@@ -2805,7 +2911,7 @@ pub mod result_store_download_client {
         pub async fn list_configured_targets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConfiguredTargetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListConfiguredTargetsResponse>,
             tonic::Status,
         > {
@@ -2822,7 +2928,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/ListConfiguredTargets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "ListConfiguredTargets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for ConfiguredTargets matching the given query parameters. Results
         /// will be ordered by timing.start_time with most recent first, but total
@@ -2843,7 +2957,7 @@ pub mod result_store_download_client {
         pub async fn search_configured_targets(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchConfiguredTargetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SearchConfiguredTargetsResponse>,
             tonic::Status,
         > {
@@ -2860,7 +2974,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/SearchConfiguredTargets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "SearchConfiguredTargets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the action with the given name.
         ///
@@ -2871,7 +2993,7 @@ pub mod result_store_download_client {
         pub async fn get_action(
             &mut self,
             request: impl tonic::IntoRequest<super::GetActionRequest>,
-        ) -> Result<tonic::Response<super::Action>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Action>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2885,7 +3007,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/GetAction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "GetAction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves all actions for a parent invocation/target/configuration.
         /// This might be limited by user or server, in which case a continuation
@@ -2903,7 +3033,10 @@ pub mod result_store_download_client {
         pub async fn list_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListActionsRequest>,
-        ) -> Result<tonic::Response<super::ListActionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListActionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2917,7 +3050,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/ListActions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "ListActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of actions for a parent invocation or multiple parents
         /// target/configuration. This might be limited by user or server, in which
@@ -2931,7 +3072,10 @@ pub mod result_store_download_client {
         pub async fn batch_list_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchListActionsRequest>,
-        ) -> Result<tonic::Response<super::BatchListActionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BatchListActionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2945,7 +3089,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/BatchListActions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "BatchListActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the file set with the given name.
         ///
@@ -2956,7 +3108,7 @@ pub mod result_store_download_client {
         pub async fn get_file_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFileSetRequest>,
-        ) -> Result<tonic::Response<super::FileSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FileSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2970,7 +3122,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/GetFileSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "GetFileSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves all file sets for a parent invocation.
         /// This might be limited by user or server,
@@ -2984,7 +3144,10 @@ pub mod result_store_download_client {
         pub async fn list_file_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFileSetsRequest>,
-        ) -> Result<tonic::Response<super::ListFileSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListFileSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2998,7 +3161,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/ListFileSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "ListFileSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the transitive closure of FileSets. This might be limited by user
         /// or server, in which case a continuation token is provided.
@@ -3012,7 +3183,10 @@ pub mod result_store_download_client {
         pub async fn traverse_file_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::TraverseFileSetsRequest>,
-        ) -> Result<tonic::Response<super::TraverseFileSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TraverseFileSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3026,7 +3200,15 @@ pub mod result_store_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreDownload/TraverseFileSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreDownload",
+                        "TraverseFileSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3117,7 +3299,7 @@ pub mod result_store_file_download_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3175,6 +3357,22 @@ pub mod result_store_file_download_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the File with the given uri.
         /// returns a stream of bytes to be stitched together in order.
         ///
@@ -3184,7 +3382,7 @@ pub mod result_store_file_download_client {
         pub async fn get_file(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFileRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::GetFileResponse>>,
             tonic::Status,
         > {
@@ -3201,7 +3399,15 @@ pub mod result_store_file_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreFileDownload/GetFile",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreFileDownload",
+                        "GetFile",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Retrieves the tail of a File with the given uri.
         ///
@@ -3211,7 +3417,10 @@ pub mod result_store_file_download_client {
         pub async fn get_file_tail(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFileTailRequest>,
-        ) -> Result<tonic::Response<super::GetFileTailResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GetFileTailResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3225,7 +3434,15 @@ pub mod result_store_file_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreFileDownload/GetFileTail",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreFileDownload",
+                        "GetFileTail",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4076,7 +4293,7 @@ pub mod result_store_upload_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4132,6 +4349,22 @@ pub mod result_store_upload_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates the given invocation.
         ///
         /// This is not an implicitly idempotent API, so a request id is required to
@@ -4145,7 +4378,7 @@ pub mod result_store_upload_client {
         pub async fn create_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInvocationRequest>,
-        ) -> Result<tonic::Response<super::Invocation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Invocation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4159,7 +4392,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/CreateInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "CreateInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a standard update to the invocation identified by the given proto's
         /// name.  For all types of fields (primitive, message, or repeated), replaces
@@ -4177,7 +4418,7 @@ pub mod result_store_upload_client {
         pub async fn update_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInvocationRequest>,
-        ) -> Result<tonic::Response<super::Invocation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Invocation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4191,7 +4432,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/UpdateInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "UpdateInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a merge update to the invocation identified by the given proto's
         /// name.  For primitive and message fields, replaces them with the ones in
@@ -4211,7 +4460,7 @@ pub mod result_store_upload_client {
         pub async fn merge_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeInvocationRequest>,
-        ) -> Result<tonic::Response<super::Invocation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Invocation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4225,7 +4474,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/MergeInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "MergeInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Touches the invocation identified by the given proto's name.
         ///
@@ -4239,7 +4496,10 @@ pub mod result_store_upload_client {
         pub async fn touch_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::TouchInvocationRequest>,
-        ) -> Result<tonic::Response<super::TouchInvocationResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TouchInvocationResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4253,7 +4513,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/TouchInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "TouchInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Declares the invocation with the given name as finalized and immutable by
         /// the user. It may still be mutated by post-processing. This is an implicitly
@@ -4267,7 +4535,10 @@ pub mod result_store_upload_client {
         pub async fn finalize_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeInvocationRequest>,
-        ) -> Result<tonic::Response<super::FinalizeInvocationResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FinalizeInvocationResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4281,7 +4552,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/FinalizeInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "FinalizeInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an immutable invocation (permanently)
         /// Note: this does not delete indirect data, e.g. files stored in other
@@ -4293,7 +4572,7 @@ pub mod result_store_upload_client {
         pub async fn delete_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInvocationRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4307,7 +4586,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/DeleteInvocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "DeleteInvocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates the given target under the given parent invocation. The given
         /// target ID is URL encoded, converted to the full resource name, and assigned
@@ -4324,7 +4611,7 @@ pub mod result_store_upload_client {
         pub async fn create_target(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTargetRequest>,
-        ) -> Result<tonic::Response<super::Target>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Target>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4338,7 +4625,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/CreateTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "CreateTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a standard update to the target identified by the given proto's
         /// name. For all types of fields (primitive, message, or repeated), replaces
@@ -4355,7 +4650,7 @@ pub mod result_store_upload_client {
         pub async fn update_target(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTargetRequest>,
-        ) -> Result<tonic::Response<super::Target>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Target>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4369,7 +4664,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/UpdateTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "UpdateTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a merge update to the target identified by the given proto's
         /// name. For primitive and message fields, replaces them with the ones in the
@@ -4388,7 +4691,7 @@ pub mod result_store_upload_client {
         pub async fn merge_target(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeTargetRequest>,
-        ) -> Result<tonic::Response<super::Target>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Target>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4402,7 +4705,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/MergeTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "MergeTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Declares the target with the given name as finalized and immutable by the
         /// user. It may still be mutated by post-processing. This is an implicitly
@@ -4413,7 +4724,10 @@ pub mod result_store_upload_client {
         pub async fn finalize_target(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeTargetRequest>,
-        ) -> Result<tonic::Response<super::FinalizeTargetResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FinalizeTargetResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4427,7 +4741,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/FinalizeTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "FinalizeTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates the given configured target under the given parent target.
         /// The given configured target ID is URL encoded, converted to the full
@@ -4446,7 +4768,10 @@ pub mod result_store_upload_client {
         pub async fn create_configured_target(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConfiguredTargetRequest>,
-        ) -> Result<tonic::Response<super::ConfiguredTarget>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConfiguredTarget>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4460,7 +4785,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/CreateConfiguredTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "CreateConfiguredTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a standard update to the configured target identified by the given
         /// proto's name. For all types of fields (primitive, message, or repeated),
@@ -4478,7 +4811,10 @@ pub mod result_store_upload_client {
         pub async fn update_configured_target(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConfiguredTargetRequest>,
-        ) -> Result<tonic::Response<super::ConfiguredTarget>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConfiguredTarget>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4492,7 +4828,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/UpdateConfiguredTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "UpdateConfiguredTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a merge update to the configured target identified by the given
         /// proto's name. For primitive and message fields, replaces them with the
@@ -4512,7 +4856,10 @@ pub mod result_store_upload_client {
         pub async fn merge_configured_target(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeConfiguredTargetRequest>,
-        ) -> Result<tonic::Response<super::ConfiguredTarget>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConfiguredTarget>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4526,7 +4873,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/MergeConfiguredTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "MergeConfiguredTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Declares the configured target with the given name as finalized and
         /// immutable by the user. It may still be mutated by post-processing. This is
@@ -4537,7 +4892,7 @@ pub mod result_store_upload_client {
         pub async fn finalize_configured_target(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeConfiguredTargetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::FinalizeConfiguredTargetResponse>,
             tonic::Status,
         > {
@@ -4554,7 +4909,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/FinalizeConfiguredTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "FinalizeConfiguredTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates the given action under the given configured target. The given
         /// action ID is URL encoded, converted to the full resource name, and
@@ -4571,7 +4934,7 @@ pub mod result_store_upload_client {
         pub async fn create_action(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateActionRequest>,
-        ) -> Result<tonic::Response<super::Action>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Action>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4585,7 +4948,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/CreateAction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "CreateAction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a standard update to the action identified by the given
         /// proto's name.  For all types of fields (primitive, message, or repeated),
@@ -4602,7 +4973,7 @@ pub mod result_store_upload_client {
         pub async fn update_action(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateActionRequest>,
-        ) -> Result<tonic::Response<super::Action>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Action>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4616,7 +4987,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/UpdateAction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "UpdateAction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a merge update to the action identified by the given
         /// proto's name.  For primitive and message fields, replaces them with the
@@ -4635,7 +5014,7 @@ pub mod result_store_upload_client {
         pub async fn merge_action(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeActionRequest>,
-        ) -> Result<tonic::Response<super::Action>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Action>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4649,7 +5028,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/MergeAction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "MergeAction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates the given configuration under the given parent invocation. The
         /// given configuration ID is URL encoded, converted to the full resource name,
@@ -4669,7 +5056,7 @@ pub mod result_store_upload_client {
         pub async fn create_configuration(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConfigurationRequest>,
-        ) -> Result<tonic::Response<super::Configuration>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Configuration>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4683,7 +5070,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/CreateConfiguration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "CreateConfiguration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a standard update to the configuration identified by the given
         /// proto's name. For all types of fields (primitive, message, or repeated),
@@ -4702,7 +5097,7 @@ pub mod result_store_upload_client {
         pub async fn update_configuration(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConfigurationRequest>,
-        ) -> Result<tonic::Response<super::Configuration>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Configuration>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4716,7 +5111,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/UpdateConfiguration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "UpdateConfiguration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates the given file set under the given parent invocation. The given
         /// file set ID is URL encoded, converted to the full resource name, and
@@ -4733,7 +5136,7 @@ pub mod result_store_upload_client {
         pub async fn create_file_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFileSetRequest>,
-        ) -> Result<tonic::Response<super::FileSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FileSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4747,7 +5150,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/CreateFileSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "CreateFileSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a standard update to the file set identified by the given proto's
         /// name. For all types of fields (primitive, message, or repeated), replaces
@@ -4765,7 +5176,7 @@ pub mod result_store_upload_client {
         pub async fn update_file_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFileSetRequest>,
-        ) -> Result<tonic::Response<super::FileSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FileSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4779,7 +5190,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/UpdateFileSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "UpdateFileSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a merge update to the file set identified by the given proto's
         /// name. For primitive and message fields, updates them with the ones in the
@@ -4799,7 +5218,7 @@ pub mod result_store_upload_client {
         pub async fn merge_file_set(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeFileSetRequest>,
-        ) -> Result<tonic::Response<super::FileSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FileSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4813,7 +5232,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/MergeFileSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "MergeFileSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// This is the RPC used for batch upload. It supports uploading multiple
         /// resources for an invocation in a transaction safe manner.
@@ -4832,7 +5259,10 @@ pub mod result_store_upload_client {
         pub async fn upload_batch(
             &mut self,
             request: impl tonic::IntoRequest<super::UploadBatchRequest>,
-        ) -> Result<tonic::Response<super::UploadBatchResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UploadBatchResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4846,7 +5276,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/UploadBatch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "UploadBatch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Provides a way to read the metadata for an invocation.
         /// The UploadMetadata could still be retrieved by this RPC even the Invocation
@@ -4860,7 +5298,7 @@ pub mod result_store_upload_client {
         pub async fn get_invocation_upload_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInvocationUploadMetadataRequest>,
-        ) -> Result<tonic::Response<super::UploadMetadata>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UploadMetadata>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4874,7 +5312,15 @@ pub mod result_store_upload_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreUpload/GetInvocationUploadMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.resultstore.v2.ResultStoreUpload",
+                        "GetInvocationUploadMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -333,7 +333,7 @@ pub struct ColorInfo {
     /// it is expected to have only 1 color. May consider using single "Mixed"
     /// instead of multiple values.
     ///
-    /// A maximum of 25 colors are allowed. Each value must be a UTF-8 encoded
+    /// A maximum of 75 colors are allowed. Each value must be a UTF-8 encoded
     /// string with a length limit of 128 characters. Otherwise, an
     /// INVALID_ARGUMENT error is returned.
     ///
@@ -1398,12 +1398,11 @@ pub struct Product {
     pub variants: ::prost::alloc::vec::Vec<Product>,
     /// Output only. A list of local inventories specific to different places.
     ///
-    /// This is only available for users who have Retail Search enabled, and it can
-    /// be managed by
+    /// This field can be managed by
     /// \[ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories\]
     /// and
     /// \[ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories\]
-    /// APIs.
+    /// APIs if fine-grained, high-volume updates are necessary.
     #[prost(message, repeated, tag = "35")]
     pub local_inventories: ::prost::alloc::vec::Vec<LocalInventory>,
     #[prost(oneof = "product::Expiration", tags = "16, 17")]
@@ -1836,6 +1835,13 @@ pub struct UserEvent {
     /// Tag Manager, this value is filled in automatically.
     #[prost(string, tag = "15")]
     pub page_view_id: ::prost::alloc::string::String,
+    /// The entity for customers that may run multiple different entities, domains,
+    /// sites or regions, for example, `Google US`, `Google Ads`, `Waymo`,
+    /// `google.com`, `youtube.com`, etc.
+    /// It is recommended to set this field to get better per-entity search,
+    /// completion and prediction results.
+    #[prost(string, tag = "23")]
+    pub entity: ::prost::alloc::string::String,
 }
 /// Detailed product information associated with a user event.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2003,7 +2009,7 @@ pub struct BigQuerySource {
     ///    The schema is available here:
     ///    <https://support.google.com/analytics/answer/7029846.>
     ///
-    /// Supported values for auto-completion imports:
+    /// Supported values for autocomplete imports:
     ///
     /// * `suggestions` (default): One JSON completion suggestion per line.
     /// * `denylist`:  One JSON deny suggestion per line.
@@ -2439,6 +2445,10 @@ pub struct CatalogAttribute {
     /// characters and underscores. For example, an attribute named
     /// `attributes.abc_xyz` can be indexed, but an attribute named
     /// `attributes.abc-xyz` cannot be indexed.
+    ///
+    /// If the attribute key starts with `attributes.`, then the attribute is a
+    /// custom attribute. Attributes such as `brands`, `patterns`, and `title` are
+    /// built-in and called system attributes.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
     /// Output only. Indicates whether this attribute has been used by any
@@ -2511,11 +2521,14 @@ pub struct CatalogAttribute {
     pub recommendations_filtering_option: i32,
     /// If EXACT_SEARCHABLE_ENABLED, attribute values will be exact searchable.
     /// This property only applies to textual custom attributes and requires
-    /// indexable set to enabled to enable exact-searchable.
+    /// indexable set to enabled to enable exact-searchable. If unset, the server
+    /// behavior defaults to
+    /// \[EXACT_SEARCHABLE_DISABLED][google.cloud.retail.v2beta.CatalogAttribute.ExactSearchableOption.EXACT_SEARCHABLE_DISABLED\].
     #[prost(enumeration = "catalog_attribute::ExactSearchableOption", tag = "11")]
     pub exact_searchable_option: i32,
     /// If RETRIEVABLE_ENABLED, attribute values are retrievable in the search
-    /// results.
+    /// results. If unset, the server behavior defaults to
+    /// \[RETRIEVABLE_DISABLED][google.cloud.retail.v2beta.CatalogAttribute.RetrievableOption.RETRIEVABLE_DISABLED\].
     #[prost(enumeration = "catalog_attribute::RetrievableOption", tag = "12")]
     pub retrievable_option: i32,
 }
@@ -2716,8 +2729,7 @@ pub mod catalog_attribute {
     )]
     #[repr(i32)]
     pub enum ExactSearchableOption {
-        /// Value used when unset. Defaults to
-        /// \[EXACT_SEARCHABLE_DISABLED][google.cloud.retail.v2beta.CatalogAttribute.ExactSearchableOption.EXACT_SEARCHABLE_DISABLED\].
+        /// Value used when unset.
         Unspecified = 0,
         /// Exact searchable option enabled for an attribute.
         ExactSearchableEnabled = 1,
@@ -2766,8 +2778,7 @@ pub mod catalog_attribute {
     )]
     #[repr(i32)]
     pub enum RetrievableOption {
-        /// Value used when unset. Defaults to
-        /// \[RETRIEVABLE_DISABLED][google.cloud.retail.v2beta.CatalogAttribute.RetrievableOption.RETRIEVABLE_DISABLED\].
+        /// Value used when unset.
         Unspecified = 0,
         /// Retrievable option enabled for an attribute.
         RetrievableEnabled = 1,
@@ -3311,7 +3322,7 @@ pub mod catalog_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3367,12 +3378,31 @@ pub mod catalog_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all the [Catalog][google.cloud.retail.v2beta.Catalog]s associated
         /// with the project.
         pub async fn list_catalogs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCatalogsRequest>,
-        ) -> Result<tonic::Response<super::ListCatalogsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCatalogsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3386,13 +3416,21 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/ListCatalogs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "ListCatalogs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the [Catalog][google.cloud.retail.v2beta.Catalog]s.
         pub async fn update_catalog(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCatalogRequest>,
-        ) -> Result<tonic::Response<super::Catalog>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Catalog>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3406,7 +3444,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/UpdateCatalog",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "UpdateCatalog",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Set a specified branch id as default branch. API methods such as
         /// [SearchService.Search][google.cloud.retail.v2beta.SearchService.Search],
@@ -3444,7 +3490,7 @@ pub mod catalog_service_client {
         pub async fn set_default_branch(
             &mut self,
             request: impl tonic::IntoRequest<super::SetDefaultBranchRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3458,7 +3504,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/SetDefaultBranch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "SetDefaultBranch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get which branch is currently default branch set by
         /// [CatalogService.SetDefaultBranch][google.cloud.retail.v2beta.CatalogService.SetDefaultBranch]
@@ -3466,7 +3520,10 @@ pub mod catalog_service_client {
         pub async fn get_default_branch(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDefaultBranchRequest>,
-        ) -> Result<tonic::Response<super::GetDefaultBranchResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GetDefaultBranchResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3480,13 +3537,24 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/GetDefaultBranch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "GetDefaultBranch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a [CompletionConfig][google.cloud.retail.v2beta.CompletionConfig].
         pub async fn get_completion_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCompletionConfigRequest>,
-        ) -> Result<tonic::Response<super::CompletionConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CompletionConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3500,14 +3568,25 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/GetCompletionConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "GetCompletionConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the
         /// [CompletionConfig][google.cloud.retail.v2beta.CompletionConfig]s.
         pub async fn update_completion_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCompletionConfigRequest>,
-        ) -> Result<tonic::Response<super::CompletionConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CompletionConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3521,13 +3600,24 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/UpdateCompletionConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "UpdateCompletionConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an [AttributesConfig][google.cloud.retail.v2beta.AttributesConfig].
         pub async fn get_attributes_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAttributesConfigRequest>,
-        ) -> Result<tonic::Response<super::AttributesConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AttributesConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3541,7 +3631,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/GetAttributesConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "GetAttributesConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the
         /// [AttributesConfig][google.cloud.retail.v2beta.AttributesConfig].
@@ -3555,7 +3653,10 @@ pub mod catalog_service_client {
         pub async fn update_attributes_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAttributesConfigRequest>,
-        ) -> Result<tonic::Response<super::AttributesConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AttributesConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3569,7 +3670,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/UpdateAttributesConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "UpdateAttributesConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds the specified
         /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute] to the
@@ -3580,7 +3689,10 @@ pub mod catalog_service_client {
         pub async fn add_catalog_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::AddCatalogAttributeRequest>,
-        ) -> Result<tonic::Response<super::AttributesConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AttributesConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3594,7 +3706,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/AddCatalogAttribute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "AddCatalogAttribute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes the specified
         /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute] from the
@@ -3605,7 +3725,10 @@ pub mod catalog_service_client {
         pub async fn remove_catalog_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveCatalogAttributeRequest>,
-        ) -> Result<tonic::Response<super::AttributesConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AttributesConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3619,7 +3742,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/RemoveCatalogAttribute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "RemoveCatalogAttribute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes all specified
         /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute]s from the
@@ -3627,7 +3758,7 @@ pub mod catalog_service_client {
         pub async fn batch_remove_catalog_attributes(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchRemoveCatalogAttributesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchRemoveCatalogAttributesResponse>,
             tonic::Status,
         > {
@@ -3644,7 +3775,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/BatchRemoveCatalogAttributes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "BatchRemoveCatalogAttributes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Replaces the specified
         /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute] in the
@@ -3657,7 +3796,10 @@ pub mod catalog_service_client {
         pub async fn replace_catalog_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::ReplaceCatalogAttributeRequest>,
-        ) -> Result<tonic::Response<super::AttributesConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AttributesConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3671,11 +3813,19 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CatalogService/ReplaceCatalogAttribute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CatalogService",
+                        "ReplaceCatalogAttribute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Auto-complete parameters.
+/// Autocomplete parameters.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteQueryRequest {
@@ -3751,8 +3901,16 @@ pub struct CompleteQueryRequest {
     /// capped by 20.
     #[prost(int32, tag = "5")]
     pub max_suggestions: i32,
+    /// The entity for customers that may run multiple different entities, domains,
+    /// sites or regions, for example, `Google US`, `Google Ads`, `Waymo`,
+    /// `google.com`, `youtube.com`, etc.
+    /// If this is set, it should be exactly matched with
+    /// \[UserEvent.entity][google.cloud.retail.v2beta.UserEvent.entity\] to get
+    /// per-entity autocomplete results.
+    #[prost(string, tag = "10")]
+    pub entity: ::prost::alloc::string::String,
 }
-/// Response of the auto-complete query.
+/// Response of the autocomplete query.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteQueryResponse {
@@ -3832,7 +3990,7 @@ pub mod completion_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Auto-completion service for retail.
+    /// Autocomplete service for retail.
     ///
     /// This feature is only available for users who have Retail Search enabled.
     /// Enable Retail Search on Cloud Console before using this feature.
@@ -3844,7 +4002,7 @@ pub mod completion_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3900,6 +4058,22 @@ pub mod completion_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Completes the specified prefix with keyword suggestions.
         ///
         /// This feature is only available for users who have Retail Search enabled.
@@ -3907,7 +4081,10 @@ pub mod completion_service_client {
         pub async fn complete_query(
             &mut self,
             request: impl tonic::IntoRequest<super::CompleteQueryRequest>,
-        ) -> Result<tonic::Response<super::CompleteQueryResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CompleteQueryResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3921,7 +4098,15 @@ pub mod completion_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CompletionService/CompleteQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CompletionService",
+                        "CompleteQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Bulk import of processed completion dataset.
         ///
@@ -3935,7 +4120,7 @@ pub mod completion_service_client {
         pub async fn import_completion_data(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportCompletionDataRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3952,7 +4137,15 @@ pub mod completion_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.CompletionService/ImportCompletionData",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.CompletionService",
+                        "ImportCompletionData",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4061,7 +4254,7 @@ pub struct SearchRequest {
     pub order_by: ::prost::alloc::string::String,
     /// Facet specifications for faceted search. If empty, no facets are returned.
     ///
-    /// A maximum of 100 values are allowed. Otherwise, an INVALID_ARGUMENT error
+    /// A maximum of 200 values are allowed. Otherwise, an INVALID_ARGUMENT error
     /// is returned.
     #[prost(message, repeated, tag = "12")]
     pub facet_specs: ::prost::alloc::vec::Vec<search_request::FacetSpec>,
@@ -4162,7 +4355,7 @@ pub struct SearchRequest {
     /// INVALID_ARGUMENT error is returned.
     #[prost(string, repeated, tag = "17")]
     pub variant_rollup_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The categories associated with a category page. Required for category
+    /// The categories associated with a category page. Must be set for category
     /// navigation queries to achieve good search quality. The format should be
     /// the same as
     /// \[UserEvent.page_categories][google.cloud.retail.v2beta.UserEvent.page_categories\];
@@ -4222,6 +4415,14 @@ pub struct SearchRequest {
     pub spell_correction_spec: ::core::option::Option<
         search_request::SpellCorrectionSpec,
     >,
+    /// The entity for customers that may run multiple different entities, domains,
+    /// sites or regions, for example, `Google US`, `Google Ads`, `Waymo`,
+    /// `google.com`, `youtube.com`, etc.
+    /// If this is set, it should be exactly matched with
+    /// \[UserEvent.entity][google.cloud.retail.v2beta.UserEvent.entity\] to get
+    /// search results boosted by entity.
+    #[prost(string, tag = "38")]
+    pub entity: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SearchRequest`.
 pub mod search_request {
@@ -4353,7 +4554,16 @@ pub mod search_request {
             pub key: ::prost::alloc::string::String,
             /// Set only if values should be bucketized into intervals. Must be set
             /// for facets with numerical values. Must not be set for facet with text
-            /// values. Maximum number of intervals is 30.
+            /// values. Maximum number of intervals is 40.
+            ///
+            /// For all numerical facet keys that appear in the list of products from
+            /// the catalog, the percentiles 0, 10, 30, 50, 70, 90 and 100 are
+            /// computed from their distribution weekly. If the model assigns a high
+            /// score to a numerical facet key and its intervals are not specified in
+            /// the search request, these percentiles will become the bounds
+            /// for its intervals and will be returned in the response. If the
+            /// facet key intervals are specified in the request, then the specified
+            /// intervals will be returned instead.
             #[prost(message, repeated, tag = "2")]
             pub intervals: ::prost::alloc::vec::Vec<super::super::Interval>,
             /// Only get facet for the given restricted values. For example, when using
@@ -4890,6 +5100,10 @@ pub struct SearchResponse {
     pub invalid_condition_boost_specs: ::prost::alloc::vec::Vec<
         search_request::boost_spec::ConditionBoostSpec,
     >,
+    /// Metadata related to A/B testing \[Experiment][\] associated with this
+    /// response. Only exists when an experiment is triggered.
+    #[prost(message, repeated, tag = "17")]
+    pub experiment_info: ::prost::alloc::vec::Vec<ExperimentInfo>,
 }
 /// Nested message and enum types in `SearchResponse`.
 pub mod search_response {
@@ -5064,6 +5278,48 @@ pub mod search_response {
         pub pinned_result_count: i64,
     }
 }
+/// Metadata for active A/B testing \[Experiments][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExperimentInfo {
+    /// The fully qualified resource name of the experiment that provides the
+    /// serving config under test, should an active experiment exist. For example:
+    /// `projects/*/locations/global/catalogs/default_catalog/experiments/experiment_id`
+    #[prost(string, tag = "1")]
+    pub experiment: ::prost::alloc::string::String,
+    /// Information associated with the specific experiment entity being recorded.
+    #[prost(oneof = "experiment_info::ExperimentMetadata", tags = "2")]
+    pub experiment_metadata: ::core::option::Option<experiment_info::ExperimentMetadata>,
+}
+/// Nested message and enum types in `ExperimentInfo`.
+pub mod experiment_info {
+    /// Metadata for active serving config A/B tests.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ServingConfigExperiment {
+        /// The fully qualified resource name of the original
+        /// \[SearchRequest.placement][google.cloud.retail.v2beta.SearchRequest.placement\]
+        /// in the search request prior to reassignment by experiment API. For
+        /// example: `projects/*/locations/*/catalogs/*/servingConfigs/*`.
+        #[prost(string, tag = "1")]
+        pub original_serving_config: ::prost::alloc::string::String,
+        /// The fully qualified resource name of the serving config
+        /// \[VariantArm.serving_config_id][\] responsible for generating the search
+        /// response. For example:
+        /// `projects/*/locations/*/catalogs/*/servingConfigs/*`.
+        #[prost(string, tag = "2")]
+        pub experiment_serving_config: ::prost::alloc::string::String,
+    }
+    /// Information associated with the specific experiment entity being recorded.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ExperimentMetadata {
+        /// A/B test between existing Cloud Retail Search
+        /// \[ServingConfig][google.cloud.retail.v2beta.ServingConfig\]s.
+        #[prost(message, tag = "2")]
+        ServingConfigExperiment(ServingConfigExperiment),
+    }
+}
 /// Generated client implementations.
 pub mod search_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -5081,7 +5337,7 @@ pub mod search_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5137,6 +5393,22 @@ pub mod search_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Performs a search.
         ///
         /// This feature is only available for users who have Retail Search enabled.
@@ -5144,7 +5416,7 @@ pub mod search_service_client {
         pub async fn search(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchRequest>,
-        ) -> Result<tonic::Response<super::SearchResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SearchResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5158,7 +5430,12 @@ pub mod search_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.SearchService/Search",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.retail.v2beta.SearchService", "Search"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -5342,7 +5619,7 @@ pub mod control_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5398,6 +5675,22 @@ pub mod control_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a Control.
         ///
         /// If the [Control][google.cloud.retail.v2beta.Control] to create already
@@ -5405,7 +5698,7 @@ pub mod control_service_client {
         pub async fn create_control(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateControlRequest>,
-        ) -> Result<tonic::Response<super::Control>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Control>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5419,7 +5712,15 @@ pub mod control_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ControlService/CreateControl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ControlService",
+                        "CreateControl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Control.
         ///
@@ -5428,7 +5729,7 @@ pub mod control_service_client {
         pub async fn delete_control(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteControlRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5442,7 +5743,15 @@ pub mod control_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ControlService/DeleteControl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ControlService",
+                        "DeleteControl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Control.
         ///
@@ -5453,7 +5762,7 @@ pub mod control_service_client {
         pub async fn update_control(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateControlRequest>,
-        ) -> Result<tonic::Response<super::Control>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Control>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5467,13 +5776,21 @@ pub mod control_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ControlService/UpdateControl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ControlService",
+                        "UpdateControl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a Control.
         pub async fn get_control(
             &mut self,
             request: impl tonic::IntoRequest<super::GetControlRequest>,
-        ) -> Result<tonic::Response<super::Control>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Control>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5487,14 +5804,25 @@ pub mod control_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ControlService/GetControl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ControlService",
+                        "GetControl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all Controls by their parent
         /// [Catalog][google.cloud.retail.v2beta.Catalog].
         pub async fn list_controls(
             &mut self,
             request: impl tonic::IntoRequest<super::ListControlsRequest>,
-        ) -> Result<tonic::Response<super::ListControlsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListControlsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5508,7 +5836,15 @@ pub mod control_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ControlService/ListControls",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ControlService",
+                        "ListControls",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -5969,6 +6305,16 @@ pub struct UpdateModelRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// Request for getting a model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetModelRequest {
+    /// Required. The resource name of the
+    /// \[Model][google.cloud.retail.v2beta.Model\] to get. Format:
+    /// `projects/{project_number}/locations/{location_id}/catalogs/{catalog}/models/{model_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Request for pausing training of a model.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6088,7 +6434,7 @@ pub mod model_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6144,11 +6490,27 @@ pub mod model_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new model.
         pub async fn create_model(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateModelRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6165,13 +6527,49 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ModelService/CreateModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "CreateModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a model.
+        pub async fn get_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetModelRequest>,
+        ) -> std::result::Result<tonic::Response<super::Model>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/GetModel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "GetModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Pauses the training of an existing model.
         pub async fn pause_model(
             &mut self,
             request: impl tonic::IntoRequest<super::PauseModelRequest>,
-        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Model>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6185,13 +6583,21 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ModelService/PauseModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "PauseModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resumes the training of an existing model.
         pub async fn resume_model(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeModelRequest>,
-        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Model>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6205,13 +6611,21 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ModelService/ResumeModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "ResumeModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing model.
         pub async fn delete_model(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteModelRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6225,13 +6639,24 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ModelService/DeleteModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "DeleteModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the models linked to this event store.
         pub async fn list_models(
             &mut self,
             request: impl tonic::IntoRequest<super::ListModelsRequest>,
-        ) -> Result<tonic::Response<super::ListModelsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListModelsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6245,7 +6670,15 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ModelService/ListModels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "ListModels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update of model metadata. Only fields that
         /// currently can be updated are: `filtering_option` and
@@ -6254,7 +6687,7 @@ pub mod model_service_client {
         pub async fn update_model(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateModelRequest>,
-        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Model>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6268,13 +6701,21 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ModelService/UpdateModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "UpdateModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Tunes an existing model.
         pub async fn tune_model(
             &mut self,
             request: impl tonic::IntoRequest<super::TuneModelRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6291,7 +6732,15 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ModelService/TuneModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ModelService",
+                        "TuneModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -6377,6 +6826,9 @@ pub struct PredictRequest {
     ///   * (colors: ANY("Red", "Blue")) AND NOT (categories: ANY("Phones"))
     ///   * (availability: ANY("IN_STOCK")) AND
     ///     (colors: ANY("Red") OR categories: ANY("Phones"))
+    ///
+    /// For more information, see
+    /// [Filter recommendations](<https://cloud.google.com/retail/docs/filter-recs>).
     #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
     /// Use validate only mode for this prediction query. If set to true, a
@@ -6499,7 +6951,7 @@ pub mod prediction_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6555,11 +7007,30 @@ pub mod prediction_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Makes a recommendation prediction.
         pub async fn predict(
             &mut self,
             request: impl tonic::IntoRequest<super::PredictRequest>,
-        ) -> Result<tonic::Response<super::PredictResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PredictResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6573,7 +7044,15 @@ pub mod prediction_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.PredictionService/Predict",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.PredictionService",
+                        "Predict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -7192,7 +7671,7 @@ pub mod product_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -7248,11 +7727,27 @@ pub mod product_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a [Product][google.cloud.retail.v2beta.Product].
         pub async fn create_product(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProductRequest>,
-        ) -> Result<tonic::Response<super::Product>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Product>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7266,13 +7761,21 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/CreateProduct",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "CreateProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a [Product][google.cloud.retail.v2beta.Product].
         pub async fn get_product(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProductRequest>,
-        ) -> Result<tonic::Response<super::Product>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Product>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7286,13 +7789,24 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/GetProduct",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "GetProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of [Product][google.cloud.retail.v2beta.Product]s.
         pub async fn list_products(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProductsRequest>,
-        ) -> Result<tonic::Response<super::ListProductsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListProductsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7306,13 +7820,21 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/ListProducts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "ListProducts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a [Product][google.cloud.retail.v2beta.Product].
         pub async fn update_product(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateProductRequest>,
-        ) -> Result<tonic::Response<super::Product>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Product>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7326,13 +7848,21 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/UpdateProduct",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "UpdateProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a [Product][google.cloud.retail.v2beta.Product].
         pub async fn delete_product(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteProductRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7346,7 +7876,15 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/DeleteProduct",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "DeleteProduct",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Bulk import of multiple [Product][google.cloud.retail.v2beta.Product]s.
         ///
@@ -7358,7 +7896,7 @@ pub mod product_service_client {
         pub async fn import_products(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportProductsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7375,7 +7913,15 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/ImportProducts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "ImportProducts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates inventory information for a
         /// [Product][google.cloud.retail.v2beta.Product] while respecting the last
@@ -7426,13 +7972,10 @@ pub mod product_service_client {
         /// [Operation][google.longrunning.Operation]s associated with the stale
         /// updates are not marked as [done][google.longrunning.Operation.done] until
         /// they are obsolete.
-        ///
-        /// This feature is only available for users who have Retail Search enabled.
-        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn set_inventory(
             &mut self,
             request: impl tonic::IntoRequest<super::SetInventoryRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7449,8 +7992,24 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/SetInventory",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "SetInventory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
+        /// It is recommended to use the
+        /// [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
+        /// method instead of
+        /// [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces].
+        /// [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
+        /// achieves the same results but provides more fine-grained control over
+        /// ingesting local inventory data.
+        ///
         /// Incrementally adds place IDs to
         /// [Product.fulfillment_info.place_ids][google.cloud.retail.v2beta.FulfillmentInfo.place_ids].
         ///
@@ -7472,13 +8031,10 @@ pub mod product_service_client {
         /// [Operation][google.longrunning.Operation]s associated with the stale
         /// updates will not be marked as [done][google.longrunning.Operation.done]
         /// until being obsolete.
-        ///
-        /// This feature is only available for users who have Retail Search enabled.
-        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn add_fulfillment_places(
             &mut self,
             request: impl tonic::IntoRequest<super::AddFulfillmentPlacesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7495,8 +8051,24 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/AddFulfillmentPlaces",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "AddFulfillmentPlaces",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
+        /// It is recommended to use the
+        /// [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
+        /// method instead of
+        /// [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces].
+        /// [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
+        /// achieves the same results but provides more fine-grained control over
+        /// ingesting local inventory data.
+        ///
         /// Incrementally removes place IDs from a
         /// [Product.fulfillment_info.place_ids][google.cloud.retail.v2beta.FulfillmentInfo.place_ids].
         ///
@@ -7518,13 +8090,10 @@ pub mod product_service_client {
         /// [Operation][google.longrunning.Operation]s associated with the stale
         /// updates will not be marked as [done][google.longrunning.Operation.done]
         /// until being obsolete.
-        ///
-        /// This feature is only available for users who have Retail Search enabled.
-        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn remove_fulfillment_places(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveFulfillmentPlacesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7541,7 +8110,15 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/RemoveFulfillmentPlaces",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "RemoveFulfillmentPlaces",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates local inventory information for a
         /// [Product][google.cloud.retail.v2beta.Product] at a list of places, while
@@ -7571,13 +8148,10 @@ pub mod product_service_client {
         /// [Operation][google.longrunning.Operation]s associated with the stale
         /// updates will not be marked as [done][google.longrunning.Operation.done]
         /// until being obsolete.
-        ///
-        /// This feature is only available for users who have Retail Search enabled.
-        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn add_local_inventories(
             &mut self,
             request: impl tonic::IntoRequest<super::AddLocalInventoriesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7594,7 +8168,15 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/AddLocalInventories",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "AddLocalInventories",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Remove local inventory information for a
         /// [Product][google.cloud.retail.v2beta.Product] at a list of places at a
@@ -7622,13 +8204,10 @@ pub mod product_service_client {
         /// [Operation][google.longrunning.Operation]s associated with the stale
         /// updates will not be marked as [done][google.longrunning.Operation.done]
         /// until being obsolete.
-        ///
-        /// This feature is only available for users who have Retail Search enabled.
-        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn remove_local_inventories(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveLocalInventoriesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7645,7 +8224,15 @@ pub mod product_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ProductService/RemoveLocalInventories",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ProductService",
+                        "RemoveLocalInventories",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -7742,7 +8329,7 @@ pub struct ServingConfig {
     ///   Allowed values are:
     ///
     /// * `no-price-reranking`
-    /// * `low-price-raranking`
+    /// * `low-price-reranking`
     /// * `medium-price-reranking`
     /// * `high-price-reranking`
     ///
@@ -7901,7 +8488,9 @@ pub struct ServingConfig {
     /// \[SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION\].
     #[prost(string, tag = "8")]
     pub diversity_level: ::prost::alloc::string::String,
-    /// What kind of diversity to use - data driven or rule based.
+    /// What kind of diversity to use - data driven or rule based. If unset, the
+    /// server behavior defaults to
+    /// \[RULE_BASED_DIVERSITY][google.cloud.retail.v2beta.ServingConfig.DiversityType.RULE_BASED_DIVERSITY\].
     #[prost(enumeration = "serving_config::DiversityType", tag = "20")]
     pub diversity_type: i32,
     /// Whether to add additional category filters on the `similar-items` model.
@@ -7948,7 +8537,6 @@ pub struct ServingConfig {
 /// Nested message and enum types in `ServingConfig`.
 pub mod serving_config {
     /// What type of diversity - data or rule based.
-    /// If none is specified, default to rule based.
     #[derive(
         Clone,
         Copy,
@@ -8115,7 +8703,7 @@ pub mod serving_config_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -8171,6 +8759,22 @@ pub mod serving_config_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a ServingConfig.
         ///
         /// A maximum of 100 [ServingConfig][google.cloud.retail.v2beta.ServingConfig]s
@@ -8179,7 +8783,7 @@ pub mod serving_config_service_client {
         pub async fn create_serving_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServingConfigRequest>,
-        ) -> Result<tonic::Response<super::ServingConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ServingConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8193,7 +8797,15 @@ pub mod serving_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ServingConfigService/CreateServingConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ServingConfigService",
+                        "CreateServingConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a ServingConfig.
         ///
@@ -8201,7 +8813,7 @@ pub mod serving_config_service_client {
         pub async fn delete_serving_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServingConfigRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8215,13 +8827,21 @@ pub mod serving_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ServingConfigService/DeleteServingConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ServingConfigService",
+                        "DeleteServingConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a ServingConfig.
         pub async fn update_serving_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServingConfigRequest>,
-        ) -> Result<tonic::Response<super::ServingConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ServingConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8235,7 +8855,15 @@ pub mod serving_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ServingConfigService/UpdateServingConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ServingConfigService",
+                        "UpdateServingConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a ServingConfig.
         ///
@@ -8243,7 +8871,7 @@ pub mod serving_config_service_client {
         pub async fn get_serving_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServingConfigRequest>,
-        ) -> Result<tonic::Response<super::ServingConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ServingConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8257,13 +8885,24 @@ pub mod serving_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ServingConfigService/GetServingConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ServingConfigService",
+                        "GetServingConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all ServingConfigs linked to this catalog.
         pub async fn list_serving_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServingConfigsRequest>,
-        ) -> Result<tonic::Response<super::ListServingConfigsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServingConfigsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -8277,7 +8916,15 @@ pub mod serving_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ServingConfigService/ListServingConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ServingConfigService",
+                        "ListServingConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enables a Control on the specified ServingConfig.
         /// The control is added in the last position of the list of controls
@@ -8289,7 +8936,7 @@ pub mod serving_config_service_client {
         pub async fn add_control(
             &mut self,
             request: impl tonic::IntoRequest<super::AddControlRequest>,
-        ) -> Result<tonic::Response<super::ServingConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ServingConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8303,7 +8950,15 @@ pub mod serving_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ServingConfigService/AddControl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ServingConfigService",
+                        "AddControl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Disables a Control on the specified ServingConfig.
         /// The control is removed from the ServingConfig.
@@ -8312,7 +8967,7 @@ pub mod serving_config_service_client {
         pub async fn remove_control(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveControlRequest>,
-        ) -> Result<tonic::Response<super::ServingConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ServingConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8326,7 +8981,15 @@ pub mod serving_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.ServingConfigService/RemoveControl",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.ServingConfigService",
+                        "RemoveControl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -8392,7 +9055,7 @@ pub mod collect_user_event_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConversionRule {
         /// The prebuilt rule name that can convert a specific type of raw_json.
-        /// For example: "default_schema/v1.0"
+        /// For example: "ga4_bq" rule for the GA4 user event schema.
         #[prost(string, tag = "6")]
         PrebuiltRule(::prost::alloc::string::String),
     }
@@ -8493,7 +9156,7 @@ pub mod user_event_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -8549,11 +9212,27 @@ pub mod user_event_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Writes a single user event.
         pub async fn write_user_event(
             &mut self,
             request: impl tonic::IntoRequest<super::WriteUserEventRequest>,
-        ) -> Result<tonic::Response<super::UserEvent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UserEvent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8567,7 +9246,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.UserEventService/WriteUserEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.UserEventService",
+                        "WriteUserEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Writes a single user event from the browser. This uses a GET request to
         /// due to browser restriction of POST-ing to a 3rd party domain.
@@ -8577,7 +9264,7 @@ pub mod user_event_service_client {
         pub async fn collect_user_event(
             &mut self,
             request: impl tonic::IntoRequest<super::CollectUserEventRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::api::HttpBody>,
             tonic::Status,
         > {
@@ -8594,7 +9281,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.UserEventService/CollectUserEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.UserEventService",
+                        "CollectUserEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes permanently all user events specified by the filter provided.
         /// Depending on the number of events specified by the filter, this operation
@@ -8603,7 +9298,7 @@ pub mod user_event_service_client {
         pub async fn purge_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::PurgeUserEventsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -8620,7 +9315,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.UserEventService/PurgeUserEvents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.UserEventService",
+                        "PurgeUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Bulk import of User events. Request processing might be
         /// synchronous. Events that already exist are skipped.
@@ -8632,7 +9335,7 @@ pub mod user_event_service_client {
         pub async fn import_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportUserEventsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -8649,7 +9352,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.UserEventService/ImportUserEvents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.UserEventService",
+                        "ImportUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts a user-event rejoin operation with latest product catalog. Events
         /// are not annotated with detailed product information for products that are
@@ -8662,7 +9373,7 @@ pub mod user_event_service_client {
         pub async fn rejoin_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::RejoinUserEventsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -8679,7 +9390,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.retail.v2beta.UserEventService/RejoinUserEvents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.UserEventService",
+                        "RejoinUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -1648,7 +1648,7 @@ pub mod content_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1704,11 +1704,27 @@ pub mod content_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create a content.
         pub async fn create_content(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateContentRequest>,
-        ) -> Result<tonic::Response<super::Content>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1722,13 +1738,21 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/CreateContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "CreateContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update a content. Only supports full resource update.
         pub async fn update_content(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateContentRequest>,
-        ) -> Result<tonic::Response<super::Content>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1742,13 +1766,21 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/UpdateContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "UpdateContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete a content.
         pub async fn delete_content(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteContentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1762,13 +1794,21 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/DeleteContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "DeleteContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a content resource.
         pub async fn get_content(
             &mut self,
             request: impl tonic::IntoRequest<super::GetContentRequest>,
-        ) -> Result<tonic::Response<super::Content>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1782,7 +1822,15 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/GetContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "GetContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a contentitem resource. A `NOT_FOUND`
         /// error is returned if the resource does not exist. An empty policy is
@@ -1795,7 +1843,7 @@ pub mod content_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1812,7 +1860,15 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified contentitem resource.
         /// Replaces any existing policy.
@@ -1824,7 +1880,7 @@ pub mod content_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1841,7 +1897,15 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the caller's permissions on a resource.
         /// If the resource does not exist, an empty set of
@@ -1858,7 +1922,7 @@ pub mod content_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -1877,13 +1941,24 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List content.
         pub async fn list_content(
             &mut self,
             request: impl tonic::IntoRequest<super::ListContentRequest>,
-        ) -> Result<tonic::Response<super::ListContentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListContentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1897,7 +1972,15 @@ pub mod content_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/ListContent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "ListContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3081,7 +3164,7 @@ pub mod data_scan_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3137,11 +3220,27 @@ pub mod data_scan_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a DataScan resource.
         pub async fn create_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDataScanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3158,13 +3257,21 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/CreateDataScan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "CreateDataScan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a DataScan resource.
         pub async fn update_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDataScanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3181,13 +3288,21 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/UpdateDataScan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "UpdateDataScan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a DataScan resource.
         pub async fn delete_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDataScanRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3204,13 +3319,21 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/DeleteDataScan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "DeleteDataScan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a DataScan resource.
         pub async fn get_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataScanRequest>,
-        ) -> Result<tonic::Response<super::DataScan>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DataScan>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3224,13 +3347,24 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/GetDataScan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "GetDataScan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists DataScans.
         pub async fn list_data_scans(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataScansRequest>,
-        ) -> Result<tonic::Response<super::ListDataScansResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataScansResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3244,13 +3378,24 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/ListDataScans",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "ListDataScans",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Runs an on-demand execution of a DataScan
         pub async fn run_data_scan(
             &mut self,
             request: impl tonic::IntoRequest<super::RunDataScanRequest>,
-        ) -> Result<tonic::Response<super::RunDataScanResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RunDataScanResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3264,13 +3409,21 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/RunDataScan",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "RunDataScan",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a DataScanJob resource.
         pub async fn get_data_scan_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataScanJobRequest>,
-        ) -> Result<tonic::Response<super::DataScanJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DataScanJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3284,13 +3437,24 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/GetDataScanJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "GetDataScanJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists DataScanJobs under the given DataScan.
         pub async fn list_data_scan_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataScanJobsRequest>,
-        ) -> Result<tonic::Response<super::ListDataScanJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataScanJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3304,7 +3468,15 @@ pub mod data_scan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/ListDataScanJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "ListDataScanJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -5101,7 +5273,7 @@ pub mod metadata_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5157,11 +5329,27 @@ pub mod metadata_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create a metadata entity.
         pub async fn create_entity(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEntityRequest>,
-        ) -> Result<tonic::Response<super::Entity>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Entity>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5175,13 +5363,21 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/CreateEntity",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "CreateEntity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update a metadata entity. Only supports full resource update.
         pub async fn update_entity(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEntityRequest>,
-        ) -> Result<tonic::Response<super::Entity>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Entity>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5195,13 +5391,21 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/UpdateEntity",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "UpdateEntity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete a metadata entity.
         pub async fn delete_entity(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEntityRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5215,13 +5419,21 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/DeleteEntity",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "DeleteEntity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a metadata entity.
         pub async fn get_entity(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEntityRequest>,
-        ) -> Result<tonic::Response<super::Entity>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Entity>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5235,13 +5447,24 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/GetEntity",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "GetEntity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List metadata entities in a zone.
         pub async fn list_entities(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEntitiesRequest>,
-        ) -> Result<tonic::Response<super::ListEntitiesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEntitiesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5255,13 +5478,21 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/ListEntities",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "ListEntities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create a metadata partition.
         pub async fn create_partition(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePartitionRequest>,
-        ) -> Result<tonic::Response<super::Partition>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Partition>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5275,13 +5506,21 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/CreatePartition",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "CreatePartition",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete a metadata partition.
         pub async fn delete_partition(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePartitionRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5295,13 +5534,21 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/DeletePartition",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "DeletePartition",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a metadata partition of an entity.
         pub async fn get_partition(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPartitionRequest>,
-        ) -> Result<tonic::Response<super::Partition>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Partition>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5315,13 +5562,24 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/GetPartition",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "GetPartition",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List metadata partitions of an entity.
         pub async fn list_partitions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPartitionsRequest>,
-        ) -> Result<tonic::Response<super::ListPartitionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListPartitionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5335,7 +5593,15 @@ pub mod metadata_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/ListPartitions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.MetadataService",
+                        "ListPartitions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -6566,7 +6832,7 @@ pub mod dataplex_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6622,11 +6888,27 @@ pub mod dataplex_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a lake resource.
         pub async fn create_lake(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateLakeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6643,13 +6925,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateLake",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a lake resource.
         pub async fn update_lake(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateLakeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6666,14 +6956,22 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateLake",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a lake resource. All zones within the lake must be deleted before
         /// the lake can be deleted.
         pub async fn delete_lake(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteLakeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6690,13 +6988,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteLake",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists lake resources in a project and location.
         pub async fn list_lakes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLakesRequest>,
-        ) -> Result<tonic::Response<super::ListLakesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListLakesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6710,13 +7019,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListLakes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListLakes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a lake resource.
         pub async fn get_lake(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLakeRequest>,
-        ) -> Result<tonic::Response<super::Lake>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Lake>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6730,13 +7047,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetLake",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists action resources in a lake.
         pub async fn list_lake_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLakeActionsRequest>,
-        ) -> Result<tonic::Response<super::ListActionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListActionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6750,13 +7078,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListLakeActions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListLakeActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a zone resource within a lake.
         pub async fn create_zone(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateZoneRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6773,13 +7109,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateZone",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a zone resource.
         pub async fn update_zone(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateZoneRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6796,14 +7140,22 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateZone",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a zone resource. All assets within a zone must be deleted before
         /// the zone can be deleted.
         pub async fn delete_zone(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteZoneRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6820,13 +7172,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteZone",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists zone resources in a lake.
         pub async fn list_zones(
             &mut self,
             request: impl tonic::IntoRequest<super::ListZonesRequest>,
-        ) -> Result<tonic::Response<super::ListZonesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListZonesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6840,13 +7203,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListZones",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListZones",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a zone resource.
         pub async fn get_zone(
             &mut self,
             request: impl tonic::IntoRequest<super::GetZoneRequest>,
-        ) -> Result<tonic::Response<super::Zone>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Zone>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6860,13 +7231,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetZone",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists action resources in a zone.
         pub async fn list_zone_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListZoneActionsRequest>,
-        ) -> Result<tonic::Response<super::ListActionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListActionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6880,13 +7262,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListZoneActions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListZoneActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an asset resource.
         pub async fn create_asset(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAssetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6903,13 +7293,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateAsset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an asset resource.
         pub async fn update_asset(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAssetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6926,14 +7324,22 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateAsset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an asset resource. The referenced storage resource is detached
         /// (default) or deleted based on the associated Lifecycle policy.
         pub async fn delete_asset(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAssetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -6950,13 +7356,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteAsset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists asset resources in a zone.
         pub async fn list_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssetsRequest>,
-        ) -> Result<tonic::Response<super::ListAssetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAssetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -6970,13 +7387,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an asset resource.
         pub async fn get_asset(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAssetRequest>,
-        ) -> Result<tonic::Response<super::Asset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Asset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -6990,13 +7415,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetAsset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists action resources in an asset.
         pub async fn list_asset_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssetActionsRequest>,
-        ) -> Result<tonic::Response<super::ListActionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListActionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7010,13 +7446,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListAssetActions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListAssetActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a task resource within a lake.
         pub async fn create_task(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTaskRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7033,13 +7477,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update the task resource.
         pub async fn update_task(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTaskRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7056,13 +7508,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete the task resource.
         pub async fn delete_task(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTaskRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7079,13 +7539,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists tasks under the given lake.
         pub async fn list_tasks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTasksRequest>,
-        ) -> Result<tonic::Response<super::ListTasksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTasksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7099,13 +7570,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListTasks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get task resource.
         pub async fn get_task(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7119,13 +7598,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Jobs under the given task.
         pub async fn list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
-        ) -> Result<tonic::Response<super::ListJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7139,13 +7629,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get job resource.
         pub async fn get_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7159,13 +7657,18 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataplex.v1.DataplexService", "GetJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Cancel jobs running for the task resource.
         pub async fn cancel_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7179,13 +7682,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CancelJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CancelJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create an environment resource.
         pub async fn create_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7202,13 +7713,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update the environment resource.
         pub async fn update_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7225,14 +7744,22 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete the environment resource. All the child resources must have been
         /// deleted before environment deletion can be initiated.
         pub async fn delete_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7249,13 +7776,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists environments under the given lake.
         pub async fn list_environments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEnvironmentsRequest>,
-        ) -> Result<tonic::Response<super::ListEnvironmentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEnvironmentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7269,13 +7807,21 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListEnvironments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListEnvironments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get environment resource.
         pub async fn get_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEnvironmentRequest>,
-        ) -> Result<tonic::Response<super::Environment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Environment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -7289,13 +7835,24 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists session resources in an environment.
         pub async fn list_sessions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSessionsRequest>,
-        ) -> Result<tonic::Response<super::ListSessionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSessionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -7309,7 +7866,15 @@ pub mod dataplex_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListSessions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListSessions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

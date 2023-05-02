@@ -1084,7 +1084,7 @@ pub mod ad_mob_api_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1140,11 +1140,30 @@ pub mod ad_mob_api_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets information about the specified AdMob publisher account.
         pub async fn get_publisher_account(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPublisherAccountRequest>,
-        ) -> Result<tonic::Response<super::PublisherAccount>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublisherAccount>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1158,14 +1177,22 @@ pub mod ad_mob_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.admob.v1.AdMobApi/GetPublisherAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.admob.v1.AdMobApi",
+                        "GetPublisherAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the AdMob publisher account accessible with the client credential.
         /// Currently, all credentials have access to at most one AdMob account.
         pub async fn list_publisher_accounts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPublisherAccountsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPublisherAccountsResponse>,
             tonic::Status,
         > {
@@ -1182,14 +1209,22 @@ pub mod ad_mob_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.admob.v1.AdMobApi/ListPublisherAccounts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.admob.v1.AdMobApi",
+                        "ListPublisherAccounts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates an AdMob Network report based on the provided report
         /// specification.
         pub async fn generate_network_report(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateNetworkReportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 tonic::codec::Streaming<super::GenerateNetworkReportResponse>,
             >,
@@ -1208,14 +1243,22 @@ pub mod ad_mob_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.admob.v1.AdMobApi/GenerateNetworkReport",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.admob.v1.AdMobApi",
+                        "GenerateNetworkReport",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Generates an AdMob Mediation report based on the provided report
         /// specification.
         pub async fn generate_mediation_report(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateMediationReportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 tonic::codec::Streaming<super::GenerateMediationReportResponse>,
             >,
@@ -1234,7 +1277,15 @@ pub mod ad_mob_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.admob.v1.AdMobApi/GenerateMediationReport",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.admob.v1.AdMobApi",
+                        "GenerateMediationReport",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
     }
 }

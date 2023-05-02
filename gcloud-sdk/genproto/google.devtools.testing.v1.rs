@@ -1665,7 +1665,7 @@ pub mod test_execution_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1721,9 +1721,29 @@ pub mod test_execution_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates and runs a matrix of tests according to the given specifications.
         /// Unsupported environments will be returned in the state UNSUPPORTED.
         /// A test matrix is limited to use at most 2000 devices in parallel.
+        ///
+        /// The returned matrix will not yet contain
+        /// the executions that will be created for this matrix. That happens later on
+        /// and will require a call to GetTestMatrix.
         ///
         /// May return any of the following canonical error codes:
         ///
@@ -1733,7 +1753,7 @@ pub mod test_execution_service_client {
         pub async fn create_test_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTestMatrixRequest>,
-        ) -> Result<tonic::Response<super::TestMatrix>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TestMatrix>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1747,9 +1767,24 @@ pub mod test_execution_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestExecutionService/CreateTestMatrix",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.TestExecutionService",
+                        "CreateTestMatrix",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
-        /// Checks the status of a test matrix.
+        /// Checks the status of a test matrix and the executions once they
+        /// are created.
+        ///
+        /// The test matrix will contain the list of test executions to run if and only
+        /// if the resultStorage.toolResultsExecution fields have been populated.
+        ///
+        /// Note: Flaky test executions may still be added to the matrix at a later
+        /// stage.
         ///
         /// May return any of the following canonical error codes:
         ///
@@ -1759,7 +1794,7 @@ pub mod test_execution_service_client {
         pub async fn get_test_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTestMatrixRequest>,
-        ) -> Result<tonic::Response<super::TestMatrix>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TestMatrix>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1773,7 +1808,15 @@ pub mod test_execution_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestExecutionService/GetTestMatrix",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.TestExecutionService",
+                        "GetTestMatrix",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Cancels unfinished test executions in a test matrix.
         /// This call returns immediately and cancellation proceeds asynchronously.
@@ -1787,7 +1830,10 @@ pub mod test_execution_service_client {
         pub async fn cancel_test_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelTestMatrixRequest>,
-        ) -> Result<tonic::Response<super::CancelTestMatrixResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CancelTestMatrixResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1801,7 +1847,15 @@ pub mod test_execution_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestExecutionService/CancelTestMatrix",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.TestExecutionService",
+                        "CancelTestMatrix",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1922,7 +1976,7 @@ pub mod application_detail_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1980,11 +2034,30 @@ pub mod application_detail_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets the details of an Android application APK.
         pub async fn get_apk_details(
             &mut self,
             request: impl tonic::IntoRequest<super::GetApkDetailsRequest>,
-        ) -> Result<tonic::Response<super::GetApkDetailsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GetApkDetailsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1998,7 +2071,15 @@ pub mod application_detail_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.ApplicationDetailService/GetApkDetails",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.ApplicationDetailService",
+                        "GetApkDetails",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2685,7 +2766,7 @@ pub mod test_environment_discovery_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2743,6 +2824,22 @@ pub mod test_environment_discovery_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets the catalog of supported test environments.
         ///
         /// May return any of the following canonical error codes:
@@ -2753,7 +2850,10 @@ pub mod test_environment_discovery_service_client {
         pub async fn get_test_environment_catalog(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTestEnvironmentCatalogRequest>,
-        ) -> Result<tonic::Response<super::TestEnvironmentCatalog>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestEnvironmentCatalog>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2767,7 +2867,15 @@ pub mod test_environment_discovery_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestEnvironmentDiscoveryService/GetTestEnvironmentCatalog",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.TestEnvironmentDiscoveryService",
+                        "GetTestEnvironmentCatalog",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -1897,7 +1897,7 @@ pub mod alpha_analytics_data_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1953,6 +1953,22 @@ pub mod alpha_analytics_data_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns a customized funnel report of your Google Analytics event data. The
         /// data returned from the API is as a table with columns for the requested
         /// dimensions and metrics.
@@ -1966,7 +1982,10 @@ pub mod alpha_analytics_data_client {
         pub async fn run_funnel_report(
             &mut self,
             request: impl tonic::IntoRequest<super::RunFunnelReportRequest>,
-        ) -> Result<tonic::Response<super::RunFunnelReportResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RunFunnelReportResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1980,7 +1999,15 @@ pub mod alpha_analytics_data_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunFunnelReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "RunFunnelReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

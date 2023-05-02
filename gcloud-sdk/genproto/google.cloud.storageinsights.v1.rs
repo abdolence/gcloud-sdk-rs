@@ -56,8 +56,8 @@ pub struct CreateReportConfigRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -86,8 +86,8 @@ pub struct UpdateReportConfigRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -112,8 +112,8 @@ pub struct DeleteReportConfigRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -125,7 +125,7 @@ pub struct DeleteReportConfigRequest {
 }
 /// Message describing ReportDetail object. ReportDetail represents metadata of
 /// generated reports for a ReportConfig.
-/// Next ID: 8
+/// Next ID: 10
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportDetail {
@@ -137,10 +137,18 @@ pub struct ReportDetail {
     /// All the report data is referenced at this point of time.
     #[prost(message, optional, tag = "2")]
     pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Generated report's full path with name. It will be of the form
-    /// destination_bucket/<destination_path>/<report>.
-    #[prost(string, repeated, tag = "3")]
-    pub report_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Prefix of the object name of each report's shard. This will have full
+    /// prefix except the "extension" and "shard_id".
+    /// For example, if the `destination_path` is
+    /// `{{report-config-id}}/dt={{datetime}}`, the shard object name would be
+    /// `gs://my-insights/1A34-F2E456-12B456-1C3D/dt=2022-05-20T06:35/1A34-F2E456-12B456-1C3D_2022-05-20T06:35_5.csv`
+    /// and the value of `report_path_prefix` field would be
+    /// `gs://my-insights/1A34-F2E456-12B456-1C3D/dt=2022-05-20T06:35/1A34-F2E456-12B456-1C3D_2022-05-20T06:35_`.
+    #[prost(string, tag = "8")]
+    pub report_path_prefix: ::prost::alloc::string::String,
+    /// Total shards generated for the report.
+    #[prost(int64, tag = "9")]
+    pub shards_count: i64,
     /// Status of the ReportDetail.
     #[prost(message, optional, tag = "4")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
@@ -320,6 +328,10 @@ pub struct CsvOptions {
     #[prost(bool, tag = "3")]
     pub header_required: bool,
 }
+/// Options to configure Parquet formatted reports.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ParquetOptions {}
 /// Options to filter data on storage systems.
 /// Next ID: 2
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -408,7 +420,7 @@ pub struct ReportConfig {
     #[prost(string, tag = "11")]
     pub display_name: ::prost::alloc::string::String,
     /// Format in which report will be published.
-    #[prost(oneof = "report_config::ReportFormat", tags = "6")]
+    #[prost(oneof = "report_config::ReportFormat", tags = "6, 7")]
     pub report_format: ::core::option::Option<report_config::ReportFormat>,
     /// Configuration options for report contents.
     #[prost(oneof = "report_config::ReportKind", tags = "8")]
@@ -423,6 +435,9 @@ pub mod report_config {
         /// Options for CSV formatted reports.
         #[prost(message, tag = "6")]
         CsvOptions(super::CsvOptions),
+        /// Options for Parquet formatted reports.
+        #[prost(message, tag = "7")]
+        ParquetOptions(super::ParquetOptions),
     }
     /// Configuration options for report contents.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -447,7 +462,7 @@ pub mod storage_insights_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -503,11 +518,30 @@ pub mod storage_insights_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists ReportConfigs in a given project and location.
         pub async fn list_report_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReportConfigsRequest>,
-        ) -> Result<tonic::Response<super::ListReportConfigsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListReportConfigsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -521,13 +555,21 @@ pub mod storage_insights_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storageinsights.v1.StorageInsights/ListReportConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.storageinsights.v1.StorageInsights",
+                        "ListReportConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single ReportConfig.
         pub async fn get_report_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReportConfigRequest>,
-        ) -> Result<tonic::Response<super::ReportConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ReportConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -541,13 +583,21 @@ pub mod storage_insights_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storageinsights.v1.StorageInsights/GetReportConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.storageinsights.v1.StorageInsights",
+                        "GetReportConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new ReportConfig in a given project and location.
         pub async fn create_report_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReportConfigRequest>,
-        ) -> Result<tonic::Response<super::ReportConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ReportConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -561,13 +611,21 @@ pub mod storage_insights_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storageinsights.v1.StorageInsights/CreateReportConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.storageinsights.v1.StorageInsights",
+                        "CreateReportConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single ReportConfig.
         pub async fn update_report_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateReportConfigRequest>,
-        ) -> Result<tonic::Response<super::ReportConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ReportConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -581,13 +639,21 @@ pub mod storage_insights_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storageinsights.v1.StorageInsights/UpdateReportConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.storageinsights.v1.StorageInsights",
+                        "UpdateReportConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single ReportConfig.
         pub async fn delete_report_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteReportConfigRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -601,13 +667,24 @@ pub mod storage_insights_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storageinsights.v1.StorageInsights/DeleteReportConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.storageinsights.v1.StorageInsights",
+                        "DeleteReportConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists ReportDetails in a given project and location.
         pub async fn list_report_details(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReportDetailsRequest>,
-        ) -> Result<tonic::Response<super::ListReportDetailsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListReportDetailsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -621,13 +698,21 @@ pub mod storage_insights_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storageinsights.v1.StorageInsights/ListReportDetails",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.storageinsights.v1.StorageInsights",
+                        "ListReportDetails",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single ReportDetail.
         pub async fn get_report_detail(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReportDetailRequest>,
-        ) -> Result<tonic::Response<super::ReportDetail>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ReportDetail>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -641,7 +726,15 @@ pub mod storage_insights_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storageinsights.v1.StorageInsights/GetReportDetail",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.storageinsights.v1.StorageInsights",
+                        "GetReportDetail",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

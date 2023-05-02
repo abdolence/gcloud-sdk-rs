@@ -659,7 +659,7 @@ pub mod controller2_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -715,6 +715,22 @@ pub mod controller2_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Registers the debuggee with the controller service.
         ///
         /// All agents attached to the same application must call this method with
@@ -728,7 +744,10 @@ pub mod controller2_client {
         pub async fn register_debuggee(
             &mut self,
             request: impl tonic::IntoRequest<super::RegisterDebuggeeRequest>,
-        ) -> Result<tonic::Response<super::RegisterDebuggeeResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RegisterDebuggeeResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -742,7 +761,15 @@ pub mod controller2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Controller2/RegisterDebuggee",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Controller2",
+                        "RegisterDebuggee",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the list of all active breakpoints for the debuggee.
         ///
@@ -760,7 +787,7 @@ pub mod controller2_client {
         pub async fn list_active_breakpoints(
             &mut self,
             request: impl tonic::IntoRequest<super::ListActiveBreakpointsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListActiveBreakpointsResponse>,
             tonic::Status,
         > {
@@ -777,7 +804,15 @@ pub mod controller2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Controller2/ListActiveBreakpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Controller2",
+                        "ListActiveBreakpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the breakpoint state or mutable fields.
         /// The entire Breakpoint message must be sent back to the controller service.
@@ -790,7 +825,7 @@ pub mod controller2_client {
         pub async fn update_active_breakpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateActiveBreakpointRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::UpdateActiveBreakpointResponse>,
             tonic::Status,
         > {
@@ -807,7 +842,15 @@ pub mod controller2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Controller2/UpdateActiveBreakpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Controller2",
+                        "UpdateActiveBreakpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -989,7 +1032,7 @@ pub mod debugger2_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1045,11 +1088,30 @@ pub mod debugger2_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Sets the breakpoint to the debuggee.
         pub async fn set_breakpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::SetBreakpointRequest>,
-        ) -> Result<tonic::Response<super::SetBreakpointResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SetBreakpointResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1063,13 +1125,24 @@ pub mod debugger2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Debugger2/SetBreakpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Debugger2",
+                        "SetBreakpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets breakpoint information.
         pub async fn get_breakpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBreakpointRequest>,
-        ) -> Result<tonic::Response<super::GetBreakpointResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GetBreakpointResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1083,13 +1156,21 @@ pub mod debugger2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Debugger2/GetBreakpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Debugger2",
+                        "GetBreakpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the breakpoint from the debuggee.
         pub async fn delete_breakpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBreakpointRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1103,13 +1184,24 @@ pub mod debugger2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Debugger2/DeleteBreakpoint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Debugger2",
+                        "DeleteBreakpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all breakpoints for the debuggee.
         pub async fn list_breakpoints(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBreakpointsRequest>,
-        ) -> Result<tonic::Response<super::ListBreakpointsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBreakpointsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1123,13 +1215,24 @@ pub mod debugger2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Debugger2/ListBreakpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Debugger2",
+                        "ListBreakpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the debuggees that the user has access to.
         pub async fn list_debuggees(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDebuggeesRequest>,
-        ) -> Result<tonic::Response<super::ListDebuggeesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDebuggeesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1143,7 +1246,15 @@ pub mod debugger2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouddebugger.v2.Debugger2/ListDebuggees",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.clouddebugger.v2.Debugger2",
+                        "ListDebuggees",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

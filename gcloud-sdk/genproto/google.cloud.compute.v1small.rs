@@ -961,7 +961,7 @@ pub mod addresses_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1017,11 +1017,30 @@ pub mod addresses_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of addresses.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListAddressesRequest>,
-        ) -> Result<tonic::Response<super::AddressAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AddressAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1035,13 +1054,21 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1small.Addresses/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1small.Addresses",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified address resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1055,13 +1082,18 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1small.Addresses/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1small.Addresses", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an address resource in the specified project by using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1075,13 +1107,18 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1small.Addresses/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1small.Addresses", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of addresses contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAddressesRequest>,
-        ) -> Result<tonic::Response<super::AddressList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AddressList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1095,7 +1132,12 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1small.Addresses/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1small.Addresses", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1113,7 +1155,7 @@ pub mod region_operations_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1169,11 +1211,27 @@ pub mod region_operations_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the specified region-specific Operations resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1187,7 +1245,15 @@ pub mod region_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1small.RegionOperations/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1small.RegionOperations",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Waits for the specified Operation resource to return as `DONE` or for the request to approach the 2 minute deadline, and retrieves the specified Operation resource. This method differs from the `GET` method in that it waits for no more than the default deadline (2 minutes) and then returns the current state of the operation, which might be `DONE` or still in progress.
         ///
@@ -1197,7 +1263,7 @@ pub mod region_operations_client {
         pub async fn wait(
             &mut self,
             request: impl tonic::IntoRequest<super::WaitRegionOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1211,7 +1277,15 @@ pub mod region_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1small.RegionOperations/Wait",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1small.RegionOperations",
+                        "Wait",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

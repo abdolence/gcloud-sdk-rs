@@ -408,7 +408,7 @@ pub mod cloud_shell_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -464,11 +464,27 @@ pub mod cloud_shell_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets an environment. Returns NOT_FOUND if the environment does not exist.
         pub async fn get_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEnvironmentRequest>,
-        ) -> Result<tonic::Response<super::Environment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Environment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -482,7 +498,15 @@ pub mod cloud_shell_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.shell.v1.CloudShellService/GetEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.shell.v1.CloudShellService",
+                        "GetEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts an existing environment, allowing clients to connect to it. The
         /// returned operation will contain an instance of StartEnvironmentMetadata in
@@ -493,7 +517,7 @@ pub mod cloud_shell_service_client {
         pub async fn start_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::StartEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -510,7 +534,15 @@ pub mod cloud_shell_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.shell.v1.CloudShellService/StartEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.shell.v1.CloudShellService",
+                        "StartEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sends OAuth credentials to a running environment on behalf of a user. When
         /// this completes, the environment will be authorized to run various Google
@@ -519,7 +551,7 @@ pub mod cloud_shell_service_client {
         pub async fn authorize_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::AuthorizeEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -536,7 +568,15 @@ pub mod cloud_shell_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.shell.v1.CloudShellService/AuthorizeEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.shell.v1.CloudShellService",
+                        "AuthorizeEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds a public SSH key to an environment, allowing clients with the
         /// corresponding private key to connect to that environment via SSH. If a key
@@ -544,7 +584,7 @@ pub mod cloud_shell_service_client {
         pub async fn add_public_key(
             &mut self,
             request: impl tonic::IntoRequest<super::AddPublicKeyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -561,7 +601,15 @@ pub mod cloud_shell_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.shell.v1.CloudShellService/AddPublicKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.shell.v1.CloudShellService",
+                        "AddPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes a public SSH key from an environment. Clients will no longer be
         /// able to connect to the environment using the corresponding private key.
@@ -570,7 +618,7 @@ pub mod cloud_shell_service_client {
         pub async fn remove_public_key(
             &mut self,
             request: impl tonic::IntoRequest<super::RemovePublicKeyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -587,7 +635,15 @@ pub mod cloud_shell_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.shell.v1.CloudShellService/RemovePublicKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.shell.v1.CloudShellService",
+                        "RemovePublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -1363,7 +1363,7 @@ pub mod access_context_manager_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1419,13 +1419,32 @@ pub mod access_context_manager_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all [access policies]
         /// [google.identity.accesscontextmanager.v1.AccessPolicy] in an
         /// organization.
         pub async fn list_access_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAccessPoliciesRequest>,
-        ) -> Result<tonic::Response<super::ListAccessPoliciesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAccessPoliciesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1439,14 +1458,22 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/ListAccessPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "ListAccessPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns an [access policy]
         /// [google.identity.accesscontextmanager.v1.AccessPolicy] based on the name.
         pub async fn get_access_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAccessPolicyRequest>,
-        ) -> Result<tonic::Response<super::AccessPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AccessPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1460,7 +1487,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/GetAccessPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "GetAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an access policy. This method fails if the organization already has
         /// an access policy. The long-running operation has a successful status
@@ -1470,7 +1505,7 @@ pub mod access_context_manager_client {
         pub async fn create_access_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::AccessPolicy>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1487,7 +1522,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/CreateAccessPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "CreateAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an [access policy]
         /// [google.identity.accesscontextmanager.v1.AccessPolicy]. The
@@ -1498,7 +1541,7 @@ pub mod access_context_manager_client {
         pub async fn update_access_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAccessPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1515,7 +1558,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/UpdateAccessPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "UpdateAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an [access policy]
         /// [google.identity.accesscontextmanager.v1.AccessPolicy] based on the
@@ -1525,7 +1576,7 @@ pub mod access_context_manager_client {
         pub async fn delete_access_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAccessPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1542,7 +1593,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/DeleteAccessPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "DeleteAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [access levels]
         /// [google.identity.accesscontextmanager.v1.AccessLevel] for an access
@@ -1550,7 +1609,10 @@ pub mod access_context_manager_client {
         pub async fn list_access_levels(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAccessLevelsRequest>,
-        ) -> Result<tonic::Response<super::ListAccessLevelsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAccessLevelsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1564,7 +1626,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/ListAccessLevels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "ListAccessLevels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an [access level]
         /// [google.identity.accesscontextmanager.v1.AccessLevel] based on the resource
@@ -1572,7 +1642,7 @@ pub mod access_context_manager_client {
         pub async fn get_access_level(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAccessLevelRequest>,
-        ) -> Result<tonic::Response<super::AccessLevel>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AccessLevel>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1586,7 +1656,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/GetAccessLevel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "GetAccessLevel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an [access level]
         /// [google.identity.accesscontextmanager.v1.AccessLevel]. The long-running
@@ -1598,7 +1676,7 @@ pub mod access_context_manager_client {
         pub async fn create_access_level(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAccessLevelRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1615,7 +1693,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/CreateAccessLevel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "CreateAccessLevel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an [access level]
         /// [google.identity.accesscontextmanager.v1.AccessLevel]. The long-running
@@ -1628,7 +1714,7 @@ pub mod access_context_manager_client {
         pub async fn update_access_level(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAccessLevelRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1645,7 +1731,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/UpdateAccessLevel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "UpdateAccessLevel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an [access level]
         /// [google.identity.accesscontextmanager.v1.AccessLevel] based on the resource
@@ -1656,7 +1750,7 @@ pub mod access_context_manager_client {
         pub async fn delete_access_level(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAccessLevelRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1673,7 +1767,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/DeleteAccessLevel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "DeleteAccessLevel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Replaces all existing [access levels]
         /// [google.identity.accesscontextmanager.v1.AccessLevel] in an [access
@@ -1695,7 +1797,7 @@ pub mod access_context_manager_client {
         pub async fn replace_access_levels(
             &mut self,
             request: impl tonic::IntoRequest<super::ReplaceAccessLevelsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1712,7 +1814,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/ReplaceAccessLevels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "ReplaceAccessLevels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [service perimeters]
         /// [google.identity.accesscontextmanager.v1.ServicePerimeter] for an
@@ -1720,7 +1830,7 @@ pub mod access_context_manager_client {
         pub async fn list_service_perimeters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicePerimetersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListServicePerimetersResponse>,
             tonic::Status,
         > {
@@ -1737,7 +1847,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/ListServicePerimeters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "ListServicePerimeters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a [service perimeter]
         /// [google.identity.accesscontextmanager.v1.ServicePerimeter] based on the
@@ -1745,7 +1863,10 @@ pub mod access_context_manager_client {
         pub async fn get_service_perimeter(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServicePerimeterRequest>,
-        ) -> Result<tonic::Response<super::ServicePerimeter>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ServicePerimeter>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1759,7 +1880,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/GetServicePerimeter",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "GetServicePerimeter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a [service perimeter]
         /// [google.identity.accesscontextmanager.v1.ServicePerimeter]. The
@@ -1772,7 +1901,7 @@ pub mod access_context_manager_client {
         pub async fn create_service_perimeter(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServicePerimeterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1789,7 +1918,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/CreateServicePerimeter",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "CreateServicePerimeter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a [service perimeter]
         /// [google.identity.accesscontextmanager.v1.ServicePerimeter]. The
@@ -1802,7 +1939,7 @@ pub mod access_context_manager_client {
         pub async fn update_service_perimeter(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServicePerimeterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1819,7 +1956,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/UpdateServicePerimeter",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "UpdateServicePerimeter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a [service perimeter]
         /// [google.identity.accesscontextmanager.v1.ServicePerimeter] based on the
@@ -1830,7 +1975,7 @@ pub mod access_context_manager_client {
         pub async fn delete_service_perimeter(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServicePerimeterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1847,7 +1992,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/DeleteServicePerimeter",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "DeleteServicePerimeter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Replace all existing [service perimeters]
         /// [google.identity.accesscontextmanager.v1.ServicePerimeter] in an [access
@@ -1865,7 +2018,7 @@ pub mod access_context_manager_client {
         pub async fn replace_service_perimeters(
             &mut self,
             request: impl tonic::IntoRequest<super::ReplaceServicePerimetersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1882,7 +2035,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/ReplaceServicePerimeters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "ReplaceServicePerimeters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Commits the dry-run specification for all the [service perimeters]
         /// [google.identity.accesscontextmanager.v1.ServicePerimeter] in an
@@ -1902,7 +2063,7 @@ pub mod access_context_manager_client {
         pub async fn commit_service_perimeters(
             &mut self,
             request: impl tonic::IntoRequest<super::CommitServicePerimetersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1919,7 +2080,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/CommitServicePerimeters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "CommitServicePerimeters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [GcpUserAccessBindings]
         /// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding] for a
@@ -1927,7 +2096,7 @@ pub mod access_context_manager_client {
         pub async fn list_gcp_user_access_bindings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGcpUserAccessBindingsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListGcpUserAccessBindingsResponse>,
             tonic::Status,
         > {
@@ -1944,7 +2113,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/ListGcpUserAccessBindings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "ListGcpUserAccessBindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the [GcpUserAccessBinding]
         /// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding] with
@@ -1952,7 +2129,10 @@ pub mod access_context_manager_client {
         pub async fn get_gcp_user_access_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGcpUserAccessBindingRequest>,
-        ) -> Result<tonic::Response<super::GcpUserAccessBinding>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GcpUserAccessBinding>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1966,7 +2146,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/GetGcpUserAccessBinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "GetGcpUserAccessBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a [GcpUserAccessBinding]
         /// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding]. If the
@@ -1981,7 +2169,7 @@ pub mod access_context_manager_client {
         pub async fn create_gcp_user_access_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateGcpUserAccessBindingRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1998,7 +2186,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/CreateGcpUserAccessBinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "CreateGcpUserAccessBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a [GcpUserAccessBinding]
         /// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding].
@@ -2008,7 +2204,7 @@ pub mod access_context_manager_client {
         pub async fn update_gcp_user_access_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateGcpUserAccessBindingRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2025,7 +2221,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/UpdateGcpUserAccessBinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "UpdateGcpUserAccessBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a [GcpUserAccessBinding]
         /// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding].
@@ -2035,7 +2239,7 @@ pub mod access_context_manager_client {
         pub async fn delete_gcp_user_access_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGcpUserAccessBindingRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2052,7 +2256,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/DeleteGcpUserAccessBinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "DeleteGcpUserAccessBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the IAM policy for the specified Access Context Manager
         /// [access policy][google.identity.accesscontextmanager.v1.AccessPolicy].
@@ -2065,7 +2277,7 @@ pub mod access_context_manager_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -2082,7 +2294,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the IAM policy for the specified Access Context Manager
         /// [access policy][google.identity.accesscontextmanager.v1.AccessPolicy].
@@ -2091,7 +2311,7 @@ pub mod access_context_manager_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -2108,7 +2328,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the IAM permissions that the caller has on the specified Access
         /// Context Manager resource. The resource can be an
@@ -2121,7 +2349,7 @@ pub mod access_context_manager_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -2140,7 +2368,15 @@ pub mod access_context_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.identity.accesscontextmanager.v1.AccessContextManager/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.identity.accesscontextmanager.v1.AccessContextManager",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

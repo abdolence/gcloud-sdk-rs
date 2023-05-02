@@ -876,7 +876,7 @@ pub struct ResponsiveDisplayAdInfo {
     pub logo_images: ::prost::alloc::vec::Vec<AdImageAsset>,
     /// Square logo images to be used in the ad. Valid image types are GIF,
     /// JPEG, and PNG. The minimum size is 128x128 and the aspect ratio must
-    /// be 1:1 (+-1%). Combined with `square_logo_images`, the maximum is 5.
+    /// be 1:1 (+-1%). Combined with `logo_images`, the maximum is 5.
     #[prost(message, repeated, tag = "4")]
     pub square_logo_images: ::prost::alloc::vec::Vec<AdImageAsset>,
     /// Short format headlines for the ad. The maximum length is 30 characters.
@@ -2397,7 +2397,7 @@ pub struct LeadFormField {
     pub input_type: i32,
     /// Defines answer configuration that this form field accepts. If oneof is not
     /// set, this is a free-text answer.
-    #[prost(oneof = "lead_form_field::Answers", tags = "2")]
+    #[prost(oneof = "lead_form_field::Answers", tags = "2, 3")]
     pub answers: ::core::option::Option<lead_form_field::Answers>,
 }
 /// Nested message and enum types in `LeadFormField`.
@@ -2412,6 +2412,14 @@ pub mod lead_form_field {
         /// 12 allowed.
         #[prost(message, tag = "2")]
         SingleChoiceAnswers(super::LeadFormSingleChoiceAnswers),
+        /// Answer configuration for location question. If true, campaign/account
+        /// level location data (state, city, business name etc) will be rendered on
+        /// the Lead Form.
+        /// Starting V13.1, has_location_answer can only be set for "What is your
+        /// preferred dealership?" question, for advertisers with Location Assets
+        /// setup at campaign/account level.
+        #[prost(bool, tag = "3")]
+        HasLocationAnswer(bool),
     }
 }
 /// One custom question input field instance within a form.
@@ -2424,7 +2432,7 @@ pub struct LeadFormCustomQuestionField {
     pub custom_question_text: ::prost::alloc::string::String,
     /// Defines answer configuration that this form field accepts. If
     /// oneof is not set, this is a free-text answer.
-    #[prost(oneof = "lead_form_custom_question_field::Answers", tags = "2")]
+    #[prost(oneof = "lead_form_custom_question_field::Answers", tags = "2, 3")]
     pub answers: ::core::option::Option<lead_form_custom_question_field::Answers>,
 }
 /// Nested message and enum types in `LeadFormCustomQuestionField`.
@@ -2438,6 +2446,14 @@ pub mod lead_form_custom_question_field {
         /// Minimum of 2 answers and maximum of 12 allowed.
         #[prost(message, tag = "2")]
         SingleChoiceAnswers(super::LeadFormSingleChoiceAnswers),
+        /// Answer configuration for location question. If true, campaign/account
+        /// level location data (state, city, business name etc) will be rendered on
+        /// the Lead Form.
+        /// Starting V13.1, has_location_answer can only be set for "What is your
+        /// preferred dealership?" question, for advertisers with Location Assets
+        /// setup at campaign/account level.
+        #[prost(bool, tag = "3")]
+        HasLocationAnswer(bool),
     }
 }
 /// Defines possible answers for a single choice question, usually presented as
@@ -4320,7 +4336,7 @@ pub struct StructuredSnippetFeedItem {
     #[prost(string, repeated, tag = "4")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Represents a sitelink extension.
+/// Represents a sitelink.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SitelinkFeedItem {
@@ -4477,13 +4493,13 @@ pub struct FrequencyCapKey {
     pub time_length: ::core::option::Option<i32>,
 }
 /// Historical metrics specific to the targeting options selected.
-/// Targeting options include geographies, network, etc.
+/// Targeting options include geographies, network, and so on.
 /// Refer to <https://support.google.com/google-ads/answer/3022575> for more
 /// details.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanHistoricalMetrics {
-    /// Approximate number of monthly searches on this query averaged
+    /// Approximate number of monthly searches on this query, averaged
     /// for the past 12 months.
     #[prost(int64, optional, tag = "7")]
     pub avg_monthly_searches: ::core::option::Option<i64>,
@@ -4517,18 +4533,15 @@ pub struct KeywordPlanHistoricalMetrics {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistoricalMetricsOptions {
-    /// The year month range for historical metrics. If not specified the searches
-    /// will be returned for past 12 months.
-    /// Searches data is available for the past 4 years. If the search volume is
+    /// The year month range for historical metrics. If not specified, metrics
+    /// for the past 12 months are returned.
+    /// Search metrics are available for the past 4 years. If the search volume is
     /// not available for the entire year_month_range provided, the subset of the
-    /// year month range for which search volume is available will be returned.
+    /// year month range for which search volume is available are returned.
     #[prost(message, optional, tag = "1")]
     pub year_month_range: ::core::option::Option<YearMonthRange>,
     /// Indicates whether to include average cost per click value.
-    /// Average CPC is a legacy value that will be removed and replaced in the
-    /// future, and as such we are including it as an optioanl value so clients
-    /// only use it when strictly necessary and to better track clients that use
-    /// this value.
+    /// Average CPC is provided only for legacy support.
     #[prost(bool, tag = "2")]
     pub include_average_cpc: bool,
 }
@@ -4584,7 +4597,7 @@ pub struct KeywordPlanDeviceSearches {
     #[prost(int64, optional, tag = "2")]
     pub search_count: ::core::option::Option<i64>,
 }
-/// The Annotations for the Keyword plan keywords.
+/// The annotations for the keyword plan keywords.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordAnnotations {
@@ -5384,6 +5397,14 @@ pub struct Metrics {
     /// The score is a range from 1 to 10, 10 being the fastest.
     #[prost(int64, optional, tag = "147")]
     pub speed_score: ::core::option::Option<i64>,
+    /// The average Target CPA, or unset if not available (for example, for
+    /// campaigns that had traffic from portfolio bidding strategies or non-tCPA).
+    #[prost(int64, optional, tag = "290")]
+    pub average_target_cpa_micros: ::core::option::Option<i64>,
+    /// The average Target ROAS, or unset if not available (for example, for
+    /// campaigns that had traffic from portfolio bidding strategies or non-tROAS).
+    #[prost(double, optional, tag = "250")]
+    pub average_target_roas: ::core::option::Option<f64>,
     /// The percent of your ad impressions that are shown anywhere above the
     /// organic search results.
     #[prost(double, optional, tag = "148")]

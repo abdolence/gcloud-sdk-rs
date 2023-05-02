@@ -357,7 +357,7 @@ pub mod schema_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -413,11 +413,27 @@ pub mod schema_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a schema.
         pub async fn create_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSchemaRequest>,
-        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Schema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -431,13 +447,18 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/CreateSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.SchemaService", "CreateSchema"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a schema.
         pub async fn get_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSchemaRequest>,
-        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Schema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -451,13 +472,19 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/GetSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.SchemaService", "GetSchema"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists schemas in a project.
         pub async fn list_schemas(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSchemasRequest>,
-        ) -> Result<tonic::Response<super::ListSchemasResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSchemasResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -471,13 +498,21 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/ListSchemas",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.SchemaService", "ListSchemas"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all schema revisions for the named schema.
         pub async fn list_schema_revisions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSchemaRevisionsRequest>,
-        ) -> Result<tonic::Response<super::ListSchemaRevisionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSchemaRevisionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -491,13 +526,21 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/ListSchemaRevisions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.pubsub.v1.SchemaService",
+                        "ListSchemaRevisions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Commits a new schema revision to an existing schema.
         pub async fn commit_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::CommitSchemaRequest>,
-        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Schema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -511,13 +554,18 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/CommitSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.SchemaService", "CommitSchema"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new schema revision that is a copy of the provided revision_id.
         pub async fn rollback_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::RollbackSchemaRequest>,
-        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Schema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -531,13 +579,18 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/RollbackSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.SchemaService", "RollbackSchema"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specific schema revision.
         pub async fn delete_schema_revision(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSchemaRevisionRequest>,
-        ) -> Result<tonic::Response<super::Schema>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Schema>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -551,13 +604,21 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/DeleteSchemaRevision",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.pubsub.v1.SchemaService",
+                        "DeleteSchemaRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a schema.
         pub async fn delete_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSchemaRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -571,13 +632,21 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/DeleteSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.SchemaService", "DeleteSchema"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Validates a schema.
         pub async fn validate_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateSchemaRequest>,
-        ) -> Result<tonic::Response<super::ValidateSchemaResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ValidateSchemaResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -591,13 +660,21 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/ValidateSchema",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.SchemaService", "ValidateSchema"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Validates a message against a schema.
         pub async fn validate_message(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateMessageRequest>,
-        ) -> Result<tonic::Response<super::ValidateMessageResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ValidateMessageResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -611,7 +688,12 @@ pub mod schema_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.SchemaService/ValidateMessage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.SchemaService", "ValidateMessage"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1855,7 +1937,7 @@ pub mod publisher_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1911,12 +1993,28 @@ pub mod publisher_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates the given topic with the given name. See the [resource name rules]
         /// (https://cloud.google.com/pubsub/docs/admin#resource_names).
         pub async fn create_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::Topic>,
-        ) -> Result<tonic::Response<super::Topic>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Topic>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1930,14 +2028,17 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/CreateTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Publisher", "CreateTopic"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing topic. Note that certain properties of a
         /// topic are not modifiable.
         pub async fn update_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTopicRequest>,
-        ) -> Result<tonic::Response<super::Topic>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Topic>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1951,14 +2052,20 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/UpdateTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Publisher", "UpdateTopic"));
+            self.inner.unary(req, path, codec).await
         }
         /// Adds one or more messages to the topic. Returns `NOT_FOUND` if the topic
         /// does not exist.
         pub async fn publish(
             &mut self,
             request: impl tonic::IntoRequest<super::PublishRequest>,
-        ) -> Result<tonic::Response<super::PublishResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublishResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1972,13 +2079,16 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/Publish",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Publisher", "Publish"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the configuration of a topic.
         pub async fn get_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTopicRequest>,
-        ) -> Result<tonic::Response<super::Topic>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Topic>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1992,13 +2102,19 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/GetTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Publisher", "GetTopic"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists matching topics.
         pub async fn list_topics(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTopicsRequest>,
-        ) -> Result<tonic::Response<super::ListTopicsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTopicsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2012,13 +2128,16 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/ListTopics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Publisher", "ListTopics"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the names of the attached subscriptions on this topic.
         pub async fn list_topic_subscriptions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTopicSubscriptionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListTopicSubscriptionsResponse>,
             tonic::Status,
         > {
@@ -2035,7 +2154,15 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/ListTopicSubscriptions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.pubsub.v1.Publisher",
+                        "ListTopicSubscriptions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the names of the snapshots on this topic. Snapshots are used in
         /// [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
@@ -2045,7 +2172,10 @@ pub mod publisher_client {
         pub async fn list_topic_snapshots(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTopicSnapshotsRequest>,
-        ) -> Result<tonic::Response<super::ListTopicSnapshotsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTopicSnapshotsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2059,7 +2189,12 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/ListTopicSnapshots",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Publisher", "ListTopicSnapshots"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the topic with the given name. Returns `NOT_FOUND` if the topic
         /// does not exist. After a topic is deleted, a new topic may be created with
@@ -2069,7 +2204,7 @@ pub mod publisher_client {
         pub async fn delete_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTopicRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2083,7 +2218,10 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/DeleteTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Publisher", "DeleteTopic"));
+            self.inner.unary(req, path, codec).await
         }
         /// Detaches a subscription from this topic. All messages retained in the
         /// subscription are dropped. Subsequent `Pull` and `StreamingPull` requests
@@ -2092,7 +2230,10 @@ pub mod publisher_client {
         pub async fn detach_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::DetachSubscriptionRequest>,
-        ) -> Result<tonic::Response<super::DetachSubscriptionResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DetachSubscriptionResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2106,7 +2247,12 @@ pub mod publisher_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Publisher/DetachSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Publisher", "DetachSubscription"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2126,7 +2272,7 @@ pub mod subscriber_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2182,6 +2328,22 @@ pub mod subscriber_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a subscription to a given topic. See the [resource name rules]
         /// (https://cloud.google.com/pubsub/docs/admin#resource_names).
         /// If the subscription already exists, returns `ALREADY_EXISTS`.
@@ -2196,7 +2358,7 @@ pub mod subscriber_client {
         pub async fn create_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::Subscription>,
-        ) -> Result<tonic::Response<super::Subscription>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Subscription>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2210,13 +2372,18 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/CreateSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "CreateSubscription"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the configuration details of a subscription.
         pub async fn get_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSubscriptionRequest>,
-        ) -> Result<tonic::Response<super::Subscription>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Subscription>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2230,14 +2397,19 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/GetSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "GetSubscription"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing subscription. Note that certain properties of a
         /// subscription, such as its topic, are not modifiable.
         pub async fn update_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSubscriptionRequest>,
-        ) -> Result<tonic::Response<super::Subscription>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Subscription>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2251,13 +2423,21 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/UpdateSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "UpdateSubscription"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists matching subscriptions.
         pub async fn list_subscriptions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSubscriptionsRequest>,
-        ) -> Result<tonic::Response<super::ListSubscriptionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSubscriptionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2271,7 +2451,12 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/ListSubscriptions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "ListSubscriptions"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing subscription. All messages retained in the subscription
         /// are immediately dropped. Calls to `Pull` after deletion will return
@@ -2281,7 +2466,7 @@ pub mod subscriber_client {
         pub async fn delete_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSubscriptionRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2295,7 +2480,12 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/DeleteSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "DeleteSubscription"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Modifies the ack deadline for a specific message. This method is useful
         /// to indicate that more time is needed to process a message by the
@@ -2305,7 +2495,7 @@ pub mod subscriber_client {
         pub async fn modify_ack_deadline(
             &mut self,
             request: impl tonic::IntoRequest<super::ModifyAckDeadlineRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2319,7 +2509,12 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/ModifyAckDeadline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "ModifyAckDeadline"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Acknowledges the messages associated with the `ack_ids` in the
         /// `AcknowledgeRequest`. The Pub/Sub system can remove the relevant messages
@@ -2331,7 +2526,7 @@ pub mod subscriber_client {
         pub async fn acknowledge(
             &mut self,
             request: impl tonic::IntoRequest<super::AcknowledgeRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2345,13 +2540,16 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/Acknowledge",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Subscriber", "Acknowledge"));
+            self.inner.unary(req, path, codec).await
         }
         /// Pulls messages from the server.
         pub async fn pull(
             &mut self,
             request: impl tonic::IntoRequest<super::PullRequest>,
-        ) -> Result<tonic::Response<super::PullResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::PullResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2365,7 +2563,10 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/Pull",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Subscriber", "Pull"));
+            self.inner.unary(req, path, codec).await
         }
         /// Establishes a stream with the server, which sends messages down to the
         /// client. The client streams acknowledgements and ack deadline modifications
@@ -2379,7 +2580,7 @@ pub mod subscriber_client {
             request: impl tonic::IntoStreamingRequest<
                 Message = super::StreamingPullRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::StreamingPullResponse>>,
             tonic::Status,
         > {
@@ -2396,7 +2597,10 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/StreamingPull",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Subscriber", "StreamingPull"));
+            self.inner.streaming(req, path, codec).await
         }
         /// Modifies the `PushConfig` for a specified subscription.
         ///
@@ -2407,7 +2611,7 @@ pub mod subscriber_client {
         pub async fn modify_push_config(
             &mut self,
             request: impl tonic::IntoRequest<super::ModifyPushConfigRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2421,7 +2625,12 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/ModifyPushConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "ModifyPushConfig"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the configuration details of a snapshot. Snapshots are used in
         /// [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
@@ -2431,7 +2640,7 @@ pub mod subscriber_client {
         pub async fn get_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Snapshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Snapshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2445,7 +2654,10 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/GetSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Subscriber", "GetSnapshot"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the existing snapshots. Snapshots are used in [Seek](
         /// https://cloud.google.com/pubsub/docs/replay-overview) operations, which
@@ -2455,7 +2667,10 @@ pub mod subscriber_client {
         pub async fn list_snapshots(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSnapshotsRequest>,
-        ) -> Result<tonic::Response<super::ListSnapshotsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSnapshotsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2469,7 +2684,10 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/ListSnapshots",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Subscriber", "ListSnapshots"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a snapshot from the requested subscription. Snapshots are used in
         /// [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
@@ -2490,7 +2708,7 @@ pub mod subscriber_client {
         pub async fn create_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Snapshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Snapshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2504,7 +2722,12 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/CreateSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "CreateSnapshot"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing snapshot. Snapshots are used in
         /// [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
@@ -2514,7 +2737,7 @@ pub mod subscriber_client {
         pub async fn update_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Snapshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Snapshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2528,7 +2751,12 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/UpdateSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "UpdateSnapshot"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes an existing snapshot. Snapshots are used in [Seek]
         /// (https://cloud.google.com/pubsub/docs/replay-overview) operations, which
@@ -2542,7 +2770,7 @@ pub mod subscriber_client {
         pub async fn delete_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSnapshotRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2556,7 +2784,12 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/DeleteSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.pubsub.v1.Subscriber", "DeleteSnapshot"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Seeks an existing subscription to a point in time or to a given snapshot,
         /// whichever is provided in the request. Snapshots are used in [Seek]
@@ -2568,7 +2801,7 @@ pub mod subscriber_client {
         pub async fn seek(
             &mut self,
             request: impl tonic::IntoRequest<super::SeekRequest>,
-        ) -> Result<tonic::Response<super::SeekResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SeekResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2582,7 +2815,10 @@ pub mod subscriber_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.pubsub.v1.Subscriber/Seek",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.pubsub.v1.Subscriber", "Seek"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }

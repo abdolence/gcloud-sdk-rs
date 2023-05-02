@@ -2275,7 +2275,7 @@ pub mod network_services_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2331,11 +2331,27 @@ pub mod network_services_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists EndpointPolicies in a given project and location.
         pub async fn list_endpoint_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEndpointPoliciesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListEndpointPoliciesResponse>,
             tonic::Status,
         > {
@@ -2352,13 +2368,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListEndpointPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListEndpointPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single EndpointPolicy.
         pub async fn get_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEndpointPolicyRequest>,
-        ) -> Result<tonic::Response<super::EndpointPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EndpointPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2372,13 +2396,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new EndpointPolicy in a given project and location.
         pub async fn create_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEndpointPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2395,13 +2427,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single EndpointPolicy.
         pub async fn update_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEndpointPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2418,13 +2458,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single EndpointPolicy.
         pub async fn delete_endpoint_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEndpointPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2441,13 +2489,24 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteEndpointPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Gateways in a given project and location.
         pub async fn list_gateways(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGatewaysRequest>,
-        ) -> Result<tonic::Response<super::ListGatewaysResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListGatewaysResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2461,13 +2520,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListGateways",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListGateways",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Gateway.
         pub async fn get_gateway(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGatewayRequest>,
-        ) -> Result<tonic::Response<super::Gateway>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Gateway>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2481,13 +2548,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetGateway",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetGateway",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Gateway in a given project and location.
         pub async fn create_gateway(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateGatewayRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2504,13 +2579,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateGateway",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateGateway",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Gateway.
         pub async fn update_gateway(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateGatewayRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2527,13 +2610,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateGateway",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateGateway",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Gateway.
         pub async fn delete_gateway(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGatewayRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2550,13 +2641,24 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteGateway",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteGateway",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists GrpcRoutes in a given project and location.
         pub async fn list_grpc_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGrpcRoutesRequest>,
-        ) -> Result<tonic::Response<super::ListGrpcRoutesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListGrpcRoutesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2570,13 +2672,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListGrpcRoutes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListGrpcRoutes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single GrpcRoute.
         pub async fn get_grpc_route(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGrpcRouteRequest>,
-        ) -> Result<tonic::Response<super::GrpcRoute>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::GrpcRoute>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2590,13 +2700,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetGrpcRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetGrpcRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new GrpcRoute in a given project and location.
         pub async fn create_grpc_route(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateGrpcRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2613,13 +2731,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateGrpcRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateGrpcRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single GrpcRoute.
         pub async fn update_grpc_route(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateGrpcRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2636,13 +2762,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateGrpcRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateGrpcRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single GrpcRoute.
         pub async fn delete_grpc_route(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGrpcRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2659,13 +2793,24 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteGrpcRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteGrpcRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists HttpRoute in a given project and location.
         pub async fn list_http_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListHttpRoutesRequest>,
-        ) -> Result<tonic::Response<super::ListHttpRoutesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListHttpRoutesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2679,13 +2824,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListHttpRoutes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListHttpRoutes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single HttpRoute.
         pub async fn get_http_route(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHttpRouteRequest>,
-        ) -> Result<tonic::Response<super::HttpRoute>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::HttpRoute>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2699,13 +2852,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetHttpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetHttpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new HttpRoute in a given project and location.
         pub async fn create_http_route(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateHttpRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2722,13 +2883,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateHttpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateHttpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single HttpRoute.
         pub async fn update_http_route(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateHttpRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2745,13 +2914,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateHttpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateHttpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single HttpRoute.
         pub async fn delete_http_route(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteHttpRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2768,13 +2945,24 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteHttpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteHttpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists TcpRoute in a given project and location.
         pub async fn list_tcp_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTcpRoutesRequest>,
-        ) -> Result<tonic::Response<super::ListTcpRoutesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTcpRoutesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2788,13 +2976,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListTcpRoutes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListTcpRoutes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single TcpRoute.
         pub async fn get_tcp_route(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTcpRouteRequest>,
-        ) -> Result<tonic::Response<super::TcpRoute>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TcpRoute>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2808,13 +3004,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetTcpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetTcpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new TcpRoute in a given project and location.
         pub async fn create_tcp_route(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTcpRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2831,13 +3035,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateTcpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateTcpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single TcpRoute.
         pub async fn update_tcp_route(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTcpRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2854,13 +3066,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateTcpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateTcpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single TcpRoute.
         pub async fn delete_tcp_route(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTcpRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2877,13 +3097,24 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteTcpRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteTcpRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists TlsRoute in a given project and location.
         pub async fn list_tls_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTlsRoutesRequest>,
-        ) -> Result<tonic::Response<super::ListTlsRoutesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTlsRoutesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2897,13 +3128,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListTlsRoutes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListTlsRoutes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single TlsRoute.
         pub async fn get_tls_route(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTlsRouteRequest>,
-        ) -> Result<tonic::Response<super::TlsRoute>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TlsRoute>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2917,13 +3156,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetTlsRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetTlsRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new TlsRoute in a given project and location.
         pub async fn create_tls_route(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTlsRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2940,13 +3187,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateTlsRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateTlsRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single TlsRoute.
         pub async fn update_tls_route(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTlsRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2963,13 +3218,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateTlsRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateTlsRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single TlsRoute.
         pub async fn delete_tls_route(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTlsRouteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2986,13 +3249,24 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteTlsRoute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteTlsRoute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists ServiceBinding in a given project and location.
         pub async fn list_service_bindings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServiceBindingsRequest>,
-        ) -> Result<tonic::Response<super::ListServiceBindingsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceBindingsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3006,13 +3280,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListServiceBindings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListServiceBindings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single ServiceBinding.
         pub async fn get_service_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceBindingRequest>,
-        ) -> Result<tonic::Response<super::ServiceBinding>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ServiceBinding>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3026,13 +3308,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetServiceBinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetServiceBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new ServiceBinding in a given project and location.
         pub async fn create_service_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceBindingRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3049,13 +3339,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateServiceBinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateServiceBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single ServiceBinding.
         pub async fn delete_service_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceBindingRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3072,13 +3370,24 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteServiceBinding",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteServiceBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Meshes in a given project and location.
         pub async fn list_meshes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMeshesRequest>,
-        ) -> Result<tonic::Response<super::ListMeshesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListMeshesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3092,13 +3401,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/ListMeshes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListMeshes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Mesh.
         pub async fn get_mesh(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMeshRequest>,
-        ) -> Result<tonic::Response<super::Mesh>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Mesh>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3112,13 +3429,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/GetMesh",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetMesh",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Mesh in a given project and location.
         pub async fn create_mesh(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMeshRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3135,13 +3460,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateMesh",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateMesh",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Mesh.
         pub async fn update_mesh(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMeshRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3158,13 +3491,21 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateMesh",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateMesh",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Mesh.
         pub async fn delete_mesh(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMeshRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3181,7 +3522,15 @@ pub mod network_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteMesh",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteMesh",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

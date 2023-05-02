@@ -755,7 +755,7 @@ pub mod assured_workloads_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -813,11 +813,27 @@ pub mod assured_workloads_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates Assured Workload.
         pub async fn create_workload(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWorkloadRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -834,7 +850,15 @@ pub mod assured_workloads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/CreateWorkload",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService",
+                        "CreateWorkload",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing workload.
         /// Currently allows updating of workload display_name and labels.
@@ -843,7 +867,7 @@ pub mod assured_workloads_service_client {
         pub async fn update_workload(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateWorkloadRequest>,
-        ) -> Result<tonic::Response<super::Workload>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Workload>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -857,7 +881,15 @@ pub mod assured_workloads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/UpdateWorkload",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService",
+                        "UpdateWorkload",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restrict the list of resources allowed in the Workload environment.
         /// The current list of allowed products can be found at
@@ -868,7 +900,7 @@ pub mod assured_workloads_service_client {
         pub async fn restrict_allowed_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::RestrictAllowedResourcesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::RestrictAllowedResourcesResponse>,
             tonic::Status,
         > {
@@ -885,7 +917,15 @@ pub mod assured_workloads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedResources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService",
+                        "RestrictAllowedResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the workload. Make sure that workload's direct children are already
         /// in a deleted state, otherwise the request will fail with a
@@ -896,7 +936,7 @@ pub mod assured_workloads_service_client {
         pub async fn delete_workload(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkloadRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -910,13 +950,21 @@ pub mod assured_workloads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/DeleteWorkload",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService",
+                        "DeleteWorkload",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets Assured Workload associated with a CRM Node
         pub async fn get_workload(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWorkloadRequest>,
-        ) -> Result<tonic::Response<super::Workload>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Workload>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -930,14 +978,25 @@ pub mod assured_workloads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/GetWorkload",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService",
+                        "GetWorkload",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Analyze if the source Assured Workloads can be moved to the target Assured
         /// Workload
         pub async fn analyze_workload_move(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeWorkloadMoveRequest>,
-        ) -> Result<tonic::Response<super::AnalyzeWorkloadMoveResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnalyzeWorkloadMoveResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -951,13 +1010,24 @@ pub mod assured_workloads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/AnalyzeWorkloadMove",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService",
+                        "AnalyzeWorkloadMove",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Assured Workloads under a CRM Node.
         pub async fn list_workloads(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkloadsRequest>,
-        ) -> Result<tonic::Response<super::ListWorkloadsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListWorkloadsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -971,7 +1041,15 @@ pub mod assured_workloads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/ListWorkloads",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService",
+                        "ListWorkloads",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

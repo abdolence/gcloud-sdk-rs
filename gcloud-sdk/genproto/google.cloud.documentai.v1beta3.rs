@@ -3168,7 +3168,7 @@ pub mod document_processor_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3226,11 +3226,30 @@ pub mod document_processor_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Processes a single document.
         pub async fn process_document(
             &mut self,
             request: impl tonic::IntoRequest<super::ProcessRequest>,
-        ) -> Result<tonic::Response<super::ProcessResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ProcessResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3244,14 +3263,22 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ProcessDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "ProcessDocument",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// LRO endpoint to batch process many documents. The output is written
         /// to Cloud Storage as JSON in the [Document] format.
         pub async fn batch_process_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchProcessRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3268,14 +3295,25 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/BatchProcessDocuments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "BatchProcessDocuments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Fetches processor types. Note that we do not use ListProcessorTypes here
         /// because it is not paginated.
         pub async fn fetch_processor_types(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchProcessorTypesRequest>,
-        ) -> Result<tonic::Response<super::FetchProcessorTypesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FetchProcessorTypesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3289,13 +3327,24 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/FetchProcessorTypes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "FetchProcessorTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the processor types that exist.
         pub async fn list_processor_types(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProcessorTypesRequest>,
-        ) -> Result<tonic::Response<super::ListProcessorTypesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListProcessorTypesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3309,13 +3358,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessorTypes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "ListProcessorTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a processor type detail.
         pub async fn get_processor_type(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProcessorTypeRequest>,
-        ) -> Result<tonic::Response<super::ProcessorType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ProcessorType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3329,13 +3386,24 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessorType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "GetProcessorType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all processors which belong to this project.
         pub async fn list_processors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProcessorsRequest>,
-        ) -> Result<tonic::Response<super::ListProcessorsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListProcessorsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3349,13 +3417,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "ListProcessors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a processor detail.
         pub async fn get_processor(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProcessorRequest>,
-        ) -> Result<tonic::Response<super::Processor>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Processor>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3369,7 +3445,15 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "GetProcessor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Trains a new processor version.
         /// Operation metadata is returned as
@@ -3377,7 +3461,7 @@ pub mod document_processor_service_client {
         pub async fn train_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::TrainProcessorVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3394,13 +3478,24 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/TrainProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "TrainProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a processor version detail.
         pub async fn get_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProcessorVersionRequest>,
-        ) -> Result<tonic::Response<super::ProcessorVersion>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ProcessorVersion>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3414,13 +3509,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "GetProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all versions of a processor.
         pub async fn list_processor_versions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProcessorVersionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListProcessorVersionsResponse>,
             tonic::Status,
         > {
@@ -3437,14 +3540,22 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessorVersions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "ListProcessorVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the processor version, all artifacts under the processor version
         /// will be deleted.
         pub async fn delete_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteProcessorVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3461,13 +3572,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeleteProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "DeleteProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deploys the processor version.
         pub async fn deploy_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::DeployProcessorVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3484,13 +3603,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeployProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "DeployProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Undeploys the processor version.
         pub async fn undeploy_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeployProcessorVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3507,14 +3634,22 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/UndeployProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "UndeployProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a processor from the type processor that the user chose.
         /// The processor will be at "ENABLED" state by default after its creation.
         pub async fn create_processor(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProcessorRequest>,
-        ) -> Result<tonic::Response<super::Processor>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Processor>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3528,14 +3663,22 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/CreateProcessor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "CreateProcessor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the processor, unloads all deployed model artifacts if it was
         /// enabled and then deletes all artifacts associated with this processor.
         pub async fn delete_processor(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteProcessorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3552,13 +3695,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeleteProcessor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "DeleteProcessor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enables a processor
         pub async fn enable_processor(
             &mut self,
             request: impl tonic::IntoRequest<super::EnableProcessorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3575,13 +3726,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/EnableProcessor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "EnableProcessor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Disables a processor
         pub async fn disable_processor(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableProcessorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3598,7 +3757,15 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DisableProcessor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "DisableProcessor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Set the default (active) version of a
         /// [Processor][google.cloud.documentai.v1beta3.Processor] that will be used in
@@ -3608,7 +3775,7 @@ pub mod document_processor_service_client {
         pub async fn set_default_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::SetDefaultProcessorVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3625,14 +3792,22 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/SetDefaultProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "SetDefaultProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Send a document for Human Review. The input document should be processed by
         /// the specified processor.
         pub async fn review_document(
             &mut self,
             request: impl tonic::IntoRequest<super::ReviewDocumentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3649,14 +3824,22 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ReviewDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "ReviewDocument",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Evaluates a ProcessorVersion against annotated documents, producing an
         /// Evaluation.
         pub async fn evaluate_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::EvaluateProcessorVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3673,13 +3856,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/EvaluateProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "EvaluateProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a specific evaluation.
         pub async fn get_evaluation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEvaluationRequest>,
-        ) -> Result<tonic::Response<super::Evaluation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Evaluation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3693,13 +3884,24 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetEvaluation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "GetEvaluation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a set of evaluations for a given processor version.
         pub async fn list_evaluations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEvaluationsRequest>,
-        ) -> Result<tonic::Response<super::ListEvaluationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEvaluationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3713,13 +3915,21 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListEvaluations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "ListEvaluations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Imports a processor version from source processor version.
         pub async fn import_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportProcessorVersionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3736,7 +3946,15 @@ pub mod document_processor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ImportProcessorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                        "ImportProcessorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

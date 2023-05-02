@@ -730,9 +730,9 @@ pub struct Trip {
     /// This field supports manual ordering of the waypoints for the trip. It
     /// contains all of the remaining waypoints for the assigned vehicle, as well
     /// as the pickup and drop-off waypoints for this trip. If the trip hasn't been
-    /// assigned to a vehicle, then this field is ignored. For privacy reasons,
-    /// this field is only populated by the server on UpdateTrip and CreateTrip
-    /// calls, NOT on GetTrip calls.
+    /// assigned to a vehicle, then Fleet Engine ignores this field. For privacy
+    /// reasons, this field is only populated by the server on `UpdateTrip` and
+    /// `CreateTrip` calls, NOT on `GetTrip` calls.
     #[prost(message, repeated, tag = "20")]
     pub vehicle_waypoints: ::prost::alloc::vec::Vec<TripWaypoint>,
     /// Output only. Anticipated route for this trip to the first entry in
@@ -804,7 +804,7 @@ pub struct Trip {
     >,
     /// Immutable. Indicates the number of passengers on this trip and does not
     /// include the driver. A vehicle must have available capacity to be returned
-    /// in SearchVehicles.
+    /// in a `SearchVehicles` response.
     #[prost(int32, tag = "10")]
     pub number_of_passengers: i32,
     /// Output only. Indicates the last reported location of the vehicle along the
@@ -1288,9 +1288,9 @@ pub struct SearchTripsResponse {
     /// The list of trips for the requested vehicle.
     #[prost(message, repeated, tag = "1")]
     pub trips: ::prost::alloc::vec::Vec<Trip>,
-    /// Pass this token in the SearchTripsRequest to continue to
-    /// list results. If all results have been returned, this field is an empty
-    /// string or not present in the response.
+    /// Pass this token in the SearchTripsRequest to page through list results. The
+    /// API returns a trip list on each call, and when no more results remain the
+    /// trip list is empty.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -1308,7 +1308,7 @@ pub mod trip_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1364,11 +1364,27 @@ pub mod trip_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a trip in the Fleet Engine and returns the new trip.
         pub async fn create_trip(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTripRequest>,
-        ) -> Result<tonic::Response<super::Trip>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Trip>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1382,13 +1398,18 @@ pub mod trip_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/CreateTrip",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("maps.fleetengine.v1.TripService", "CreateTrip"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get information about a single trip.
         pub async fn get_trip(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTripRequest>,
-        ) -> Result<tonic::Response<super::Trip>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Trip>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1402,13 +1423,16 @@ pub mod trip_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/GetTrip",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("maps.fleetengine.v1.TripService", "GetTrip"));
+            self.inner.unary(req, path, codec).await
         }
         /// Report billable trip usage.
         pub async fn report_billable_trip(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportBillableTripRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1422,13 +1446,24 @@ pub mod trip_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/ReportBillableTrip",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.v1.TripService",
+                        "ReportBillableTrip",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get all the trips for a specific vehicle.
         pub async fn search_trips(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchTripsRequest>,
-        ) -> Result<tonic::Response<super::SearchTripsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchTripsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1442,13 +1477,18 @@ pub mod trip_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/SearchTrips",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("maps.fleetengine.v1.TripService", "SearchTrips"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates trip data.
         pub async fn update_trip(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTripRequest>,
-        ) -> Result<tonic::Response<super::Trip>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Trip>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1462,7 +1502,12 @@ pub mod trip_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/UpdateTrip",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("maps.fleetengine.v1.TripService", "UpdateTrip"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1514,7 +1559,8 @@ pub struct Vehicle {
     /// not yet supported.
     #[prost(string, tag = "20")]
     pub current_route_segment: ::prost::alloc::string::String,
-    /// Input only. Fleet Engine uses this information to improve Journey Sharing.
+    /// Input only. Fleet Engine uses this information to improve journey sharing.
+    /// Note: This field is intended only for use by the Driver SDK.
     #[prost(message, optional, tag = "28")]
     pub current_route_segment_traffic: ::core::option::Option<TrafficPolylineData>,
     /// Output only. Time when `current_route_segment` was set. It can be stored by
@@ -2069,18 +2115,18 @@ pub struct UpdateVehicleRequest {
     /// the following fields may not be updated as they are managed by the
     /// server.
     ///
-    /// * `current_trips`
     /// * `available_capacity`
     /// * `current_route_segment_version`
+    /// * `current_trips`
+    /// * `name`
     /// * `waypoints_version`
-    ///
-    /// Furthermore, the vehicle `name` cannot be updated.
     ///
     /// If the `attributes` field is updated, **all** the vehicle's attributes are
     /// replaced with the attributes provided in the request. If you want to update
-    /// only some attributes, see the `UpdateVehicleAttributes` method. Likewise,
-    /// the `waypoints` field can be updated, but must contain all the waypoints.
-    /// currently on the vehicle, and no other waypoints.
+    /// only some attributes, see the `UpdateVehicleAttributes` method.
+    ///
+    /// Likewise, the `waypoints` field can be updated, but must contain all the
+    /// waypoints currently on the vehicle, and no other waypoints.
     #[prost(message, optional, tag = "4")]
     pub vehicle: ::core::option::Option<Vehicle>,
     /// Required. A field mask indicating which fields of the `Vehicle` to update.
@@ -2688,7 +2734,7 @@ pub mod vehicle_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2744,6 +2790,22 @@ pub mod vehicle_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Instantiates a new vehicle associated with an on-demand rideshare or
         /// deliveries provider. Each `Vehicle` must have a unique vehicle ID.
         ///
@@ -2775,7 +2837,7 @@ pub mod vehicle_service_client {
         pub async fn create_vehicle(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateVehicleRequest>,
-        ) -> Result<tonic::Response<super::Vehicle>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Vehicle>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2789,13 +2851,21 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/CreateVehicle",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.v1.VehicleService",
+                        "CreateVehicle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a vehicle from the Fleet Engine.
         pub async fn get_vehicle(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVehicleRequest>,
-        ) -> Result<tonic::Response<super::Vehicle>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Vehicle>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2809,7 +2879,12 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/GetVehicle",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("maps.fleetengine.v1.VehicleService", "GetVehicle"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Writes updated vehicle data to the Fleet Engine.
         ///
@@ -2831,7 +2906,7 @@ pub mod vehicle_service_client {
         pub async fn update_vehicle(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateVehicleRequest>,
-        ) -> Result<tonic::Response<super::Vehicle>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Vehicle>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2845,14 +2920,25 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/UpdateVehicle",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.v1.VehicleService",
+                        "UpdateVehicle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deprecated: Use the `UpdateVehicle` method instead.
         /// UpdateVehicleLocation updates the location of the vehicle.
         pub async fn update_vehicle_location(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateVehicleLocationRequest>,
-        ) -> Result<tonic::Response<super::VehicleLocation>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::VehicleLocation>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2866,7 +2952,15 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/UpdateVehicleLocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.v1.VehicleService",
+                        "UpdateVehicleLocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Partially updates a vehicle's attributes.
         /// Only the attributes mentioned in the request will be updated, other
@@ -2876,7 +2970,7 @@ pub mod vehicle_service_client {
         pub async fn update_vehicle_attributes(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateVehicleAttributesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::UpdateVehicleAttributesResponse>,
             tonic::Status,
         > {
@@ -2893,14 +2987,25 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/UpdateVehicleAttributes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.v1.VehicleService",
+                        "UpdateVehicleAttributes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a paginated list of vehicles associated with
         /// a provider that match the request options.
         pub async fn list_vehicles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVehiclesRequest>,
-        ) -> Result<tonic::Response<super::ListVehiclesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListVehiclesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2914,13 +3019,21 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/ListVehicles",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("maps.fleetengine.v1.VehicleService", "ListVehicles"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a list of vehicles that match the request options.
         pub async fn search_vehicles(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchVehiclesRequest>,
-        ) -> Result<tonic::Response<super::SearchVehiclesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchVehiclesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2934,7 +3047,15 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/SearchVehicles",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.v1.VehicleService",
+                        "SearchVehicles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a list of vehicles that match the request
         /// options, but the vehicle locations will be somewhat altered for privacy.
@@ -2944,7 +3065,10 @@ pub mod vehicle_service_client {
         pub async fn search_fuzzed_vehicles(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchVehiclesRequest>,
-        ) -> Result<tonic::Response<super::SearchVehiclesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchVehiclesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2958,7 +3082,15 @@ pub mod vehicle_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/SearchFuzzedVehicles",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "maps.fleetengine.v1.VehicleService",
+                        "SearchFuzzedVehicles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

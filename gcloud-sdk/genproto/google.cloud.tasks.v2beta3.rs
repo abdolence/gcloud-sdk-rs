@@ -1,8 +1,9 @@
 /// Pull Message.
 ///
 /// This proto can only be used for tasks in a queue which has
-/// \[PULL][google.cloud.tasks.v2beta3.Queue.type\] type. It currently exists for backwards compatibility with
-/// the App Engine Task Queue SDK. This message type maybe returned with methods
+/// \[PULL][google.cloud.tasks.v2beta3.Queue.type\] type. It currently exists for
+/// backwards compatibility with the App Engine Task Queue SDK. This message type
+/// maybe returned with methods
 /// \[list][google.cloud.tasks.v2beta3.CloudTask.ListTasks\] and
 /// \[get][google.cloud.tasks.v2beta3.CloudTask.ListTasks\], when the response view
 /// is \[FULL][google.cloud.tasks.v2beta3.Task.View.Full\].
@@ -32,8 +33,10 @@ pub struct PullMessage {
 /// any other HTTP response code is returned or no response is received, the
 /// task will be retried according to the following:
 ///
-/// * User-specified throttling: [retry configuration]\[google.cloud.tasks.v2beta3.Queue.retry_config\],
-///    [rate limits]\[google.cloud.tasks.v2beta3.Queue.rate_limits\], and the [queue's state]\[google.cloud.tasks.v2beta3.Queue.state\].
+/// * User-specified throttling: [retry
+/// configuration]\[google.cloud.tasks.v2beta3.Queue.retry_config\],
+///    [rate limits]\[google.cloud.tasks.v2beta3.Queue.rate_limits\], and the
+///    [queue's state]\[google.cloud.tasks.v2beta3.Queue.state\].
 ///
 /// * System throttling: To prevent the worker from overloading, Cloud Tasks may
 ///    temporarily reduce the queue's effective rate. User-specified settings
@@ -42,10 +45,11 @@ pub struct PullMessage {
 ///   System throttling happens because:
 ///
 ///    * Cloud Tasks backs off on all errors. Normally the backoff specified in
-///      [rate limits]\[google.cloud.tasks.v2beta3.Queue.rate_limits\] will be used. But if the worker returns
-///      `429` (Too Many Requests), `503` (Service Unavailable), or the rate of
-///      errors is high, Cloud Tasks will use a higher backoff rate. The retry
-///      specified in the `Retry-After` HTTP response header is considered.
+///      [rate limits]\[google.cloud.tasks.v2beta3.Queue.rate_limits\] will be used.
+///      But if the worker returns `429` (Too Many Requests), `503` (Service
+///      Unavailable), or the rate of errors is high, Cloud Tasks will use a
+///      higher backoff rate. The retry specified in the `Retry-After` HTTP
+///      response header is considered.
 ///
 ///    * To prevent traffic spikes and to smooth sudden increases in traffic,
 ///      dispatches ramp up slowly when the queue is newly created or idle and
@@ -105,14 +109,16 @@ pub struct HttpRequest {
     /// HTTP request body.
     ///
     /// A request body is allowed only if the
-    /// [HTTP method]\[google.cloud.tasks.v2beta3.HttpRequest.http_method\] is POST, PUT, or PATCH. It is an
-    /// error to set body on a task with an incompatible \[HttpMethod][google.cloud.tasks.v2beta3.HttpMethod\].
+    /// [HTTP method]\[google.cloud.tasks.v2beta3.HttpRequest.http_method\] is POST,
+    /// PUT, or PATCH. It is an error to set body on a task with an incompatible
+    /// \[HttpMethod][google.cloud.tasks.v2beta3.HttpMethod\].
     #[prost(bytes = "vec", tag = "4")]
     pub body: ::prost::alloc::vec::Vec<u8>,
     /// The mode for generating an `Authorization` header for HTTP requests.
     ///
-    /// If specified, all `Authorization` headers in the \[HttpRequest.headers][google.cloud.tasks.v2beta3.HttpRequest.headers\]
-    /// field will be overridden.
+    /// If specified, all `Authorization` headers in the
+    /// \[HttpRequest.headers][google.cloud.tasks.v2beta3.HttpRequest.headers\] field
+    /// will be overridden.
     #[prost(oneof = "http_request::AuthorizationHeader", tags = "5, 6")]
     pub authorization_header: ::core::option::Option<http_request::AuthorizationHeader>,
 }
@@ -120,8 +126,9 @@ pub struct HttpRequest {
 pub mod http_request {
     /// The mode for generating an `Authorization` header for HTTP requests.
     ///
-    /// If specified, all `Authorization` headers in the \[HttpRequest.headers][google.cloud.tasks.v2beta3.HttpRequest.headers\]
-    /// field will be overridden.
+    /// If specified, all `Authorization` headers in the
+    /// \[HttpRequest.headers][google.cloud.tasks.v2beta3.HttpRequest.headers\] field
+    /// will be overridden.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuthorizationHeader {
@@ -149,11 +156,15 @@ pub mod http_request {
 /// App Engine HTTP queue.
 ///
 /// The task will be delivered to the App Engine application hostname
-/// specified by its \[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue\] and \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\].
-/// The documentation for \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\] explains how the
-/// task's host URL is constructed.
+/// specified by its
+/// \[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue\] and
+/// \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\]. The
+/// documentation for
+/// \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\]
+/// explains how the task's host URL is constructed.
 ///
-/// Using \[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue\] requires
+/// Using \[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue\]
+/// requires
 /// \[`appengine.applications.get`\](<https://cloud.google.com/appengine/docs/admin-api/access-control>)
 /// Google IAM permission for the project
 /// and the following scope:
@@ -163,11 +174,13 @@ pub mod http_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineHttpQueue {
     /// Overrides for the
-    /// [task-level app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
+    /// [task-level
+    /// app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
     ///
     /// If set, `app_engine_routing_override` is used for all tasks in
     /// the queue, no matter what the setting is for the
-    /// [task-level app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
+    /// [task-level
+    /// app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
     #[prost(message, optional, tag = "1")]
     pub app_engine_routing_override: ::core::option::Option<AppEngineRouting>,
 }
@@ -176,7 +189,8 @@ pub struct AppEngineHttpQueue {
 /// The message defines the HTTP request that is sent to an App Engine app when
 /// the task is dispatched.
 ///
-/// Using \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\] requires
+/// Using \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\]
+/// requires
 /// \[`appengine.applications.get`\](<https://cloud.google.com/appengine/docs/admin-api/access-control>)
 /// Google IAM permission for the project
 /// and the following scope:
@@ -196,14 +210,16 @@ pub struct AppEngineHttpQueue {
 /// The request to the handler, however, will appear to have used the HTTP
 /// protocol.
 ///
-/// The \[AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting\] used to construct the URL that the task is
-/// delivered to can be set at the queue-level or task-level:
+/// The \[AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting\] used to
+/// construct the URL that the task is delivered to can be set at the queue-level
+/// or task-level:
 ///
 /// * If set,
 ///    \[app_engine_routing_override][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override\]
 ///    is used for all tasks in the queue, no matter what the setting
 ///    is for the
-///    [task-level app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
+///    [task-level
+///    app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
 ///
 ///
 /// The `url` that the task will be sent to is:
@@ -224,14 +240,15 @@ pub struct AppEngineHttpQueue {
 /// The task attempt has succeeded if the app's request handler returns an HTTP
 /// response code in the range [`200` - `299`]. The task attempt has failed if
 /// the app's handler returns a non-2xx response code or Cloud Tasks does
-/// not receive response before the \[deadline][google.cloud.tasks.v2beta3.Task.dispatch_deadline\]. Failed
-/// tasks will be retried according to the
-/// [retry configuration]\[google.cloud.tasks.v2beta3.Queue.retry_config\]. `503` (Service Unavailable) is
-/// considered an App Engine system error instead of an application error and
-/// will cause Cloud Tasks' traffic congestion control to temporarily throttle
-/// the queue's dispatches. Unlike other types of task targets, a `429` (Too Many
-/// Requests) response from an app handler does not cause traffic congestion
-/// control to throttle the queue.
+/// not receive response before the
+/// \[deadline][google.cloud.tasks.v2beta3.Task.dispatch_deadline\]. Failed tasks
+/// will be retried according to the [retry
+/// configuration]\[google.cloud.tasks.v2beta3.Queue.retry_config\]. `503` (Service
+/// Unavailable) is considered an App Engine system error instead of an
+/// application error and will cause Cloud Tasks' traffic congestion control to
+/// temporarily throttle the queue's dispatches. Unlike other types of task
+/// targets, a `429` (Too Many Requests) response from an app handler does not
+/// cause traffic congestion control to throttle the queue.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineHttpRequest {
@@ -250,7 +267,8 @@ pub struct AppEngineHttpRequest {
     /// If set,
     /// \[app_engine_routing_override][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override\]
     /// is used for all tasks in the queue, no matter what the setting is for the
-    /// [task-level app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
+    /// [task-level
+    /// app_engine_routing]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing\].
     #[prost(message, optional, tag = "2")]
     pub app_engine_routing: ::core::option::Option<AppEngineRouting>,
     /// The relative URI.
@@ -276,8 +294,9 @@ pub struct AppEngineHttpRequest {
     ///    `"AppEngine-Google; (+<http://code.google.com/appengine>)"` to the
     ///    modified `User-Agent`.
     ///
-    /// If the task has a \[body][google.cloud.tasks.v2beta3.AppEngineHttpRequest.body\], Cloud
-    /// Tasks sets the following headers:
+    /// If the task has a
+    /// \[body][google.cloud.tasks.v2beta3.AppEngineHttpRequest.body\], Cloud Tasks
+    /// sets the following headers:
     ///
     /// * `Content-Type`: By default, the `Content-Type` header is set to
     ///    `"application/octet-stream"`. The default can be overridden by explicitly
@@ -301,8 +320,10 @@ pub struct AppEngineHttpRequest {
     /// visible when the task is returned in a Cloud Tasks response.
     ///
     /// Although there is no specific limit for the maximum number of headers or
-    /// the size, there is a limit on the maximum size of the \[Task][google.cloud.tasks.v2beta3.Task\]. For more
-    /// information, see the \[CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask\] documentation.
+    /// the size, there is a limit on the maximum size of the
+    /// \[Task][google.cloud.tasks.v2beta3.Task\]. For more information, see the
+    /// \[CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask\]
+    /// documentation.
     #[prost(map = "string, string", tag = "4")]
     pub headers: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -311,7 +332,8 @@ pub struct AppEngineHttpRequest {
     /// HTTP request body.
     ///
     /// A request body is allowed only if the HTTP method is POST or PUT. It is
-    /// an error to set a body on a task with an incompatible \[HttpMethod][google.cloud.tasks.v2beta3.HttpMethod\].
+    /// an error to set a body on a task with an incompatible
+    /// \[HttpMethod][google.cloud.tasks.v2beta3.HttpMethod\].
     #[prost(bytes = "vec", tag = "5")]
     pub body: ::prost::alloc::vec::Vec<u8>,
 }
@@ -338,16 +360,18 @@ pub struct AppEngineRouting {
     /// service when the task is attempted.
     ///
     /// For some queues or tasks which were created using the App Engine
-    /// Task Queue API, \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is not parsable
-    /// into \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\],
-    /// \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\], and
-    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\]. For example, some tasks
-    /// which were created using the App Engine SDK use a custom domain
-    /// name; custom domains are not parsed by Cloud Tasks. If
-    /// \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is not parsable, then
+    /// Task Queue API, \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is
+    /// not parsable into
     /// \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\],
     /// \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\], and
-    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\] are the empty string.
+    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\]. For
+    /// example, some tasks which were created using the App Engine SDK use a
+    /// custom domain name; custom domains are not parsed by Cloud Tasks. If
+    /// \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is not parsable,
+    /// then \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\],
+    /// \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\], and
+    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\] are the
+    /// empty string.
     #[prost(string, tag = "1")]
     pub service: ::prost::alloc::string::String,
     /// App version.
@@ -356,16 +380,18 @@ pub struct AppEngineRouting {
     /// version when the task is attempted.
     ///
     /// For some queues or tasks which were created using the App Engine
-    /// Task Queue API, \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is not parsable
-    /// into \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\],
-    /// \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\], and
-    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\]. For example, some tasks
-    /// which were created using the App Engine SDK use a custom domain
-    /// name; custom domains are not parsed by Cloud Tasks. If
-    /// \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is not parsable, then
+    /// Task Queue API, \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is
+    /// not parsable into
     /// \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\],
     /// \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\], and
-    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\] are the empty string.
+    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\]. For
+    /// example, some tasks which were created using the App Engine SDK use a
+    /// custom domain name; custom domains are not parsed by Cloud Tasks. If
+    /// \[host][google.cloud.tasks.v2beta3.AppEngineRouting.host\] is not parsable,
+    /// then \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\],
+    /// \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\], and
+    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\] are the
+    /// empty string.
     #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
     /// App instance.
@@ -387,9 +413,11 @@ pub struct AppEngineRouting {
     ///
     /// The host is constructed from the domain name of the app associated with
     /// the queue's project ID (for example <app-id>.appspot.com), and the
-    /// \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\], \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\],
-    /// and \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\]. Tasks which were created using
-    /// the App Engine SDK might have a custom domain name.
+    /// \[service][google.cloud.tasks.v2beta3.AppEngineRouting.service\],
+    /// \[version][google.cloud.tasks.v2beta3.AppEngineRouting.version\], and
+    /// \[instance][google.cloud.tasks.v2beta3.AppEngineRouting.instance\]. Tasks
+    /// which were created using the App Engine SDK might have a custom domain
+    /// name.
     ///
     /// For more information, see
     /// [How Requests are
@@ -497,8 +525,9 @@ impl HttpMethod {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Queue {
-    /// Caller-specified and required in \[CreateQueue][google.cloud.tasks.v2beta3.CloudTasks.CreateQueue\],
-    /// after which it becomes output only.
+    /// Caller-specified and required in
+    /// \[CreateQueue][google.cloud.tasks.v2beta3.CloudTasks.CreateQueue\], after
+    /// which it becomes output only.
     ///
     /// The queue name.
     ///
@@ -520,23 +549,27 @@ pub struct Queue {
     pub name: ::prost::alloc::string::String,
     /// Rate limits for task dispatches.
     ///
-    /// \[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits\] and \[retry_config][google.cloud.tasks.v2beta3.Queue.retry_config\] are
-    /// related because they both control task attempts. However they control task
-    /// attempts in different ways:
+    /// \[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits\] and
+    /// \[retry_config][google.cloud.tasks.v2beta3.Queue.retry_config\] are related
+    /// because they both control task attempts. However they control task attempts
+    /// in different ways:
     ///
-    /// * \[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits\] controls the total rate of
+    /// * \[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits\] controls the
+    /// total rate of
     ///    dispatches from a queue (i.e. all traffic dispatched from the
     ///    queue, regardless of whether the dispatch is from a first
     ///    attempt or a retry).
-    /// * \[retry_config][google.cloud.tasks.v2beta3.Queue.retry_config\] controls what happens to
+    /// * \[retry_config][google.cloud.tasks.v2beta3.Queue.retry_config\] controls
+    /// what happens to
     ///    particular a task after its first attempt fails. That is,
-    ///    \[retry_config][google.cloud.tasks.v2beta3.Queue.retry_config\] controls task retries (the
-    ///    second attempt, third attempt, etc).
+    ///    \[retry_config][google.cloud.tasks.v2beta3.Queue.retry_config\] controls
+    ///    task retries (the second attempt, third attempt, etc).
     ///
     /// The queue's actual dispatch rate is the result of:
     ///
     /// * Number of tasks in the queue
-    /// * User-specified throttling: \[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits\],
+    /// * User-specified throttling:
+    /// \[rate_limits][google.cloud.tasks.v2beta3.Queue.rate_limits\],
     ///    \[retry_config][google.cloud.tasks.v2beta3.Queue.retry_config\], and the
     ///    [queue's state]\[google.cloud.tasks.v2beta3.Queue.state\].
     /// * System throttling due to `429` (Too Many Requests) or `503` (Service
@@ -560,18 +593,21 @@ pub struct Queue {
     ///
     /// `state` can only be changed by calling
     /// \[PauseQueue][google.cloud.tasks.v2beta3.CloudTasks.PauseQueue\],
-    /// \[ResumeQueue][google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue\], or uploading
+    /// \[ResumeQueue][google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue\], or
+    /// uploading
     /// \[queue.yaml/xml\](<https://cloud.google.com/appengine/docs/python/config/queueref>).
-    /// \[UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue\] cannot be used to change `state`.
+    /// \[UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue\] cannot be
+    /// used to change `state`.
     #[prost(enumeration = "queue::State", tag = "6")]
     pub state: i32,
     /// Output only. The last time this queue was purged.
     ///
-    /// All tasks that were \[created][google.cloud.tasks.v2beta3.Task.create_time\] before this time
-    /// were purged.
+    /// All tasks that were \[created][google.cloud.tasks.v2beta3.Task.create_time\]
+    /// before this time were purged.
     ///
-    /// A queue can be purged using \[PurgeQueue][google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue\], the
-    /// [App Engine Task Queue SDK, or the Cloud
+    /// A queue can be purged using
+    /// \[PurgeQueue][google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue\], the [App
+    /// Engine Task Queue SDK, or the Cloud
     /// Console](<https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/deleting-tasks-and-queues#purging_all_tasks_from_a_queue>).
     ///
     /// Purge time will be truncated to the nearest microsecond. Purge
@@ -741,9 +777,11 @@ pub mod queue {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum QueueType {
-        /// \[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue\] settings apply only to
-        /// [App Engine tasks]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest\] in this queue.
-        /// [Http tasks]\[google.cloud.tasks.v2beta3.HttpRequest\] are not affected by this proto.
+        /// \[AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue\]
+        /// settings apply only to [App Engine
+        /// tasks]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest\] in this queue.
+        /// [Http tasks]\[google.cloud.tasks.v2beta3.HttpRequest\] are not affected by
+        /// this proto.
         #[prost(message, tag = "3")]
         AppEngineHttpQueue(super::AppEngineHttpQueue),
     }
@@ -753,8 +791,10 @@ pub mod queue {
 /// This message determines the maximum rate that tasks can be dispatched by a
 /// queue, regardless of whether the dispatch is a first task attempt or a retry.
 ///
-/// Note: The debugging command, \[RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask\], will run a task
-/// even if the queue has reached its \[RateLimits][google.cloud.tasks.v2beta3.RateLimits\].
+/// Note: The debugging command,
+/// \[RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask\], will run a task
+/// even if the queue has reached its
+/// \[RateLimits][google.cloud.tasks.v2beta3.RateLimits\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RateLimits {
@@ -763,7 +803,8 @@ pub struct RateLimits {
     /// If unspecified when the queue is created, Cloud Tasks will pick the
     /// default.
     ///
-    /// * For [App Engine queues]\[google.cloud.tasks.v2beta3.AppEngineHttpQueue\], the maximum allowed value
+    /// * For [App Engine queues]\[google.cloud.tasks.v2beta3.AppEngineHttpQueue\],
+    /// the maximum allowed value
     ///    is 500.
     ///
     ///
@@ -799,10 +840,11 @@ pub struct RateLimits {
     /// `queue.yaml/xml`, `max_burst_size` is equal to
     /// \[bucket_size\](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size>).
     /// If
-    /// \[UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue\] is called on a queue without
-    /// explicitly setting a value for `max_burst_size`,
+    /// \[UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue\] is called
+    /// on a queue without explicitly setting a value for `max_burst_size`,
     /// `max_burst_size` value will get updated if
-    /// \[UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue\] is updating
+    /// \[UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue\] is
+    /// updating
     /// \[max_dispatches_per_second][google.cloud.tasks.v2beta3.RateLimits.max_dispatches_per_second\].
     ///
     #[prost(int32, tag = "2")]
@@ -850,9 +892,9 @@ pub struct RetryConfig {
     /// If positive, `max_retry_duration` specifies the time limit for
     /// retrying a failed task, measured from when the task was first
     /// attempted. Once `max_retry_duration` time has passed *and* the
-    /// task has been attempted \[max_attempts][google.cloud.tasks.v2beta3.RetryConfig.max_attempts\]
-    /// times, no further attempts will be made and the task will be
-    /// deleted.
+    /// task has been attempted
+    /// \[max_attempts][google.cloud.tasks.v2beta3.RetryConfig.max_attempts\] times,
+    /// no further attempts will be made and the task will be deleted.
     ///
     /// If zero, then the task age is unlimited.
     ///
@@ -867,11 +909,13 @@ pub struct RetryConfig {
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
     #[prost(message, optional, tag = "2")]
     pub max_retry_duration: ::core::option::Option<::prost_types::Duration>,
-    /// A task will be \[scheduled][google.cloud.tasks.v2beta3.Task.schedule_time\] for retry between
+    /// A task will be \[scheduled][google.cloud.tasks.v2beta3.Task.schedule_time\]
+    /// for retry between
     /// \[min_backoff][google.cloud.tasks.v2beta3.RetryConfig.min_backoff\] and
-    /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] duration after it fails,
-    /// if the queue's \[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig\] specifies that the task should be
-    /// retried.
+    /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] duration
+    /// after it fails, if the queue's
+    /// \[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig\] specifies that the
+    /// task should be retried.
     ///
     /// If unspecified when the queue is created, Cloud Tasks will pick the
     /// default.
@@ -884,11 +928,13 @@ pub struct RetryConfig {
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
     #[prost(message, optional, tag = "3")]
     pub min_backoff: ::core::option::Option<::prost_types::Duration>,
-    /// A task will be \[scheduled][google.cloud.tasks.v2beta3.Task.schedule_time\] for retry between
+    /// A task will be \[scheduled][google.cloud.tasks.v2beta3.Task.schedule_time\]
+    /// for retry between
     /// \[min_backoff][google.cloud.tasks.v2beta3.RetryConfig.min_backoff\] and
-    /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] duration after it fails,
-    /// if the queue's \[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig\] specifies that the task should be
-    /// retried.
+    /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] duration
+    /// after it fails, if the queue's
+    /// \[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig\] specifies that the
+    /// task should be retried.
     ///
     /// If unspecified when the queue is created, Cloud Tasks will pick the
     /// default.
@@ -904,21 +950,23 @@ pub struct RetryConfig {
     /// The time between retries will double `max_doublings` times.
     ///
     /// A task's retry interval starts at
-    /// \[min_backoff][google.cloud.tasks.v2beta3.RetryConfig.min_backoff\], then doubles
-    /// `max_doublings` times, then increases linearly, and finally
-    /// retries at intervals of
+    /// \[min_backoff][google.cloud.tasks.v2beta3.RetryConfig.min_backoff\], then
+    /// doubles `max_doublings` times, then increases linearly, and finally retries
+    /// at intervals of
     /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] up to
     /// \[max_attempts][google.cloud.tasks.v2beta3.RetryConfig.max_attempts\] times.
     ///
-    /// For example, if \[min_backoff][google.cloud.tasks.v2beta3.RetryConfig.min_backoff\] is 10s,
-    /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] is 300s, and
-    /// `max_doublings` is 3, then the a task will first be retried in
-    /// 10s. The retry interval will double three times, and then
-    /// increase linearly by 2^3 * 10s.  Finally, the task will retry at
-    /// intervals of \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] until the
-    /// task has been attempted \[max_attempts][google.cloud.tasks.v2beta3.RetryConfig.max_attempts\]
-    /// times. Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s,
-    /// 240s, 300s, 300s, ....
+    /// For example, if
+    /// \[min_backoff][google.cloud.tasks.v2beta3.RetryConfig.min_backoff\] is 10s,
+    /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] is 300s,
+    /// and `max_doublings` is 3, then the a task will first be retried in 10s. The
+    /// retry interval will double three times, and then increase linearly by 2^3 *
+    /// 10s.  Finally, the task will retry at intervals of
+    /// \[max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff\] until the
+    /// task has been attempted
+    /// \[max_attempts][google.cloud.tasks.v2beta3.RetryConfig.max_attempts\] times.
+    /// Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s,
+    /// 300s, ....
     ///
     /// If unspecified when the queue is created, Cloud Tasks will pick the
     /// default.
@@ -946,29 +994,29 @@ pub struct StackdriverLoggingConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueueStats {
-    /// Output only. An estimation of the number of tasks in the queue, that is, the tasks in
-    /// the queue that haven't been executed, the tasks in the queue which the
-    /// queue has dispatched but has not yet received a reply for, and the failed
-    /// tasks that the queue is retrying.
+    /// Output only. An estimation of the number of tasks in the queue, that is,
+    /// the tasks in the queue that haven't been executed, the tasks in the queue
+    /// which the queue has dispatched but has not yet received a reply for, and
+    /// the failed tasks that the queue is retrying.
     #[prost(int64, tag = "1")]
     pub tasks_count: i64,
-    /// Output only. An estimation of the nearest time in the future where a task in the queue
-    /// is scheduled to be executed.
+    /// Output only. An estimation of the nearest time in the future where a task
+    /// in the queue is scheduled to be executed.
     #[prost(message, optional, tag = "2")]
     pub oldest_estimated_arrival_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The number of tasks that the queue has dispatched and received a reply for
-    /// during the last minute. This variable counts both successful and
-    /// non-successful executions.
+    /// Output only. The number of tasks that the queue has dispatched and received
+    /// a reply for during the last minute. This variable counts both successful
+    /// and non-successful executions.
     #[prost(int64, tag = "3")]
     pub executed_last_minute_count: i64,
-    /// Output only. The number of requests that the queue has dispatched but has not received
-    /// a reply for yet.
+    /// Output only. The number of requests that the queue has dispatched but has
+    /// not received a reply for yet.
     #[prost(int64, tag = "4")]
     pub concurrent_dispatches_count: i64,
-    /// Output only. The current maximum number of tasks per second executed by the queue.
-    /// The maximum value of this variable is controlled by the RateLimits of the
-    /// Queue. However, this value could be less to avoid overloading the endpoints
-    /// tasks in the queue are targeting.
+    /// Output only. The current maximum number of tasks per second executed by the
+    /// queue. The maximum value of this variable is controlled by the RateLimits
+    /// of the Queue. However, this value could be less to avoid overloading the
+    /// endpoints tasks in the queue are targeting.
     #[prost(double, tag = "5")]
     pub effective_execution_rate: f64,
 }
@@ -976,7 +1024,8 @@ pub struct QueueStats {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
-    /// Optionally caller-specified in \[CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask\].
+    /// Optionally caller-specified in
+    /// \[CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask\].
     ///
     /// The task name.
     ///
@@ -1013,7 +1062,8 @@ pub struct Task {
     /// The deadline for requests sent to the worker. If the worker does not
     /// respond by this deadline then the request is cancelled and the attempt
     /// is marked as a `DEADLINE_EXCEEDED` failure. Cloud Tasks will retry the
-    /// task according to the \[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig\].
+    /// task according to the
+    /// \[RetryConfig][google.cloud.tasks.v2beta3.RetryConfig\].
     ///
     /// Note that when the request is cancelled, Cloud Tasks will stop listening
     /// for the response, but whether the worker stops processing depends on the
@@ -1022,10 +1072,12 @@ pub struct Task {
     ///
     /// The default and maximum values depend on the type of request:
     ///
-    /// * For [HTTP tasks]\[google.cloud.tasks.v2beta3.HttpRequest\], the default is 10 minutes. The deadline
+    /// * For [HTTP tasks]\[google.cloud.tasks.v2beta3.HttpRequest\], the default is
+    /// 10 minutes. The deadline
     ///    must be in the interval [15 seconds, 30 minutes].
     ///
-    /// * For [App Engine tasks]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest\], 0 indicates that the
+    /// * For [App Engine tasks]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest\],
+    /// 0 indicates that the
     ///    request has the default deadline. The default deadline depends on the
     ///    [scaling
     ///    type](<https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling>)
@@ -1054,15 +1106,16 @@ pub struct Task {
     pub response_count: i32,
     /// Output only. The status of the task's first attempt.
     ///
-    /// Only \[dispatch_time][google.cloud.tasks.v2beta3.Attempt.dispatch_time\] will be set.
-    /// The other \[Attempt][google.cloud.tasks.v2beta3.Attempt\] information is not retained by Cloud Tasks.
+    /// Only \[dispatch_time][google.cloud.tasks.v2beta3.Attempt.dispatch_time\] will
+    /// be set. The other \[Attempt][google.cloud.tasks.v2beta3.Attempt\] information
+    /// is not retained by Cloud Tasks.
     #[prost(message, optional, tag = "8")]
     pub first_attempt: ::core::option::Option<Attempt>,
     /// Output only. The status of the task's last attempt.
     #[prost(message, optional, tag = "9")]
     pub last_attempt: ::core::option::Option<Attempt>,
-    /// Output only. The view specifies which subset of the \[Task][google.cloud.tasks.v2beta3.Task\] has
-    /// been returned.
+    /// Output only. The view specifies which subset of the
+    /// \[Task][google.cloud.tasks.v2beta3.Task\] has been returned.
     #[prost(enumeration = "task::View", tag = "10")]
     pub view: i32,
     /// Required. The message to send to the worker.
@@ -1071,7 +1124,8 @@ pub struct Task {
 }
 /// Nested message and enum types in `Task`.
 pub mod task {
-    /// The view specifies a subset of \[Task][google.cloud.tasks.v2beta3.Task\] data.
+    /// The view specifies a subset of \[Task][google.cloud.tasks.v2beta3.Task\]
+    /// data.
     ///
     /// When a task is returned in a response, not all
     /// information is retrieved by default because some data, such as
@@ -1097,16 +1151,18 @@ pub mod task {
         /// sensitive data.
         ///
         /// This view does not include the
-        /// [body in AppEngineHttpRequest]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.body\].
+        /// [body in
+        /// AppEngineHttpRequest]\[google.cloud.tasks.v2beta3.AppEngineHttpRequest.body\].
         /// Bodies are desirable to return only when needed, because they
         /// can be large and because of the sensitivity of the data that you
         /// choose to store in it.
         Basic = 1,
         /// All information is returned.
         ///
-        /// Authorization for \[FULL][google.cloud.tasks.v2beta3.Task.View.FULL\] requires
-        /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
-        /// permission on the \[Queue][google.cloud.tasks.v2beta3.Queue\] resource.
+        /// Authorization for \[FULL][google.cloud.tasks.v2beta3.Task.View.FULL\]
+        /// requires `cloudtasks.tasks.fullView` [Google
+        /// IAM](<https://cloud.google.com/iam/>) permission on the
+        /// \[Queue][google.cloud.tasks.v2beta3.Queue\] resource.
         Full = 2,
     }
     impl View {
@@ -1137,18 +1193,21 @@ pub mod task {
     pub enum PayloadType {
         /// HTTP request that is sent to the App Engine app handler.
         ///
-        /// An App Engine task is a task that has \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\] set.
+        /// An App Engine task is a task that has
+        /// \[AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest\]
+        /// set.
         #[prost(message, tag = "3")]
         AppEngineHttpRequest(super::AppEngineHttpRequest),
         /// HTTP request that is sent to the task's target.
         ///
-        /// An HTTP task is a task that has \[HttpRequest][google.cloud.tasks.v2beta3.HttpRequest\] set.
+        /// An HTTP task is a task that has
+        /// \[HttpRequest][google.cloud.tasks.v2beta3.HttpRequest\] set.
         #[prost(message, tag = "11")]
         HttpRequest(super::HttpRequest),
-        /// Pull Message contained in a task in a \[PULL][google.cloud.tasks.v2beta3.Queue.type\] queue type. This
-        /// payload type cannot be explicitly set through Cloud Tasks API. Its
-        /// purpose, currently is to provide backward compatibility with App Engine
-        /// Task Queue
+        /// Pull Message contained in a task in a
+        /// \[PULL][google.cloud.tasks.v2beta3.Queue.type\] queue type. This payload
+        /// type cannot be explicitly set through Cloud Tasks API. Its purpose,
+        /// currently is to provide backward compatibility with App Engine Task Queue
         /// \[pull\](<https://cloud.google.com/appengine/docs/standard/java/taskqueue/pull/>)
         /// queues to provide a way to inspect contents of pull tasks through the
         /// \[CloudTasks.GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask\].
@@ -1529,7 +1588,7 @@ pub mod cloud_tasks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1585,13 +1644,32 @@ pub mod cloud_tasks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists queues.
         ///
         /// Queues are returned in lexicographical order.
         pub async fn list_queues(
             &mut self,
             request: impl tonic::IntoRequest<super::ListQueuesRequest>,
-        ) -> Result<tonic::Response<super::ListQueuesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListQueuesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1605,13 +1683,21 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/ListQueues",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "ListQueues",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a queue.
         pub async fn get_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::GetQueueRequest>,
-        ) -> Result<tonic::Response<super::Queue>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Queue>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1625,7 +1711,12 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/GetQueue",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tasks.v2beta3.CloudTasks", "GetQueue"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a queue.
         ///
@@ -1642,7 +1733,7 @@ pub mod cloud_tasks_client {
         pub async fn create_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateQueueRequest>,
-        ) -> Result<tonic::Response<super::Queue>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Queue>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1656,7 +1747,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/CreateQueue",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "CreateQueue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a queue.
         ///
@@ -1676,7 +1775,7 @@ pub mod cloud_tasks_client {
         pub async fn update_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateQueueRequest>,
-        ) -> Result<tonic::Response<super::Queue>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Queue>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1690,7 +1789,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/UpdateQueue",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "UpdateQueue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a queue.
         ///
@@ -1708,7 +1815,7 @@ pub mod cloud_tasks_client {
         pub async fn delete_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteQueueRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1722,7 +1829,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/DeleteQueue",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "DeleteQueue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Purges a queue by deleting all of its tasks.
         ///
@@ -1733,7 +1848,7 @@ pub mod cloud_tasks_client {
         pub async fn purge_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::PurgeQueueRequest>,
-        ) -> Result<tonic::Response<super::Queue>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Queue>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1747,7 +1862,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/PurgeQueue",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "PurgeQueue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Pauses the queue.
         ///
@@ -1759,7 +1882,7 @@ pub mod cloud_tasks_client {
         pub async fn pause_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::PauseQueueRequest>,
-        ) -> Result<tonic::Response<super::Queue>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Queue>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1773,7 +1896,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/PauseQueue",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "PauseQueue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resume a queue.
         ///
@@ -1791,7 +1922,7 @@ pub mod cloud_tasks_client {
         pub async fn resume_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeQueueRequest>,
-        ) -> Result<tonic::Response<super::Queue>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Queue>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1805,7 +1936,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/ResumeQueue",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "ResumeQueue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a [Queue][google.cloud.tasks.v2beta3.Queue].
         /// Returns an empty policy if the resource exists and does not have a policy
@@ -1821,7 +1960,7 @@ pub mod cloud_tasks_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1838,7 +1977,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy for a [Queue][google.cloud.tasks.v2beta3.Queue]. Replaces any existing
         /// policy.
@@ -1856,7 +2003,7 @@ pub mod cloud_tasks_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1873,7 +2020,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on a [Queue][google.cloud.tasks.v2beta3.Queue].
         /// If the resource does not exist, this will return an empty set of
@@ -1887,7 +2042,7 @@ pub mod cloud_tasks_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -1906,7 +2061,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the tasks in a queue.
         ///
@@ -1920,7 +2083,10 @@ pub mod cloud_tasks_client {
         pub async fn list_tasks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTasksRequest>,
-        ) -> Result<tonic::Response<super::ListTasksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTasksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1934,13 +2100,18 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/ListTasks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tasks.v2beta3.CloudTasks", "ListTasks"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a task.
         pub async fn get_task(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1954,7 +2125,12 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/GetTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tasks.v2beta3.CloudTasks", "GetTask"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a task and adds it to a queue.
         ///
@@ -1964,7 +2140,7 @@ pub mod cloud_tasks_client {
         pub async fn create_task(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1978,7 +2154,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/CreateTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "CreateTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a task.
         ///
@@ -1988,7 +2172,7 @@ pub mod cloud_tasks_client {
         pub async fn delete_task(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTaskRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2002,7 +2186,15 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/DeleteTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta3.CloudTasks",
+                        "DeleteTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Forces a task to run now.
         ///
@@ -2031,7 +2223,7 @@ pub mod cloud_tasks_client {
         pub async fn run_task(
             &mut self,
             request: impl tonic::IntoRequest<super::RunTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2045,7 +2237,12 @@ pub mod cloud_tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tasks.v2beta3.CloudTasks/RunTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tasks.v2beta3.CloudTasks", "RunTask"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

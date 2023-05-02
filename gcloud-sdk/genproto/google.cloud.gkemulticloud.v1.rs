@@ -741,7 +741,7 @@ pub mod attached_clusters_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -797,6 +797,22 @@ pub mod attached_clusters_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new
         /// [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster] resource
         /// on a given Google Cloud Platform project and region.
@@ -807,7 +823,7 @@ pub mod attached_clusters_client {
         pub async fn create_attached_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAttachedClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -824,14 +840,22 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/CreateAttachedCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "CreateAttachedCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an
         /// [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster].
         pub async fn update_attached_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAttachedClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -848,7 +872,15 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/UpdateAttachedCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "UpdateAttachedCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Imports creates a new
         /// [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster] resource
@@ -863,7 +895,7 @@ pub mod attached_clusters_client {
         pub async fn import_attached_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportAttachedClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -880,14 +912,25 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/ImportAttachedCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "ImportAttachedCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Describes a specific
         /// [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster] resource.
         pub async fn get_attached_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAttachedClusterRequest>,
-        ) -> Result<tonic::Response<super::AttachedCluster>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AttachedCluster>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -901,14 +944,22 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "GetAttachedCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]
         /// resources on a given Google Cloud project and region.
         pub async fn list_attached_clusters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAttachedClustersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListAttachedClustersResponse>,
             tonic::Status,
         > {
@@ -925,7 +976,15 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/ListAttachedClusters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "ListAttachedClusters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specific
         /// [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster] resource.
@@ -936,7 +995,7 @@ pub mod attached_clusters_client {
         pub async fn delete_attached_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAttachedClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -953,14 +1012,25 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/DeleteAttachedCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "DeleteAttachedCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information, such as supported Kubernetes versions, on a given
         /// Google Cloud location.
         pub async fn get_attached_server_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAttachedServerConfigRequest>,
-        ) -> Result<tonic::Response<super::AttachedServerConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AttachedServerConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -974,7 +1044,15 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedServerConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "GetAttachedServerConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates the install manifest to be installed on the target cluster.
         pub async fn generate_attached_cluster_install_manifest(
@@ -982,7 +1060,7 @@ pub mod attached_clusters_client {
             request: impl tonic::IntoRequest<
                 super::GenerateAttachedClusterInstallManifestRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateAttachedClusterInstallManifestResponse>,
             tonic::Status,
         > {
@@ -999,7 +1077,15 @@ pub mod attached_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterInstallManifest",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "GenerateAttachedClusterInstallManifest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2160,7 +2246,7 @@ pub mod aws_clusters_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2216,6 +2302,22 @@ pub mod aws_clusters_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
         /// resource on a given Google Cloud Platform project and region.
         ///
@@ -2225,7 +2327,7 @@ pub mod aws_clusters_client {
         pub async fn create_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAwsClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2242,13 +2344,21 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/CreateAwsCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "CreateAwsCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
         pub async fn update_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAwsClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2265,14 +2375,22 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/UpdateAwsCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "UpdateAwsCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Describes a specific [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
         /// resource.
         pub async fn get_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsClusterRequest>,
-        ) -> Result<tonic::Response<super::AwsCluster>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AwsCluster>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2286,14 +2404,25 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "GetAwsCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resources
         /// on a given Google Cloud project and region.
         pub async fn list_aws_clusters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAwsClustersRequest>,
-        ) -> Result<tonic::Response<super::ListAwsClustersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAwsClustersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2307,7 +2436,15 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/ListAwsClusters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "ListAwsClusters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specific [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
         /// resource.
@@ -2321,7 +2458,7 @@ pub mod aws_clusters_client {
         pub async fn delete_aws_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAwsClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2338,14 +2475,22 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/DeleteAwsCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "DeleteAwsCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates a short-lived access token to authenticate to a given
         /// [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
         pub async fn generate_aws_access_token(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateAwsAccessTokenRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateAwsAccessTokenResponse>,
             tonic::Status,
         > {
@@ -2362,7 +2507,15 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsAccessToken",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "GenerateAwsAccessToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool],
         /// attached to a given [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
@@ -2373,7 +2526,7 @@ pub mod aws_clusters_client {
         pub async fn create_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAwsNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2390,13 +2543,21 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/CreateAwsNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "CreateAwsNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool].
         pub async fn update_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAwsNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2413,14 +2574,22 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/UpdateAwsNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "UpdateAwsNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Describes a specific
         /// [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool] resource.
         pub async fn get_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsNodePoolRequest>,
-        ) -> Result<tonic::Response<super::AwsNodePool>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AwsNodePool>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2434,7 +2603,15 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "GetAwsNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
         /// resources on a given
@@ -2442,7 +2619,10 @@ pub mod aws_clusters_client {
         pub async fn list_aws_node_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAwsNodePoolsRequest>,
-        ) -> Result<tonic::Response<super::ListAwsNodePoolsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAwsNodePoolsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2456,7 +2636,15 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/ListAwsNodePools",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "ListAwsNodePools",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specific [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
         /// resource.
@@ -2467,7 +2655,7 @@ pub mod aws_clusters_client {
         pub async fn delete_aws_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAwsNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2484,14 +2672,25 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/DeleteAwsNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "DeleteAwsNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information, such as supported AWS regions and Kubernetes
         /// versions, on a given Google Cloud location.
         pub async fn get_aws_server_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAwsServerConfigRequest>,
-        ) -> Result<tonic::Response<super::AwsServerConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AwsServerConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2505,7 +2704,15 @@ pub mod aws_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsServerConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "GetAwsServerConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3771,7 +3978,7 @@ pub mod azure_clusters_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3827,6 +4034,22 @@ pub mod azure_clusters_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
         /// resource on a given Google Cloud project and region.
         ///
@@ -3840,7 +4063,7 @@ pub mod azure_clusters_client {
         pub async fn create_azure_client(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAzureClientRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3857,14 +4080,22 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/CreateAzureClient",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "CreateAzureClient",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Describes a specific
         /// [AzureClient][google.cloud.gkemulticloud.v1.AzureClient] resource.
         pub async fn get_azure_client(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureClientRequest>,
-        ) -> Result<tonic::Response<super::AzureClient>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AzureClient>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3878,14 +4109,25 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureClient",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GetAzureClient",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
         /// resources on a given Google Cloud project and region.
         pub async fn list_azure_clients(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAzureClientsRequest>,
-        ) -> Result<tonic::Response<super::ListAzureClientsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAzureClientsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3899,7 +4141,15 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/ListAzureClients",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "ListAzureClients",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specific [AzureClient][google.cloud.gkemulticloud.v1.AzureClient]
         /// resource.
@@ -3913,7 +4163,7 @@ pub mod azure_clusters_client {
         pub async fn delete_azure_client(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAzureClientRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3930,7 +4180,15 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/DeleteAzureClient",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "DeleteAzureClient",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
         /// resource on a given Google Cloud Platform project and region.
@@ -3941,7 +4199,7 @@ pub mod azure_clusters_client {
         pub async fn create_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAzureClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3958,13 +4216,21 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/CreateAzureCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "CreateAzureCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster].
         pub async fn update_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAzureClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3981,14 +4247,22 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/UpdateAzureCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "UpdateAzureCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Describes a specific
         /// [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster] resource.
         pub async fn get_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureClusterRequest>,
-        ) -> Result<tonic::Response<super::AzureCluster>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AzureCluster>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4002,14 +4276,25 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GetAzureCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
         /// resources on a given Google Cloud project and region.
         pub async fn list_azure_clusters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAzureClustersRequest>,
-        ) -> Result<tonic::Response<super::ListAzureClustersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAzureClustersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4023,7 +4308,15 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/ListAzureClusters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "ListAzureClusters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specific
         /// [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster] resource.
@@ -4037,7 +4330,7 @@ pub mod azure_clusters_client {
         pub async fn delete_azure_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAzureClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4054,14 +4347,22 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/DeleteAzureCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "DeleteAzureCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates a short-lived access token to authenticate to a given
         /// [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster] resource.
         pub async fn generate_azure_access_token(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateAzureAccessTokenRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateAzureAccessTokenResponse>,
             tonic::Status,
         > {
@@ -4078,7 +4379,15 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureAccessToken",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GenerateAzureAccessToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool],
         /// attached to a given
@@ -4090,7 +4399,7 @@ pub mod azure_clusters_client {
         pub async fn create_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAzureNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4107,13 +4416,21 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/CreateAzureNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "CreateAzureNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool].
         pub async fn update_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAzureNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4130,14 +4447,22 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/UpdateAzureNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "UpdateAzureNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Describes a specific
         /// [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool] resource.
         pub async fn get_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureNodePoolRequest>,
-        ) -> Result<tonic::Response<super::AzureNodePool>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AzureNodePool>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4151,7 +4476,15 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GetAzureNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]
         /// resources on a given
@@ -4159,7 +4492,10 @@ pub mod azure_clusters_client {
         pub async fn list_azure_node_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAzureNodePoolsRequest>,
-        ) -> Result<tonic::Response<super::ListAzureNodePoolsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAzureNodePoolsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4173,7 +4509,15 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/ListAzureNodePools",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "ListAzureNodePools",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a specific
         /// [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool] resource.
@@ -4184,7 +4528,7 @@ pub mod azure_clusters_client {
         pub async fn delete_azure_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAzureNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4201,14 +4545,25 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/DeleteAzureNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "DeleteAzureNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information, such as supported Azure regions and Kubernetes
         /// versions, on a given Google Cloud location.
         pub async fn get_azure_server_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAzureServerConfigRequest>,
-        ) -> Result<tonic::Response<super::AzureServerConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AzureServerConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4222,7 +4577,15 @@ pub mod azure_clusters_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureServerConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GetAzureServerConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

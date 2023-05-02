@@ -592,7 +592,7 @@ pub mod hub_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -648,11 +648,30 @@ pub mod hub_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists the Network Connectivity Center hubs associated with a given project.
         pub async fn list_hubs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListHubsRequest>,
-        ) -> Result<tonic::Response<super::ListHubsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListHubsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -666,13 +685,21 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/ListHubs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "ListHubs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details about a Network Connectivity Center hub.
         pub async fn get_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHubRequest>,
-        ) -> Result<tonic::Response<super::Hub>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Hub>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -686,13 +713,21 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/GetHub",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "GetHub",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Network Connectivity Center hub in the specified project.
         pub async fn create_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateHubRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -709,14 +744,22 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/CreateHub",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "CreateHub",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the description and/or labels of a Network Connectivity Center
         /// hub.
         pub async fn update_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateHubRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -733,13 +776,21 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/UpdateHub",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "UpdateHub",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Network Connectivity Center hub.
         pub async fn delete_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteHubRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -756,14 +807,25 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/DeleteHub",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "DeleteHub",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the Network Connectivity Center spokes in a specified project and
         /// location.
         pub async fn list_spokes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSpokesRequest>,
-        ) -> Result<tonic::Response<super::ListSpokesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSpokesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -777,13 +839,21 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/ListSpokes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "ListSpokes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details about a Network Connectivity Center spoke.
         pub async fn get_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSpokeRequest>,
-        ) -> Result<tonic::Response<super::Spoke>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Spoke>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -797,13 +867,21 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/GetSpoke",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "GetSpoke",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Network Connectivity Center spoke.
         pub async fn create_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSpokeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -820,13 +898,21 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/CreateSpoke",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "CreateSpoke",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a Network Connectivity Center spoke.
         pub async fn update_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSpokeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -843,13 +929,21 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/UpdateSpoke",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "UpdateSpoke",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Network Connectivity Center spoke.
         pub async fn delete_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSpokeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -866,7 +960,15 @@ pub mod hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networkconnectivity.v1.HubService/DeleteSpoke",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "DeleteSpoke",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

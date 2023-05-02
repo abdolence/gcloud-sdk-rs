@@ -2393,6 +2393,8 @@ pub mod asset_error_enum {
         CannotModifyAssetSource = 35,
         /// User can not modify the automatically created asset.
         CannotModifyAutomaticallyCreatedAsset = 36,
+        /// Lead Form is disallowed to use "LOCATION" answer type.
+        LeadFormLocationAnswerTypeDisallowed = 37,
     }
     impl AssetError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2475,6 +2477,9 @@ pub mod asset_error_enum {
                 AssetError::CannotModifyAutomaticallyCreatedAsset => {
                     "CANNOT_MODIFY_AUTOMATICALLY_CREATED_ASSET"
                 }
+                AssetError::LeadFormLocationAnswerTypeDisallowed => {
+                    "LEAD_FORM_LOCATION_ANSWER_TYPE_DISALLOWED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2553,6 +2558,9 @@ pub mod asset_error_enum {
                 "CANNOT_MODIFY_ASSET_SOURCE" => Some(Self::CannotModifyAssetSource),
                 "CANNOT_MODIFY_AUTOMATICALLY_CREATED_ASSET" => {
                     Some(Self::CannotModifyAutomaticallyCreatedAsset)
+                }
+                "LEAD_FORM_LOCATION_ANSWER_TYPE_DISALLOWED" => {
+                    Some(Self::LeadFormLocationAnswerTypeDisallowed)
                 }
                 _ => None,
             }
@@ -2676,6 +2684,18 @@ pub mod asset_group_error_enum {
         NotEnoughLogoAsset = 10,
         /// Final url and shopping merchant url does not have the same domain.
         FinalUrlShoppingMerchantHomePageUrlDomainsDiffer = 11,
+        /// Path1 required when path2 is set.
+        Path1RequiredWhenPath2IsSet = 12,
+        /// At least one short description asset is required for a valid asset group.
+        ShortDescriptionRequired = 13,
+        /// Final url field is required for asset group.
+        FinalUrlRequired = 14,
+        /// Final url contains invalid domain name.
+        FinalUrlContainsInvalidDomainName = 15,
+        /// Ad customizers are not supported in asset group's text field.
+        AdCustomizerNotSupported = 16,
+        /// Cannot mutate asset group for campaign with removed status.
+        CannotMutateAssetGroupForRemovedCampaign = 17,
     }
     impl AssetGroupError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2710,6 +2730,20 @@ pub mod asset_group_error_enum {
                 AssetGroupError::FinalUrlShoppingMerchantHomePageUrlDomainsDiffer => {
                     "FINAL_URL_SHOPPING_MERCHANT_HOME_PAGE_URL_DOMAINS_DIFFER"
                 }
+                AssetGroupError::Path1RequiredWhenPath2IsSet => {
+                    "PATH1_REQUIRED_WHEN_PATH2_IS_SET"
+                }
+                AssetGroupError::ShortDescriptionRequired => "SHORT_DESCRIPTION_REQUIRED",
+                AssetGroupError::FinalUrlRequired => "FINAL_URL_REQUIRED",
+                AssetGroupError::FinalUrlContainsInvalidDomainName => {
+                    "FINAL_URL_CONTAINS_INVALID_DOMAIN_NAME"
+                }
+                AssetGroupError::AdCustomizerNotSupported => {
+                    "AD_CUSTOMIZER_NOT_SUPPORTED"
+                }
+                AssetGroupError::CannotMutateAssetGroupForRemovedCampaign => {
+                    "CANNOT_MUTATE_ASSET_GROUP_FOR_REMOVED_CAMPAIGN"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2738,6 +2772,18 @@ pub mod asset_group_error_enum {
                 "NOT_ENOUGH_LOGO_ASSET" => Some(Self::NotEnoughLogoAsset),
                 "FINAL_URL_SHOPPING_MERCHANT_HOME_PAGE_URL_DOMAINS_DIFFER" => {
                     Some(Self::FinalUrlShoppingMerchantHomePageUrlDomainsDiffer)
+                }
+                "PATH1_REQUIRED_WHEN_PATH2_IS_SET" => {
+                    Some(Self::Path1RequiredWhenPath2IsSet)
+                }
+                "SHORT_DESCRIPTION_REQUIRED" => Some(Self::ShortDescriptionRequired),
+                "FINAL_URL_REQUIRED" => Some(Self::FinalUrlRequired),
+                "FINAL_URL_CONTAINS_INVALID_DOMAIN_NAME" => {
+                    Some(Self::FinalUrlContainsInvalidDomainName)
+                }
+                "AD_CUSTOMIZER_NOT_SUPPORTED" => Some(Self::AdCustomizerNotSupported),
+                "CANNOT_MUTATE_ASSET_GROUP_FOR_REMOVED_CAMPAIGN" => {
+                    Some(Self::CannotMutateAssetGroupForRemovedCampaign)
                 }
                 _ => None,
             }
@@ -2960,9 +3006,12 @@ pub mod asset_link_error_enum {
         CannotCreateAutomaticallyCreatedLinks = 19,
         /// Advertiser links cannot link to automatically created asset.
         CannotLinkToAutomaticallyCreatedAsset = 20,
-        /// Automatically created links cannot be changed into adveritser links or
+        /// Automatically created links cannot be changed into advertiser links or
         /// the reverse.
         CannotModifyAssetLinkSource = 21,
+        /// Lead Form asset with Location answer type can't be linked to the
+        /// Customer/Campaign because there are no Location assets.
+        CannotLinkLocationLeadFormWithoutLocationAsset = 22,
     }
     impl AssetLinkError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3017,6 +3066,9 @@ pub mod asset_link_error_enum {
                 AssetLinkError::CannotModifyAssetLinkSource => {
                     "CANNOT_MODIFY_ASSET_LINK_SOURCE"
                 }
+                AssetLinkError::CannotLinkLocationLeadFormWithoutLocationAsset => {
+                    "CANNOT_LINK_LOCATION_LEAD_FORM_WITHOUT_LOCATION_ASSET"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3069,6 +3121,9 @@ pub mod asset_link_error_enum {
                 }
                 "CANNOT_MODIFY_ASSET_LINK_SOURCE" => {
                     Some(Self::CannotModifyAssetLinkSource)
+                }
+                "CANNOT_LINK_LOCATION_LEAD_FORM_WITHOUT_LOCATION_ASSET" => {
+                    Some(Self::CannotLinkLocationLeadFormWithoutLocationAsset)
                 }
                 _ => None,
             }
@@ -8395,6 +8450,9 @@ pub mod custom_conversion_goal_error_enum {
         CustomGoalDuplicateName = 5,
         /// Custom goal with the same conversion action list already exists.
         DuplicateConversionActionList = 6,
+        /// Conversion types that cannot be biddable should not be included in custom
+        /// goal.
+        NonBiddableConversionActionNotEligibleForCustomGoal = 7,
     }
     impl CustomConversionGoalError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8420,6 +8478,9 @@ pub mod custom_conversion_goal_error_enum {
                 CustomConversionGoalError::DuplicateConversionActionList => {
                     "DUPLICATE_CONVERSION_ACTION_LIST"
                 }
+                CustomConversionGoalError::NonBiddableConversionActionNotEligibleForCustomGoal => {
+                    "NON_BIDDABLE_CONVERSION_ACTION_NOT_ELIGIBLE_FOR_CUSTOM_GOAL"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8435,6 +8496,9 @@ pub mod custom_conversion_goal_error_enum {
                 "CUSTOM_GOAL_DUPLICATE_NAME" => Some(Self::CustomGoalDuplicateName),
                 "DUPLICATE_CONVERSION_ACTION_LIST" => {
                     Some(Self::DuplicateConversionActionList)
+                }
+                "NON_BIDDABLE_CONVERSION_ACTION_NOT_ELIGIBLE_FOR_CUSTOM_GOAL" => {
+                    Some(Self::NonBiddableConversionActionNotEligibleForCustomGoal)
                 }
                 _ => None,
             }
@@ -8948,6 +9012,79 @@ pub mod customer_manager_link_error_enum {
                 "TEST_ACCOUNT_LINKS_TOO_MANY_CHILD_ACCOUNTS" => {
                     Some(Self::TestAccountLinksTooManyChildAccounts)
                 }
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible
+/// CustomerSkAdNetworkConversionValueSchema errors.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerSkAdNetworkConversionValueSchemaErrorEnum {}
+/// Nested message and enum types in `CustomerSkAdNetworkConversionValueSchemaErrorEnum`.
+pub mod customer_sk_ad_network_conversion_value_schema_error_enum {
+    /// Enum describing possible CustomerSkAdNetworkConversionValueSchema errors.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CustomerSkAdNetworkConversionValueSchemaError {
+        /// Enum unspecified.
+        Unspecified = 0,
+        /// The received error code is not known in this version.
+        Unknown = 1,
+        /// The customer link ID provided is invalid.
+        InvalidLinkId = 2,
+        /// The app ID provided is invalid.
+        InvalidAppId = 3,
+        /// The conversion value schema provided is invalid.
+        InvalidSchema = 4,
+        /// The customer link id provided could not be found.
+        LinkCodeNotFound = 5,
+    }
+    impl CustomerSkAdNetworkConversionValueSchemaError {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CustomerSkAdNetworkConversionValueSchemaError::Unspecified => {
+                    "UNSPECIFIED"
+                }
+                CustomerSkAdNetworkConversionValueSchemaError::Unknown => "UNKNOWN",
+                CustomerSkAdNetworkConversionValueSchemaError::InvalidLinkId => {
+                    "INVALID_LINK_ID"
+                }
+                CustomerSkAdNetworkConversionValueSchemaError::InvalidAppId => {
+                    "INVALID_APP_ID"
+                }
+                CustomerSkAdNetworkConversionValueSchemaError::InvalidSchema => {
+                    "INVALID_SCHEMA"
+                }
+                CustomerSkAdNetworkConversionValueSchemaError::LinkCodeNotFound => {
+                    "LINK_CODE_NOT_FOUND"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INVALID_LINK_ID" => Some(Self::InvalidLinkId),
+                "INVALID_APP_ID" => Some(Self::InvalidAppId),
+                "INVALID_SCHEMA" => Some(Self::InvalidSchema),
+                "LINK_CODE_NOT_FOUND" => Some(Self::LinkCodeNotFound),
                 _ => None,
             }
         }
@@ -16221,6 +16358,8 @@ pub mod recommendation_error_enum {
         RecommendationAlreadyDismissed = 14,
         /// The recommendation apply request was malformed and invalid.
         InvalidApplyRequest = 15,
+        /// The type of recommendation requested to apply is not supported.
+        RecommendationTypeApplyNotSupported = 17,
     }
     impl RecommendationError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -16253,6 +16392,9 @@ pub mod recommendation_error_enum {
                     "RECOMMENDATION_ALREADY_DISMISSED"
                 }
                 RecommendationError::InvalidApplyRequest => "INVALID_APPLY_REQUEST",
+                RecommendationError::RecommendationTypeApplyNotSupported => {
+                    "RECOMMENDATION_TYPE_APPLY_NOT_SUPPORTED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -16278,6 +16420,9 @@ pub mod recommendation_error_enum {
                     Some(Self::RecommendationAlreadyDismissed)
                 }
                 "INVALID_APPLY_REQUEST" => Some(Self::InvalidApplyRequest),
+                "RECOMMENDATION_TYPE_APPLY_NOT_SUPPORTED" => {
+                    Some(Self::RecommendationTypeApplyNotSupported)
+                }
                 _ => None,
             }
         }
@@ -16409,6 +16554,8 @@ pub mod request_error_enum {
         TotalResultsCountNotOriginallyRequested = 32,
         /// Deadline specified by the client was too short.
         RpcDeadlineTooShort = 33,
+        /// This API version has been sunset and is no longer supported.
+        UnsupportedVersion = 38,
     }
     impl RequestError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -16458,6 +16605,7 @@ pub mod request_error_enum {
                     "TOTAL_RESULTS_COUNT_NOT_ORIGINALLY_REQUESTED"
                 }
                 RequestError::RpcDeadlineTooShort => "RPC_DEADLINE_TOO_SHORT",
+                RequestError::UnsupportedVersion => "UNSUPPORTED_VERSION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -16504,6 +16652,7 @@ pub mod request_error_enum {
                     Some(Self::TotalResultsCountNotOriginallyRequested)
                 }
                 "RPC_DEADLINE_TOO_SHORT" => Some(Self::RpcDeadlineTooShort),
+                "UNSUPPORTED_VERSION" => Some(Self::UnsupportedVersion),
                 _ => None,
             }
         }
@@ -17845,6 +17994,13 @@ pub mod user_list_error_enum {
         /// Logical user list should not have a mix of CRM based user list and other
         /// types of lists in its rules.
         CanNotMixCrmBasedInLogicalListWithOtherLists = 36,
+        /// crm_based_user_list.app_id field can only be set when upload_key_type is
+        /// MOBILE_ADVERTISING_ID.
+        AppIdNotAllowed = 39,
+        /// Google system generated user lists cannot be mutated.
+        CannotMutateSystemList = 40,
+        /// The mobile app associated with the remarketing list is sensitive.
+        MobileAppIsSensitive = 41,
     }
     impl UserListError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -17905,6 +18061,9 @@ pub mod user_list_error_enum {
                 UserListError::CanNotMixCrmBasedInLogicalListWithOtherLists => {
                     "CAN_NOT_MIX_CRM_BASED_IN_LOGICAL_LIST_WITH_OTHER_LISTS"
                 }
+                UserListError::AppIdNotAllowed => "APP_ID_NOT_ALLOWED",
+                UserListError::CannotMutateSystemList => "CANNOT_MUTATE_SYSTEM_LIST",
+                UserListError::MobileAppIsSensitive => "MOBILE_APP_IS_SENSITIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17962,6 +18121,9 @@ pub mod user_list_error_enum {
                 "CAN_NOT_MIX_CRM_BASED_IN_LOGICAL_LIST_WITH_OTHER_LISTS" => {
                     Some(Self::CanNotMixCrmBasedInLogicalListWithOtherLists)
                 }
+                "APP_ID_NOT_ALLOWED" => Some(Self::AppIdNotAllowed),
+                "CANNOT_MUTATE_SYSTEM_LIST" => Some(Self::CannotMutateSystemList),
+                "MOBILE_APP_IS_SENSITIVE" => Some(Self::MobileAppIsSensitive),
                 _ => None,
             }
         }
@@ -18067,7 +18229,7 @@ pub struct ErrorCode {
     /// The list of error enums
     #[prost(
         oneof = "error_code::ErrorCode",
-        tags = "1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 161, 18, 159, 19, 21, 24, 25, 107, 149, 155, 148, 153, 154, 152, 26, 29, 166, 160, 31, 165, 109, 32, 150, 158, 90, 151, 33, 34, 35, 36, 37, 38, 39, 40, 110, 42, 116, 86, 162, 44, 45, 46, 47, 48, 49, 58, 51, 52, 53, 54, 55, 56, 57, 117, 59, 60, 61, 62, 63, 64, 65, 115, 143, 111, 145, 146, 66, 67, 68, 70, 71, 72, 132, 74, 133, 76, 77, 78, 136, 79, 80, 81, 82, 83, 84, 87, 88, 91, 92, 93, 94, 96, 97, 98, 100, 101, 102, 103, 140, 141, 104, 105, 112, 114, 118, 119, 137, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 134, 135, 138, 139, 164, 147, 156, 167, 171"
+        tags = "1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 161, 18, 159, 19, 21, 24, 25, 107, 149, 155, 148, 153, 154, 152, 26, 29, 166, 160, 31, 165, 109, 32, 150, 158, 90, 151, 33, 34, 35, 36, 37, 38, 39, 40, 110, 42, 116, 86, 162, 44, 45, 46, 47, 48, 49, 58, 51, 52, 53, 54, 55, 56, 57, 117, 59, 60, 61, 62, 63, 64, 65, 115, 143, 111, 145, 146, 66, 67, 68, 70, 71, 72, 132, 74, 133, 76, 77, 78, 136, 79, 80, 81, 82, 83, 84, 87, 88, 91, 92, 93, 94, 96, 97, 98, 100, 101, 102, 103, 140, 141, 104, 105, 112, 114, 118, 119, 137, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 134, 135, 138, 139, 164, 147, 156, 167, 170, 171"
     )]
     pub error_code: ::core::option::Option<error_code::ErrorCode>,
 }
@@ -18803,6 +18965,12 @@ pub mod error_code {
             tag = "167"
         )]
         AudienceInsightsError(i32),
+        /// The reasons for the customer SK Ad network conversion value schema error
+        #[prost(
+            enumeration = "super::customer_sk_ad_network_conversion_value_schema_error_enum::CustomerSkAdNetworkConversionValueSchemaError",
+            tag = "170"
+        )]
+        CustomerSkAdNetworkConversionValueSchemaError(i32),
         /// The reasons for the currency errors.
         #[prost(enumeration = "super::currency_error_enum::CurrencyError", tag = "171")]
         CurrencyError(i32),

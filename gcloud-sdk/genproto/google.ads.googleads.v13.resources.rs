@@ -3626,6 +3626,14 @@ pub struct Campaign {
     /// campaigns.
     #[prost(string, optional, tag = "83")]
     pub hotel_property_asset_set: ::core::option::Option<::prost::alloc::string::String>,
+    /// Immutable. Listing type of ads served for this campaign.
+    /// Field is restricted for usage with Performance Max campaigns.
+    #[prost(
+        enumeration = "super::enums::listing_type_enum::ListingType",
+        optional,
+        tag = "86"
+    )]
+    pub listing_type: ::core::option::Option<i32>,
     /// The bidding strategy for the campaign.
     ///
     /// Must be either portfolio (created through BiddingStrategy service) or
@@ -3743,7 +3751,9 @@ pub mod campaign {
         /// Whether to include local products.
         #[prost(bool, optional, tag = "8")]
         pub enable_local: ::core::option::Option<bool>,
-        /// Immutable. Whether to target Vehicle Listing inventory.
+        /// Immutable. Whether to target Vehicle Listing inventory. This field is
+        /// supported only in Smart Shopping Campaigns. For setting Vehicle Listing
+        /// inventory in Performance Max campaigns, use `listing_type` instead.
         #[prost(bool, tag = "9")]
         pub use_vehicle_inventory: bool,
     }
@@ -4704,6 +4714,9 @@ pub struct CampaignSharedSet {
 /// * MULTI_CHANNEL - TARGET_CPA - UNIFORM
 /// * DISCOVERY - TARGET_CPA - DEFAULT
 /// * DISPLAY - TARGET_CPA - UNIFORM
+/// * PERFORMANCE_MAX - TARGET_CPA - UNIFORM
+/// * PERFORMANCE_MAX - TARGET_ROAS - UNIFORM
+/// * PERFORMANCE_MAX - BUDGET - UNIFORM
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignSimulation {
@@ -6666,6 +6679,148 @@ pub mod customer_negative_criterion {
         YoutubeChannel(super::super::common::YouTubeChannelInfo),
     }
 }
+/// A CustomerSkAdNetworkConversionValueSchema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerSkAdNetworkConversionValueSchema {
+    /// Output only. The resource name of the schema.
+    /// CustomerSkAdNetworkConversionValueSchema resource names have the form:
+    /// customers/{customer_id}/customerSkAdNetworkConversionValueSchemas/{account_link_id}
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The schema for the specified resource.
+    #[prost(message, optional, tag = "2")]
+    pub schema: ::core::option::Option<
+        customer_sk_ad_network_conversion_value_schema::SkAdNetworkConversionValueSchema,
+    >,
+}
+/// Nested message and enum types in `CustomerSkAdNetworkConversionValueSchema`.
+pub mod customer_sk_ad_network_conversion_value_schema {
+    /// The CustomerLink specific SkAdNetworkConversionValueSchema.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SkAdNetworkConversionValueSchema {
+        /// Required. Output only. Apple App Store app ID.
+        #[prost(string, tag = "1")]
+        pub app_id: ::prost::alloc::string::String,
+        /// Output only. A time window (measured in hours) post install after which
+        /// the App Attribution Partner or advertiser stops calling
+        /// updateConversionValue
+        /// (<https://developer.apple.com/documentation/storekit/skadnetwork/3566697-updateconversionvalue>).
+        #[prost(int32, tag = "2")]
+        pub measurement_window_hours: i32,
+        /// Output only. Fine grained conversion value mappings.
+        #[prost(message, repeated, tag = "3")]
+        pub fine_grained_conversion_value_mappings: ::prost::alloc::vec::Vec<
+            sk_ad_network_conversion_value_schema::FineGrainedConversionValueMappings,
+        >,
+    }
+    /// Nested message and enum types in `SkAdNetworkConversionValueSchema`.
+    pub mod sk_ad_network_conversion_value_schema {
+        /// Mappings for fine grained conversion value.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FineGrainedConversionValueMappings {
+            /// Output only. Fine grained conversion value. Valid values are in the
+            /// inclusive range \[0,63\].
+            #[prost(int32, tag = "1")]
+            pub fine_grained_conversion_value: i32,
+            /// Output only. Conversion events the fine grained conversion value maps
+            /// to.
+            #[prost(message, optional, tag = "2")]
+            pub conversion_value_mapping: ::core::option::Option<ConversionValueMapping>,
+        }
+        /// Represent mapping from one conversion value to one or more conversion
+        /// events.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ConversionValueMapping {
+            /// Output only. The minimum of the time range in which a user was last
+            /// active during the measurement window.
+            #[prost(int64, tag = "1")]
+            pub min_time_post_install_hours: i64,
+            /// Output only. The maximum of the time range in which a user was last
+            /// active during the measurement window.
+            #[prost(int64, tag = "2")]
+            pub max_time_post_install_hours: i64,
+            /// Output only. The conversion value may be mapped to multiple events with
+            /// various attributes.
+            #[prost(message, repeated, tag = "3")]
+            pub mapped_events: ::prost::alloc::vec::Vec<Event>,
+        }
+        /// Defines a Google conversion event that the conversion value is mapped to.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Event {
+            /// Output only. Google event name represented by this conversion value.
+            #[prost(string, tag = "1")]
+            pub mapped_event_name: ::prost::alloc::string::String,
+            /// Output only. The reported currency for the event_revenue. ISO 4217
+            /// three-letter currency code, for example, "USD"
+            #[prost(string, tag = "2")]
+            pub currency_code: ::prost::alloc::string::String,
+            /// Either a range or specific value for event revenue.
+            #[prost(oneof = "event::RevenueRate", tags = "3, 4")]
+            pub revenue_rate: ::core::option::Option<event::RevenueRate>,
+            /// Either a range or specific value for event counter.
+            #[prost(oneof = "event::EventRate", tags = "5, 6")]
+            pub event_rate: ::core::option::Option<event::EventRate>,
+        }
+        /// Nested message and enum types in `Event`.
+        pub mod event {
+            /// Defines a range for revenue values.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct RevenueRange {
+                /// Output only. For revenue ranges, the minimum value in `currency_code`
+                /// for which this conversion value would be updated. A value of 0 will
+                /// be treated as unset.
+                #[prost(double, tag = "3")]
+                pub min_event_revenue: f64,
+                /// Output only. For revenue ranges, the maximum value in `currency_code`
+                /// for which this conversion value would be updated. A value of 0 will
+                /// be treated as unset.
+                #[prost(double, tag = "4")]
+                pub max_event_revenue: f64,
+            }
+            /// Defines a range for event counter values.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct EventOccurrenceRange {
+                /// Output only. For event counter ranges, the minimum of the defined
+                /// range. A value of 0 will be treated as unset.
+                #[prost(int64, tag = "1")]
+                pub min_event_count: i64,
+                /// Output only. For event counter ranges, the maximum of the defined
+                /// range. A value of 0 will be treated as unset.
+                #[prost(int64, tag = "2")]
+                pub max_event_count: i64,
+            }
+            /// Either a range or specific value for event revenue.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum RevenueRate {
+                /// Output only. The event revenue range.
+                #[prost(message, tag = "3")]
+                EventRevenueRange(RevenueRange),
+                /// Output only. The specific event revenue value.
+                #[prost(double, tag = "4")]
+                EventRevenueValue(f64),
+            }
+            /// Either a range or specific value for event counter.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum EventRate {
+                /// Output only. The event counter range.
+                #[prost(message, tag = "5")]
+                EventOccurrenceRange(EventOccurrenceRange),
+                /// Output only. For specific event counter values.
+                #[prost(int64, tag = "6")]
+                EventCounter(i64),
+            }
+        }
+    }
+}
 /// Represents the permission of a single user onto a single customer.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7160,7 +7315,7 @@ pub mod extension_feed_item {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Extension {
-        /// Sitelink extension.
+        /// Sitelink.
         #[prost(message, tag = "2")]
         SitelinkFeedItem(super::super::common::SitelinkFeedItem),
         /// Structured snippet extension.
@@ -9133,6 +9288,10 @@ pub struct Recommendation {
     /// TARGET_ROAS_OPT_IN, TEXT_AD,
     /// UPGRADE_SMART_SHOPPING_CAMPAIGN_TO_PERFORMANCE_MAX ,
     /// RAISE_TARGET_CPA_BID_TOO_LOW, FORECASTING_SET_TARGET_ROAS
+    /// SHOPPING_ADD_AGE_GROUP, SHOPPING_ADD_COLOR, SHOPPING_ADD_GENDER,
+    /// SHOPPING_ADD_SIZE, SHOPPING_ADD_GTIN, SHOPPING_ADD_MORE_IDENTIFIERS,
+    /// SHOPPING_ADD_PRODUCTS_TO_CAMPAIGN, SHOPPING_FIX_DISAPPROVED_PRODUCTS,
+    /// SHOPPING_MIGRATE_REGULAR_SHOPPING_CAMPAIGN_OFFERS_TO_PERFORMANCE_MAX
     #[prost(string, optional, tag = "25")]
     pub campaign: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The ad group targeted by this recommendation. This will be set
@@ -9156,12 +9315,27 @@ pub struct Recommendation {
     /// The details of recommendation.
     #[prost(
         oneof = "recommendation::Recommendation",
-        tags = "4, 22, 8, 9, 10, 11, 12, 14, 15, 16, 20, 21, 23, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41"
+        tags = "4, 22, 8, 9, 10, 11, 12, 14, 15, 16, 20, 21, 23, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53"
     )]
     pub recommendation: ::core::option::Option<recommendation::Recommendation>,
 }
 /// Nested message and enum types in `Recommendation`.
 pub mod recommendation {
+    /// The Merchant Center account details.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MerchantInfo {
+        /// Output only. The Merchant Center account ID.
+        #[prost(int64, tag = "1")]
+        pub id: i64,
+        /// Output only. The name of the Merchant Center account.
+        #[prost(string, tag = "2")]
+        pub name: ::prost::alloc::string::String,
+        /// Output only. Whether the Merchant Center account is a Multi-Client
+        /// account (MCA).
+        #[prost(bool, tag = "3")]
+        pub multi_client: bool,
+    }
     /// The impact of making the change as described in the recommendation.
     /// Some types of recommendations may not have impact information.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9341,12 +9515,10 @@ pub mod recommendation {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SitelinkAssetRecommendation {
-        /// Output only. New sitelink extension assets recommended at the campaign
-        /// level.
+        /// Output only. New sitelink assets recommended at the campaign level.
         #[prost(message, repeated, tag = "1")]
         pub recommended_campaign_sitelink_assets: ::prost::alloc::vec::Vec<super::Asset>,
-        /// Output only. New sitelink extension assets recommended at the customer
-        /// level.
+        /// Output only. New sitelink assets recommended at the customer level.
         #[prost(message, repeated, tag = "2")]
         pub recommended_customer_sitelink_assets: ::prost::alloc::vec::Vec<super::Asset>,
     }
@@ -9492,6 +9664,103 @@ pub mod recommendation {
         #[prost(message, optional, tag = "2")]
         pub campaign_budget: ::core::option::Option<CampaignBudget>,
     }
+    /// The shopping recommendation to add an attribute to offers that are demoted
+    /// because it is missing.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShoppingOfferAttributeRecommendation {
+        /// Output only. The details of the Merchant Center account.
+        #[prost(message, optional, tag = "1")]
+        pub merchant: ::core::option::Option<MerchantInfo>,
+        /// Output only. The campaign feed label.
+        #[prost(string, tag = "2")]
+        pub feed_label: ::prost::alloc::string::String,
+        /// Output only. The number of online, servable offers.
+        #[prost(int64, tag = "3")]
+        pub offers_count: i64,
+        /// Output only. The number of online, servable offers that are demoted for
+        /// missing attributes. Visit the Merchant Center for more details.
+        #[prost(int64, tag = "4")]
+        pub demoted_offers_count: i64,
+    }
+    /// The shopping recommendation to fix disapproved products in a Shopping
+    /// Campaign Inventory.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShoppingFixDisapprovedProductsRecommendation {
+        /// Output only. The details of the Merchant Center account.
+        #[prost(message, optional, tag = "1")]
+        pub merchant: ::core::option::Option<MerchantInfo>,
+        /// Output only. The feed label for the campaign.
+        #[prost(string, tag = "2")]
+        pub feed_label: ::prost::alloc::string::String,
+        /// Output only. The number of products of the campaign.
+        #[prost(int64, tag = "3")]
+        pub products_count: i64,
+        /// Output only. The numbers of products of the campaign that are
+        /// disapproved.
+        #[prost(int64, tag = "4")]
+        pub disapproved_products_count: i64,
+    }
+    /// The shopping recommendation to create a catch-all campaign that targets all
+    /// offers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShoppingTargetAllOffersRecommendation {
+        /// Output only. The details of the Merchant Center account.
+        #[prost(message, optional, tag = "1")]
+        pub merchant: ::core::option::Option<MerchantInfo>,
+        /// Output only. The number of untargeted offers.
+        #[prost(int64, tag = "2")]
+        pub untargeted_offers_count: i64,
+        /// Output only. The offer feed label.
+        #[prost(string, tag = "3")]
+        pub feed_label: ::prost::alloc::string::String,
+    }
+    /// The shopping recommendation to add products to a Shopping Campaign
+    /// Inventory.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShoppingAddProductsToCampaignRecommendation {
+        /// Output only. The details of the Merchant Center account.
+        #[prost(message, optional, tag = "1")]
+        pub merchant: ::core::option::Option<MerchantInfo>,
+        /// Output only. The feed label for the campaign.
+        #[prost(string, tag = "2")]
+        pub feed_label: ::prost::alloc::string::String,
+        /// Output only. The reason why no products are attached to the campaign.
+        #[prost(
+            enumeration = "super::super::enums::shopping_add_products_to_campaign_recommendation_enum::Reason",
+            tag = "3"
+        )]
+        pub reason: i32,
+    }
+    /// The shopping recommendation to fix Merchant Center account suspension
+    /// issues.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShoppingMerchantCenterAccountSuspensionRecommendation {
+        /// Output only. The details of the Merchant Center account.
+        #[prost(message, optional, tag = "1")]
+        pub merchant: ::core::option::Option<MerchantInfo>,
+        /// Output only. The feed label of the campaign for which the suspension
+        /// happened.
+        #[prost(string, tag = "2")]
+        pub feed_label: ::prost::alloc::string::String,
+    }
+    /// The shopping recommendation to migrate Regular Shopping Campaign targeted
+    /// offers to Performance Max campaigns.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShoppingMigrateRegularShoppingCampaignOffersToPerformanceMaxRecommendation {
+        /// Output only. The details of the Merchant Center account.
+        #[prost(message, optional, tag = "1")]
+        pub merchant: ::core::option::Option<MerchantInfo>,
+        /// Output only. The feed label of the offers targeted by the campaigns
+        /// sharing this suggestion.
+        #[prost(string, tag = "2")]
+        pub feed_label: ::prost::alloc::string::String,
+    }
     /// A campaign budget shared amongst various budget recommendation types.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9598,6 +9867,55 @@ pub mod recommendation {
         /// Output only. The call asset recommendation.
         #[prost(message, tag = "41")]
         CallAssetRecommendation(CallAssetRecommendation),
+        /// Output only. The shopping add age group recommendation.
+        #[prost(message, tag = "42")]
+        ShoppingAddAgeGroupRecommendation(ShoppingOfferAttributeRecommendation),
+        /// Output only. The shopping add color recommendation.
+        #[prost(message, tag = "43")]
+        ShoppingAddColorRecommendation(ShoppingOfferAttributeRecommendation),
+        /// Output only. The shopping add gender recommendation.
+        #[prost(message, tag = "44")]
+        ShoppingAddGenderRecommendation(ShoppingOfferAttributeRecommendation),
+        /// Output only. The shopping add GTIN recommendation.
+        #[prost(message, tag = "45")]
+        ShoppingAddGtinRecommendation(ShoppingOfferAttributeRecommendation),
+        /// Output only. The shopping add more identifiers recommendation.
+        #[prost(message, tag = "46")]
+        ShoppingAddMoreIdentifiersRecommendation(ShoppingOfferAttributeRecommendation),
+        /// Output only. The shopping add size recommendation.
+        #[prost(message, tag = "47")]
+        ShoppingAddSizeRecommendation(ShoppingOfferAttributeRecommendation),
+        /// Output only. The shopping add products to campaign recommendation.
+        #[prost(message, tag = "48")]
+        ShoppingAddProductsToCampaignRecommendation(
+            ShoppingAddProductsToCampaignRecommendation,
+        ),
+        /// Output only. The shopping fix disapproved products recommendation.
+        #[prost(message, tag = "49")]
+        ShoppingFixDisapprovedProductsRecommendation(
+            ShoppingFixDisapprovedProductsRecommendation,
+        ),
+        /// Output only. The shopping target all offers recommendation.
+        #[prost(message, tag = "50")]
+        ShoppingTargetAllOffersRecommendation(ShoppingTargetAllOffersRecommendation),
+        /// Output only. The shopping fix suspended Merchant Center account
+        /// recommendation.
+        #[prost(message, tag = "51")]
+        ShoppingFixSuspendedMerchantCenterAccountRecommendation(
+            ShoppingMerchantCenterAccountSuspensionRecommendation,
+        ),
+        /// Output only. The shopping fix Merchant Center account suspension warning
+        /// recommendation.
+        #[prost(message, tag = "52")]
+        ShoppingFixMerchantCenterAccountSuspensionWarningRecommendation(
+            ShoppingMerchantCenterAccountSuspensionRecommendation,
+        ),
+        /// Output only. The shopping migrate Regular Shopping Campaign offers to
+        /// Performance Max recommendation.
+        #[prost(message, tag = "53")]
+        ShoppingMigrateRegularShoppingCampaignOffersToPerformanceMaxRecommendation(
+            ShoppingMigrateRegularShoppingCampaignOffersToPerformanceMaxRecommendation,
+        ),
     }
 }
 /// A remarketing action. A snippet of JavaScript code that will collect the
