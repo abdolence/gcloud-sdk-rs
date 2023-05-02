@@ -404,7 +404,7 @@ pub mod tables_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -460,11 +460,27 @@ pub mod tables_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets a table. Returns NOT_FOUND if the table does not exist.
         pub async fn get_table(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTableRequest>,
-        ) -> Result<tonic::Response<super::Table>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Table>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -478,13 +494,24 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/GetTable",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "GetTable",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists tables for the user.
         pub async fn list_tables(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTablesRequest>,
-        ) -> Result<tonic::Response<super::ListTablesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTablesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -498,13 +525,21 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/ListTables",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "ListTables",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a workspace. Returns NOT_FOUND if the workspace does not exist.
         pub async fn get_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWorkspaceRequest>,
-        ) -> Result<tonic::Response<super::Workspace>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Workspace>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -518,13 +553,24 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/GetWorkspace",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "GetWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists workspaces for the user.
         pub async fn list_workspaces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkspacesRequest>,
-        ) -> Result<tonic::Response<super::ListWorkspacesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListWorkspacesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -538,13 +584,21 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/ListWorkspaces",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "ListWorkspaces",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a row. Returns NOT_FOUND if the row does not exist in the table.
         pub async fn get_row(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRowRequest>,
-        ) -> Result<tonic::Response<super::Row>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Row>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -558,13 +612,24 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/GetRow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "GetRow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists rows in a table. Returns NOT_FOUND if the table does not exist.
         pub async fn list_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRowsRequest>,
-        ) -> Result<tonic::Response<super::ListRowsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRowsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -578,13 +643,21 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/ListRows",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "ListRows",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a row.
         pub async fn create_row(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRowRequest>,
-        ) -> Result<tonic::Response<super::Row>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Row>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -598,13 +671,24 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/CreateRow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "CreateRow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates multiple rows.
         pub async fn batch_create_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateRowsRequest>,
-        ) -> Result<tonic::Response<super::BatchCreateRowsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BatchCreateRowsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -618,13 +702,21 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/BatchCreateRows",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "BatchCreateRows",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a row.
         pub async fn update_row(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRowRequest>,
-        ) -> Result<tonic::Response<super::Row>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Row>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -638,13 +730,24 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/UpdateRow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "UpdateRow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates multiple rows.
         pub async fn batch_update_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchUpdateRowsRequest>,
-        ) -> Result<tonic::Response<super::BatchUpdateRowsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BatchUpdateRowsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -658,13 +761,21 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/BatchUpdateRows",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "BatchUpdateRows",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a row.
         pub async fn delete_row(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRowRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -678,13 +789,21 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/DeleteRow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "DeleteRow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes multiple rows.
         pub async fn batch_delete_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchDeleteRowsRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -698,7 +817,15 @@ pub mod tables_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/BatchDeleteRows",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.area120.tables.v1alpha1.TablesService",
+                        "BatchDeleteRows",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

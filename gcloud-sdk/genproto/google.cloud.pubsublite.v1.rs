@@ -832,7 +832,7 @@ pub mod admin_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -888,11 +888,27 @@ pub mod admin_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new topic.
         pub async fn create_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTopicRequest>,
-        ) -> Result<tonic::Response<super::Topic>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Topic>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -906,13 +922,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/CreateTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "CreateTopic",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the topic configuration.
         pub async fn get_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTopicRequest>,
-        ) -> Result<tonic::Response<super::Topic>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Topic>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -926,13 +950,24 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/GetTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "GetTopic",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the partition information for the requested topic.
         pub async fn get_topic_partitions(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTopicPartitionsRequest>,
-        ) -> Result<tonic::Response<super::TopicPartitions>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TopicPartitions>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -946,13 +981,24 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/GetTopicPartitions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "GetTopicPartitions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the list of topics for the given project.
         pub async fn list_topics(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTopicsRequest>,
-        ) -> Result<tonic::Response<super::ListTopicsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTopicsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -966,13 +1012,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/ListTopics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "ListTopics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates properties of the specified topic.
         pub async fn update_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTopicRequest>,
-        ) -> Result<tonic::Response<super::Topic>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Topic>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -986,13 +1040,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/UpdateTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "UpdateTopic",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified topic.
         pub async fn delete_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTopicRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1006,13 +1068,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteTopic",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "DeleteTopic",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the subscriptions attached to the specified topic.
         pub async fn list_topic_subscriptions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTopicSubscriptionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListTopicSubscriptionsResponse>,
             tonic::Status,
         > {
@@ -1029,13 +1099,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/ListTopicSubscriptions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "ListTopicSubscriptions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new subscription.
         pub async fn create_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSubscriptionRequest>,
-        ) -> Result<tonic::Response<super::Subscription>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Subscription>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1049,13 +1127,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/CreateSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "CreateSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the subscription configuration.
         pub async fn get_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSubscriptionRequest>,
-        ) -> Result<tonic::Response<super::Subscription>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Subscription>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1069,13 +1155,24 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/GetSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "GetSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the list of subscriptions for the given project.
         pub async fn list_subscriptions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSubscriptionsRequest>,
-        ) -> Result<tonic::Response<super::ListSubscriptionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSubscriptionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1089,13 +1186,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/ListSubscriptions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "ListSubscriptions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates properties of the specified subscription.
         pub async fn update_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSubscriptionRequest>,
-        ) -> Result<tonic::Response<super::Subscription>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Subscription>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1109,13 +1214,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/UpdateSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "UpdateSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified subscription.
         pub async fn delete_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSubscriptionRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1129,7 +1242,15 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "DeleteSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Performs an out-of-band seek for a subscription to a specified target,
         /// which may be timestamps or named positions within the message backlog.
@@ -1155,7 +1276,7 @@ pub mod admin_service_client {
         pub async fn seek_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::SeekSubscriptionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1172,13 +1293,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/SeekSubscription",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "SeekSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new reservation.
         pub async fn create_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReservationRequest>,
-        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1192,13 +1321,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/CreateReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "CreateReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the reservation configuration.
         pub async fn get_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReservationRequest>,
-        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1212,13 +1349,24 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/GetReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "GetReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the list of reservations for the given project.
         pub async fn list_reservations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReservationsRequest>,
-        ) -> Result<tonic::Response<super::ListReservationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListReservationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1232,13 +1380,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/ListReservations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "ListReservations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates properties of the specified reservation.
         pub async fn update_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateReservationRequest>,
-        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1252,13 +1408,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/UpdateReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "UpdateReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified reservation.
         pub async fn delete_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteReservationRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1272,13 +1436,21 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "DeleteReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the topics attached to the specified reservation.
         pub async fn list_reservation_topics(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReservationTopicsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListReservationTopicsResponse>,
             tonic::Status,
         > {
@@ -1295,7 +1467,15 @@ pub mod admin_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.AdminService/ListReservationTopics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.AdminService",
+                        "ListReservationTopics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1460,7 +1640,7 @@ pub mod cursor_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1516,13 +1696,29 @@ pub mod cursor_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Establishes a stream with the server for managing committed cursors.
         pub async fn streaming_commit_cursor(
             &mut self,
             request: impl tonic::IntoStreamingRequest<
                 Message = super::StreamingCommitCursorRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 tonic::codec::Streaming<super::StreamingCommitCursorResponse>,
             >,
@@ -1541,13 +1737,24 @@ pub mod cursor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.CursorService/StreamingCommitCursor",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.CursorService",
+                        "StreamingCommitCursor",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
         /// Updates the committed cursor.
         pub async fn commit_cursor(
             &mut self,
             request: impl tonic::IntoRequest<super::CommitCursorRequest>,
-        ) -> Result<tonic::Response<super::CommitCursorResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CommitCursorResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1561,13 +1768,21 @@ pub mod cursor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.CursorService/CommitCursor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.CursorService",
+                        "CommitCursor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all committed cursor information for a subscription.
         pub async fn list_partition_cursors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPartitionCursorsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPartitionCursorsResponse>,
             tonic::Status,
         > {
@@ -1584,7 +1799,15 @@ pub mod cursor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.CursorService/ListPartitionCursors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.CursorService",
+                        "ListPartitionCursors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1734,7 +1957,7 @@ pub mod publisher_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1790,6 +2013,22 @@ pub mod publisher_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Establishes a stream with the server for publishing messages. Once the
         /// stream is initialized, the client publishes messages by sending publish
         /// requests on the stream. The server responds with a PublishResponse for each
@@ -1800,7 +2039,7 @@ pub mod publisher_service_client {
         pub async fn publish(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::PublishRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::PublishResponse>>,
             tonic::Status,
         > {
@@ -1817,7 +2056,15 @@ pub mod publisher_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.PublisherService/Publish",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.PublisherService",
+                        "Publish",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }
@@ -2080,7 +2327,7 @@ pub mod subscriber_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2136,11 +2383,27 @@ pub mod subscriber_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Establishes a stream with the server for receiving messages.
         pub async fn subscribe(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::SubscribeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::SubscribeResponse>>,
             tonic::Status,
         > {
@@ -2157,7 +2420,15 @@ pub mod subscriber_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.SubscriberService/Subscribe",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.SubscriberService",
+                        "Subscribe",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }
@@ -2176,7 +2447,7 @@ pub mod partition_assignment_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2234,6 +2505,22 @@ pub mod partition_assignment_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Assign partitions for this client to handle for the specified subscription.
         ///
         /// The client must send an InitialPartitionAssignmentRequest first.
@@ -2246,7 +2533,7 @@ pub mod partition_assignment_service_client {
             request: impl tonic::IntoStreamingRequest<
                 Message = super::PartitionAssignmentRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::PartitionAssignment>>,
             tonic::Status,
         > {
@@ -2263,7 +2550,15 @@ pub mod partition_assignment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.PartitionAssignmentService/AssignPartitions",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.PartitionAssignmentService",
+                        "AssignPartitions",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }
@@ -2367,7 +2662,7 @@ pub mod topic_stats_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2423,12 +2718,31 @@ pub mod topic_stats_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Compute statistics about a range of messages in a given topic and
         /// partition.
         pub async fn compute_message_stats(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeMessageStatsRequest>,
-        ) -> Result<tonic::Response<super::ComputeMessageStatsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ComputeMessageStatsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2442,7 +2756,15 @@ pub mod topic_stats_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.TopicStatsService/ComputeMessageStats",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.TopicStatsService",
+                        "ComputeMessageStats",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Compute the head cursor for the partition.
         /// The head cursor's offset is guaranteed to be less than or equal to all
@@ -2453,7 +2775,10 @@ pub mod topic_stats_service_client {
         pub async fn compute_head_cursor(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeHeadCursorRequest>,
-        ) -> Result<tonic::Response<super::ComputeHeadCursorResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ComputeHeadCursorResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2467,14 +2792,25 @@ pub mod topic_stats_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.TopicStatsService/ComputeHeadCursor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.TopicStatsService",
+                        "ComputeHeadCursor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Compute the corresponding cursor for a publish or event time in a topic
         /// partition.
         pub async fn compute_time_cursor(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeTimeCursorRequest>,
-        ) -> Result<tonic::Response<super::ComputeTimeCursorResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ComputeTimeCursorResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2488,7 +2824,15 @@ pub mod topic_stats_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.TopicStatsService/ComputeTimeCursor",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.pubsublite.v1.TopicStatsService",
+                        "ComputeTimeCursor",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

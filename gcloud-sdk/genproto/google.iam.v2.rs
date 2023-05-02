@@ -308,7 +308,7 @@ pub mod policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -364,6 +364,22 @@ pub mod policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the policies of the specified kind that are attached to a
         /// resource.
         ///
@@ -372,7 +388,10 @@ pub mod policies_client {
         pub async fn list_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPoliciesRequest>,
-        ) -> Result<tonic::Response<super::ListPoliciesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListPoliciesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -386,13 +405,16 @@ pub mod policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v2.Policies/ListPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.iam.v2.Policies", "ListPolicies"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a policy.
         pub async fn get_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -406,13 +428,16 @@ pub mod policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v2.Policies/GetPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.iam.v2.Policies", "GetPolicy"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a policy.
         pub async fn create_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -429,7 +454,10 @@ pub mod policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v2.Policies/CreatePolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.iam.v2.Policies", "CreatePolicy"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified policy.
         ///
@@ -445,7 +473,7 @@ pub mod policies_client {
         pub async fn update_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdatePolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -462,13 +490,16 @@ pub mod policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v2.Policies/UpdatePolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.iam.v2.Policies", "UpdatePolicy"));
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a policy. This action is permanent.
         pub async fn delete_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -485,7 +516,10 @@ pub mod policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v2.Policies/DeletePolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.iam.v2.Policies", "DeletePolicy"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -2303,7 +2303,7 @@ pub mod issuer_switch_resolutions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2361,6 +2361,22 @@ pub mod issuer_switch_resolutions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create a complaint. The returned `Operation` type has
         /// the following method-specific fields:
         ///
@@ -2371,7 +2387,7 @@ pub mod issuer_switch_resolutions_client {
         pub async fn create_complaint(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateComplaintRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2388,7 +2404,15 @@ pub mod issuer_switch_resolutions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/CreateComplaint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions",
+                        "CreateComplaint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resolve a complaint. The returned `Operation` type has
         /// the following method-specific fields:
@@ -2400,7 +2424,7 @@ pub mod issuer_switch_resolutions_client {
         pub async fn resolve_complaint(
             &mut self,
             request: impl tonic::IntoRequest<super::ResolveComplaintRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2417,7 +2441,15 @@ pub mod issuer_switch_resolutions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/ResolveComplaint",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions",
+                        "ResolveComplaint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create a dispute. The returned `Operation` type has
         /// the following method-specific fields:
@@ -2429,7 +2461,7 @@ pub mod issuer_switch_resolutions_client {
         pub async fn create_dispute(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDisputeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2446,7 +2478,15 @@ pub mod issuer_switch_resolutions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/CreateDispute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions",
+                        "CreateDispute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resolve a dispute. The returned `Operation` type has
         /// the following method-specific fields:
@@ -2458,7 +2498,7 @@ pub mod issuer_switch_resolutions_client {
         pub async fn resolve_dispute(
             &mut self,
             request: impl tonic::IntoRequest<super::ResolveDisputeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2475,7 +2515,15 @@ pub mod issuer_switch_resolutions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/ResolveDispute",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions",
+                        "ResolveDispute",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3691,7 +3739,7 @@ pub mod issuer_switch_transactions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3749,11 +3797,27 @@ pub mod issuer_switch_transactions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// List metadata transactions that satisfy the specified filter criteria.
         pub async fn list_metadata_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMetadataTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListMetadataTransactionsResponse>,
             tonic::Status,
         > {
@@ -3770,13 +3834,21 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListMetadataTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ListMetadataTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List financial transactions that satisfy specified filter criteria.
         pub async fn list_financial_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFinancialTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListFinancialTransactionsResponse>,
             tonic::Status,
         > {
@@ -3793,13 +3865,21 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListFinancialTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ListFinancialTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List mandate transactions that satisfy specified filter criteria.
         pub async fn list_mandate_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMandateTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListMandateTransactionsResponse>,
             tonic::Status,
         > {
@@ -3816,13 +3896,21 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListMandateTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ListMandateTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List complaint transactions that satisfy specified filter criteria.
         pub async fn list_complaint_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListComplaintTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListComplaintTransactionsResponse>,
             tonic::Status,
         > {
@@ -3839,7 +3927,15 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListComplaintTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ListComplaintTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Export financial transactions received within the specified time range as a
         /// file into a configured target location. The returned `Operation` type has
@@ -4048,7 +4144,7 @@ pub mod issuer_switch_transactions_client {
         pub async fn export_financial_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportFinancialTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4065,7 +4161,15 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportFinancialTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ExportFinancialTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Export metadata transactions received within the specified time range as a
         /// file into a configured target location. The returned `Operation` type has
@@ -4129,7 +4233,7 @@ pub mod issuer_switch_transactions_client {
         pub async fn export_metadata_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportMetadataTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4146,7 +4250,15 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportMetadataTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ExportMetadataTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Export mandate transactions received within the specified time range as a
         /// file into a configured target location. The returned `Operation` type has
@@ -4282,7 +4394,7 @@ pub mod issuer_switch_transactions_client {
         pub async fn export_mandate_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportMandateTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4299,7 +4411,15 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportMandateTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ExportMandateTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Export complaint transactions received within the specified time range as a
         /// file into a configured target location. The returned `Operation` type has
@@ -4439,7 +4559,7 @@ pub mod issuer_switch_transactions_client {
         pub async fn export_complaint_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportComplaintTransactionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4456,7 +4576,15 @@ pub mod issuer_switch_transactions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportComplaintTransactions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions",
+                        "ExportComplaintTransactions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4844,7 +4972,7 @@ pub mod issuer_switch_rules_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4900,12 +5028,31 @@ pub mod issuer_switch_rules_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// List all rules that are applied on transactions by the issuer switch. Rules
         /// can be filtered on API type and transaction type.
         pub async fn list_rules(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRulesRequest>,
-        ) -> Result<tonic::Response<super::ListRulesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRulesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4919,13 +5066,24 @@ pub mod issuer_switch_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/ListRules",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules",
+                        "ListRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all rule metadata for a given rule identifier.
         pub async fn list_rule_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRuleMetadataRequest>,
-        ) -> Result<tonic::Response<super::ListRuleMetadataResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRuleMetadataResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4939,13 +5097,21 @@ pub mod issuer_switch_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/ListRuleMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules",
+                        "ListRuleMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all metadata values for a rule metadata identifier.
         pub async fn list_rule_metadata_values(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRuleMetadataValuesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListRuleMetadataValuesResponse>,
             tonic::Status,
         > {
@@ -4962,14 +5128,22 @@ pub mod issuer_switch_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/ListRuleMetadataValues",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules",
+                        "ListRuleMetadataValues",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create (add) multiple values to the list of values under the specified rule
         /// metadata resource.
         pub async fn batch_create_rule_metadata_values(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateRuleMetadataValuesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchCreateRuleMetadataValuesResponse>,
             tonic::Status,
         > {
@@ -4986,14 +5160,22 @@ pub mod issuer_switch_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/BatchCreateRuleMetadataValues",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules",
+                        "BatchCreateRuleMetadataValues",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete (remove) multiple values from the list of values under the specified
         /// rules metadata resource.
         pub async fn batch_delete_rule_metadata_values(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchDeleteRuleMetadataValuesRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5007,7 +5189,15 @@ pub mod issuer_switch_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/BatchDeleteRuleMetadataValues",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules",
+                        "BatchDeleteRuleMetadataValues",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -2499,7 +2499,7 @@ pub mod label_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2555,11 +2555,30 @@ pub mod label_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets the user capabilities.
         pub async fn get_user_capabilities(
             &mut self,
             request: impl tonic::IntoRequest<super::GetUserCapabilitiesRequest>,
-        ) -> Result<tonic::Response<super::UserCapabilities>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UserCapabilities>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2573,13 +2592,24 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/GetUserCapabilities",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "GetUserCapabilities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List labels.
         pub async fn list_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLabelsRequest>,
-        ) -> Result<tonic::Response<super::ListLabelsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListLabelsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2593,7 +2623,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/ListLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "ListLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get a label by its resource name.
         /// Resource name may be any of:
@@ -2607,7 +2645,7 @@ pub mod label_service_client {
         pub async fn get_label(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLabelRequest>,
-        ) -> Result<tonic::Response<super::Label>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2621,14 +2659,22 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/GetLabel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "GetLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get the constraints on the structure of a Label; such as, the maximum
         /// number of Fields allowed and maximum length of the label title.
         pub async fn get_label_limits(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLabelLimitsRequest>,
-        ) -> Result<tonic::Response<super::LabelLimits>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::LabelLimits>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2642,13 +2688,21 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/GetLabelLimits",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "GetLabelLimits",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Label.
         pub async fn create_label(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateLabelRequest>,
-        ) -> Result<tonic::Response<super::Label>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2662,7 +2716,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/CreateLabel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "CreateLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a single Label by applying a set of update requests resulting in a
         /// new draft revision. The batch update is all-or-nothing: If any of the
@@ -2671,7 +2733,10 @@ pub mod label_service_client {
         pub async fn delta_update_label(
             &mut self,
             request: impl tonic::IntoRequest<super::DeltaUpdateLabelRequest>,
-        ) -> Result<tonic::Response<super::DeltaUpdateLabelResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeltaUpdateLabelResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2685,14 +2750,22 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/DeltaUpdateLabel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "DeltaUpdateLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Label's `CopyMode`. Changes to this policy are not revisioned, do
         /// not require publishing, and take effect immediately.
         pub async fn update_label_copy_mode(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateLabelCopyModeRequest>,
-        ) -> Result<tonic::Response<super::Label>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2706,7 +2779,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/UpdateLabelCopyMode",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "UpdateLabelCopyMode",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Publish all draft changes to the Label. Once published, the Label may not
         /// return to its draft state. See
@@ -2729,7 +2810,7 @@ pub mod label_service_client {
         pub async fn publish_label(
             &mut self,
             request: impl tonic::IntoRequest<super::PublishLabelRequest>,
-        ) -> Result<tonic::Response<super::Label>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2743,7 +2824,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/PublishLabel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "PublishLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Disable a published Label.
         /// Disabling a Label will result in a new disabled published revision based on
@@ -2755,7 +2844,7 @@ pub mod label_service_client {
         pub async fn disable_label(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableLabelRequest>,
-        ) -> Result<tonic::Response<super::Label>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2769,7 +2858,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/DisableLabel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "DisableLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enable a disabled Label and restore it to its published state.
         /// This will result in a new published revision based on the current disabled
@@ -2778,7 +2875,7 @@ pub mod label_service_client {
         pub async fn enable_label(
             &mut self,
             request: impl tonic::IntoRequest<super::EnableLabelRequest>,
-        ) -> Result<tonic::Response<super::Label>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2792,7 +2889,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/EnableLabel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "EnableLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Permanently deletes a Label and related metadata on Drive Items.
         ///
@@ -2801,7 +2906,7 @@ pub mod label_service_client {
         pub async fn delete_label(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteLabelRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2815,13 +2920,21 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/DeleteLabel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "DeleteLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists a Label's permissions.
         pub async fn list_label_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLabelPermissionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListLabelPermissionsResponse>,
             tonic::Status,
         > {
@@ -2838,7 +2951,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/ListLabelPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "ListLabelPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Label's permissions. If a permission for the indicated principal
         /// doesn't exist, a new Label Permission is created, otherwise the existing
@@ -2847,7 +2968,10 @@ pub mod label_service_client {
         pub async fn create_label_permission(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateLabelPermissionRequest>,
-        ) -> Result<tonic::Response<super::LabelPermission>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::LabelPermission>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2861,7 +2985,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/CreateLabelPermission",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "CreateLabelPermission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Label's permissions. If a permission for the indicated principal
         /// doesn't exist, a new Label Permission is created, otherwise the existing
@@ -2870,7 +3002,10 @@ pub mod label_service_client {
         pub async fn update_label_permission(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateLabelPermissionRequest>,
-        ) -> Result<tonic::Response<super::LabelPermission>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::LabelPermission>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2884,14 +3019,22 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/UpdateLabelPermission",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "UpdateLabelPermission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Label's permission. Permissions affect the Label resource as a
         /// whole, are not revisioned, and do not require publishing.
         pub async fn delete_label_permission(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteLabelPermissionRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2905,7 +3048,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/DeleteLabelPermission",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "DeleteLabelPermission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates Label permissions. If a permission for the
         /// indicated principal doesn't exist, a new Label Permission is created,
@@ -2914,7 +3065,7 @@ pub mod label_service_client {
         pub async fn batch_update_label_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchUpdateLabelPermissionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchUpdateLabelPermissionsResponse>,
             tonic::Status,
         > {
@@ -2931,14 +3082,22 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/BatchUpdateLabelPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "BatchUpdateLabelPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes Label permissions. Permissions affect the Label resource as a
         /// whole, are not revisioned, and do not require publishing.
         pub async fn batch_delete_label_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchDeleteLabelPermissionsRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2952,13 +3111,24 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/BatchDeleteLabelPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "BatchDeleteLabelPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the LabelLocks on a Label.
         pub async fn list_label_locks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLabelLocksRequest>,
-        ) -> Result<tonic::Response<super::ListLabelLocksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListLabelLocksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2972,7 +3142,15 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2beta.LabelService/ListLabelLocks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2beta.LabelService",
+                        "ListLabelLocks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

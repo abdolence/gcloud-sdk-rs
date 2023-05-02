@@ -137,7 +137,11 @@ pub struct MapValue {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredQuery {
-    /// The projection to return.
+    /// Optional sub-set of the fields to return.
+    ///
+    /// This acts as a \[DocumentMask][google.firestore.v1.DocumentMask\] over the
+    /// documents returned from a query. When not set, assumes that the caller
+    /// wants all fields returned.
     #[prost(message, optional, tag = "1")]
     pub select: ::core::option::Option<structured_query::Projection>,
     /// The collections to query.
@@ -405,23 +409,26 @@ pub mod structured_query {
             ///
             /// Requires:
             ///
-            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
+            /// * That `value` is a non-empty `ArrayValue`, subject to disjunction
+            ///    limits.
+            /// * No `NOT_IN` filters in the same query.
             In = 8,
             /// The given `field` is an array that contains any of the values in the
             /// given array.
             ///
             /// Requires:
             ///
-            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
+            /// * That `value` is a non-empty `ArrayValue`, subject to disjunction
+            ///    limits.
+            /// * No other `ARRAY_CONTAINS_ANY` filters within the same disjunction.
+            /// * No `NOT_IN` filters in the same query.
             ArrayContainsAny = 9,
             /// The value of the `field` is not in the given array.
             ///
             /// Requires:
             ///
             /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
+            /// * No other `OR`, `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
             ///    `IS_NOT_NULL`, or `IS_NOT_NAN`.
             /// * That `field` comes first in the `order_by`.
             NotIn = 10,
@@ -648,7 +655,7 @@ pub struct StructuredAggregationQuery {
 }
 /// Nested message and enum types in `StructuredAggregationQuery`.
 pub mod structured_aggregation_query {
-    /// Defines a aggregation that produces a single result.
+    /// Defines an aggregation that produces a single result.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aggregation {
@@ -663,7 +670,7 @@ pub mod structured_aggregation_query {
         ///    COUNT_UP_TO(1) AS count_up_to_1,
         ///    COUNT_UP_TO(2),
         ///    COUNT_UP_TO(3) AS count_up_to_3,
-        ///    COUNT_UP_TO(4)
+        ///    COUNT(*)
         /// OVER (
         ///    ...
         /// );
@@ -676,7 +683,7 @@ pub mod structured_aggregation_query {
         ///    COUNT_UP_TO(1) AS count_up_to_1,
         ///    COUNT_UP_TO(2) AS field_1,
         ///    COUNT_UP_TO(3) AS count_up_to_3,
-        ///    COUNT_UP_TO(4) AS field_2
+        ///    COUNT(*) AS field_2
         /// OVER (
         ///    ...
         /// );
@@ -706,7 +713,7 @@ pub mod structured_aggregation_query {
             /// count.
             ///
             /// This provides a way to set an upper bound on the number of documents
-            /// to scan, limiting latency and cost.
+            /// to scan, limiting latency, and cost.
             ///
             /// Unspecified is interpreted as no bound.
             ///
@@ -1713,7 +1720,14 @@ pub struct RunAggregationQueryResponse {
     /// a new transaction.
     #[prost(bytes = "vec", tag = "2")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
-    /// The time at which the aggregate value is valid for.
+    /// The time at which the aggregate result was computed. This is always
+    /// monotonically increasing; in this case, the previous AggregationResult in
+    /// the result stream are guaranteed not to have changed between their
+    /// `read_time` and this one.
+    ///
+    /// If the query returns no results, a response with `read_time` and no
+    /// `result` will be sent, and this represents the time at which the query
+    /// was run.
     #[prost(message, optional, tag = "3")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -2278,7 +2292,7 @@ pub mod firestore_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2334,11 +2348,27 @@ pub mod firestore_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets a single document.
         pub async fn get_document(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDocumentRequest>,
-        ) -> Result<tonic::Response<super::Document>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Document>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2352,13 +2382,19 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/GetDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.firestore.v1.Firestore", "GetDocument"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists documents.
         pub async fn list_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDocumentsRequest>,
-        ) -> Result<tonic::Response<super::ListDocumentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDocumentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2372,13 +2408,18 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/ListDocuments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "ListDocuments"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates or inserts a document.
         pub async fn update_document(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDocumentRequest>,
-        ) -> Result<tonic::Response<super::Document>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Document>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2392,13 +2433,18 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/UpdateDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "UpdateDocument"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a document.
         pub async fn delete_document(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDocumentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2412,7 +2458,12 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/DeleteDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "DeleteDocument"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets multiple documents.
         ///
@@ -2421,7 +2472,7 @@ pub mod firestore_client {
         pub async fn batch_get_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchGetDocumentsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::BatchGetDocumentsResponse>>,
             tonic::Status,
         > {
@@ -2438,13 +2489,21 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/BatchGetDocuments",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "BatchGetDocuments"),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Starts a new transaction.
         pub async fn begin_transaction(
             &mut self,
             request: impl tonic::IntoRequest<super::BeginTransactionRequest>,
-        ) -> Result<tonic::Response<super::BeginTransactionResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BeginTransactionResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2458,13 +2517,18 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/BeginTransaction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "BeginTransaction"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Commits a transaction, while optionally updating documents.
         pub async fn commit(
             &mut self,
             request: impl tonic::IntoRequest<super::CommitRequest>,
-        ) -> Result<tonic::Response<super::CommitResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CommitResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2478,13 +2542,16 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/Commit",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.firestore.v1.Firestore", "Commit"));
+            self.inner.unary(req, path, codec).await
         }
         /// Rolls back a transaction.
         pub async fn rollback(
             &mut self,
             request: impl tonic::IntoRequest<super::RollbackRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2498,13 +2565,16 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/Rollback",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.firestore.v1.Firestore", "Rollback"));
+            self.inner.unary(req, path, codec).await
         }
         /// Runs a query.
         pub async fn run_query(
             &mut self,
             request: impl tonic::IntoRequest<super::RunQueryRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::RunQueryResponse>>,
             tonic::Status,
         > {
@@ -2521,7 +2591,10 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/RunQuery",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.firestore.v1.Firestore", "RunQuery"));
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Runs an aggregation query.
         ///
@@ -2539,7 +2612,7 @@ pub mod firestore_client {
         pub async fn run_aggregation_query(
             &mut self,
             request: impl tonic::IntoRequest<super::RunAggregationQueryRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::RunAggregationQueryResponse>>,
             tonic::Status,
         > {
@@ -2556,7 +2629,15 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/RunAggregationQuery",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.v1.Firestore",
+                        "RunAggregationQuery",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Partitions a query by returning partition cursors that can be used to run
         /// the query in parallel. The returned partition cursors are split points that
@@ -2564,7 +2645,10 @@ pub mod firestore_client {
         pub async fn partition_query(
             &mut self,
             request: impl tonic::IntoRequest<super::PartitionQueryRequest>,
-        ) -> Result<tonic::Response<super::PartitionQueryResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PartitionQueryResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2578,14 +2662,19 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/PartitionQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "PartitionQuery"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Streams batches of document updates and deletes, in order. This method is
-        /// only available via the gRPC API (not REST).
+        /// only available via gRPC or WebChannel (not REST).
         pub async fn write(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::WriteRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::WriteResponse>>,
             tonic::Status,
         > {
@@ -2602,14 +2691,17 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/Write",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.firestore.v1.Firestore", "Write"));
+            self.inner.streaming(req, path, codec).await
         }
-        /// Listens to changes. This method is only available via the gRPC API (not
-        /// REST).
+        /// Listens to changes. This method is only available via gRPC or WebChannel
+        /// (not REST).
         pub async fn listen(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::ListenRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::ListenResponse>>,
             tonic::Status,
         > {
@@ -2626,13 +2718,19 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/Listen",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.firestore.v1.Firestore", "Listen"));
+            self.inner.streaming(req, path, codec).await
         }
         /// Lists all the collection IDs underneath a document.
         pub async fn list_collection_ids(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCollectionIdsRequest>,
-        ) -> Result<tonic::Response<super::ListCollectionIdsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCollectionIdsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2646,7 +2744,12 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/ListCollectionIds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "ListCollectionIds"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies a batch of write operations.
         ///
@@ -2661,7 +2764,10 @@ pub mod firestore_client {
         pub async fn batch_write(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchWriteRequest>,
-        ) -> Result<tonic::Response<super::BatchWriteResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BatchWriteResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2675,13 +2781,16 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/BatchWrite",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.firestore.v1.Firestore", "BatchWrite"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new document.
         pub async fn create_document(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDocumentRequest>,
-        ) -> Result<tonic::Response<super::Document>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Document>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2695,7 +2804,12 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/CreateDocument",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.firestore.v1.Firestore", "CreateDocument"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -1,19 +1,21 @@
-/// Details of the address parsed from the input.
+/// Details of the post-processed address. Post-processing includes
+/// correcting misspelled parts of the address, replacing incorrect parts, and
+/// inferring missing parts.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Address {
-    /// The corrected address, formatted as a single-line address following the
-    /// address formatting rules of the region where the address is located.
+    /// The post-processed address, formatted as a single-line address following
+    /// the address formatting rules of the region where the address is located.
     #[prost(string, tag = "2")]
     pub formatted_address: ::prost::alloc::string::String,
-    /// The validated address represented as a postal address.
+    /// The post-processed address represented as a postal address.
     #[prost(message, optional, tag = "3")]
     pub postal_address: ::core::option::Option<
         super::super::super::r#type::PostalAddress,
     >,
-    /// Unordered list. The individual address components of the formatted and corrected address,
-    /// along with validation information. This provides information on the
-    /// validation status of the individual components.
+    /// Unordered list. The individual address components of the formatted and
+    /// corrected address, along with validation information. This provides
+    /// information on the validation status of the individual components.
     ///
     /// Address components are not ordered in a particular way. Do not make any
     /// assumptions on the ordering of the address components in the list.
@@ -216,7 +218,8 @@ pub struct PlusCode {
     #[prost(string, tag = "2")]
     pub compound_code: ::prost::alloc::string::String,
 }
-/// The metadata for the address.
+/// The metadata for the address. `metadata` is not guaranteed to be fully
+/// populated for every address sent to the Address Validation API.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressMetadata {
@@ -265,7 +268,10 @@ pub struct UspsAddress {
     #[prost(string, tag = "9")]
     pub zip_code_extension: ::prost::alloc::string::String,
 }
-/// The USPS data for the address.
+/// The USPS data for the address. `uspsData` is not guaranteed to be fully
+/// populated for every US or PR address sent to the Address Validation API. It's
+/// recommended to integrate the backup address fields in the response if you
+/// utilize uspsData as the primary part of the response.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UspsData {
@@ -590,7 +596,8 @@ pub struct ValidationResult {
     /// Information about the location and place that the address geocoded to.
     #[prost(message, optional, tag = "3")]
     pub geocode: ::core::option::Option<Geocode>,
-    /// Other information relevant to deliverability.
+    /// Other information relevant to deliverability. `metadata` is not guaranteed
+    /// to be fully populated for every address sent to the Address Validation API.
     #[prost(message, optional, tag = "4")]
     pub metadata: ::core::option::Option<AddressMetadata>,
     /// Extra deliverability flags provided by USPS. Only provided in region `US`
@@ -745,7 +752,7 @@ pub mod address_validation_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -801,11 +808,30 @@ pub mod address_validation_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Validates an address.
         pub async fn validate_address(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateAddressRequest>,
-        ) -> Result<tonic::Response<super::ValidateAddressResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ValidateAddressResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -819,7 +845,15 @@ pub mod address_validation_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.addressvalidation.v1.AddressValidation/ValidateAddress",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.addressvalidation.v1.AddressValidation",
+                        "ValidateAddress",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Feedback about the outcome of the sequence of validation attempts. This
         /// should be the last call made after a sequence of validation calls for the
@@ -829,7 +863,7 @@ pub mod address_validation_client {
         pub async fn provide_validation_feedback(
             &mut self,
             request: impl tonic::IntoRequest<super::ProvideValidationFeedbackRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ProvideValidationFeedbackResponse>,
             tonic::Status,
         > {
@@ -846,7 +880,15 @@ pub mod address_validation_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.addressvalidation.v1.AddressValidation/ProvideValidationFeedback",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.addressvalidation.v1.AddressValidation",
+                        "ProvideValidationFeedback",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

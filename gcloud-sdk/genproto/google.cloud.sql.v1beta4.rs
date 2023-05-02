@@ -3775,7 +3775,7 @@ pub mod sql_backup_runs_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3831,11 +3831,27 @@ pub mod sql_backup_runs_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the backup taken by a backup run.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlBackupRunsDeleteRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3849,13 +3865,21 @@ pub mod sql_backup_runs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlBackupRunsService/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupRunsService",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a resource containing information about a backup run.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlBackupRunsGetRequest>,
-        ) -> Result<tonic::Response<super::BackupRun>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BackupRun>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3869,13 +3893,21 @@ pub mod sql_backup_runs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlBackupRunsService/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupRunsService",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new backup run on demand.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlBackupRunsInsertRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3889,7 +3921,15 @@ pub mod sql_backup_runs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlBackupRunsService/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupRunsService",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all backup runs associated with the project or a given instance and
         /// configuration in the reverse chronological order of the backup initiation
@@ -3897,7 +3937,10 @@ pub mod sql_backup_runs_service_client {
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlBackupRunsListRequest>,
-        ) -> Result<tonic::Response<super::BackupRunsListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BackupRunsListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3911,7 +3954,15 @@ pub mod sql_backup_runs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlBackupRunsService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlBackupRunsService",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3928,7 +3979,7 @@ pub mod sql_databases_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3984,11 +4035,27 @@ pub mod sql_databases_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes a database from a Cloud SQL instance.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlDatabasesDeleteRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4002,14 +4069,22 @@ pub mod sql_databases_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlDatabasesService/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlDatabasesService",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a resource containing information about a database inside a Cloud
         /// SQL instance.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlDatabasesGetRequest>,
-        ) -> Result<tonic::Response<super::Database>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Database>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4023,14 +4098,22 @@ pub mod sql_databases_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlDatabasesService/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlDatabasesService",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts a resource containing information about a database inside a Cloud
         /// SQL instance.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlDatabasesInsertRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4044,13 +4127,24 @@ pub mod sql_databases_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlDatabasesService/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlDatabasesService",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists databases in the specified Cloud SQL instance.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlDatabasesListRequest>,
-        ) -> Result<tonic::Response<super::DatabasesListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DatabasesListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4064,14 +4158,22 @@ pub mod sql_databases_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlDatabasesService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlDatabasesService",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Partially updates a resource containing information about a database inside
         /// a Cloud SQL instance. This method supports patch semantics.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlDatabasesUpdateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4085,14 +4187,22 @@ pub mod sql_databases_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlDatabasesService/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlDatabasesService",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a resource containing information about a database inside a Cloud
         /// SQL instance.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlDatabasesUpdateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4106,7 +4216,15 @@ pub mod sql_databases_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlDatabasesService/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlDatabasesService",
+                        "Update",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4123,7 +4241,7 @@ pub mod sql_flags_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4179,11 +4297,30 @@ pub mod sql_flags_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all available database flags for Cloud SQL instances.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlFlagsListRequest>,
-        ) -> Result<tonic::Response<super::FlagsListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FlagsListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4197,7 +4334,12 @@ pub mod sql_flags_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlFlagsService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1beta4.SqlFlagsService", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4214,7 +4356,7 @@ pub mod sql_instances_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4270,6 +4412,22 @@ pub mod sql_instances_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Add a new trusted Certificate Authority (CA) version for the specified
         /// instance. Required to prepare for a certificate rotation. If a CA version
         /// was previously added but never used in a certificate rotation, this
@@ -4278,7 +4436,7 @@ pub mod sql_instances_service_client {
         pub async fn add_server_ca(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesAddServerCaRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4292,14 +4450,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/AddServerCa",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "AddServerCa",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Cloud SQL instance as a clone of the source instance. Using this
         /// operation might cause your instance to restart.
         pub async fn clone(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesCloneRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4313,13 +4479,21 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Clone",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Clone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Cloud SQL instance.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesDeleteRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4333,14 +4507,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Demotes the stand-alone instance to be a Cloud SQL read replica for an
         /// external database server.
         pub async fn demote_master(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesDemoteMasterRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4354,14 +4536,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/DemoteMaster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "DemoteMaster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports data from a Cloud SQL instance to a Cloud Storage bucket as a SQL
         /// dump or CSV file.
         pub async fn export(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesExportRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4375,7 +4565,15 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Export",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Export",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Initiates a manual failover of a high availability (HA) primary instance
         /// to a standby instance, which becomes the primary instance. Users are
@@ -4388,7 +4586,7 @@ pub mod sql_instances_service_client {
         pub async fn failover(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesFailoverRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4402,13 +4600,24 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Failover",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Failover",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a resource containing information about a Cloud SQL instance.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesGetRequest>,
-        ) -> Result<tonic::Response<super::DatabaseInstance>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DatabaseInstance>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4422,14 +4631,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Imports data into a Cloud SQL instance from a SQL dump  or CSV file in
         /// Cloud Storage.
         pub async fn import(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesImportRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4443,13 +4660,21 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Import",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Import",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Cloud SQL instance.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesInsertRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4463,13 +4688,24 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists instances under a given project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesListRequest>,
-        ) -> Result<tonic::Response<super::InstancesListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstancesListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4483,7 +4719,15 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all of the trusted Certificate Authorities (CAs) for the specified
         /// instance. There can be up to three CAs listed: the CA that was used to sign
@@ -4493,7 +4737,7 @@ pub mod sql_instances_service_client {
         pub async fn list_server_cas(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesListServerCasRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstancesListServerCasResponse>,
             tonic::Status,
         > {
@@ -4510,14 +4754,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/ListServerCas",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "ListServerCas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates settings of a Cloud SQL instance.
         /// This method supports patch semantics.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesPatchRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4531,14 +4783,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Promotes the read replica instance to be a stand-alone Cloud SQL instance.
         /// Using this operation might cause your instance to restart.
         pub async fn promote_replica(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesPromoteReplicaRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4552,14 +4812,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/PromoteReplica",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "PromoteReplica",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes all client certificates and generates a new server SSL certificate
         /// for the instance.
         pub async fn reset_ssl_config(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesResetSslConfigRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4573,13 +4841,21 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/ResetSslConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "ResetSslConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restarts a Cloud SQL instance.
         pub async fn restart(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesRestartRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4593,14 +4869,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Restart",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Restart",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restores a backup of a Cloud SQL instance. Using this operation might cause
         /// your instance to restart.
         pub async fn restore_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesRestoreBackupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4614,14 +4898,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/RestoreBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "RestoreBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Rotates the server certificate to one signed by the Certificate Authority
         /// (CA) version previously added with the addServerCA method.
         pub async fn rotate_server_ca(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesRotateServerCaRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4635,13 +4927,21 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/RotateServerCa",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "RotateServerCa",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts the replication in the read replica instance.
         pub async fn start_replica(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesStartReplicaRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4655,13 +4955,21 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/StartReplica",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "StartReplica",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Stops the replication in the read replica instance.
         pub async fn stop_replica(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesStopReplicaRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4675,14 +4983,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/StopReplica",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "StopReplica",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Truncate MySQL general and slow query log tables
         /// MySQL only.
         pub async fn truncate_log(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesTruncateLogRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4696,14 +5012,22 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/TruncateLog",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "TruncateLog",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates settings of a Cloud SQL instance. Using this operation might cause
         /// your instance to restart.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesUpdateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4717,7 +5041,15 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "Update",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates a short-lived X509 certificate containing the provided public key
         /// and signed by a private key specific to the target instance. Users may use
@@ -4728,7 +5060,7 @@ pub mod sql_instances_service_client {
             request: impl tonic::IntoRequest<
                 super::SqlInstancesCreateEphemeralCertRequest,
             >,
-        ) -> Result<tonic::Response<super::SslCert>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SslCert>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4742,7 +5074,15 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/CreateEphemeral",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "CreateEphemeral",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Reschedules the maintenance on the given instance.
         pub async fn reschedule_maintenance(
@@ -4750,7 +5090,7 @@ pub mod sql_instances_service_client {
             request: impl tonic::IntoRequest<
                 super::SqlInstancesRescheduleMaintenanceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4764,7 +5104,15 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/RescheduleMaintenance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "RescheduleMaintenance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Verify External primary instance external sync settings.
         pub async fn verify_external_sync_settings(
@@ -4772,7 +5120,7 @@ pub mod sql_instances_service_client {
             request: impl tonic::IntoRequest<
                 super::SqlInstancesVerifyExternalSyncSettingsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SqlInstancesVerifyExternalSyncSettingsResponse>,
             tonic::Status,
         > {
@@ -4789,13 +5137,21 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/VerifyExternalSyncSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "VerifyExternalSyncSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Start External primary instance migration.
         pub async fn start_external_sync(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesStartExternalSyncRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4809,7 +5165,15 @@ pub mod sql_instances_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlInstancesService/StartExternalSync",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlInstancesService",
+                        "StartExternalSync",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4826,7 +5190,7 @@ pub mod sql_operations_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4882,11 +5246,27 @@ pub mod sql_operations_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an instance operation that has been performed on an instance.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlOperationsGetRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4900,14 +5280,25 @@ pub mod sql_operations_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlOperationsService/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlOperationsService",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all instance operations that have been performed on the given Cloud
         /// SQL instance in the reverse chronological order of the start time.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlOperationsListRequest>,
-        ) -> Result<tonic::Response<super::OperationsListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::OperationsListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4921,7 +5312,15 @@ pub mod sql_operations_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlOperationsService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlOperationsService",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4938,7 +5337,7 @@ pub mod sql_ssl_certs_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4994,12 +5393,28 @@ pub mod sql_ssl_certs_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the SSL certificate. For First Generation instances, the
         /// certificate remains valid until the instance is restarted.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlSslCertsDeleteRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5013,7 +5428,15 @@ pub mod sql_ssl_certs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlSslCertsService/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlSslCertsService",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a particular SSL certificate.  Does not include the private key
         /// (required for usage).  The private key must be saved from the response to
@@ -5021,7 +5444,7 @@ pub mod sql_ssl_certs_service_client {
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlSslCertsGetRequest>,
-        ) -> Result<tonic::Response<super::SslCert>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SslCert>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5035,7 +5458,12 @@ pub mod sql_ssl_certs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlSslCertsService/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1beta4.SqlSslCertsService", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an SSL certificate and returns it along with the private key and
         /// server certificate authority.  The new certificate will not be usable until
@@ -5043,7 +5471,10 @@ pub mod sql_ssl_certs_service_client {
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlSslCertsInsertRequest>,
-        ) -> Result<tonic::Response<super::SslCertsInsertResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SslCertsInsertResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5057,13 +5488,24 @@ pub mod sql_ssl_certs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlSslCertsService/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlSslCertsService",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all of the current SSL certificates for the instance.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlSslCertsListRequest>,
-        ) -> Result<tonic::Response<super::SslCertsListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SslCertsListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5077,7 +5519,15 @@ pub mod sql_ssl_certs_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlSslCertsService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlSslCertsService",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -5177,7 +5627,7 @@ pub mod sql_connect_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5233,11 +5683,30 @@ pub mod sql_connect_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves connect settings about a Cloud SQL instance.
         pub async fn get_connect_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConnectSettingsRequest>,
-        ) -> Result<tonic::Response<super::ConnectSettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConnectSettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5251,7 +5720,15 @@ pub mod sql_connect_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlConnectService/GetConnectSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlConnectService",
+                        "GetConnectSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates a short-lived X509 certificate containing the provided public key
         /// and signed by a private key specific to the target instance. Users may use
@@ -5260,7 +5737,7 @@ pub mod sql_connect_service_client {
         pub async fn generate_ephemeral_cert(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateEphemeralCertRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateEphemeralCertResponse>,
             tonic::Status,
         > {
@@ -5277,7 +5754,15 @@ pub mod sql_connect_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlConnectService/GenerateEphemeralCert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1beta4.SqlConnectService",
+                        "GenerateEphemeralCert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -5334,7 +5819,7 @@ pub mod sql_tiers_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5390,12 +5875,31 @@ pub mod sql_tiers_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all available machine types (tiers) for Cloud SQL, for example,
         /// `db-custom-1-3840`. For related information, see [Pricing](/sql/pricing).
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlTiersListRequest>,
-        ) -> Result<tonic::Response<super::TiersListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TiersListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5409,7 +5913,12 @@ pub mod sql_tiers_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlTiersService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1beta4.SqlTiersService", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -5636,7 +6145,7 @@ pub mod sql_users_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5692,11 +6201,27 @@ pub mod sql_users_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes a user from a Cloud SQL instance.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlUsersDeleteRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5710,13 +6235,18 @@ pub mod sql_users_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlUsersService/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1beta4.SqlUsersService", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new user in a Cloud SQL instance.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlUsersInsertRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5730,13 +6260,21 @@ pub mod sql_users_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlUsersService/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1beta4.SqlUsersService", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists users in the specified Cloud SQL instance.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlUsersListRequest>,
-        ) -> Result<tonic::Response<super::UsersListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UsersListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5750,13 +6288,18 @@ pub mod sql_users_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlUsersService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1beta4.SqlUsersService", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing user in a Cloud SQL instance.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlUsersUpdateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -5770,7 +6313,12 @@ pub mod sql_users_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.sql.v1beta4.SqlUsersService/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1beta4.SqlUsersService", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

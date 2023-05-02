@@ -471,6 +471,13 @@ pub struct EnvironmentConfig {
     /// interface](/composer/docs/how-to/accessing/airflow-web-interface)).
     #[prost(string, tag = "6")]
     pub airflow_uri: ::prost::alloc::string::String,
+    /// Output only. The 'bring your own identity' variant of the URI of the Apache
+    /// Airflow Web UI hosted within this environment, to be accessed with external
+    /// identities using workforce identity federation (see [Access environments
+    /// with workforce identity
+    /// federation](/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).
+    #[prost(string, tag = "20")]
+    pub airflow_byoid_uri: ::prost::alloc::string::String,
     /// Optional. The configuration options for GKE cluster master authorized
     /// networks. By default master authorized networks feature is:
     /// - in case of private environment: enabled with no external networks
@@ -1418,7 +1425,7 @@ pub mod environments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1474,11 +1481,27 @@ pub mod environments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create a new environment.
         pub async fn create_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::super::super::longrunning::Operation,
             >,
@@ -1497,13 +1520,21 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.Environments/CreateEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.Environments",
+                        "CreateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get an existing environment.
         pub async fn get_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEnvironmentRequest>,
-        ) -> Result<tonic::Response<super::Environment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Environment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1517,13 +1548,24 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.Environments/GetEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.Environments",
+                        "GetEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List environments.
         pub async fn list_environments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEnvironmentsRequest>,
-        ) -> Result<tonic::Response<super::ListEnvironmentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEnvironmentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1537,13 +1579,21 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.Environments/ListEnvironments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.Environments",
+                        "ListEnvironments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update an environment.
         pub async fn update_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::super::super::longrunning::Operation,
             >,
@@ -1562,13 +1612,21 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.Environments/UpdateEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.Environments",
+                        "UpdateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete an environment.
         pub async fn delete_environment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEnvironmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::super::super::longrunning::Operation,
             >,
@@ -1587,7 +1645,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.Environments/DeleteEnvironment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.Environments",
+                        "DeleteEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a snapshots of a Cloud Composer environment.
         ///
@@ -1596,7 +1662,7 @@ pub mod environments_client {
         pub async fn save_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::SaveSnapshotRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::super::super::longrunning::Operation,
             >,
@@ -1615,7 +1681,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.Environments/SaveSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.Environments",
+                        "SaveSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Loads a snapshot of a Cloud Composer environment.
         ///
@@ -1624,7 +1698,7 @@ pub mod environments_client {
         pub async fn load_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::LoadSnapshotRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::super::super::longrunning::Operation,
             >,
@@ -1643,7 +1717,15 @@ pub mod environments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.Environments/LoadSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.Environments",
+                        "LoadSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1720,7 +1802,7 @@ pub mod image_versions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1776,11 +1858,30 @@ pub mod image_versions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// List ImageVersions for provided location.
         pub async fn list_image_versions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListImageVersionsRequest>,
-        ) -> Result<tonic::Response<super::ListImageVersionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListImageVersionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1794,7 +1895,15 @@ pub mod image_versions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orchestration.airflow.service.v1.ImageVersions/ListImageVersions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1.ImageVersions",
+                        "ListImageVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

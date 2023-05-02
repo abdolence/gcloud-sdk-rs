@@ -1439,7 +1439,7 @@ pub mod bare_metal_solution_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1495,11 +1495,30 @@ pub mod bare_metal_solution_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// List servers in a given project and location.
         pub async fn list_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstancesRequest>,
-        ) -> Result<tonic::Response<super::ListInstancesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstancesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1513,13 +1532,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ListInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get details about a single server.
         pub async fn get_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Instance>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Instance>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1533,13 +1560,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "GetInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update details of a single server.
         pub async fn update_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1556,14 +1591,22 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "UpdateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Perform an ungraceful, hard reset on a server. Equivalent to shutting the
         /// power off and then turning it back on.
         pub async fn reset_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::ResetInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1580,13 +1623,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResetInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ResetInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts a server that was shutdown.
         pub async fn start_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::StartInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1603,13 +1654,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/StartInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "StartInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Stop a running server.
         pub async fn stop_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::StopInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1626,13 +1685,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/StopInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "StopInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Detach LUN from Instance.
         pub async fn detach_lun(
             &mut self,
             request: impl tonic::IntoRequest<super::DetachLunRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1649,13 +1716,24 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DetachLun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "DetachLun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List storage volumes in a given project and location.
         pub async fn list_volumes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVolumesRequest>,
-        ) -> Result<tonic::Response<super::ListVolumesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListVolumesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1669,13 +1747,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListVolumes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ListVolumes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get details of a single storage volume.
         pub async fn get_volume(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVolumeRequest>,
-        ) -> Result<tonic::Response<super::Volume>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Volume>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1689,13 +1775,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetVolume",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "GetVolume",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update details of a single storage volume.
         pub async fn update_volume(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateVolumeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1712,13 +1806,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateVolume",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "UpdateVolume",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Emergency Volume resize.
         pub async fn resize_volume(
             &mut self,
             request: impl tonic::IntoRequest<super::ResizeVolumeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1735,13 +1837,24 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResizeVolume",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ResizeVolume",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List network in a given project and location.
         pub async fn list_networks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNetworksRequest>,
-        ) -> Result<tonic::Response<super::ListNetworksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListNetworksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1755,14 +1868,25 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ListNetworks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all Networks (and used IPs for each Network) in the vendor account
         /// associated with the specified project.
         pub async fn list_network_usage(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNetworkUsageRequest>,
-        ) -> Result<tonic::Response<super::ListNetworkUsageResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListNetworkUsageResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1776,13 +1900,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworkUsage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ListNetworkUsage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get details of a single network.
         pub async fn get_network(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkRequest>,
-        ) -> Result<tonic::Response<super::Network>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Network>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1796,13 +1928,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNetwork",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "GetNetwork",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update details of a single network.
         pub async fn update_network(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNetworkRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1819,13 +1959,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNetwork",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "UpdateNetwork",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get details of a single storage logical unit number(LUN).
         pub async fn get_lun(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLunRequest>,
-        ) -> Result<tonic::Response<super::Lun>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Lun>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1839,13 +1987,24 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetLun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "GetLun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List storage volume luns for given storage volume.
         pub async fn list_luns(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLunsRequest>,
-        ) -> Result<tonic::Response<super::ListLunsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListLunsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1859,13 +2018,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListLuns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ListLuns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get details of a single NFS share.
         pub async fn get_nfs_share(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNfsShareRequest>,
-        ) -> Result<tonic::Response<super::NfsShare>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NfsShare>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1879,13 +2046,24 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNfsShare",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "GetNfsShare",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List NFS shares.
         pub async fn list_nfs_shares(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNfsSharesRequest>,
-        ) -> Result<tonic::Response<super::ListNfsSharesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListNfsSharesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1899,13 +2077,21 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNfsShares",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "ListNfsShares",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update details of a single NFS share.
         pub async fn update_nfs_share(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNfsShareRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1922,7 +2108,15 @@ pub mod bare_metal_solution_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNfsShare",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "UpdateNfsShare",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

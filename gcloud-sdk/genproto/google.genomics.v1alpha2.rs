@@ -663,7 +663,7 @@ pub mod pipelines_v1_alpha2_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -719,6 +719,22 @@ pub mod pipelines_v1_alpha2_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a pipeline that can be run later. Create takes a Pipeline that
         /// has all fields other than `pipelineId` populated, and then returns
         /// the same pipeline with `pipelineId` populated. This id can be used
@@ -728,7 +744,7 @@ pub mod pipelines_v1_alpha2_client {
         pub async fn create_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePipelineRequest>,
-        ) -> Result<tonic::Response<super::Pipeline>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Pipeline>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -742,7 +758,15 @@ pub mod pipelines_v1_alpha2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1alpha2.PipelinesV1Alpha2/CreatePipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1alpha2.PipelinesV1Alpha2",
+                        "CreatePipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Runs a pipeline. If `pipelineId` is specified in the request, then
         /// run a saved pipeline. If `ephemeralPipeline` is specified, then run
@@ -754,7 +778,7 @@ pub mod pipelines_v1_alpha2_client {
         pub async fn run_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::RunPipelineRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -771,7 +795,15 @@ pub mod pipelines_v1_alpha2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1alpha2.PipelinesV1Alpha2/RunPipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1alpha2.PipelinesV1Alpha2",
+                        "RunPipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a pipeline based on ID.
         ///
@@ -779,7 +811,7 @@ pub mod pipelines_v1_alpha2_client {
         pub async fn get_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPipelineRequest>,
-        ) -> Result<tonic::Response<super::Pipeline>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Pipeline>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -793,7 +825,15 @@ pub mod pipelines_v1_alpha2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1alpha2.PipelinesV1Alpha2/GetPipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1alpha2.PipelinesV1Alpha2",
+                        "GetPipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists pipelines.
         ///
@@ -801,7 +841,10 @@ pub mod pipelines_v1_alpha2_client {
         pub async fn list_pipelines(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPipelinesRequest>,
-        ) -> Result<tonic::Response<super::ListPipelinesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListPipelinesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -815,7 +858,15 @@ pub mod pipelines_v1_alpha2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1alpha2.PipelinesV1Alpha2/ListPipelines",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1alpha2.PipelinesV1Alpha2",
+                        "ListPipelines",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a pipeline based on ID.
         ///
@@ -823,7 +874,7 @@ pub mod pipelines_v1_alpha2_client {
         pub async fn delete_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePipelineRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -837,14 +888,25 @@ pub mod pipelines_v1_alpha2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1alpha2.PipelinesV1Alpha2/DeletePipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1alpha2.PipelinesV1Alpha2",
+                        "DeletePipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets controller configuration information. Should only be called
         /// by VMs created by the Pipelines Service and not by end users.
         pub async fn get_controller_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetControllerConfigRequest>,
-        ) -> Result<tonic::Response<super::ControllerConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ControllerConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -858,7 +920,15 @@ pub mod pipelines_v1_alpha2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1alpha2.PipelinesV1Alpha2/GetControllerConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1alpha2.PipelinesV1Alpha2",
+                        "GetControllerConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets status of a given operation. Any new timestamps (as determined by
         /// description) are appended to TimestampEvents. Should only be called by VMs
@@ -866,7 +936,7 @@ pub mod pipelines_v1_alpha2_client {
         pub async fn set_operation_status(
             &mut self,
             request: impl tonic::IntoRequest<super::SetOperationStatusRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -880,7 +950,15 @@ pub mod pipelines_v1_alpha2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1alpha2.PipelinesV1Alpha2/SetOperationStatus",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1alpha2.PipelinesV1Alpha2",
+                        "SetOperationStatus",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

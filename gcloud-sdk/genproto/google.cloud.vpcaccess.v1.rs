@@ -202,7 +202,7 @@ pub mod vpc_access_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -258,11 +258,27 @@ pub mod vpc_access_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a Serverless VPC Access connector, returns an operation.
         pub async fn create_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConnectorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -279,14 +295,22 @@ pub mod vpc_access_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vpcaccess.v1.VpcAccessService/CreateConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vpcaccess.v1.VpcAccessService",
+                        "CreateConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a Serverless VPC Access connector. Returns NOT_FOUND if the resource
         /// does not exist.
         pub async fn get_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConnectorRequest>,
-        ) -> Result<tonic::Response<super::Connector>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Connector>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -300,13 +324,24 @@ pub mod vpc_access_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vpcaccess.v1.VpcAccessService/GetConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vpcaccess.v1.VpcAccessService",
+                        "GetConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Serverless VPC Access connectors.
         pub async fn list_connectors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConnectorsRequest>,
-        ) -> Result<tonic::Response<super::ListConnectorsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListConnectorsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -320,14 +355,22 @@ pub mod vpc_access_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vpcaccess.v1.VpcAccessService/ListConnectors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vpcaccess.v1.VpcAccessService",
+                        "ListConnectors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Serverless VPC Access connector. Returns NOT_FOUND if the
         /// resource does not exist.
         pub async fn delete_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteConnectorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -344,7 +387,15 @@ pub mod vpc_access_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vpcaccess.v1.VpcAccessService/DeleteConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vpcaccess.v1.VpcAccessService",
+                        "DeleteConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

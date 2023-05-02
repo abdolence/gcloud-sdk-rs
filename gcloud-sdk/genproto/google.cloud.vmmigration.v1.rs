@@ -3610,7 +3610,7 @@ pub mod vm_migration_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3666,11 +3666,30 @@ pub mod vm_migration_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists Sources in a given project and location.
         pub async fn list_sources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSourcesRequest>,
-        ) -> Result<tonic::Response<super::ListSourcesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSourcesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3684,13 +3703,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListSources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListSources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Source.
         pub async fn get_source(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSourceRequest>,
-        ) -> Result<tonic::Response<super::Source>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Source>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3704,13 +3731,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Source in a given project and location.
         pub async fn create_source(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSourceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3727,13 +3762,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Source.
         pub async fn update_source(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSourceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3750,13 +3793,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "UpdateSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Source.
         pub async fn delete_source(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSourceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3773,7 +3824,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteSource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteSource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List remote source's inventory of VMs.
         /// The remote source is the onprem vCenter (remote in the sense it's not in
@@ -3783,7 +3842,10 @@ pub mod vm_migration_client {
         pub async fn fetch_inventory(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchInventoryRequest>,
-        ) -> Result<tonic::Response<super::FetchInventoryResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FetchInventoryResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3797,13 +3859,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/FetchInventory",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "FetchInventory",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Utilization Reports of the given Source.
         pub async fn list_utilization_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::ListUtilizationReportsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListUtilizationReportsResponse>,
             tonic::Status,
         > {
@@ -3820,13 +3890,24 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListUtilizationReports",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListUtilizationReports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a single Utilization Report.
         pub async fn get_utilization_report(
             &mut self,
             request: impl tonic::IntoRequest<super::GetUtilizationReportRequest>,
-        ) -> Result<tonic::Response<super::UtilizationReport>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UtilizationReport>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3840,13 +3921,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetUtilizationReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetUtilizationReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new UtilizationReport.
         pub async fn create_utilization_report(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateUtilizationReportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3863,13 +3952,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateUtilizationReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateUtilizationReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Utilization Report.
         pub async fn delete_utilization_report(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteUtilizationReportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3886,13 +3983,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteUtilizationReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteUtilizationReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists DatacenterConnectors in a given Source.
         pub async fn list_datacenter_connectors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDatacenterConnectorsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListDatacenterConnectorsResponse>,
             tonic::Status,
         > {
@@ -3909,13 +4014,24 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListDatacenterConnectors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListDatacenterConnectors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single DatacenterConnector.
         pub async fn get_datacenter_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDatacenterConnectorRequest>,
-        ) -> Result<tonic::Response<super::DatacenterConnector>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DatacenterConnector>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3929,13 +4045,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetDatacenterConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetDatacenterConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new DatacenterConnector in a given Source.
         pub async fn create_datacenter_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDatacenterConnectorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3952,13 +4076,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateDatacenterConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateDatacenterConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single DatacenterConnector.
         pub async fn delete_datacenter_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDatacenterConnectorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3975,14 +4107,22 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteDatacenterConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Upgrades the appliance relate to this DatacenterConnector to the in-place
         /// updateable version.
         pub async fn upgrade_appliance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpgradeApplianceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3999,13 +4139,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/UpgradeAppliance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "UpgradeAppliance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new MigratingVm in a given Source.
         pub async fn create_migrating_vm(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMigratingVmRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4022,13 +4170,24 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateMigratingVm",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateMigratingVm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists MigratingVms in a given Source.
         pub async fn list_migrating_vms(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMigratingVmsRequest>,
-        ) -> Result<tonic::Response<super::ListMigratingVmsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListMigratingVmsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4042,13 +4201,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListMigratingVms",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListMigratingVms",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single MigratingVm.
         pub async fn get_migrating_vm(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMigratingVmRequest>,
-        ) -> Result<tonic::Response<super::MigratingVm>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MigratingVm>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4062,13 +4229,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetMigratingVm",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetMigratingVm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single MigratingVm.
         pub async fn update_migrating_vm(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMigratingVmRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4085,13 +4260,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateMigratingVm",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "UpdateMigratingVm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single MigratingVm.
         pub async fn delete_migrating_vm(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMigratingVmRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4108,14 +4291,22 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteMigratingVm",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteMigratingVm",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts migration for a VM. Starts the process of uploading
         /// data and creating snapshots, in replication cycles scheduled by the policy.
         pub async fn start_migration(
             &mut self,
             request: impl tonic::IntoRequest<super::StartMigrationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4132,7 +4323,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/StartMigration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "StartMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resumes a migration for a VM. When called on a paused migration, will start
         /// the process of uploading data and creating snapshots; when called on a
@@ -4141,7 +4340,7 @@ pub mod vm_migration_client {
         pub async fn resume_migration(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeMigrationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4158,7 +4357,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ResumeMigration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ResumeMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Pauses a migration for a VM. If cycle tasks are running they will be
         /// cancelled, preserving source task data. Further replication cycles will not
@@ -4166,7 +4373,7 @@ pub mod vm_migration_client {
         pub async fn pause_migration(
             &mut self,
             request: impl tonic::IntoRequest<super::PauseMigrationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4183,14 +4390,22 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/PauseMigration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "PauseMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Marks a migration as completed, deleting migration resources that are no
         /// longer being used. Only applicable after cutover is done.
         pub async fn finalize_migration(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeMigrationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4207,13 +4422,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/FinalizeMigration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "FinalizeMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Initiates a Clone of a specific migrating VM.
         pub async fn create_clone_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCloneJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4230,13 +4453,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateCloneJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateCloneJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Initiates the cancellation of a running clone job.
         pub async fn cancel_clone_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelCloneJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4253,13 +4484,24 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CancelCloneJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CancelCloneJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists CloneJobs of a given migrating VM.
         pub async fn list_clone_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCloneJobsRequest>,
-        ) -> Result<tonic::Response<super::ListCloneJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCloneJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4273,13 +4515,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListCloneJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListCloneJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single CloneJob.
         pub async fn get_clone_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCloneJobRequest>,
-        ) -> Result<tonic::Response<super::CloneJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CloneJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4293,7 +4543,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetCloneJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetCloneJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Initiates a Cutover of a specific migrating VM.
         /// The returned LRO is completed when the cutover job resource is created
@@ -4301,7 +4559,7 @@ pub mod vm_migration_client {
         pub async fn create_cutover_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCutoverJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4318,13 +4576,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateCutoverJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateCutoverJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Initiates the cancellation of a running cutover job.
         pub async fn cancel_cutover_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelCutoverJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4341,13 +4607,24 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CancelCutoverJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CancelCutoverJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists CutoverJobs of a given migrating VM.
         pub async fn list_cutover_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCutoverJobsRequest>,
-        ) -> Result<tonic::Response<super::ListCutoverJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCutoverJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4361,13 +4638,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListCutoverJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListCutoverJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single CutoverJob.
         pub async fn get_cutover_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCutoverJobRequest>,
-        ) -> Result<tonic::Response<super::CutoverJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CutoverJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4381,13 +4666,24 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetCutoverJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetCutoverJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Groups in a given project and location.
         pub async fn list_groups(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGroupsRequest>,
-        ) -> Result<tonic::Response<super::ListGroupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListGroupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4401,13 +4697,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListGroups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Group.
         pub async fn get_group(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGroupRequest>,
-        ) -> Result<tonic::Response<super::Group>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Group>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4421,13 +4725,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Group in a given project and location.
         pub async fn create_group(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateGroupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4444,13 +4756,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Group.
         pub async fn update_group(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateGroupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4467,13 +4787,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "UpdateGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Group.
         pub async fn delete_group(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGroupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4490,13 +4818,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteGroup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds a MigratingVm to a Group.
         pub async fn add_group_migration(
             &mut self,
             request: impl tonic::IntoRequest<super::AddGroupMigrationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4513,13 +4849,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/AddGroupMigration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "AddGroupMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes a MigratingVm from a Group.
         pub async fn remove_group_migration(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveGroupMigrationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4536,7 +4880,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/RemoveGroupMigration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "RemoveGroupMigration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists TargetProjects in a given project.
         ///
@@ -4545,7 +4897,10 @@ pub mod vm_migration_client {
         pub async fn list_target_projects(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetProjectsRequest>,
-        ) -> Result<tonic::Response<super::ListTargetProjectsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTargetProjectsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4559,7 +4914,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListTargetProjects",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListTargetProjects",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single TargetProject.
         ///
@@ -4568,7 +4931,7 @@ pub mod vm_migration_client {
         pub async fn get_target_project(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetProjectRequest>,
-        ) -> Result<tonic::Response<super::TargetProject>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TargetProject>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4582,7 +4945,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetTargetProject",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetTargetProject",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new TargetProject in a given project.
         ///
@@ -4591,7 +4962,7 @@ pub mod vm_migration_client {
         pub async fn create_target_project(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTargetProjectRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4608,7 +4979,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateTargetProject",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "CreateTargetProject",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single TargetProject.
         ///
@@ -4617,7 +4996,7 @@ pub mod vm_migration_client {
         pub async fn update_target_project(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTargetProjectRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4634,7 +5013,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateTargetProject",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "UpdateTargetProject",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single TargetProject.
         ///
@@ -4643,7 +5030,7 @@ pub mod vm_migration_client {
         pub async fn delete_target_project(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetProjectRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4660,13 +5047,21 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteTargetProject",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "DeleteTargetProject",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists ReplicationCycles in a given MigratingVM.
         pub async fn list_replication_cycles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReplicationCyclesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListReplicationCyclesResponse>,
             tonic::Status,
         > {
@@ -4683,13 +5078,24 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/ListReplicationCycles",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "ListReplicationCycles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single ReplicationCycle.
         pub async fn get_replication_cycle(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReplicationCycleRequest>,
-        ) -> Result<tonic::Response<super::ReplicationCycle>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ReplicationCycle>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4703,7 +5109,15 @@ pub mod vm_migration_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/GetReplicationCycle",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmmigration.v1.VmMigration",
+                        "GetReplicationCycle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

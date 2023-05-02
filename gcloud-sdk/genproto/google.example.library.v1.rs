@@ -201,7 +201,7 @@ pub mod library_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -257,11 +257,27 @@ pub mod library_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a shelf, and returns the new Shelf.
         pub async fn create_shelf(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateShelfRequest>,
-        ) -> Result<tonic::Response<super::Shelf>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Shelf>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -275,13 +291,21 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/CreateShelf",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "CreateShelf",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a shelf. Returns NOT_FOUND if the shelf does not exist.
         pub async fn get_shelf(
             &mut self,
             request: impl tonic::IntoRequest<super::GetShelfRequest>,
-        ) -> Result<tonic::Response<super::Shelf>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Shelf>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -295,14 +319,25 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/GetShelf",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "GetShelf",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists shelves. The order is unspecified but deterministic. Newly created
         /// shelves will not necessarily be added to the end of this list.
         pub async fn list_shelves(
             &mut self,
             request: impl tonic::IntoRequest<super::ListShelvesRequest>,
-        ) -> Result<tonic::Response<super::ListShelvesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListShelvesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -316,13 +351,21 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/ListShelves",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "ListShelves",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a shelf. Returns NOT_FOUND if the shelf does not exist.
         pub async fn delete_shelf(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteShelfRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -336,7 +379,15 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/DeleteShelf",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "DeleteShelf",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Merges two shelves by adding all books from the shelf named
         /// `other_shelf_name` to shelf `name`, and deletes
@@ -348,7 +399,7 @@ pub mod library_service_client {
         pub async fn merge_shelves(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeShelvesRequest>,
-        ) -> Result<tonic::Response<super::Shelf>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Shelf>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -362,13 +413,21 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/MergeShelves",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "MergeShelves",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a book, and returns the new Book.
         pub async fn create_book(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBookRequest>,
-        ) -> Result<tonic::Response<super::Book>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Book>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -382,13 +441,21 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/CreateBook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "CreateBook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a book. Returns NOT_FOUND if the book does not exist.
         pub async fn get_book(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBookRequest>,
-        ) -> Result<tonic::Response<super::Book>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Book>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -402,7 +469,15 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/GetBook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "GetBook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists books in a shelf. The order is unspecified but deterministic. Newly
         /// created books will not necessarily be added to the end of this list.
@@ -410,7 +485,10 @@ pub mod library_service_client {
         pub async fn list_books(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBooksRequest>,
-        ) -> Result<tonic::Response<super::ListBooksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBooksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -424,13 +502,21 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/ListBooks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "ListBooks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a book. Returns NOT_FOUND if the book does not exist.
         pub async fn delete_book(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBookRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -444,14 +530,22 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/DeleteBook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "DeleteBook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a book. Returns INVALID_ARGUMENT if the name of the book
         /// is non-empty and does not equal the existing name.
         pub async fn update_book(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBookRequest>,
-        ) -> Result<tonic::Response<super::Book>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Book>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -465,14 +559,22 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/UpdateBook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "UpdateBook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Moves a book to another shelf, and returns the new book. The book
         /// id of the new book may not be the same as the original book.
         pub async fn move_book(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveBookRequest>,
-        ) -> Result<tonic::Response<super::Book>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Book>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -486,7 +588,15 @@ pub mod library_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.example.library.v1.LibraryService/MoveBook",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.example.library.v1.LibraryService",
+                        "MoveBook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -498,7 +498,7 @@ pub mod app_connectors_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -554,11 +554,30 @@ pub mod app_connectors_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists AppConnectors in a given project and location.
         pub async fn list_app_connectors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAppConnectorsRequest>,
-        ) -> Result<tonic::Response<super::ListAppConnectorsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAppConnectorsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -572,13 +591,21 @@ pub mod app_connectors_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/ListAppConnectors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "ListAppConnectors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single AppConnector.
         pub async fn get_app_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAppConnectorRequest>,
-        ) -> Result<tonic::Response<super::AppConnector>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AppConnector>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -592,13 +619,21 @@ pub mod app_connectors_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/GetAppConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "GetAppConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new AppConnector in a given project and location.
         pub async fn create_app_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAppConnectorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -615,13 +650,21 @@ pub mod app_connectors_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/CreateAppConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "CreateAppConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single AppConnector.
         pub async fn update_app_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAppConnectorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -638,13 +681,21 @@ pub mod app_connectors_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/UpdateAppConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "UpdateAppConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single AppConnector.
         pub async fn delete_app_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAppConnectorRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -661,13 +712,21 @@ pub mod app_connectors_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/DeleteAppConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "DeleteAppConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Report status for a given connector.
         pub async fn report_status(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportStatusRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -684,7 +743,15 @@ pub mod app_connectors_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService/ReportStatus",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "ReportStatus",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

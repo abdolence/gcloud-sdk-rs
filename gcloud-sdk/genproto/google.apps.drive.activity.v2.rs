@@ -1826,7 +1826,7 @@ pub mod drive_activity_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1882,11 +1882,30 @@ pub mod drive_activity_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Query past activity in Google Drive.
         pub async fn query_drive_activity(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryDriveActivityRequest>,
-        ) -> Result<tonic::Response<super::QueryDriveActivityResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDriveActivityResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1900,7 +1919,15 @@ pub mod drive_activity_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.activity.v2.DriveActivityService/QueryDriveActivity",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.activity.v2.DriveActivityService",
+                        "QueryDriveActivity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

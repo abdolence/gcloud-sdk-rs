@@ -229,7 +229,7 @@ pub mod customer_license_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -287,12 +287,31 @@ pub mod customer_license_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Get the status of a license for a customer to determine if they have access
         /// for a given app.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::CustomerLicenseGetRequest>,
-        ) -> Result<tonic::Response<super::CustomerLicense>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CustomerLicense>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -306,7 +325,15 @@ pub mod customer_license_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/ccc.hosted.marketplace.v2.CustomerLicenseService/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "ccc.hosted.marketplace.v2.CustomerLicenseService",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -323,7 +350,7 @@ pub mod license_notification_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -381,11 +408,30 @@ pub mod license_notification_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Get a list of licensing notifications with regards to a given app.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::LicenseNotificationListRequest>,
-        ) -> Result<tonic::Response<super::LicenseNotificationList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::LicenseNotificationList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -399,7 +445,15 @@ pub mod license_notification_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/ccc.hosted.marketplace.v2.LicenseNotificationService/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "ccc.hosted.marketplace.v2.LicenseNotificationService",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -416,7 +470,7 @@ pub mod user_license_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -472,11 +526,27 @@ pub mod user_license_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Get the user's licensing status for their permission to use a given app.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::UserLicenseGetRequest>,
-        ) -> Result<tonic::Response<super::UserLicense>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UserLicense>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -490,7 +560,15 @@ pub mod user_license_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/ccc.hosted.marketplace.v2.UserLicenseService/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "ccc.hosted.marketplace.v2.UserLicenseService",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

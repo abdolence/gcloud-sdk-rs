@@ -761,7 +761,7 @@ pub mod security_center_settings_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -819,6 +819,22 @@ pub mod security_center_settings_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the organizations service account, if it exists, otherwise it
         /// creates the organization service account. This API is idempotent and
         /// will only create a service account once. On subsequent calls it will
@@ -832,7 +848,7 @@ pub mod security_center_settings_service_client {
         pub async fn get_service_account(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceAccountRequest>,
-        ) -> Result<tonic::Response<super::ServiceAccount>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ServiceAccount>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -846,13 +862,21 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetServiceAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "GetServiceAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the Settings.
         pub async fn get_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSettingsRequest>,
-        ) -> Result<tonic::Response<super::Settings>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Settings>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -866,13 +890,21 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "GetSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the Settings.
         pub async fn update_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSettingsRequest>,
-        ) -> Result<tonic::Response<super::Settings>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Settings>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -886,7 +918,15 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/UpdateSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "UpdateSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Reset the organization, folder or project's settings and return
         /// the settings of just that resource to the default.
@@ -901,7 +941,7 @@ pub mod security_center_settings_service_client {
         pub async fn reset_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::ResetSettingsRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -915,13 +955,24 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ResetSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "ResetSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of settings.
         pub async fn batch_get_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchGetSettingsRequest>,
-        ) -> Result<tonic::Response<super::BatchGetSettingsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BatchGetSettingsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -935,7 +986,15 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/BatchGetSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "BatchGetSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// CalculateEffectiveSettings looks up all of the Security Center
         /// Settings resources in the GCP resource hierarchy, and calculates the
@@ -951,7 +1010,7 @@ pub mod security_center_settings_service_client {
         pub async fn calculate_effective_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::CalculateEffectiveSettingsRequest>,
-        ) -> Result<tonic::Response<super::Settings>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Settings>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -965,7 +1024,15 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/CalculateEffectiveSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "CalculateEffectiveSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of effective settings.
         pub async fn batch_calculate_effective_settings(
@@ -973,7 +1040,7 @@ pub mod security_center_settings_service_client {
             request: impl tonic::IntoRequest<
                 super::BatchCalculateEffectiveSettingsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchCalculateEffectiveSettingsResponse>,
             tonic::Status,
         > {
@@ -990,13 +1057,24 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/BatchCalculateEffectiveSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "BatchCalculateEffectiveSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the Component Settings.
         pub async fn get_component_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetComponentSettingsRequest>,
-        ) -> Result<tonic::Response<super::ComponentSettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ComponentSettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1010,13 +1088,24 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetComponentSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "GetComponentSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the Component Settings.
         pub async fn update_component_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateComponentSettingsRequest>,
-        ) -> Result<tonic::Response<super::ComponentSettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ComponentSettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1030,7 +1119,15 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/UpdateComponentSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "UpdateComponentSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Reset the organization, folder or project's component settings and return
         /// the settings to the default. Settings are present at the
@@ -1040,7 +1137,7 @@ pub mod security_center_settings_service_client {
         pub async fn reset_component_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::ResetComponentSettingsRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1054,7 +1151,15 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ResetComponentSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "ResetComponentSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the Effective Component Settings.
         pub async fn calculate_effective_component_settings(
@@ -1062,7 +1167,10 @@ pub mod security_center_settings_service_client {
             request: impl tonic::IntoRequest<
                 super::CalculateEffectiveComponentSettingsRequest,
             >,
-        ) -> Result<tonic::Response<super::ComponentSettings>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ComponentSettings>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1076,13 +1184,24 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/CalculateEffectiveComponentSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "CalculateEffectiveComponentSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an unordered list of available detectors.
         pub async fn list_detectors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDetectorsRequest>,
-        ) -> Result<tonic::Response<super::ListDetectorsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDetectorsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1096,13 +1215,24 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ListDetectors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "ListDetectors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an unordered list of available SCC components.
         pub async fn list_components(
             &mut self,
             request: impl tonic::IntoRequest<super::ListComponentsRequest>,
-        ) -> Result<tonic::Response<super::ListComponentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListComponentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1116,7 +1246,15 @@ pub mod security_center_settings_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ListComponents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService",
+                        "ListComponents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

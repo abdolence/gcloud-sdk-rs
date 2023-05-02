@@ -225,7 +225,7 @@ pub mod account_management_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -283,11 +283,27 @@ pub mod account_management_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Finishes enrolling a second factor for the user.
         pub async fn finalize_mfa_enrollment(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeMfaEnrollmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::FinalizeMfaEnrollmentResponse>,
             tonic::Status,
         > {
@@ -304,14 +320,25 @@ pub mod account_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.identitytoolkit.v2.AccountManagementService/FinalizeMfaEnrollment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.identitytoolkit.v2.AccountManagementService",
+                        "FinalizeMfaEnrollment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Step one of the MFA enrollment process. In SMS case, this sends an
         /// SMS verification code to the user.
         pub async fn start_mfa_enrollment(
             &mut self,
             request: impl tonic::IntoRequest<super::StartMfaEnrollmentRequest>,
-        ) -> Result<tonic::Response<super::StartMfaEnrollmentResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::StartMfaEnrollmentResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -325,13 +352,24 @@ pub mod account_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.identitytoolkit.v2.AccountManagementService/StartMfaEnrollment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.identitytoolkit.v2.AccountManagementService",
+                        "StartMfaEnrollment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Revokes one second factor from the enrolled second factors for an account.
         pub async fn withdraw_mfa(
             &mut self,
             request: impl tonic::IntoRequest<super::WithdrawMfaRequest>,
-        ) -> Result<tonic::Response<super::WithdrawMfaResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::WithdrawMfaResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -345,7 +383,15 @@ pub mod account_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.identitytoolkit.v2.AccountManagementService/WithdrawMfa",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.identitytoolkit.v2.AccountManagementService",
+                        "WithdrawMfa",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -469,7 +515,7 @@ pub mod authentication_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -525,11 +571,30 @@ pub mod authentication_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Verifies the MFA challenge and performs sign-in
         pub async fn finalize_mfa_sign_in(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeMfaSignInRequest>,
-        ) -> Result<tonic::Response<super::FinalizeMfaSignInResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FinalizeMfaSignInResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -543,13 +608,24 @@ pub mod authentication_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.identitytoolkit.v2.AuthenticationService/FinalizeMfaSignIn",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.identitytoolkit.v2.AuthenticationService",
+                        "FinalizeMfaSignIn",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sends the MFA challenge
         pub async fn start_mfa_sign_in(
             &mut self,
             request: impl tonic::IntoRequest<super::StartMfaSignInRequest>,
-        ) -> Result<tonic::Response<super::StartMfaSignInResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::StartMfaSignInResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -563,7 +639,15 @@ pub mod authentication_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.identitytoolkit.v2.AuthenticationService/StartMfaSignIn",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.identitytoolkit.v2.AuthenticationService",
+                        "StartMfaSignIn",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

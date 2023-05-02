@@ -880,7 +880,7 @@ pub mod datastore_admin_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -936,6 +936,22 @@ pub mod datastore_admin_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Exports a copy of all or a subset of entities from Google Cloud Datastore
         /// to another storage system, such as Google Cloud Storage. Recent updates to
         /// entities may not be reflected in the export. The export occurs in the
@@ -947,7 +963,7 @@ pub mod datastore_admin_client {
         pub async fn export_entities(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportEntitiesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -964,7 +980,15 @@ pub mod datastore_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/ExportEntities",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.datastore.admin.v1.DatastoreAdmin",
+                        "ExportEntities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Imports entities into Google Cloud Datastore. Existing entities with the
         /// same key are overwritten. The import occurs in the background and its
@@ -974,7 +998,7 @@ pub mod datastore_admin_client {
         pub async fn import_entities(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportEntitiesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -991,7 +1015,15 @@ pub mod datastore_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/ImportEntities",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.datastore.admin.v1.DatastoreAdmin",
+                        "ImportEntities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates the specified index.
         /// A newly created index's initial state is `CREATING`. On completion of the
@@ -1010,7 +1042,7 @@ pub mod datastore_admin_client {
         pub async fn create_index(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateIndexRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1027,7 +1059,15 @@ pub mod datastore_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/CreateIndex",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.datastore.admin.v1.DatastoreAdmin",
+                        "CreateIndex",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing index.
         /// An index can only be deleted if it is in a `READY` or `ERROR` state. On
@@ -1042,7 +1082,7 @@ pub mod datastore_admin_client {
         pub async fn delete_index(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteIndexRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1059,13 +1099,21 @@ pub mod datastore_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/DeleteIndex",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.datastore.admin.v1.DatastoreAdmin",
+                        "DeleteIndex",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an index.
         pub async fn get_index(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIndexRequest>,
-        ) -> Result<tonic::Response<super::Index>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Index>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1079,7 +1127,15 @@ pub mod datastore_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/GetIndex",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.datastore.admin.v1.DatastoreAdmin",
+                        "GetIndex",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the indexes that match the specified filters.  Datastore uses an
         /// eventually consistent query to fetch the list of indexes and may
@@ -1087,7 +1143,10 @@ pub mod datastore_admin_client {
         pub async fn list_indexes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListIndexesRequest>,
-        ) -> Result<tonic::Response<super::ListIndexesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListIndexesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1101,7 +1160,15 @@ pub mod datastore_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/ListIndexes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.datastore.admin.v1.DatastoreAdmin",
+                        "ListIndexes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

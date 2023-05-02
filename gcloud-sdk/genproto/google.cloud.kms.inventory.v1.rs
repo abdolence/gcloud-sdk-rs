@@ -44,7 +44,7 @@ pub mod key_dashboard_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -100,13 +100,32 @@ pub mod key_dashboard_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns cryptographic keys managed by Cloud KMS in a given Cloud project.
         /// Note that this data is sourced from snapshots, meaning it may not
         /// completely reflect the actual state of key metadata at call time.
         pub async fn list_crypto_keys(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCryptoKeysRequest>,
-        ) -> Result<tonic::Response<super::ListCryptoKeysResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCryptoKeysResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -120,7 +139,15 @@ pub mod key_dashboard_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.kms.inventory.v1.KeyDashboardService/ListCryptoKeys",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.inventory.v1.KeyDashboardService",
+                        "ListCryptoKeys",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -273,7 +300,7 @@ pub mod key_tracking_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -329,6 +356,22 @@ pub mod key_tracking_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns aggregate information about the resources protected by the given
         /// Cloud KMS [CryptoKey][google.cloud.kms.v1.CryptoKey]. Only resources within
         /// the same Cloud organization as the key will be returned. The project that
@@ -337,7 +380,10 @@ pub mod key_tracking_service_client {
         pub async fn get_protected_resources_summary(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProtectedResourcesSummaryRequest>,
-        ) -> Result<tonic::Response<super::ProtectedResourcesSummary>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ProtectedResourcesSummary>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -351,14 +397,22 @@ pub mod key_tracking_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.kms.inventory.v1.KeyTrackingService/GetProtectedResourcesSummary",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.inventory.v1.KeyTrackingService",
+                        "GetProtectedResourcesSummary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns metadata about the resources protected by the given Cloud KMS
         /// [CryptoKey][google.cloud.kms.v1.CryptoKey] in the given Cloud organization.
         pub async fn search_protected_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchProtectedResourcesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SearchProtectedResourcesResponse>,
             tonic::Status,
         > {
@@ -375,7 +429,15 @@ pub mod key_tracking_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.kms.inventory.v1.KeyTrackingService/SearchProtectedResources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.inventory.v1.KeyTrackingService",
+                        "SearchProtectedResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

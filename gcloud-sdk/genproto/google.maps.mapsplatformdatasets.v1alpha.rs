@@ -336,7 +336,7 @@ pub mod maps_platform_datasets_v1_alpha_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -394,11 +394,27 @@ pub mod maps_platform_datasets_v1_alpha_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create a new dataset for the specified project.
         pub async fn create_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -412,13 +428,21 @@ pub mod maps_platform_datasets_v1_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha/CreateDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha",
+                        "CreateDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update the metadata for the dataset. To update the data use: UploadDataset.
         pub async fn update_dataset_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDatasetMetadataRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -432,13 +456,21 @@ pub mod maps_platform_datasets_v1_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha/UpdateDatasetMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha",
+                        "UpdateDatasetMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get the published or latest version of the dataset.
         pub async fn get_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -452,13 +484,24 @@ pub mod maps_platform_datasets_v1_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha/GetDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha",
+                        "GetDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all the versions of a dataset.
         pub async fn list_dataset_versions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDatasetVersionsRequest>,
-        ) -> Result<tonic::Response<super::ListDatasetVersionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDatasetVersionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -472,13 +515,24 @@ pub mod maps_platform_datasets_v1_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha/ListDatasetVersions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha",
+                        "ListDatasetVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all the datasets for the specified project.
         pub async fn list_datasets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDatasetsRequest>,
-        ) -> Result<tonic::Response<super::ListDatasetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDatasetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -492,14 +546,22 @@ pub mod maps_platform_datasets_v1_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha/ListDatasets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha",
+                        "ListDatasets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete the specified dataset and optionally all its corresponding
         /// versions.
         pub async fn delete_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDatasetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -513,13 +575,21 @@ pub mod maps_platform_datasets_v1_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha/DeleteDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha",
+                        "DeleteDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Delete a specific version of the dataset.
         pub async fn delete_dataset_version(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDatasetVersionRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -533,7 +603,15 @@ pub mod maps_platform_datasets_v1_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha/DeleteDatasetVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1alpha.MapsPlatformDatasetsV1Alpha",
+                        "DeleteDatasetVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

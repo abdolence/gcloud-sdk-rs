@@ -908,7 +908,7 @@ pub mod catalog_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -964,11 +964,27 @@ pub mod catalog_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a catalog item.
         pub async fn create_catalog_item(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCatalogItemRequest>,
-        ) -> Result<tonic::Response<super::CatalogItem>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CatalogItem>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -982,13 +998,21 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/CreateCatalogItem",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "CreateCatalogItem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a specific catalog item.
         pub async fn get_catalog_item(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCatalogItemRequest>,
-        ) -> Result<tonic::Response<super::CatalogItem>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CatalogItem>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1002,13 +1026,24 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/GetCatalogItem",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "GetCatalogItem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of catalog items.
         pub async fn list_catalog_items(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCatalogItemsRequest>,
-        ) -> Result<tonic::Response<super::ListCatalogItemsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCatalogItemsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1022,14 +1057,22 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/ListCatalogItems",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "ListCatalogItems",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a catalog item. Partial updating is supported. Non-existing
         /// items will be created.
         pub async fn update_catalog_item(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCatalogItemRequest>,
-        ) -> Result<tonic::Response<super::CatalogItem>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CatalogItem>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1043,13 +1086,21 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/UpdateCatalogItem",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "UpdateCatalogItem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a catalog item.
         pub async fn delete_catalog_item(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCatalogItemRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1063,7 +1114,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/DeleteCatalogItem",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "DeleteCatalogItem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Bulk import of multiple catalog items. Request processing may be
         /// synchronous. No partial updating supported. Non-existing items will be
@@ -1074,7 +1133,7 @@ pub mod catalog_service_client {
         pub async fn import_catalog_items(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportCatalogItemsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1091,7 +1150,15 @@ pub mod catalog_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/ImportCatalogItems",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "ImportCatalogItems",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1174,7 +1241,7 @@ pub mod prediction_api_key_registry_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1232,13 +1299,29 @@ pub mod prediction_api_key_registry_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Register an API key for use with predict method.
         pub async fn create_prediction_api_key_registration(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::CreatePredictionApiKeyRegistrationRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::PredictionApiKeyRegistration>,
             tonic::Status,
         > {
@@ -1255,7 +1338,15 @@ pub mod prediction_api_key_registry_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/CreatePredictionApiKeyRegistration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry",
+                        "CreatePredictionApiKeyRegistration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List the registered apiKeys for use with predict method.
         pub async fn list_prediction_api_key_registrations(
@@ -1263,7 +1354,7 @@ pub mod prediction_api_key_registry_client {
             request: impl tonic::IntoRequest<
                 super::ListPredictionApiKeyRegistrationsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPredictionApiKeyRegistrationsResponse>,
             tonic::Status,
         > {
@@ -1280,7 +1371,15 @@ pub mod prediction_api_key_registry_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/ListPredictionApiKeyRegistrations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry",
+                        "ListPredictionApiKeyRegistrations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Unregister an apiKey from using for predict method.
         pub async fn delete_prediction_api_key_registration(
@@ -1288,7 +1387,7 @@ pub mod prediction_api_key_registry_client {
             request: impl tonic::IntoRequest<
                 super::DeletePredictionApiKeyRegistrationRequest,
             >,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1302,7 +1401,15 @@ pub mod prediction_api_key_registry_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/DeletePredictionApiKeyRegistration",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry",
+                        "DeletePredictionApiKeyRegistration",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1484,7 +1591,7 @@ pub mod prediction_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1540,6 +1647,22 @@ pub mod prediction_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Makes a recommendation prediction. If using API Key based authentication,
         /// the API Key must be registered using the
         /// [PredictionApiKeyRegistry][google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry]
@@ -1547,7 +1670,10 @@ pub mod prediction_service_client {
         pub async fn predict(
             &mut self,
             request: impl tonic::IntoRequest<super::PredictRequest>,
-        ) -> Result<tonic::Response<super::PredictResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PredictResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1561,7 +1687,15 @@ pub mod prediction_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.PredictionService/Predict",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.PredictionService",
+                        "Predict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1737,7 +1871,7 @@ pub mod user_event_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1793,11 +1927,27 @@ pub mod user_event_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Writes a single user event.
         pub async fn write_user_event(
             &mut self,
             request: impl tonic::IntoRequest<super::WriteUserEventRequest>,
-        ) -> Result<tonic::Response<super::UserEvent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UserEvent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1811,7 +1961,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.UserEventService/WriteUserEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.UserEventService",
+                        "WriteUserEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Writes a single user event from the browser. This uses a GET request to
         /// due to browser restriction of POST-ing to a 3rd party domain.
@@ -1821,7 +1979,7 @@ pub mod user_event_service_client {
         pub async fn collect_user_event(
             &mut self,
             request: impl tonic::IntoRequest<super::CollectUserEventRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::api::HttpBody>,
             tonic::Status,
         > {
@@ -1838,13 +1996,24 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.UserEventService/CollectUserEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.UserEventService",
+                        "CollectUserEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of user events within a time range, with potential filtering.
         pub async fn list_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::ListUserEventsRequest>,
-        ) -> Result<tonic::Response<super::ListUserEventsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListUserEventsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1858,7 +2027,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.UserEventService/ListUserEvents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.UserEventService",
+                        "ListUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes permanently all user events specified by the filter provided.
         /// Depending on the number of events specified by the filter, this operation
@@ -1867,7 +2044,7 @@ pub mod user_event_service_client {
         pub async fn purge_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::PurgeUserEventsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1884,7 +2061,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.UserEventService/PurgeUserEvents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.UserEventService",
+                        "PurgeUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Bulk import of User events. Request processing might be
         /// synchronous. Events that already exist are skipped.
@@ -1896,7 +2081,7 @@ pub mod user_event_service_client {
         pub async fn import_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportUserEventsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1913,7 +2098,15 @@ pub mod user_event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommendationengine.v1beta1.UserEventService/ImportUserEvents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommendationengine.v1beta1.UserEventService",
+                        "ImportUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

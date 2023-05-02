@@ -996,7 +996,7 @@ pub mod migration_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1052,11 +1052,30 @@ pub mod migration_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a migration workflow.
         pub async fn create_migration_workflow(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMigrationWorkflowRequest>,
-        ) -> Result<tonic::Response<super::MigrationWorkflow>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MigrationWorkflow>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1070,13 +1089,24 @@ pub mod migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/CreateMigrationWorkflow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.MigrationService",
+                        "CreateMigrationWorkflow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a previously created migration workflow.
         pub async fn get_migration_workflow(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMigrationWorkflowRequest>,
-        ) -> Result<tonic::Response<super::MigrationWorkflow>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MigrationWorkflow>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1090,13 +1120,21 @@ pub mod migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/GetMigrationWorkflow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.MigrationService",
+                        "GetMigrationWorkflow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists previously created migration workflow.
         pub async fn list_migration_workflows(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMigrationWorkflowsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListMigrationWorkflowsResponse>,
             tonic::Status,
         > {
@@ -1113,13 +1151,21 @@ pub mod migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/ListMigrationWorkflows",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.MigrationService",
+                        "ListMigrationWorkflows",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a migration workflow by name.
         pub async fn delete_migration_workflow(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMigrationWorkflowRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1133,7 +1179,15 @@ pub mod migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/DeleteMigrationWorkflow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.MigrationService",
+                        "DeleteMigrationWorkflow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts a previously created migration workflow. I.e., the state transitions
         /// from DRAFT to RUNNING. This is a no-op if the state is already RUNNING.
@@ -1142,7 +1196,7 @@ pub mod migration_service_client {
         pub async fn start_migration_workflow(
             &mut self,
             request: impl tonic::IntoRequest<super::StartMigrationWorkflowRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1156,13 +1210,24 @@ pub mod migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/StartMigrationWorkflow",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.MigrationService",
+                        "StartMigrationWorkflow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a previously created migration subtask.
         pub async fn get_migration_subtask(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMigrationSubtaskRequest>,
-        ) -> Result<tonic::Response<super::MigrationSubtask>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MigrationSubtask>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1176,13 +1241,21 @@ pub mod migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/GetMigrationSubtask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.MigrationService",
+                        "GetMigrationSubtask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists previously created migration subtasks.
         pub async fn list_migration_subtasks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMigrationSubtasksRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListMigrationSubtasksResponse>,
             tonic::Status,
         > {
@@ -1199,7 +1272,15 @@ pub mod migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/ListMigrationSubtasks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.MigrationService",
+                        "ListMigrationSubtasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1386,7 +1467,7 @@ pub mod sql_translation_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1442,11 +1523,30 @@ pub mod sql_translation_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Translates input queries from source dialects to GoogleSQL.
         pub async fn translate_query(
             &mut self,
             request: impl tonic::IntoRequest<super::TranslateQueryRequest>,
-        ) -> Result<tonic::Response<super::TranslateQueryResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TranslateQueryResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1460,7 +1560,15 @@ pub mod sql_translation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.SqlTranslationService/TranslateQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.migration.v2alpha.SqlTranslationService",
+                        "TranslateQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

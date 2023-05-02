@@ -477,7 +477,7 @@ pub mod budget_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -533,13 +533,29 @@ pub mod budget_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new budget. See
         /// [Quotas and limits](https://cloud.google.com/billing/quotas)
         /// for more information on the limits of the number of budgets you can create.
         pub async fn create_budget(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBudgetRequest>,
-        ) -> Result<tonic::Response<super::Budget>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Budget>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -553,7 +569,15 @@ pub mod budget_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1.BudgetService/CreateBudget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.budgets.v1.BudgetService",
+                        "CreateBudget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a budget and returns the updated budget.
         ///
@@ -563,7 +587,7 @@ pub mod budget_service_client {
         pub async fn update_budget(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBudgetRequest>,
-        ) -> Result<tonic::Response<super::Budget>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Budget>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -577,7 +601,15 @@ pub mod budget_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1.BudgetService/UpdateBudget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.budgets.v1.BudgetService",
+                        "UpdateBudget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a budget.
         ///
@@ -588,7 +620,7 @@ pub mod budget_service_client {
         pub async fn get_budget(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBudgetRequest>,
-        ) -> Result<tonic::Response<super::Budget>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Budget>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -602,7 +634,15 @@ pub mod budget_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1.BudgetService/GetBudget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.budgets.v1.BudgetService",
+                        "GetBudget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a list of budgets for a billing account.
         ///
@@ -613,7 +653,10 @@ pub mod budget_service_client {
         pub async fn list_budgets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBudgetsRequest>,
-        ) -> Result<tonic::Response<super::ListBudgetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBudgetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -627,13 +670,21 @@ pub mod budget_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1.BudgetService/ListBudgets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.budgets.v1.BudgetService",
+                        "ListBudgets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a budget. Returns successfully if already deleted.
         pub async fn delete_budget(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBudgetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -647,7 +698,15 @@ pub mod budget_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1.BudgetService/DeleteBudget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.budgets.v1.BudgetService",
+                        "DeleteBudget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

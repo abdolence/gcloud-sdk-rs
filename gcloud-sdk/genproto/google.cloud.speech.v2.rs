@@ -1994,7 +1994,7 @@ pub mod speech_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2050,11 +2050,27 @@ pub mod speech_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a [Recognizer][google.cloud.speech.v2.Recognizer].
         pub async fn create_recognizer(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRecognizerRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2071,13 +2087,21 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/CreateRecognizer",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "CreateRecognizer"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Recognizers.
         pub async fn list_recognizers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRecognizersRequest>,
-        ) -> Result<tonic::Response<super::ListRecognizersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRecognizersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2091,7 +2115,12 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/ListRecognizers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "ListRecognizers"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the requested
         /// [Recognizer][google.cloud.speech.v2.Recognizer]. Fails with
@@ -2100,7 +2129,7 @@ pub mod speech_client {
         pub async fn get_recognizer(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRecognizerRequest>,
-        ) -> Result<tonic::Response<super::Recognizer>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Recognizer>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2114,13 +2143,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/GetRecognizer",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "GetRecognizer"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the [Recognizer][google.cloud.speech.v2.Recognizer].
         pub async fn update_recognizer(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRecognizerRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2137,13 +2171,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/UpdateRecognizer",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "UpdateRecognizer"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the [Recognizer][google.cloud.speech.v2.Recognizer].
         pub async fn delete_recognizer(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRecognizerRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2160,13 +2199,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/DeleteRecognizer",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "DeleteRecognizer"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Undeletes the [Recognizer][google.cloud.speech.v2.Recognizer].
         pub async fn undelete_recognizer(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeleteRecognizerRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2183,14 +2227,25 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/UndeleteRecognizer",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.speech.v2.Speech",
+                        "UndeleteRecognizer",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Performs synchronous Speech recognition: receive results after all audio
         /// has been sent and processed.
         pub async fn recognize(
             &mut self,
             request: impl tonic::IntoRequest<super::RecognizeRequest>,
-        ) -> Result<tonic::Response<super::RecognizeResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RecognizeResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2204,7 +2259,10 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/Recognize",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.speech.v2.Speech", "Recognize"));
+            self.inner.unary(req, path, codec).await
         }
         /// Performs bidirectional streaming speech recognition: receive results while
         /// sending audio. This method is only available via the gRPC API (not REST).
@@ -2213,7 +2271,7 @@ pub mod speech_client {
             request: impl tonic::IntoStreamingRequest<
                 Message = super::StreamingRecognizeRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::StreamingRecognizeResponse>>,
             tonic::Status,
         > {
@@ -2230,7 +2288,15 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/StreamingRecognize",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.speech.v2.Speech",
+                        "StreamingRecognize",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
         /// Performs batch asynchronous speech recognition: send a request with N
         /// audio files and receive a long running operation that can be polled to see
@@ -2238,7 +2304,7 @@ pub mod speech_client {
         pub async fn batch_recognize(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchRecognizeRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2255,13 +2321,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/BatchRecognize",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "BatchRecognize"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the requested [Config][google.cloud.speech.v2.Config].
         pub async fn get_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConfigRequest>,
-        ) -> Result<tonic::Response<super::Config>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Config>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2275,13 +2346,16 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/GetConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.speech.v2.Speech", "GetConfig"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the [Config][google.cloud.speech.v2.Config].
         pub async fn update_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConfigRequest>,
-        ) -> Result<tonic::Response<super::Config>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Config>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2295,13 +2369,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/UpdateConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "UpdateConfig"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a [CustomClass][google.cloud.speech.v2.CustomClass].
         pub async fn create_custom_class(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCustomClassRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2318,13 +2397,21 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/CreateCustomClass",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "CreateCustomClass"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists CustomClasses.
         pub async fn list_custom_classes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCustomClassesRequest>,
-        ) -> Result<tonic::Response<super::ListCustomClassesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCustomClassesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2338,14 +2425,19 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/ListCustomClasses",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "ListCustomClasses"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the requested
         /// [CustomClass][google.cloud.speech.v2.CustomClass].
         pub async fn get_custom_class(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCustomClassRequest>,
-        ) -> Result<tonic::Response<super::CustomClass>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CustomClass>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2359,13 +2451,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/GetCustomClass",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "GetCustomClass"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the [CustomClass][google.cloud.speech.v2.CustomClass].
         pub async fn update_custom_class(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCustomClassRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2382,13 +2479,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/UpdateCustomClass",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "UpdateCustomClass"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the [CustomClass][google.cloud.speech.v2.CustomClass].
         pub async fn delete_custom_class(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCustomClassRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2405,13 +2507,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/DeleteCustomClass",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "DeleteCustomClass"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Undeletes the [CustomClass][google.cloud.speech.v2.CustomClass].
         pub async fn undelete_custom_class(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeleteCustomClassRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2428,13 +2535,21 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/UndeleteCustomClass",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.speech.v2.Speech",
+                        "UndeleteCustomClass",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a [PhraseSet][google.cloud.speech.v2.PhraseSet].
         pub async fn create_phrase_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePhraseSetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2451,13 +2566,21 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/CreatePhraseSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "CreatePhraseSet"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists PhraseSets.
         pub async fn list_phrase_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPhraseSetsRequest>,
-        ) -> Result<tonic::Response<super::ListPhraseSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListPhraseSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2471,14 +2594,19 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/ListPhraseSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "ListPhraseSets"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the requested
         /// [PhraseSet][google.cloud.speech.v2.PhraseSet].
         pub async fn get_phrase_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPhraseSetRequest>,
-        ) -> Result<tonic::Response<super::PhraseSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::PhraseSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2492,13 +2620,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/GetPhraseSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "GetPhraseSet"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the [PhraseSet][google.cloud.speech.v2.PhraseSet].
         pub async fn update_phrase_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdatePhraseSetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2515,13 +2648,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/UpdatePhraseSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "UpdatePhraseSet"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the [PhraseSet][google.cloud.speech.v2.PhraseSet].
         pub async fn delete_phrase_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePhraseSetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2538,13 +2676,18 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/DeletePhraseSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "DeletePhraseSet"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Undeletes the [PhraseSet][google.cloud.speech.v2.PhraseSet].
         pub async fn undelete_phrase_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeletePhraseSetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2561,7 +2704,12 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v2.Speech/UndeletePhraseSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.speech.v2.Speech", "UndeletePhraseSet"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

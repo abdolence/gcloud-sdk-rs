@@ -2736,7 +2736,7 @@ pub mod data_labeling_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2792,11 +2792,27 @@ pub mod data_labeling_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates dataset. If success return a Dataset resource.
         pub async fn create_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2810,13 +2826,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "CreateDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets dataset by resource name.
         pub async fn get_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2830,13 +2854,24 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists datasets under a project. Pagination is supported.
         pub async fn list_datasets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDatasetsRequest>,
-        ) -> Result<tonic::Response<super::ListDatasetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDatasetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2850,13 +2885,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListDatasets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ListDatasets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a dataset by resource name.
         pub async fn delete_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDatasetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2870,7 +2913,15 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "DeleteDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Imports data into dataset based on source locations defined in request.
         /// It can be called multiple times for the same dataset. Each dataset can
@@ -2880,7 +2931,7 @@ pub mod data_labeling_service_client {
         pub async fn import_data(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportDataRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2897,13 +2948,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ImportData",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ImportData",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports data and annotations from dataset.
         pub async fn export_data(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportDataRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2920,14 +2979,22 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ExportData",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ExportData",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a data item in a dataset by resource name. This API can be
         /// called after data are imported into dataset.
         pub async fn get_data_item(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataItemRequest>,
-        ) -> Result<tonic::Response<super::DataItem>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DataItem>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2941,14 +3008,25 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetDataItem",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetDataItem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists data items in a dataset. This API can be called after data
         /// are imported into dataset. Pagination is supported.
         pub async fn list_data_items(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataItemsRequest>,
-        ) -> Result<tonic::Response<super::ListDataItemsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataItemsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2962,13 +3040,24 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListDataItems",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ListDataItems",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an annotated dataset by resource name.
         pub async fn get_annotated_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAnnotatedDatasetRequest>,
-        ) -> Result<tonic::Response<super::AnnotatedDataset>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnnotatedDataset>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2982,13 +3071,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetAnnotatedDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetAnnotatedDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists annotated datasets for a dataset. Pagination is supported.
         pub async fn list_annotated_datasets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAnnotatedDatasetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListAnnotatedDatasetsResponse>,
             tonic::Status,
         > {
@@ -3005,13 +3102,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListAnnotatedDatasets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ListAnnotatedDatasets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an annotated dataset by resource name.
         pub async fn delete_annotated_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAnnotatedDatasetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3025,14 +3130,22 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotatedDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "DeleteAnnotatedDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts a labeling task for image. The type of image labeling task is
         /// configured by feature in the request.
         pub async fn label_image(
             &mut self,
             request: impl tonic::IntoRequest<super::LabelImageRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3049,14 +3162,22 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelImage",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "LabelImage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts a labeling task for video. The type of video labeling task is
         /// configured by feature in the request.
         pub async fn label_video(
             &mut self,
             request: impl tonic::IntoRequest<super::LabelVideoRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3073,14 +3194,22 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelVideo",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "LabelVideo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts a labeling task for text. The type of text labeling task is
         /// configured by feature in the request.
         pub async fn label_text(
             &mut self,
             request: impl tonic::IntoRequest<super::LabelTextRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3097,13 +3226,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelText",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "LabelText",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an example by resource name, including both data and annotation.
         pub async fn get_example(
             &mut self,
             request: impl tonic::IntoRequest<super::GetExampleRequest>,
-        ) -> Result<tonic::Response<super::Example>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Example>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3117,13 +3254,24 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetExample",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetExample",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists examples in an annotated dataset. Pagination is supported.
         pub async fn list_examples(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExamplesRequest>,
-        ) -> Result<tonic::Response<super::ListExamplesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListExamplesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3137,13 +3285,24 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListExamples",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ListExamples",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an annotation spec set by providing a set of labels.
         pub async fn create_annotation_spec_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAnnotationSpecSetRequest>,
-        ) -> Result<tonic::Response<super::AnnotationSpecSet>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnnotationSpecSet>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3157,13 +3316,24 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateAnnotationSpecSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "CreateAnnotationSpecSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an annotation spec set by resource name.
         pub async fn get_annotation_spec_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAnnotationSpecSetRequest>,
-        ) -> Result<tonic::Response<super::AnnotationSpecSet>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AnnotationSpecSet>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3177,13 +3347,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetAnnotationSpecSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetAnnotationSpecSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists annotation spec sets for a project. Pagination is supported.
         pub async fn list_annotation_spec_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAnnotationSpecSetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListAnnotationSpecSetsResponse>,
             tonic::Status,
         > {
@@ -3200,13 +3378,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListAnnotationSpecSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ListAnnotationSpecSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an annotation spec set by resource name.
         pub async fn delete_annotation_spec_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAnnotationSpecSetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3220,13 +3406,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotationSpecSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "DeleteAnnotationSpecSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an instruction for how data should be labeled.
         pub async fn create_instruction(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInstructionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3243,13 +3437,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateInstruction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "CreateInstruction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an instruction by resource name.
         pub async fn get_instruction(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstructionRequest>,
-        ) -> Result<tonic::Response<super::Instruction>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Instruction>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3263,13 +3465,24 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetInstruction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetInstruction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists instructions for a project. Pagination is supported.
         pub async fn list_instructions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstructionsRequest>,
-        ) -> Result<tonic::Response<super::ListInstructionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstructionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3283,13 +3496,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListInstructions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ListInstructions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an instruction object by resource name.
         pub async fn delete_instruction(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstructionRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3303,14 +3524,22 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteInstruction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "DeleteInstruction",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an evaluation by resource name (to search, use
         /// [projects.evaluations.search][google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations]).
         pub async fn get_evaluation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEvaluationRequest>,
-        ) -> Result<tonic::Response<super::Evaluation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Evaluation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3324,13 +3553,24 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetEvaluation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetEvaluation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches [evaluations][google.cloud.datalabeling.v1beta1.Evaluation] within a project.
         pub async fn search_evaluations(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchEvaluationsRequest>,
-        ) -> Result<tonic::Response<super::SearchEvaluationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchEvaluationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3344,7 +3584,15 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchEvaluations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "SearchEvaluations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches example comparisons from an evaluation. The return format is a
         /// list of example comparisons that show ground truth and prediction(s) for
@@ -3352,7 +3600,7 @@ pub mod data_labeling_service_client {
         pub async fn search_example_comparisons(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchExampleComparisonsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SearchExampleComparisonsResponse>,
             tonic::Status,
         > {
@@ -3369,13 +3617,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchExampleComparisons",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "SearchExampleComparisons",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an evaluation job.
         pub async fn create_evaluation_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEvaluationJobRequest>,
-        ) -> Result<tonic::Response<super::EvaluationJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EvaluationJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3389,7 +3645,15 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateEvaluationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "CreateEvaluationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an evaluation job. You can only update certain fields of the job's
         /// [EvaluationJobConfig][google.cloud.datalabeling.v1beta1.EvaluationJobConfig]: `humanAnnotationConfig.instruction`,
@@ -3400,7 +3664,7 @@ pub mod data_labeling_service_client {
         pub async fn update_evaluation_job(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEvaluationJobRequest>,
-        ) -> Result<tonic::Response<super::EvaluationJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EvaluationJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3414,13 +3678,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/UpdateEvaluationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "UpdateEvaluationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an evaluation job by resource name.
         pub async fn get_evaluation_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEvaluationJobRequest>,
-        ) -> Result<tonic::Response<super::EvaluationJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EvaluationJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3434,14 +3706,22 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetEvaluationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "GetEvaluationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Pauses an evaluation job. Pausing an evaluation job that is already in a
         /// `PAUSED` state is a no-op.
         pub async fn pause_evaluation_job(
             &mut self,
             request: impl tonic::IntoRequest<super::PauseEvaluationJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3455,14 +3735,22 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/PauseEvaluationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "PauseEvaluationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resumes a paused evaluation job. A deleted evaluation job can't be resumed.
         /// Resuming a running or scheduled evaluation job is a no-op.
         pub async fn resume_evaluation_job(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeEvaluationJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3476,13 +3764,21 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ResumeEvaluationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ResumeEvaluationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Stops and deletes an evaluation job.
         pub async fn delete_evaluation_job(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEvaluationJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3496,14 +3792,25 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteEvaluationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "DeleteEvaluationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all evaluation jobs within a project with possible filters.
         /// Pagination is supported.
         pub async fn list_evaluation_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEvaluationJobsRequest>,
-        ) -> Result<tonic::Response<super::ListEvaluationJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListEvaluationJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3517,7 +3824,15 @@ pub mod data_labeling_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListEvaluationJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datalabeling.v1beta1.DataLabelingService",
+                        "ListEvaluationJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

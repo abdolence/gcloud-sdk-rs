@@ -406,7 +406,7 @@ pub mod web_risk_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -462,6 +462,22 @@ pub mod web_risk_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets the most recent threat list diffs. These diffs should be applied to
         /// a local database of hashes to keep it up-to-date. If the local database is
         /// empty or excessively out-of-date, a complete snapshot of the database will
@@ -471,7 +487,7 @@ pub mod web_risk_service_client {
         pub async fn compute_threat_list_diff(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeThreatListDiffRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ComputeThreatListDiffResponse>,
             tonic::Status,
         > {
@@ -488,7 +504,15 @@ pub mod web_risk_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.webrisk.v1.WebRiskService/ComputeThreatListDiff",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.webrisk.v1.WebRiskService",
+                        "ComputeThreatListDiff",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// This method is used to check whether a URI is on a given threatList.
         /// Multiple threatLists may be searched in a single query.
@@ -498,7 +522,10 @@ pub mod web_risk_service_client {
         pub async fn search_uris(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchUrisRequest>,
-        ) -> Result<tonic::Response<super::SearchUrisResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchUrisResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -512,7 +539,15 @@ pub mod web_risk_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.webrisk.v1.WebRiskService/SearchUris",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.webrisk.v1.WebRiskService",
+                        "SearchUris",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the full hashes that match the requested hash prefix.
         /// This is used after a hash prefix is looked up in a threatList
@@ -522,7 +557,10 @@ pub mod web_risk_service_client {
         pub async fn search_hashes(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchHashesRequest>,
-        ) -> Result<tonic::Response<super::SearchHashesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchHashesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -536,7 +574,15 @@ pub mod web_risk_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.webrisk.v1.WebRiskService/SearchHashes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.webrisk.v1.WebRiskService",
+                        "SearchHashes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Submission of a URI suspected of containing phishing content to
         /// be reviewed. If the result verifies the existence of malicious phishing
@@ -548,7 +594,7 @@ pub mod web_risk_service_client {
         pub async fn create_submission(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSubmissionRequest>,
-        ) -> Result<tonic::Response<super::Submission>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Submission>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -562,7 +608,15 @@ pub mod web_risk_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.webrisk.v1.WebRiskService/CreateSubmission",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.webrisk.v1.WebRiskService",
+                        "CreateSubmission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

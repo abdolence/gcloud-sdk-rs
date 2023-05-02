@@ -566,7 +566,7 @@ pub mod analytics_hub_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -622,11 +622,30 @@ pub mod analytics_hub_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all data exchanges in a given project and location.
         pub async fn list_data_exchanges(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataExchangesRequest>,
-        ) -> Result<tonic::Response<super::ListDataExchangesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataExchangesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -640,14 +659,22 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/ListDataExchanges",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "ListDataExchanges",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all data exchanges from projects in a given organization and
         /// location.
         pub async fn list_org_data_exchanges(
             &mut self,
             request: impl tonic::IntoRequest<super::ListOrgDataExchangesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListOrgDataExchangesResponse>,
             tonic::Status,
         > {
@@ -664,13 +691,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/ListOrgDataExchanges",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "ListOrgDataExchanges",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a data exchange.
         pub async fn get_data_exchange(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataExchangeRequest>,
-        ) -> Result<tonic::Response<super::DataExchange>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DataExchange>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -684,13 +719,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/GetDataExchange",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "GetDataExchange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new data exchange.
         pub async fn create_data_exchange(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDataExchangeRequest>,
-        ) -> Result<tonic::Response<super::DataExchange>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DataExchange>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -704,13 +747,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/CreateDataExchange",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "CreateDataExchange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing data exchange.
         pub async fn update_data_exchange(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDataExchangeRequest>,
-        ) -> Result<tonic::Response<super::DataExchange>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DataExchange>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -724,13 +775,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/UpdateDataExchange",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "UpdateDataExchange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an existing data exchange.
         pub async fn delete_data_exchange(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDataExchangeRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -744,13 +803,24 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/DeleteDataExchange",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "DeleteDataExchange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all listings in a given project and location.
         pub async fn list_listings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListListingsRequest>,
-        ) -> Result<tonic::Response<super::ListListingsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListListingsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -764,13 +834,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/ListListings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "ListListings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a listing.
         pub async fn get_listing(
             &mut self,
             request: impl tonic::IntoRequest<super::GetListingRequest>,
-        ) -> Result<tonic::Response<super::Listing>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Listing>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -784,13 +862,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/GetListing",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "GetListing",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new listing.
         pub async fn create_listing(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateListingRequest>,
-        ) -> Result<tonic::Response<super::Listing>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Listing>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -804,13 +890,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/CreateListing",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "CreateListing",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing listing.
         pub async fn update_listing(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateListingRequest>,
-        ) -> Result<tonic::Response<super::Listing>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Listing>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -824,13 +918,21 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/UpdateListing",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "UpdateListing",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a listing.
         pub async fn delete_listing(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteListingRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -844,7 +946,15 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/DeleteListing",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "DeleteListing",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Subscribes to a listing.
         ///
@@ -855,7 +965,10 @@ pub mod analytics_hub_service_client {
         pub async fn subscribe_listing(
             &mut self,
             request: impl tonic::IntoRequest<super::SubscribeListingRequest>,
-        ) -> Result<tonic::Response<super::SubscribeListingResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SubscribeListingResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -869,7 +982,15 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/SubscribeListing",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "SubscribeListing",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the IAM policy.
         pub async fn get_iam_policy(
@@ -877,7 +998,7 @@ pub mod analytics_hub_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -894,7 +1015,15 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the IAM policy.
         pub async fn set_iam_policy(
@@ -902,7 +1031,7 @@ pub mod analytics_hub_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -919,7 +1048,15 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the permissions that a caller has.
         pub async fn test_iam_permissions(
@@ -927,7 +1064,7 @@ pub mod analytics_hub_service_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -946,7 +1083,15 @@ pub mod analytics_hub_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

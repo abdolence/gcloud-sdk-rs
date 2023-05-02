@@ -198,7 +198,7 @@ pub mod cloud_billing_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -254,13 +254,29 @@ pub mod cloud_billing_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets information about a billing account. The current authenticated user
         /// must be a [viewer of the billing
         /// account](https://cloud.google.com/billing/docs/how-to/billing-access).
         pub async fn get_billing_account(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBillingAccountRequest>,
-        ) -> Result<tonic::Response<super::BillingAccount>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BillingAccount>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -274,7 +290,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/GetBillingAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "GetBillingAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the billing accounts that the current authenticated user has
         /// permission to
@@ -282,7 +306,10 @@ pub mod cloud_billing_client {
         pub async fn list_billing_accounts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBillingAccountsRequest>,
-        ) -> Result<tonic::Response<super::ListBillingAccountsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBillingAccountsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -296,7 +323,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/ListBillingAccounts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "ListBillingAccounts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a billing account's fields.
         /// Currently the only field that can be edited is `display_name`.
@@ -307,7 +342,7 @@ pub mod cloud_billing_client {
         pub async fn update_billing_account(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBillingAccountRequest>,
-        ) -> Result<tonic::Response<super::BillingAccount>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BillingAccount>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -321,7 +356,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/UpdateBillingAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "UpdateBillingAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// This method creates [billing
         /// subaccounts](https://cloud.google.com/billing/docs/concepts#subaccounts).
@@ -341,7 +384,7 @@ pub mod cloud_billing_client {
         pub async fn create_billing_account(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBillingAccountRequest>,
-        ) -> Result<tonic::Response<super::BillingAccount>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BillingAccount>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -355,7 +398,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/CreateBillingAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "CreateBillingAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the projects associated with a billing account. The current
         /// authenticated user must have the `billing.resourceAssociations.list` IAM
@@ -364,7 +415,7 @@ pub mod cloud_billing_client {
         pub async fn list_project_billing_info(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProjectBillingInfoRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListProjectBillingInfoResponse>,
             tonic::Status,
         > {
@@ -381,7 +432,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/ListProjectBillingInfo",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "ListProjectBillingInfo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the billing information for a project. The current authenticated user
         /// must have the `resourcemanager.projects.get` permission for the project,
@@ -391,7 +450,10 @@ pub mod cloud_billing_client {
         pub async fn get_project_billing_info(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProjectBillingInfoRequest>,
-        ) -> Result<tonic::Response<super::ProjectBillingInfo>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ProjectBillingInfo>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -405,7 +467,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/GetProjectBillingInfo",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "GetProjectBillingInfo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets or updates the billing account associated with a project. You specify
         /// the new billing account by setting the `billing_account_name` in the
@@ -441,7 +511,10 @@ pub mod cloud_billing_client {
         pub async fn update_project_billing_info(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateProjectBillingInfoRequest>,
-        ) -> Result<tonic::Response<super::ProjectBillingInfo>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ProjectBillingInfo>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -455,7 +528,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/UpdateProjectBillingInfo",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "UpdateProjectBillingInfo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a billing account.
         /// The caller must have the `billing.accounts.getIamPolicy` permission on the
@@ -466,7 +547,7 @@ pub mod cloud_billing_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -483,7 +564,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy for a billing account. Replaces any existing
         /// policy.
@@ -495,7 +584,7 @@ pub mod cloud_billing_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -512,7 +601,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Tests the access control policy for a billing account. This method takes
         /// the resource and a set of permissions as input and returns the subset of
@@ -522,7 +619,7 @@ pub mod cloud_billing_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -541,7 +638,15 @@ pub mod cloud_billing_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudBilling/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -980,7 +1085,7 @@ pub mod cloud_catalog_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1036,11 +1141,30 @@ pub mod cloud_catalog_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all public cloud services.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
-        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1054,13 +1178,24 @@ pub mod cloud_catalog_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudCatalog/ListServices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudCatalog",
+                        "ListServices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all publicly available SKUs for a given cloud service.
         pub async fn list_skus(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSkusRequest>,
-        ) -> Result<tonic::Response<super::ListSkusResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSkusResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1074,7 +1209,12 @@ pub mod cloud_catalog_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.v1.CloudCatalog/ListSkus",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.billing.v1.CloudCatalog", "ListSkus"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

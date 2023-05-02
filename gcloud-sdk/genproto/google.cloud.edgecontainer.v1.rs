@@ -870,7 +870,7 @@ pub mod edge_container_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -926,11 +926,30 @@ pub mod edge_container_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists Clusters in a given project and location.
         pub async fn list_clusters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListClustersRequest>,
-        ) -> Result<tonic::Response<super::ListClustersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListClustersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -944,13 +963,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListClusters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "ListClusters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Cluster.
         pub async fn get_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::GetClusterRequest>,
-        ) -> Result<tonic::Response<super::Cluster>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Cluster>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -964,13 +991,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "GetCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Cluster in a given project and location.
         pub async fn create_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -987,13 +1022,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/CreateCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "CreateCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Cluster.
         pub async fn update_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1010,13 +1053,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/UpdateCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "UpdateCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Cluster.
         pub async fn delete_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1033,13 +1084,24 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/DeleteCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "DeleteCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates an access token for a Cluster.
         pub async fn generate_access_token(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateAccessTokenRequest>,
-        ) -> Result<tonic::Response<super::GenerateAccessTokenResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateAccessTokenResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1053,13 +1115,24 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateAccessToken",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "GenerateAccessToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists NodePools in a given project and location.
         pub async fn list_node_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNodePoolsRequest>,
-        ) -> Result<tonic::Response<super::ListNodePoolsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListNodePoolsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1073,13 +1146,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListNodePools",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "ListNodePools",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single NodePool.
         pub async fn get_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNodePoolRequest>,
-        ) -> Result<tonic::Response<super::NodePool>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NodePool>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1093,13 +1174,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "GetNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new NodePool in a given project and location.
         pub async fn create_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1116,13 +1205,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/CreateNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "CreateNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single NodePool.
         pub async fn update_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1139,13 +1236,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/UpdateNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "UpdateNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single NodePool.
         pub async fn delete_node_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNodePoolRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1162,13 +1267,24 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/DeleteNodePool",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "DeleteNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Machines in a given project and location.
         pub async fn list_machines(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMachinesRequest>,
-        ) -> Result<tonic::Response<super::ListMachinesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListMachinesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1182,13 +1298,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListMachines",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "ListMachines",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Machine.
         pub async fn get_machine(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMachineRequest>,
-        ) -> Result<tonic::Response<super::Machine>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Machine>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1202,13 +1326,24 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetMachine",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "GetMachine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists VPN connections in a given project and location.
         pub async fn list_vpn_connections(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVpnConnectionsRequest>,
-        ) -> Result<tonic::Response<super::ListVpnConnectionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListVpnConnectionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1222,13 +1357,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListVpnConnections",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "ListVpnConnections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single VPN connection.
         pub async fn get_vpn_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVpnConnectionRequest>,
-        ) -> Result<tonic::Response<super::VpnConnection>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VpnConnection>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1242,13 +1385,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetVpnConnection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "GetVpnConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new VPN connection in a given project and location.
         pub async fn create_vpn_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateVpnConnectionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1265,13 +1416,21 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/CreateVpnConnection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "CreateVpnConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single VPN connection.
         pub async fn delete_vpn_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteVpnConnectionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1288,7 +1447,15 @@ pub mod edge_container_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/DeleteVpnConnection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "DeleteVpnConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -471,7 +471,7 @@ pub mod org_policy_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -527,11 +527,30 @@ pub mod org_policy_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists `Constraints` that could be applied on the specified resource.
         pub async fn list_constraints(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConstraintsRequest>,
-        ) -> Result<tonic::Response<super::ListConstraintsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListConstraintsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -545,13 +564,24 @@ pub mod org_policy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListConstraints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "ListConstraints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves all of the `Policies` that exist on a particular resource.
         pub async fn list_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPoliciesRequest>,
-        ) -> Result<tonic::Response<super::ListPoliciesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListPoliciesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -565,7 +595,15 @@ pub mod org_policy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "ListPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a `Policy` on a resource.
         ///
@@ -575,7 +613,7 @@ pub mod org_policy_client {
         pub async fn get_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -589,7 +627,12 @@ pub mod org_policy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.orgpolicy.v2.OrgPolicy", "GetPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the effective `Policy` on a resource. This is the result of merging
         /// `Policies` in the resource hierarchy and evaluating conditions. The
@@ -600,7 +643,7 @@ pub mod org_policy_client {
         pub async fn get_effective_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEffectivePolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -614,7 +657,15 @@ pub mod org_policy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetEffectivePolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "GetEffectivePolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Policy.
         ///
@@ -625,7 +676,7 @@ pub mod org_policy_client {
         pub async fn create_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -639,7 +690,15 @@ pub mod org_policy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/CreatePolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "CreatePolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Policy.
         ///
@@ -653,7 +712,7 @@ pub mod org_policy_client {
         pub async fn update_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdatePolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -667,7 +726,15 @@ pub mod org_policy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/UpdatePolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "UpdatePolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Policy.
         ///
@@ -676,7 +743,7 @@ pub mod org_policy_client {
         pub async fn delete_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePolicyRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -690,7 +757,15 @@ pub mod org_policy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/DeletePolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "DeletePolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

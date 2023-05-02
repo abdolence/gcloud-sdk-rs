@@ -193,7 +193,7 @@ pub mod profiler_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -249,6 +249,22 @@ pub mod profiler_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// CreateProfile creates a new profile resource in the online mode.
         ///
         /// The server ensures that the new profiles are created at a constant rate per
@@ -266,7 +282,7 @@ pub mod profiler_service_client {
         pub async fn create_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProfileRequest>,
-        ) -> Result<tonic::Response<super::Profile>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Profile>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -280,7 +296,15 @@ pub mod profiler_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/CreateProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.cloudprofiler.v2.ProfilerService",
+                        "CreateProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// CreateOfflineProfile creates a new profile resource in the offline mode.
         /// The client provides the profile to create along with the profile bytes, the
@@ -288,7 +312,7 @@ pub mod profiler_service_client {
         pub async fn create_offline_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateOfflineProfileRequest>,
-        ) -> Result<tonic::Response<super::Profile>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Profile>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -302,7 +326,15 @@ pub mod profiler_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/CreateOfflineProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.cloudprofiler.v2.ProfilerService",
+                        "CreateOfflineProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// UpdateProfile updates the profile bytes and labels on the profile resource
         /// created in the online mode. Updating the bytes for profiles created in the
@@ -311,7 +343,7 @@ pub mod profiler_service_client {
         pub async fn update_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateProfileRequest>,
-        ) -> Result<tonic::Response<super::Profile>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Profile>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -325,7 +357,15 @@ pub mod profiler_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/UpdateProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.cloudprofiler.v2.ProfilerService",
+                        "UpdateProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

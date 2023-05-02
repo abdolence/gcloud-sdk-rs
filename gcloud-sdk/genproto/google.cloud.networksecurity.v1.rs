@@ -653,7 +653,7 @@ pub mod network_security_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -709,11 +709,27 @@ pub mod network_security_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists AuthorizationPolicies in a given project and location.
         pub async fn list_authorization_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAuthorizationPoliciesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListAuthorizationPoliciesResponse>,
             tonic::Status,
         > {
@@ -730,13 +746,24 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/ListAuthorizationPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "ListAuthorizationPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single AuthorizationPolicy.
         pub async fn get_authorization_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAuthorizationPolicyRequest>,
-        ) -> Result<tonic::Response<super::AuthorizationPolicy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AuthorizationPolicy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -750,13 +777,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/GetAuthorizationPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "GetAuthorizationPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new AuthorizationPolicy in a given project and location.
         pub async fn create_authorization_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAuthorizationPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -773,13 +808,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/CreateAuthorizationPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "CreateAuthorizationPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single AuthorizationPolicy.
         pub async fn update_authorization_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAuthorizationPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -796,13 +839,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateAuthorizationPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "UpdateAuthorizationPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single AuthorizationPolicy.
         pub async fn delete_authorization_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAuthorizationPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -819,13 +870,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteAuthorizationPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "DeleteAuthorizationPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists ServerTlsPolicies in a given project and location.
         pub async fn list_server_tls_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServerTlsPoliciesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListServerTlsPoliciesResponse>,
             tonic::Status,
         > {
@@ -842,13 +901,24 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/ListServerTlsPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "ListServerTlsPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single ServerTlsPolicy.
         pub async fn get_server_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServerTlsPolicyRequest>,
-        ) -> Result<tonic::Response<super::ServerTlsPolicy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ServerTlsPolicy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -862,13 +932,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/GetServerTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "GetServerTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new ServerTlsPolicy in a given project and location.
         pub async fn create_server_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServerTlsPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -885,13 +963,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/CreateServerTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "CreateServerTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single ServerTlsPolicy.
         pub async fn update_server_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServerTlsPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -908,13 +994,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateServerTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "UpdateServerTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single ServerTlsPolicy.
         pub async fn delete_server_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServerTlsPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -931,13 +1025,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteServerTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "DeleteServerTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists ClientTlsPolicies in a given project and location.
         pub async fn list_client_tls_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListClientTlsPoliciesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListClientTlsPoliciesResponse>,
             tonic::Status,
         > {
@@ -954,13 +1056,24 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/ListClientTlsPolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "ListClientTlsPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single ClientTlsPolicy.
         pub async fn get_client_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetClientTlsPolicyRequest>,
-        ) -> Result<tonic::Response<super::ClientTlsPolicy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ClientTlsPolicy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -974,13 +1087,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/GetClientTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "GetClientTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new ClientTlsPolicy in a given project and location.
         pub async fn create_client_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateClientTlsPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -997,13 +1118,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/CreateClientTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "CreateClientTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single ClientTlsPolicy.
         pub async fn update_client_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateClientTlsPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1020,13 +1149,21 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/UpdateClientTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "UpdateClientTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single ClientTlsPolicy.
         pub async fn delete_client_tls_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteClientTlsPolicyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1043,7 +1180,15 @@ pub mod network_security_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1.NetworkSecurity/DeleteClientTlsPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networksecurity.v1.NetworkSecurity",
+                        "DeleteClientTlsPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

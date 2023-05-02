@@ -1084,7 +1084,7 @@ pub mod service_usage_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1140,13 +1140,29 @@ pub mod service_usage_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Enables a service so that it can be used with a project.
         ///
         /// Operation response type: `google.protobuf.Empty`
         pub async fn enable_service(
             &mut self,
             request: impl tonic::IntoRequest<super::EnableServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1163,7 +1179,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/EnableService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "EnableService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Disables a service so that it can no longer be used with a project.
         /// This prevents unintended usage that may cause unexpected billing
@@ -1177,7 +1201,7 @@ pub mod service_usage_client {
         pub async fn disable_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1194,13 +1218,21 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/DisableService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "DisableService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the service configuration and enabled state for a given service.
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
-        ) -> Result<tonic::Response<super::Service>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Service>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1214,7 +1246,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GetService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "GetService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all services available to the specified project, and the current
         /// state of those services with respect to the project. The list includes
@@ -1226,7 +1266,10 @@ pub mod service_usage_client {
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
-        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1240,7 +1283,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListServices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "ListServices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enables multiple services on a project. The operation is atomic: if
         /// enabling any service fails, then the entire batch fails, and no state
@@ -1250,7 +1301,7 @@ pub mod service_usage_client {
         pub async fn batch_enable_services(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchEnableServicesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1267,7 +1318,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/BatchEnableServices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "BatchEnableServices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a summary of all quota information visible to the service
         /// consumer, organized by service metric. Each metric includes information
@@ -1277,7 +1336,7 @@ pub mod service_usage_client {
         pub async fn list_consumer_quota_metrics(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConsumerQuotaMetricsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListConsumerQuotaMetricsResponse>,
             tonic::Status,
         > {
@@ -1294,13 +1353,24 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListConsumerQuotaMetrics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "ListConsumerQuotaMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a summary of quota information for a specific quota metric
         pub async fn get_consumer_quota_metric(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConsumerQuotaMetricRequest>,
-        ) -> Result<tonic::Response<super::ConsumerQuotaMetric>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConsumerQuotaMetric>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1314,13 +1384,24 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaMetric",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "GetConsumerQuotaMetric",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a summary of quota information for a specific quota limit.
         pub async fn get_consumer_quota_limit(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConsumerQuotaLimitRequest>,
-        ) -> Result<tonic::Response<super::ConsumerQuotaLimit>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConsumerQuotaLimit>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1334,7 +1415,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaLimit",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "GetConsumerQuotaLimit",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an admin override.
         /// An admin override is applied by an administrator of a parent folder or
@@ -1345,7 +1434,7 @@ pub mod service_usage_client {
         pub async fn create_admin_override(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAdminOverrideRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1362,13 +1451,21 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/CreateAdminOverride",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "CreateAdminOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an admin override.
         pub async fn update_admin_override(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAdminOverrideRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1385,13 +1482,21 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/UpdateAdminOverride",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "UpdateAdminOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an admin override.
         pub async fn delete_admin_override(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAdminOverrideRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1408,13 +1513,24 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/DeleteAdminOverride",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "DeleteAdminOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all admin overrides on this limit.
         pub async fn list_admin_overrides(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAdminOverridesRequest>,
-        ) -> Result<tonic::Response<super::ListAdminOverridesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAdminOverridesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1428,7 +1544,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListAdminOverrides",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "ListAdminOverrides",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates or updates multiple admin overrides atomically, all on the
         /// same consumer, but on many different metrics or limits.
@@ -1436,7 +1560,7 @@ pub mod service_usage_client {
         pub async fn import_admin_overrides(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportAdminOverridesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1453,7 +1577,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ImportAdminOverrides",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "ImportAdminOverrides",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a consumer override.
         /// A consumer override is applied to the consumer on its own authority to
@@ -1463,7 +1595,7 @@ pub mod service_usage_client {
         pub async fn create_consumer_override(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConsumerOverrideRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1480,13 +1612,21 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/CreateConsumerOverride",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "CreateConsumerOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a consumer override.
         pub async fn update_consumer_override(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConsumerOverrideRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1503,13 +1643,21 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/UpdateConsumerOverride",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "UpdateConsumerOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a consumer override.
         pub async fn delete_consumer_override(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteConsumerOverrideRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1526,13 +1674,21 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/DeleteConsumerOverride",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "DeleteConsumerOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all consumer overrides on this limit.
         pub async fn list_consumer_overrides(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConsumerOverridesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListConsumerOverridesResponse>,
             tonic::Status,
         > {
@@ -1549,7 +1705,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListConsumerOverrides",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "ListConsumerOverrides",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates or updates multiple consumer overrides atomically, all on the
         /// same consumer, but on many different metrics or limits.
@@ -1557,7 +1721,7 @@ pub mod service_usage_client {
         pub async fn import_consumer_overrides(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportConsumerOverridesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1574,13 +1738,21 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ImportConsumerOverrides",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "ImportConsumerOverrides",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates service identity for service.
         pub async fn generate_service_identity(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateServiceIdentityRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1597,7 +1769,15 @@ pub mod service_usage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GenerateServiceIdentity",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.serviceusage.v1beta1.ServiceUsage",
+                        "GenerateServiceIdentity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

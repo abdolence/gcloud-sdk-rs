@@ -1534,7 +1534,7 @@ pub mod data_migration_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1590,11 +1590,30 @@ pub mod data_migration_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists migration jobs in a given project and location.
         pub async fn list_migration_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMigrationJobsRequest>,
-        ) -> Result<tonic::Response<super::ListMigrationJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListMigrationJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1608,13 +1627,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListMigrationJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ListMigrationJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single migration job.
         pub async fn get_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMigrationJobRequest>,
-        ) -> Result<tonic::Response<super::MigrationJob>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MigrationJob>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1628,13 +1655,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "GetMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new migration job in a given project and location.
         pub async fn create_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1651,13 +1686,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreateMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "CreateMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single migration job.
         pub async fn update_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1674,13 +1717,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/UpdateMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "UpdateMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single migration job.
         pub async fn delete_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1697,13 +1748,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeleteMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "DeleteMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Start an already created migration job.
         pub async fn start_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::StartMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1720,13 +1779,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/StartMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "StartMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Stops a running migration job.
         pub async fn stop_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::StopMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1743,14 +1810,22 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/StopMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "StopMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resume a migration job that is currently stopped and is resumable (was
         /// stopped during CDC phase).
         pub async fn resume_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1767,14 +1842,22 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/ResumeMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ResumeMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Promote a migration job, stopping replication to the destination and
         /// promoting the destination to be a standalone database.
         pub async fn promote_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::PromoteMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1791,14 +1874,22 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/PromoteMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "PromoteMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Verify a migration job, making sure the destination can reach the source
         /// and that all configuration and prerequisites are met.
         pub async fn verify_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::VerifyMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1815,7 +1906,15 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/VerifyMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "VerifyMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restart a stopped or failed migration job, resetting the destination
         /// instance to its original state and starting the migration process from
@@ -1823,7 +1922,7 @@ pub mod data_migration_service_client {
         pub async fn restart_migration_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RestartMigrationJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1840,14 +1939,22 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/RestartMigrationJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "RestartMigrationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generate a SSH configuration script to configure the reverse SSH
         /// connectivity.
         pub async fn generate_ssh_script(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateSshScriptRequest>,
-        ) -> Result<tonic::Response<super::SshScript>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SshScript>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1861,13 +1968,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/GenerateSshScript",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "GenerateSshScript",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve a list of all connection profiles in a given project and location.
         pub async fn list_connection_profiles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConnectionProfilesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListConnectionProfilesResponse>,
             tonic::Status,
         > {
@@ -1884,13 +1999,24 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListConnectionProfiles",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ListConnectionProfiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single connection profile.
         pub async fn get_connection_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConnectionProfileRequest>,
-        ) -> Result<tonic::Response<super::ConnectionProfile>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConnectionProfile>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1904,13 +2030,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/GetConnectionProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "GetConnectionProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new connection profile in a given project and location.
         pub async fn create_connection_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConnectionProfileRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1927,13 +2061,21 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreateConnectionProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "CreateConnectionProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update the configuration of a single connection profile.
         pub async fn update_connection_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConnectionProfileRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1950,7 +2092,15 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/UpdateConnectionProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "UpdateConnectionProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Database Migration Service connection profile.
         /// A connection profile can only be deleted if it is not in use by any
@@ -1958,7 +2108,7 @@ pub mod data_migration_service_client {
         pub async fn delete_connection_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteConnectionProfileRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1975,7 +2125,15 @@ pub mod data_migration_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeleteConnectionProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "DeleteConnectionProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

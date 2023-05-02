@@ -897,6 +897,90 @@ pub mod day_of_week_enum {
         }
     }
 }
+/// The dimensions that can be targeted.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetingDimensionEnum {}
+/// Nested message and enum types in `TargetingDimensionEnum`.
+pub mod targeting_dimension_enum {
+    /// Enum describing possible targeting dimensions.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TargetingDimension {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Keyword criteria, for example, 'mars cruise'. KEYWORD may be used as a
+        /// custom bid dimension. Keywords are always a targeting dimension, so may
+        /// not be set as a target "ALL" dimension with TargetRestriction.
+        Keyword = 2,
+        /// Audience criteria, which include user list, user interest, custom
+        /// affinity,  and custom in market.
+        Audience = 3,
+        /// Topic criteria for targeting categories of content, for example,
+        /// 'category::Animals>Pets' Used for Display and Video targeting.
+        Topic = 4,
+        /// Criteria for targeting gender.
+        Gender = 5,
+        /// Criteria for targeting age ranges.
+        AgeRange = 6,
+        /// Placement criteria, which include websites like 'www.flowers4sale.com',
+        /// as well as mobile applications, mobile app categories, YouTube videos,
+        /// and YouTube channels.
+        Placement = 7,
+        /// Criteria for parental status targeting.
+        ParentalStatus = 8,
+        /// Criteria for income range targeting.
+        IncomeRange = 9,
+    }
+    impl TargetingDimension {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                TargetingDimension::Unspecified => "UNSPECIFIED",
+                TargetingDimension::Unknown => "UNKNOWN",
+                TargetingDimension::Keyword => "KEYWORD",
+                TargetingDimension::Audience => "AUDIENCE",
+                TargetingDimension::Topic => "TOPIC",
+                TargetingDimension::Gender => "GENDER",
+                TargetingDimension::AgeRange => "AGE_RANGE",
+                TargetingDimension::Placement => "PLACEMENT",
+                TargetingDimension::ParentalStatus => "PARENTAL_STATUS",
+                TargetingDimension::IncomeRange => "INCOME_RANGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "AUDIENCE" => Some(Self::Audience),
+                "TOPIC" => Some(Self::Topic),
+                "GENDER" => Some(Self::Gender),
+                "AGE_RANGE" => Some(Self::AgeRange),
+                "PLACEMENT" => Some(Self::Placement),
+                "PARENTAL_STATUS" => Some(Self::ParentalStatus),
+                "INCOME_RANGE" => Some(Self::IncomeRange),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible statuses of an account.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1041,6 +1125,140 @@ pub mod account_type_enum {
         }
     }
 }
+/// Container for enum describing possible AdGroupAd engine statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupAdEngineStatusEnum {}
+/// Nested message and enum types in `AdGroupAdEngineStatusEnum`.
+pub mod ad_group_ad_engine_status_enum {
+    /// Enumerates AdGroupAd engine statuses.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdGroupAdEngineStatus {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Deprecated. Do not use.
+        AdGroupAdEligible = 2,
+        /// Baidu: Creative was not approved.
+        AdGroupAdInappropriateForCampaign = 3,
+        /// Baidu: Mobile URL in process to be reviewed.
+        AdGroupAdMobileUrlUnderReview = 4,
+        /// Baidu: Creative is invalid on mobile device but valid on desktop.
+        AdGroupAdPartiallyInvalid = 5,
+        /// Baidu: Creative is ready for activation.
+        AdGroupAdToBeActivated = 6,
+        /// Baidu: Creative not reviewed.
+        AdGroupAdNotReviewed = 7,
+        /// Deprecated. Do not use. Previously used by Gemini
+        AdGroupAdOnHold = 8,
+        /// Creative has been paused.
+        AdGroupAdPaused = 9,
+        /// Creative has been removed.
+        AdGroupAdRemoved = 10,
+        /// Creative is pending review.
+        AdGroupAdPendingReview = 11,
+        /// Creative is under review.
+        AdGroupAdUnderReview = 12,
+        /// Creative has been approved.
+        AdGroupAdApproved = 13,
+        /// Creative has been disapproved.
+        AdGroupAdDisapproved = 14,
+        /// Creative is serving.
+        AdGroupAdServing = 15,
+        /// Creative has been paused because the account is paused.
+        AdGroupAdAccountPaused = 16,
+        /// Creative has been paused because the campaign is paused.
+        AdGroupAdCampaignPaused = 17,
+        /// Creative has been paused because the ad group is paused.
+        AdGroupAdAdGroupPaused = 18,
+    }
+    impl AdGroupAdEngineStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AdGroupAdEngineStatus::Unspecified => "UNSPECIFIED",
+                AdGroupAdEngineStatus::Unknown => "UNKNOWN",
+                AdGroupAdEngineStatus::AdGroupAdEligible => "AD_GROUP_AD_ELIGIBLE",
+                AdGroupAdEngineStatus::AdGroupAdInappropriateForCampaign => {
+                    "AD_GROUP_AD_INAPPROPRIATE_FOR_CAMPAIGN"
+                }
+                AdGroupAdEngineStatus::AdGroupAdMobileUrlUnderReview => {
+                    "AD_GROUP_AD_MOBILE_URL_UNDER_REVIEW"
+                }
+                AdGroupAdEngineStatus::AdGroupAdPartiallyInvalid => {
+                    "AD_GROUP_AD_PARTIALLY_INVALID"
+                }
+                AdGroupAdEngineStatus::AdGroupAdToBeActivated => {
+                    "AD_GROUP_AD_TO_BE_ACTIVATED"
+                }
+                AdGroupAdEngineStatus::AdGroupAdNotReviewed => "AD_GROUP_AD_NOT_REVIEWED",
+                AdGroupAdEngineStatus::AdGroupAdOnHold => "AD_GROUP_AD_ON_HOLD",
+                AdGroupAdEngineStatus::AdGroupAdPaused => "AD_GROUP_AD_PAUSED",
+                AdGroupAdEngineStatus::AdGroupAdRemoved => "AD_GROUP_AD_REMOVED",
+                AdGroupAdEngineStatus::AdGroupAdPendingReview => {
+                    "AD_GROUP_AD_PENDING_REVIEW"
+                }
+                AdGroupAdEngineStatus::AdGroupAdUnderReview => "AD_GROUP_AD_UNDER_REVIEW",
+                AdGroupAdEngineStatus::AdGroupAdApproved => "AD_GROUP_AD_APPROVED",
+                AdGroupAdEngineStatus::AdGroupAdDisapproved => "AD_GROUP_AD_DISAPPROVED",
+                AdGroupAdEngineStatus::AdGroupAdServing => "AD_GROUP_AD_SERVING",
+                AdGroupAdEngineStatus::AdGroupAdAccountPaused => {
+                    "AD_GROUP_AD_ACCOUNT_PAUSED"
+                }
+                AdGroupAdEngineStatus::AdGroupAdCampaignPaused => {
+                    "AD_GROUP_AD_CAMPAIGN_PAUSED"
+                }
+                AdGroupAdEngineStatus::AdGroupAdAdGroupPaused => {
+                    "AD_GROUP_AD_AD_GROUP_PAUSED"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_GROUP_AD_ELIGIBLE" => Some(Self::AdGroupAdEligible),
+                "AD_GROUP_AD_INAPPROPRIATE_FOR_CAMPAIGN" => {
+                    Some(Self::AdGroupAdInappropriateForCampaign)
+                }
+                "AD_GROUP_AD_MOBILE_URL_UNDER_REVIEW" => {
+                    Some(Self::AdGroupAdMobileUrlUnderReview)
+                }
+                "AD_GROUP_AD_PARTIALLY_INVALID" => Some(Self::AdGroupAdPartiallyInvalid),
+                "AD_GROUP_AD_TO_BE_ACTIVATED" => Some(Self::AdGroupAdToBeActivated),
+                "AD_GROUP_AD_NOT_REVIEWED" => Some(Self::AdGroupAdNotReviewed),
+                "AD_GROUP_AD_ON_HOLD" => Some(Self::AdGroupAdOnHold),
+                "AD_GROUP_AD_PAUSED" => Some(Self::AdGroupAdPaused),
+                "AD_GROUP_AD_REMOVED" => Some(Self::AdGroupAdRemoved),
+                "AD_GROUP_AD_PENDING_REVIEW" => Some(Self::AdGroupAdPendingReview),
+                "AD_GROUP_AD_UNDER_REVIEW" => Some(Self::AdGroupAdUnderReview),
+                "AD_GROUP_AD_APPROVED" => Some(Self::AdGroupAdApproved),
+                "AD_GROUP_AD_DISAPPROVED" => Some(Self::AdGroupAdDisapproved),
+                "AD_GROUP_AD_SERVING" => Some(Self::AdGroupAdServing),
+                "AD_GROUP_AD_ACCOUNT_PAUSED" => Some(Self::AdGroupAdAccountPaused),
+                "AD_GROUP_AD_CAMPAIGN_PAUSED" => Some(Self::AdGroupAdCampaignPaused),
+                "AD_GROUP_AD_AD_GROUP_PAUSED" => Some(Self::AdGroupAdAdGroupPaused),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible ad rotation modes of ads within an
 /// ad group.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1093,6 +1311,66 @@ pub mod ad_group_ad_rotation_mode_enum {
                 "UNKNOWN" => Some(Self::Unknown),
                 "OPTIMIZE" => Some(Self::Optimize),
                 "ROTATE_FOREVER" => Some(Self::RotateForever),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible statuses of an AdGroupAd.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupAdStatusEnum {}
+/// Nested message and enum types in `AdGroupAdStatusEnum`.
+pub mod ad_group_ad_status_enum {
+    /// The possible statuses of an AdGroupAd.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdGroupAdStatus {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        ///
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The ad group ad is enabled.
+        Enabled = 2,
+        /// The ad group ad is paused.
+        Paused = 3,
+        /// The ad group ad is removed.
+        Removed = 4,
+    }
+    impl AdGroupAdStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AdGroupAdStatus::Unspecified => "UNSPECIFIED",
+                AdGroupAdStatus::Unknown => "UNKNOWN",
+                AdGroupAdStatus::Enabled => "ENABLED",
+                AdGroupAdStatus::Paused => "PAUSED",
+                AdGroupAdStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
                 _ => None,
             }
         }
@@ -1349,6 +1627,92 @@ pub mod ad_group_criterion_status_enum {
         }
     }
 }
+/// Container for enum describing possible AdGroup engine statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupEngineStatusEnum {}
+/// Nested message and enum types in `AdGroupEngineStatusEnum`.
+pub mod ad_group_engine_status_enum {
+    /// Next ID = 11
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdGroupEngineStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Deprecated. Do not use.
+        AdGroupEligible = 2,
+        /// No ads are running for this ad group, because the ad group's end date has
+        /// passed.
+        AdGroupExpired = 3,
+        /// The ad group has been deleted.
+        AdGroupRemoved = 4,
+        /// No ads are running for this ad group because the associated ad group is
+        /// still in draft form.
+        AdGroupDraft = 5,
+        /// The ad group has been paused.
+        AdGroupPaused = 6,
+        /// The ad group is active and currently serving ads.
+        AdGroupServing = 7,
+        /// The ad group has been submitted (Microsoft Bing Ads legacy status).
+        AdGroupSubmitted = 8,
+        /// No ads are running for this ad group, because the campaign has been
+        /// paused.
+        CampaignPaused = 9,
+        /// No ads are running for this ad group, because the account has been
+        /// paused.
+        AccountPaused = 10,
+    }
+    impl AdGroupEngineStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AdGroupEngineStatus::Unspecified => "UNSPECIFIED",
+                AdGroupEngineStatus::Unknown => "UNKNOWN",
+                AdGroupEngineStatus::AdGroupEligible => "AD_GROUP_ELIGIBLE",
+                AdGroupEngineStatus::AdGroupExpired => "AD_GROUP_EXPIRED",
+                AdGroupEngineStatus::AdGroupRemoved => "AD_GROUP_REMOVED",
+                AdGroupEngineStatus::AdGroupDraft => "AD_GROUP_DRAFT",
+                AdGroupEngineStatus::AdGroupPaused => "AD_GROUP_PAUSED",
+                AdGroupEngineStatus::AdGroupServing => "AD_GROUP_SERVING",
+                AdGroupEngineStatus::AdGroupSubmitted => "AD_GROUP_SUBMITTED",
+                AdGroupEngineStatus::CampaignPaused => "CAMPAIGN_PAUSED",
+                AdGroupEngineStatus::AccountPaused => "ACCOUNT_PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_GROUP_ELIGIBLE" => Some(Self::AdGroupEligible),
+                "AD_GROUP_EXPIRED" => Some(Self::AdGroupExpired),
+                "AD_GROUP_REMOVED" => Some(Self::AdGroupRemoved),
+                "AD_GROUP_DRAFT" => Some(Self::AdGroupDraft),
+                "AD_GROUP_PAUSED" => Some(Self::AdGroupPaused),
+                "AD_GROUP_SERVING" => Some(Self::AdGroupServing),
+                "AD_GROUP_SUBMITTED" => Some(Self::AdGroupSubmitted),
+                "CAMPAIGN_PAUSED" => Some(Self::CampaignPaused),
+                "ACCOUNT_PAUSED" => Some(Self::AccountPaused),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible statuses of an ad group.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1472,6 +1836,8 @@ pub mod ad_group_type_enum {
         VideoEfficientReach = 17,
         /// Ad group type for Smart campaigns.
         SmartCampaignAds = 18,
+        /// Ad group type for Travel campaigns.
+        TravelAds = 19,
     }
     impl AdGroupType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1501,6 +1867,7 @@ pub mod ad_group_type_enum {
                 AdGroupType::VideoResponsive => "VIDEO_RESPONSIVE",
                 AdGroupType::VideoEfficientReach => "VIDEO_EFFICIENT_REACH",
                 AdGroupType::SmartCampaignAds => "SMART_CAMPAIGN_ADS",
+                AdGroupType::TravelAds => "TRAVEL_ADS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1527,6 +1894,7 @@ pub mod ad_group_type_enum {
                 "VIDEO_RESPONSIVE" => Some(Self::VideoResponsive),
                 "VIDEO_EFFICIENT_REACH" => Some(Self::VideoEfficientReach),
                 "SMART_CAMPAIGN_ADS" => Some(Self::SmartCampaignAds),
+                "TRAVEL_ADS" => Some(Self::TravelAds),
                 _ => None,
             }
         }
@@ -1603,6 +1971,183 @@ pub mod ad_serving_optimization_status_enum {
         }
     }
 }
+/// Container for enum describing possible types of an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdTypeEnum {}
+/// Nested message and enum types in `AdTypeEnum`.
+pub mod ad_type_enum {
+    /// The possible types of an ad.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdType {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        ///
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The ad is a text ad.
+        TextAd = 2,
+        /// The ad is an expanded text ad.
+        ExpandedTextAd = 3,
+        /// The ad is a call only ad.
+        CallOnlyAd = 6,
+        /// The ad is an expanded dynamic search ad.
+        ExpandedDynamicSearchAd = 7,
+        /// The ad is a hotel ad.
+        HotelAd = 8,
+        /// The ad is a Smart Shopping ad.
+        ShoppingSmartAd = 9,
+        /// The ad is a standard Shopping ad.
+        ShoppingProductAd = 10,
+        /// The ad is a video ad.
+        VideoAd = 12,
+        /// This ad is a Gmail ad.
+        GmailAd = 13,
+        /// This ad is an Image ad.
+        ImageAd = 14,
+        /// The ad is a responsive search ad.
+        ResponsiveSearchAd = 15,
+        /// The ad is a legacy responsive display ad.
+        LegacyResponsiveDisplayAd = 16,
+        /// The ad is an app ad.
+        AppAd = 17,
+        /// The ad is a legacy app install ad.
+        LegacyAppInstallAd = 18,
+        /// The ad is a responsive display ad.
+        ResponsiveDisplayAd = 19,
+        /// The ad is a local ad.
+        LocalAd = 20,
+        /// The ad is a display upload ad with the HTML5_UPLOAD_AD product type.
+        Html5UploadAd = 21,
+        /// The ad is a display upload ad with one of the DYNAMIC_HTML5_* product
+        /// types.
+        DynamicHtml5Ad = 22,
+        /// The ad is an app engagement ad.
+        AppEngagementAd = 23,
+        /// The ad is a Shopping Comparison Listing ad.
+        ShoppingComparisonListingAd = 24,
+        /// Video bumper ad.
+        VideoBumperAd = 25,
+        /// Video non-skippable in-stream ad.
+        VideoNonSkippableInStreamAd = 26,
+        /// Video outstream ad.
+        VideoOutstreamAd = 27,
+        /// Video TrueView in-display ad.
+        VideoTrueviewDiscoveryAd = 28,
+        /// Video TrueView in-stream ad.
+        VideoTrueviewInStreamAd = 29,
+        /// Video responsive ad.
+        VideoResponsiveAd = 30,
+        /// Smart campaign ad.
+        SmartCampaignAd = 31,
+        /// Universal app pre-registration ad.
+        AppPreRegistrationAd = 33,
+        /// Discovery multi asset ad.
+        DiscoveryMultiAssetAd = 35,
+        /// Discovery carousel ad.
+        DiscoveryCarouselAd = 36,
+        /// Travel ad.
+        TravelAd = 37,
+    }
+    impl AdType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AdType::Unspecified => "UNSPECIFIED",
+                AdType::Unknown => "UNKNOWN",
+                AdType::TextAd => "TEXT_AD",
+                AdType::ExpandedTextAd => "EXPANDED_TEXT_AD",
+                AdType::CallOnlyAd => "CALL_ONLY_AD",
+                AdType::ExpandedDynamicSearchAd => "EXPANDED_DYNAMIC_SEARCH_AD",
+                AdType::HotelAd => "HOTEL_AD",
+                AdType::ShoppingSmartAd => "SHOPPING_SMART_AD",
+                AdType::ShoppingProductAd => "SHOPPING_PRODUCT_AD",
+                AdType::VideoAd => "VIDEO_AD",
+                AdType::GmailAd => "GMAIL_AD",
+                AdType::ImageAd => "IMAGE_AD",
+                AdType::ResponsiveSearchAd => "RESPONSIVE_SEARCH_AD",
+                AdType::LegacyResponsiveDisplayAd => "LEGACY_RESPONSIVE_DISPLAY_AD",
+                AdType::AppAd => "APP_AD",
+                AdType::LegacyAppInstallAd => "LEGACY_APP_INSTALL_AD",
+                AdType::ResponsiveDisplayAd => "RESPONSIVE_DISPLAY_AD",
+                AdType::LocalAd => "LOCAL_AD",
+                AdType::Html5UploadAd => "HTML5_UPLOAD_AD",
+                AdType::DynamicHtml5Ad => "DYNAMIC_HTML5_AD",
+                AdType::AppEngagementAd => "APP_ENGAGEMENT_AD",
+                AdType::ShoppingComparisonListingAd => "SHOPPING_COMPARISON_LISTING_AD",
+                AdType::VideoBumperAd => "VIDEO_BUMPER_AD",
+                AdType::VideoNonSkippableInStreamAd => "VIDEO_NON_SKIPPABLE_IN_STREAM_AD",
+                AdType::VideoOutstreamAd => "VIDEO_OUTSTREAM_AD",
+                AdType::VideoTrueviewDiscoveryAd => "VIDEO_TRUEVIEW_DISCOVERY_AD",
+                AdType::VideoTrueviewInStreamAd => "VIDEO_TRUEVIEW_IN_STREAM_AD",
+                AdType::VideoResponsiveAd => "VIDEO_RESPONSIVE_AD",
+                AdType::SmartCampaignAd => "SMART_CAMPAIGN_AD",
+                AdType::AppPreRegistrationAd => "APP_PRE_REGISTRATION_AD",
+                AdType::DiscoveryMultiAssetAd => "DISCOVERY_MULTI_ASSET_AD",
+                AdType::DiscoveryCarouselAd => "DISCOVERY_CAROUSEL_AD",
+                AdType::TravelAd => "TRAVEL_AD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT_AD" => Some(Self::TextAd),
+                "EXPANDED_TEXT_AD" => Some(Self::ExpandedTextAd),
+                "CALL_ONLY_AD" => Some(Self::CallOnlyAd),
+                "EXPANDED_DYNAMIC_SEARCH_AD" => Some(Self::ExpandedDynamicSearchAd),
+                "HOTEL_AD" => Some(Self::HotelAd),
+                "SHOPPING_SMART_AD" => Some(Self::ShoppingSmartAd),
+                "SHOPPING_PRODUCT_AD" => Some(Self::ShoppingProductAd),
+                "VIDEO_AD" => Some(Self::VideoAd),
+                "GMAIL_AD" => Some(Self::GmailAd),
+                "IMAGE_AD" => Some(Self::ImageAd),
+                "RESPONSIVE_SEARCH_AD" => Some(Self::ResponsiveSearchAd),
+                "LEGACY_RESPONSIVE_DISPLAY_AD" => Some(Self::LegacyResponsiveDisplayAd),
+                "APP_AD" => Some(Self::AppAd),
+                "LEGACY_APP_INSTALL_AD" => Some(Self::LegacyAppInstallAd),
+                "RESPONSIVE_DISPLAY_AD" => Some(Self::ResponsiveDisplayAd),
+                "LOCAL_AD" => Some(Self::LocalAd),
+                "HTML5_UPLOAD_AD" => Some(Self::Html5UploadAd),
+                "DYNAMIC_HTML5_AD" => Some(Self::DynamicHtml5Ad),
+                "APP_ENGAGEMENT_AD" => Some(Self::AppEngagementAd),
+                "SHOPPING_COMPARISON_LISTING_AD" => {
+                    Some(Self::ShoppingComparisonListingAd)
+                }
+                "VIDEO_BUMPER_AD" => Some(Self::VideoBumperAd),
+                "VIDEO_NON_SKIPPABLE_IN_STREAM_AD" => {
+                    Some(Self::VideoNonSkippableInStreamAd)
+                }
+                "VIDEO_OUTSTREAM_AD" => Some(Self::VideoOutstreamAd),
+                "VIDEO_TRUEVIEW_DISCOVERY_AD" => Some(Self::VideoTrueviewDiscoveryAd),
+                "VIDEO_TRUEVIEW_IN_STREAM_AD" => Some(Self::VideoTrueviewInStreamAd),
+                "VIDEO_RESPONSIVE_AD" => Some(Self::VideoResponsiveAd),
+                "SMART_CAMPAIGN_AD" => Some(Self::SmartCampaignAd),
+                "APP_PRE_REGISTRATION_AD" => Some(Self::AppPreRegistrationAd),
+                "DISCOVERY_MULTI_ASSET_AD" => Some(Self::DiscoveryMultiAssetAd),
+                "DISCOVERY_CAROUSEL_AD" => Some(Self::DiscoveryCarouselAd),
+                "TRAVEL_AD" => Some(Self::TravelAd),
+                _ => None,
+            }
+        }
+    }
+}
 /// An immutable specialization of an Advertising Channel.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1639,7 +2184,8 @@ pub mod advertising_channel_sub_type_enum {
         ShoppingSmartAds = 6,
         /// Gmail Ad campaigns.
         DisplayGmailAd = 7,
-        /// Smart display campaigns.
+        /// Smart display campaigns. New campaigns of this sub type cannot be
+        /// created.
         DisplaySmartCampaign = 8,
         /// Video Outstream campaigns.
         VideoOutstream = 9,
@@ -1667,6 +2213,10 @@ pub mod advertising_channel_sub_type_enum {
         /// app pre-registration, that targets multiple advertising channels across
         /// Google Play, YouTube and Display Network.
         AppCampaignForPreRegistration = 18,
+        /// Video reach campaign with Target Frequency bidding strategy.
+        VideoReachTargetFrequency = 19,
+        /// Travel Activities campaigns.
+        TravelActivities = 20,
     }
     impl AdvertisingChannelSubType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1702,6 +2252,10 @@ pub mod advertising_channel_sub_type_enum {
                 AdvertisingChannelSubType::AppCampaignForPreRegistration => {
                     "APP_CAMPAIGN_FOR_PRE_REGISTRATION"
                 }
+                AdvertisingChannelSubType::VideoReachTargetFrequency => {
+                    "VIDEO_REACH_TARGET_FREQUENCY"
+                }
+                AdvertisingChannelSubType::TravelActivities => "TRAVEL_ACTIVITIES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1730,6 +2284,8 @@ pub mod advertising_channel_sub_type_enum {
                 "APP_CAMPAIGN_FOR_PRE_REGISTRATION" => {
                     Some(Self::AppCampaignForPreRegistration)
                 }
+                "VIDEO_REACH_TARGET_FREQUENCY" => Some(Self::VideoReachTargetFrequency),
+                "TRAVEL_ACTIVITIES" => Some(Self::TravelActivities),
                 _ => None,
             }
         }
@@ -1783,6 +2339,8 @@ pub mod advertising_channel_type_enum {
         LocalServices = 11,
         /// Discovery campaigns.
         Discovery = 12,
+        /// Travel campaigns.
+        Travel = 13,
     }
     impl AdvertisingChannelType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1804,6 +2362,7 @@ pub mod advertising_channel_type_enum {
                 AdvertisingChannelType::PerformanceMax => "PERFORMANCE_MAX",
                 AdvertisingChannelType::LocalServices => "LOCAL_SERVICES",
                 AdvertisingChannelType::Discovery => "DISCOVERY",
+                AdvertisingChannelType::Travel => "TRAVEL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1822,6 +2381,7 @@ pub mod advertising_channel_type_enum {
                 "PERFORMANCE_MAX" => Some(Self::PerformanceMax),
                 "LOCAL_SERVICES" => Some(Self::LocalServices),
                 "DISCOVERY" => Some(Self::Discovery),
+                "TRAVEL" => Some(Self::Travel),
                 _ => None,
             }
         }
@@ -1902,6 +2462,11 @@ pub mod asset_field_type_enum {
         CallToActionSelection = 25,
         /// The asset is linked for use to select an ad image.
         AdImage = 26,
+        /// The asset is linked for use as a business logo.
+        BusinessLogo = 27,
+        /// The asset is linked for use as a hotel property in a Performance Max for
+        /// travel goals campaign.
+        HotelProperty = 28,
     }
     impl AssetFieldType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1937,6 +2502,8 @@ pub mod asset_field_type_enum {
                 AssetFieldType::Video => "VIDEO",
                 AssetFieldType::CallToActionSelection => "CALL_TO_ACTION_SELECTION",
                 AssetFieldType::AdImage => "AD_IMAGE",
+                AssetFieldType::BusinessLogo => "BUSINESS_LOGO",
+                AssetFieldType::HotelProperty => "HOTEL_PROPERTY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1969,6 +2536,8 @@ pub mod asset_field_type_enum {
                 "VIDEO" => Some(Self::Video),
                 "CALL_TO_ACTION_SELECTION" => Some(Self::CallToActionSelection),
                 "AD_IMAGE" => Some(Self::AdImage),
+                "BUSINESS_LOGO" => Some(Self::BusinessLogo),
+                "HOTEL_PROPERTY" => Some(Self::HotelProperty),
                 _ => None,
             }
         }
@@ -2602,6 +3171,66 @@ pub mod budget_period_enum {
         }
     }
 }
+/// Message describing CampaignCriterion statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CampaignCriterionStatusEnum {}
+/// Nested message and enum types in `CampaignCriterionStatusEnum`.
+pub mod campaign_criterion_status_enum {
+    /// The possible statuses of a CampaignCriterion.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CampaignCriterionStatus {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        ///
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The campaign criterion is enabled.
+        Enabled = 2,
+        /// The campaign criterion is paused.
+        Paused = 3,
+        /// The campaign criterion is removed.
+        Removed = 4,
+    }
+    impl CampaignCriterionStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CampaignCriterionStatus::Unspecified => "UNSPECIFIED",
+                CampaignCriterionStatus::Unknown => "UNKNOWN",
+                CampaignCriterionStatus::Enabled => "ENABLED",
+                CampaignCriterionStatus::Paused => "PAUSED",
+                CampaignCriterionStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
+    }
+}
 /// Message describing Campaign serving statuses.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2907,6 +3536,9 @@ pub mod conversion_action_type_enum {
         /// Conversions that occur when a user visits an advertiser's retail store.
         /// Read only.
         StoreVisits = 36,
+        /// Conversions created from website events (such as form submissions or page
+        /// loads), that don't use individually coded event snippets.
+        WebpageCodeless = 37,
     }
     impl ConversionActionType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2986,6 +3618,7 @@ pub mod conversion_action_type_enum {
                     "SMART_CAMPAIGN_TRACKED_CALLS"
                 }
                 ConversionActionType::StoreVisits => "STORE_VISITS",
+                ConversionActionType::WebpageCodeless => "WEBPAGE_CODELESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3048,6 +3681,7 @@ pub mod conversion_action_type_enum {
                 "SMART_CAMPAIGN_MAP_DIRECTIONS" => Some(Self::SmartCampaignMapDirections),
                 "SMART_CAMPAIGN_TRACKED_CALLS" => Some(Self::SmartCampaignTrackedCalls),
                 "STORE_VISITS" => Some(Self::StoreVisits),
+                "WEBPAGE_CODELESS" => Some(Self::WebpageCodeless),
                 _ => None,
             }
         }
@@ -3225,7 +3859,7 @@ pub mod criterion_type_enum {
         KeywordTheme = 34,
         /// Audience
         Audience = 35,
-        /// Google Local Services (GLS) Service ID.
+        /// Local Services Ads Service ID.
         LocalServiceId = 37,
     }
     impl CriterionType {
@@ -3510,6 +4144,60 @@ pub mod data_driven_model_status_enum {
                 "STALE" => Some(Self::Stale),
                 "EXPIRED" => Some(Self::Expired),
                 "NEVER_GENERATED" => Some(Self::NeverGenerated),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible status of a label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LabelStatusEnum {}
+/// Nested message and enum types in `LabelStatusEnum`.
+pub mod label_status_enum {
+    /// Possible statuses of a label.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LabelStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Label is enabled.
+        Enabled = 2,
+        /// Label is removed.
+        Removed = 3,
+    }
+    impl LabelStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                LabelStatus::Unspecified => "UNSPECIFIED",
+                LabelStatus::Unknown => "UNKNOWN",
+                LabelStatus::Enabled => "ENABLED",
+                LabelStatus::Removed => "REMOVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
                 _ => None,
             }
         }
@@ -4001,6 +4689,77 @@ pub mod summary_row_setting_enum {
                 "NO_SUMMARY_ROW" => Some(Self::NoSummaryRow),
                 "SUMMARY_ROW_WITH_RESULTS" => Some(Self::SummaryRowWithResults),
                 "SUMMARY_ROW_ONLY" => Some(Self::SummaryRowOnly),
+                _ => None,
+            }
+        }
+    }
+}
+/// The user list types.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListTypeEnum {}
+/// Nested message and enum types in `UserListTypeEnum`.
+pub mod user_list_type_enum {
+    /// Enum containing possible user list types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum UserListType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// UserList represented as a collection of conversion types.
+        Remarketing = 2,
+        /// UserList represented as a combination of other user lists/interests.
+        Logical = 3,
+        /// UserList created in the Google Ad Manager platform.
+        ExternalRemarketing = 4,
+        /// UserList associated with a rule.
+        RuleBased = 5,
+        /// UserList with users similar to users of another UserList.
+        Similar = 6,
+        /// UserList of first-party CRM data provided by advertiser in the form of
+        /// emails or other formats.
+        CrmBased = 7,
+    }
+    impl UserListType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                UserListType::Unspecified => "UNSPECIFIED",
+                UserListType::Unknown => "UNKNOWN",
+                UserListType::Remarketing => "REMARKETING",
+                UserListType::Logical => "LOGICAL",
+                UserListType::ExternalRemarketing => "EXTERNAL_REMARKETING",
+                UserListType::RuleBased => "RULE_BASED",
+                UserListType::Similar => "SIMILAR",
+                UserListType::CrmBased => "CRM_BASED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REMARKETING" => Some(Self::Remarketing),
+                "LOGICAL" => Some(Self::Logical),
+                "EXTERNAL_REMARKETING" => Some(Self::ExternalRemarketing),
+                "RULE_BASED" => Some(Self::RuleBased),
+                "SIMILAR" => Some(Self::Similar),
+                "CRM_BASED" => Some(Self::CrmBased),
                 _ => None,
             }
         }

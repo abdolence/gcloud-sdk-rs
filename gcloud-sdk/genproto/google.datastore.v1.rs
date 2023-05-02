@@ -1621,7 +1621,7 @@ pub mod datastore_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1677,11 +1677,27 @@ pub mod datastore_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Looks up entities by key.
         pub async fn lookup(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupRequest>,
-        ) -> Result<tonic::Response<super::LookupResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::LookupResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1695,13 +1711,19 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/Lookup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.datastore.v1.Datastore", "Lookup"));
+            self.inner.unary(req, path, codec).await
         }
         /// Queries for entities.
         pub async fn run_query(
             &mut self,
             request: impl tonic::IntoRequest<super::RunQueryRequest>,
-        ) -> Result<tonic::Response<super::RunQueryResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RunQueryResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1715,13 +1737,19 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/RunQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.datastore.v1.Datastore", "RunQuery"));
+            self.inner.unary(req, path, codec).await
         }
         /// Runs an aggregation query.
         pub async fn run_aggregation_query(
             &mut self,
             request: impl tonic::IntoRequest<super::RunAggregationQueryRequest>,
-        ) -> Result<tonic::Response<super::RunAggregationQueryResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RunAggregationQueryResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1735,13 +1763,24 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/RunAggregationQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.datastore.v1.Datastore",
+                        "RunAggregationQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Begins a new transaction.
         pub async fn begin_transaction(
             &mut self,
             request: impl tonic::IntoRequest<super::BeginTransactionRequest>,
-        ) -> Result<tonic::Response<super::BeginTransactionResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BeginTransactionResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1755,14 +1794,19 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/BeginTransaction",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.datastore.v1.Datastore", "BeginTransaction"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Commits a transaction, optionally creating, deleting or modifying some
         /// entities.
         pub async fn commit(
             &mut self,
             request: impl tonic::IntoRequest<super::CommitRequest>,
-        ) -> Result<tonic::Response<super::CommitResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CommitResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1776,13 +1820,19 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/Commit",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.datastore.v1.Datastore", "Commit"));
+            self.inner.unary(req, path, codec).await
         }
         /// Rolls back a transaction.
         pub async fn rollback(
             &mut self,
             request: impl tonic::IntoRequest<super::RollbackRequest>,
-        ) -> Result<tonic::Response<super::RollbackResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RollbackResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1796,14 +1846,20 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/Rollback",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.datastore.v1.Datastore", "Rollback"));
+            self.inner.unary(req, path, codec).await
         }
         /// Allocates IDs for the given keys, which is useful for referencing an entity
         /// before it is inserted.
         pub async fn allocate_ids(
             &mut self,
             request: impl tonic::IntoRequest<super::AllocateIdsRequest>,
-        ) -> Result<tonic::Response<super::AllocateIdsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AllocateIdsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1817,14 +1873,20 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/AllocateIds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.datastore.v1.Datastore", "AllocateIds"));
+            self.inner.unary(req, path, codec).await
         }
         /// Prevents the supplied keys' IDs from being auto-allocated by Cloud
         /// Datastore.
         pub async fn reserve_ids(
             &mut self,
             request: impl tonic::IntoRequest<super::ReserveIdsRequest>,
-        ) -> Result<tonic::Response<super::ReserveIdsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ReserveIdsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1838,7 +1900,10 @@ pub mod datastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/ReserveIds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.datastore.v1.Datastore", "ReserveIds"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }

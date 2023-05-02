@@ -387,7 +387,7 @@ pub mod embedded_assistant_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -443,6 +443,22 @@ pub mod embedded_assistant_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Initiates or continues a conversation with the embedded assistant service.
         /// Each call performs one round-trip, sending an audio request to the service
         /// and receiving the audio response. Uses bidirectional streaming to receive
@@ -487,7 +503,7 @@ pub mod embedded_assistant_client {
         pub async fn converse(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::ConverseRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::ConverseResponse>>,
             tonic::Status,
         > {
@@ -504,7 +520,15 @@ pub mod embedded_assistant_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.assistant.embedded.v1alpha1.EmbeddedAssistant/Converse",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.assistant.embedded.v1alpha1.EmbeddedAssistant",
+                        "Converse",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }

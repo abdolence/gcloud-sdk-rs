@@ -1638,7 +1638,7 @@ pub mod company_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1694,11 +1694,27 @@ pub mod company_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new company entity.
         pub async fn create_company(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCompanyRequest>,
-        ) -> Result<tonic::Response<super::Company>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Company>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1712,13 +1728,21 @@ pub mod company_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.CompanyService/CreateCompany",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.CompanyService",
+                        "CreateCompany",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves specified company.
         pub async fn get_company(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCompanyRequest>,
-        ) -> Result<tonic::Response<super::Company>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Company>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1732,13 +1756,21 @@ pub mod company_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.CompanyService/GetCompany",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.CompanyService",
+                        "GetCompany",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates specified company.
         pub async fn update_company(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCompanyRequest>,
-        ) -> Result<tonic::Response<super::Company>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Company>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1752,14 +1784,22 @@ pub mod company_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.CompanyService/UpdateCompany",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.CompanyService",
+                        "UpdateCompany",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes specified company.
         /// Prerequisite: The company has no jobs associated with it.
         pub async fn delete_company(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCompanyRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1773,13 +1813,24 @@ pub mod company_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.CompanyService/DeleteCompany",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.CompanyService",
+                        "DeleteCompany",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all companies associated with the project.
         pub async fn list_companies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCompaniesRequest>,
-        ) -> Result<tonic::Response<super::ListCompaniesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCompaniesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1793,7 +1844,15 @@ pub mod company_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.CompanyService/ListCompanies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.CompanyService",
+                        "ListCompanies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2010,7 +2069,7 @@ pub mod completion_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2066,12 +2125,31 @@ pub mod completion_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Completes the specified prefix with keyword suggestions.
         /// Intended for use by a job search auto-complete search box.
         pub async fn complete_query(
             &mut self,
             request: impl tonic::IntoRequest<super::CompleteQueryRequest>,
-        ) -> Result<tonic::Response<super::CompleteQueryResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CompleteQueryResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2085,7 +2163,15 @@ pub mod completion_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.Completion/CompleteQuery",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.Completion",
+                        "CompleteQuery",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2349,7 +2435,7 @@ pub mod event_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2405,6 +2491,22 @@ pub mod event_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Report events issued when end user interacts with customer's application
         /// that uses Cloud Talent Solution. You may inspect the created events in
         /// [self service
@@ -2415,7 +2517,7 @@ pub mod event_service_client {
         pub async fn create_client_event(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateClientEventRequest>,
-        ) -> Result<tonic::Response<super::ClientEvent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ClientEvent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2429,7 +2531,15 @@ pub mod event_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.EventService/CreateClientEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.EventService",
+                        "CreateClientEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4342,7 +4452,7 @@ pub mod job_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4398,6 +4508,22 @@ pub mod job_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new job.
         ///
         /// Typically, the job becomes searchable within 10 seconds, but it may take
@@ -4405,7 +4531,7 @@ pub mod job_service_client {
         pub async fn create_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4419,13 +4545,21 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/CreateJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "CreateJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Begins executing a batch create jobs operation.
         pub async fn batch_create_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateJobsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4442,14 +4576,22 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/BatchCreateJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "BatchCreateJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified job, whose status is OPEN or recently EXPIRED
         /// within the last 90 days.
         pub async fn get_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4463,7 +4605,12 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/GetJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.talent.v4beta1.JobService", "GetJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates specified job.
         ///
@@ -4472,7 +4619,7 @@ pub mod job_service_client {
         pub async fn update_job(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4486,13 +4633,21 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/UpdateJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "UpdateJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Begins executing a batch update jobs operation.
         pub async fn batch_update_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchUpdateJobsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4509,7 +4664,15 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/BatchUpdateJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "BatchUpdateJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified job.
         ///
@@ -4518,7 +4681,7 @@ pub mod job_service_client {
         pub async fn delete_job(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteJobRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4532,13 +4695,21 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/DeleteJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "DeleteJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by filter.
         pub async fn batch_delete_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchDeleteJobsRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4552,13 +4723,24 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/BatchDeleteJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "BatchDeleteJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists jobs by filter.
         pub async fn list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
-        ) -> Result<tonic::Response<super::ListJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4572,7 +4754,12 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/ListJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.talent.v4beta1.JobService", "ListJobs"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for jobs using the provided
         /// [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
@@ -4584,7 +4771,10 @@ pub mod job_service_client {
         pub async fn search_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchJobsRequest>,
-        ) -> Result<tonic::Response<super::SearchJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4598,7 +4788,15 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/SearchJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "SearchJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for jobs using the provided
         /// [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
@@ -4615,7 +4813,10 @@ pub mod job_service_client {
         pub async fn search_jobs_for_alert(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchJobsRequest>,
-        ) -> Result<tonic::Response<super::SearchJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4629,7 +4830,15 @@ pub mod job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.JobService/SearchJobsForAlert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.JobService",
+                        "SearchJobsForAlert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4828,7 +5037,7 @@ pub mod tenant_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4884,11 +5093,27 @@ pub mod tenant_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new tenant entity.
         pub async fn create_tenant(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTenantRequest>,
-        ) -> Result<tonic::Response<super::Tenant>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Tenant>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4902,13 +5127,21 @@ pub mod tenant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.TenantService/CreateTenant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.TenantService",
+                        "CreateTenant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves specified tenant.
         pub async fn get_tenant(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTenantRequest>,
-        ) -> Result<tonic::Response<super::Tenant>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Tenant>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4922,13 +5155,21 @@ pub mod tenant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.TenantService/GetTenant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.TenantService",
+                        "GetTenant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates specified tenant.
         pub async fn update_tenant(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTenantRequest>,
-        ) -> Result<tonic::Response<super::Tenant>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Tenant>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4942,13 +5183,21 @@ pub mod tenant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.TenantService/UpdateTenant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.TenantService",
+                        "UpdateTenant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes specified tenant.
         pub async fn delete_tenant(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTenantRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4962,13 +5211,24 @@ pub mod tenant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.TenantService/DeleteTenant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.TenantService",
+                        "DeleteTenant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all tenants associated with the project.
         pub async fn list_tenants(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTenantsRequest>,
-        ) -> Result<tonic::Response<super::ListTenantsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTenantsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4982,7 +5242,15 @@ pub mod tenant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.talent.v4beta1.TenantService/ListTenants",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.talent.v4beta1.TenantService",
+                        "ListTenants",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

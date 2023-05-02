@@ -1287,7 +1287,7 @@ pub mod cloud_filestore_manager_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1343,12 +1343,31 @@ pub mod cloud_filestore_manager_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all instances in a project for either a specified location
         /// or for all locations.
         pub async fn list_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstancesRequest>,
-        ) -> Result<tonic::Response<super::ListInstancesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstancesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1362,13 +1381,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/ListInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "ListInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a specific instance.
         pub async fn get_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Instance>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Instance>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1382,7 +1409,15 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/GetInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "GetInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an instance.
         /// When creating from a backup, the capacity of the new instance needs to be
@@ -1391,7 +1426,7 @@ pub mod cloud_filestore_manager_client {
         pub async fn create_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1408,13 +1443,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/CreateInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "CreateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the settings of a specific instance.
         pub async fn update_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1431,7 +1474,15 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/UpdateInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "UpdateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restores an existing instance's file share from a backup.
         ///
@@ -1441,7 +1492,7 @@ pub mod cloud_filestore_manager_client {
         pub async fn restore_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::RestoreInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1458,13 +1509,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/RestoreInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "RestoreInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Revert an existing instance's file system to a specified snapshot.
         pub async fn revert_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::RevertInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1481,13 +1540,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/RevertInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "RevertInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an instance.
         pub async fn delete_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1504,14 +1571,25 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/DeleteInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "DeleteInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all snapshots in a project for either a specified location
         /// or for all locations.
         pub async fn list_snapshots(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSnapshotsRequest>,
-        ) -> Result<tonic::Response<super::ListSnapshotsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSnapshotsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1525,13 +1603,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/ListSnapshots",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "ListSnapshots",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a specific snapshot.
         pub async fn get_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Snapshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Snapshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1545,13 +1631,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/GetSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "GetSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a snapshot.
         pub async fn create_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSnapshotRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1568,13 +1662,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/CreateSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "CreateSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a snapshot.
         pub async fn delete_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSnapshotRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1591,13 +1693,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/DeleteSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "DeleteSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the settings of a specific snapshot.
         pub async fn update_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSnapshotRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1614,14 +1724,25 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/UpdateSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "UpdateSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all backups in a project for either a specified location or for all
         /// locations.
         pub async fn list_backups(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBackupsRequest>,
-        ) -> Result<tonic::Response<super::ListBackupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1635,13 +1756,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/ListBackups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a specific backup.
         pub async fn get_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackupRequest>,
-        ) -> Result<tonic::Response<super::Backup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1655,13 +1784,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/GetBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "GetBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a backup.
         pub async fn create_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1678,13 +1815,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/CreateBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "CreateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a backup.
         pub async fn delete_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1701,13 +1846,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/DeleteBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the settings of a specific backup.
         pub async fn update_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1724,13 +1877,24 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/UpdateBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "UpdateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all shares for a specified instance.
         pub async fn list_shares(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSharesRequest>,
-        ) -> Result<tonic::Response<super::ListSharesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSharesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1744,13 +1908,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/ListShares",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "ListShares",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a specific share.
         pub async fn get_share(
             &mut self,
             request: impl tonic::IntoRequest<super::GetShareRequest>,
-        ) -> Result<tonic::Response<super::Share>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Share>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1764,13 +1936,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/GetShare",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "GetShare",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a share.
         pub async fn create_share(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateShareRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1787,13 +1967,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/CreateShare",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "CreateShare",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a share.
         pub async fn delete_share(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteShareRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1810,13 +1998,21 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/DeleteShare",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "DeleteShare",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the settings of a specific share.
         pub async fn update_share(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateShareRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1833,7 +2029,15 @@ pub mod cloud_filestore_manager_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.filestore.v1beta1.CloudFilestoreManager/UpdateShare",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1beta1.CloudFilestoreManager",
+                        "UpdateShare",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -749,7 +749,7 @@ pub mod annotation_service_v1_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -805,6 +805,22 @@ pub mod annotation_service_v1_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new annotation set. Caller must have WRITE permission for the
         /// associated dataset.
         ///
@@ -818,7 +834,7 @@ pub mod annotation_service_v1_client {
         pub async fn create_annotation_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAnnotationSetRequest>,
-        ) -> Result<tonic::Response<super::AnnotationSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AnnotationSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -832,14 +848,22 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/CreateAnnotationSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "CreateAnnotationSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an annotation set. Caller must have READ permission for
         /// the associated dataset.
         pub async fn get_annotation_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAnnotationSetRequest>,
-        ) -> Result<tonic::Response<super::AnnotationSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AnnotationSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -853,7 +877,15 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/GetAnnotationSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "GetAnnotationSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an annotation set. The update must respect all mutability
         /// restrictions and other invariants described on the annotation set resource.
@@ -861,7 +893,7 @@ pub mod annotation_service_v1_client {
         pub async fn update_annotation_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAnnotationSetRequest>,
-        ) -> Result<tonic::Response<super::AnnotationSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AnnotationSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -875,14 +907,22 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/UpdateAnnotationSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "UpdateAnnotationSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an annotation set. Caller must have WRITE permission
         /// for the associated annotation set.
         pub async fn delete_annotation_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAnnotationSetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -896,7 +936,15 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/DeleteAnnotationSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "DeleteAnnotationSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for annotation sets that match the given criteria. Annotation sets
         /// are returned in an unspecified order. This order is consistent, such that
@@ -906,7 +954,7 @@ pub mod annotation_service_v1_client {
         pub async fn search_annotation_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAnnotationSetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SearchAnnotationSetsResponse>,
             tonic::Status,
         > {
@@ -923,7 +971,15 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/SearchAnnotationSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "SearchAnnotationSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new annotation. Caller must have WRITE permission
         /// for the associated annotation set.
@@ -950,7 +1006,7 @@ pub mod annotation_service_v1_client {
         pub async fn create_annotation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAnnotationRequest>,
-        ) -> Result<tonic::Response<super::Annotation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Annotation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -964,7 +1020,15 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/CreateAnnotation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "CreateAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates one or more new annotations atomically. All annotations must
         /// belong to the same annotation set. Caller must have WRITE
@@ -983,7 +1047,7 @@ pub mod annotation_service_v1_client {
         pub async fn batch_create_annotations(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateAnnotationsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchCreateAnnotationsResponse>,
             tonic::Status,
         > {
@@ -1000,14 +1064,22 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/BatchCreateAnnotations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "BatchCreateAnnotations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an annotation. Caller must have READ permission
         /// for the associated annotation set.
         pub async fn get_annotation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAnnotationRequest>,
-        ) -> Result<tonic::Response<super::Annotation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Annotation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1021,14 +1093,22 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/GetAnnotation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "GetAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an annotation. Caller must have
         /// WRITE permission for the associated dataset.
         pub async fn update_annotation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAnnotationRequest>,
-        ) -> Result<tonic::Response<super::Annotation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Annotation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1042,14 +1122,22 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/UpdateAnnotation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "UpdateAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an annotation. Caller must have WRITE permission for
         /// the associated annotation set.
         pub async fn delete_annotation(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAnnotationRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1063,7 +1151,15 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/DeleteAnnotation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "DeleteAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for annotations that match the given criteria. Results are
         /// ordered by genomic coordinate (by reference sequence, then position).
@@ -1075,7 +1171,10 @@ pub mod annotation_service_v1_client {
         pub async fn search_annotations(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAnnotationsRequest>,
-        ) -> Result<tonic::Response<super::SearchAnnotationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchAnnotationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1089,7 +1188,15 @@ pub mod annotation_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/SearchAnnotations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.AnnotationServiceV1",
+                        "SearchAnnotations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1317,7 +1424,7 @@ pub mod dataset_service_v1_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1373,6 +1480,22 @@ pub mod dataset_service_v1_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists datasets within a project.
         ///
         /// For the definitions of datasets and other genomics resources, see
@@ -1381,7 +1504,10 @@ pub mod dataset_service_v1_client {
         pub async fn list_datasets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDatasetsRequest>,
-        ) -> Result<tonic::Response<super::ListDatasetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDatasetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1395,7 +1521,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/ListDatasets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "ListDatasets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new dataset.
         ///
@@ -1405,7 +1539,7 @@ pub mod dataset_service_v1_client {
         pub async fn create_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1419,7 +1553,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/CreateDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "CreateDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a dataset by ID.
         ///
@@ -1429,7 +1571,7 @@ pub mod dataset_service_v1_client {
         pub async fn get_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1443,7 +1585,12 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/GetDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.genomics.v1.DatasetServiceV1", "GetDataset"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a dataset.
         ///
@@ -1455,7 +1602,7 @@ pub mod dataset_service_v1_client {
         pub async fn update_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1469,7 +1616,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/UpdateDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "UpdateDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a dataset and all of its contents (all read group sets,
         /// reference sets, variant sets, call sets, annotation sets, etc.)
@@ -1484,7 +1639,7 @@ pub mod dataset_service_v1_client {
         pub async fn delete_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDatasetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1498,7 +1653,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/DeleteDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "DeleteDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Undeletes a dataset by restoring a dataset which was deleted via this API.
         ///
@@ -1510,7 +1673,7 @@ pub mod dataset_service_v1_client {
         pub async fn undelete_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeleteDatasetRequest>,
-        ) -> Result<tonic::Response<super::Dataset>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Dataset>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1524,7 +1687,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/UndeleteDataset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "UndeleteDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified dataset. Replaces any
         /// existing policy.
@@ -1540,7 +1711,7 @@ pub mod dataset_service_v1_client {
             request: impl tonic::IntoRequest<
                 super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1557,7 +1728,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for the dataset. This is empty if the
         /// policy or resource does not exist.
@@ -1573,7 +1752,7 @@ pub mod dataset_service_v1_client {
             request: impl tonic::IntoRequest<
                 super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1590,7 +1769,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         /// See <a href="/iam/docs/managing-policies#testing_permissions">Testing
@@ -1604,7 +1791,7 @@ pub mod dataset_service_v1_client {
             request: impl tonic::IntoRequest<
                 super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::iam::v1::TestIamPermissionsResponse>,
             tonic::Status,
         > {
@@ -1621,7 +1808,15 @@ pub mod dataset_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.DatasetServiceV1",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2428,7 +2623,7 @@ pub mod streaming_read_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2484,12 +2679,28 @@ pub mod streaming_read_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns a stream of all the reads matching the search request, ordered
         /// by reference name, position, and ID.
         pub async fn stream_reads(
             &mut self,
             request: impl tonic::IntoRequest<super::StreamReadsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::StreamReadsResponse>>,
             tonic::Status,
         > {
@@ -2506,7 +2717,15 @@ pub mod streaming_read_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.StreamingReadService/StreamReads",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.StreamingReadService",
+                        "StreamReads",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
     }
 }
@@ -2524,7 +2743,7 @@ pub mod read_service_v1_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2580,6 +2799,22 @@ pub mod read_service_v1_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates read group sets by asynchronously importing the provided
         /// information.
         ///
@@ -2601,7 +2836,7 @@ pub mod read_service_v1_client {
         pub async fn import_read_group_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportReadGroupSetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2618,7 +2853,15 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/ImportReadGroupSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReadServiceV1",
+                        "ImportReadGroupSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports a read group set to a BAM file in Google Cloud Storage.
         ///
@@ -2633,7 +2876,7 @@ pub mod read_service_v1_client {
         pub async fn export_read_group_set(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportReadGroupSetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2650,7 +2893,15 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/ExportReadGroupSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReadServiceV1",
+                        "ExportReadGroupSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for read group sets matching the criteria.
         ///
@@ -2663,7 +2914,10 @@ pub mod read_service_v1_client {
         pub async fn search_read_group_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchReadGroupSetsRequest>,
-        ) -> Result<tonic::Response<super::SearchReadGroupSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchReadGroupSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2677,7 +2931,15 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/SearchReadGroupSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReadServiceV1",
+                        "SearchReadGroupSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a read group set.
         ///
@@ -2689,7 +2951,7 @@ pub mod read_service_v1_client {
         pub async fn update_read_group_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateReadGroupSetRequest>,
-        ) -> Result<tonic::Response<super::ReadGroupSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ReadGroupSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2703,7 +2965,15 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/UpdateReadGroupSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReadServiceV1",
+                        "UpdateReadGroupSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a read group set.
         ///
@@ -2713,7 +2983,7 @@ pub mod read_service_v1_client {
         pub async fn delete_read_group_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteReadGroupSetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2727,7 +2997,15 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/DeleteReadGroupSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReadServiceV1",
+                        "DeleteReadGroupSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a read group set by ID.
         ///
@@ -2737,7 +3015,7 @@ pub mod read_service_v1_client {
         pub async fn get_read_group_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReadGroupSetRequest>,
-        ) -> Result<tonic::Response<super::ReadGroupSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ReadGroupSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2751,7 +3029,15 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/GetReadGroupSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReadServiceV1",
+                        "GetReadGroupSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists fixed width coverage buckets for a read group set, each of which
         /// correspond to a range of a reference sequence. Each bucket summarizes
@@ -2769,7 +3055,10 @@ pub mod read_service_v1_client {
         pub async fn list_coverage_buckets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCoverageBucketsRequest>,
-        ) -> Result<tonic::Response<super::ListCoverageBucketsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCoverageBucketsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2783,7 +3072,15 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/ListCoverageBuckets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReadServiceV1",
+                        "ListCoverageBuckets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of reads for one or more read group sets.
         ///
@@ -2812,7 +3109,10 @@ pub mod read_service_v1_client {
         pub async fn search_reads(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchReadsRequest>,
-        ) -> Result<tonic::Response<super::SearchReadsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchReadsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2826,7 +3126,12 @@ pub mod read_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/SearchReads",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.genomics.v1.ReadServiceV1", "SearchReads"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3057,7 +3362,7 @@ pub mod reference_service_v1_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3113,6 +3418,22 @@ pub mod reference_service_v1_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Searches for reference sets which match the given criteria.
         ///
         /// For the definitions of references and other genomics resources, see
@@ -3124,7 +3445,10 @@ pub mod reference_service_v1_client {
         pub async fn search_reference_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchReferenceSetsRequest>,
-        ) -> Result<tonic::Response<super::SearchReferenceSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchReferenceSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3138,7 +3462,15 @@ pub mod reference_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/SearchReferenceSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReferenceServiceV1",
+                        "SearchReferenceSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a reference set.
         ///
@@ -3151,7 +3483,7 @@ pub mod reference_service_v1_client {
         pub async fn get_reference_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReferenceSetRequest>,
-        ) -> Result<tonic::Response<super::ReferenceSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ReferenceSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3165,7 +3497,15 @@ pub mod reference_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/GetReferenceSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReferenceServiceV1",
+                        "GetReferenceSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for references which match the given criteria.
         ///
@@ -3178,7 +3518,10 @@ pub mod reference_service_v1_client {
         pub async fn search_references(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchReferencesRequest>,
-        ) -> Result<tonic::Response<super::SearchReferencesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchReferencesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3192,7 +3535,15 @@ pub mod reference_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/SearchReferences",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReferenceServiceV1",
+                        "SearchReferences",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a reference.
         ///
@@ -3205,7 +3556,7 @@ pub mod reference_service_v1_client {
         pub async fn get_reference(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReferenceRequest>,
-        ) -> Result<tonic::Response<super::Reference>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reference>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3219,7 +3570,15 @@ pub mod reference_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/GetReference",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.ReferenceServiceV1",
+                        "GetReference",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the bases in a reference, optionally restricted to a range.
         ///
@@ -3232,7 +3591,10 @@ pub mod reference_service_v1_client {
         pub async fn list_bases(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBasesRequest>,
-        ) -> Result<tonic::Response<super::ListBasesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBasesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3246,7 +3608,12 @@ pub mod reference_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/ListBases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.genomics.v1.ReferenceServiceV1", "ListBases"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4049,7 +4416,7 @@ pub mod streaming_variant_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4107,12 +4474,28 @@ pub mod streaming_variant_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns a stream of all the variants matching the search request, ordered
         /// by reference name, position, and ID.
         pub async fn stream_variants(
             &mut self,
             request: impl tonic::IntoRequest<super::StreamVariantsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::StreamVariantsResponse>>,
             tonic::Status,
         > {
@@ -4129,7 +4512,15 @@ pub mod streaming_variant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.StreamingVariantService/StreamVariants",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.StreamingVariantService",
+                        "StreamVariants",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
     }
 }
@@ -4146,7 +4537,7 @@ pub mod variant_service_v1_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4202,6 +4593,22 @@ pub mod variant_service_v1_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates variant data by asynchronously importing the provided information.
         ///
         /// For the definitions of variant sets and other genomics resources, see
@@ -4223,7 +4630,7 @@ pub mod variant_service_v1_client {
         pub async fn import_variants(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportVariantsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4240,7 +4647,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/ImportVariants",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "ImportVariants",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new variant set.
         ///
@@ -4254,7 +4669,7 @@ pub mod variant_service_v1_client {
         pub async fn create_variant_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateVariantSetRequest>,
-        ) -> Result<tonic::Response<super::VariantSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VariantSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4268,7 +4683,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/CreateVariantSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "CreateVariantSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports variant set data to an external destination.
         ///
@@ -4278,7 +4701,7 @@ pub mod variant_service_v1_client {
         pub async fn export_variant_set(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportVariantSetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -4295,7 +4718,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/ExportVariantSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "ExportVariantSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a variant set by ID.
         ///
@@ -4305,7 +4736,7 @@ pub mod variant_service_v1_client {
         pub async fn get_variant_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVariantSetRequest>,
-        ) -> Result<tonic::Response<super::VariantSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VariantSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4319,7 +4750,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/GetVariantSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "GetVariantSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a list of all variant sets matching search criteria.
         ///
@@ -4332,7 +4771,10 @@ pub mod variant_service_v1_client {
         pub async fn search_variant_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchVariantSetsRequest>,
-        ) -> Result<tonic::Response<super::SearchVariantSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchVariantSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4346,7 +4788,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/SearchVariantSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "SearchVariantSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a variant set including all variants, call sets, and calls within.
         /// This is not reversible.
@@ -4357,7 +4807,7 @@ pub mod variant_service_v1_client {
         pub async fn delete_variant_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteVariantSetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4371,7 +4821,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/DeleteVariantSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "DeleteVariantSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a variant set using patch semantics.
         ///
@@ -4381,7 +4839,7 @@ pub mod variant_service_v1_client {
         pub async fn update_variant_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateVariantSetRequest>,
-        ) -> Result<tonic::Response<super::VariantSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VariantSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4395,7 +4853,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/UpdateVariantSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "UpdateVariantSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of variants matching the criteria.
         ///
@@ -4408,7 +4874,10 @@ pub mod variant_service_v1_client {
         pub async fn search_variants(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchVariantsRequest>,
-        ) -> Result<tonic::Response<super::SearchVariantsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchVariantsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4422,7 +4891,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/SearchVariants",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "SearchVariants",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new variant.
         ///
@@ -4432,7 +4909,7 @@ pub mod variant_service_v1_client {
         pub async fn create_variant(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateVariantRequest>,
-        ) -> Result<tonic::Response<super::Variant>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Variant>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4446,7 +4923,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/CreateVariant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "CreateVariant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a variant.
         ///
@@ -4459,7 +4944,7 @@ pub mod variant_service_v1_client {
         pub async fn update_variant(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateVariantRequest>,
-        ) -> Result<tonic::Response<super::Variant>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Variant>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4473,7 +4958,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/UpdateVariant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "UpdateVariant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a variant.
         ///
@@ -4483,7 +4976,7 @@ pub mod variant_service_v1_client {
         pub async fn delete_variant(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteVariantRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4497,7 +4990,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/DeleteVariant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "DeleteVariant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a variant by ID.
         ///
@@ -4507,7 +5008,7 @@ pub mod variant_service_v1_client {
         pub async fn get_variant(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVariantRequest>,
-        ) -> Result<tonic::Response<super::Variant>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Variant>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4521,7 +5022,12 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/GetVariant",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.genomics.v1.VariantServiceV1", "GetVariant"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Merges the given variants with existing variants.
         ///
@@ -4617,7 +5123,7 @@ pub mod variant_service_v1_client {
         pub async fn merge_variants(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeVariantsRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4631,7 +5137,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/MergeVariants",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "MergeVariants",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a list of call sets matching the criteria.
         ///
@@ -4644,7 +5158,10 @@ pub mod variant_service_v1_client {
         pub async fn search_call_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchCallSetsRequest>,
-        ) -> Result<tonic::Response<super::SearchCallSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchCallSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4658,7 +5175,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/SearchCallSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "SearchCallSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new call set.
         ///
@@ -4668,7 +5193,7 @@ pub mod variant_service_v1_client {
         pub async fn create_call_set(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCallSetRequest>,
-        ) -> Result<tonic::Response<super::CallSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CallSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4682,7 +5207,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/CreateCallSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "CreateCallSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a call set.
         ///
@@ -4694,7 +5227,7 @@ pub mod variant_service_v1_client {
         pub async fn update_call_set(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCallSetRequest>,
-        ) -> Result<tonic::Response<super::CallSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CallSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4708,7 +5241,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/UpdateCallSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "UpdateCallSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a call set.
         ///
@@ -4718,7 +5259,7 @@ pub mod variant_service_v1_client {
         pub async fn delete_call_set(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCallSetRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4732,7 +5273,15 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/DeleteCallSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.genomics.v1.VariantServiceV1",
+                        "DeleteCallSet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a call set by ID.
         ///
@@ -4742,7 +5291,7 @@ pub mod variant_service_v1_client {
         pub async fn get_call_set(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCallSetRequest>,
-        ) -> Result<tonic::Response<super::CallSet>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CallSet>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4756,7 +5305,12 @@ pub mod variant_service_v1_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/GetCallSet",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.genomics.v1.VariantServiceV1", "GetCallSet"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

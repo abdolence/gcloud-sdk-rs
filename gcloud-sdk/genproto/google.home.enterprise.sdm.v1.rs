@@ -218,7 +218,7 @@ pub mod smart_device_management_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -276,11 +276,27 @@ pub mod smart_device_management_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets a device managed by the enterprise.
         pub async fn get_device(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDeviceRequest>,
-        ) -> Result<tonic::Response<super::Device>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Device>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -294,13 +310,24 @@ pub mod smart_device_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.enterprise.sdm.v1.SmartDeviceManagementService/GetDevice",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.home.enterprise.sdm.v1.SmartDeviceManagementService",
+                        "GetDevice",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists devices managed by the enterprise.
         pub async fn list_devices(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDevicesRequest>,
-        ) -> Result<tonic::Response<super::ListDevicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListDevicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -314,13 +341,21 @@ pub mod smart_device_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.enterprise.sdm.v1.SmartDeviceManagementService/ListDevices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.home.enterprise.sdm.v1.SmartDeviceManagementService",
+                        "ListDevices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Executes a command to device managed by the enterprise.
         pub async fn execute_device_command(
             &mut self,
             request: impl tonic::IntoRequest<super::ExecuteDeviceCommandRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ExecuteDeviceCommandResponse>,
             tonic::Status,
         > {
@@ -337,13 +372,21 @@ pub mod smart_device_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.enterprise.sdm.v1.SmartDeviceManagementService/ExecuteDeviceCommand",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.home.enterprise.sdm.v1.SmartDeviceManagementService",
+                        "ExecuteDeviceCommand",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a structure managed by the enterprise.
         pub async fn get_structure(
             &mut self,
             request: impl tonic::IntoRequest<super::GetStructureRequest>,
-        ) -> Result<tonic::Response<super::Structure>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Structure>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -357,13 +400,24 @@ pub mod smart_device_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.enterprise.sdm.v1.SmartDeviceManagementService/GetStructure",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.home.enterprise.sdm.v1.SmartDeviceManagementService",
+                        "GetStructure",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists structures managed by the enterprise.
         pub async fn list_structures(
             &mut self,
             request: impl tonic::IntoRequest<super::ListStructuresRequest>,
-        ) -> Result<tonic::Response<super::ListStructuresResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListStructuresResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -377,13 +431,21 @@ pub mod smart_device_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.enterprise.sdm.v1.SmartDeviceManagementService/ListStructures",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.home.enterprise.sdm.v1.SmartDeviceManagementService",
+                        "ListStructures",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a room managed by the enterprise.
         pub async fn get_room(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRoomRequest>,
-        ) -> Result<tonic::Response<super::Room>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Room>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -397,13 +459,24 @@ pub mod smart_device_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.enterprise.sdm.v1.SmartDeviceManagementService/GetRoom",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.home.enterprise.sdm.v1.SmartDeviceManagementService",
+                        "GetRoom",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists rooms managed by the enterprise.
         pub async fn list_rooms(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRoomsRequest>,
-        ) -> Result<tonic::Response<super::ListRoomsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRoomsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -417,7 +490,15 @@ pub mod smart_device_management_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.enterprise.sdm.v1.SmartDeviceManagementService/ListRooms",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.home.enterprise.sdm.v1.SmartDeviceManagementService",
+                        "ListRooms",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -2158,7 +2158,7 @@ pub mod connectors_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2214,11 +2214,30 @@ pub mod connectors_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists Connections in a given project and location.
         pub async fn list_connections(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConnectionsRequest>,
-        ) -> Result<tonic::Response<super::ListConnectionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListConnectionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2232,13 +2251,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/ListConnections",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "ListConnections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Connection.
         pub async fn get_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConnectionRequest>,
-        ) -> Result<tonic::Response<super::Connection>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Connection>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2252,13 +2279,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetConnection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "GetConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Connection in a given project and location.
         pub async fn create_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConnectionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2275,13 +2310,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/CreateConnection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "CreateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Connection.
         pub async fn update_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConnectionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2298,13 +2341,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/UpdateConnection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "UpdateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Connection.
         pub async fn delete_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteConnectionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2321,13 +2372,24 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/DeleteConnection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "DeleteConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Providers in a given project and location.
         pub async fn list_providers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProvidersRequest>,
-        ) -> Result<tonic::Response<super::ListProvidersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListProvidersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2341,13 +2403,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/ListProviders",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "ListProviders",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a provider.
         pub async fn get_provider(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProviderRequest>,
-        ) -> Result<tonic::Response<super::Provider>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Provider>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2361,13 +2431,24 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetProvider",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "GetProvider",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Connectors in a given project and location.
         pub async fn list_connectors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConnectorsRequest>,
-        ) -> Result<tonic::Response<super::ListConnectorsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListConnectorsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2381,13 +2462,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/ListConnectors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "ListConnectors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Connector.
         pub async fn get_connector(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConnectorRequest>,
-        ) -> Result<tonic::Response<super::Connector>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Connector>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2401,13 +2490,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetConnector",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "GetConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Connector Versions in a given project and location.
         pub async fn list_connector_versions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConnectorVersionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListConnectorVersionsResponse>,
             tonic::Status,
         > {
@@ -2424,13 +2521,24 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/ListConnectorVersions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "ListConnectorVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single connector version.
         pub async fn get_connector_version(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConnectorVersionRequest>,
-        ) -> Result<tonic::Response<super::ConnectorVersion>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConnectorVersion>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2444,14 +2552,25 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetConnectorVersion",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "GetConnectorVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets schema metadata of a connection.
         /// SchemaMetadata is a singleton resource for each connection.
         pub async fn get_connection_schema_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConnectionSchemaMetadataRequest>,
-        ) -> Result<tonic::Response<super::ConnectionSchemaMetadata>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ConnectionSchemaMetadata>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2465,7 +2584,15 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetConnectionSchemaMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "GetConnectionSchemaMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Refresh runtime schema of a connection.
         pub async fn refresh_connection_schema_metadata(
@@ -2473,7 +2600,7 @@ pub mod connectors_client {
             request: impl tonic::IntoRequest<
                 super::RefreshConnectionSchemaMetadataRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2490,13 +2617,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/RefreshConnectionSchemaMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "RefreshConnectionSchemaMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List schema of a runtime entities filtered by entity name.
         pub async fn list_runtime_entity_schemas(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRuntimeEntitySchemasRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListRuntimeEntitySchemasResponse>,
             tonic::Status,
         > {
@@ -2513,13 +2648,21 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/ListRuntimeEntitySchemas",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "ListRuntimeEntitySchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List schema of a runtime actions filtered by action name.
         pub async fn list_runtime_action_schemas(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRuntimeActionSchemasRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListRuntimeActionSchemasResponse>,
             tonic::Status,
         > {
@@ -2536,14 +2679,22 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/ListRuntimeActionSchemas",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "ListRuntimeActionSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the runtimeConfig of a location.
         /// RuntimeConfig is a singleton resource for each location.
         pub async fn get_runtime_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRuntimeConfigRequest>,
-        ) -> Result<tonic::Response<super::RuntimeConfig>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RuntimeConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2557,14 +2708,22 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetRuntimeConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "GetRuntimeConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// GetGlobalSettings gets settings of a project.
         /// GlobalSettings is a singleton resource.
         pub async fn get_global_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGlobalSettingsRequest>,
-        ) -> Result<tonic::Response<super::Settings>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Settings>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2578,7 +2737,15 @@ pub mod connectors_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.connectors.v1.Connectors/GetGlobalSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.connectors.v1.Connectors",
+                        "GetGlobalSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

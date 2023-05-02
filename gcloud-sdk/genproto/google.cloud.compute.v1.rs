@@ -41085,7 +41085,7 @@ pub mod accelerator_types_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -41141,13 +41141,29 @@ pub mod accelerator_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of accelerator types.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListAcceleratorTypesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::AcceleratorTypeAggregatedList>,
             tonic::Status,
         > {
@@ -41164,13 +41180,24 @@ pub mod accelerator_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.AcceleratorTypes/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.AcceleratorTypes",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified accelerator type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAcceleratorTypeRequest>,
-        ) -> Result<tonic::Response<super::AcceleratorType>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AcceleratorType>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -41184,13 +41211,21 @@ pub mod accelerator_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.AcceleratorTypes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.AcceleratorTypes", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of accelerator types that are available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAcceleratorTypesRequest>,
-        ) -> Result<tonic::Response<super::AcceleratorTypeList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AcceleratorTypeList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -41204,7 +41239,12 @@ pub mod accelerator_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.AcceleratorTypes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.AcceleratorTypes", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -41222,7 +41262,7 @@ pub mod addresses_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -41278,11 +41318,30 @@ pub mod addresses_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of addresses.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListAddressesRequest>,
-        ) -> Result<tonic::Response<super::AddressAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AddressAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -41296,13 +41355,21 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Addresses/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Addresses",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified address resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41316,13 +41383,16 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Addresses/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Addresses", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified address resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAddressRequest>,
-        ) -> Result<tonic::Response<super::Address>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Address>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41336,13 +41406,16 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Addresses/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Addresses", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an address resource in the specified project by using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41356,13 +41429,16 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Addresses/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Addresses", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of addresses contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAddressesRequest>,
-        ) -> Result<tonic::Response<super::AddressList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AddressList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41376,13 +41452,16 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Addresses/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Addresses", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on an Address. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41396,7 +41475,12 @@ pub mod addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Addresses/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Addresses", "SetLabels"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -41414,7 +41498,7 @@ pub mod autoscalers_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -41470,11 +41554,30 @@ pub mod autoscalers_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of autoscalers.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListAutoscalersRequest>,
-        ) -> Result<tonic::Response<super::AutoscalerAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AutoscalerAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -41488,13 +41591,21 @@ pub mod autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Autoscalers/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Autoscalers",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified autoscaler.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41508,13 +41619,18 @@ pub mod autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Autoscalers/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Autoscalers", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified autoscaler resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Autoscaler>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Autoscaler>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41528,13 +41644,16 @@ pub mod autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Autoscalers/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Autoscalers", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an autoscaler in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41548,13 +41667,18 @@ pub mod autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Autoscalers/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Autoscalers", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of autoscalers contained within the specified zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAutoscalersRequest>,
-        ) -> Result<tonic::Response<super::AutoscalerList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AutoscalerList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41568,13 +41692,16 @@ pub mod autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Autoscalers/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Autoscalers", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an autoscaler in the specified project using the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41588,13 +41715,16 @@ pub mod autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Autoscalers/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Autoscalers", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an autoscaler in the specified project using the data included in the request.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41608,7 +41738,12 @@ pub mod autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Autoscalers/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Autoscalers", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -41626,7 +41761,7 @@ pub mod backend_buckets_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -41682,11 +41817,27 @@ pub mod backend_buckets_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds a key for validating requests with signed URLs for this backend bucket.
         pub async fn add_signed_url_key(
             &mut self,
             request: impl tonic::IntoRequest<super::AddSignedUrlKeyBackendBucketRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41700,13 +41851,21 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/AddSignedUrlKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendBuckets",
+                        "AddSignedUrlKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified BackendBucket resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBackendBucketRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41720,7 +41879,12 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendBuckets", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a key for validating requests with signed URLs for this backend bucket.
         pub async fn delete_signed_url_key(
@@ -41728,7 +41892,7 @@ pub mod backend_buckets_client {
             request: impl tonic::IntoRequest<
                 super::DeleteSignedUrlKeyBackendBucketRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41742,13 +41906,21 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/DeleteSignedUrlKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendBuckets",
+                        "DeleteSignedUrlKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified BackendBucket resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackendBucketRequest>,
-        ) -> Result<tonic::Response<super::BackendBucket>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BackendBucket>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41762,13 +41934,18 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendBuckets", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a BackendBucket resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertBackendBucketRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41782,13 +41959,21 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendBuckets", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of BackendBucket resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBackendBucketsRequest>,
-        ) -> Result<tonic::Response<super::BackendBucketList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BackendBucketList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -41802,13 +41987,18 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendBuckets", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified BackendBucket resource with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchBackendBucketRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41822,7 +42012,12 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendBuckets", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the edge security policy for the specified backend bucket.
         pub async fn set_edge_security_policy(
@@ -41830,7 +42025,7 @@ pub mod backend_buckets_client {
             request: impl tonic::IntoRequest<
                 super::SetEdgeSecurityPolicyBackendBucketRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41844,13 +42039,21 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/SetEdgeSecurityPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendBuckets",
+                        "SetEdgeSecurityPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified BackendBucket resource with the data included in the request.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBackendBucketRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41864,7 +42067,12 @@ pub mod backend_buckets_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendBuckets/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendBuckets", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -41882,7 +42090,7 @@ pub mod backend_services_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -41938,11 +42146,27 @@ pub mod backend_services_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds a key for validating requests with signed URLs for this backend service.
         pub async fn add_signed_url_key(
             &mut self,
             request: impl tonic::IntoRequest<super::AddSignedUrlKeyBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41956,13 +42180,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/AddSignedUrlKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "AddSignedUrlKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of all BackendService resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListBackendServicesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BackendServiceAggregatedList>,
             tonic::Status,
         > {
@@ -41979,13 +42211,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified BackendService resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -41999,7 +42239,12 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendServices", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a key for validating requests with signed URLs for this backend service.
         pub async fn delete_signed_url_key(
@@ -42007,7 +42252,7 @@ pub mod backend_services_client {
             request: impl tonic::IntoRequest<
                 super::DeleteSignedUrlKeyBackendServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42021,13 +42266,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/DeleteSignedUrlKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "DeleteSignedUrlKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified BackendService resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::BackendService>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BackendService>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42041,13 +42294,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendServices", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the most recent health check results for this BackendService. Example request body: { "group": "/zones/us-east1-b/instanceGroups/lb-backend-example" }
         pub async fn get_health(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHealthBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::BackendServiceGroupHealth>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BackendServiceGroupHealth>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42061,13 +42322,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/GetHealth",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "GetHealth",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42081,13 +42350,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a BackendService resource in the specified project using the data included in the request. For more information, see Backend services overview .
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42101,13 +42378,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendServices", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of BackendService resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBackendServicesRequest>,
-        ) -> Result<tonic::Response<super::BackendServiceList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BackendServiceList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42121,13 +42406,18 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendServices", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified BackendService resource with the data included in the request. For more information, see Backend services overview. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42141,7 +42431,12 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendServices", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the edge security policy for the specified backend service.
         pub async fn set_edge_security_policy(
@@ -42149,7 +42444,7 @@ pub mod backend_services_client {
             request: impl tonic::IntoRequest<
                 super::SetEdgeSecurityPolicyBackendServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42163,13 +42458,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/SetEdgeSecurityPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "SetEdgeSecurityPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42183,7 +42486,15 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the Google Cloud Armor security policy for the specified backend service. For more information, see Google Cloud Armor Overview
         pub async fn set_security_policy(
@@ -42191,7 +42502,7 @@ pub mod backend_services_client {
             request: impl tonic::IntoRequest<
                 super::SetSecurityPolicyBackendServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42205,13 +42516,21 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/SetSecurityPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.BackendServices",
+                        "SetSecurityPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified BackendService resource with the data included in the request. For more information, see Backend services overview.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42225,7 +42544,12 @@ pub mod backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.BackendServices/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.BackendServices", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -42243,7 +42567,7 @@ pub mod disk_types_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -42299,11 +42623,30 @@ pub mod disk_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of disk types.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListDiskTypesRequest>,
-        ) -> Result<tonic::Response<super::DiskTypeAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DiskTypeAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42317,13 +42660,21 @@ pub mod disk_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.DiskTypes/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.DiskTypes",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified disk type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiskTypeRequest>,
-        ) -> Result<tonic::Response<super::DiskType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DiskType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42337,13 +42688,16 @@ pub mod disk_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.DiskTypes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.DiskTypes", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of disk types available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDiskTypesRequest>,
-        ) -> Result<tonic::Response<super::DiskTypeList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DiskTypeList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42357,7 +42711,10 @@ pub mod disk_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.DiskTypes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.DiskTypes", "List"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -42375,7 +42732,7 @@ pub mod disks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -42431,11 +42788,27 @@ pub mod disks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds existing resource policies to a disk. You can only add one policy which will be applied to this disk for scheduling snapshot creation.
         pub async fn add_resource_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::AddResourcePoliciesDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42449,13 +42822,24 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/AddResourcePolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Disks",
+                        "AddResourcePolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an aggregated list of persistent disks.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListDisksRequest>,
-        ) -> Result<tonic::Response<super::DiskAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DiskAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42469,13 +42853,18 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Disks", "AggregatedList"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a snapshot of a specified persistent disk. For regular snapshot creation, consider using snapshots.insert instead, as that method supports more features, such as creating snapshots in a project different from the source disk project.
         pub async fn create_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSnapshotDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42489,13 +42878,18 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/CreateSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Disks", "CreateSnapshot"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified persistent disk. Deleting a disk removes its data permanently and is irreversible. However, deleting a disk does not delete any snapshots previously made from the disk. You must separately delete snapshots.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42509,13 +42903,16 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Disks", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified persistent disk.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiskRequest>,
-        ) -> Result<tonic::Response<super::Disk>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Disk>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42529,13 +42926,16 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Disks", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyDiskRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42549,13 +42949,18 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Disks", "GetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a persistent disk in the specified project using the data in the request. You can create a disk from a source (sourceImage, sourceSnapshot, or sourceDisk) or create an empty 500 GB data disk by omitting all properties. You can also create a disk that is larger than the default size by specifying the sizeGb property.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42569,13 +42974,16 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Disks", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of persistent disks contained within the specified zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDisksRequest>,
-        ) -> Result<tonic::Response<super::DiskList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DiskList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42589,13 +42997,16 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Disks", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Removes resource policies from a disk.
         pub async fn remove_resource_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveResourcePoliciesDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42609,13 +43020,21 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/RemoveResourcePolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Disks",
+                        "RemoveResourcePolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resizes the specified persistent disk. You can only increase the size of the disk.
         pub async fn resize(
             &mut self,
             request: impl tonic::IntoRequest<super::ResizeDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42629,13 +43048,16 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/Resize",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Disks", "Resize"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyDiskRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42649,13 +43071,18 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Disks", "SetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on a disk. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42669,13 +43096,19 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Disks", "SetLabels"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsDiskRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42689,13 +43122,21 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Disks",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified disk with the data included in the request. The update is performed only on selected fields included as part of update-mask. Only the following fields can be modified: user_license.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42709,7 +43150,10 @@ pub mod disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Disks/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Disks", "Update"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -42727,7 +43171,7 @@ pub mod external_vpn_gateways_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -42783,11 +43227,27 @@ pub mod external_vpn_gateways_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified externalVpnGateway.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteExternalVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42801,13 +43261,24 @@ pub mod external_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ExternalVpnGateways/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ExternalVpnGateways",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified externalVpnGateway. Get a list of available externalVpnGateways by making a list() request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetExternalVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::ExternalVpnGateway>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ExternalVpnGateway>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42821,13 +43292,18 @@ pub mod external_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ExternalVpnGateways/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ExternalVpnGateways", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a ExternalVpnGateway in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertExternalVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42841,13 +43317,24 @@ pub mod external_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ExternalVpnGateways/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ExternalVpnGateways",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of ExternalVpnGateway available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExternalVpnGatewaysRequest>,
-        ) -> Result<tonic::Response<super::ExternalVpnGatewayList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ExternalVpnGatewayList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42861,13 +43348,21 @@ pub mod external_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ExternalVpnGateways/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ExternalVpnGateways",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on an ExternalVpnGateway. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsExternalVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42881,7 +43376,15 @@ pub mod external_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ExternalVpnGateways/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ExternalVpnGateways",
+                        "SetLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -42889,7 +43392,10 @@ pub mod external_vpn_gateways_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsExternalVpnGatewayRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -42903,7 +43409,15 @@ pub mod external_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ExternalVpnGateways/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ExternalVpnGateways",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -42921,7 +43435,7 @@ pub mod firewall_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -42977,11 +43491,27 @@ pub mod firewall_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Inserts an association for the specified firewall policy.
         pub async fn add_association(
             &mut self,
             request: impl tonic::IntoRequest<super::AddAssociationFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -42995,13 +43525,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/AddAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "AddAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts a rule into a firewall policy.
         pub async fn add_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::AddRuleFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43015,13 +43553,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/AddRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "AddRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Copies rules to the specified firewall policy.
         pub async fn clone_rules(
             &mut self,
             request: impl tonic::IntoRequest<super::CloneRulesFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43035,13 +43581,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/CloneRules",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "CloneRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified policy.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43055,13 +43609,18 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.FirewallPolicies", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified firewall policy.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::FirewallPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FirewallPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43075,13 +43634,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.FirewallPolicies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an association with the specified name.
         pub async fn get_association(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAssociationFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::FirewallPolicyAssociation>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyAssociation>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -43095,13 +43662,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/GetAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "GetAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43115,13 +43690,24 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a rule of the specified priority.
         pub async fn get_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRuleFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::FirewallPolicyRule>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyRule>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -43135,13 +43721,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/GetRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "GetRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new policy in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43155,13 +43749,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.FirewallPolicies", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the policies that have been configured for the specified folder or organization.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFirewallPoliciesRequest>,
-        ) -> Result<tonic::Response<super::FirewallPolicyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -43175,7 +43777,12 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.FirewallPolicies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists associations of a specified target, i.e., organization or folder.
         pub async fn list_associations(
@@ -43183,7 +43790,7 @@ pub mod firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::ListAssociationsFirewallPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::FirewallPoliciesListAssociationsResponse>,
             tonic::Status,
         > {
@@ -43200,13 +43807,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/ListAssociations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "ListAssociations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Moves the specified firewall policy.
         pub async fn r#move(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43220,13 +43835,18 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/Move",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.FirewallPolicies", "Move"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified policy with the data included in the request.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43240,13 +43860,18 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.FirewallPolicies", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches a rule of the specified priority.
         pub async fn patch_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRuleFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43260,7 +43885,15 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/PatchRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "PatchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes an association for the specified firewall policy.
         pub async fn remove_association(
@@ -43268,7 +43901,7 @@ pub mod firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::RemoveAssociationFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43282,13 +43915,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/RemoveAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "RemoveAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a rule of the specified priority.
         pub async fn remove_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveRuleFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43302,13 +43943,21 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/RemoveRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "RemoveRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43322,7 +43971,15 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -43330,7 +43987,10 @@ pub mod firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -43344,7 +44004,15 @@ pub mod firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.FirewallPolicies/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.FirewallPolicies",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -43362,7 +44030,7 @@ pub mod firewalls_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -43418,11 +44086,27 @@ pub mod firewalls_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified firewall.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteFirewallRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43436,13 +44120,16 @@ pub mod firewalls_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Firewalls/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Firewalls", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified firewall.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFirewallRequest>,
-        ) -> Result<tonic::Response<super::Firewall>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Firewall>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43456,13 +44143,16 @@ pub mod firewalls_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Firewalls/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Firewalls", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a firewall rule in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertFirewallRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43476,13 +44166,16 @@ pub mod firewalls_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Firewalls/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Firewalls", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of firewall rules available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFirewallsRequest>,
-        ) -> Result<tonic::Response<super::FirewallList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FirewallList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43496,13 +44189,16 @@ pub mod firewalls_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Firewalls/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Firewalls", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified firewall rule with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchFirewallRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43516,13 +44212,16 @@ pub mod firewalls_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Firewalls/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Firewalls", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified firewall rule with the data included in the request. Note that all fields will be updated if using PUT, even fields that are not specified. To update individual fields, please use PATCH instead.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFirewallRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43536,7 +44235,10 @@ pub mod firewalls_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Firewalls/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Firewalls", "Update"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -43554,7 +44256,7 @@ pub mod forwarding_rules_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -43610,11 +44312,27 @@ pub mod forwarding_rules_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of forwarding rules.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListForwardingRulesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ForwardingRuleAggregatedList>,
             tonic::Status,
         > {
@@ -43631,13 +44349,21 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ForwardingRules",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified ForwardingRule resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43651,13 +44377,18 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ForwardingRules", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified ForwardingRule resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::ForwardingRule>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ForwardingRule>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43671,13 +44402,18 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ForwardingRules", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a ForwardingRule resource in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43691,13 +44427,21 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ForwardingRules", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of ForwardingRule resources available to the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListForwardingRulesRequest>,
-        ) -> Result<tonic::Response<super::ForwardingRuleList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ForwardingRuleList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -43711,13 +44455,18 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ForwardingRules", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified forwarding rule with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules. Currently, you can only patch the network_tier field.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43731,13 +44480,18 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ForwardingRules", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on the specified resource. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43751,13 +44505,21 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ForwardingRules",
+                        "SetLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes target URL for forwarding rule. The new target should be of the same type as the old target.
         pub async fn set_target(
             &mut self,
             request: impl tonic::IntoRequest<super::SetTargetForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43771,7 +44533,15 @@ pub mod forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ForwardingRules/SetTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ForwardingRules",
+                        "SetTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -43789,7 +44559,7 @@ pub mod global_addresses_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -43845,11 +44615,27 @@ pub mod global_addresses_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified address resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGlobalAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43863,13 +44649,18 @@ pub mod global_addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalAddresses/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalAddresses", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified address resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGlobalAddressRequest>,
-        ) -> Result<tonic::Response<super::Address>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Address>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43883,13 +44674,18 @@ pub mod global_addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalAddresses/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalAddresses", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an address resource in the specified project by using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertGlobalAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43903,13 +44699,18 @@ pub mod global_addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalAddresses/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalAddresses", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of global addresses.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGlobalAddressesRequest>,
-        ) -> Result<tonic::Response<super::AddressList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::AddressList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43923,13 +44724,18 @@ pub mod global_addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalAddresses/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalAddresses", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on a GlobalAddress. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsGlobalAddressRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -43943,7 +44749,15 @@ pub mod global_addresses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalAddresses/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalAddresses",
+                        "SetLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -43961,7 +44775,7 @@ pub mod global_forwarding_rules_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -44017,11 +44831,27 @@ pub mod global_forwarding_rules_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified GlobalForwardingRule resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGlobalForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44035,13 +44865,21 @@ pub mod global_forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalForwardingRules/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalForwardingRules",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified GlobalForwardingRule resource. Gets a list of available forwarding rules by making a list() request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGlobalForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::ForwardingRule>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ForwardingRule>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44055,13 +44893,21 @@ pub mod global_forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalForwardingRules/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalForwardingRules",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a GlobalForwardingRule resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertGlobalForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44075,13 +44921,24 @@ pub mod global_forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalForwardingRules/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalForwardingRules",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of GlobalForwardingRule resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGlobalForwardingRulesRequest>,
-        ) -> Result<tonic::Response<super::ForwardingRuleList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ForwardingRuleList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -44095,13 +44952,21 @@ pub mod global_forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalForwardingRules/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalForwardingRules",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified forwarding rule with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules. Currently, you can only patch the network_tier field.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchGlobalForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44115,13 +44980,21 @@ pub mod global_forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalForwardingRules/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalForwardingRules",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on the specified resource. To learn more about labels, read the Labeling resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsGlobalForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44135,13 +45008,21 @@ pub mod global_forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalForwardingRules/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalForwardingRules",
+                        "SetLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes target URL for the GlobalForwardingRule resource. The new target should be of the same type as the old target.
         pub async fn set_target(
             &mut self,
             request: impl tonic::IntoRequest<super::SetTargetGlobalForwardingRuleRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44155,7 +45036,15 @@ pub mod global_forwarding_rules_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalForwardingRules/SetTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalForwardingRules",
+                        "SetTarget",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -44173,7 +45062,7 @@ pub mod global_network_endpoint_groups_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -44231,13 +45120,29 @@ pub mod global_network_endpoint_groups_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Attach a network endpoint to the specified network endpoint group.
         pub async fn attach_network_endpoints(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44251,7 +45156,15 @@ pub mod global_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalNetworkEndpointGroups/AttachNetworkEndpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "AttachNetworkEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified network endpoint group.Note that the NEG cannot be deleted if there are backend services referencing it.
         pub async fn delete(
@@ -44259,7 +45172,7 @@ pub mod global_network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::DeleteGlobalNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44273,7 +45186,15 @@ pub mod global_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalNetworkEndpointGroups/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Detach the network endpoint from the specified network endpoint group.
         pub async fn detach_network_endpoints(
@@ -44281,7 +45202,7 @@ pub mod global_network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44295,13 +45216,24 @@ pub mod global_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalNetworkEndpointGroups/DetachNetworkEndpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "DetachNetworkEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified network endpoint group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGlobalNetworkEndpointGroupRequest>,
-        ) -> Result<tonic::Response<super::NetworkEndpointGroup>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkEndpointGroup>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -44315,7 +45247,15 @@ pub mod global_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalNetworkEndpointGroups/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a network endpoint group in the specified project using the parameters that are included in the request.
         pub async fn insert(
@@ -44323,7 +45263,7 @@ pub mod global_network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::InsertGlobalNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44337,7 +45277,15 @@ pub mod global_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalNetworkEndpointGroups/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of network endpoint groups that are located in the specified project.
         pub async fn list(
@@ -44345,7 +45293,10 @@ pub mod global_network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::ListGlobalNetworkEndpointGroupsRequest,
             >,
-        ) -> Result<tonic::Response<super::NetworkEndpointGroupList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkEndpointGroupList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -44359,7 +45310,15 @@ pub mod global_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalNetworkEndpointGroups/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the network endpoints in the specified network endpoint group.
         pub async fn list_network_endpoints(
@@ -44367,7 +45326,7 @@ pub mod global_network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::NetworkEndpointGroupsListNetworkEndpoints>,
             tonic::Status,
         > {
@@ -44384,7 +45343,15 @@ pub mod global_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalNetworkEndpointGroups/ListNetworkEndpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "ListNetworkEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -44402,7 +45369,7 @@ pub mod global_operations_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -44458,13 +45425,32 @@ pub mod global_operations_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of all operations.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListGlobalOperationsRequest,
             >,
-        ) -> Result<tonic::Response<super::OperationAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::OperationAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -44478,13 +45464,21 @@ pub mod global_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOperations/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalOperations",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified Operations resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteGlobalOperationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::DeleteGlobalOperationResponse>,
             tonic::Status,
         > {
@@ -44501,13 +45495,18 @@ pub mod global_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOperations/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalOperations", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified Operations resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGlobalOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44521,13 +45520,18 @@ pub mod global_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOperations/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalOperations", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of Operation resources contained within the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListGlobalOperationsRequest>,
-        ) -> Result<tonic::Response<super::OperationList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::OperationList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44541,13 +45545,18 @@ pub mod global_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOperations/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalOperations", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Waits for the specified Operation resource to return as `DONE` or for the request to approach the 2 minute deadline, and retrieves the specified Operation resource. This method differs from the `GET` method in that it waits for no more than the default deadline (2 minutes) and then returns the current state of the operation, which might be `DONE` or still in progress. This method is called on a best-effort basis. Specifically: - In uncommon cases, when the server is overloaded, the request might return before the default deadline is reached, or might return after zero seconds. - If the default deadline is reached, there is no guarantee that the operation is actually done when the method returns. Be prepared to retry if the operation is not `DONE`.
         pub async fn wait(
             &mut self,
             request: impl tonic::IntoRequest<super::WaitGlobalOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44561,7 +45570,12 @@ pub mod global_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOperations/Wait",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.GlobalOperations", "Wait"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -44579,7 +45593,7 @@ pub mod global_organization_operations_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -44637,13 +45651,29 @@ pub mod global_organization_operations_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified Operations resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::DeleteGlobalOrganizationOperationRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::DeleteGlobalOrganizationOperationResponse>,
             tonic::Status,
         > {
@@ -44660,7 +45690,15 @@ pub mod global_organization_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOrganizationOperations/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalOrganizationOperations",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified Operations resource. Gets a list of operations by making a `list()` request.
         pub async fn get(
@@ -44668,7 +45706,7 @@ pub mod global_organization_operations_client {
             request: impl tonic::IntoRequest<
                 super::GetGlobalOrganizationOperationRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44682,7 +45720,15 @@ pub mod global_organization_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOrganizationOperations/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalOrganizationOperations",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of Operation resources contained within the specified organization.
         pub async fn list(
@@ -44690,7 +45736,7 @@ pub mod global_organization_operations_client {
             request: impl tonic::IntoRequest<
                 super::ListGlobalOrganizationOperationsRequest,
             >,
-        ) -> Result<tonic::Response<super::OperationList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::OperationList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44704,7 +45750,15 @@ pub mod global_organization_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalOrganizationOperations/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalOrganizationOperations",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -44722,7 +45776,7 @@ pub mod global_public_delegated_prefixes_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -44780,13 +45834,29 @@ pub mod global_public_delegated_prefixes_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified global PublicDelegatedPrefix.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::DeleteGlobalPublicDelegatedPrefixeRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44800,7 +45870,15 @@ pub mod global_public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalPublicDelegatedPrefixes/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalPublicDelegatedPrefixes",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified global PublicDelegatedPrefix resource.
         pub async fn get(
@@ -44808,7 +45886,10 @@ pub mod global_public_delegated_prefixes_client {
             request: impl tonic::IntoRequest<
                 super::GetGlobalPublicDelegatedPrefixeRequest,
             >,
-        ) -> Result<tonic::Response<super::PublicDelegatedPrefix>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublicDelegatedPrefix>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -44822,7 +45903,15 @@ pub mod global_public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalPublicDelegatedPrefixes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalPublicDelegatedPrefixes",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a global PublicDelegatedPrefix in the specified project using the parameters that are included in the request.
         pub async fn insert(
@@ -44830,7 +45919,7 @@ pub mod global_public_delegated_prefixes_client {
             request: impl tonic::IntoRequest<
                 super::InsertGlobalPublicDelegatedPrefixeRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44844,7 +45933,15 @@ pub mod global_public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalPublicDelegatedPrefixes/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalPublicDelegatedPrefixes",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the global PublicDelegatedPrefixes for a project.
         pub async fn list(
@@ -44852,7 +45949,10 @@ pub mod global_public_delegated_prefixes_client {
             request: impl tonic::IntoRequest<
                 super::ListGlobalPublicDelegatedPrefixesRequest,
             >,
-        ) -> Result<tonic::Response<super::PublicDelegatedPrefixList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublicDelegatedPrefixList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -44866,7 +45966,15 @@ pub mod global_public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalPublicDelegatedPrefixes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalPublicDelegatedPrefixes",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified global PublicDelegatedPrefix resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
@@ -44874,7 +45982,7 @@ pub mod global_public_delegated_prefixes_client {
             request: impl tonic::IntoRequest<
                 super::PatchGlobalPublicDelegatedPrefixeRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -44888,7 +45996,15 @@ pub mod global_public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.GlobalPublicDelegatedPrefixes/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.GlobalPublicDelegatedPrefixes",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -44906,7 +46022,7 @@ pub mod health_checks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -44962,11 +46078,30 @@ pub mod health_checks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all HealthCheck resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListHealthChecksRequest>,
-        ) -> Result<tonic::Response<super::HealthChecksAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::HealthChecksAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -44980,13 +46115,21 @@ pub mod health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.HealthChecks/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.HealthChecks",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified HealthCheck resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45000,13 +46143,18 @@ pub mod health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.HealthChecks/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.HealthChecks", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified HealthCheck resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::HealthCheck>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::HealthCheck>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45020,13 +46168,16 @@ pub mod health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.HealthChecks/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.HealthChecks", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a HealthCheck resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45040,13 +46191,21 @@ pub mod health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.HealthChecks/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.HealthChecks", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of HealthCheck resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListHealthChecksRequest>,
-        ) -> Result<tonic::Response<super::HealthCheckList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::HealthCheckList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -45060,13 +46219,16 @@ pub mod health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.HealthChecks/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.HealthChecks", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a HealthCheck resource in the specified project using the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45080,13 +46242,18 @@ pub mod health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.HealthChecks/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.HealthChecks", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a HealthCheck resource in the specified project using the data included in the request.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45100,7 +46267,12 @@ pub mod health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.HealthChecks/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.HealthChecks", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -45118,7 +46290,7 @@ pub mod image_family_views_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -45174,11 +46346,30 @@ pub mod image_family_views_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the latest image that is part of an image family, is not deprecated and is rolled out in the specified zone.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetImageFamilyViewRequest>,
-        ) -> Result<tonic::Response<super::ImageFamilyView>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ImageFamilyView>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -45192,7 +46383,12 @@ pub mod image_family_views_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ImageFamilyViews/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ImageFamilyViews", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -45210,7 +46406,7 @@ pub mod images_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -45266,11 +46462,27 @@ pub mod images_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified image.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteImageRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45284,13 +46496,16 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Images", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the deprecation status of an image. If an empty request body is given, clears the deprecation status instead.
         pub async fn deprecate(
             &mut self,
             request: impl tonic::IntoRequest<super::DeprecateImageRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45304,13 +46519,16 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/Deprecate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Images", "Deprecate"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified image.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetImageRequest>,
-        ) -> Result<tonic::Response<super::Image>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Image>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45324,13 +46542,16 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Images", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the latest image that is part of an image family and is not deprecated. For more information on image families, see Public image families documentation.
         pub async fn get_from_family(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFromFamilyImageRequest>,
-        ) -> Result<tonic::Response<super::Image>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Image>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45344,13 +46565,18 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/GetFromFamily",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Images", "GetFromFamily"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyImageRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45364,13 +46590,18 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Images", "GetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an image in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertImageRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45384,13 +46615,16 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Images", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of custom images available to the specified project. Custom images are images you create that belong to your project. This method does not get any images that belong to other projects, including publicly-available images, like Debian 8. If you want to get a list of publicly-available images, use this method to make a request to the respective image project, such as debian-cloud or windows-cloud.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListImagesRequest>,
-        ) -> Result<tonic::Response<super::ImageList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ImageList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45404,13 +46638,16 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Images", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified image with the data included in the request. Only the following fields can be modified: family, description, deprecation status.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchImageRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45424,13 +46661,16 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Images", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyImageRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45444,13 +46684,18 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Images", "SetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on an image. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsImageRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45464,13 +46709,19 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Images", "SetLabels"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsImageRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -45484,7 +46735,15 @@ pub mod images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Images/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Images",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -45502,7 +46761,7 @@ pub mod instance_group_managers_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -45558,13 +46817,29 @@ pub mod instance_group_managers_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Flags the specified instances to be removed from the managed instance group. Abandoning an instance does not delete the instance, but it does remove the instance from any target pools that are applied by the managed instance group. This method reduces the targetSize of the managed instance group by the number of instances that you abandon. This operation is marked as DONE when the action is scheduled even if the instances have not yet been removed from the group. You must separately verify the status of the abandoning action with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
         pub async fn abandon_instances(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AbandonInstancesInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45578,7 +46853,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/AbandonInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "AbandonInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of managed instance groups and groups them by zone.
         pub async fn aggregated_list(
@@ -45586,7 +46869,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::AggregatedListInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstanceGroupManagerAggregatedList>,
             tonic::Status,
         > {
@@ -45603,7 +46886,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Applies changes to selected instances on the managed instance group. This method can be used to apply new overrides and/or new versions.
         pub async fn apply_updates_to_instances(
@@ -45611,7 +46902,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ApplyUpdatesToInstancesInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45625,7 +46916,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/ApplyUpdatesToInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "ApplyUpdatesToInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates instances with per-instance configurations in this managed instance group. Instances are created using the current instance template. The create instances operation is marked DONE if the createInstances request is successful. The underlying actions take additional time. You must separately verify the status of the creating or actions with the listmanagedinstances method.
         pub async fn create_instances(
@@ -45633,7 +46932,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::CreateInstancesInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45647,13 +46946,21 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/CreateInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "CreateInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified managed instance group and all of the instances in that group. Note that the instance group must not belong to a backend service. Read Deleting an instance group for more information.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceGroupManagerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45667,7 +46974,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Flags the specified instances in the managed instance group for immediate deletion. The instances are also removed from any target pools of which they were a member. This method reduces the targetSize of the managed instance group by the number of instances that you delete. This operation is marked as DONE when the action is scheduled even if the instances are still being deleted. You must separately verify the status of the deleting action with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
         pub async fn delete_instances(
@@ -45675,7 +46990,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::DeleteInstancesInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45689,7 +47004,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/DeleteInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "DeleteInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes selected per-instance configurations for the managed instance group.
         pub async fn delete_per_instance_configs(
@@ -45697,7 +47020,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::DeletePerInstanceConfigsInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45711,13 +47034,24 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/DeletePerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "DeletePerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all of the details about the specified managed instance group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceGroupManagerRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroupManager>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceGroupManager>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -45731,13 +47065,21 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a managed instance group using the information that you specify in the request. After the group is created, instances in the group are created using the specified instance template. This operation is marked as DONE when the group is created even if the instances in the group have not yet been created. You must separately verify the status of the individual instances with the listmanagedinstances method. A managed instance group can have up to 1000 VM instances per group. Please contact Cloud Support if you need an increase in this limit.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertInstanceGroupManagerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45751,13 +47093,24 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of managed instance groups that are contained within the specified project and zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstanceGroupManagersRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroupManagerList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceGroupManagerList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -45771,7 +47124,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all errors thrown by actions on instances for a given managed instance group. The filter and orderBy query parameters are not supported.
         pub async fn list_errors(
@@ -45779,7 +47140,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ListErrorsInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstanceGroupManagersListErrorsResponse>,
             tonic::Status,
         > {
@@ -45796,7 +47157,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/ListErrors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "ListErrors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all of the instances in the managed instance group. Each instance in the list has a currentAction, which indicates the action that the managed instance group is performing on the instance. For example, if the group is still creating an instance, the currentAction is CREATING. If a previous action failed, the list displays the errors for that failed action. The orderBy query parameter is not supported. The `pageToken` query parameter is supported only in the alpha and beta API and only if the group's `listManagedInstancesResults` field is set to `PAGINATED`.
         pub async fn list_managed_instances(
@@ -45804,7 +47173,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ListManagedInstancesInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstanceGroupManagersListManagedInstancesResponse>,
             tonic::Status,
         > {
@@ -45821,7 +47190,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/ListManagedInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "ListManagedInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all of the per-instance configurations defined for the managed instance group. The orderBy query parameter is not supported.
         pub async fn list_per_instance_configs(
@@ -45829,7 +47206,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ListPerInstanceConfigsInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstanceGroupManagersListPerInstanceConfigsResp>,
             tonic::Status,
         > {
@@ -45846,13 +47223,21 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/ListPerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "ListPerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a managed instance group using the information that you specify in the request. This operation is marked as DONE when the group is patched even if the instances in the group are still in the process of being patched. You must separately verify the status of the individual instances with the listManagedInstances method. This method supports PATCH semantics and uses the JSON merge patch format and processing rules. If you update your group to specify a new template or instance configuration, it's possible that your intended specification for each VM in the group is different from the current state of that VM. To learn how to apply an updated configuration to the VMs in a MIG, see Updating instances in a MIG.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchInstanceGroupManagerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45866,7 +47251,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts or patches per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
         pub async fn patch_per_instance_configs(
@@ -45874,7 +47267,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::PatchPerInstanceConfigsInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45888,7 +47281,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/PatchPerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "PatchPerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Flags the specified VM instances in the managed instance group to be immediately recreated. Each instance is recreated using the group's current configuration. This operation is marked as DONE when the flag is set even if the instances have not yet been recreated. You must separately verify the status of each instance by checking its currentAction field; for more information, see Checking the status of managed instances. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
         pub async fn recreate_instances(
@@ -45896,7 +47297,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::RecreateInstancesInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45910,13 +47311,21 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/RecreateInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "RecreateInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resizes the managed instance group. If you increase the size, the group creates new instances using the current instance template. If you decrease the size, the group deletes instances. The resize operation is marked DONE when the resize actions are scheduled even if the group has not yet added or deleted any instances. You must separately verify the status of the creating or deleting actions with the listmanagedinstances method. When resizing down, the instance group arbitrarily chooses the order in which VMs are deleted. The group takes into account some VM attributes when making the selection including: + The status of the VM instance. + The health of the VM instance. + The instance template version the VM is based on. + For regional managed instance groups, the location of the VM instance. This list is subject to change. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted.
         pub async fn resize(
             &mut self,
             request: impl tonic::IntoRequest<super::ResizeInstanceGroupManagerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45930,7 +47339,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/Resize",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "Resize",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Specifies the instance template to use when creating new instances in this group. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE.
         pub async fn set_instance_template(
@@ -45938,7 +47355,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::SetInstanceTemplateInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45952,7 +47369,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/SetInstanceTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "SetInstanceTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Modifies the target pools to which all instances in this managed instance group are assigned. The target pools automatically apply to all of the instances in the managed instance group. This operation is marked DONE when you make the request even if the instances have not yet been added to their target pools. The change might take some time to apply to all of the instances in the group depending on the size of the group.
         pub async fn set_target_pools(
@@ -45960,7 +47385,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::SetTargetPoolsInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45974,7 +47399,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/SetTargetPools",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "SetTargetPools",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts or updates per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
         pub async fn update_per_instance_configs(
@@ -45982,7 +47415,7 @@ pub mod instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::UpdatePerInstanceConfigsInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -45996,7 +47429,15 @@ pub mod instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroupManagers/UpdatePerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroupManagers",
+                        "UpdatePerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -46014,7 +47455,7 @@ pub mod instance_groups_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -46070,11 +47511,27 @@ pub mod instance_groups_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds a list of instances to the specified instance group. All of the instances in the instance group must be in the same network/subnetwork. Read Adding instances for more information.
         pub async fn add_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::AddInstancesInstanceGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46088,13 +47545,24 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/AddInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroups",
+                        "AddInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of instance groups and sorts them by zone.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListInstanceGroupsRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroupAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceGroupAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46108,13 +47576,21 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroups",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified instance group. The instances in the group are not deleted. Note that instance group must not belong to a backend service. Read Deleting an instance group for more information.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46128,13 +47604,18 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.InstanceGroups", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified zonal instance group. Get a list of available zonal instance groups by making a list() request. For managed instance groups, use the instanceGroupManagers or regionInstanceGroupManagers methods instead.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceGroupRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::InstanceGroup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46148,13 +47629,18 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.InstanceGroups", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an instance group in the specified project using the parameters that are included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertInstanceGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46168,13 +47654,21 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.InstanceGroups", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of zonal instance group resources contained within the specified zone. For managed instance groups, use the instanceGroupManagers or regionInstanceGroupManagers methods instead.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstanceGroupsRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroupList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceGroupList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46188,13 +47682,21 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.InstanceGroups", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the instances in the specified instance group. The orderBy query parameter is not supported. The filter query parameter is supported, but only for expressions that use `eq` (equal) or `ne` (not equal) operators.
         pub async fn list_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstancesInstanceGroupsRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroupsListInstances>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceGroupsListInstances>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46208,13 +47710,21 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/ListInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroups",
+                        "ListInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes one or more instances from the specified instance group, but does not delete those instances. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration before the VM instance is removed or deleted.
         pub async fn remove_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveInstancesInstanceGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46228,13 +47738,21 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/RemoveInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroups",
+                        "RemoveInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the named ports for the specified instance group.
         pub async fn set_named_ports(
             &mut self,
             request: impl tonic::IntoRequest<super::SetNamedPortsInstanceGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46248,7 +47766,15 @@ pub mod instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceGroups/SetNamedPorts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceGroups",
+                        "SetNamedPorts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -46266,7 +47792,7 @@ pub mod instance_templates_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -46322,13 +47848,29 @@ pub mod instance_templates_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all InstanceTemplates resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListInstanceTemplatesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstanceTemplateAggregatedList>,
             tonic::Status,
         > {
@@ -46345,13 +47887,21 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceTemplates",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified instance template. Deleting an instance template is permanent and cannot be undone. It is not possible to delete templates that are already in use by a managed instance group.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46365,13 +47915,24 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceTemplates",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified instance template.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::InstanceTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46385,13 +47946,18 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.InstanceTemplates", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46405,13 +47971,21 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceTemplates",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an instance template in the specified project using the data that is included in the request. If you are creating a new template to update an existing instance group, your new instance template must use the same network or, if applicable, the same subnetwork as the original template.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46425,13 +47999,24 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceTemplates",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of instance templates that are contained within the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstanceTemplatesRequest>,
-        ) -> Result<tonic::Response<super::InstanceTemplateList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceTemplateList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46445,13 +48030,18 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.InstanceTemplates", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46465,7 +48055,15 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceTemplates",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -46473,7 +48071,10 @@ pub mod instance_templates_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsInstanceTemplateRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46487,7 +48088,15 @@ pub mod instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InstanceTemplates/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InstanceTemplates",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -46505,7 +48114,7 @@ pub mod instances_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -46561,11 +48170,27 @@ pub mod instances_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds an access config to an instance's network interface.
         pub async fn add_access_config(
             &mut self,
             request: impl tonic::IntoRequest<super::AddAccessConfigInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46579,13 +48204,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/AddAccessConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "AddAccessConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds existing resource policies to an instance. You can only add one policy right now which will be applied to this instance for scheduling live migrations.
         pub async fn add_resource_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::AddResourcePoliciesInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46599,13 +48232,24 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/AddResourcePolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "AddResourcePolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an aggregated list of all of the instances in your project across all regions and zones. The performance of this method degrades when a filter is specified on a project that has a very large number of instances.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListInstancesRequest>,
-        ) -> Result<tonic::Response<super::InstanceAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46619,13 +48263,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Attaches an existing Disk resource to an instance. You must first create the disk before you can attach it. It is not possible to create and attach a disk at the same time. For more information, read Adding a persistent disk to your instance.
         pub async fn attach_disk(
             &mut self,
             request: impl tonic::IntoRequest<super::AttachDiskInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46639,13 +48291,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/AttachDisk",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "AttachDisk"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates multiple instances. Count specifies the number of instances to create. For more information, see About bulk creation of VMs.
         pub async fn bulk_insert(
             &mut self,
             request: impl tonic::IntoRequest<super::BulkInsertInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46659,13 +48316,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/BulkInsert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "BulkInsert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified Instance resource. For more information, see Deleting an instance.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46679,13 +48341,16 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an access config from an instance's network interface.
         pub async fn delete_access_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAccessConfigInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46699,13 +48364,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/DeleteAccessConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "DeleteAccessConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Detaches a disk from an instance.
         pub async fn detach_disk(
             &mut self,
             request: impl tonic::IntoRequest<super::DetachDiskInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46719,13 +48392,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/DetachDisk",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "DetachDisk"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified Instance resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Instance>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Instance>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46739,13 +48417,16 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns effective firewalls applied to an interface of the instance.
         pub async fn get_effective_firewalls(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEffectiveFirewallsInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InstancesGetEffectiveFirewallsResponse>,
             tonic::Status,
         > {
@@ -46762,13 +48443,24 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/GetEffectiveFirewalls",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "GetEffectiveFirewalls",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified guest attributes entry.
         pub async fn get_guest_attributes(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGuestAttributesInstanceRequest>,
-        ) -> Result<tonic::Response<super::GuestAttributes>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GuestAttributes>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46782,13 +48474,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/GetGuestAttributes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "GetGuestAttributes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyInstanceRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46802,13 +48502,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "GetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the screenshot from the specified instance.
         pub async fn get_screenshot(
             &mut self,
             request: impl tonic::IntoRequest<super::GetScreenshotInstanceRequest>,
-        ) -> Result<tonic::Response<super::Screenshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Screenshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46822,13 +48527,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/GetScreenshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "GetScreenshot"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the last 1 MB of serial port output from the specified instance.
         pub async fn get_serial_port_output(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSerialPortOutputInstanceRequest>,
-        ) -> Result<tonic::Response<super::SerialPortOutput>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SerialPortOutput>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46842,7 +48555,15 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/GetSerialPortOutput",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "GetSerialPortOutput",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the Shielded Instance Identity of an instance
         pub async fn get_shielded_instance_identity(
@@ -46850,7 +48571,10 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::GetShieldedInstanceIdentityInstanceRequest,
             >,
-        ) -> Result<tonic::Response<super::ShieldedInstanceIdentity>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ShieldedInstanceIdentity>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46864,13 +48588,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/GetShieldedInstanceIdentity",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "GetShieldedInstanceIdentity",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an instance resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46884,13 +48616,16 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of instances contained within the specified zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstancesRequest>,
-        ) -> Result<tonic::Response<super::InstanceList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::InstanceList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46904,13 +48639,19 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of resources that refer to the VM instance specified in the request. For example, if the VM instance is part of a managed or unmanaged instance group, the referrers list includes the instance group. For more information, read Viewing referrers to VM instances.
         pub async fn list_referrers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReferrersInstancesRequest>,
-        ) -> Result<tonic::Response<super::InstanceListReferrers>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceListReferrers>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -46924,7 +48665,12 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/ListReferrers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "ListReferrers"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes resource policies from an instance.
         pub async fn remove_resource_policies(
@@ -46932,7 +48678,7 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::RemoveResourcePoliciesInstanceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46946,13 +48692,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/RemoveResourcePolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "RemoveResourcePolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Performs a reset on the instance. This is a hard reset. The VM does not do a graceful shutdown. For more information, see Resetting an instance.
         pub async fn reset(
             &mut self,
             request: impl tonic::IntoRequest<super::ResetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46966,13 +48720,16 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Reset",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Reset"));
+            self.inner.unary(req, path, codec).await
         }
         /// Resumes an instance that was suspended using the instances().suspend method.
         pub async fn resume(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -46986,7 +48743,10 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Resume",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Resume"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sends diagnostic interrupt to the instance.
         pub async fn send_diagnostic_interrupt(
@@ -46994,7 +48754,7 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::SendDiagnosticInterruptInstanceRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SendDiagnosticInterruptInstanceResponse>,
             tonic::Status,
         > {
@@ -47011,13 +48771,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SendDiagnosticInterrupt",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SendDiagnosticInterrupt",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets deletion protection on the instance.
         pub async fn set_deletion_protection(
             &mut self,
             request: impl tonic::IntoRequest<super::SetDeletionProtectionInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47031,13 +48799,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetDeletionProtection",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SetDeletionProtection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the auto-delete flag for a disk attached to an instance.
         pub async fn set_disk_auto_delete(
             &mut self,
             request: impl tonic::IntoRequest<super::SetDiskAutoDeleteInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47051,13 +48827,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetDiskAutoDelete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SetDiskAutoDelete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyInstanceRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47071,13 +48855,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "SetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets labels on an instance. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47091,13 +48880,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "SetLabels"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the number and/or type of accelerator for a stopped instance to the values specified in the request.
         pub async fn set_machine_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::SetMachineResourcesInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47111,13 +48905,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetMachineResources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SetMachineResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the machine type for a stopped instance to the machine type specified in the request.
         pub async fn set_machine_type(
             &mut self,
             request: impl tonic::IntoRequest<super::SetMachineTypeInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47131,13 +48933,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetMachineType",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SetMachineType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets metadata for the specified instance to the data included in the request.
         pub async fn set_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::SetMetadataInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47151,13 +48961,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "SetMetadata"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the minimum CPU platform that this instance should use. This method can only be called on a stopped instance. For more information, read Specifying a Minimum CPU Platform.
         pub async fn set_min_cpu_platform(
             &mut self,
             request: impl tonic::IntoRequest<super::SetMinCpuPlatformInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47171,13 +48986,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetMinCpuPlatform",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SetMinCpuPlatform",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets name of an instance.
         pub async fn set_name(
             &mut self,
             request: impl tonic::IntoRequest<super::SetNameInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47191,13 +49014,16 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetName",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "SetName"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets an instance's scheduling options. You can only call this method on a stopped instance, that is, a VM instance that is in a `TERMINATED` state. See Instance Life Cycle for more information on the possible instance states. For more information about setting scheduling options for a VM, see Set VM host maintenance policy.
         pub async fn set_scheduling(
             &mut self,
             request: impl tonic::IntoRequest<super::SetSchedulingInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47211,13 +49037,18 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetScheduling",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Instances", "SetScheduling"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the service account on the instance. For more information, read Changing the service account and access scopes for an instance.
         pub async fn set_service_account(
             &mut self,
             request: impl tonic::IntoRequest<super::SetServiceAccountInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47231,7 +49062,15 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetServiceAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SetServiceAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the Shielded Instance integrity policy for an instance. You can only use this method on a running instance. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn set_shielded_instance_integrity_policy(
@@ -47239,7 +49078,7 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::SetShieldedInstanceIntegrityPolicyInstanceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47253,13 +49092,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetShieldedInstanceIntegrityPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SetShieldedInstanceIntegrityPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets network tags for the specified instance to the data included in the request.
         pub async fn set_tags(
             &mut self,
             request: impl tonic::IntoRequest<super::SetTagsInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47273,7 +49120,10 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SetTags",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "SetTags"));
+            self.inner.unary(req, path, codec).await
         }
         /// Simulates a host maintenance event on a VM. For more information, see Simulate a host maintenance event.
         pub async fn simulate_maintenance_event(
@@ -47281,7 +49131,7 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::SimulateMaintenanceEventInstanceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47295,13 +49145,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/SimulateMaintenanceEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "SimulateMaintenanceEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Starts an instance that was stopped using the instances().stop method. For more information, see Restart an instance.
         pub async fn start(
             &mut self,
             request: impl tonic::IntoRequest<super::StartInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47315,7 +49173,10 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Start",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Start"));
+            self.inner.unary(req, path, codec).await
         }
         /// Starts an instance that was stopped using the instances().stop method. For more information, see Restart an instance.
         pub async fn start_with_encryption_key(
@@ -47323,7 +49184,7 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::StartWithEncryptionKeyInstanceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47337,13 +49198,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/StartWithEncryptionKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "StartWithEncryptionKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Stops a running instance, shutting it down cleanly, and allows you to restart the instance at a later time. Stopped instances do not incur VM usage charges while they are stopped. However, resources that the VM is using, such as persistent disks and static IP addresses, will continue to be charged until they are deleted. For more information, see Stopping an instance.
         pub async fn stop(
             &mut self,
             request: impl tonic::IntoRequest<super::StopInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47357,13 +49226,16 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Stop",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Stop"));
+            self.inner.unary(req, path, codec).await
         }
         /// This method suspends a running instance, saving its state to persistent storage, and allows you to resume the instance at a later time. Suspended instances have no compute costs (cores or RAM), and incur only storage charges for the saved VM memory and localSSD data. Any charged resources the virtual machine was using, such as persistent disks and static IP addresses, will continue to be charged while the instance is suspended. For more information, see Suspending and resuming an instance.
         pub async fn suspend(
             &mut self,
             request: impl tonic::IntoRequest<super::SuspendInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47377,13 +49249,19 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Suspend",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Suspend"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsInstanceRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -47397,13 +49275,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an instance only if the necessary resources are available. This method can update only a specific set of instance properties. See Updating a running instance for a list of updatable instance properties.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47417,13 +49303,16 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Instances", "Update"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified access config from an instance's network interface with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn update_access_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAccessConfigInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47437,13 +49326,21 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/UpdateAccessConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "UpdateAccessConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the Display config for a VM instance. You can only use this method on a stopped VM instance. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn update_display_device(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDisplayDeviceInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47457,7 +49354,15 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/UpdateDisplayDevice",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "UpdateDisplayDevice",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an instance's network interface. This method can only update an interface's alias IP range and attached network. See Modifying alias IP ranges for an existing instance for instructions on changing alias IP ranges. See Migrating a VM between networks for instructions on migrating an interface. This method follows PATCH semantics.
         pub async fn update_network_interface(
@@ -47465,7 +49370,7 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::UpdateNetworkInterfaceInstanceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47479,7 +49384,15 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/UpdateNetworkInterface",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "UpdateNetworkInterface",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the Shielded Instance config for an instance. You can only use this method on a stopped instance. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn update_shielded_instance_config(
@@ -47487,7 +49400,7 @@ pub mod instances_client {
             request: impl tonic::IntoRequest<
                 super::UpdateShieldedInstanceConfigInstanceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47501,7 +49414,15 @@ pub mod instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Instances/UpdateShieldedInstanceConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Instances",
+                        "UpdateShieldedInstanceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -47519,7 +49440,7 @@ pub mod interconnect_attachments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -47577,13 +49498,29 @@ pub mod interconnect_attachments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of interconnect attachments.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListInterconnectAttachmentsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InterconnectAttachmentAggregatedList>,
             tonic::Status,
         > {
@@ -47600,13 +49537,21 @@ pub mod interconnect_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectAttachments/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectAttachments",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified interconnect attachment.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInterconnectAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47620,13 +49565,24 @@ pub mod interconnect_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectAttachments/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectAttachments",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified interconnect attachment.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInterconnectAttachmentRequest>,
-        ) -> Result<tonic::Response<super::InterconnectAttachment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InterconnectAttachment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -47640,13 +49596,21 @@ pub mod interconnect_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectAttachments/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectAttachments",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an InterconnectAttachment in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertInterconnectAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47660,13 +49624,24 @@ pub mod interconnect_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectAttachments/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectAttachments",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of interconnect attachments contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInterconnectAttachmentsRequest>,
-        ) -> Result<tonic::Response<super::InterconnectAttachmentList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InterconnectAttachmentList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -47680,13 +49655,21 @@ pub mod interconnect_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectAttachments/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectAttachments",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified interconnect attachment with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchInterconnectAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47700,7 +49683,15 @@ pub mod interconnect_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectAttachments/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectAttachments",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on an InterconnectAttachment. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
@@ -47708,7 +49699,7 @@ pub mod interconnect_attachments_client {
             request: impl tonic::IntoRequest<
                 super::SetLabelsInterconnectAttachmentRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47722,7 +49713,15 @@ pub mod interconnect_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectAttachments/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectAttachments",
+                        "SetLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -47740,7 +49739,7 @@ pub mod interconnect_locations_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -47796,11 +49795,30 @@ pub mod interconnect_locations_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the details for the specified interconnect location. Gets a list of available interconnect locations by making a list() request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInterconnectLocationRequest>,
-        ) -> Result<tonic::Response<super::InterconnectLocation>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InterconnectLocation>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -47814,13 +49832,24 @@ pub mod interconnect_locations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectLocations/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectLocations",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of interconnect locations available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInterconnectLocationsRequest>,
-        ) -> Result<tonic::Response<super::InterconnectLocationList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InterconnectLocationList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -47834,7 +49863,15 @@ pub mod interconnect_locations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.InterconnectLocations/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.InterconnectLocations",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -47852,7 +49889,7 @@ pub mod interconnects_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -47908,11 +49945,27 @@ pub mod interconnects_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified Interconnect.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInterconnectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47926,13 +49979,18 @@ pub mod interconnects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Interconnects/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Interconnects", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified Interconnect. Get a list of available Interconnects by making a list() request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInterconnectRequest>,
-        ) -> Result<tonic::Response<super::Interconnect>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Interconnect>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47946,13 +50004,16 @@ pub mod interconnects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Interconnects/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Interconnects", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the interconnectDiagnostics for the specified Interconnect.
         pub async fn get_diagnostics(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiagnosticsInterconnectRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::InterconnectsGetDiagnosticsResponse>,
             tonic::Status,
         > {
@@ -47969,13 +50030,21 @@ pub mod interconnects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Interconnects/GetDiagnostics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Interconnects",
+                        "GetDiagnostics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an Interconnect in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertInterconnectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -47989,13 +50058,21 @@ pub mod interconnects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Interconnects/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Interconnects", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of Interconnects available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInterconnectsRequest>,
-        ) -> Result<tonic::Response<super::InterconnectList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InterconnectList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48009,13 +50086,18 @@ pub mod interconnects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Interconnects/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Interconnects", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified Interconnect with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchInterconnectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48029,13 +50111,18 @@ pub mod interconnects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Interconnects/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Interconnects", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on an Interconnect. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsInterconnectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48049,7 +50136,12 @@ pub mod interconnects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Interconnects/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Interconnects", "SetLabels"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -48067,7 +50159,7 @@ pub mod license_codes_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -48123,11 +50215,27 @@ pub mod license_codes_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Return a specified license code. License codes are mirrored across all projects that have permissions to read the License Code. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLicenseCodeRequest>,
-        ) -> Result<tonic::Response<super::LicenseCode>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::LicenseCode>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48141,13 +50249,19 @@ pub mod license_codes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.LicenseCodes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.LicenseCodes", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsLicenseCodeRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48161,7 +50275,15 @@ pub mod license_codes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.LicenseCodes/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.LicenseCodes",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -48179,7 +50301,7 @@ pub mod licenses_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -48235,11 +50357,27 @@ pub mod licenses_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified license. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteLicenseRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48253,13 +50391,16 @@ pub mod licenses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Licenses/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Licenses", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified License resource. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLicenseRequest>,
-        ) -> Result<tonic::Response<super::License>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::License>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48273,13 +50414,16 @@ pub mod licenses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Licenses/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Licenses", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyLicenseRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48293,13 +50437,18 @@ pub mod licenses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Licenses/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Licenses", "GetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create a License resource in the specified project. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertLicenseRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48313,13 +50462,19 @@ pub mod licenses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Licenses/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Licenses", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of licenses available in the specified project. This method does not get any licenses that belong to other projects, including licenses attached to publicly-available images, like Debian 9. If you want to get a list of publicly-available licenses, use this method to make a request to the respective image project, such as debian-cloud or windows-cloud. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLicensesRequest>,
-        ) -> Result<tonic::Response<super::LicensesListResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::LicensesListResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48333,13 +50488,16 @@ pub mod licenses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Licenses/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Licenses", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyLicenseRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48353,13 +50511,21 @@ pub mod licenses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Licenses/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Licenses", "SetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsLicenseRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48373,7 +50539,15 @@ pub mod licenses_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Licenses/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Licenses",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -48391,7 +50565,7 @@ pub mod machine_images_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -48447,11 +50621,27 @@ pub mod machine_images_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified machine image. Deleting a machine image is permanent and cannot be undone.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMachineImageRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48465,13 +50655,18 @@ pub mod machine_images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineImages/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.MachineImages", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified machine image.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMachineImageRequest>,
-        ) -> Result<tonic::Response<super::MachineImage>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MachineImage>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48485,13 +50680,16 @@ pub mod machine_images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineImages/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.MachineImages", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyMachineImageRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48505,13 +50703,21 @@ pub mod machine_images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineImages/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.MachineImages",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a machine image in the specified project using the data that is included in the request. If you are creating a new machine image to update an existing instance, your new machine image should use the same network or, if applicable, the same subnetwork as the original instance.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertMachineImageRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48525,13 +50731,21 @@ pub mod machine_images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineImages/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.MachineImages", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of machine images that are contained within the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMachineImagesRequest>,
-        ) -> Result<tonic::Response<super::MachineImageList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MachineImageList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48545,13 +50759,18 @@ pub mod machine_images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineImages/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.MachineImages", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyMachineImageRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48565,7 +50784,15 @@ pub mod machine_images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineImages/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.MachineImages",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -48573,7 +50800,10 @@ pub mod machine_images_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsMachineImageRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48587,7 +50817,15 @@ pub mod machine_images_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineImages/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.MachineImages",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -48605,7 +50843,7 @@ pub mod machine_types_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -48661,11 +50899,30 @@ pub mod machine_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of machine types.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListMachineTypesRequest>,
-        ) -> Result<tonic::Response<super::MachineTypeAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MachineTypeAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48679,13 +50936,21 @@ pub mod machine_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineTypes/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.MachineTypes",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified machine type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMachineTypeRequest>,
-        ) -> Result<tonic::Response<super::MachineType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MachineType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48699,13 +50964,19 @@ pub mod machine_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineTypes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.MachineTypes", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of machine types available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMachineTypesRequest>,
-        ) -> Result<tonic::Response<super::MachineTypeList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MachineTypeList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48719,7 +50990,10 @@ pub mod machine_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineTypes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.MachineTypes", "List"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -48737,7 +51011,7 @@ pub mod network_attachments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -48793,13 +51067,29 @@ pub mod network_attachments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all NetworkAttachment resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListNetworkAttachmentsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::NetworkAttachmentAggregatedList>,
             tonic::Status,
         > {
@@ -48816,13 +51106,21 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkAttachments",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified NetworkAttachment in the given scope
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNetworkAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48836,13 +51134,24 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkAttachments",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified NetworkAttachment resource in the given scope.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkAttachmentRequest>,
-        ) -> Result<tonic::Response<super::NetworkAttachment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkAttachment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48856,13 +51165,18 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NetworkAttachments", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyNetworkAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48876,13 +51190,21 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkAttachments",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a NetworkAttachment in the specified project in the given scope using the parameters that are included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertNetworkAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48896,13 +51218,24 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkAttachments",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the NetworkAttachments for a project in the given scope.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNetworkAttachmentsRequest>,
-        ) -> Result<tonic::Response<super::NetworkAttachmentList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkAttachmentList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48916,13 +51249,18 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NetworkAttachments", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyNetworkAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -48936,7 +51274,15 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkAttachments",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -48944,7 +51290,10 @@ pub mod network_attachments_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsNetworkAttachmentRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -48958,7 +51307,15 @@ pub mod network_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkAttachments/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkAttachments",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -48976,7 +51333,7 @@ pub mod network_edge_security_services_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -49034,13 +51391,29 @@ pub mod network_edge_security_services_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all NetworkEdgeSecurityService resources available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListNetworkEdgeSecurityServicesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::NetworkEdgeSecurityServiceAggregatedList>,
             tonic::Status,
         > {
@@ -49057,7 +51430,15 @@ pub mod network_edge_security_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEdgeSecurityServices/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEdgeSecurityServices",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified service.
         pub async fn delete(
@@ -49065,7 +51446,7 @@ pub mod network_edge_security_services_client {
             request: impl tonic::IntoRequest<
                 super::DeleteNetworkEdgeSecurityServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49079,13 +51460,24 @@ pub mod network_edge_security_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEdgeSecurityServices/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEdgeSecurityServices",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a specified NetworkEdgeSecurityService.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkEdgeSecurityServiceRequest>,
-        ) -> Result<tonic::Response<super::NetworkEdgeSecurityService>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkEdgeSecurityService>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49099,7 +51491,15 @@ pub mod network_edge_security_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEdgeSecurityServices/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEdgeSecurityServices",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new service in the specified project using the data included in the request.
         pub async fn insert(
@@ -49107,7 +51507,7 @@ pub mod network_edge_security_services_client {
             request: impl tonic::IntoRequest<
                 super::InsertNetworkEdgeSecurityServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49121,7 +51521,15 @@ pub mod network_edge_security_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEdgeSecurityServices/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEdgeSecurityServices",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified policy with the data included in the request.
         pub async fn patch(
@@ -49129,7 +51537,7 @@ pub mod network_edge_security_services_client {
             request: impl tonic::IntoRequest<
                 super::PatchNetworkEdgeSecurityServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49143,7 +51551,15 @@ pub mod network_edge_security_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEdgeSecurityServices/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEdgeSecurityServices",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -49161,7 +51577,7 @@ pub mod network_endpoint_groups_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -49217,13 +51633,29 @@ pub mod network_endpoint_groups_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of network endpoint groups and sorts them by zone.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListNetworkEndpointGroupsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::NetworkEndpointGroupAggregatedList>,
             tonic::Status,
         > {
@@ -49240,7 +51672,15 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Attach a list of network endpoints to the specified network endpoint group.
         pub async fn attach_network_endpoints(
@@ -49248,7 +51688,7 @@ pub mod network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::AttachNetworkEndpointsNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49262,13 +51702,21 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/AttachNetworkEndpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "AttachNetworkEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified network endpoint group. The network endpoints in the NEG and the VM instances they belong to are not terminated when the NEG is deleted. Note that the NEG cannot be deleted if there are backend services referencing it.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNetworkEndpointGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49282,7 +51730,15 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Detach a list of network endpoints from the specified network endpoint group.
         pub async fn detach_network_endpoints(
@@ -49290,7 +51746,7 @@ pub mod network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::DetachNetworkEndpointsNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49304,13 +51760,24 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/DetachNetworkEndpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "DetachNetworkEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified network endpoint group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkEndpointGroupRequest>,
-        ) -> Result<tonic::Response<super::NetworkEndpointGroup>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkEndpointGroup>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49324,13 +51791,21 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a network endpoint group in the specified project using the parameters that are included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertNetworkEndpointGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49344,13 +51819,24 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of network endpoint groups that are located in the specified project and zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNetworkEndpointGroupsRequest>,
-        ) -> Result<tonic::Response<super::NetworkEndpointGroupList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkEndpointGroupList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49364,7 +51850,15 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the network endpoints in the specified network endpoint group.
         pub async fn list_network_endpoints(
@@ -49372,7 +51866,7 @@ pub mod network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::ListNetworkEndpointsNetworkEndpointGroupsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::NetworkEndpointGroupsListNetworkEndpoints>,
             tonic::Status,
         > {
@@ -49389,7 +51883,15 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/ListNetworkEndpoints",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "ListNetworkEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -49397,7 +51899,10 @@ pub mod network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49411,7 +51916,15 @@ pub mod network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkEndpointGroups/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkEndpointGroups",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -49429,7 +51942,7 @@ pub mod network_firewall_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -49487,13 +52000,29 @@ pub mod network_firewall_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Inserts an association for the specified firewall policy.
         pub async fn add_association(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AddAssociationNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49507,13 +52036,21 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/AddAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "AddAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts a rule into a firewall policy.
         pub async fn add_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::AddRuleNetworkFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49527,7 +52064,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/AddRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "AddRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Copies rules to the specified firewall policy.
         pub async fn clone_rules(
@@ -49535,7 +52080,7 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::CloneRulesNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49549,13 +52094,21 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/CloneRules",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "CloneRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified policy.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNetworkFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49569,13 +52122,21 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified network firewall policy.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::FirewallPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FirewallPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49589,7 +52150,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an association with the specified name.
         pub async fn get_association(
@@ -49597,7 +52166,10 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::GetAssociationNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::FirewallPolicyAssociation>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyAssociation>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49611,7 +52183,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/GetAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "GetAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
@@ -49619,7 +52199,7 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::GetIamPolicyNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49633,13 +52213,24 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a rule of the specified priority.
         pub async fn get_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRuleNetworkFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::FirewallPolicyRule>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyRule>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49653,13 +52244,21 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/GetRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "GetRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new policy in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertNetworkFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49673,13 +52272,24 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the policies that have been configured for the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNetworkFirewallPoliciesRequest>,
-        ) -> Result<tonic::Response<super::FirewallPolicyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49693,13 +52303,21 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified policy with the data included in the request.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchNetworkFirewallPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49713,7 +52331,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches a rule of the specified priority.
         pub async fn patch_rule(
@@ -49721,7 +52347,7 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::PatchRuleNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49735,7 +52361,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/PatchRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "PatchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes an association for the specified firewall policy.
         pub async fn remove_association(
@@ -49743,7 +52377,7 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::RemoveAssociationNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49757,7 +52391,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/RemoveAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "RemoveAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a rule of the specified priority.
         pub async fn remove_rule(
@@ -49765,7 +52407,7 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::RemoveRuleNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49779,7 +52421,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/RemoveRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "RemoveRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
@@ -49787,7 +52437,7 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::SetIamPolicyNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49801,7 +52451,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -49809,7 +52467,10 @@ pub mod network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -49823,7 +52484,15 @@ pub mod network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NetworkFirewallPolicies/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -49841,7 +52510,7 @@ pub mod networks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -49897,11 +52566,27 @@ pub mod networks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds a peering to the specified network.
         pub async fn add_peering(
             &mut self,
             request: impl tonic::IntoRequest<super::AddPeeringNetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49915,13 +52600,18 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/AddPeering",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Networks", "AddPeering"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified network.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49935,13 +52625,16 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Networks", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified network.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNetworkRequest>,
-        ) -> Result<tonic::Response<super::Network>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Network>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49955,13 +52648,16 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Networks", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the effective firewalls on a given network.
         pub async fn get_effective_firewalls(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEffectiveFirewallsNetworkRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::NetworksGetEffectiveFirewallsResponse>,
             tonic::Status,
         > {
@@ -49978,13 +52674,21 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/GetEffectiveFirewalls",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Networks",
+                        "GetEffectiveFirewalls",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a network in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertNetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -49998,13 +52702,16 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Networks", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of networks available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNetworksRequest>,
-        ) -> Result<tonic::Response<super::NetworkList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NetworkList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50018,13 +52725,19 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Networks", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the peering routes exchanged over peering connection.
         pub async fn list_peering_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPeeringRoutesNetworksRequest>,
-        ) -> Result<tonic::Response<super::ExchangedPeeringRoutesList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ExchangedPeeringRoutesList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50038,13 +52751,21 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/ListPeeringRoutes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Networks",
+                        "ListPeeringRoutes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified network with the data included in the request. Only the following fields can be modified: routingConfig.routingMode.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchNetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50058,13 +52779,16 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Networks", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Removes a peering from the specified network.
         pub async fn remove_peering(
             &mut self,
             request: impl tonic::IntoRequest<super::RemovePeeringNetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50078,13 +52802,18 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/RemovePeering",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Networks", "RemovePeering"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Switches the network mode from auto subnet mode to custom subnet mode.
         pub async fn switch_to_custom_mode(
             &mut self,
             request: impl tonic::IntoRequest<super::SwitchToCustomModeNetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50098,13 +52827,21 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/SwitchToCustomMode",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Networks",
+                        "SwitchToCustomMode",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified network peering with the data included in the request. You can only modify the NetworkPeering.export_custom_routes field and the NetworkPeering.import_custom_routes field.
         pub async fn update_peering(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdatePeeringNetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50118,7 +52855,12 @@ pub mod networks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Networks/UpdatePeering",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Networks", "UpdatePeering"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -50136,7 +52878,7 @@ pub mod node_groups_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -50192,11 +52934,27 @@ pub mod node_groups_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds specified number of nodes to the node group.
         pub async fn add_nodes(
             &mut self,
             request: impl tonic::IntoRequest<super::AddNodesNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50210,13 +52968,21 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/AddNodes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "AddNodes"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an aggregated list of node groups. Note: use nodeGroups.listNodes for more details about each group.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListNodeGroupsRequest>,
-        ) -> Result<tonic::Response<super::NodeGroupAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NodeGroupAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50230,13 +52996,21 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeGroups",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified NodeGroup resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50250,13 +53024,16 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes specified nodes from the node group.
         pub async fn delete_nodes(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNodesNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50270,13 +53047,18 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/DeleteNodes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "DeleteNodes"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified NodeGroup. Get a list of available NodeGroups by making a list() request. Note: the "nodes" field should not be used. Use nodeGroups.listNodes instead.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::NodeGroup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NodeGroup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50290,13 +53072,16 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50310,13 +53095,18 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "GetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a NodeGroup resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50330,13 +53120,16 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of node groups available to the specified project. Note: use nodeGroups.listNodes for more details about each group.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNodeGroupsRequest>,
-        ) -> Result<tonic::Response<super::NodeGroupList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NodeGroupList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50350,13 +53143,19 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists nodes in the node group.
         pub async fn list_nodes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNodesNodeGroupsRequest>,
-        ) -> Result<tonic::Response<super::NodeGroupsListNodes>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NodeGroupsListNodes>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50370,13 +53169,18 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/ListNodes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "ListNodes"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified node group.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50390,13 +53194,16 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50410,13 +53217,18 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeGroups", "SetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the node template of the node group.
         pub async fn set_node_template(
             &mut self,
             request: impl tonic::IntoRequest<super::SetNodeTemplateNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50430,7 +53242,15 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/SetNodeTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeGroups",
+                        "SetNodeTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Simulates maintenance event on specified nodes from the node group.
         pub async fn simulate_maintenance_event(
@@ -50438,7 +53258,7 @@ pub mod node_groups_client {
             request: impl tonic::IntoRequest<
                 super::SimulateMaintenanceEventNodeGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50452,13 +53272,24 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/SimulateMaintenanceEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeGroups",
+                        "SimulateMaintenanceEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsNodeGroupRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50472,7 +53303,15 @@ pub mod node_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeGroups/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeGroups",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -50490,7 +53329,7 @@ pub mod node_templates_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -50546,11 +53385,30 @@ pub mod node_templates_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of node templates.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListNodeTemplatesRequest>,
-        ) -> Result<tonic::Response<super::NodeTemplateAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NodeTemplateAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50564,13 +53422,21 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeTemplates",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified NodeTemplate resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNodeTemplateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50584,13 +53450,18 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeTemplates", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified node template.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNodeTemplateRequest>,
-        ) -> Result<tonic::Response<super::NodeTemplate>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NodeTemplate>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50604,13 +53475,16 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeTemplates", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyNodeTemplateRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50624,13 +53498,21 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeTemplates",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a NodeTemplate resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertNodeTemplateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50644,13 +53526,21 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeTemplates", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of node templates available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNodeTemplatesRequest>,
-        ) -> Result<tonic::Response<super::NodeTemplateList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NodeTemplateList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50664,13 +53554,18 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.NodeTemplates", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyNodeTemplateRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50684,7 +53579,15 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeTemplates",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -50692,7 +53595,10 @@ pub mod node_templates_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsNodeTemplateRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50706,7 +53612,15 @@ pub mod node_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTemplates/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeTemplates",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -50724,7 +53638,7 @@ pub mod node_types_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -50780,11 +53694,30 @@ pub mod node_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of node types.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListNodeTypesRequest>,
-        ) -> Result<tonic::Response<super::NodeTypeAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NodeTypeAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50798,13 +53731,21 @@ pub mod node_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTypes/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.NodeTypes",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified node type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNodeTypeRequest>,
-        ) -> Result<tonic::Response<super::NodeType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NodeType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50818,13 +53759,16 @@ pub mod node_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTypes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeTypes", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of node types available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNodeTypesRequest>,
-        ) -> Result<tonic::Response<super::NodeTypeList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::NodeTypeList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50838,7 +53782,10 @@ pub mod node_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.NodeTypes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.NodeTypes", "List"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -50856,7 +53803,7 @@ pub mod packet_mirrorings_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -50912,13 +53859,29 @@ pub mod packet_mirrorings_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of packetMirrorings.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListPacketMirroringsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::PacketMirroringAggregatedList>,
             tonic::Status,
         > {
@@ -50935,13 +53898,21 @@ pub mod packet_mirrorings_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PacketMirrorings/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PacketMirrorings",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified PacketMirroring resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePacketMirroringRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50955,13 +53926,21 @@ pub mod packet_mirrorings_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PacketMirrorings/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.PacketMirrorings", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified PacketMirroring resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPacketMirroringRequest>,
-        ) -> Result<tonic::Response<super::PacketMirroring>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PacketMirroring>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -50975,13 +53954,18 @@ pub mod packet_mirrorings_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PacketMirrorings/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.PacketMirrorings", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a PacketMirroring resource in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertPacketMirroringRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -50995,13 +53979,21 @@ pub mod packet_mirrorings_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PacketMirrorings/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.PacketMirrorings", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of PacketMirroring resources available to the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPacketMirroringsRequest>,
-        ) -> Result<tonic::Response<super::PacketMirroringList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PacketMirroringList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51015,13 +54007,18 @@ pub mod packet_mirrorings_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PacketMirrorings/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.PacketMirrorings", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified PacketMirroring resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchPacketMirroringRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51035,7 +54032,12 @@ pub mod packet_mirrorings_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PacketMirrorings/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.PacketMirrorings", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -51043,7 +54045,10 @@ pub mod packet_mirrorings_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsPacketMirroringRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51057,7 +54062,15 @@ pub mod packet_mirrorings_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PacketMirrorings/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PacketMirrorings",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -51075,7 +54088,7 @@ pub mod projects_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -51131,11 +54144,27 @@ pub mod projects_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Disable this project as a shared VPC host project.
         pub async fn disable_xpn_host(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableXpnHostProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51149,13 +54178,18 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/DisableXpnHost",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Projects", "DisableXpnHost"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Disable a service resource (also known as service project) associated with this host project.
         pub async fn disable_xpn_resource(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableXpnResourceProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51169,13 +54203,21 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/DisableXpnResource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Projects",
+                        "DisableXpnResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enable this project as a shared VPC host project.
         pub async fn enable_xpn_host(
             &mut self,
             request: impl tonic::IntoRequest<super::EnableXpnHostProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51189,13 +54231,18 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/EnableXpnHost",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Projects", "EnableXpnHost"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enable service resource (a.k.a service project) for a host project, so that subnets in the host project can be used by instances in the service project.
         pub async fn enable_xpn_resource(
             &mut self,
             request: impl tonic::IntoRequest<super::EnableXpnResourceProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51209,13 +54256,21 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/EnableXpnResource",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Projects",
+                        "EnableXpnResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified Project resource. To decrease latency for this method, you can optionally omit any unneeded information from the response by using a field mask. This practice is especially recommended for unused quota information (the `quotas` field). To exclude one or more fields, set your request's `fields` query parameter to only include the fields you need. For example, to only include the `id` and `selfLink` fields, add the query parameter `?fields=id,selfLink` to your request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProjectRequest>,
-        ) -> Result<tonic::Response<super::Project>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Project>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51229,13 +54284,16 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Projects", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the shared VPC host project that this project links to. May be empty if no link exists.
         pub async fn get_xpn_host(
             &mut self,
             request: impl tonic::IntoRequest<super::GetXpnHostProjectRequest>,
-        ) -> Result<tonic::Response<super::Project>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Project>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51249,13 +54307,21 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/GetXpnHost",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Projects", "GetXpnHost"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets service resources (a.k.a service project) associated with this host project.
         pub async fn get_xpn_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::GetXpnResourcesProjectsRequest>,
-        ) -> Result<tonic::Response<super::ProjectsGetXpnResources>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ProjectsGetXpnResources>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51269,13 +54335,21 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/GetXpnResources",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Projects",
+                        "GetXpnResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all shared VPC host projects visible to the user in an organization.
         pub async fn list_xpn_hosts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListXpnHostsProjectsRequest>,
-        ) -> Result<tonic::Response<super::XpnHostList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::XpnHostList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51289,13 +54363,18 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/ListXpnHosts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Projects", "ListXpnHosts"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Moves a persistent disk from one zone to another.
         pub async fn move_disk(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveDiskProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51309,13 +54388,16 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/MoveDisk",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Projects", "MoveDisk"));
+            self.inner.unary(req, path, codec).await
         }
         /// Moves an instance and its attached persistent disks from one zone to another. *Note*: Moving VMs or disks by using this method might cause unexpected behavior. For more information, see the [known issue](/compute/docs/troubleshooting/known-issues#moving_vms_or_disks_using_the_moveinstance_api_or_the_causes_unexpected_behavior).
         pub async fn move_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveInstanceProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51329,7 +54411,12 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/MoveInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Projects", "MoveInstance"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets metadata common to all instances within the specified project using the data included in the request.
         pub async fn set_common_instance_metadata(
@@ -51337,7 +54424,7 @@ pub mod projects_client {
             request: impl tonic::IntoRequest<
                 super::SetCommonInstanceMetadataProjectRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51351,13 +54438,21 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/SetCommonInstanceMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Projects",
+                        "SetCommonInstanceMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the default network tier of the project. The default network tier is used when an address/forwardingRule/instance is created without specifying the network tier field.
         pub async fn set_default_network_tier(
             &mut self,
             request: impl tonic::IntoRequest<super::SetDefaultNetworkTierProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51371,13 +54466,21 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/SetDefaultNetworkTier",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Projects",
+                        "SetDefaultNetworkTier",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Enables the usage export feature and sets the usage export bucket where reports are stored. If you provide an empty request body using this method, the usage export feature will be disabled.
         pub async fn set_usage_export_bucket(
             &mut self,
             request: impl tonic::IntoRequest<super::SetUsageExportBucketProjectRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51391,7 +54494,15 @@ pub mod projects_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Projects/SetUsageExportBucket",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Projects",
+                        "SetUsageExportBucket",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -51409,7 +54520,7 @@ pub mod public_advertised_prefixes_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -51467,11 +54578,27 @@ pub mod public_advertised_prefixes_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified PublicAdvertisedPrefix
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePublicAdvertisedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51485,13 +54612,24 @@ pub mod public_advertised_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicAdvertisedPrefixes/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicAdvertisedPrefixes",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified PublicAdvertisedPrefix resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPublicAdvertisedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::PublicAdvertisedPrefix>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublicAdvertisedPrefix>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51505,13 +54643,21 @@ pub mod public_advertised_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicAdvertisedPrefixes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicAdvertisedPrefixes",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a PublicAdvertisedPrefix in the specified project using the parameters that are included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertPublicAdvertisedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51525,13 +54671,24 @@ pub mod public_advertised_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicAdvertisedPrefixes/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicAdvertisedPrefixes",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the PublicAdvertisedPrefixes for a project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPublicAdvertisedPrefixesRequest>,
-        ) -> Result<tonic::Response<super::PublicAdvertisedPrefixList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublicAdvertisedPrefixList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51545,13 +54702,21 @@ pub mod public_advertised_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicAdvertisedPrefixes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicAdvertisedPrefixes",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified Router resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchPublicAdvertisedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51565,7 +54730,15 @@ pub mod public_advertised_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicAdvertisedPrefixes/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicAdvertisedPrefixes",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -51583,7 +54756,7 @@ pub mod public_delegated_prefixes_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -51641,13 +54814,29 @@ pub mod public_delegated_prefixes_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists all PublicDelegatedPrefix resources owned by the specific project across all scopes.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListPublicDelegatedPrefixesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::PublicDelegatedPrefixAggregatedList>,
             tonic::Status,
         > {
@@ -51664,13 +54853,21 @@ pub mod public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicDelegatedPrefixes/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified PublicDelegatedPrefix in the given region.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePublicDelegatedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51684,13 +54881,24 @@ pub mod public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicDelegatedPrefixes/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified PublicDelegatedPrefix resource in the given region.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPublicDelegatedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::PublicDelegatedPrefix>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublicDelegatedPrefix>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51704,13 +54912,21 @@ pub mod public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicDelegatedPrefixes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a PublicDelegatedPrefix in the specified project in the given region using the parameters that are included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertPublicDelegatedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51724,13 +54940,24 @@ pub mod public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicDelegatedPrefixes/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the PublicDelegatedPrefixes for a project in the given region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPublicDelegatedPrefixesRequest>,
-        ) -> Result<tonic::Response<super::PublicDelegatedPrefixList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::PublicDelegatedPrefixList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51744,13 +54971,21 @@ pub mod public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicDelegatedPrefixes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified PublicDelegatedPrefix resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchPublicDelegatedPrefixeRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51764,7 +54999,15 @@ pub mod public_delegated_prefixes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.PublicDelegatedPrefixes/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -51782,7 +55025,7 @@ pub mod region_autoscalers_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -51838,11 +55081,27 @@ pub mod region_autoscalers_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified autoscaler.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51856,13 +55115,21 @@ pub mod region_autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionAutoscalers/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionAutoscalers",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified autoscaler.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Autoscaler>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Autoscaler>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51876,13 +55143,18 @@ pub mod region_autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionAutoscalers/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionAutoscalers", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an autoscaler in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51896,13 +55168,24 @@ pub mod region_autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionAutoscalers/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionAutoscalers",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of autoscalers contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionAutoscalersRequest>,
-        ) -> Result<tonic::Response<super::RegionAutoscalerList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RegionAutoscalerList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -51916,13 +55199,18 @@ pub mod region_autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionAutoscalers/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionAutoscalers", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an autoscaler in the specified project using the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51936,13 +55224,18 @@ pub mod region_autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionAutoscalers/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionAutoscalers", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an autoscaler in the specified project using the data included in the request.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRegionAutoscalerRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -51956,7 +55249,15 @@ pub mod region_autoscalers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionAutoscalers/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionAutoscalers",
+                        "Update",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -51974,7 +55275,7 @@ pub mod region_backend_services_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -52030,11 +55331,27 @@ pub mod region_backend_services_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified regional BackendService resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52048,13 +55365,21 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified regional BackendService resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::BackendService>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BackendService>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52068,13 +55393,24 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the most recent health check results for this regional BackendService.
         pub async fn get_health(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHealthRegionBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::BackendServiceGroupHealth>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BackendServiceGroupHealth>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -52088,7 +55424,15 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/GetHealth",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "GetHealth",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
@@ -52096,7 +55440,7 @@ pub mod region_backend_services_client {
             request: impl tonic::IntoRequest<
                 super::GetIamPolicyRegionBackendServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52110,13 +55454,21 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a regional BackendService resource in the specified project using the data included in the request. For more information, see Backend services overview.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52130,13 +55482,24 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of regional BackendService resources available to the specified project in the given region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionBackendServicesRequest>,
-        ) -> Result<tonic::Response<super::BackendServiceList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::BackendServiceList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -52150,13 +55513,21 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified regional BackendService resource with the data included in the request. For more information, see Understanding backend services This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52170,7 +55541,15 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
@@ -52178,7 +55557,7 @@ pub mod region_backend_services_client {
             request: impl tonic::IntoRequest<
                 super::SetIamPolicyRegionBackendServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52192,13 +55571,21 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified regional BackendService resource with the data included in the request. For more information, see Backend services overview .
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRegionBackendServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52212,7 +55599,15 @@ pub mod region_backend_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionBackendServices/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionBackendServices",
+                        "Update",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -52230,7 +55625,7 @@ pub mod region_commitments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -52286,13 +55681,32 @@ pub mod region_commitments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of commitments by region.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListRegionCommitmentsRequest,
             >,
-        ) -> Result<tonic::Response<super::CommitmentAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CommitmentAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -52306,13 +55720,21 @@ pub mod region_commitments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionCommitments/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionCommitments",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified commitment resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionCommitmentRequest>,
-        ) -> Result<tonic::Response<super::Commitment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Commitment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52326,13 +55748,18 @@ pub mod region_commitments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionCommitments/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionCommitments", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a commitment in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionCommitmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52346,13 +55773,21 @@ pub mod region_commitments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionCommitments/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionCommitments",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of commitments contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionCommitmentsRequest>,
-        ) -> Result<tonic::Response<super::CommitmentList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CommitmentList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52366,13 +55801,18 @@ pub mod region_commitments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionCommitments/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionCommitments", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified commitment with the data included in the request. Update is performed only on selected fields included as part of update-mask. Only the following fields can be modified: auto_renew.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRegionCommitmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52386,7 +55826,15 @@ pub mod region_commitments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionCommitments/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionCommitments",
+                        "Update",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -52404,7 +55852,7 @@ pub mod region_disk_types_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -52460,11 +55908,27 @@ pub mod region_disk_types_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the specified regional disk type.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionDiskTypeRequest>,
-        ) -> Result<tonic::Response<super::DiskType>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DiskType>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52478,13 +55942,21 @@ pub mod region_disk_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDiskTypes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionDiskTypes", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of regional disk types available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionDiskTypesRequest>,
-        ) -> Result<tonic::Response<super::RegionDiskTypeList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RegionDiskTypeList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -52498,7 +55970,12 @@ pub mod region_disk_types_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDiskTypes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionDiskTypes", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -52516,7 +55993,7 @@ pub mod region_disks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -52572,11 +56049,27 @@ pub mod region_disks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds existing resource policies to a regional disk. You can only add one policy which will be applied to this disk for scheduling snapshot creation.
         pub async fn add_resource_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::AddResourcePoliciesRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52590,13 +56083,21 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/AddResourcePolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionDisks",
+                        "AddResourcePolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a snapshot of a specified persistent disk. For regular snapshot creation, consider using snapshots.insert instead, as that method supports more features, such as creating snapshots in a project different from the source disk project.
         pub async fn create_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSnapshotRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52610,13 +56111,21 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/CreateSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionDisks",
+                        "CreateSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified regional persistent disk. Deleting a regional disk removes all the replicas of its data permanently and is irreversible. However, deleting a disk does not delete any snapshots previously made from the disk. You must separately delete snapshots.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52630,13 +56139,18 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionDisks", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a specified regional persistent disk.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Disk>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Disk>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52650,13 +56164,16 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.RegionDisks", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52670,13 +56187,21 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionDisks",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a persistent regional disk in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52690,13 +56215,18 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionDisks", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of persistent disks contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionDisksRequest>,
-        ) -> Result<tonic::Response<super::DiskList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::DiskList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52710,7 +56240,10 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.RegionDisks", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Removes resource policies from a regional disk.
         pub async fn remove_resource_policies(
@@ -52718,7 +56251,7 @@ pub mod region_disks_client {
             request: impl tonic::IntoRequest<
                 super::RemoveResourcePoliciesRegionDiskRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52732,13 +56265,21 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/RemoveResourcePolicies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionDisks",
+                        "RemoveResourcePolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Resizes the specified regional persistent disk.
         pub async fn resize(
             &mut self,
             request: impl tonic::IntoRequest<super::ResizeRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52752,13 +56293,18 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/Resize",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionDisks", "Resize"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52772,13 +56318,21 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionDisks",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on the target regional disk.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52792,13 +56346,21 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionDisks", "SetLabels"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -52812,13 +56374,21 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionDisks",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update the specified disk with the data included in the request. Update is performed only on selected fields included as part of update-mask. Only the following fields can be modified: user_license.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRegionDiskRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52832,7 +56402,12 @@ pub mod region_disks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionDisks/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionDisks", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -52850,7 +56425,7 @@ pub mod region_health_check_services_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -52908,13 +56483,29 @@ pub mod region_health_check_services_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified regional HealthCheckService.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::DeleteRegionHealthCheckServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52928,13 +56519,24 @@ pub mod region_health_check_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthCheckServices/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthCheckServices",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified regional HealthCheckService resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionHealthCheckServiceRequest>,
-        ) -> Result<tonic::Response<super::HealthCheckService>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::HealthCheckService>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -52948,7 +56550,15 @@ pub mod region_health_check_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthCheckServices/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthCheckServices",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a regional HealthCheckService resource in the specified project and region using the data included in the request.
         pub async fn insert(
@@ -52956,7 +56566,7 @@ pub mod region_health_check_services_client {
             request: impl tonic::IntoRequest<
                 super::InsertRegionHealthCheckServiceRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -52970,13 +56580,24 @@ pub mod region_health_check_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthCheckServices/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthCheckServices",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the HealthCheckService resources that have been configured for the specified project in the given region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionHealthCheckServicesRequest>,
-        ) -> Result<tonic::Response<super::HealthCheckServicesList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::HealthCheckServicesList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -52990,13 +56611,21 @@ pub mod region_health_check_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthCheckServices/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthCheckServices",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified regional HealthCheckService resource with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionHealthCheckServiceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53010,7 +56639,15 @@ pub mod region_health_check_services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthCheckServices/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthCheckServices",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -53028,7 +56665,7 @@ pub mod region_health_checks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -53084,11 +56721,27 @@ pub mod region_health_checks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified HealthCheck resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53102,13 +56755,21 @@ pub mod region_health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthChecks/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthChecks",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified HealthCheck resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::HealthCheck>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::HealthCheck>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53122,13 +56783,18 @@ pub mod region_health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthChecks/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionHealthChecks", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a HealthCheck resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53142,13 +56808,24 @@ pub mod region_health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthChecks/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthChecks",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of HealthCheck resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionHealthChecksRequest>,
-        ) -> Result<tonic::Response<super::HealthCheckList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::HealthCheckList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -53162,13 +56839,18 @@ pub mod region_health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthChecks/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionHealthChecks", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a HealthCheck resource in the specified project using the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53182,13 +56864,21 @@ pub mod region_health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthChecks/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthChecks",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a HealthCheck resource in the specified project using the data included in the request.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRegionHealthCheckRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53202,7 +56892,15 @@ pub mod region_health_checks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionHealthChecks/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionHealthChecks",
+                        "Update",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -53220,7 +56918,7 @@ pub mod region_instance_group_managers_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -53278,13 +56976,29 @@ pub mod region_instance_group_managers_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Flags the specified instances to be immediately removed from the managed instance group. Abandoning an instance does not delete the instance, but it does remove the instance from any target pools that are applied by the managed instance group. This method reduces the targetSize of the managed instance group by the number of instances that you abandon. This operation is marked as DONE when the action is scheduled even if the instances have not yet been removed from the group. You must separately verify the status of the abandoning action with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
         pub async fn abandon_instances(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AbandonInstancesRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53298,7 +57012,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/AbandonInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "AbandonInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Apply updates to selected instances the managed instance group.
         pub async fn apply_updates_to_instances(
@@ -53306,7 +57028,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53320,7 +57042,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/ApplyUpdatesToInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "ApplyUpdatesToInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates instances with per-instance configurations in this regional managed instance group. Instances are created using the current instance template. The create instances operation is marked DONE if the createInstances request is successful. The underlying actions take additional time. You must separately verify the status of the creating or actions with the listmanagedinstances method.
         pub async fn create_instances(
@@ -53328,7 +57058,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::CreateInstancesRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53342,7 +57072,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/CreateInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "CreateInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified managed instance group and all of the instances in that group.
         pub async fn delete(
@@ -53350,7 +57088,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::DeleteRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53364,7 +57102,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Flags the specified instances in the managed instance group to be immediately deleted. The instances are also removed from any target pools of which they were a member. This method reduces the targetSize of the managed instance group by the number of instances that you delete. The deleteInstances operation is marked DONE if the deleteInstances request is successful. The underlying actions take additional time. You must separately verify the status of the deleting action with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
         pub async fn delete_instances(
@@ -53372,7 +57118,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::DeleteInstancesRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53386,7 +57132,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/DeleteInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "DeleteInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes selected per-instance configurations for the managed instance group.
         pub async fn delete_per_instance_configs(
@@ -53394,7 +57148,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::DeletePerInstanceConfigsRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53408,13 +57162,24 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/DeletePerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "DeletePerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all of the details about the specified managed instance group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionInstanceGroupManagerRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroupManager>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceGroupManager>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -53428,7 +57193,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a managed instance group using the information that you specify in the request. After the group is created, instances in the group are created using the specified instance template. This operation is marked as DONE when the group is created even if the instances in the group have not yet been created. You must separately verify the status of the individual instances with the listmanagedinstances method. A regional managed instance group can contain up to 2000 instances.
         pub async fn insert(
@@ -53436,7 +57209,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::InsertRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53450,7 +57223,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of managed instance groups that are contained within the specified region.
         pub async fn list(
@@ -53458,7 +57239,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ListRegionInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::RegionInstanceGroupManagerList>,
             tonic::Status,
         > {
@@ -53475,7 +57256,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all errors thrown by actions on instances for a given regional managed instance group. The filter and orderBy query parameters are not supported.
         pub async fn list_errors(
@@ -53483,7 +57272,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ListErrorsRegionInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::RegionInstanceGroupManagersListErrorsResponse>,
             tonic::Status,
         > {
@@ -53500,7 +57289,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/ListErrors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "ListErrors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the instances in the managed instance group and instances that are scheduled to be created. The list includes any current actions that the group has scheduled for its instances. The orderBy query parameter is not supported. The `pageToken` query parameter is supported only in the alpha and beta API and only if the group's `listManagedInstancesResults` field is set to `PAGINATED`.
         pub async fn list_managed_instances(
@@ -53508,7 +57305,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ListManagedInstancesRegionInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::RegionInstanceGroupManagersListInstancesResponse>,
             tonic::Status,
         > {
@@ -53525,7 +57322,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/ListManagedInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "ListManagedInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all of the per-instance configurations defined for the managed instance group. The orderBy query parameter is not supported.
         pub async fn list_per_instance_configs(
@@ -53533,7 +57338,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ListPerInstanceConfigsRegionInstanceGroupManagersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::RegionInstanceGroupManagersListInstanceConfigsResp>,
             tonic::Status,
         > {
@@ -53550,7 +57355,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/ListPerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "ListPerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a managed instance group using the information that you specify in the request. This operation is marked as DONE when the group is patched even if the instances in the group are still in the process of being patched. You must separately verify the status of the individual instances with the listmanagedinstances method. This method supports PATCH semantics and uses the JSON merge patch format and processing rules. If you update your group to specify a new template or instance configuration, it's possible that your intended specification for each VM in the group is different from the current state of that VM. To learn how to apply an updated configuration to the VMs in a MIG, see Updating instances in a MIG.
         pub async fn patch(
@@ -53558,7 +57371,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::PatchRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53572,7 +57385,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts or patches per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
         pub async fn patch_per_instance_configs(
@@ -53580,7 +57401,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::PatchPerInstanceConfigsRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53594,7 +57415,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/PatchPerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "PatchPerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Flags the specified VM instances in the managed instance group to be immediately recreated. Each instance is recreated using the group's current configuration. This operation is marked as DONE when the flag is set even if the instances have not yet been recreated. You must separately verify the status of each instance by checking its currentAction field; for more information, see Checking the status of managed instances. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
         pub async fn recreate_instances(
@@ -53602,7 +57431,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::RecreateInstancesRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53616,7 +57445,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/RecreateInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "RecreateInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the intended size of the managed instance group. If you increase the size, the group creates new instances using the current instance template. If you decrease the size, the group deletes one or more instances. The resize operation is marked DONE if the resize request is successful. The underlying actions take additional time. You must separately verify the status of the creating or deleting actions with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted.
         pub async fn resize(
@@ -53624,7 +57461,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::ResizeRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53638,7 +57475,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/Resize",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "Resize",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the instance template to use when creating new instances or recreating instances in this group. Existing instances are not affected.
         pub async fn set_instance_template(
@@ -53646,7 +57491,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::SetInstanceTemplateRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53660,7 +57505,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/SetInstanceTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "SetInstanceTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Modifies the target pools to which all new instances in this group are assigned. Existing instances in the group are not affected.
         pub async fn set_target_pools(
@@ -53668,7 +57521,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::SetTargetPoolsRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53682,7 +57535,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/SetTargetPools",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "SetTargetPools",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts or updates per-instance configurations for the managed instance group. perInstanceConfig.name serves as a key used to distinguish whether to perform insert or patch.
         pub async fn update_per_instance_configs(
@@ -53690,7 +57551,7 @@ pub mod region_instance_group_managers_client {
             request: impl tonic::IntoRequest<
                 super::UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53704,7 +57565,15 @@ pub mod region_instance_group_managers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroupManagers/UpdatePerInstanceConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "UpdatePerInstanceConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -53722,7 +57591,7 @@ pub mod region_instance_groups_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -53778,11 +57647,27 @@ pub mod region_instance_groups_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the specified instance group resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionInstanceGroupRequest>,
-        ) -> Result<tonic::Response<super::InstanceGroup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::InstanceGroup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53796,13 +57681,24 @@ pub mod region_instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroups/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroups",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of instance group resources contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionInstanceGroupsRequest>,
-        ) -> Result<tonic::Response<super::RegionInstanceGroupList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RegionInstanceGroupList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -53816,7 +57712,15 @@ pub mod region_instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroups/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroups",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the instances in the specified instance group and displays information about the named ports. Depending on the specified options, this method can list all instances or only the instances that are running. The orderBy query parameter is not supported.
         pub async fn list_instances(
@@ -53824,7 +57728,7 @@ pub mod region_instance_groups_client {
             request: impl tonic::IntoRequest<
                 super::ListInstancesRegionInstanceGroupsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::RegionInstanceGroupsListInstances>,
             tonic::Status,
         > {
@@ -53841,7 +57745,15 @@ pub mod region_instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroups/ListInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroups",
+                        "ListInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the named ports for the specified regional instance group.
         pub async fn set_named_ports(
@@ -53849,7 +57761,7 @@ pub mod region_instance_groups_client {
             request: impl tonic::IntoRequest<
                 super::SetNamedPortsRegionInstanceGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53863,7 +57775,15 @@ pub mod region_instance_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceGroups/SetNamedPorts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceGroups",
+                        "SetNamedPorts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -53881,7 +57801,7 @@ pub mod region_instance_templates_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -53939,11 +57859,27 @@ pub mod region_instance_templates_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified instance template. Deleting an instance template is permanent and cannot be undone.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53957,13 +57893,24 @@ pub mod region_instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceTemplates/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceTemplates",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified instance template.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::InstanceTemplate>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceTemplate>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -53977,13 +57924,21 @@ pub mod region_instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceTemplates/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceTemplates",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an instance template in the specified project and region using the global instance template whose URL is included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionInstanceTemplateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -53997,13 +57952,24 @@ pub mod region_instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceTemplates/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceTemplates",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of instance templates that are contained within the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionInstanceTemplatesRequest>,
-        ) -> Result<tonic::Response<super::InstanceTemplateList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InstanceTemplateList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54017,7 +57983,15 @@ pub mod region_instance_templates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstanceTemplates/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstanceTemplates",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -54035,7 +58009,7 @@ pub mod region_instances_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -54091,11 +58065,27 @@ pub mod region_instances_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates multiple instances in a given region. Count specifies the number of instances to create.
         pub async fn bulk_insert(
             &mut self,
             request: impl tonic::IntoRequest<super::BulkInsertRegionInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54109,7 +58099,15 @@ pub mod region_instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionInstances/BulkInsert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionInstances",
+                        "BulkInsert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -54127,7 +58125,7 @@ pub mod region_network_endpoint_groups_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -54185,13 +58183,29 @@ pub mod region_network_endpoint_groups_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified network endpoint group. Note that the NEG cannot be deleted if it is configured as a backend of a backend service.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::DeleteRegionNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54205,13 +58219,24 @@ pub mod region_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkEndpointGroups/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkEndpointGroups",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified network endpoint group.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionNetworkEndpointGroupRequest>,
-        ) -> Result<tonic::Response<super::NetworkEndpointGroup>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkEndpointGroup>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54225,7 +58250,15 @@ pub mod region_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkEndpointGroups/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkEndpointGroups",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a network endpoint group in the specified project using the parameters that are included in the request.
         pub async fn insert(
@@ -54233,7 +58266,7 @@ pub mod region_network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::InsertRegionNetworkEndpointGroupRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54247,7 +58280,15 @@ pub mod region_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkEndpointGroups/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkEndpointGroups",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of regional network endpoint groups available to the specified project in the given region.
         pub async fn list(
@@ -54255,7 +58296,10 @@ pub mod region_network_endpoint_groups_client {
             request: impl tonic::IntoRequest<
                 super::ListRegionNetworkEndpointGroupsRequest,
             >,
-        ) -> Result<tonic::Response<super::NetworkEndpointGroupList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NetworkEndpointGroupList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54269,7 +58313,15 @@ pub mod region_network_endpoint_groups_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkEndpointGroups/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkEndpointGroups",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -54287,7 +58339,7 @@ pub mod region_network_firewall_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -54345,13 +58397,29 @@ pub mod region_network_firewall_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Inserts an association for the specified network firewall policy.
         pub async fn add_association(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AddAssociationRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54365,7 +58433,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/AddAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "AddAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Inserts a rule into a network firewall policy.
         pub async fn add_rule(
@@ -54373,7 +58449,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::AddRuleRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54387,7 +58463,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/AddRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "AddRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Copies rules to the specified network firewall policy.
         pub async fn clone_rules(
@@ -54395,7 +58479,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::CloneRulesRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54409,7 +58493,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/CloneRules",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "CloneRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified network firewall policy.
         pub async fn delete(
@@ -54417,7 +58509,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::DeleteRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54431,7 +58523,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified network firewall policy.
         pub async fn get(
@@ -54439,7 +58539,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::GetRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::FirewallPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::FirewallPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54453,7 +58553,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets an association with the specified name.
         pub async fn get_association(
@@ -54461,7 +58569,10 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::GetAssociationRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::FirewallPolicyAssociation>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyAssociation>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54475,7 +58586,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/GetAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "GetAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the effective firewalls on a given network.
         pub async fn get_effective_firewalls(
@@ -54483,7 +58602,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse,
             >,
@@ -54502,7 +58621,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/GetEffectiveFirewalls",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "GetEffectiveFirewalls",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
@@ -54510,7 +58637,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::GetIamPolicyRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54524,7 +58651,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a rule of the specified priority.
         pub async fn get_rule(
@@ -54532,7 +58667,10 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::GetRuleRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::FirewallPolicyRule>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyRule>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54546,7 +58684,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/GetRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "GetRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new network firewall policy in the specified project and region.
         pub async fn insert(
@@ -54554,7 +58700,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::InsertRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54568,7 +58714,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the network firewall policies that have been configured for the specified project in the given region.
         pub async fn list(
@@ -54576,7 +58730,10 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::ListRegionNetworkFirewallPoliciesRequest,
             >,
-        ) -> Result<tonic::Response<super::FirewallPolicyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::FirewallPolicyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54590,7 +58747,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified network firewall policy.
         pub async fn patch(
@@ -54598,7 +58763,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::PatchRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54612,7 +58777,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches a rule of the specified priority.
         pub async fn patch_rule(
@@ -54620,7 +58793,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::PatchRuleRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54634,7 +58807,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/PatchRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "PatchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes an association for the specified network firewall policy.
         pub async fn remove_association(
@@ -54642,7 +58823,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::RemoveAssociationRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54656,7 +58837,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/RemoveAssociation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "RemoveAssociation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a rule of the specified priority.
         pub async fn remove_rule(
@@ -54664,7 +58853,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::RemoveRuleRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54678,7 +58867,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/RemoveRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "RemoveRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
@@ -54686,7 +58883,7 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::SetIamPolicyRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54700,7 +58897,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -54708,7 +58913,10 @@ pub mod region_network_firewall_policies_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsRegionNetworkFirewallPolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54722,7 +58930,15 @@ pub mod region_network_firewall_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNetworkFirewallPolicies/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNetworkFirewallPolicies",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -54740,7 +58956,7 @@ pub mod region_notification_endpoints_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -54798,13 +59014,29 @@ pub mod region_notification_endpoints_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified NotificationEndpoint in the given region
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::DeleteRegionNotificationEndpointRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54818,13 +59050,24 @@ pub mod region_notification_endpoints_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNotificationEndpoints/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNotificationEndpoints",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified NotificationEndpoint resource in the given region.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionNotificationEndpointRequest>,
-        ) -> Result<tonic::Response<super::NotificationEndpoint>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NotificationEndpoint>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54838,7 +59081,15 @@ pub mod region_notification_endpoints_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNotificationEndpoints/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNotificationEndpoints",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Create a NotificationEndpoint in the specified project in the given region using the parameters that are included in the request.
         pub async fn insert(
@@ -54846,7 +59097,7 @@ pub mod region_notification_endpoints_client {
             request: impl tonic::IntoRequest<
                 super::InsertRegionNotificationEndpointRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54860,7 +59111,15 @@ pub mod region_notification_endpoints_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNotificationEndpoints/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNotificationEndpoints",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the NotificationEndpoints for a project in the given region.
         pub async fn list(
@@ -54868,7 +59127,10 @@ pub mod region_notification_endpoints_client {
             request: impl tonic::IntoRequest<
                 super::ListRegionNotificationEndpointsRequest,
             >,
-        ) -> Result<tonic::Response<super::NotificationEndpointList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::NotificationEndpointList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -54882,7 +59144,15 @@ pub mod region_notification_endpoints_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionNotificationEndpoints/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionNotificationEndpoints",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -54900,7 +59170,7 @@ pub mod region_operations_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -54956,11 +59226,27 @@ pub mod region_operations_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified region-specific Operations resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionOperationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::DeleteRegionOperationResponse>,
             tonic::Status,
         > {
@@ -54977,13 +59263,18 @@ pub mod region_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionOperations/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionOperations", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified region-specific Operations resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -54997,13 +59288,18 @@ pub mod region_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionOperations/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionOperations", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of Operation resources contained within the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionOperationsRequest>,
-        ) -> Result<tonic::Response<super::OperationList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::OperationList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55017,13 +59313,18 @@ pub mod region_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionOperations/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionOperations", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Waits for the specified Operation resource to return as `DONE` or for the request to approach the 2 minute deadline, and retrieves the specified Operation resource. This method differs from the `GET` method in that it waits for no more than the default deadline (2 minutes) and then returns the current state of the operation, which might be `DONE` or still in progress. This method is called on a best-effort basis. Specifically: - In uncommon cases, when the server is overloaded, the request might return before the default deadline is reached, or might return after zero seconds. - If the default deadline is reached, there is no guarantee that the operation is actually done when the method returns. Be prepared to retry if the operation is not `DONE`.
         pub async fn wait(
             &mut self,
             request: impl tonic::IntoRequest<super::WaitRegionOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55037,7 +59338,12 @@ pub mod region_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionOperations/Wait",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionOperations", "Wait"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -55055,7 +59361,7 @@ pub mod region_security_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -55113,11 +59419,27 @@ pub mod region_security_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified policy.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55131,13 +59453,21 @@ pub mod region_security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSecurityPolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all of the ordered rules present in a single specified policy.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::SecurityPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SecurityPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55151,13 +59481,21 @@ pub mod region_security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSecurityPolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new policy in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55171,13 +59509,24 @@ pub mod region_security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSecurityPolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all the policies that have been configured for the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionSecurityPoliciesRequest>,
-        ) -> Result<tonic::Response<super::SecurityPolicyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityPolicyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -55191,13 +59540,21 @@ pub mod region_security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSecurityPolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified policy with the data included in the request. To clear fields in the rule, leave the fields empty and specify them in the updateMask. This cannot be used to be update the rules in the policy. Please use the per rule methods like addRule, patchRule, and removeRule instead.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55211,7 +59568,15 @@ pub mod region_security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSecurityPolicies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -55229,7 +59594,7 @@ pub mod region_ssl_certificates_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -55285,11 +59650,27 @@ pub mod region_ssl_certificates_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified SslCertificate resource in the region.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionSslCertificateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55303,13 +59684,21 @@ pub mod region_ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslCertificates/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSslCertificates",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified SslCertificate resource in the specified region. Get a list of available SSL certificates by making a list() request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionSslCertificateRequest>,
-        ) -> Result<tonic::Response<super::SslCertificate>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SslCertificate>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55323,13 +59712,21 @@ pub mod region_ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslCertificates/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSslCertificates",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a SslCertificate resource in the specified project and region using the data included in the request
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionSslCertificateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55343,13 +59740,24 @@ pub mod region_ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslCertificates/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSslCertificates",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of SslCertificate resources available to the specified project in the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionSslCertificatesRequest>,
-        ) -> Result<tonic::Response<super::SslCertificateList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SslCertificateList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -55363,7 +59771,15 @@ pub mod region_ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslCertificates/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSslCertificates",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -55381,7 +59797,7 @@ pub mod region_ssl_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -55437,11 +59853,27 @@ pub mod region_ssl_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified SSL policy. The SSL policy resource can be deleted only if it is not in use by any TargetHttpsProxy or TargetSslProxy resources.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55455,13 +59887,21 @@ pub mod region_ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslPolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSslPolicies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all of the ordered rules present in a single specified policy.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::SslPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SslPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55475,13 +59915,18 @@ pub mod region_ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslPolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionSslPolicies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new policy in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55495,13 +59940,24 @@ pub mod region_ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslPolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSslPolicies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the SSL policies that have been configured for the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionSslPoliciesRequest>,
-        ) -> Result<tonic::Response<super::SslPoliciesList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SslPoliciesList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -55515,7 +59971,12 @@ pub mod region_ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslPolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionSslPolicies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all features that can be specified in the SSL policy when using custom profile.
         pub async fn list_available_features(
@@ -55523,7 +59984,7 @@ pub mod region_ssl_policies_client {
             request: impl tonic::IntoRequest<
                 super::ListAvailableFeaturesRegionSslPoliciesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SslPoliciesListAvailableFeaturesResponse>,
             tonic::Status,
         > {
@@ -55540,13 +60001,21 @@ pub mod region_ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslPolicies/ListAvailableFeatures",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionSslPolicies",
+                        "ListAvailableFeatures",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified SSL policy with the data included in the request.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55560,7 +60029,12 @@ pub mod region_ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionSslPolicies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionSslPolicies", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -55578,7 +60052,7 @@ pub mod region_target_http_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -55636,11 +60110,27 @@ pub mod region_target_http_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified TargetHttpProxy resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55654,13 +60144,24 @@ pub mod region_target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetHttpProxy resource in the specified region.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpProxy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpProxy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -55674,13 +60175,21 @@ pub mod region_target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetHttpProxy resource in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55694,13 +60203,24 @@ pub mod region_target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of TargetHttpProxy resources available to the specified project in the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionTargetHttpProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -55714,7 +60234,15 @@ pub mod region_target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the URL map for TargetHttpProxy.
         pub async fn set_url_map(
@@ -55722,7 +60250,7 @@ pub mod region_target_http_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetUrlMapRegionTargetHttpProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55736,7 +60264,15 @@ pub mod region_target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpProxies/SetUrlMap",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "SetUrlMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -55754,7 +60290,7 @@ pub mod region_target_https_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -55812,11 +60348,27 @@ pub mod region_target_https_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified TargetHttpsProxy resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55830,13 +60382,24 @@ pub mod region_target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpsProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpsProxies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetHttpsProxy resource in the specified region.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpsProxy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpsProxy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -55850,13 +60413,21 @@ pub mod region_target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpsProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpsProxies",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetHttpsProxy resource in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55870,13 +60441,24 @@ pub mod region_target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpsProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpsProxies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of TargetHttpsProxy resources available to the specified project in the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionTargetHttpsProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpsProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpsProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -55890,13 +60472,21 @@ pub mod region_target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpsProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpsProxies",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified regional TargetHttpsProxy resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55910,7 +60500,15 @@ pub mod region_target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpsProxies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpsProxies",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Replaces SslCertificates for TargetHttpsProxy.
         pub async fn set_ssl_certificates(
@@ -55918,7 +60516,7 @@ pub mod region_target_https_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetSslCertificatesRegionTargetHttpsProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55932,7 +60530,15 @@ pub mod region_target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpsProxies/SetSslCertificates",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpsProxies",
+                        "SetSslCertificates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the URL map for TargetHttpsProxy.
         pub async fn set_url_map(
@@ -55940,7 +60546,7 @@ pub mod region_target_https_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetUrlMapRegionTargetHttpsProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -55954,7 +60560,15 @@ pub mod region_target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetHttpsProxies/SetUrlMap",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetHttpsProxies",
+                        "SetUrlMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -55972,7 +60586,7 @@ pub mod region_target_tcp_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -56030,11 +60644,27 @@ pub mod region_target_tcp_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified TargetTcpProxy resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionTargetTcpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56048,13 +60678,21 @@ pub mod region_target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetTcpProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetTcpProxies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetTcpProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionTargetTcpProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetTcpProxy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TargetTcpProxy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56068,13 +60706,21 @@ pub mod region_target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetTcpProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetTcpProxies",
+                        "Get",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetTcpProxy resource in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionTargetTcpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56088,13 +60734,24 @@ pub mod region_target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetTcpProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetTcpProxies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of TargetTcpProxy resources available to the specified project in a given region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionTargetTcpProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetTcpProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetTcpProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -56108,7 +60765,15 @@ pub mod region_target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionTargetTcpProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.RegionTargetTcpProxies",
+                        "List",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -56126,7 +60791,7 @@ pub mod region_url_maps_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -56182,11 +60847,27 @@ pub mod region_url_maps_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified UrlMap resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegionUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56200,13 +60881,18 @@ pub mod region_url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionUrlMaps/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionUrlMaps", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified UrlMap resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionUrlMapRequest>,
-        ) -> Result<tonic::Response<super::UrlMap>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UrlMap>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56220,13 +60906,16 @@ pub mod region_url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionUrlMaps/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.RegionUrlMaps", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a UrlMap resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRegionUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56240,13 +60929,18 @@ pub mod region_url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionUrlMaps/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionUrlMaps", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of UrlMap resources available to the specified project in the specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionUrlMapsRequest>,
-        ) -> Result<tonic::Response<super::UrlMapList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UrlMapList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56260,13 +60954,18 @@ pub mod region_url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionUrlMaps/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionUrlMaps", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified UrlMap resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56280,13 +60979,18 @@ pub mod region_url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionUrlMaps/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionUrlMaps", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified UrlMap resource with the data included in the request.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRegionUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56300,13 +61004,21 @@ pub mod region_url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionUrlMaps/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionUrlMaps", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Runs static validation for the UrlMap. In particular, the tests of the provided UrlMap will be run. Calling this method does NOT create the UrlMap.
         pub async fn validate(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateRegionUrlMapRequest>,
-        ) -> Result<tonic::Response<super::UrlMapsValidateResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UrlMapsValidateResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -56320,7 +61032,12 @@ pub mod region_url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.RegionUrlMaps/Validate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.RegionUrlMaps", "Validate"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -56338,7 +61055,7 @@ pub mod regions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -56394,11 +61111,27 @@ pub mod regions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the specified Region resource. To decrease latency for this method, you can optionally omit any unneeded information from the response by using a field mask. This practice is especially recommended for unused quota information (the `quotas` field). To exclude one or more fields, set your request's `fields` query parameter to only include the fields you need. For example, to only include the `id` and `selfLink` fields, add the query parameter `?fields=id,selfLink` to your request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRegionRequest>,
-        ) -> Result<tonic::Response<super::Region>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Region>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56412,13 +61145,16 @@ pub mod regions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Regions/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Regions", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of region resources available to the specified project. To decrease latency for this method, you can optionally omit any unneeded information from the response by using a field mask. This practice is especially recommended for unused quota information (the `items.quotas` field). To exclude one or more fields, set your request's `fields` query parameter to only include the fields you need. For example, to only include the `id` and `selfLink` fields, add the query parameter `?fields=id,selfLink` to your request.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRegionsRequest>,
-        ) -> Result<tonic::Response<super::RegionList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RegionList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56432,7 +61168,10 @@ pub mod regions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Regions/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Regions", "List"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -56450,7 +61189,7 @@ pub mod reservations_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -56506,11 +61245,30 @@ pub mod reservations_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of reservations.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListReservationsRequest>,
-        ) -> Result<tonic::Response<super::ReservationAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ReservationAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -56524,13 +61282,21 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Reservations",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified reservation.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteReservationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56544,13 +61310,18 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Reservations", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves information about the specified reservation.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReservationRequest>,
-        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56564,13 +61335,16 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Reservations", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyReservationRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56584,13 +61358,21 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Reservations",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new reservation. For more information, read Reserving zonal resources.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertReservationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56604,13 +61386,21 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Reservations", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// A list of all the reservations that have been configured for the specified project in specified zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReservationsRequest>,
-        ) -> Result<tonic::Response<super::ReservationList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ReservationList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -56624,13 +61414,16 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Reservations", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Resizes the reservation (applicable to standalone reservations only). For more information, read Modifying reservations.
         pub async fn resize(
             &mut self,
             request: impl tonic::IntoRequest<super::ResizeReservationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56644,13 +61437,18 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/Resize",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Reservations", "Resize"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyReservationRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56664,13 +61462,24 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Reservations",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsReservationRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -56684,13 +61493,21 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Reservations",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Update share settings of the reservation.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateReservationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56704,7 +61521,12 @@ pub mod reservations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Reservations/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Reservations", "Update"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -56722,7 +61544,7 @@ pub mod resource_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -56778,13 +61600,29 @@ pub mod resource_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of resource policies.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListResourcePoliciesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ResourcePolicyAggregatedList>,
             tonic::Status,
         > {
@@ -56801,13 +61639,21 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ResourcePolicies",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified resource policy.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteResourcePolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56821,13 +61667,18 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ResourcePolicies", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves all information of the specified resource policy.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetResourcePolicyRequest>,
-        ) -> Result<tonic::Response<super::ResourcePolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ResourcePolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56841,13 +61692,18 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ResourcePolicies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyResourcePolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56861,13 +61717,21 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ResourcePolicies",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new resource policy.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertResourcePolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56881,13 +61745,21 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ResourcePolicies", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// A list all the resource policies that have been configured for the specified project in specified region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListResourcePoliciesRequest>,
-        ) -> Result<tonic::Response<super::ResourcePolicyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ResourcePolicyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -56901,13 +61773,18 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ResourcePolicies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyResourcePolicyRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -56921,7 +61798,15 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ResourcePolicies",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -56929,7 +61814,10 @@ pub mod resource_policies_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsResourcePolicyRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -56943,7 +61831,15 @@ pub mod resource_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ResourcePolicies/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ResourcePolicies",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -56961,7 +61857,7 @@ pub mod routers_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -57017,11 +61913,30 @@ pub mod routers_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of routers.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListRoutersRequest>,
-        ) -> Result<tonic::Response<super::RouterAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RouterAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57035,13 +61950,18 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Routers", "AggregatedList"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified Router resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRouterRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57055,13 +61975,16 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routers", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified Router resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRouterRequest>,
-        ) -> Result<tonic::Response<super::Router>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Router>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57075,13 +61998,19 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routers", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves runtime Nat mapping information of VM endpoints.
         pub async fn get_nat_mapping_info(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNatMappingInfoRoutersRequest>,
-        ) -> Result<tonic::Response<super::VmEndpointNatMappingsList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::VmEndpointNatMappingsList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57095,13 +62024,24 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/GetNatMappingInfo",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Routers",
+                        "GetNatMappingInfo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves runtime information of the specified router.
         pub async fn get_router_status(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRouterStatusRouterRequest>,
-        ) -> Result<tonic::Response<super::RouterStatusResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RouterStatusResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57115,13 +62055,18 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/GetRouterStatus",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Routers", "GetRouterStatus"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Router resource in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRouterRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57135,13 +62080,16 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routers", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of Router resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRoutersRequest>,
-        ) -> Result<tonic::Response<super::RouterList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RouterList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57155,13 +62103,16 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routers", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified Router resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRouterRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57175,13 +62126,19 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routers", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Preview fields auto-generated during router create and update operations. Calling this method does NOT create or update the router.
         pub async fn preview(
             &mut self,
             request: impl tonic::IntoRequest<super::PreviewRouterRequest>,
-        ) -> Result<tonic::Response<super::RoutersPreviewResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RoutersPreviewResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57195,13 +62152,16 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/Preview",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routers", "Preview"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified Router resource with the data included in the request. This method conforms to PUT semantics, which requests that the state of the target resource be created or replaced with the state defined by the representation enclosed in the request message payload.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRouterRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57215,7 +62175,10 @@ pub mod routers_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routers/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routers", "Update"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -57233,7 +62196,7 @@ pub mod routes_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -57289,11 +62252,27 @@ pub mod routes_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified Route resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRouteRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57307,13 +62286,16 @@ pub mod routes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routes/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routes", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified Route resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRouteRequest>,
-        ) -> Result<tonic::Response<super::Route>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Route>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57327,13 +62309,16 @@ pub mod routes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routes/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routes", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a Route resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertRouteRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57347,13 +62332,16 @@ pub mod routes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routes/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routes", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of Route resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRoutesRequest>,
-        ) -> Result<tonic::Response<super::RouteList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::RouteList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57367,7 +62355,10 @@ pub mod routes_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Routes/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Routes", "List"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -57385,7 +62376,7 @@ pub mod security_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -57441,11 +62432,27 @@ pub mod security_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Inserts a rule into a security policy.
         pub async fn add_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::AddRuleSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57459,7 +62466,15 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/AddRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SecurityPolicies",
+                        "AddRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of all SecurityPolicy resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
@@ -57467,7 +62482,7 @@ pub mod security_policies_client {
             request: impl tonic::IntoRequest<
                 super::AggregatedListSecurityPoliciesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SecurityPoliciesAggregatedList>,
             tonic::Status,
         > {
@@ -57484,13 +62499,21 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SecurityPolicies",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified policy.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57504,13 +62527,18 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SecurityPolicies", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all of the ordered rules present in a single specified policy.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::SecurityPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SecurityPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57524,13 +62552,21 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SecurityPolicies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets a rule at the specified priority.
         pub async fn get_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRuleSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::SecurityPolicyRule>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityPolicyRule>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57544,13 +62580,21 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/GetRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SecurityPolicies",
+                        "GetRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new policy in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57564,13 +62608,21 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SecurityPolicies", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List all the policies that have been configured for the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSecurityPoliciesRequest>,
-        ) -> Result<tonic::Response<super::SecurityPolicyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SecurityPolicyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57584,7 +62636,12 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SecurityPolicies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the current list of preconfigured Web Application Firewall (WAF) expressions.
         pub async fn list_preconfigured_expression_sets(
@@ -57592,7 +62649,7 @@ pub mod security_policies_client {
             request: impl tonic::IntoRequest<
                 super::ListPreconfiguredExpressionSetsSecurityPoliciesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::SecurityPoliciesListPreconfiguredExpressionSetsResponse,
             >,
@@ -57611,13 +62668,21 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/ListPreconfiguredExpressionSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SecurityPolicies",
+                        "ListPreconfiguredExpressionSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified policy with the data included in the request. To clear fields in the rule, leave the fields empty and specify them in the updateMask. This cannot be used to be update the rules in the policy. Please use the per rule methods like addRule, patchRule, and removeRule instead.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57631,13 +62696,18 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SecurityPolicies", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches a rule at the specified priority.
         pub async fn patch_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRuleSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57651,13 +62721,21 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/PatchRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SecurityPolicies",
+                        "PatchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a rule at the specified priority.
         pub async fn remove_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveRuleSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57671,13 +62749,21 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/RemoveRule",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SecurityPolicies",
+                        "RemoveRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on a security policy. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsSecurityPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57691,7 +62777,15 @@ pub mod security_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SecurityPolicies/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SecurityPolicies",
+                        "SetLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -57709,7 +62803,7 @@ pub mod service_attachments_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -57765,13 +62859,29 @@ pub mod service_attachments_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all ServiceAttachment resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListServiceAttachmentsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ServiceAttachmentAggregatedList>,
             tonic::Status,
         > {
@@ -57788,13 +62898,21 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ServiceAttachments",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified ServiceAttachment in the given scope
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57808,13 +62926,24 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ServiceAttachments",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified ServiceAttachment resource in the given scope.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceAttachmentRequest>,
-        ) -> Result<tonic::Response<super::ServiceAttachment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ServiceAttachment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57828,13 +62957,18 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ServiceAttachments", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicyServiceAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57848,13 +62982,21 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ServiceAttachments",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a ServiceAttachment in the specified project in the given scope using the parameters that are included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertServiceAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57868,13 +63010,24 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ServiceAttachments",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the ServiceAttachments for a project in the given scope.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServiceAttachmentsRequest>,
-        ) -> Result<tonic::Response<super::ServiceAttachmentList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ServiceAttachmentList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57888,13 +63041,18 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ServiceAttachments", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified ServiceAttachment resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchServiceAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57908,13 +63066,21 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ServiceAttachments",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicyServiceAttachmentRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -57928,7 +63094,15 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ServiceAttachments",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
@@ -57936,7 +63110,10 @@ pub mod service_attachments_client {
             request: impl tonic::IntoRequest<
                 super::TestIamPermissionsServiceAttachmentRequest,
             >,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -57950,7 +63127,15 @@ pub mod service_attachments_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ServiceAttachments/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.ServiceAttachments",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -57968,7 +63153,7 @@ pub mod snapshots_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -58024,11 +63209,27 @@ pub mod snapshots_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified Snapshot resource. Keep in mind that deleting a single snapshot might not necessarily delete all the data on that snapshot. If any data on the snapshot that is marked for deletion is needed for subsequent snapshots, the data will be moved to the next corresponding snapshot. For more information, see Deleting snapshots.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58042,13 +63243,16 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Snapshots", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified Snapshot resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Snapshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Snapshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58062,13 +63266,16 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Snapshots", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicySnapshotRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58082,13 +63289,18 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Snapshots", "GetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a snapshot in the specified project using the data included in the request. For regular snapshot creation, consider using this method instead of disks.createSnapshot, as this method supports more features, such as creating snapshots in a project different from the source disk project.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58102,13 +63314,16 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Snapshots", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of Snapshot resources contained within the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSnapshotsRequest>,
-        ) -> Result<tonic::Response<super::SnapshotList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SnapshotList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58122,13 +63337,16 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Snapshots", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicySnapshotRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58142,13 +63360,18 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Snapshots", "SetIamPolicy"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on a snapshot. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58162,13 +63385,21 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Snapshots", "SetLabels"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsSnapshotRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -58182,7 +63413,15 @@ pub mod snapshots_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Snapshots/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Snapshots",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -58200,7 +63439,7 @@ pub mod ssl_certificates_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -58256,11 +63495,27 @@ pub mod ssl_certificates_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all SslCertificate resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListSslCertificatesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SslCertificateAggregatedList>,
             tonic::Status,
         > {
@@ -58277,13 +63532,21 @@ pub mod ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslCertificates/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SslCertificates",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified SslCertificate resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSslCertificateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58297,13 +63560,18 @@ pub mod ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslCertificates/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SslCertificates", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified SslCertificate resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSslCertificateRequest>,
-        ) -> Result<tonic::Response<super::SslCertificate>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SslCertificate>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58317,13 +63585,18 @@ pub mod ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslCertificates/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SslCertificates", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a SslCertificate resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertSslCertificateRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58337,13 +63610,21 @@ pub mod ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslCertificates/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SslCertificates", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of SslCertificate resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSslCertificatesRequest>,
-        ) -> Result<tonic::Response<super::SslCertificateList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SslCertificateList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -58357,7 +63638,12 @@ pub mod ssl_certificates_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslCertificates/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SslCertificates", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -58375,7 +63661,7 @@ pub mod ssl_policies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -58431,11 +63717,30 @@ pub mod ssl_policies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all SslPolicy resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListSslPoliciesRequest>,
-        ) -> Result<tonic::Response<super::SslPoliciesAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SslPoliciesAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -58449,13 +63754,21 @@ pub mod ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslPolicies/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SslPolicies",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified SSL policy. The SSL policy resource can be deleted only if it is not in use by any TargetHttpsProxy or TargetSslProxy resources.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58469,13 +63782,18 @@ pub mod ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslPolicies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SslPolicies", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all of the ordered rules present in a single specified policy.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::SslPolicy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SslPolicy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58489,13 +63807,16 @@ pub mod ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslPolicies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.SslPolicies", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified SSL policy resource.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58509,13 +63830,21 @@ pub mod ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslPolicies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.SslPolicies", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the SSL policies that have been configured for the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSslPoliciesRequest>,
-        ) -> Result<tonic::Response<super::SslPoliciesList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SslPoliciesList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -58529,7 +63858,10 @@ pub mod ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslPolicies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.SslPolicies", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all features that can be specified in the SSL policy when using custom profile.
         pub async fn list_available_features(
@@ -58537,7 +63869,7 @@ pub mod ssl_policies_client {
             request: impl tonic::IntoRequest<
                 super::ListAvailableFeaturesSslPoliciesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SslPoliciesListAvailableFeaturesResponse>,
             tonic::Status,
         > {
@@ -58554,13 +63886,21 @@ pub mod ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslPolicies/ListAvailableFeatures",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.SslPolicies",
+                        "ListAvailableFeatures",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified SSL policy with the data included in the request.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchSslPolicyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58574,7 +63914,10 @@ pub mod ssl_policies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.SslPolicies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.SslPolicies", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -58592,7 +63935,7 @@ pub mod subnetworks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -58648,11 +63991,30 @@ pub mod subnetworks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of subnetworks.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListSubnetworksRequest>,
-        ) -> Result<tonic::Response<super::SubnetworkAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SubnetworkAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -58666,13 +64028,21 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Subnetworks",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified subnetwork.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSubnetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58686,13 +64056,18 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Subnetworks", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Expands the IP CIDR range of the subnetwork to a specified value.
         pub async fn expand_ip_cidr_range(
             &mut self,
             request: impl tonic::IntoRequest<super::ExpandIpCidrRangeSubnetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58706,13 +64081,21 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/ExpandIpCidrRange",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Subnetworks",
+                        "ExpandIpCidrRange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified subnetwork.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSubnetworkRequest>,
-        ) -> Result<tonic::Response<super::Subnetwork>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Subnetwork>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58726,13 +64109,16 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Subnetworks", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIamPolicySubnetworkRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58746,13 +64132,21 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Subnetworks",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a subnetwork in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertSubnetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58766,13 +64160,18 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Subnetworks", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of subnetworks available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSubnetworksRequest>,
-        ) -> Result<tonic::Response<super::SubnetworkList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::SubnetworkList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58786,13 +64185,16 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Subnetworks", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an aggregated list of all usable subnetworks in the project.
         pub async fn list_usable(
             &mut self,
             request: impl tonic::IntoRequest<super::ListUsableSubnetworksRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::UsableSubnetworksAggregatedList>,
             tonic::Status,
         > {
@@ -58809,13 +64211,18 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/ListUsable",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.Subnetworks", "ListUsable"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified subnetwork with the data included in the request. Only certain fields can be updated with a patch request as indicated in the field descriptions. You must specify the current fingerprint of the subnetwork resource being patched.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchSubnetworkRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58829,13 +64236,16 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Subnetworks", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the access control policy on the specified resource. Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetIamPolicySubnetworkRequest>,
-        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Policy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58849,7 +64259,15 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Subnetworks",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Set whether VMs in this subnet can access Google services without assigning external IP addresses through Private Google Access.
         pub async fn set_private_ip_google_access(
@@ -58857,7 +64275,7 @@ pub mod subnetworks_client {
             request: impl tonic::IntoRequest<
                 super::SetPrivateIpGoogleAccessSubnetworkRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58871,13 +64289,24 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/SetPrivateIpGoogleAccess",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Subnetworks",
+                        "SetPrivateIpGoogleAccess",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsSubnetworkRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -58891,7 +64320,15 @@ pub mod subnetworks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Subnetworks/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.Subnetworks",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -58909,7 +64346,7 @@ pub mod target_grpc_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -58965,11 +64402,27 @@ pub mod target_grpc_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified TargetGrpcProxy in the given scope
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetGrpcProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -58983,13 +64436,24 @@ pub mod target_grpc_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetGrpcProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetGrpcProxies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetGrpcProxy resource in the given scope.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetGrpcProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetGrpcProxy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetGrpcProxy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59003,13 +64467,18 @@ pub mod target_grpc_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetGrpcProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetGrpcProxies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetGrpcProxy in the specified project in the given scope using the parameters that are included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetGrpcProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59023,13 +64492,24 @@ pub mod target_grpc_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetGrpcProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetGrpcProxies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists the TargetGrpcProxies for a project in the given scope.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetGrpcProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetGrpcProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetGrpcProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59043,13 +64523,18 @@ pub mod target_grpc_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetGrpcProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetGrpcProxies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified TargetGrpcProxy resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchTargetGrpcProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59063,7 +64548,12 @@ pub mod target_grpc_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetGrpcProxies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetGrpcProxies", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -59081,7 +64571,7 @@ pub mod target_http_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -59137,13 +64627,29 @@ pub mod target_http_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all TargetHttpProxy resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListTargetHttpProxiesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::TargetHttpProxyAggregatedList>,
             tonic::Status,
         > {
@@ -59160,13 +64666,21 @@ pub mod target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpProxies/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpProxies",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified TargetHttpProxy resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59180,13 +64694,24 @@ pub mod target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpProxies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetHttpProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpProxy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpProxy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59200,13 +64725,18 @@ pub mod target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetHttpProxies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetHttpProxy resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59220,13 +64750,24 @@ pub mod target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpProxies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of TargetHttpProxy resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetHttpProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59240,13 +64781,18 @@ pub mod target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetHttpProxies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified TargetHttpProxy resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59260,13 +64806,18 @@ pub mod target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpProxies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetHttpProxies", "Patch"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the URL map for TargetHttpProxy.
         pub async fn set_url_map(
             &mut self,
             request: impl tonic::IntoRequest<super::SetUrlMapTargetHttpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59280,7 +64831,15 @@ pub mod target_http_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpProxies/SetUrlMap",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpProxies",
+                        "SetUrlMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -59298,7 +64857,7 @@ pub mod target_https_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -59354,13 +64913,29 @@ pub mod target_https_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all TargetHttpsProxy resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListTargetHttpsProxiesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::TargetHttpsProxyAggregatedList>,
             tonic::Status,
         > {
@@ -59377,13 +64952,21 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified TargetHttpsProxy resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59397,13 +64980,24 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetHttpsProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpsProxy>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpsProxy>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59417,13 +65011,18 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetHttpsProxies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetHttpsProxy resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59437,13 +65036,24 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of TargetHttpsProxy resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetHttpsProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetHttpsProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetHttpsProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59457,13 +65067,18 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetHttpsProxies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified TargetHttpsProxy resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59477,7 +65092,15 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "Patch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the Certificate Map for TargetHttpsProxy.
         pub async fn set_certificate_map(
@@ -59485,7 +65108,7 @@ pub mod target_https_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetCertificateMapTargetHttpsProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59499,7 +65122,15 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/SetCertificateMap",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "SetCertificateMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the QUIC override policy for TargetHttpsProxy.
         pub async fn set_quic_override(
@@ -59507,7 +65138,7 @@ pub mod target_https_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetQuicOverrideTargetHttpsProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59521,7 +65152,15 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/SetQuicOverride",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "SetQuicOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Replaces SslCertificates for TargetHttpsProxy.
         pub async fn set_ssl_certificates(
@@ -59529,7 +65168,7 @@ pub mod target_https_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetSslCertificatesTargetHttpsProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59543,13 +65182,21 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/SetSslCertificates",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "SetSslCertificates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the SSL policy for TargetHttpsProxy. The SSL policy specifies the server-side support for SSL features. This affects connections between clients and the HTTPS proxy load balancer. They do not affect the connection between the load balancer and the backends.
         pub async fn set_ssl_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetSslPolicyTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59563,13 +65210,21 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/SetSslPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "SetSslPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the URL map for TargetHttpsProxy.
         pub async fn set_url_map(
             &mut self,
             request: impl tonic::IntoRequest<super::SetUrlMapTargetHttpsProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59583,7 +65238,15 @@ pub mod target_https_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetHttpsProxies/SetUrlMap",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetHttpsProxies",
+                        "SetUrlMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -59601,7 +65264,7 @@ pub mod target_instances_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -59657,11 +65320,27 @@ pub mod target_instances_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of target instances.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListTargetInstancesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::TargetInstanceAggregatedList>,
             tonic::Status,
         > {
@@ -59678,13 +65357,21 @@ pub mod target_instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetInstances/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetInstances",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified TargetInstance resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59698,13 +65385,18 @@ pub mod target_instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetInstances/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetInstances", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetInstance resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetInstanceRequest>,
-        ) -> Result<tonic::Response<super::TargetInstance>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TargetInstance>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59718,13 +65410,18 @@ pub mod target_instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetInstances/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetInstances", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetInstance resource in the specified project and zone using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59738,13 +65435,21 @@ pub mod target_instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetInstances/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetInstances", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of TargetInstance resources available to the specified project and zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetInstancesRequest>,
-        ) -> Result<tonic::Response<super::TargetInstanceList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetInstanceList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59758,7 +65463,12 @@ pub mod target_instances_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetInstances/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetInstances", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -59776,7 +65486,7 @@ pub mod target_pools_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -59832,11 +65542,27 @@ pub mod target_pools_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Adds health check URLs to a target pool.
         pub async fn add_health_check(
             &mut self,
             request: impl tonic::IntoRequest<super::AddHealthCheckTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59850,13 +65576,21 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/AddHealthCheck",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetPools",
+                        "AddHealthCheck",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds an instance to a target pool.
         pub async fn add_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::AddInstanceTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59870,13 +65604,21 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/AddInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetPools", "AddInstance"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an aggregated list of target pools.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListTargetPoolsRequest>,
-        ) -> Result<tonic::Response<super::TargetPoolAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetPoolAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59890,13 +65632,21 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetPools",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified target pool.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59910,13 +65660,18 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetPools", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified target pool.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::TargetPool>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TargetPool>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59930,13 +65685,19 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.TargetPools", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the most recent health check results for each IP for the instance that is referenced by the given target pool.
         pub async fn get_health(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHealthTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::TargetPoolInstanceHealth>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetPoolInstanceHealth>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -59950,13 +65711,18 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/GetHealth",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetPools", "GetHealth"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a target pool in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59970,13 +65736,18 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetPools", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of target pools available to the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetPoolsRequest>,
-        ) -> Result<tonic::Response<super::TargetPoolList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TargetPoolList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -59990,13 +65761,16 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.TargetPools", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Removes health check URL from a target pool.
         pub async fn remove_health_check(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveHealthCheckTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60010,13 +65784,21 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/RemoveHealthCheck",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetPools",
+                        "RemoveHealthCheck",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes instance URL from a target pool.
         pub async fn remove_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveInstanceTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60030,13 +65812,21 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/RemoveInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetPools",
+                        "RemoveInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes a backup target pool's configurations.
         pub async fn set_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::SetBackupTargetPoolRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60050,7 +65840,12 @@ pub mod target_pools_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetPools/SetBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetPools", "SetBackup"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -60068,7 +65863,7 @@ pub mod target_ssl_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -60124,11 +65919,27 @@ pub mod target_ssl_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified TargetSslProxy resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetSslProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60142,13 +65953,18 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetSslProxies", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetSslProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetSslProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetSslProxy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TargetSslProxy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60162,13 +65978,18 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetSslProxies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetSslProxy resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetSslProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60182,13 +66003,21 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetSslProxies", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of TargetSslProxy resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetSslProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetSslProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetSslProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -60202,7 +66031,12 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetSslProxies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the BackendService for TargetSslProxy.
         pub async fn set_backend_service(
@@ -60210,7 +66044,7 @@ pub mod target_ssl_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetBackendServiceTargetSslProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60224,7 +66058,15 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/SetBackendService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetSslProxies",
+                        "SetBackendService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the Certificate Map for TargetSslProxy.
         pub async fn set_certificate_map(
@@ -60232,7 +66074,7 @@ pub mod target_ssl_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetCertificateMapTargetSslProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60246,13 +66088,21 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/SetCertificateMap",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetSslProxies",
+                        "SetCertificateMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the ProxyHeaderType for TargetSslProxy.
         pub async fn set_proxy_header(
             &mut self,
             request: impl tonic::IntoRequest<super::SetProxyHeaderTargetSslProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60266,7 +66116,15 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/SetProxyHeader",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetSslProxies",
+                        "SetProxyHeader",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes SslCertificates for TargetSslProxy.
         pub async fn set_ssl_certificates(
@@ -60274,7 +66132,7 @@ pub mod target_ssl_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetSslCertificatesTargetSslProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60288,13 +66146,21 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/SetSslCertificates",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetSslProxies",
+                        "SetSslCertificates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the SSL policy for TargetSslProxy. The SSL policy specifies the server-side support for SSL features. This affects connections between clients and the SSL proxy load balancer. They do not affect the connection between the load balancer and the backends.
         pub async fn set_ssl_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::SetSslPolicyTargetSslProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60308,7 +66174,15 @@ pub mod target_ssl_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetSslProxies/SetSslPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetSslProxies",
+                        "SetSslPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -60326,7 +66200,7 @@ pub mod target_tcp_proxies_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -60382,13 +66256,29 @@ pub mod target_tcp_proxies_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all TargetTcpProxy resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListTargetTcpProxiesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::TargetTcpProxyAggregatedList>,
             tonic::Status,
         > {
@@ -60405,13 +66295,21 @@ pub mod target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetTcpProxies/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetTcpProxies",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified TargetTcpProxy resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetTcpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60425,13 +66323,18 @@ pub mod target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetTcpProxies/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetTcpProxies", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified TargetTcpProxy resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetTcpProxyRequest>,
-        ) -> Result<tonic::Response<super::TargetTcpProxy>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::TargetTcpProxy>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60445,13 +66348,18 @@ pub mod target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetTcpProxies/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetTcpProxies", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a TargetTcpProxy resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetTcpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60465,13 +66373,21 @@ pub mod target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetTcpProxies/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetTcpProxies", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of TargetTcpProxy resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetTcpProxiesRequest>,
-        ) -> Result<tonic::Response<super::TargetTcpProxyList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetTcpProxyList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -60485,7 +66401,12 @@ pub mod target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetTcpProxies/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetTcpProxies", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the BackendService for TargetTcpProxy.
         pub async fn set_backend_service(
@@ -60493,7 +66414,7 @@ pub mod target_tcp_proxies_client {
             request: impl tonic::IntoRequest<
                 super::SetBackendServiceTargetTcpProxyRequest,
             >,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60507,13 +66428,21 @@ pub mod target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetTcpProxies/SetBackendService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetTcpProxies",
+                        "SetBackendService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Changes the ProxyHeaderType for TargetTcpProxy.
         pub async fn set_proxy_header(
             &mut self,
             request: impl tonic::IntoRequest<super::SetProxyHeaderTargetTcpProxyRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60527,7 +66456,15 @@ pub mod target_tcp_proxies_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetTcpProxies/SetProxyHeader",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetTcpProxies",
+                        "SetProxyHeader",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -60545,7 +66482,7 @@ pub mod target_vpn_gateways_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -60601,13 +66538,29 @@ pub mod target_vpn_gateways_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of target VPN gateways.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::AggregatedListTargetVpnGatewaysRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::TargetVpnGatewayAggregatedList>,
             tonic::Status,
         > {
@@ -60624,13 +66577,21 @@ pub mod target_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetVpnGateways/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetVpnGateways",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified target VPN gateway.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60644,13 +66605,24 @@ pub mod target_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetVpnGateways/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetVpnGateways",
+                        "Delete",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified target VPN gateway.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::TargetVpnGateway>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetVpnGateway>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -60664,13 +66636,18 @@ pub mod target_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetVpnGateways/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetVpnGateways", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a target VPN gateway in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertTargetVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60684,13 +66661,24 @@ pub mod target_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetVpnGateways/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetVpnGateways",
+                        "Insert",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of target VPN gateways available to the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetVpnGatewaysRequest>,
-        ) -> Result<tonic::Response<super::TargetVpnGatewayList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TargetVpnGatewayList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -60704,13 +66692,18 @@ pub mod target_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetVpnGateways/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.TargetVpnGateways", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on a TargetVpnGateway. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsTargetVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60724,7 +66717,15 @@ pub mod target_vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.TargetVpnGateways/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.TargetVpnGateways",
+                        "SetLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -60742,7 +66743,7 @@ pub mod url_maps_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -60798,11 +66799,30 @@ pub mod url_maps_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the list of all UrlMap resources, regional and global, available to the specified project.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListUrlMapsRequest>,
-        ) -> Result<tonic::Response<super::UrlMapsAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UrlMapsAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -60816,13 +66836,18 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "AggregatedList"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified UrlMap resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60836,13 +66861,16 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified UrlMap resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetUrlMapRequest>,
-        ) -> Result<tonic::Response<super::UrlMap>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UrlMap>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60856,13 +66884,16 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a UrlMap resource in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60876,13 +66907,16 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Initiates a cache invalidation operation, invalidating the specified path, scoped to the specified UrlMap. For more information, see [Invalidating cached content](/cdn/docs/invalidating-cached-content).
         pub async fn invalidate_cache(
             &mut self,
             request: impl tonic::IntoRequest<super::InvalidateCacheUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60896,13 +66930,18 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/InvalidateCache",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "InvalidateCache"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of UrlMap resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListUrlMapsRequest>,
-        ) -> Result<tonic::Response<super::UrlMapList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::UrlMapList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60916,13 +66955,16 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Patches the specified UrlMap resource with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60936,13 +66978,16 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/Patch",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "Patch"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the specified UrlMap resource with the data included in the request.
         pub async fn update(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateUrlMapRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -60956,13 +67001,19 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/Update",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "Update"));
+            self.inner.unary(req, path, codec).await
         }
         /// Runs static validation for the UrlMap. In particular, the tests of the provided UrlMap will be run. Calling this method does NOT create the UrlMap.
         pub async fn validate(
             &mut self,
             request: impl tonic::IntoRequest<super::ValidateUrlMapRequest>,
-        ) -> Result<tonic::Response<super::UrlMapsValidateResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UrlMapsValidateResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -60976,7 +67027,10 @@ pub mod url_maps_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.UrlMaps/Validate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.UrlMaps", "Validate"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -60994,7 +67048,7 @@ pub mod vpn_gateways_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -61050,11 +67104,30 @@ pub mod vpn_gateways_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of VPN gateways.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListVpnGatewaysRequest>,
-        ) -> Result<tonic::Response<super::VpnGatewayAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::VpnGatewayAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -61068,13 +67141,21 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.VpnGateways",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified VPN gateway.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61088,13 +67169,18 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.VpnGateways", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified VPN gateway.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::VpnGateway>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VpnGateway>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61108,13 +67194,16 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.VpnGateways", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the status for the specified VPN gateway.
         pub async fn get_status(
             &mut self,
             request: impl tonic::IntoRequest<super::GetStatusVpnGatewayRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::VpnGatewaysGetStatusResponse>,
             tonic::Status,
         > {
@@ -61131,13 +67220,18 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/GetStatus",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.VpnGateways", "GetStatus"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a VPN gateway in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61151,13 +67245,18 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.VpnGateways", "Insert"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of VPN gateways available to the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVpnGatewaysRequest>,
-        ) -> Result<tonic::Response<super::VpnGatewayList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VpnGatewayList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61171,13 +67270,16 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.VpnGateways", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on a VpnGateway. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61191,13 +67293,21 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.VpnGateways", "SetLabels"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified resource.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<super::TestIamPermissionsVpnGatewayRequest>,
-        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TestPermissionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -61211,7 +67321,15 @@ pub mod vpn_gateways_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnGateways/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.VpnGateways",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -61229,7 +67347,7 @@ pub mod vpn_tunnels_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -61285,11 +67403,30 @@ pub mod vpn_tunnels_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves an aggregated list of VPN tunnels.
         pub async fn aggregated_list(
             &mut self,
             request: impl tonic::IntoRequest<super::AggregatedListVpnTunnelsRequest>,
-        ) -> Result<tonic::Response<super::VpnTunnelAggregatedList>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::VpnTunnelAggregatedList>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -61303,13 +67440,21 @@ pub mod vpn_tunnels_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnTunnels/AggregatedList",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.compute.v1.VpnTunnels",
+                        "AggregatedList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified VpnTunnel resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteVpnTunnelRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61323,13 +67468,16 @@ pub mod vpn_tunnels_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnTunnels/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.VpnTunnels", "Delete"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the specified VpnTunnel resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetVpnTunnelRequest>,
-        ) -> Result<tonic::Response<super::VpnTunnel>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VpnTunnel>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61343,13 +67491,16 @@ pub mod vpn_tunnels_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnTunnels/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.VpnTunnels", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a VpnTunnel resource in the specified project and region using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertVpnTunnelRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61363,13 +67514,16 @@ pub mod vpn_tunnels_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnTunnels/Insert",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.VpnTunnels", "Insert"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of VpnTunnel resources contained in the specified project and region.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListVpnTunnelsRequest>,
-        ) -> Result<tonic::Response<super::VpnTunnelList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::VpnTunnelList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61383,13 +67537,16 @@ pub mod vpn_tunnels_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnTunnels/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.VpnTunnels", "List"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the labels on a VpnTunnel. To learn more about labels, read the Labeling Resources documentation.
         pub async fn set_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLabelsVpnTunnelRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61403,7 +67560,12 @@ pub mod vpn_tunnels_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.VpnTunnels/SetLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.VpnTunnels", "SetLabels"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -61421,7 +67583,7 @@ pub mod zone_operations_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -61477,11 +67639,30 @@ pub mod zone_operations_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Deletes the specified zone-specific Operations resource.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteZoneOperationRequest>,
-        ) -> Result<tonic::Response<super::DeleteZoneOperationResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteZoneOperationResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -61495,13 +67676,18 @@ pub mod zone_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ZoneOperations/Delete",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ZoneOperations", "Delete"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the specified zone-specific Operations resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetZoneOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61515,13 +67701,18 @@ pub mod zone_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ZoneOperations/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ZoneOperations", "Get"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a list of Operation resources contained within the specified zone.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListZoneOperationsRequest>,
-        ) -> Result<tonic::Response<super::OperationList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::OperationList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61535,13 +67726,18 @@ pub mod zone_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ZoneOperations/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ZoneOperations", "List"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Waits for the specified Operation resource to return as `DONE` or for the request to approach the 2 minute deadline, and retrieves the specified Operation resource. This method waits for no more than the 2 minutes and then returns the current state of the operation, which might be `DONE` or still in progress. This method is called on a best-effort basis. Specifically: - In uncommon cases, when the server is overloaded, the request might return before the default deadline is reached, or might return after zero seconds. - If the default deadline is reached, there is no guarantee that the operation is actually done when the method returns. Be prepared to retry if the operation is not `DONE`.
         pub async fn wait(
             &mut self,
             request: impl tonic::IntoRequest<super::WaitZoneOperationRequest>,
-        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61555,7 +67751,12 @@ pub mod zone_operations_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.ZoneOperations/Wait",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.compute.v1.ZoneOperations", "Wait"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -61573,7 +67774,7 @@ pub mod zones_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -61629,11 +67830,27 @@ pub mod zones_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the specified Zone resource.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetZoneRequest>,
-        ) -> Result<tonic::Response<super::Zone>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Zone>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61647,13 +67864,16 @@ pub mod zones_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Zones/Get",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Zones", "Get"));
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of Zone resources available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListZonesRequest>,
-        ) -> Result<tonic::Response<super::ZoneList>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ZoneList>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -61667,7 +67887,10 @@ pub mod zones_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.Zones/List",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.compute.v1.Zones", "List"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }

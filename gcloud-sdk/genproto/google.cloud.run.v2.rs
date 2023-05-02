@@ -351,6 +351,8 @@ pub mod condition {
         NonZeroExitCode = 2,
         /// The execution was cancelled by users.
         Cancelled = 3,
+        /// The execution is in the process of being cancelled.
+        Cancelling = 4,
     }
     impl ExecutionReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -365,6 +367,7 @@ pub mod condition {
                 }
                 ExecutionReason::NonZeroExitCode => "NON_ZERO_EXIT_CODE",
                 ExecutionReason::Cancelled => "CANCELLED",
+                ExecutionReason::Cancelling => "CANCELLING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -376,6 +379,7 @@ pub mod condition {
                 }
                 "NON_ZERO_EXIT_CODE" => Some(Self::NonZeroExitCode),
                 "CANCELLED" => Some(Self::Cancelled),
+                "CANCELLING" => Some(Self::Cancelling),
                 _ => None,
             }
         }
@@ -410,38 +414,21 @@ pub struct Container {
     pub name: ::prost::alloc::string::String,
     /// Required. Name of the container image in Dockerhub, Google Artifact
     /// Registry, or Google Container Registry. If the host is not provided,
-    /// Dockerhub is assumed. More info:
-    /// <https://kubernetes.io/docs/concepts/containers/images>
+    /// Dockerhub is assumed.
     #[prost(string, tag = "2")]
     pub image: ::prost::alloc::string::String,
     /// Entrypoint array. Not executed within a shell.
     /// The docker image's ENTRYPOINT is used if this is not provided.
-    /// Variable references $(VAR_NAME) are expanded using the container's
-    /// environment. If a variable cannot be resolved, the reference in the input
-    /// string will be unchanged. The $(VAR_NAME) syntax can be escaped with a
-    /// double $$, ie: $$(VAR_NAME). Escaped references will never be expanded,
-    /// regardless of whether the variable exists or not.
-    /// More info:
-    /// <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>
     #[prost(string, repeated, tag = "3")]
     pub command: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Arguments to the entrypoint.
     /// The docker image's CMD is used if this is not provided.
-    /// Variable references $(VAR_NAME) are expanded using the container's
-    /// environment. If a variable cannot be resolved, the reference in the input
-    /// string will be unchanged. The $(VAR_NAME) syntax can be escaped with a
-    /// double $$, ie: $$(VAR_NAME). Escaped references will never be expanded,
-    /// regardless of whether the variable exists or not.
-    /// More info:
-    /// <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>
     #[prost(string, repeated, tag = "4")]
     pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of environment variables to set in the container.
     #[prost(message, repeated, tag = "5")]
     pub env: ::prost::alloc::vec::Vec<EnvVar>,
     /// Compute Resource requirements by this container.
-    /// More info:
-    /// <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources>
     #[prost(message, optional, tag = "6")]
     pub resources: ::core::option::Option<ResourceRequirements>,
     /// List of ports to expose from the container. Only a single port can be
@@ -462,16 +449,12 @@ pub struct Container {
     pub working_dir: ::prost::alloc::string::String,
     /// Periodic probe of container liveness.
     /// Container will be restarted if the probe fails.
-    /// More info:
-    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
     #[prost(message, optional, tag = "10")]
     pub liveness_probe: ::core::option::Option<Probe>,
     /// Startup probe of application within the container.
     /// All other probes are disabled if a startup probe is provided, until it
     /// succeeds. Container will not be added to service endpoints if the probe
     /// fails.
-    /// More info:
-    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
     #[prost(message, optional, tag = "11")]
     pub startup_probe: ::core::option::Option<Probe>,
 }
@@ -479,11 +462,14 @@ pub struct Container {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceRequirements {
-    /// Only memory and CPU are supported. Note: The only
-    /// supported values for CPU are '1', '2',  '4', and '8'. Setting 4 CPU
-    /// requires at least 2Gi of memory. The values of the map is string form of
-    /// the 'quantity' k8s type:
-    /// <https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go>
+    /// Only ´memory´ and 'cpu' are supported.
+    ///
+    /// <p>Notes:
+    ///   * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
+    /// CPU requires at least 2Gi of memory. For more information, go to
+    /// <https://cloud.google.com/run/docs/configuring/cpu.>
+    ///    * For supported 'memory' values and syntax, go to
+    ///   <https://cloud.google.com/run/docs/configuring/memory-limits>
     #[prost(map = "string, string", tag = "1")]
     pub limits: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -492,6 +478,11 @@ pub struct ResourceRequirements {
     /// Determines whether CPU should be throttled or not outside of requests.
     #[prost(bool, tag = "2")]
     pub cpu_idle: bool,
+    /// Determines whether CPU should be boosted on startup of a new container
+    /// instance above the requested CPU threshold, this can help reduce cold-start
+    /// latency.
+    #[prost(bool, tag = "3")]
+    pub startup_cpu_boost: bool,
 }
 /// EnvVar represents an environment variable present in a Container.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -592,7 +583,6 @@ pub mod volume {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VolumeType {
         /// Secret represents a secret that should populate this volume.
-        /// More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret>
         #[prost(message, tag = "2")]
         Secret(super::SecretVolumeSource),
         /// For Cloud SQL volumes, contains the specific instances that should be
@@ -697,15 +687,11 @@ pub struct Probe {
     /// initiated.
     /// Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe
     /// is 3600. Maximum value for startup probe is 240.
-    /// More info:
-    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
     #[prost(int32, tag = "1")]
     pub initial_delay_seconds: i32,
     /// Number of seconds after which the probe times out.
     /// Defaults to 1 second. Minimum value is 1. Maximum value is 3600.
     /// Must be smaller than period_seconds.
-    /// More info:
-    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
     #[prost(int32, tag = "2")]
     pub timeout_seconds: i32,
     /// How often (in seconds) to perform the probe.
@@ -750,6 +736,11 @@ pub struct HttpGetAction {
     /// Custom headers to set in the request. HTTP allows repeated headers.
     #[prost(message, repeated, tag = "4")]
     pub http_headers: ::prost::alloc::vec::Vec<HttpHeader>,
+    /// Port number to access on the container. Must be in the range 1 to 65535.
+    /// If not specified, defaults to the exposed port of the container, which is
+    /// the value of container.ports\[0\].containerPort.
+    #[prost(int32, tag = "5")]
+    pub port: i32,
 }
 /// HTTPHeader describes a custom header to be used in HTTP probes
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -767,7 +758,8 @@ pub struct HttpHeader {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TcpSocketAction {
     /// Port number to access on the container. Must be in the range 1 to 65535.
-    /// If not specified, defaults to 8080.
+    /// If not specified, defaults to the exposed port of the container, which is
+    /// the value of container.ports\[0\].containerPort.
     #[prost(int32, tag = "1")]
     pub port: i32,
 }
@@ -776,7 +768,8 @@ pub struct TcpSocketAction {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GrpcAction {
     /// Port number of the gRPC service. Number must be in the range 1 to 65535.
-    /// If not specified, defaults to 8080.
+    /// If not specified, defaults to the exposed port of the container, which is
+    /// the value of container.ports\[0\].containerPort.
     #[prost(int32, tag = "1")]
     pub port: i32,
     /// Service is the name of the service to place in the gRPC HealthCheckRequest
@@ -1004,6 +997,7 @@ pub struct TaskTemplate {
     /// Max allowed time duration the Task may be active before the system will
     /// actively try to mark it failed and kill associated containers. This applies
     /// per attempt of a task, meaning each retry can run for the full timeout.
+    /// Defaults to 600 seconds.
     #[prost(message, optional, tag = "4")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Email address of the IAM service account associated with the Task of a
@@ -1033,6 +1027,7 @@ pub mod task_template {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Retries {
         /// Number of retries allowed per Task, before marking this Task failed.
+        /// Defaults to 3.
         #[prost(int32, tag = "3")]
         MaxRetries(i32),
     }
@@ -1118,10 +1113,10 @@ pub struct Execution {
     /// modifies the desired state.
     #[prost(int64, tag = "3")]
     pub generation: i64,
-    /// KRM-style labels for the resource.
-    /// User-provided labels are shared with Google's billing system, so they can
-    /// be used to filter, or break down billing charges by team, component,
-    /// environment, state, etc. For more information, visit
+    /// Output only. Unstructured key value map that can be used to organize and
+    /// categorize objects. User-provided labels are shared with Google's billing
+    /// system, so they can be used to filter, or break down billing charges by
+    /// team, component, environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels>
     #[prost(map = "string, string", tag = "4")]
@@ -1129,7 +1124,10 @@ pub struct Execution {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// KRM-style annotations for the resource.
+    /// Output only. Unstructured key value map that may
+    /// be set by external tools to store and arbitrary metadata.
+    /// They are not queryable and should be preserved
+    /// when modifying objects.
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1161,10 +1159,14 @@ pub struct Execution {
     /// request.
     #[prost(message, optional, tag = "10")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Set the launch stage to a preview stage on write to allow use of preview
-    /// features in that stage. On read, describes whether the resource uses
-    /// preview features. Launch Stages are defined at [Google Cloud Platform
-    /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
+    /// The least stable launch stage needed to create this resource, as defined by
+    /// [Google Cloud Platform Launch
+    /// Stages](<https://cloud.google.com/terms/launch-stages>). Cloud Run supports
+    /// `ALPHA`, `BETA`, and `GA`.
+    /// <p>Note that this value might not be what was used
+    /// as input. For example, if ALPHA was provided as input in the parent
+    /// resource, but only BETA and GA-level features are were, this field will be
+    /// BETA.
     #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "11")]
     pub launch_stage: i32,
     /// Output only. The name of the parent Job.
@@ -1174,15 +1176,12 @@ pub struct Execution {
     /// should run at any given time. Must be <= task_count. The actual number of
     /// tasks running in steady state will be less than this number when
     /// ((.spec.task_count - .status.successful) < .spec.parallelism), i.e. when
-    /// the work left to do is less than max parallelism. More info:
-    /// <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
+    /// the work left to do is less than max parallelism.
     #[prost(int32, tag = "13")]
     pub parallelism: i32,
     /// Output only. Specifies the desired number of tasks the execution should
     /// run. Setting to 1 means that parallelism is limited to 1 and the success of
     /// that task signals the success of the execution.
-    /// More info:
-    /// <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
     #[prost(int32, tag = "14")]
     pub task_count: i32,
     /// Output only. The template used to create tasks for this execution.
@@ -1222,6 +1221,9 @@ pub struct Execution {
     /// Console.
     #[prost(string, tag = "26")]
     pub log_uri: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "27")]
+    pub satisfies_pzs: bool,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -1241,7 +1243,7 @@ pub mod executions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1297,11 +1299,27 @@ pub mod executions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets information about an Execution.
         pub async fn get_execution(
             &mut self,
             request: impl tonic::IntoRequest<super::GetExecutionRequest>,
-        ) -> Result<tonic::Response<super::Execution>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Execution>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1315,13 +1333,21 @@ pub mod executions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Executions/GetExecution",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Executions", "GetExecution"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Executions from a Job.
         pub async fn list_executions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExecutionsRequest>,
-        ) -> Result<tonic::Response<super::ListExecutionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListExecutionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1335,13 +1361,18 @@ pub mod executions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Executions/ListExecutions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Executions", "ListExecutions"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an Execution.
         pub async fn delete_execution(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteExecutionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1358,7 +1389,12 @@ pub mod executions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Executions/DeleteExecution",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Executions", "DeleteExecution"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -1367,7 +1403,13 @@ pub mod executions_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionTemplate {
-    /// KRM-style labels for the resource.
+    /// Unstructured key value map that can be used to organize and categorize
+    /// objects.
+    /// User-provided labels are shared with Google's billing system, so they can
+    /// be used to filter, or break down billing charges by team, component,
+    /// environment, state, etc. For more information, visit
+    /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
+    /// <https://cloud.google.com/run/docs/configuring/labels.>
     ///
     /// <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
@@ -1378,12 +1420,17 @@ pub struct ExecutionTemplate {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// KRM-style annotations for the resource.
+    /// Unstructured key value map that may be set by external tools to store and
+    /// arbitrary metadata. They are not queryable and should be preserved
+    /// when modifying objects.
     ///
     /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
     /// namespaces, and they will be rejected. All system annotations in v1 now
     /// have a corresponding field in v2 ExecutionTemplate.
+    ///
+    /// <p>This field follows Kubernetes annotations' namespacing, limits, and
+    /// rules.
     #[prost(map = "string, string", tag = "2")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1400,9 +1447,7 @@ pub struct ExecutionTemplate {
     pub parallelism: i32,
     /// Specifies the desired number of tasks the execution should run.
     /// Setting to 1 means that parallelism is limited to 1 and the success of
-    /// that task signals the success of the execution.
-    /// More info:
-    /// <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
+    /// that task signals the success of the execution. Defaults to 1.
     #[prost(int32, tag = "4")]
     pub task_count: i32,
     /// Required. Describes the task(s) that will be created when executing an
@@ -1546,12 +1591,13 @@ pub struct Job {
     /// modifies the desired state.
     #[prost(int64, tag = "3")]
     pub generation: i64,
-    /// KRM-style labels for the resource.
+    /// Unstructured key value map that can be used to organize and categorize
+    /// objects.
     /// User-provided labels are shared with Google's billing system, so they can
     /// be used to filter, or break down billing charges by team, component,
     /// environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
-    /// <https://cloud.google.com/run/docs/configuring/labels>
+    /// <https://cloud.google.com/run/docs/configuring/labels.>
     ///
     /// <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
@@ -1562,18 +1608,18 @@ pub struct Job {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// KRM-style annotations for the resource. Unstructured key value map that may
+    /// Unstructured key value map that may
     /// be set by external tools to store and arbitrary metadata.
     /// They are not queryable and should be preserved
     /// when modifying objects.
     ///
     /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
-    /// namespaces, and they will be rejected. All system annotations in v1 now
-    /// have a corresponding field in v2 Job.
+    /// namespaces, and they will be rejected on new resources. All system
+    /// annotations in v1 now have a corresponding field in v2 Job.
     ///
     /// <p>This field follows Kubernetes annotations' namespacing, limits, and
-    /// rules. More info: <https://kubernetes.io/docs/user-guide/annotations>
+    /// rules.
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1608,6 +1654,12 @@ pub struct Job {
     /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
     /// Cloud Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA
     /// is assumed.
+    /// Set the launch stage to a preview stage on input to allow use of preview
+    /// features in that stage. On read (or output), describes whether the resource
+    /// uses preview features.
+    /// <p>
+    /// For example, if ALPHA is provided as input, but only BETA and GA-level
+    /// features are used, this field will be BETA on output.
     #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "14")]
     pub launch_stage: i32,
     /// Settings for the Binary Authorization feature.
@@ -1659,6 +1711,9 @@ pub struct Job {
     /// failure can be found in `terminal_condition` and `conditions`.
     #[prost(bool, tag = "23")]
     pub reconciling: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "25")]
+    pub satisfies_pzs: bool,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -1693,7 +1748,7 @@ pub mod jobs_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1749,11 +1804,27 @@ pub mod jobs_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a Job.
         pub async fn create_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1770,13 +1841,16 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/CreateJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "CreateJob"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets information about a Job.
         pub async fn get_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1790,13 +1864,19 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/GetJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "GetJob"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Jobs.
         pub async fn list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
-        ) -> Result<tonic::Response<super::ListJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1810,13 +1890,16 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/ListJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "ListJobs"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Job.
         pub async fn update_job(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1833,13 +1916,16 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/UpdateJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "UpdateJob"));
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Job.
         pub async fn delete_job(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1856,13 +1942,16 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/DeleteJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "DeleteJob"));
+            self.inner.unary(req, path, codec).await
         }
         /// Triggers creation of a new Execution of this Job.
         pub async fn run_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RunJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1879,7 +1968,10 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/RunJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "RunJob"));
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the IAM Access Control policy currently in effect for the given Job.
         /// This result does not include any inherited policies.
@@ -1888,7 +1980,7 @@ pub mod jobs_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1905,7 +1997,10 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "GetIamPolicy"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the IAM Access control policy for the specified Job. Overwrites
         /// any existing policy.
@@ -1914,7 +2009,7 @@ pub mod jobs_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -1931,7 +2026,10 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "SetIamPolicy"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified Project.
         ///
@@ -1941,7 +2039,7 @@ pub mod jobs_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -1960,7 +2058,12 @@ pub mod jobs_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Jobs", "TestIamPermissions"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2045,18 +2148,21 @@ pub struct Revision {
     /// modifies the desired state.
     #[prost(int64, tag = "3")]
     pub generation: i64,
-    /// KRM-style labels for the resource.
-    /// User-provided labels are shared with Google's billing system, so they can
-    /// be used to filter, or break down billing charges by team, component,
-    /// environment, state, etc. For more information, visit
+    /// Output only. Unstructured key value map that can be used to organize and
+    /// categorize objects. User-provided labels are shared with Google's billing
+    /// system, so they can be used to filter, or break down billing charges by
+    /// team, component, environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
-    /// <https://cloud.google.com/run/docs/configuring/labels>
+    /// <https://cloud.google.com/run/docs/configuring/labels.>
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// KRM-style annotations for the resource.
+    /// Output only. Unstructured key value map that may
+    /// be set by external tools to store and arbitrary metadata.
+    /// They are not queryable and should be preserved
+    /// when modifying objects.
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2077,10 +2183,14 @@ pub struct Revision {
     /// request.
     #[prost(message, optional, tag = "9")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Set the launch stage to a preview stage on write to allow use of preview
-    /// features in that stage. On read, describes whether the resource uses
-    /// preview features. Launch Stages are defined at [Google Cloud Platform
-    /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
+    /// The least stable launch stage needed to create this resource, as defined by
+    /// [Google Cloud Platform Launch
+    /// Stages](<https://cloud.google.com/terms/launch-stages>). Cloud Run supports
+    /// `ALPHA`, `BETA`, and `GA`.
+    /// <p>Note that this value might not be what was used
+    /// as input. For example, if ALPHA was provided as input in the parent
+    /// resource, but only BETA and GA-level features are were, this field will be
+    /// BETA.
     #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "10")]
     pub launch_stage: i32,
     /// Output only. The name of the parent service.
@@ -2146,6 +2256,12 @@ pub struct Revision {
     /// Output only. The Google Console URI to obtain logs for the Revision.
     #[prost(string, tag = "33")]
     pub log_uri: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "37")]
+    pub satisfies_pzs: bool,
+    /// Enable session affinity.
+    #[prost(bool, tag = "38")]
+    pub session_affinity: bool,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -2165,7 +2281,7 @@ pub mod revisions_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2221,11 +2337,27 @@ pub mod revisions_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets information about a Revision.
         pub async fn get_revision(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRevisionRequest>,
-        ) -> Result<tonic::Response<super::Revision>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Revision>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2239,13 +2371,19 @@ pub mod revisions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/GetRevision",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Revisions", "GetRevision"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Revisions from a given Service, or from a given location.
         pub async fn list_revisions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRevisionsRequest>,
-        ) -> Result<tonic::Response<super::ListRevisionsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRevisionsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2259,13 +2397,18 @@ pub mod revisions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/ListRevisions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Revisions", "ListRevisions"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Revision.
         pub async fn delete_revision(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRevisionRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2282,7 +2425,12 @@ pub mod revisions_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/DeleteRevision",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Revisions", "DeleteRevision"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2295,7 +2443,13 @@ pub struct RevisionTemplate {
     /// automatically generated based on the Service name.
     #[prost(string, tag = "1")]
     pub revision: ::prost::alloc::string::String,
-    /// KRM-style labels for the resource.
+    /// Unstructured key value map that can be used to organize and categorize
+    /// objects.
+    /// User-provided labels are shared with Google's billing system, so they can
+    /// be used to filter, or break down billing charges by team, component,
+    /// environment, state, etc. For more information, visit
+    /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
+    /// <https://cloud.google.com/run/docs/configuring/labels.>
     ///
     /// <p>Cloud Run API v2 does not support labels with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
@@ -2306,12 +2460,17 @@ pub struct RevisionTemplate {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// KRM-style annotations for the resource.
+    /// Unstructured key value map that may be set by external tools to store and
+    /// arbitrary metadata. They are not queryable and should be preserved
+    /// when modifying objects.
     ///
     /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
     /// namespaces, and they will be rejected. All system annotations in v1 now
     /// have a corresponding field in v2 RevisionTemplate.
+    ///
+    /// <p>This field follows Kubernetes annotations' namespacing, limits, and
+    /// rules.
     #[prost(map = "string, string", tag = "3")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2351,6 +2510,9 @@ pub struct RevisionTemplate {
     /// Sets the maximum number of requests that each serving instance can receive.
     #[prost(int32, tag = "15")]
     pub max_instance_request_concurrency: i32,
+    /// Enable session affinity.
+    #[prost(bool, tag = "19")]
+    pub session_affinity: bool,
 }
 /// Holds a single traffic routing entry for the Service. Allocations can be done
 /// to a specific Revision name, or pointing to the latest Ready Revision.
@@ -2466,8 +2628,8 @@ pub struct UpdateServiceRequest {
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
     /// If set to true, and if the Service does not exist, it will create a new
-    /// one. Caller must have both create and update permissions for this call if
-    /// this is set to true.
+    /// one. The caller must have 'run.services.create' permissions if this is set
+    /// to true and the Service does not exist.
     #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
@@ -2563,13 +2725,13 @@ pub struct Service {
     /// APIs, its JSON representation will be a `string` instead of an `integer`.
     #[prost(int64, tag = "4")]
     pub generation: i64,
-    /// Map of string keys and values that can be used to organize and categorize
+    /// Unstructured key value map that can be used to organize and categorize
     /// objects.
     /// User-provided labels are shared with Google's billing system, so they can
     /// be used to filter, or break down billing charges by team, component,
     /// environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
-    /// <https://cloud.google.com/run/docs/configuring/labels>
+    /// <https://cloud.google.com/run/docs/configuring/labels.>
     ///
     /// <p>Cloud Run API v2 does not support labels with  `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
@@ -2586,12 +2748,11 @@ pub struct Service {
     ///
     /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
-    /// namespaces, and they will be rejected. All system annotations in v1 now
-    /// have a corresponding field in v2 Service.
+    /// namespaces, and they will be rejected in new resources. All system
+    /// annotations in v1 now have a corresponding field in v2 Service.
     ///
     /// <p>This field follows Kubernetes
-    /// annotations' namespacing, limits, and rules. More info:
-    /// <https://kubernetes.io/docs/user-guide/annotations>
+    /// annotations' namespacing, limits, and rules.
     #[prost(map = "string, string", tag = "6")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2631,6 +2792,12 @@ pub struct Service {
     /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
     /// Cloud Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA
     /// is assumed.
+    /// Set the launch stage to a preview stage on input to allow use of preview
+    /// features in that stage. On read (or output), describes whether the resource
+    /// uses preview features.
+    /// <p>
+    /// For example, if ALPHA is provided as input, but only BETA and GA-level
+    /// features are used, this field will be BETA on output.
     #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "16")]
     pub launch_stage: i32,
     /// Settings for the Binary Authorization feature.
@@ -2681,6 +2848,9 @@ pub struct Service {
     /// Output only. The main URI in which this Service is serving traffic.
     #[prost(string, tag = "36")]
     pub uri: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "38")]
+    pub satisfies_pzs: bool,
     /// Output only. Returns true if the Service is currently being acted upon by
     /// the system to bring it into the desired state.
     ///
@@ -2724,7 +2894,7 @@ pub mod services_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2780,11 +2950,27 @@ pub mod services_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new Service in a given project and location.
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2801,13 +2987,18 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/CreateService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Services", "CreateService"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets information about a Service.
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
-        ) -> Result<tonic::Response<super::Service>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Service>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2821,13 +3012,19 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/GetService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Services", "GetService"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Services.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
-        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2841,13 +3038,16 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/ListServices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Services", "ListServices"));
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Service.
         pub async fn update_service(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2864,7 +3064,12 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/UpdateService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Services", "UpdateService"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a Service.
         /// This will cause the Service to stop serving traffic and will delete all
@@ -2872,7 +3077,7 @@ pub mod services_client {
         pub async fn delete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2889,7 +3094,12 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/DeleteService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Services", "DeleteService"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the IAM Access Control policy currently in effect for the given
         /// Cloud Run Service. This result does not include any inherited policies.
@@ -2898,7 +3108,7 @@ pub mod services_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::GetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -2915,7 +3125,10 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/GetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Services", "GetIamPolicy"));
+            self.inner.unary(req, path, codec).await
         }
         /// Sets the IAM Access control policy for the specified Service. Overwrites
         /// any existing policy.
@@ -2924,7 +3137,7 @@ pub mod services_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::SetIamPolicyRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::iam::v1::Policy>,
             tonic::Status,
         > {
@@ -2941,7 +3154,10 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/SetIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Services", "SetIamPolicy"));
+            self.inner.unary(req, path, codec).await
         }
         /// Returns permissions that a caller has on the specified Project.
         ///
@@ -2951,7 +3167,7 @@ pub mod services_client {
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 super::super::super::super::iam::v1::TestIamPermissionsResponse,
             >,
@@ -2970,7 +3186,12 @@ pub mod services_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/TestIamPermissions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.run.v2.Services", "TestIamPermissions"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -3033,10 +3254,10 @@ pub struct Task {
     /// modifies the desired state.
     #[prost(int64, tag = "3")]
     pub generation: i64,
-    /// KRM-style labels for the resource.
-    /// User-provided labels are shared with Google's billing system, so they can
-    /// be used to filter, or break down billing charges by team, component,
-    /// environment, state, etc. For more information, visit
+    /// Output only. Unstructured key value map that can be used to organize and
+    /// categorize objects. User-provided labels are shared with Google's billing
+    /// system, so they can be used to filter, or break down billing charges by
+    /// team, component, environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels>
     #[prost(map = "string, string", tag = "4")]
@@ -3044,7 +3265,10 @@ pub struct Task {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// KRM-style annotations for the resource.
+    /// Output only. Unstructured key value map that may
+    /// be set by external tools to store and arbitrary metadata.
+    /// They are not queryable and should be preserved
+    /// when modifying objects.
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3143,6 +3367,9 @@ pub struct Task {
     /// Console.
     #[prost(string, tag = "32")]
     pub log_uri: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "33")]
+    pub satisfies_pzs: bool,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -3177,7 +3404,7 @@ pub mod tasks_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3233,11 +3460,27 @@ pub mod tasks_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets information about a Task.
         pub async fn get_task(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTaskRequest>,
-        ) -> Result<tonic::Response<super::Task>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3251,13 +3494,19 @@ pub mod tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Tasks/GetTask",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Tasks", "GetTask"));
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Tasks from an Execution of a Job.
         pub async fn list_tasks(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTasksRequest>,
-        ) -> Result<tonic::Response<super::ListTasksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTasksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3271,7 +3520,10 @@ pub mod tasks_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Tasks/ListTasks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.run.v2.Tasks", "ListTasks"));
+            self.inner.unary(req, path, codec).await
         }
     }
 }

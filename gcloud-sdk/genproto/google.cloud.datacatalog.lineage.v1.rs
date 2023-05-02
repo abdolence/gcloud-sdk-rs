@@ -801,7 +801,7 @@ pub mod lineage_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -857,11 +857,27 @@ pub mod lineage_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new process.
         pub async fn create_process(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProcessRequest>,
-        ) -> Result<tonic::Response<super::Process>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Process>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -875,13 +891,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/CreateProcess",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "CreateProcess",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a process.
         pub async fn update_process(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateProcessRequest>,
-        ) -> Result<tonic::Response<super::Process>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Process>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -895,13 +919,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/UpdateProcess",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "UpdateProcess",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of the specified process.
         pub async fn get_process(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProcessRequest>,
-        ) -> Result<tonic::Response<super::Process>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Process>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -915,14 +947,25 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/GetProcess",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "GetProcess",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List processes in the given project and location. List order is descending
         /// by insertion time.
         pub async fn list_processes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProcessesRequest>,
-        ) -> Result<tonic::Response<super::ListProcessesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListProcessesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -936,13 +979,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ListProcesses",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "ListProcesses",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the process with the specified name.
         pub async fn delete_process(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteProcessRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -959,13 +1010,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/DeleteProcess",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "DeleteProcess",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new run.
         pub async fn create_run(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRunRequest>,
-        ) -> Result<tonic::Response<super::Run>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Run>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -979,13 +1038,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/CreateRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "CreateRun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a run.
         pub async fn update_run(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRunRequest>,
-        ) -> Result<tonic::Response<super::Run>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Run>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -999,13 +1066,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/UpdateRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "UpdateRun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of the specified run.
         pub async fn get_run(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRunRequest>,
-        ) -> Result<tonic::Response<super::Run>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Run>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1019,14 +1094,25 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/GetRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "GetRun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists runs in the given project and location. List order is descending by
         /// `start_time`.
         pub async fn list_runs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRunsRequest>,
-        ) -> Result<tonic::Response<super::ListRunsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRunsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1040,13 +1126,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ListRuns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "ListRuns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the run with the specified name.
         pub async fn delete_run(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRunRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1063,13 +1157,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/DeleteRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "DeleteRun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new lineage event.
         pub async fn create_lineage_event(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateLineageEventRequest>,
-        ) -> Result<tonic::Response<super::LineageEvent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::LineageEvent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1083,13 +1185,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/CreateLineageEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "CreateLineageEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a specified lineage event.
         pub async fn get_lineage_event(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLineageEventRequest>,
-        ) -> Result<tonic::Response<super::LineageEvent>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::LineageEvent>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1103,14 +1213,25 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/GetLineageEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "GetLineageEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists lineage events in the given project and location. The list order is
         /// not defined.
         pub async fn list_lineage_events(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLineageEventsRequest>,
-        ) -> Result<tonic::Response<super::ListLineageEventsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListLineageEventsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1124,13 +1245,21 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ListLineageEvents",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "ListLineageEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the lineage event with the specified name.
         pub async fn delete_lineage_event(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteLineageEventRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1144,7 +1273,15 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/DeleteLineageEvent",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "DeleteLineageEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve a list of links connected to a specific asset.
         /// Links represent the data flow between **source** (upstream)
@@ -1158,7 +1295,10 @@ pub mod lineage_client {
         pub async fn search_links(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchLinksRequest>,
-        ) -> Result<tonic::Response<super::SearchLinksResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchLinksResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1172,7 +1312,15 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/SearchLinks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "SearchLinks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieve information about LineageProcesses associated with specific
         /// links. LineageProcesses are transformation pipelines that result in data
@@ -1191,7 +1339,7 @@ pub mod lineage_client {
         pub async fn batch_search_link_processes(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchSearchLinkProcessesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::BatchSearchLinkProcessesResponse>,
             tonic::Status,
         > {
@@ -1208,7 +1356,15 @@ pub mod lineage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/BatchSearchLinkProcesses",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "BatchSearchLinkProcesses",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

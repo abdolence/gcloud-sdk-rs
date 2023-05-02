@@ -340,7 +340,7 @@ pub mod asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -396,12 +396,28 @@ pub mod asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a feed in a parent project/folder/organization to listen to its
         /// asset updates.
         pub async fn create_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFeedRequest>,
-        ) -> Result<tonic::Response<super::Feed>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -415,13 +431,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/CreateFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1p2beta1.AssetService",
+                        "CreateFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details about an asset feed.
         pub async fn get_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFeedRequest>,
-        ) -> Result<tonic::Response<super::Feed>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -435,13 +459,24 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/GetFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1p2beta1.AssetService",
+                        "GetFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all asset feeds in a parent project/folder/organization.
         pub async fn list_feeds(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFeedsRequest>,
-        ) -> Result<tonic::Response<super::ListFeedsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeedsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -455,13 +490,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/ListFeeds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1p2beta1.AssetService",
+                        "ListFeeds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an asset feed configuration.
         pub async fn update_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFeedRequest>,
-        ) -> Result<tonic::Response<super::Feed>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Feed>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -475,13 +518,21 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/UpdateFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1p2beta1.AssetService",
+                        "UpdateFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an asset feed.
         pub async fn delete_feed(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteFeedRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -495,7 +546,15 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/DeleteFeed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.asset.v1p2beta1.AssetService",
+                        "DeleteFeed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

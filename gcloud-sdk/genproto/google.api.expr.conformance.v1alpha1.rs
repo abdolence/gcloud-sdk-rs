@@ -209,7 +209,7 @@ pub mod conformance_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -265,11 +265,27 @@ pub mod conformance_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Transforms CEL source text into a parsed representation.
         pub async fn parse(
             &mut self,
             request: impl tonic::IntoRequest<super::ParseRequest>,
-        ) -> Result<tonic::Response<super::ParseResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::ParseResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -283,14 +299,22 @@ pub mod conformance_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.expr.conformance.v1alpha1.ConformanceService/Parse",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.expr.conformance.v1alpha1.ConformanceService",
+                        "Parse",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Runs static checks on a parsed CEL representation and return
         /// an annotated representation, or a set of issues.
         pub async fn check(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckRequest>,
-        ) -> Result<tonic::Response<super::CheckResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::CheckResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -304,14 +328,22 @@ pub mod conformance_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.expr.conformance.v1alpha1.ConformanceService/Check",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.expr.conformance.v1alpha1.ConformanceService",
+                        "Check",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Evaluates a parsed or annotation CEL representation given
         /// values of external bindings.
         pub async fn eval(
             &mut self,
             request: impl tonic::IntoRequest<super::EvalRequest>,
-        ) -> Result<tonic::Response<super::EvalResponse>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::EvalResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -325,7 +357,15 @@ pub mod conformance_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.expr.conformance.v1alpha1.ConformanceService/Eval",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.api.expr.conformance.v1alpha1.ConformanceService",
+                        "Eval",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

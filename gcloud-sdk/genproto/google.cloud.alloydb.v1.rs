@@ -2245,7 +2245,7 @@ pub mod alloy_db_admin_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2301,11 +2301,30 @@ pub mod alloy_db_admin_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists Clusters in a given project and location.
         pub async fn list_clusters(
             &mut self,
             request: impl tonic::IntoRequest<super::ListClustersRequest>,
-        ) -> Result<tonic::Response<super::ListClustersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListClustersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2319,13 +2338,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/ListClusters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "ListClusters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Cluster.
         pub async fn get_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::GetClusterRequest>,
-        ) -> Result<tonic::Response<super::Cluster>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Cluster>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2339,13 +2366,18 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/GetCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.alloydb.v1.AlloyDBAdmin", "GetCluster"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Cluster in a given project and location.
         pub async fn create_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2362,13 +2394,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "CreateCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Cluster.
         pub async fn update_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2385,13 +2425,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/UpdateCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "UpdateCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Cluster.
         pub async fn delete_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2408,7 +2456,15 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/DeleteCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "DeleteCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Cluster in a given project and location, with a volume
         /// restored from the provided source, either a backup ID or a point-in-time
@@ -2416,7 +2472,7 @@ pub mod alloy_db_admin_client {
         pub async fn restore_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::RestoreClusterRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2433,13 +2489,24 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/RestoreCluster",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "RestoreCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Instances in a given project and location.
         pub async fn list_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstancesRequest>,
-        ) -> Result<tonic::Response<super::ListInstancesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstancesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2453,13 +2520,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/ListInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "ListInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Instance.
         pub async fn get_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceRequest>,
-        ) -> Result<tonic::Response<super::Instance>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Instance>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2473,13 +2548,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/GetInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "GetInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Instance in a given project and location.
         pub async fn create_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2496,7 +2579,15 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "CreateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates new instances under the given project, location and cluster.
         /// There can be only one primary instance in a cluster. If the primary
@@ -2511,7 +2602,7 @@ pub mod alloy_db_admin_client {
         pub async fn batch_create_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateInstancesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2528,13 +2619,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/BatchCreateInstances",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "BatchCreateInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Instance.
         pub async fn update_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2551,13 +2650,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/UpdateInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "UpdateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Instance.
         pub async fn delete_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2574,7 +2681,15 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/DeleteInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "DeleteInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Forces a Failover for a highly available instance.
         /// Failover promotes the HA standby instance as the new primary.
@@ -2582,7 +2697,7 @@ pub mod alloy_db_admin_client {
         pub async fn failover_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::FailoverInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2599,14 +2714,22 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/FailoverInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "FailoverInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restart an Instance in a cluster.
         /// Imperative only.
         pub async fn restart_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::RestartInstanceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2623,13 +2746,24 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/RestartInstance",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "RestartInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Backups in a given project and location.
         pub async fn list_backups(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBackupsRequest>,
-        ) -> Result<tonic::Response<super::ListBackupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2643,13 +2777,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/ListBackups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Backup.
         pub async fn get_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackupRequest>,
-        ) -> Result<tonic::Response<super::Backup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2663,13 +2805,18 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/GetBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.alloydb.v1.AlloyDBAdmin", "GetBackup"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Backup in a given project and location.
         pub async fn create_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2686,13 +2833,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "CreateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Backup.
         pub async fn update_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2709,13 +2864,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/UpdateBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "UpdateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Backup.
         pub async fn delete_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2732,13 +2895,21 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/DeleteBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists SupportedDatabaseFlags for a given project and location.
         pub async fn list_supported_database_flags(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSupportedDatabaseFlagsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListSupportedDatabaseFlagsResponse>,
             tonic::Status,
         > {
@@ -2755,7 +2926,15 @@ pub mod alloy_db_admin_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.alloydb.v1.AlloyDBAdmin/ListSupportedDatabaseFlags",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "ListSupportedDatabaseFlags",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

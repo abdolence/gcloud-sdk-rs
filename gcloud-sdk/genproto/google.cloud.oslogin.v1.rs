@@ -129,7 +129,7 @@ pub mod os_login_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -185,11 +185,30 @@ pub mod os_login_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Create an SSH public key
         pub async fn create_ssh_public_key(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSshPublicKeyRequest>,
-        ) -> Result<tonic::Response<super::super::common::SshPublicKey>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::SshPublicKey>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -203,13 +222,21 @@ pub mod os_login_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/CreateSshPublicKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "CreateSshPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a POSIX account.
         pub async fn delete_posix_account(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePosixAccountRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -223,13 +250,21 @@ pub mod os_login_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/DeletePosixAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "DeletePosixAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes an SSH public key.
         pub async fn delete_ssh_public_key(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSshPublicKeyRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -243,14 +278,22 @@ pub mod os_login_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/DeleteSshPublicKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "DeleteSshPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the profile information used for logging in to a virtual machine
         /// on Google Compute Engine.
         pub async fn get_login_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLoginProfileRequest>,
-        ) -> Result<tonic::Response<super::LoginProfile>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::LoginProfile>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -264,13 +307,24 @@ pub mod os_login_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/GetLoginProfile",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "GetLoginProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves an SSH public key.
         pub async fn get_ssh_public_key(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSshPublicKeyRequest>,
-        ) -> Result<tonic::Response<super::super::common::SshPublicKey>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::SshPublicKey>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -284,7 +338,15 @@ pub mod os_login_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/GetSshPublicKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "GetSshPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds an SSH public key and returns the profile information. Default POSIX
         /// account information is set when no username and UID exist as part of the
@@ -292,7 +354,10 @@ pub mod os_login_service_client {
         pub async fn import_ssh_public_key(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportSshPublicKeyRequest>,
-        ) -> Result<tonic::Response<super::ImportSshPublicKeyResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ImportSshPublicKeyResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -306,14 +371,25 @@ pub mod os_login_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/ImportSshPublicKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "ImportSshPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an SSH public key and returns the profile information. This method
         /// supports patch semantics.
         pub async fn update_ssh_public_key(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSshPublicKeyRequest>,
-        ) -> Result<tonic::Response<super::super::common::SshPublicKey>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::SshPublicKey>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -327,7 +403,15 @@ pub mod os_login_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/UpdateSshPublicKey",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "UpdateSshPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

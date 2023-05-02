@@ -82,6 +82,9 @@ pub struct Service {
     /// service. If unspecified defaults to `JSON`.
     #[prost(message, optional, tag = "23")]
     pub telemetry_config: ::core::option::Option<TelemetryConfig>,
+    /// Scaling configuration of the metastore service.
+    #[prost(message, optional, tag = "24")]
+    pub scaling_config: ::core::option::Option<ScalingConfig>,
     /// Configuration properties specific to the underlying metastore service
     /// technology (the software that serves metastore queries).
     #[prost(oneof = "service::MetastoreConfig", tags = "5")]
@@ -529,6 +532,10 @@ pub struct NetworkConfig {
     /// Metastore instance.
     #[prost(message, repeated, tag = "1")]
     pub consumers: ::prost::alloc::vec::Vec<network_config::Consumer>,
+    /// Enables custom routes to be imported and exported for the Dataproc
+    /// Metastore service's peered VPC network.
+    #[prost(bool, tag = "2")]
+    pub custom_routes_enabled: bool,
 }
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
@@ -1071,6 +1078,87 @@ pub mod restore {
                 _ => None,
             }
         }
+    }
+}
+/// Represents the scaling configuration of a metastore service.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ScalingConfig {
+    /// Represents either a predetermined instance size or a numeric
+    /// scaling factor.
+    #[prost(oneof = "scaling_config::ScalingModel", tags = "1, 2")]
+    pub scaling_model: ::core::option::Option<scaling_config::ScalingModel>,
+}
+/// Nested message and enum types in `ScalingConfig`.
+pub mod scaling_config {
+    /// Metastore instance sizes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum InstanceSize {
+        /// Unspecified instance size
+        Unspecified = 0,
+        /// Extra small instance size, maps to a scaling factor of 0.1.
+        ExtraSmall = 1,
+        /// Small instance size, maps to a scaling factor of 0.5.
+        Small = 2,
+        /// Medium instance size, maps to a scaling factor of 1.0.
+        Medium = 3,
+        /// Large instance size, maps to a scaling factor of 3.0.
+        Large = 4,
+        /// Extra large instance size, maps to a scaling factor of 6.0.
+        ExtraLarge = 5,
+    }
+    impl InstanceSize {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                InstanceSize::Unspecified => "INSTANCE_SIZE_UNSPECIFIED",
+                InstanceSize::ExtraSmall => "EXTRA_SMALL",
+                InstanceSize::Small => "SMALL",
+                InstanceSize::Medium => "MEDIUM",
+                InstanceSize::Large => "LARGE",
+                InstanceSize::ExtraLarge => "EXTRA_LARGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INSTANCE_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXTRA_SMALL" => Some(Self::ExtraSmall),
+                "SMALL" => Some(Self::Small),
+                "MEDIUM" => Some(Self::Medium),
+                "LARGE" => Some(Self::Large),
+                "EXTRA_LARGE" => Some(Self::ExtraLarge),
+                _ => None,
+            }
+        }
+    }
+    /// Represents either a predetermined instance size or a numeric
+    /// scaling factor.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ScalingModel {
+        /// An enum of readable instance sizes, with each instance size mapping to a
+        /// float value (e.g. InstanceSize.EXTRA_SMALL = scaling_factor(0.1))
+        #[prost(enumeration = "InstanceSize", tag = "1")]
+        InstanceSize(i32),
+        /// Scaling factor, increments of 0.1 for values less than 1.0, and
+        /// increments of 1.0 for values greater than 1.0.
+        #[prost(float, tag = "2")]
+        ScalingFactor(f32),
     }
 }
 /// Request message for
@@ -1827,7 +1915,7 @@ pub mod dataproc_metastore_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1883,11 +1971,30 @@ pub mod dataproc_metastore_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists services in a project and location.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
-        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListServicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1901,13 +2008,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/ListServices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "ListServices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a single service.
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
-        ) -> Result<tonic::Response<super::Service>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Service>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1921,13 +2036,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/GetService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "GetService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a metastore service in a project and location.
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1944,13 +2067,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/CreateService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "CreateService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single service.
         pub async fn update_service(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1967,13 +2098,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/UpdateService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "UpdateService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single service.
         pub async fn delete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -1990,13 +2129,24 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/DeleteService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "DeleteService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists imports in a service.
         pub async fn list_metadata_imports(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMetadataImportsRequest>,
-        ) -> Result<tonic::Response<super::ListMetadataImportsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListMetadataImportsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2010,13 +2160,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/ListMetadataImports",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "ListMetadataImports",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single import.
         pub async fn get_metadata_import(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMetadataImportRequest>,
-        ) -> Result<tonic::Response<super::MetadataImport>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::MetadataImport>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2030,13 +2188,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/GetMetadataImport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "GetMetadataImport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new MetadataImport in a given project and location.
         pub async fn create_metadata_import(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMetadataImportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2053,14 +2219,22 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/CreateMetadataImport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "CreateMetadataImport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a single import.
         /// Only the description field of MetadataImport is supported to be updated.
         pub async fn update_metadata_import(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMetadataImportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2077,13 +2251,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/UpdateMetadataImport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "UpdateMetadataImport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Exports metadata from a service.
         pub async fn export_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportMetadataRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2100,13 +2282,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/ExportMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "ExportMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Restores a service from a backup.
         pub async fn restore_service(
             &mut self,
             request: impl tonic::IntoRequest<super::RestoreServiceRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2123,13 +2313,24 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/RestoreService",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "RestoreService",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists backups in a service.
         pub async fn list_backups(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBackupsRequest>,
-        ) -> Result<tonic::Response<super::ListBackupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2143,13 +2344,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/ListBackups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single backup.
         pub async fn get_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBackupRequest>,
-        ) -> Result<tonic::Response<super::Backup>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2163,13 +2372,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/GetBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "GetBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new backup in a given project and location.
         pub async fn create_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2186,13 +2403,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/CreateBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "CreateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single backup.
         pub async fn delete_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2209,13 +2434,24 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/DeleteBackup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Removes the attached IAM policies for a resource
         pub async fn remove_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::RemoveIamPolicyResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RemoveIamPolicyResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2229,13 +2465,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/RemoveIamPolicy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "RemoveIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Query DPMS metadata.
         pub async fn query_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryMetadataRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2252,13 +2496,21 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/QueryMetadata",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "QueryMetadata",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Move a table to another database.
         pub async fn move_table_to_database(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveTableToDatabaseRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2275,7 +2527,15 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/MoveTableToDatabase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "MoveTableToDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Alter metadata resource location. The metadata resource can be a database,
         /// table, or partition. This functionality only updates the parent directory
@@ -2284,7 +2544,7 @@ pub mod dataproc_metastore_client {
         pub async fn alter_metadata_resource_location(
             &mut self,
             request: impl tonic::IntoRequest<super::AlterMetadataResourceLocationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2301,7 +2561,15 @@ pub mod dataproc_metastore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastore/AlterMetadataResourceLocation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "AlterMetadataResourceLocation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2421,12 +2689,10 @@ pub struct BackendMetastore {
     /// The formats of the relative resource names for the currently supported
     /// metastores are listed below:
     ///
-    /// * Dataplex
-    ///    * `projects/{project_id}/locations/{location}/lakes/{lake_id}`
     /// * BigQuery
-    ///    * `projects/{project_id}`
+    ///      * `projects/{project_id}`
     /// * Dataproc Metastore
-    ///    * `projects/{project_id}/locations/{location}/services/{service_id}`
+    ///      * `projects/{project_id}/locations/{location}/services/{service_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The type of the backend metastore.
@@ -2451,6 +2717,8 @@ pub mod backend_metastore {
     pub enum MetastoreType {
         /// The metastore type is not set.
         Unspecified = 0,
+        /// The backend metastore is Dataplex.
+        Dataplex = 1,
         /// The backend metastore is BigQuery.
         Bigquery = 2,
         /// The backend metastore is Dataproc Metastore.
@@ -2464,6 +2732,7 @@ pub mod backend_metastore {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 MetastoreType::Unspecified => "METASTORE_TYPE_UNSPECIFIED",
+                MetastoreType::Dataplex => "DATAPLEX",
                 MetastoreType::Bigquery => "BIGQUERY",
                 MetastoreType::DataprocMetastore => "DATAPROC_METASTORE",
             }
@@ -2472,6 +2741,7 @@ pub mod backend_metastore {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "METASTORE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATAPLEX" => Some(Self::Dataplex),
                 "BIGQUERY" => Some(Self::Bigquery),
                 "DATAPROC_METASTORE" => Some(Self::DataprocMetastore),
                 _ => None,
@@ -2660,7 +2930,7 @@ pub mod dataproc_metastore_federation_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2718,11 +2988,30 @@ pub mod dataproc_metastore_federation_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists federations in a project and location.
         pub async fn list_federations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFederationsRequest>,
-        ) -> Result<tonic::Response<super::ListFederationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListFederationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2736,13 +3025,21 @@ pub mod dataproc_metastore_federation_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastoreFederation/ListFederations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+                        "ListFederations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the details of a single federation.
         pub async fn get_federation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFederationRequest>,
-        ) -> Result<tonic::Response<super::Federation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Federation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2756,13 +3053,21 @@ pub mod dataproc_metastore_federation_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastoreFederation/GetFederation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+                        "GetFederation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a metastore federation in a project and location.
         pub async fn create_federation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFederationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2779,13 +3084,21 @@ pub mod dataproc_metastore_federation_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastoreFederation/CreateFederation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+                        "CreateFederation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the fields of a federation.
         pub async fn update_federation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFederationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2802,13 +3115,21 @@ pub mod dataproc_metastore_federation_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastoreFederation/UpdateFederation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+                        "UpdateFederation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single federation.
         pub async fn delete_federation(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteFederationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2825,7 +3146,15 @@ pub mod dataproc_metastore_federation_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1beta.DataprocMetastoreFederation/DeleteFederation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.metastore.v1beta.DataprocMetastoreFederation",
+                        "DeleteFederation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

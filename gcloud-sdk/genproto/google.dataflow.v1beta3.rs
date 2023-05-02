@@ -857,7 +857,7 @@ pub mod snapshots_v1_beta3_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -913,11 +913,27 @@ pub mod snapshots_v1_beta3_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets information about a snapshot.
         pub async fn get_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSnapshotRequest>,
-        ) -> Result<tonic::Response<super::Snapshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Snapshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -931,13 +947,24 @@ pub mod snapshots_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.SnapshotsV1Beta3/GetSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "GetSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a snapshot.
         pub async fn delete_snapshot(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSnapshotRequest>,
-        ) -> Result<tonic::Response<super::DeleteSnapshotResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteSnapshotResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -951,13 +978,24 @@ pub mod snapshots_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.SnapshotsV1Beta3/DeleteSnapshot",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "DeleteSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists snapshots.
         pub async fn list_snapshots(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSnapshotsRequest>,
-        ) -> Result<tonic::Response<super::ListSnapshotsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSnapshotsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -971,7 +1009,15 @@ pub mod snapshots_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.SnapshotsV1Beta3/ListSnapshots",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "ListSnapshots",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2015,7 +2061,7 @@ pub mod jobs_v1_beta3_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2071,6 +2117,22 @@ pub mod jobs_v1_beta3_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a Cloud Dataflow job.
         ///
         /// To create a job, we recommend using `projects.locations.jobs.create` with a
@@ -2081,7 +2143,7 @@ pub mod jobs_v1_beta3_client {
         pub async fn create_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2095,7 +2157,12 @@ pub mod jobs_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/CreateJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.dataflow.v1beta3.JobsV1Beta3", "CreateJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the state of the specified Cloud Dataflow job.
         ///
@@ -2107,7 +2174,7 @@ pub mod jobs_v1_beta3_client {
         pub async fn get_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2121,7 +2188,12 @@ pub mod jobs_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/GetJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.dataflow.v1beta3.JobsV1Beta3", "GetJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the state of an existing Cloud Dataflow job.
         ///
@@ -2133,7 +2205,7 @@ pub mod jobs_v1_beta3_client {
         pub async fn update_job(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateJobRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2147,7 +2219,12 @@ pub mod jobs_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/UpdateJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.dataflow.v1beta3.JobsV1Beta3", "UpdateJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List the jobs of a project.
         ///
@@ -2160,7 +2237,10 @@ pub mod jobs_v1_beta3_client {
         pub async fn list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
-        ) -> Result<tonic::Response<super::ListJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2174,13 +2254,21 @@ pub mod jobs_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/ListJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.dataflow.v1beta3.JobsV1Beta3", "ListJobs"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// List the jobs of a project across all regions.
         pub async fn aggregated_list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
-        ) -> Result<tonic::Response<super::ListJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2194,13 +2282,24 @@ pub mod jobs_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/AggregatedListJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.JobsV1Beta3",
+                        "AggregatedListJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Check for existence of active jobs in the given project across all regions.
         pub async fn check_active_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckActiveJobsRequest>,
-        ) -> Result<tonic::Response<super::CheckActiveJobsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CheckActiveJobsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2214,13 +2313,21 @@ pub mod jobs_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/CheckActiveJobs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.JobsV1Beta3",
+                        "CheckActiveJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Snapshot the state of a streaming job.
         pub async fn snapshot_job(
             &mut self,
             request: impl tonic::IntoRequest<super::SnapshotJobRequest>,
-        ) -> Result<tonic::Response<super::Snapshot>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Snapshot>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2234,7 +2341,12 @@ pub mod jobs_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/SnapshotJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.dataflow.v1beta3.JobsV1Beta3", "SnapshotJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2513,7 +2625,7 @@ pub mod messages_v1_beta3_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2569,6 +2681,22 @@ pub mod messages_v1_beta3_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Request the job status.
         ///
         /// To request the status of a job, we recommend using
@@ -2579,7 +2707,10 @@ pub mod messages_v1_beta3_client {
         pub async fn list_job_messages(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobMessagesRequest>,
-        ) -> Result<tonic::Response<super::ListJobMessagesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobMessagesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2593,7 +2724,15 @@ pub mod messages_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MessagesV1Beta3/ListJobMessages",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.MessagesV1Beta3",
+                        "ListJobMessages",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -2961,7 +3100,7 @@ pub mod metrics_v1_beta3_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3017,6 +3156,22 @@ pub mod metrics_v1_beta3_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Request the job status.
         ///
         /// To request the status of a job, we recommend using
@@ -3027,7 +3182,7 @@ pub mod metrics_v1_beta3_client {
         pub async fn get_job_metrics(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobMetricsRequest>,
-        ) -> Result<tonic::Response<super::JobMetrics>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::JobMetrics>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3041,7 +3196,15 @@ pub mod metrics_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MetricsV1Beta3/GetJobMetrics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "GetJobMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Request detailed information about the execution status of the job.
         ///
@@ -3049,7 +3212,10 @@ pub mod metrics_v1_beta3_client {
         pub async fn get_job_execution_details(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobExecutionDetailsRequest>,
-        ) -> Result<tonic::Response<super::JobExecutionDetails>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::JobExecutionDetails>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3063,7 +3229,15 @@ pub mod metrics_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MetricsV1Beta3/GetJobExecutionDetails",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "GetJobExecutionDetails",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Request detailed information about the execution status of a stage of the
         /// job.
@@ -3072,7 +3246,10 @@ pub mod metrics_v1_beta3_client {
         pub async fn get_stage_execution_details(
             &mut self,
             request: impl tonic::IntoRequest<super::GetStageExecutionDetailsRequest>,
-        ) -> Result<tonic::Response<super::StageExecutionDetails>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::StageExecutionDetails>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3086,7 +3263,15 @@ pub mod metrics_v1_beta3_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MetricsV1Beta3/GetStageExecutionDetails",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "GetStageExecutionDetails",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4116,7 +4301,7 @@ pub mod templates_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4172,11 +4357,27 @@ pub mod templates_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a Cloud Dataflow job from a template.
         pub async fn create_job_from_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobFromTemplateRequest>,
-        ) -> Result<tonic::Response<super::Job>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -4190,13 +4391,24 @@ pub mod templates_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.TemplatesService/CreateJobFromTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.TemplatesService",
+                        "CreateJobFromTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Launch a template.
         pub async fn launch_template(
             &mut self,
             request: impl tonic::IntoRequest<super::LaunchTemplateRequest>,
-        ) -> Result<tonic::Response<super::LaunchTemplateResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::LaunchTemplateResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4210,13 +4422,24 @@ pub mod templates_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.TemplatesService/LaunchTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.TemplatesService",
+                        "LaunchTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Get the template associated with a template.
         pub async fn get_template(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTemplateRequest>,
-        ) -> Result<tonic::Response<super::GetTemplateResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GetTemplateResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4230,7 +4453,15 @@ pub mod templates_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.TemplatesService/GetTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.TemplatesService",
+                        "GetTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -4248,7 +4479,7 @@ pub mod flex_templates_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4304,11 +4535,30 @@ pub mod flex_templates_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Launch a job with a FlexTemplate.
         pub async fn launch_flex_template(
             &mut self,
             request: impl tonic::IntoRequest<super::LaunchFlexTemplateRequest>,
-        ) -> Result<tonic::Response<super::LaunchFlexTemplateResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::LaunchFlexTemplateResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4322,7 +4572,15 @@ pub mod flex_templates_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.FlexTemplatesService/LaunchFlexTemplate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.dataflow.v1beta3.FlexTemplatesService",
+                        "LaunchFlexTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

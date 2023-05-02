@@ -1114,7 +1114,7 @@ pub mod recommender_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1170,12 +1170,31 @@ pub mod recommender_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists insights for the specified Cloud Resource. Requires the
         /// recommender.*.list IAM permission for the specified insight type.
         pub async fn list_insights(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInsightsRequest>,
-        ) -> Result<tonic::Response<super::ListInsightsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInsightsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1189,14 +1208,22 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/ListInsights",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "ListInsights",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the requested insight. Requires the recommender.*.get IAM permission
         /// for the specified insight type.
         pub async fn get_insight(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInsightRequest>,
-        ) -> Result<tonic::Response<super::Insight>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Insight>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1210,7 +1237,15 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetInsight",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "GetInsight",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Marks the Insight State as Accepted. Users can use this method to
         /// indicate to the Recommender API that they have applied some action based
@@ -1221,7 +1256,7 @@ pub mod recommender_client {
         pub async fn mark_insight_accepted(
             &mut self,
             request: impl tonic::IntoRequest<super::MarkInsightAcceptedRequest>,
-        ) -> Result<tonic::Response<super::Insight>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Insight>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1235,14 +1270,25 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkInsightAccepted",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "MarkInsightAccepted",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists recommendations for the specified Cloud Resource. Requires the
         /// recommender.*.list IAM permission for the specified recommender.
         pub async fn list_recommendations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRecommendationsRequest>,
-        ) -> Result<tonic::Response<super::ListRecommendationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRecommendationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1256,14 +1302,22 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/ListRecommendations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "ListRecommendations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the requested recommendation. Requires the recommender.*.get
         /// IAM permission for the specified recommender.
         pub async fn get_recommendation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRecommendationRequest>,
-        ) -> Result<tonic::Response<super::Recommendation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Recommendation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1277,7 +1331,15 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetRecommendation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "GetRecommendation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Marks the Recommendation State as Claimed. Users can use this method to
         /// indicate to the Recommender API that they are starting to apply the
@@ -1292,7 +1354,7 @@ pub mod recommender_client {
         pub async fn mark_recommendation_claimed(
             &mut self,
             request: impl tonic::IntoRequest<super::MarkRecommendationClaimedRequest>,
-        ) -> Result<tonic::Response<super::Recommendation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Recommendation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1306,7 +1368,15 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkRecommendationClaimed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "MarkRecommendationClaimed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Marks the Recommendation State as Succeeded. Users can use this method to
         /// indicate to the Recommender API that they have applied the recommendation
@@ -1322,7 +1392,7 @@ pub mod recommender_client {
         pub async fn mark_recommendation_succeeded(
             &mut self,
             request: impl tonic::IntoRequest<super::MarkRecommendationSucceededRequest>,
-        ) -> Result<tonic::Response<super::Recommendation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Recommendation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1336,7 +1406,15 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkRecommendationSucceeded",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "MarkRecommendationSucceeded",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Marks the Recommendation State as Failed. Users can use this method to
         /// indicate to the Recommender API that they have applied the recommendation
@@ -1352,7 +1430,7 @@ pub mod recommender_client {
         pub async fn mark_recommendation_failed(
             &mut self,
             request: impl tonic::IntoRequest<super::MarkRecommendationFailedRequest>,
-        ) -> Result<tonic::Response<super::Recommendation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Recommendation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1366,14 +1444,25 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkRecommendationFailed",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "MarkRecommendationFailed",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the requested Recommender Config. There is only one instance of the
         /// config for each Recommender.
         pub async fn get_recommender_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRecommenderConfigRequest>,
-        ) -> Result<tonic::Response<super::RecommenderConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RecommenderConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1387,14 +1476,25 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetRecommenderConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "GetRecommenderConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a Recommender Config. This will create a new revision of the
         /// config.
         pub async fn update_recommender_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRecommenderConfigRequest>,
-        ) -> Result<tonic::Response<super::RecommenderConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RecommenderConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1408,14 +1508,25 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/UpdateRecommenderConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "UpdateRecommenderConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the requested InsightTypeConfig. There is only one instance of the
         /// config for each InsightType.
         pub async fn get_insight_type_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInsightTypeConfigRequest>,
-        ) -> Result<tonic::Response<super::InsightTypeConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InsightTypeConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1429,14 +1540,25 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetInsightTypeConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "GetInsightTypeConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an InsightTypeConfig change. This will create a new revision of the
         /// config.
         pub async fn update_insight_type_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInsightTypeConfigRequest>,
-        ) -> Result<tonic::Response<super::InsightTypeConfig>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::InsightTypeConfig>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1450,7 +1572,15 @@ pub mod recommender_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/UpdateInsightTypeConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "UpdateInsightTypeConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

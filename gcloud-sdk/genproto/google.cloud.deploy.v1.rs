@@ -1340,6 +1340,10 @@ pub mod target_artifact {
         /// Output only. File path of the rendered manifest relative to the URI.
         #[prost(string, tag = "3")]
         pub manifest_path: ::prost::alloc::string::String,
+        /// Output only. File path of the directory of rendered job manifests
+        /// relative to the URI. This is only set if it is applicable.
+        #[prost(string, tag = "4")]
+        pub job_manifests_path: ::prost::alloc::string::String,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1350,6 +1354,19 @@ pub mod target_artifact {
         #[prost(string, tag = "4")]
         ArtifactUri(::prost::alloc::string::String),
     }
+}
+/// The artifacts produced by a deploy operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployArtifact {
+    /// Output only. URI of a directory containing the artifacts. All paths are
+    /// relative to this location.
+    #[prost(string, tag = "1")]
+    pub artifact_uri: ::prost::alloc::string::String,
+    /// Output only. File paths of the manifests applied during the deploy
+    /// operation relative to the URI.
+    #[prost(string, repeated, tag = "2")]
+    pub manifest_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// CloudRunRenderMetadata contains Cloud Run information associated with a
 /// `Release` render.
@@ -1887,7 +1904,7 @@ pub mod phase {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentJobs {
-    /// Output only. The deploy Job. This is the first job run in the phase.
+    /// Output only. The deploy Job. This is the deploy job in the phase.
     #[prost(message, optional, tag = "1")]
     pub deploy_job: ::core::option::Option<Job>,
     /// Output only. The verify Job. Runs after a deploy if the deploy succeeds.
@@ -2390,6 +2407,9 @@ pub struct DeployJobRun {
     /// Output only. Metadata containing information about the deploy job run.
     #[prost(message, optional, tag = "4")]
     pub metadata: ::core::option::Option<DeployJobRunMetadata>,
+    /// Output only. The artifact of a deploy job run, if available.
+    #[prost(message, optional, tag = "5")]
+    pub artifact: ::core::option::Option<DeployArtifact>,
 }
 /// Nested message and enum types in `DeployJobRun`.
 pub mod deploy_job_run {
@@ -2732,7 +2752,7 @@ pub mod cloud_deploy_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2788,11 +2808,27 @@ pub mod cloud_deploy_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Lists DeliveryPipelines in a given project and location.
         pub async fn list_delivery_pipelines(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDeliveryPipelinesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListDeliveryPipelinesResponse>,
             tonic::Status,
         > {
@@ -2809,13 +2845,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListDeliveryPipelines",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "ListDeliveryPipelines",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single DeliveryPipeline.
         pub async fn get_delivery_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDeliveryPipelineRequest>,
-        ) -> Result<tonic::Response<super::DeliveryPipeline>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::DeliveryPipeline>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2829,13 +2876,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetDeliveryPipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "GetDeliveryPipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new DeliveryPipeline in a given project and location.
         pub async fn create_delivery_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDeliveryPipelineRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2852,13 +2907,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateDeliveryPipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "CreateDeliveryPipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single DeliveryPipeline.
         pub async fn update_delivery_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDeliveryPipelineRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2875,13 +2938,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateDeliveryPipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "UpdateDeliveryPipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single DeliveryPipeline.
         pub async fn delete_delivery_pipeline(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDeliveryPipelineRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2898,13 +2969,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteDeliveryPipeline",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "DeleteDeliveryPipeline",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Targets in a given project and location.
         pub async fn list_targets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTargetsRequest>,
-        ) -> Result<tonic::Response<super::ListTargetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListTargetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2918,13 +3000,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListTargets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "ListTargets"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Target.
         pub async fn get_target(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTargetRequest>,
-        ) -> Result<tonic::Response<super::Target>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Target>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2938,13 +3025,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "GetTarget"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Target in a given project and location.
         pub async fn create_target(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTargetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2961,13 +3053,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "CreateTarget"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates the parameters of a single Target.
         pub async fn update_target(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTargetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -2984,13 +3081,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "UpdateTarget"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a single Target.
         pub async fn delete_target(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTargetRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3007,13 +3109,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteTarget",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "DeleteTarget"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Releases in a given project and location.
         pub async fn list_releases(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReleasesRequest>,
-        ) -> Result<tonic::Response<super::ListReleasesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListReleasesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3027,13 +3137,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListReleases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "ListReleases"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Release.
         pub async fn get_release(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReleaseRequest>,
-        ) -> Result<tonic::Response<super::Release>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Release>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3047,13 +3162,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetRelease",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "GetRelease"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Release in a given project and location.
         pub async fn create_release(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReleaseRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3070,13 +3190,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateRelease",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "CreateRelease",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Abandons a Release in the Delivery Pipeline.
         pub async fn abandon_release(
             &mut self,
             request: impl tonic::IntoRequest<super::AbandonReleaseRequest>,
-        ) -> Result<tonic::Response<super::AbandonReleaseResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AbandonReleaseResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3090,13 +3221,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/AbandonRelease",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "AbandonRelease",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Approves a Rollout.
         pub async fn approve_rollout(
             &mut self,
             request: impl tonic::IntoRequest<super::ApproveRolloutRequest>,
-        ) -> Result<tonic::Response<super::ApproveRolloutResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ApproveRolloutResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3110,13 +3252,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ApproveRollout",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "ApproveRollout",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Advances a Rollout in a given project and location.
         pub async fn advance_rollout(
             &mut self,
             request: impl tonic::IntoRequest<super::AdvanceRolloutRequest>,
-        ) -> Result<tonic::Response<super::AdvanceRolloutResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::AdvanceRolloutResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3130,13 +3283,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/AdvanceRollout",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "AdvanceRollout",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Cancels a Rollout in a given project and location.
         pub async fn cancel_rollout(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelRolloutRequest>,
-        ) -> Result<tonic::Response<super::CancelRolloutResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CancelRolloutResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3150,13 +3314,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CancelRollout",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "CancelRollout",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists Rollouts in a given project and location.
         pub async fn list_rollouts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRolloutsRequest>,
-        ) -> Result<tonic::Response<super::ListRolloutsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListRolloutsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3170,13 +3345,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListRollouts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "ListRollouts"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single Rollout.
         pub async fn get_rollout(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRolloutRequest>,
-        ) -> Result<tonic::Response<super::Rollout>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Rollout>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3190,13 +3370,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetRollout",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "GetRollout"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new Rollout in a given project and location.
         pub async fn create_rollout(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRolloutRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -3213,13 +3398,24 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateRollout",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "CreateRollout",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Ignores the specified Job in a Rollout.
         pub async fn ignore_job(
             &mut self,
             request: impl tonic::IntoRequest<super::IgnoreJobRequest>,
-        ) -> Result<tonic::Response<super::IgnoreJobResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::IgnoreJobResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3233,13 +3429,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/IgnoreJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "IgnoreJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retries the specified Job in a Rollout.
         pub async fn retry_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RetryJobRequest>,
-        ) -> Result<tonic::Response<super::RetryJobResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::RetryJobResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3253,13 +3457,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/RetryJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "RetryJob"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists JobRuns in a given project and location.
         pub async fn list_job_runs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobRunsRequest>,
-        ) -> Result<tonic::Response<super::ListJobRunsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobRunsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3273,13 +3485,18 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListJobRuns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "ListJobRuns"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single JobRun.
         pub async fn get_job_run(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobRunRequest>,
-        ) -> Result<tonic::Response<super::JobRun>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::JobRun>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3293,13 +3510,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetJobRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "GetJobRun"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Terminates a Job Run in a given project and location.
         pub async fn terminate_job_run(
             &mut self,
             request: impl tonic::IntoRequest<super::TerminateJobRunRequest>,
-        ) -> Result<tonic::Response<super::TerminateJobRunResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::TerminateJobRunResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3313,13 +3538,21 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/TerminateJobRun",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "TerminateJobRun",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Gets the configuration for a location.
         pub async fn get_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetConfigRequest>,
-        ) -> Result<tonic::Response<super::Config>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Config>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -3333,7 +3566,12 @@ pub mod cloud_deploy_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetConfig",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "GetConfig"),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
