@@ -8,7 +8,8 @@ pub struct UiDetectionRequest {
     /// Required. Required field that indicates the detection type.
     #[prost(message, optional, tag = "2")]
     pub request: ::core::option::Option<DetectionRequest>,
-    /// Indicates whether to resize the image when detecting.
+    /// Indicates whether to fall back to resizing the image if no elements are
+    /// detected.
     #[prost(bool, optional, tag = "3")]
     pub resize_image: ::core::option::Option<bool>,
     /// Deprecated as of 2023-03-29. Use test_metadata instead.
@@ -18,6 +19,12 @@ pub struct UiDetectionRequest {
     /// Optional. Metadata about the client for analytics.
     #[prost(message, optional, tag = "5")]
     pub test_metadata: ::core::option::Option<TestMetadata>,
+    /// Optional. Indicates whether to always start by resizing the image.
+    #[prost(bool, tag = "6")]
+    pub force_image_resizing: bool,
+    /// Optional. Indicates whether to respond with the transformed image png.
+    #[prost(bool, tag = "7")]
+    pub return_transformed_image: bool,
 }
 /// Detection type specifies what to detect in the image.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -124,10 +131,14 @@ pub struct UiDetectionResponse {
     /// Locations of matching UI elements.
     #[prost(message, repeated, tag = "1")]
     pub bounding_boxes: ::prost::alloc::vec::Vec<BoundingBox>,
-    /// Detection image PNG after all transformations have been applied. If absent,
-    /// assume the image was not transformed.
+    /// The transformed detection image PNG, if requested and transformations were
+    /// applied.
     #[prost(bytes = "vec", tag = "2")]
     pub transformed_image_png: ::prost::alloc::vec::Vec<u8>,
+    /// The amount the original image was scaled by to make the transformed image.
+    /// 1.0 if the detection result is not based on a resized image.
+    #[prost(float, tag = "3")]
+    pub resizing_scale_factor: f32,
 }
 /// The location of a UI element.
 /// A bounding box is reprensented by its top-left point [left, top]

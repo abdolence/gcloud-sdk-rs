@@ -508,6 +508,14 @@ pub mod read_session {
         /// Restricted to a maximum length for 1 MB.
         #[prost(string, tag = "2")]
         pub row_restriction: ::prost::alloc::string::String,
+        /// Optional. Specifies a table sampling percentage. Specifically, the query
+        /// planner will use TABLESAMPLE SYSTEM (sample_percentage PERCENT). This
+        /// samples at the file-level. It will randomly choose for each file whether
+        /// to include that file in the sample returned. Note, that if the table only
+        /// has one file, then TABLESAMPLE SYSTEM will select that file and return
+        /// all returnable rows contained within.
+        #[prost(double, optional, tag = "5")]
+        pub sample_percentage: ::core::option::Option<f64>,
         #[prost(
             oneof = "table_read_options::OutputFormatSerializationOptions",
             tags = "3, 4"
@@ -1288,6 +1296,17 @@ pub mod storage_error {
         OffsetAlreadyExists = 8,
         /// Offset out of range.
         OffsetOutOfRange = 9,
+        /// Customer-managed encryption key (CMEK) not provided for CMEK-enabled
+        /// data.
+        CmekNotProvided = 10,
+        /// Customer-managed encryption key (CMEK) was incorrectly provided.
+        InvalidCmekProvided = 11,
+        /// There is an encryption error while using customer-managed encryption key.
+        CmekEncryptionError = 12,
+        /// Key Management Service (KMS) service returned an error.
+        KmsServiceError = 13,
+        /// Permission denied while using customer-managed encryption key.
+        KmsPermissionDenied = 14,
     }
     impl StorageErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1308,6 +1327,11 @@ pub mod storage_error {
                 }
                 StorageErrorCode::OffsetAlreadyExists => "OFFSET_ALREADY_EXISTS",
                 StorageErrorCode::OffsetOutOfRange => "OFFSET_OUT_OF_RANGE",
+                StorageErrorCode::CmekNotProvided => "CMEK_NOT_PROVIDED",
+                StorageErrorCode::InvalidCmekProvided => "INVALID_CMEK_PROVIDED",
+                StorageErrorCode::CmekEncryptionError => "CMEK_ENCRYPTION_ERROR",
+                StorageErrorCode::KmsServiceError => "KMS_SERVICE_ERROR",
+                StorageErrorCode::KmsPermissionDenied => "KMS_PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1323,6 +1347,11 @@ pub mod storage_error {
                 "SCHEMA_MISMATCH_EXTRA_FIELDS" => Some(Self::SchemaMismatchExtraFields),
                 "OFFSET_ALREADY_EXISTS" => Some(Self::OffsetAlreadyExists),
                 "OFFSET_OUT_OF_RANGE" => Some(Self::OffsetOutOfRange),
+                "CMEK_NOT_PROVIDED" => Some(Self::CmekNotProvided),
+                "INVALID_CMEK_PROVIDED" => Some(Self::InvalidCmekProvided),
+                "CMEK_ENCRYPTION_ERROR" => Some(Self::CmekEncryptionError),
+                "KMS_SERVICE_ERROR" => Some(Self::KmsServiceError),
+                "KMS_PERMISSION_DENIED" => Some(Self::KmsPermissionDenied),
                 _ => None,
             }
         }

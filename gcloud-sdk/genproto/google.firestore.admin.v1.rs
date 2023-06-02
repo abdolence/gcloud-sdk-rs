@@ -215,14 +215,17 @@ pub struct Index {
     /// time, and that have the same collection id as this index.
     #[prost(enumeration = "index::QueryScope", tag = "2")]
     pub query_scope: i32,
+    /// The API scope supported by this index.
+    #[prost(enumeration = "index::ApiScope", tag = "5")]
+    pub api_scope: i32,
     /// The fields supported by this index.
     ///
-    /// For composite indexes, this is always 2 or more fields.
-    /// The last field entry is always for the field path `__name__`. If, on
-    /// creation, `__name__` was not specified as the last field, it will be added
-    /// automatically with the same direction as that of the last field defined. If
-    /// the final field in a composite index is not directional, the `__name__`
-    /// will be ordered ASCENDING (unless explicitly specified).
+    /// For composite indexes, this requires a minimum of 2 and a maximum of 100
+    /// fields. The last field entry is always for the field path `__name__`. If,
+    /// on creation, `__name__` was not specified as the last field, it will be
+    /// added automatically with the same direction as that of the last field
+    /// defined. If the final field in a composite index is not directional, the
+    /// `__name__` will be ordered ASCENDING (unless explicitly specified).
     ///
     /// For single field indexes, this will always be exactly one entry with a
     /// field path equal to the field path of the associated field.
@@ -371,6 +374,9 @@ pub mod index {
         /// against all collections that has the collection id specified by the
         /// index.
         CollectionGroup = 2,
+        /// Include all the collections's ancestor in the index. Only available for
+        /// Datastore Mode databases.
+        CollectionRecursive = 3,
     }
     impl QueryScope {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -382,6 +388,7 @@ pub mod index {
                 QueryScope::Unspecified => "QUERY_SCOPE_UNSPECIFIED",
                 QueryScope::Collection => "COLLECTION",
                 QueryScope::CollectionGroup => "COLLECTION_GROUP",
+                QueryScope::CollectionRecursive => "COLLECTION_RECURSIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -390,6 +397,48 @@ pub mod index {
                 "QUERY_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "COLLECTION" => Some(Self::Collection),
                 "COLLECTION_GROUP" => Some(Self::CollectionGroup),
+                "COLLECTION_RECURSIVE" => Some(Self::CollectionRecursive),
+                _ => None,
+            }
+        }
+    }
+    /// API Scope defines the APIs (Firestore Native, or Firestore in
+    /// Datastore Mode) that are supported for queries.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ApiScope {
+        /// The index can only be used by the Firestore Native query API.
+        /// This is the default.
+        AnyApi = 0,
+        /// The index can only be used by the Firestore in Datastore Mode query API.
+        DatastoreModeApi = 1,
+    }
+    impl ApiScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ApiScope::AnyApi => "ANY_API",
+                ApiScope::DatastoreModeApi => "DATASTORE_MODE_API",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANY_API" => Some(Self::AnyApi),
+                "DATASTORE_MODE_API" => Some(Self::DatastoreModeApi),
                 _ => None,
             }
         }

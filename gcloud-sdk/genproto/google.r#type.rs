@@ -641,6 +641,20 @@ pub struct Decimal {
     #[prost(string, tag = "1")]
     pub value: ::prost::alloc::string::String,
 }
+/// Localized variant of a text in a particular language.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocalizedText {
+    /// Localized string in the language corresponding to `language_code' below.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+    /// The text's BCP-47 language code, such as "en-US" or "sr-Latn".
+    ///
+    /// For more information, see
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+}
 /// A `CalendarPeriod` represents the abstract concept of a time period that has
 /// a canonical start. Grammatically, "the start of the current
 /// `CalendarPeriod`." All calendar times begin at midnight UTC.
@@ -711,20 +725,6 @@ pub struct Fraction {
     /// positive.
     #[prost(int64, tag = "2")]
     pub denominator: i64,
-}
-/// Localized variant of a text in a particular language.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocalizedText {
-    /// Localized string in the language corresponding to `language_code' below.
-    #[prost(string, tag = "1")]
-    pub text: ::prost::alloc::string::String,
-    /// The text's BCP-47 language code, such as "en-US" or "sr-Latn".
-    ///
-    /// For more information, see
-    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
-    #[prost(string, tag = "2")]
-    pub language_code: ::prost::alloc::string::String,
 }
 /// Represents a month in the Gregorian calendar.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

@@ -159,6 +159,10 @@ pub enum IntegratedSystem {
     DataprocMetastore = 3,
     /// Dataplex.
     Dataplex = 4,
+    /// Cloud Spanner
+    CloudSpanner = 6,
+    /// Cloud Bigtable
+    CloudBigtable = 7,
     /// Cloud Sql
     CloudSql = 8,
     /// Looker
@@ -176,6 +180,8 @@ impl IntegratedSystem {
             IntegratedSystem::CloudPubsub => "CLOUD_PUBSUB",
             IntegratedSystem::DataprocMetastore => "DATAPROC_METASTORE",
             IntegratedSystem::Dataplex => "DATAPLEX",
+            IntegratedSystem::CloudSpanner => "CLOUD_SPANNER",
+            IntegratedSystem::CloudBigtable => "CLOUD_BIGTABLE",
             IntegratedSystem::CloudSql => "CLOUD_SQL",
             IntegratedSystem::Looker => "LOOKER",
         }
@@ -188,6 +194,8 @@ impl IntegratedSystem {
             "CLOUD_PUBSUB" => Some(Self::CloudPubsub),
             "DATAPROC_METASTORE" => Some(Self::DataprocMetastore),
             "DATAPLEX" => Some(Self::Dataplex),
+            "CLOUD_SPANNER" => Some(Self::CloudSpanner),
+            "CLOUD_BIGTABLE" => Some(Self::CloudBigtable),
             "CLOUD_SQL" => Some(Self::CloudSql),
             "LOOKER" => Some(Self::Looker),
             _ => None,
@@ -1478,6 +1486,9 @@ pub struct SearchCatalogResponse {
     /// Search results.
     #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<SearchCatalogResult>,
+    /// The approximate total number of entries matched by the query.
+    #[prost(int32, tag = "2")]
+    pub total_size: i32,
     /// Pagination token that can be used in subsequent calls to retrieve the next
     /// page of results.
     #[prost(string, tag = "3")]
@@ -1673,6 +1684,16 @@ pub struct GetEntryRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupEntryRequest {
+    /// Project where the lookup should be performed. Required to lookup
+    /// entry that is not a part of `DPMS` or `DATAPLEX` `integrated_system`
+    /// using its `fully_qualified_name`. Ignored in other cases.
+    #[prost(string, tag = "6")]
+    pub project: ::prost::alloc::string::String,
+    /// Location where the lookup should be performed. Required to lookup
+    /// entry that is not a part of `DPMS` or `DATAPLEX` `integrated_system`
+    /// using its `fully_qualified_name`. Ignored in other cases.
+    #[prost(string, tag = "7")]
+    pub location: ::prost::alloc::string::String,
     /// Required. A full name, SQL name, or a fully qualified name of a
     /// Google Cloud Platform resource.
     #[prost(oneof = "lookup_entry_request::TargetName", tags = "1, 3, 5")]
@@ -1710,7 +1731,9 @@ pub mod lookup_entry_request {
         /// (<https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical>).
         #[prost(string, tag = "3")]
         SqlResource(::prost::alloc::string::String),
-        /// Fully qualified name (FQN) of the resource.
+        /// [Fully Qualified Name
+        /// (FQN)](<https://cloud.google.com//data-catalog/docs/fully-qualified-names>)
+        /// of the resource.
         ///
         /// FQNs take two forms:
         ///
@@ -1768,25 +1791,12 @@ pub struct Entry {
     /// The maximum size is 200 bytes when encoded in UTF-8.
     #[prost(string, tag = "9")]
     pub linked_resource: ::prost::alloc::string::String,
-    /// Fully qualified name (FQN) of the resource. Set automatically for entries
-    /// representing resources from synced systems. Settable only during creation
-    /// and read-only afterwards. Can be used for search and lookup of the entries.
+    /// [Fully Qualified Name
+    /// (FQN)](<https://cloud.google.com//data-catalog/docs/fully-qualified-names>)
+    /// of the resource. Set automatically for entries representing resources from
+    /// synced systems. Settable only during creation, and read-only later. Can
+    /// be used for search and lookup of the entries.
     ///
-    ///
-    ///
-    /// FQNs take two forms:
-    ///
-    /// * For non-regionalized resources:
-    ///
-    ///    `{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}`
-    ///
-    /// * For regionalized resources:
-    ///
-    ///    `{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}`
-    ///
-    /// Example for a DPMS table:
-    ///
-    /// `dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}`
     #[prost(string, tag = "29")]
     pub fully_qualified_name: ::prost::alloc::string::String,
     /// Display name of an entry.
@@ -1848,7 +1858,7 @@ pub struct Entry {
     /// System specification.
     /// Can be used as a complement for `spec`, when some metadata is relevant for
     /// all entries existing within given system
-    #[prost(oneof = "entry::SystemSpec", tags = "39, 40")]
+    #[prost(oneof = "entry::SystemSpec", tags = "39, 40, 41")]
     pub system_spec: ::core::option::Option<entry::SystemSpec>,
     /// Type specification.
     #[prost(oneof = "entry::TypeSpec", tags = "6, 12, 15")]
@@ -1859,7 +1869,7 @@ pub struct Entry {
     ///
     /// When extending the API with new types and systems, use this field instead
     /// of the legacy `type_spec`.
-    #[prost(oneof = "entry::Spec", tags = "24, 27, 28, 33")]
+    #[prost(oneof = "entry::Spec", tags = "24, 27, 28, 33, 42")]
     pub spec: ::core::option::Option<entry::Spec>,
 }
 /// Nested message and enum types in `Entry`.
@@ -1925,6 +1935,10 @@ pub mod entry {
         /// `user_specified_system` is equal to `LOOKER`
         #[prost(message, tag = "40")]
         LookerSystemSpec(super::LookerSystemSpec),
+        /// Specification that applies to Cloud Bigtable system. Only settable when
+        /// `integrated_system` is equal to `CLOUD_BIGTABLE`
+        #[prost(message, tag = "41")]
+        CloudBigtableSystemSpec(super::CloudBigtableSystemSpec),
     }
     /// Type specification.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1971,6 +1985,9 @@ pub mod entry {
         /// for entries with the `FILESET` type.
         #[prost(message, tag = "33")]
         FilesetSpec(super::FilesetSpec),
+        /// Specification that applies to a Service resource.
+        #[prost(message, tag = "42")]
+        ServiceSpec(super::ServiceSpec),
     }
 }
 /// Specification that applies to a table resource. Valid only
@@ -2334,6 +2351,70 @@ pub struct LookerSystemSpec {
     /// Name of the parent View. Empty if it does not exist.
     #[prost(string, tag = "6")]
     pub parent_view_display_name: ::prost::alloc::string::String,
+}
+/// Specification that applies to
+/// all entries that are part of `CLOUD_BIGTABLE` system
+/// (user_specified_type)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudBigtableSystemSpec {
+    /// Display name of the Instance. This is user specified and different from
+    /// the resource name.
+    #[prost(string, tag = "1")]
+    pub instance_display_name: ::prost::alloc::string::String,
+}
+/// Specification that applies to Instance
+/// entries that are part of `CLOUD_BIGTABLE` system.
+/// (user_specified_type)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudBigtableInstanceSpec {
+    /// The list of clusters for the Instance.
+    #[prost(message, repeated, tag = "1")]
+    pub cloud_bigtable_cluster_specs: ::prost::alloc::vec::Vec<
+        cloud_bigtable_instance_spec::CloudBigtableClusterSpec,
+    >,
+}
+/// Nested message and enum types in `CloudBigtableInstanceSpec`.
+pub mod cloud_bigtable_instance_spec {
+    /// Spec that applies to clusters of an Instance of Cloud Bigtable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CloudBigtableClusterSpec {
+        /// Name of the cluster.
+        #[prost(string, tag = "1")]
+        pub display_name: ::prost::alloc::string::String,
+        /// Location of the cluster, typically a Cloud zone.
+        #[prost(string, tag = "2")]
+        pub location: ::prost::alloc::string::String,
+        /// Type of the resource. For a cluster this would be "CLUSTER".
+        #[prost(string, tag = "3")]
+        pub r#type: ::prost::alloc::string::String,
+        /// A link back to the parent resource, in this case Instance.
+        #[prost(string, tag = "4")]
+        pub linked_resource: ::prost::alloc::string::String,
+    }
+}
+/// Specification that applies to a Service resource. Valid only
+/// for entries with the `SERVICE` type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceSpec {
+    /// System spec
+    #[prost(oneof = "service_spec::SystemSpec", tags = "1")]
+    pub system_spec: ::core::option::Option<service_spec::SystemSpec>,
+}
+/// Nested message and enum types in `ServiceSpec`.
+pub mod service_spec {
+    /// System spec
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SystemSpec {
+        /// Specification that applies to Instance entries of `CLOUD_BIGTABLE`
+        /// system.
+        #[prost(message, tag = "1")]
+        CloudBigtableInstanceSpec(super::CloudBigtableInstanceSpec),
+    }
 }
 /// Business Context of the entry.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2828,6 +2909,10 @@ pub struct ImportEntriesRequest {
     /// Required. Target entry group for ingested entries.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. (Optional) Dataplex task job id, if specified will be used as
+    /// part of ImportEntries LRO ID
+    #[prost(string, tag = "3")]
+    pub job_id: ::prost::alloc::string::String,
     /// Source of imported entries, e.g. dump stored in a Cloud Storage
     #[prost(oneof = "import_entries_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_entries_request::Source>,
@@ -4370,19 +4455,21 @@ pub mod data_catalog_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaggedEntry {
-    /// Tags that should be ingested into the Data Catalog.
+    /// Optional. Tags that should be ingested into the Data Catalog.
     /// Caller should populate template name, column and fields.
     #[prost(message, repeated, tag = "2")]
     pub present_tags: ::prost::alloc::vec::Vec<Tag>,
-    /// Tags that should be deleted from the Data Catalog.
+    /// Optional. Tags that should be deleted from the Data Catalog.
     /// Caller should populate template name and column only.
     #[prost(message, repeated, tag = "3")]
     pub absent_tags: ::prost::alloc::vec::Vec<Tag>,
+    /// Required. Entry to be ingested.
     #[prost(oneof = "tagged_entry::Entry", tags = "1")]
     pub entry: ::core::option::Option<tagged_entry::Entry>,
 }
 /// Nested message and enum types in `TaggedEntry`.
 pub mod tagged_entry {
+    /// Required. Entry to be ingested.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Entry {
@@ -4481,7 +4568,7 @@ pub mod taxonomy {
         /// The Google Cloud service name.
         #[prost(enumeration = "super::ManagingSystem", tag = "1")]
         pub name: i32,
-        /// P4SA Identity of the service.
+        /// The service agent for the service.
         #[prost(string, tag = "2")]
         pub identity: ::prost::alloc::string::String,
     }

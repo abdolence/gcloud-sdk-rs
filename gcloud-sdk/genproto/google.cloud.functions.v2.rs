@@ -7,9 +7,6 @@ pub struct Function {
     /// globally and match pattern `projects/*/locations/*/functions/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Describe whether the function is 1st Gen or 2nd Gen.
-    #[prost(enumeration = "Environment", tag = "10")]
-    pub environment: i32,
     /// User-provided description of a function.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
@@ -40,16 +37,19 @@ pub struct Function {
     /// Output only. State Messages for this Cloud Function.
     #[prost(message, repeated, tag = "9")]
     pub state_messages: ::prost::alloc::vec::Vec<StateMessage>,
-    /// Resource name of a KMS crypto key (managed by the user) used to
+    /// Describe whether the function is 1st Gen or 2nd Gen.
+    #[prost(enumeration = "Environment", tag = "10")]
+    pub environment: i32,
+    /// Output only. The deployed url for the function.
+    #[prost(string, tag = "14")]
+    pub url: ::prost::alloc::string::String,
+    /// \[Preview\] Resource name of a KMS crypto key (managed by the user) used to
     /// encrypt/decrypt function resources.
     ///
     /// It must match the pattern
     /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
     #[prost(string, tag = "25")]
     pub kms_key_name: ::prost::alloc::string::String,
-    /// Output only. The deployed url for the function.
-    #[prost(string, tag = "14")]
-    pub url: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Function`.
 pub mod function {
@@ -334,9 +334,9 @@ pub struct BuildConfig {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. Docker Registry to use for this deployment. This configuration is
-    /// only applicable to 1st Gen functions, 2nd Gen functions can only use
-    /// Artifact Registry.
+    /// Docker Registry to use for this deployment. This configuration is only
+    /// applicable to 1st Gen functions, 2nd Gen functions can only use Artifact
+    /// Registry.
     ///
     /// If `docker_repository` field is specified, this field will be automatically
     /// set as `ARTIFACT_REGISTRY`.
@@ -344,8 +344,8 @@ pub struct BuildConfig {
     /// This field may be overridden by the backend for eligible deployments.
     #[prost(enumeration = "build_config::DockerRegistry", tag = "10")]
     pub docker_registry: i32,
-    /// User managed repository created in Artifact Registry optionally with a
-    /// customer managed encryption key. This is the repository to which the
+    /// User managed repository created in Artifact Registry optionally
+    /// with a customer managed encryption key. This is the repository to which the
     /// function docker image will be pushed after it is built by Cloud Build.
     /// If unspecified, GCF will create and use a repository named 'gcf-artifacts'
     /// for every deployed region.
@@ -412,7 +412,6 @@ pub mod build_config {
 }
 /// Describes the Service being deployed.
 /// Currently Supported : Cloud Run (fully managed).
-/// Next tag: 23
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceConfig {
@@ -434,7 +433,7 @@ pub struct ServiceConfig {
     /// a full description.
     #[prost(string, tag = "13")]
     pub available_memory: ::prost::alloc::string::String,
-    /// The number of CPUs used in a single container instance.
+    /// \[Preview\] The number of CPUs used in a single container instance.
     /// Default value is calculated from available memory.
     /// Supports the same values as Cloud Run, see
     /// <https://cloud.google.com/run/docs/reference/rest/v1/Container#resourcerequirements>
@@ -507,8 +506,8 @@ pub struct ServiceConfig {
     /// Output only. The name of service revision.
     #[prost(string, tag = "18")]
     pub revision: ::prost::alloc::string::String,
-    /// Sets the maximum number of concurrent requests that each instance can
-    /// receive. Defaults to 1.
+    /// \[Preview\] Sets the maximum number of concurrent requests that each instance
+    /// can receive. Defaults to 1.
     #[prost(int32, tag = "20")]
     pub max_instance_request_concurrency: i32,
     /// Security level configure whether the function only accepts https.
@@ -624,7 +623,7 @@ pub mod service_config {
     ///
     /// This enforces security protocol on function URL.
     ///
-    /// Security level is only ocnfigurable for 1st Gen functions, If unspecified,
+    /// Security level is only configurable for 1st Gen functions, If unspecified,
     /// SECURE_OPTIONAL will be used. 2nd Gen functions are SECURE_ALWAYS ONLY.
     #[derive(
         Clone,
@@ -963,7 +962,7 @@ pub struct GenerateUploadUrlRequest {
     /// URL should be generated, specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Resource name of a KMS crypto key (managed by the user) used to
+    /// \[Preview\] Resource name of a KMS crypto key (managed by the user) used to
     /// encrypt/decrypt function source code objects in intermediate Cloud Storage
     /// buckets. When you generate an upload url and upload your source code, it
     /// gets copied to an intermediate Cloud Storage bucket. The source code is
@@ -1158,6 +1157,14 @@ pub struct OperationMetadata {
     /// Mechanism for reporting in-progress stages
     #[prost(message, repeated, tag = "9")]
     pub stages: ::prost::alloc::vec::Vec<Stage>,
+}
+/// Extra GCF specific location information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationMetadata {
+    /// The Cloud Function environments this location supports.
+    #[prost(enumeration = "Environment", repeated, tag = "1")]
+    pub environments: ::prost::alloc::vec::Vec<i32>,
 }
 /// Each Stage of the deployment process
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -2,23 +2,23 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslConfig {
-    /// Output only. The ssl config type according to 'client_key', 'client_certificate' and
-    /// 'ca_certificate'.
+    /// Output only. The ssl config type according to 'client_key',
+    /// 'client_certificate' and 'ca_certificate'.
     #[prost(enumeration = "ssl_config::SslType", tag = "1")]
     pub r#type: i32,
-    /// Input only. The unencrypted PKCS#1 or PKCS#8 PEM-encoded private key associated with
-    /// the Client Certificate. If this field is used then the 'client_certificate'
-    /// field is mandatory.
+    /// Input only. The unencrypted PKCS#1 or PKCS#8 PEM-encoded private key
+    /// associated with the Client Certificate. If this field is used then the
+    /// 'client_certificate' field is mandatory.
     #[prost(string, tag = "2")]
     pub client_key: ::prost::alloc::string::String,
-    /// Input only. The x509 PEM-encoded certificate that will be used by the replica to
-    /// authenticate against the source database server.If this field is used then
-    /// the 'client_key' field is mandatory.
+    /// Input only. The x509 PEM-encoded certificate that will be used by the
+    /// replica to authenticate against the source database server.If this field is
+    /// used then the 'client_key' field is mandatory.
     #[prost(string, tag = "3")]
     pub client_certificate: ::prost::alloc::string::String,
-    /// Required. Input only. The x509 PEM-encoded certificate of the CA that signed the source database
-    /// server's certificate. The replica will use this certificate to verify
-    /// it's connecting to the right host.
+    /// Required. Input only. The x509 PEM-encoded certificate of the CA that
+    /// signed the source database server's certificate. The replica will use this
+    /// certificate to verify it's connecting to the right host.
     #[prost(string, tag = "4")]
     pub ca_certificate: ::prost::alloc::string::String,
 }
@@ -79,13 +79,15 @@ pub struct MySqlConnectionProfile {
     /// Required. The network port of the source MySQL database.
     #[prost(int32, tag = "2")]
     pub port: i32,
-    /// Required. The username that Database Migration Service will use to connect to the
-    /// database. The value is encrypted when stored in Database Migration Service.
+    /// Required. The username that Database Migration Service will use to connect
+    /// to the database. The value is encrypted when stored in Database Migration
+    /// Service.
     #[prost(string, tag = "3")]
     pub username: ::prost::alloc::string::String,
-    /// Required. Input only. The password for the user that Database Migration Service will be using to
-    /// connect to the database. This field is not returned on request, and the
-    /// value is encrypted when stored in Database Migration Service.
+    /// Required. Input only. The password for the user that Database Migration
+    /// Service will be using to connect to the database. This field is not
+    /// returned on request, and the value is encrypted when stored in Database
+    /// Migration Service.
     #[prost(string, tag = "4")]
     pub password: ::prost::alloc::string::String,
     /// Output only. Indicates If this connection profile password is stored.
@@ -110,13 +112,15 @@ pub struct PostgreSqlConnectionProfile {
     /// Required. The network port of the source PostgreSQL database.
     #[prost(int32, tag = "2")]
     pub port: i32,
-    /// Required. The username that Database Migration Service will use to connect to the
-    /// database. The value is encrypted when stored in Database Migration Service.
+    /// Required. The username that Database Migration Service will use to connect
+    /// to the database. The value is encrypted when stored in Database Migration
+    /// Service.
     #[prost(string, tag = "3")]
     pub username: ::prost::alloc::string::String,
-    /// Required. Input only. The password for the user that Database Migration Service will be using to
-    /// connect to the database. This field is not returned on request, and the
-    /// value is encrypted when stored in Database Migration Service.
+    /// Required. Input only. The password for the user that Database Migration
+    /// Service will be using to connect to the database. This field is not
+    /// returned on request, and the value is encrypted when stored in Database
+    /// Migration Service.
     #[prost(string, tag = "4")]
     pub password: ::prost::alloc::string::String,
     /// Output only. Indicates If this connection profile password is stored.
@@ -129,13 +133,86 @@ pub struct PostgreSqlConnectionProfile {
     /// provide the Cloud SQL instance ID of the source.
     #[prost(string, tag = "7")]
     pub cloud_sql_id: ::prost::alloc::string::String,
+    /// Output only. If the source is a Cloud SQL database, this field indicates
+    /// the network architecture it's associated with.
+    #[prost(enumeration = "NetworkArchitecture", tag = "8")]
+    pub network_architecture: i32,
+    /// Connectivity options used to establish a connection to the database server.
+    #[prost(oneof = "postgre_sql_connection_profile::Connectivity", tags = "100, 101")]
+    pub connectivity: ::core::option::Option<
+        postgre_sql_connection_profile::Connectivity,
+    >,
+}
+/// Nested message and enum types in `PostgreSqlConnectionProfile`.
+pub mod postgre_sql_connection_profile {
+    /// Connectivity options used to establish a connection to the database server.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Connectivity {
+        /// Static ip connectivity data (default, no additional details needed).
+        #[prost(message, tag = "100")]
+        StaticIpConnectivity(super::StaticIpConnectivity),
+        /// Private service connect connectivity.
+        #[prost(message, tag = "101")]
+        PrivateServiceConnectConnectivity(super::PrivateServiceConnectConnectivity),
+    }
+}
+/// Specifies connection parameters required specifically for Oracle
+/// databases.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OracleConnectionProfile {
+    /// Required. The IP or hostname of the source Oracle database.
+    #[prost(string, tag = "1")]
+    pub host: ::prost::alloc::string::String,
+    /// Required. The network port of the source Oracle database.
+    #[prost(int32, tag = "2")]
+    pub port: i32,
+    /// Required. The username that Database Migration Service will use to connect
+    /// to the database. The value is encrypted when stored in Database Migration
+    /// Service.
+    #[prost(string, tag = "3")]
+    pub username: ::prost::alloc::string::String,
+    /// Required. Input only. The password for the user that Database Migration
+    /// Service will be using to connect to the database. This field is not
+    /// returned on request, and the value is encrypted when stored in Database
+    /// Migration Service.
+    #[prost(string, tag = "4")]
+    pub password: ::prost::alloc::string::String,
+    /// Output only. Indicates whether a new password is included in the request.
+    #[prost(bool, tag = "5")]
+    pub password_set: bool,
+    /// Required. Database service for the Oracle connection.
+    #[prost(string, tag = "6")]
+    pub database_service: ::prost::alloc::string::String,
+    /// Connectivity options used to establish a connection to the database server.
+    #[prost(oneof = "oracle_connection_profile::Connectivity", tags = "100, 101, 102")]
+    pub connectivity: ::core::option::Option<oracle_connection_profile::Connectivity>,
+}
+/// Nested message and enum types in `OracleConnectionProfile`.
+pub mod oracle_connection_profile {
+    /// Connectivity options used to establish a connection to the database server.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Connectivity {
+        /// Static Service IP connectivity.
+        #[prost(message, tag = "100")]
+        StaticServiceIpConnectivity(super::StaticServiceIpConnectivity),
+        /// Forward SSH tunnel connectivity.
+        #[prost(message, tag = "101")]
+        ForwardSshConnectivity(super::ForwardSshTunnelConnectivity),
+        /// Private connectivity.
+        #[prost(message, tag = "102")]
+        PrivateConnectivity(super::PrivateConnectivity),
+    }
 }
 /// Specifies required connection parameters, and, optionally, the parameters
 /// required to create a Cloud SQL destination database instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlConnectionProfile {
-    /// Output only. The Cloud SQL instance ID that this connection profile is associated with.
+    /// Output only. The Cloud SQL instance ID that this connection profile is
+    /// associated with.
     #[prost(string, tag = "1")]
     pub cloud_sql_id: ::prost::alloc::string::String,
     /// Immutable. Metadata used to create the destination Cloud SQL database.
@@ -147,6 +224,24 @@ pub struct CloudSqlConnectionProfile {
     /// Output only. The Cloud SQL database instance's public IP.
     #[prost(string, tag = "4")]
     pub public_ip: ::prost::alloc::string::String,
+    /// Output only. The Cloud SQL database instance's additional (outgoing) public
+    /// IP. Used when the Cloud SQL database availability type is REGIONAL (i.e.
+    /// multiple zones / highly available).
+    #[prost(string, tag = "5")]
+    pub additional_public_ip: ::prost::alloc::string::String,
+}
+/// Specifies required connection parameters, and the parameters
+/// required to create an AlloyDB destination cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AlloyDbConnectionProfile {
+    /// Required. The AlloyDB cluster ID that this connection profile is associated
+    /// with.
+    #[prost(string, tag = "1")]
+    pub cluster_id: ::prost::alloc::string::String,
+    /// Immutable. Metadata used to create the destination AlloyDB cluster.
+    #[prost(message, optional, tag = "2")]
+    pub settings: ::core::option::Option<AlloyDbSettings>,
 }
 /// An entry for an Access Control list.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -191,6 +286,14 @@ pub struct SqlIpConfig {
     /// be updated, but it cannot be removed after it is set.
     #[prost(string, tag = "2")]
     pub private_network: ::prost::alloc::string::String,
+    /// Optional. The name of the allocated IP address range for the private IP
+    /// Cloud SQL instance. This name refers to an already allocated IP range
+    /// address. If set, the instance IP address will be created in the allocated
+    /// range. Note that this IP address range can't be modified after the instance
+    /// is created. If you change the VPC when configuring connectivity settings
+    /// for the migration job, this field is not relevant.
+    #[prost(string, tag = "5")]
+    pub allocated_ip_range: ::prost::alloc::string::String,
     /// Whether SSL connections over IP should be enforced or not.
     #[prost(message, optional, tag = "3")]
     pub require_ssl: ::core::option::Option<bool>,
@@ -267,10 +370,15 @@ pub struct CloudSqlSettings {
     /// The minimum (and default) size is 10GB.
     #[prost(message, optional, tag = "10")]
     pub data_disk_size_gb: ::core::option::Option<i64>,
-    /// The Google Cloud Platform zone where your Cloud SQL datdabse instance is
+    /// The Google Cloud Platform zone where your Cloud SQL database instance is
     /// located.
     #[prost(string, tag = "11")]
     pub zone: ::prost::alloc::string::String,
+    /// Optional. The Google Cloud Platform zone where the failover Cloud SQL
+    /// database instance is located. Used when the Cloud SQL database availability
+    /// type is REGIONAL (i.e. multiple zones / highly available).
+    #[prost(string, tag = "18")]
+    pub secondary_zone: ::prost::alloc::string::String,
     /// The Database Migration Service source connection profile ID,
     /// in the format:
     /// `projects/my_project_name/locations/us-central1/connectionProfiles/connection_profile_ID`
@@ -285,6 +393,16 @@ pub struct CloudSqlSettings {
     /// The Cloud SQL default instance level collation.
     #[prost(string, tag = "15")]
     pub collation: ::prost::alloc::string::String,
+    /// The KMS key name used for the csql instance.
+    #[prost(string, tag = "16")]
+    pub cmek_key_name: ::prost::alloc::string::String,
+    /// Optional. Availability type. Potential values:
+    /// *  `ZONAL`: The instance serves data from only one zone. Outages in that
+    /// zone affect data availability.
+    /// *  `REGIONAL`: The instance can serve data from more than one zone in a
+    /// region (it is highly available).
+    #[prost(enumeration = "cloud_sql_settings::SqlAvailabilityType", tag = "17")]
+    pub availability_type: i32,
 }
 /// Nested message and enum types in `CloudSqlSettings`.
 pub mod cloud_sql_settings {
@@ -406,6 +524,8 @@ pub mod cloud_sql_settings {
         Postgres12 = 7,
         /// PostgreSQL 13.
         Postgres13 = 8,
+        /// PostgreSQL 14.
+        Postgres14 = 17,
     }
     impl SqlDatabaseVersion {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -423,6 +543,7 @@ pub mod cloud_sql_settings {
                 SqlDatabaseVersion::Mysql80 => "MYSQL_8_0",
                 SqlDatabaseVersion::Postgres12 => "POSTGRES_12",
                 SqlDatabaseVersion::Postgres13 => "POSTGRES_13",
+                SqlDatabaseVersion::Postgres14 => "POSTGRES_14",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -437,18 +558,181 @@ pub mod cloud_sql_settings {
                 "MYSQL_8_0" => Some(Self::Mysql80),
                 "POSTGRES_12" => Some(Self::Postgres12),
                 "POSTGRES_13" => Some(Self::Postgres13),
+                "POSTGRES_14" => Some(Self::Postgres14),
+                _ => None,
+            }
+        }
+    }
+    /// The availability type of the given Cloud SQL instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SqlAvailabilityType {
+        /// This is an unknown Availability type.
+        Unspecified = 0,
+        /// Zonal availablility instance.
+        Zonal = 1,
+        /// Regional availability instance.
+        Regional = 2,
+    }
+    impl SqlAvailabilityType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SqlAvailabilityType::Unspecified => "SQL_AVAILABILITY_TYPE_UNSPECIFIED",
+                SqlAvailabilityType::Zonal => "ZONAL",
+                SqlAvailabilityType::Regional => "REGIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_AVAILABILITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ZONAL" => Some(Self::Zonal),
+                "REGIONAL" => Some(Self::Regional),
                 _ => None,
             }
         }
     }
 }
-/// The source database will allow incoming connections from the destination
-/// database's public IP. You can retrieve the Cloud SQL instance's public IP
-/// from the Cloud SQL console or using Cloud SQL APIs. No additional
+/// Settings for creating an AlloyDB cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AlloyDbSettings {
+    /// Required. Input only. Initial user to setup during cluster creation.
+    /// Required.
+    #[prost(message, optional, tag = "1")]
+    pub initial_user: ::core::option::Option<alloy_db_settings::UserPassword>,
+    /// Required. The resource link for the VPC network in which cluster resources
+    /// are created and from which they are accessible via Private IP. The network
+    /// must belong to the same project as the cluster. It is specified in the
+    /// form: "projects/{project_number}/global/networks/{network_id}". This is
+    /// required to create a cluster.
+    #[prost(string, tag = "2")]
+    pub vpc_network: ::prost::alloc::string::String,
+    /// Labels for the AlloyDB cluster created by DMS. An object containing a list
+    /// of 'key', 'value' pairs.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    #[prost(message, optional, tag = "4")]
+    pub primary_instance_settings: ::core::option::Option<
+        alloy_db_settings::PrimaryInstanceSettings,
+    >,
+    /// Optional. The encryption config can be specified to encrypt the data disks
+    /// and other persistent data resources of a cluster with a
+    /// customer-managed encryption key (CMEK). When this field is not
+    /// specified, the cluster will then use default encryption scheme to
+    /// protect the user data.
+    #[prost(message, optional, tag = "5")]
+    pub encryption_config: ::core::option::Option<alloy_db_settings::EncryptionConfig>,
+}
+/// Nested message and enum types in `AlloyDbSettings`.
+pub mod alloy_db_settings {
+    /// The username/password for a database user. Used for specifying initial
+    /// users at cluster creation time.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UserPassword {
+        /// The database username.
+        #[prost(string, tag = "1")]
+        pub user: ::prost::alloc::string::String,
+        /// The initial password for the user.
+        #[prost(string, tag = "2")]
+        pub password: ::prost::alloc::string::String,
+        /// Output only. Indicates if the initial_user.password field has been set.
+        #[prost(bool, tag = "3")]
+        pub password_set: bool,
+    }
+    /// Settings for the cluster's primary instance
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PrimaryInstanceSettings {
+        /// Required. The ID of the AlloyDB primary instance. The ID must satisfy the
+        /// regex expression "\[a-z0-9-\]+".
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// Configuration for the machines that host the underlying
+        /// database engine.
+        #[prost(message, optional, tag = "2")]
+        pub machine_config: ::core::option::Option<
+            primary_instance_settings::MachineConfig,
+        >,
+        /// Database flags to pass to AlloyDB when DMS is creating the AlloyDB
+        /// cluster and instances. See the AlloyDB documentation for how these can be
+        /// used.
+        #[prost(map = "string, string", tag = "6")]
+        pub database_flags: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Labels for the AlloyDB primary instance created by DMS. An object
+        /// containing a list of 'key', 'value' pairs.
+        #[prost(map = "string, string", tag = "7")]
+        pub labels: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Output only. The private IP address for the Instance.
+        /// This is the connection endpoint for an end-user application.
+        #[prost(string, tag = "8")]
+        pub private_ip: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `PrimaryInstanceSettings`.
+    pub mod primary_instance_settings {
+        /// MachineConfig describes the configuration of a machine.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MachineConfig {
+            /// The number of CPU's in the VM instance.
+            #[prost(int32, tag = "1")]
+            pub cpu_count: i32,
+        }
+    }
+    /// EncryptionConfig describes the encryption config of a cluster that is
+    /// encrypted with a CMEK (customer-managed encryption key).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EncryptionConfig {
+        /// The fully-qualified resource name of the KMS key.
+        /// Each Cloud KMS key is regionalized and has the following format:
+        /// projects/\[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME\]
+        #[prost(string, tag = "1")]
+        pub kms_key_name: ::prost::alloc::string::String,
+    }
+}
+/// The source database will allow incoming connections from the public IP of the
+/// destination database. You can retrieve the public IP of the Cloud SQL
+/// instance from the Cloud SQL console or using Cloud SQL APIs. No additional
 /// configuration is required.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticIpConnectivity {}
+/// Private Service Connect connectivity
+/// (<https://cloud.google.com/vpc/docs/private-service-connect#service-attachments>)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrivateServiceConnectConnectivity {
+    /// Required. A service attachment that exposes a database, and has the
+    /// following format:
+    /// projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}
+    #[prost(string, tag = "1")]
+    pub service_attachment: ::prost::alloc::string::String,
+}
 /// The details needed to configure a reverse SSH tunnel between the source and
 /// destination databases. These details will be used when calling the
 /// generateSshScript method (see
@@ -458,12 +742,12 @@ pub struct StaticIpConnectivity {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReverseSshConnectivity {
-    /// Required. The IP of the virtual machine (Compute Engine) used as the bastion server
-    /// for the SSH tunnel.
+    /// Required. The IP of the virtual machine (Compute Engine) used as the
+    /// bastion server for the SSH tunnel.
     #[prost(string, tag = "1")]
     pub vm_ip: ::prost::alloc::string::String,
-    /// Required. The forwarding port of the virtual machine (Compute Engine) used as the
-    /// bastion server for the SSH tunnel.
+    /// Required. The forwarding port of the virtual machine (Compute Engine) used
+    /// as the bastion server for the SSH tunnel.
     #[prost(int32, tag = "2")]
     pub vm_port: i32,
     /// The name of the virtual machine (Compute Engine) used as the bastion server
@@ -484,6 +768,52 @@ pub struct VpcPeeringConnectivity {
     #[prost(string, tag = "1")]
     pub vpc: ::prost::alloc::string::String,
 }
+/// Forward SSH Tunnel connectivity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ForwardSshTunnelConnectivity {
+    /// Required. Hostname for the SSH tunnel.
+    #[prost(string, tag = "1")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Required. Username for the SSH tunnel.
+    #[prost(string, tag = "2")]
+    pub username: ::prost::alloc::string::String,
+    /// Port for the SSH tunnel, default value is 22.
+    #[prost(int32, tag = "3")]
+    pub port: i32,
+    #[prost(
+        oneof = "forward_ssh_tunnel_connectivity::AuthenticationMethod",
+        tags = "100, 101"
+    )]
+    pub authentication_method: ::core::option::Option<
+        forward_ssh_tunnel_connectivity::AuthenticationMethod,
+    >,
+}
+/// Nested message and enum types in `ForwardSshTunnelConnectivity`.
+pub mod forward_ssh_tunnel_connectivity {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AuthenticationMethod {
+        /// Input only. SSH password.
+        #[prost(string, tag = "100")]
+        Password(::prost::alloc::string::String),
+        /// Input only. SSH private key.
+        #[prost(string, tag = "101")]
+        PrivateKey(::prost::alloc::string::String),
+    }
+}
+/// Static IP address connectivity configured on service project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StaticServiceIpConnectivity {}
+/// Private Connectivity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrivateConnectivity {
+    /// Required. The resource name (URI) of the private connection.
+    #[prost(string, tag = "1")]
+    pub private_connection: ::prost::alloc::string::String,
+}
 /// A message defining the database engine and provider.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -500,7 +830,7 @@ pub struct DatabaseType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationJob {
     /// The name (URI) of this migration job resource, in the form of:
-    /// projects/{project}/locations/{location}/instances/{instance}.
+    /// projects/{project}/locations/{location}/migrationJobs/{migrationJob}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The timestamp when the migration job resource was created.
@@ -508,8 +838,8 @@ pub struct MigrationJob {
     /// Example: "2014-10-02T15:01:23.045123456Z".
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The timestamp when the migration job resource was last updated.
-    /// A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+    /// Output only. The timestamp when the migration job resource was last
+    /// updated. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
     /// Example: "2014-10-02T15:01:23.045123456Z".
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -537,16 +867,22 @@ pub struct MigrationJob {
     pub r#type: i32,
     /// The path to the dump file in Google Cloud Storage,
     /// in the format: (gs://\[BUCKET_NAME]/[OBJECT_NAME\]).
+    /// This field and the "dump_flags" field are mutually exclusive.
     #[prost(string, tag = "9")]
     pub dump_path: ::prost::alloc::string::String,
+    /// The initial dump flags.
+    /// This field and the "dump_path" field are mutually exclusive.
+    #[prost(message, optional, tag = "17")]
+    pub dump_flags: ::core::option::Option<migration_job::DumpFlags>,
     /// Required. The resource name (URI) of the source connection profile.
     #[prost(string, tag = "10")]
     pub source: ::prost::alloc::string::String,
     /// Required. The resource name (URI) of the destination connection profile.
     #[prost(string, tag = "11")]
     pub destination: ::prost::alloc::string::String,
-    /// Output only. The duration of the migration job (in seconds). A duration in seconds
-    /// with up to nine fractional digits, terminated by 's'. Example: "3.5s".
+    /// Output only. The duration of the migration job (in seconds). A duration in
+    /// seconds with up to nine fractional digits, terminated by 's'. Example:
+    /// "3.5s".
     #[prost(message, optional, tag = "12")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Output only. The error details in case of state FAILED.
@@ -558,15 +894,58 @@ pub struct MigrationJob {
     /// The database engine type and provider of the destination.
     #[prost(message, optional, tag = "15")]
     pub destination_database: ::core::option::Option<DatabaseType>,
-    /// Output only. If the migration job is completed, the time when it was completed.
+    /// Output only. If the migration job is completed, the time when it was
+    /// completed.
     #[prost(message, optional, tag = "16")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The conversion workspace used by the migration.
+    #[prost(message, optional, tag = "18")]
+    pub conversion_workspace: ::core::option::Option<ConversionWorkspaceInfo>,
+    /// This field can be used to select the entities to migrate as part of
+    /// the migration job. It uses AIP-160 notation to select a subset of the
+    /// entities configured on the associated conversion-workspace. This field
+    /// should not be set on migration-jobs that are not associated with a
+    /// conversion workspace.
+    #[prost(string, tag = "20")]
+    pub filter: ::prost::alloc::string::String,
+    /// The CMEK (customer-managed encryption key) fully qualified key name used
+    /// for the migration job.
+    /// This field supports all migration jobs types except for:
+    /// * Mysql to Mysql (use the cmek field in the cloudsql connection profile
+    /// instead).
+    /// * PostrgeSQL to PostgreSQL (use the cmek field in the cloudsql
+    /// connection profile instead).
+    /// * PostgreSQL to AlloyDB (use the kms_key_name field in the alloydb
+    /// connection profile instead).
+    /// Each Cloud CMEK key has the following format:
+    /// projects/\[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME\]
+    #[prost(string, tag = "21")]
+    pub cmek_key_name: ::prost::alloc::string::String,
     /// The connectivity method.
     #[prost(oneof = "migration_job::Connectivity", tags = "101, 102, 103")]
     pub connectivity: ::core::option::Option<migration_job::Connectivity>,
 }
 /// Nested message and enum types in `MigrationJob`.
 pub mod migration_job {
+    /// Dump flag definition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DumpFlag {
+        /// The name of the flag
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The value of the flag.
+        #[prost(string, tag = "2")]
+        pub value: ::prost::alloc::string::String,
+    }
+    /// Dump flags definition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DumpFlags {
+        /// The flags for the initial dump.
+        #[prost(message, repeated, tag = "1")]
+        pub dump_flags: ::prost::alloc::vec::Vec<DumpFlag>,
+    }
     /// The current migration job states.
     #[derive(
         Clone,
@@ -780,12 +1159,23 @@ pub mod migration_job {
         StaticIpConnectivity(super::StaticIpConnectivity),
     }
 }
+/// A conversion workspace's version.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionWorkspaceInfo {
+    /// The resource name (URI) of the conversion workspace.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The commit ID of the conversion workspace.
+    #[prost(string, tag = "2")]
+    pub commit_id: ::prost::alloc::string::String,
+}
 /// A connection profile definition.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionProfile {
     /// The name of this connection profile resource in the form of
-    /// projects/{project}/locations/{location}/instances/{instance}.
+    /// projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The timestamp when the resource was created.
@@ -821,7 +1211,10 @@ pub struct ConnectionProfile {
     #[prost(enumeration = "DatabaseProvider", tag = "8")]
     pub provider: i32,
     /// The connection profile definition.
-    #[prost(oneof = "connection_profile::ConnectionProfile", tags = "100, 101, 102")]
+    #[prost(
+        oneof = "connection_profile::ConnectionProfile",
+        tags = "100, 101, 104, 102, 105"
+    )]
     pub connection_profile: ::core::option::Option<
         connection_profile::ConnectionProfile,
     >,
@@ -901,9 +1294,15 @@ pub mod connection_profile {
         /// A PostgreSQL database connection profile.
         #[prost(message, tag = "101")]
         Postgresql(super::PostgreSqlConnectionProfile),
+        /// An Oracle database connection profile.
+        #[prost(message, tag = "104")]
+        Oracle(super::OracleConnectionProfile),
         /// A CloudSQL database connection profile.
         #[prost(message, tag = "102")]
         Cloudsql(super::CloudSqlConnectionProfile),
+        /// An AlloyDB cluster connection profile.
+        #[prost(message, tag = "105")]
+        Alloydb(super::AlloyDbConnectionProfile),
     }
 }
 /// Error message of a verification Migration job.
@@ -913,7 +1312,8 @@ pub struct MigrationJobVerificationError {
     /// Output only. An instance of ErrorCode specifying the error that occurred.
     #[prost(enumeration = "migration_job_verification_error::ErrorCode", tag = "1")]
     pub error_code: i32,
-    /// Output only. A formatted message with further details about the error and a CTA.
+    /// Output only. A formatted message with further details about the error and a
+    /// CTA.
     #[prost(string, tag = "2")]
     pub error_message: ::prost::alloc::string::String,
     /// Output only. A specific detailed error message, if supplied by the engine.
@@ -979,6 +1379,18 @@ pub mod migration_job_verification_error {
         UnsupportedDefiner = 19,
         /// Migration is already running at the time of restart request.
         CantRestartRunningMigration = 21,
+        /// The source has tables with limited support.
+        /// E.g. PostgreSQL tables without primary keys.
+        TablesWithLimitedSupport = 24,
+        /// The source uses an unsupported locale.
+        UnsupportedDatabaseLocale = 25,
+        /// The source uses an unsupported Foreign Data Wrapper configuration.
+        UnsupportedDatabaseFdwConfig = 26,
+        /// There was an underlying RDBMS error.
+        ErrorRdbms = 27,
+        /// The source DB size in Bytes exceeds a certain threshold. The migration
+        /// might require an increase of quota, or might not be supported.
+        SourceSizeExceedsThreshold = 28,
     }
     impl ErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1021,6 +1433,13 @@ pub mod migration_job_verification_error {
                 ErrorCode::CantRestartRunningMigration => {
                     "CANT_RESTART_RUNNING_MIGRATION"
                 }
+                ErrorCode::TablesWithLimitedSupport => "TABLES_WITH_LIMITED_SUPPORT",
+                ErrorCode::UnsupportedDatabaseLocale => "UNSUPPORTED_DATABASE_LOCALE",
+                ErrorCode::UnsupportedDatabaseFdwConfig => {
+                    "UNSUPPORTED_DATABASE_FDW_CONFIG"
+                }
+                ErrorCode::ErrorRdbms => "ERROR_RDBMS",
+                ErrorCode::SourceSizeExceedsThreshold => "SOURCE_SIZE_EXCEEDS_THRESHOLD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1060,8 +1479,167 @@ pub mod migration_job_verification_error {
                 "CANT_RESTART_RUNNING_MIGRATION" => {
                     Some(Self::CantRestartRunningMigration)
                 }
+                "TABLES_WITH_LIMITED_SUPPORT" => Some(Self::TablesWithLimitedSupport),
+                "UNSUPPORTED_DATABASE_LOCALE" => Some(Self::UnsupportedDatabaseLocale),
+                "UNSUPPORTED_DATABASE_FDW_CONFIG" => {
+                    Some(Self::UnsupportedDatabaseFdwConfig)
+                }
+                "ERROR_RDBMS" => Some(Self::ErrorRdbms),
+                "SOURCE_SIZE_EXCEEDS_THRESHOLD" => Some(Self::SourceSizeExceedsThreshold),
                 _ => None,
             }
+        }
+    }
+}
+/// The PrivateConnection resource is used to establish private connectivity
+/// with the customer's network.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrivateConnection {
+    /// The name of the resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The create time of the resource.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The last update time of the resource.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The resource labels for private connections to use to annotate any related
+    /// underlying resources such as Compute Engine VMs. An object containing a
+    /// list of "key": "value" pairs.
+    ///
+    /// Example: `{ "name": "wrench", "mass": "1.3kg", "count": "3" }`.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The private connection display name.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The state of the private connection.
+    #[prost(enumeration = "private_connection::State", tag = "6")]
+    pub state: i32,
+    /// Output only. The error details in case of state FAILED.
+    #[prost(message, optional, tag = "7")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    #[prost(oneof = "private_connection::Connectivity", tags = "100")]
+    pub connectivity: ::core::option::Option<private_connection::Connectivity>,
+}
+/// Nested message and enum types in `PrivateConnection`.
+pub mod private_connection {
+    /// Private Connection state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        Unspecified = 0,
+        /// The private connection is in creation state - creating resources.
+        Creating = 1,
+        /// The private connection has been created with all of its resources.
+        Created = 2,
+        /// The private connection creation has failed.
+        Failed = 3,
+        /// The private connection is being deleted.
+        Deleting = 4,
+        /// Delete request has failed, resource is in invalid state.
+        FailedToDelete = 5,
+        /// The private connection has been deleted.
+        Deleted = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Created => "CREATED",
+                State::Failed => "FAILED",
+                State::Deleting => "DELETING",
+                State::FailedToDelete => "FAILED_TO_DELETE",
+                State::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED_TO_DELETE" => Some(Self::FailedToDelete),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Connectivity {
+        /// VPC peering configuration.
+        #[prost(message, tag = "100")]
+        VpcPeeringConfig(super::VpcPeeringConfig),
+    }
+}
+/// The VPC peering configuration is used to create VPC peering with the
+/// consumer's VPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VpcPeeringConfig {
+    /// Required. Fully qualified name of the VPC that Database Migration Service
+    /// will peer to.
+    #[prost(string, tag = "1")]
+    pub vpc_name: ::prost::alloc::string::String,
+    /// Required. A free subnet for peering. (CIDR of /29)
+    #[prost(string, tag = "2")]
+    pub subnet: ::prost::alloc::string::String,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum NetworkArchitecture {
+    Unspecified = 0,
+    /// Instance is in Cloud SQL's old producer network architecture.
+    OldCsqlProducer = 1,
+    /// Instance is in Cloud SQL's new producer network architecture.
+    NewCsqlProducer = 2,
+}
+impl NetworkArchitecture {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            NetworkArchitecture::Unspecified => "NETWORK_ARCHITECTURE_UNSPECIFIED",
+            NetworkArchitecture::OldCsqlProducer => {
+                "NETWORK_ARCHITECTURE_OLD_CSQL_PRODUCER"
+            }
+            NetworkArchitecture::NewCsqlProducer => {
+                "NETWORK_ARCHITECTURE_NEW_CSQL_PRODUCER"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NETWORK_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NETWORK_ARCHITECTURE_OLD_CSQL_PRODUCER" => Some(Self::OldCsqlProducer),
+            "NETWORK_ARCHITECTURE_NEW_CSQL_PRODUCER" => Some(Self::NewCsqlProducer),
+            _ => None,
         }
     }
 }
@@ -1075,6 +1653,8 @@ pub enum DatabaseEngine {
     Mysql = 1,
     /// The source engine is PostgreSQL.
     Postgresql = 2,
+    /// The source engine is Oracle.
+    Oracle = 4,
 }
 impl DatabaseEngine {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1086,6 +1666,7 @@ impl DatabaseEngine {
             DatabaseEngine::Unspecified => "DATABASE_ENGINE_UNSPECIFIED",
             DatabaseEngine::Mysql => "MYSQL",
             DatabaseEngine::Postgresql => "POSTGRESQL",
+            DatabaseEngine::Oracle => "ORACLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1094,6 +1675,7 @@ impl DatabaseEngine {
             "DATABASE_ENGINE_UNSPECIFIED" => Some(Self::Unspecified),
             "MYSQL" => Some(Self::Mysql),
             "POSTGRESQL" => Some(Self::Postgresql),
+            "ORACLE" => Some(Self::Oracle),
             _ => None,
         }
     }
@@ -1108,6 +1690,10 @@ pub enum DatabaseProvider {
     Cloudsql = 1,
     /// RDS runs the database.
     Rds = 2,
+    /// Amazon Aurora.
+    Aurora = 3,
+    /// AlloyDB.
+    Alloydb = 4,
 }
 impl DatabaseProvider {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1119,6 +1705,8 @@ impl DatabaseProvider {
             DatabaseProvider::Unspecified => "DATABASE_PROVIDER_UNSPECIFIED",
             DatabaseProvider::Cloudsql => "CLOUDSQL",
             DatabaseProvider::Rds => "RDS",
+            DatabaseProvider::Aurora => "AURORA",
+            DatabaseProvider::Alloydb => "ALLOYDB",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1127,20 +1715,811 @@ impl DatabaseProvider {
             "DATABASE_PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
             "CLOUDSQL" => Some(Self::Cloudsql),
             "RDS" => Some(Self::Rds),
+            "AURORA" => Some(Self::Aurora),
+            "ALLOYDB" => Some(Self::Alloydb),
             _ => None,
         }
     }
 }
-/// Retrieve a list of all migration jobs in a given project and location.
+/// The type and version of a source or destination database.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseEngineInfo {
+    /// Required. Engine type.
+    #[prost(enumeration = "DatabaseEngine", tag = "1")]
+    pub engine: i32,
+    /// Required. Engine named version, for example 12.c.1.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+}
+/// The main conversion workspace resource entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionWorkspace {
+    /// Full name of the workspace resource, in the form of:
+    /// projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The source engine details.
+    #[prost(message, optional, tag = "2")]
+    pub source: ::core::option::Option<DatabaseEngineInfo>,
+    /// Required. The destination engine details.
+    #[prost(message, optional, tag = "3")]
+    pub destination: ::core::option::Option<DatabaseEngineInfo>,
+    /// A generic list of settings for the workspace.
+    /// The settings are database pair dependant and can indicate default behavior
+    /// for the mapping rules engine or turn on or off specific features.
+    /// Such examples can be: convert_foreign_key_to_interleave=true,
+    /// skip_triggers=false, ignore_non_table_synonyms=true
+    #[prost(map = "string, string", tag = "4")]
+    pub global_settings: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Whether the workspace has uncommitted changes (changes which
+    /// were made after the workspace was committed).
+    #[prost(bool, tag = "5")]
+    pub has_uncommitted_changes: bool,
+    /// Output only. The latest commit ID.
+    #[prost(string, tag = "6")]
+    pub latest_commit_id: ::prost::alloc::string::String,
+    /// Output only. The timestamp when the workspace was committed.
+    #[prost(message, optional, tag = "7")]
+    pub latest_commit_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the workspace resource was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the workspace resource was last updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The display name for the workspace.
+    #[prost(string, tag = "11")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Execution log of a background job.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackgroundJobLogEntry {
+    /// The background job log entry ID.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// The type of job that was executed.
+    #[prost(enumeration = "BackgroundJobType", tag = "2")]
+    pub job_type: i32,
+    /// The timestamp when the background job was started.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The timestamp when the background job was finished.
+    #[prost(message, optional, tag = "4")]
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Job completion state, i.e. the final state after the job completed.
+    #[prost(enumeration = "background_job_log_entry::JobCompletionState", tag = "5")]
+    pub completion_state: i32,
+    /// Job completion comment, such as how many entities were seeded,
+    /// how many warnings were found during conversion, and similar information.
+    #[prost(string, tag = "6")]
+    pub completion_comment: ::prost::alloc::string::String,
+    /// Whether the client requested the conversion workspace to be committed after
+    /// a successful completion of the job.
+    #[prost(bool, tag = "7")]
+    pub request_autocommit: bool,
+    #[prost(oneof = "background_job_log_entry::JobDetails", tags = "100, 101, 102, 103")]
+    pub job_details: ::core::option::Option<background_job_log_entry::JobDetails>,
+}
+/// Nested message and enum types in `BackgroundJobLogEntry`.
+pub mod background_job_log_entry {
+    /// Details regarding a Seed background job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SeedJobDetails {
+        /// The connection profile which was used for the seed job.
+        #[prost(string, tag = "1")]
+        pub connection_profile: ::prost::alloc::string::String,
+    }
+    /// Details regarding an Import Rules background job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ImportRulesJobDetails {
+        /// File names used for the import rules job.
+        #[prost(string, repeated, tag = "1")]
+        pub files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The requested file format.
+        #[prost(enumeration = "super::ImportRulesFileFormat", tag = "2")]
+        pub file_format: i32,
+    }
+    /// Details regarding a Convert background job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConvertJobDetails {
+        /// AIP-160 based filter used to specify the entities to convert
+        #[prost(string, tag = "1")]
+        pub filter: ::prost::alloc::string::String,
+    }
+    /// Details regarding an Apply background job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ApplyJobDetails {
+        /// The connection profile which was used for the apply job.
+        #[prost(string, tag = "1")]
+        pub connection_profile: ::prost::alloc::string::String,
+        /// AIP-160 based filter used to specify the entities to apply
+        #[prost(string, tag = "2")]
+        pub filter: ::prost::alloc::string::String,
+    }
+    /// Final state after a job completes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum JobCompletionState {
+        /// The status is not specified. This state is used when job is not yet
+        /// finished.
+        Unspecified = 0,
+        /// Success.
+        Succeeded = 1,
+        /// Error.
+        Failed = 2,
+    }
+    impl JobCompletionState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                JobCompletionState::Unspecified => "JOB_COMPLETION_STATE_UNSPECIFIED",
+                JobCompletionState::Succeeded => "SUCCEEDED",
+                JobCompletionState::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JOB_COMPLETION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum JobDetails {
+        /// Seed job details.
+        #[prost(message, tag = "100")]
+        SeedJobDetails(SeedJobDetails),
+        /// Import rules job details.
+        #[prost(message, tag = "101")]
+        ImportRulesJobDetails(ImportRulesJobDetails),
+        /// Convert job details.
+        #[prost(message, tag = "102")]
+        ConvertJobDetails(ConvertJobDetails),
+        /// Apply job details.
+        #[prost(message, tag = "103")]
+        ApplyJobDetails(ApplyJobDetails),
+    }
+}
+/// The base entity type for all the database related entities.
+/// The message contains the entity name, the name of its parent, the entity
+/// type, and the specific details per entity type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseEntity {
+    /// The short name (e.g. table name) of the entity.
+    #[prost(string, tag = "1")]
+    pub short_name: ::prost::alloc::string::String,
+    /// The full name of the parent entity (e.g. schema name).
+    #[prost(string, tag = "2")]
+    pub parent_entity: ::prost::alloc::string::String,
+    /// The type of tree the entity belongs to.
+    #[prost(enumeration = "database_entity::TreeType", tag = "3")]
+    pub tree: i32,
+    /// The type of the database entity (table, view, index, ...).
+    #[prost(enumeration = "DatabaseEntityType", tag = "4")]
+    pub entity_type: i32,
+    /// Details about entity mappings.
+    /// For source tree entities, this holds the draft entities which were
+    /// generated by the mapping rules.
+    /// For draft tree entities, this holds the source entities which were
+    /// converted to form the draft entity.
+    /// Destination entities will have no mapping details.
+    #[prost(message, repeated, tag = "5")]
+    pub mappings: ::prost::alloc::vec::Vec<EntityMapping>,
+    /// The specific body for each entity type.
+    #[prost(
+        oneof = "database_entity::EntityBody",
+        tags = "102, 103, 104, 105, 106, 107, 108, 109"
+    )]
+    pub entity_body: ::core::option::Option<database_entity::EntityBody>,
+}
+/// Nested message and enum types in `DatabaseEntity`.
+pub mod database_entity {
+    /// The type of database entities tree.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TreeType {
+        /// Tree type unspecified.
+        Unspecified = 0,
+        /// Tree of entities loaded from a source database.
+        Source = 1,
+        /// Tree of entities converted from the source tree using the mapping rules.
+        Draft = 2,
+        /// Tree of entities observed on the destination database.
+        Destination = 3,
+    }
+    impl TreeType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                TreeType::Unspecified => "TREE_TYPE_UNSPECIFIED",
+                TreeType::Source => "SOURCE",
+                TreeType::Draft => "DRAFT",
+                TreeType::Destination => "DESTINATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TREE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SOURCE" => Some(Self::Source),
+                "DRAFT" => Some(Self::Draft),
+                "DESTINATION" => Some(Self::Destination),
+                _ => None,
+            }
+        }
+    }
+    /// The specific body for each entity type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EntityBody {
+        /// Schema.
+        #[prost(message, tag = "102")]
+        Schema(super::SchemaEntity),
+        /// Table.
+        #[prost(message, tag = "103")]
+        Table(super::TableEntity),
+        /// View.
+        #[prost(message, tag = "104")]
+        View(super::ViewEntity),
+        /// Sequence.
+        #[prost(message, tag = "105")]
+        Sequence(super::SequenceEntity),
+        /// Stored procedure.
+        #[prost(message, tag = "106")]
+        StoredProcedure(super::StoredProcedureEntity),
+        /// Function.
+        #[prost(message, tag = "107")]
+        DatabaseFunction(super::FunctionEntity),
+        /// Synonym.
+        #[prost(message, tag = "108")]
+        Synonym(super::SynonymEntity),
+        /// Package.
+        #[prost(message, tag = "109")]
+        DatabasePackage(super::PackageEntity),
+    }
+}
+/// Schema typically has no parent entity, but can have a parent entity
+/// DatabaseInstance (for database engines which support it).  For some database
+/// engines, the terms  schema and user can be used interchangeably when they
+/// refer to a namespace or a collection of other database entities. Can store
+/// additional information which is schema specific.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SchemaEntity {
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "1")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// Table's parent is a schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableEntity {
+    /// Table columns.
+    #[prost(message, repeated, tag = "1")]
+    pub columns: ::prost::alloc::vec::Vec<ColumnEntity>,
+    /// Table constraints.
+    #[prost(message, repeated, tag = "2")]
+    pub constraints: ::prost::alloc::vec::Vec<ConstraintEntity>,
+    /// Table indices.
+    #[prost(message, repeated, tag = "3")]
+    pub indices: ::prost::alloc::vec::Vec<IndexEntity>,
+    /// Table triggers.
+    #[prost(message, repeated, tag = "4")]
+    pub triggers: ::prost::alloc::vec::Vec<TriggerEntity>,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "5")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+    /// Comment associated with the table.
+    #[prost(string, tag = "6")]
+    pub comment: ::prost::alloc::string::String,
+}
+/// Column is not used as an independent entity, it is retrieved as part of a
+/// Table entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ColumnEntity {
+    /// Column name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Column data type.
+    #[prost(string, tag = "2")]
+    pub data_type: ::prost::alloc::string::String,
+    /// Charset override - instead of table level charset.
+    #[prost(string, tag = "3")]
+    pub charset: ::prost::alloc::string::String,
+    /// Collation override - instead of table level collation.
+    #[prost(string, tag = "4")]
+    pub collation: ::prost::alloc::string::String,
+    /// Column length - e.g. varchar (50).
+    #[prost(int64, tag = "5")]
+    pub length: i64,
+    /// Column precision - when relevant.
+    #[prost(int32, tag = "6")]
+    pub precision: i32,
+    /// Column scale - when relevant.
+    #[prost(int32, tag = "7")]
+    pub scale: i32,
+    /// Column fractional second precision - used for timestamp based datatypes.
+    #[prost(int32, tag = "8")]
+    pub fractional_seconds_precision: i32,
+    /// Is the column of array type.
+    #[prost(bool, tag = "9")]
+    pub array: bool,
+    /// If the column is array, of which length.
+    #[prost(int32, tag = "10")]
+    pub array_length: i32,
+    /// Is the column nullable.
+    #[prost(bool, tag = "11")]
+    pub nullable: bool,
+    /// Is the column auto-generated/identity.
+    #[prost(bool, tag = "12")]
+    pub auto_generated: bool,
+    /// Is the column a UDT.
+    #[prost(bool, tag = "13")]
+    pub udt: bool,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "14")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+    /// Specifies the list of values allowed in the column.
+    /// Only used for set data type.
+    #[prost(string, repeated, tag = "15")]
+    pub set_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Comment associated with the column.
+    #[prost(string, tag = "16")]
+    pub comment: ::prost::alloc::string::String,
+    /// Column order in the table.
+    #[prost(int32, tag = "17")]
+    pub ordinal_position: i32,
+    /// Default value of the column.
+    #[prost(string, tag = "18")]
+    pub default_value: ::prost::alloc::string::String,
+}
+/// Constraint is not used as an independent entity, it is retrieved
+/// as part of another entity such as Table or View.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConstraintEntity {
+    /// The name of the table constraint.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Type of constraint, for example unique, primary key, foreign key (currently
+    /// only primary key is supported).
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Table columns used as part of the Constraint, for example primary key
+    /// constraint should list the columns which constitutes the key.
+    #[prost(string, repeated, tag = "3")]
+    pub table_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "4")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+    /// Reference columns which may be associated with the constraint. For example,
+    /// if the constraint is a FOREIGN_KEY, this represents the list of full names
+    /// of referenced columns by the foreign key.
+    #[prost(string, repeated, tag = "5")]
+    pub reference_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Reference table which may be associated with the constraint. For example,
+    /// if the constraint is a FOREIGN_KEY, this represents the list of full name
+    /// of the referenced table by the foreign key.
+    #[prost(string, tag = "6")]
+    pub reference_table: ::prost::alloc::string::String,
+    /// Table which is associated with the constraint. In case the constraint
+    /// is defined on a table, this field is left empty as this information is
+    /// stored in parent_name. However, if constraint is defined on a view, this
+    /// field stores the table name on which the view is defined.
+    #[prost(string, tag = "7")]
+    pub table_name: ::prost::alloc::string::String,
+}
+/// Index is not used as an independent entity, it is retrieved as part of a
+/// Table entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexEntity {
+    /// The name of the index.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Type of index, for example B-TREE.
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Table columns used as part of the Index, for example B-TREE index should
+    /// list the columns which constitutes the index.
+    #[prost(string, repeated, tag = "3")]
+    pub table_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Boolean value indicating whether the index is unique.
+    #[prost(bool, tag = "4")]
+    pub unique: bool,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "5")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// Trigger is not used as an independent entity, it is retrieved as part of a
+/// Table entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TriggerEntity {
+    /// The name of the trigger.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The DML, DDL, or database events that fire the trigger, for example
+    /// INSERT, UPDATE.
+    #[prost(string, repeated, tag = "2")]
+    pub triggering_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Indicates when the trigger fires, for example BEFORE STATEMENT, AFTER EACH
+    /// ROW.
+    #[prost(string, tag = "3")]
+    pub trigger_type: ::prost::alloc::string::String,
+    /// The SQL code which creates the trigger.
+    #[prost(string, tag = "4")]
+    pub sql_code: ::prost::alloc::string::String,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "5")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// View's parent is a schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ViewEntity {
+    /// The SQL code which creates the view.
+    #[prost(string, tag = "1")]
+    pub sql_code: ::prost::alloc::string::String,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "2")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+    /// View constraints.
+    #[prost(message, repeated, tag = "3")]
+    pub constraints: ::prost::alloc::vec::Vec<ConstraintEntity>,
+}
+/// Sequence's parent is a schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SequenceEntity {
+    /// Increment value for the sequence.
+    #[prost(int64, tag = "1")]
+    pub increment: i64,
+    /// Start number for the sequence represented as bytes to accommodate large.
+    /// numbers
+    #[prost(bytes = "vec", tag = "2")]
+    pub start_value: ::prost::alloc::vec::Vec<u8>,
+    /// Maximum number for the sequence represented as bytes to accommodate large.
+    /// numbers
+    #[prost(bytes = "vec", tag = "3")]
+    pub max_value: ::prost::alloc::vec::Vec<u8>,
+    /// Minimum number for the sequence represented as bytes to accommodate large.
+    /// numbers
+    #[prost(bytes = "vec", tag = "4")]
+    pub min_value: ::prost::alloc::vec::Vec<u8>,
+    /// Indicates whether the sequence value should cycle through.
+    #[prost(bool, tag = "5")]
+    pub cycle: bool,
+    /// Indicates number of entries to cache / precreate.
+    #[prost(int64, tag = "6")]
+    pub cache: i64,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "7")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// Stored procedure's parent is a schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoredProcedureEntity {
+    /// The SQL code which creates the stored procedure.
+    #[prost(string, tag = "1")]
+    pub sql_code: ::prost::alloc::string::String,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "2")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// Function's parent is a schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FunctionEntity {
+    /// The SQL code which creates the function.
+    #[prost(string, tag = "1")]
+    pub sql_code: ::prost::alloc::string::String,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "2")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// Synonym's parent is a schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SynonymEntity {
+    /// The name of the entity for which the synonym is being created (the source).
+    #[prost(string, tag = "1")]
+    pub source_entity: ::prost::alloc::string::String,
+    /// The type of the entity for which the synonym is being created
+    /// (usually a table or a sequence).
+    #[prost(enumeration = "DatabaseEntityType", tag = "2")]
+    pub source_type: i32,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "3")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// Package's parent is a schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PackageEntity {
+    /// The SQL code which creates the package.
+    #[prost(string, tag = "1")]
+    pub package_sql_code: ::prost::alloc::string::String,
+    /// The SQL code which creates the package body. If the package specification
+    /// has cursors or subprograms, then the package body is mandatory.
+    #[prost(string, tag = "2")]
+    pub package_body: ::prost::alloc::string::String,
+    /// Custom engine specific features.
+    #[prost(message, optional, tag = "3")]
+    pub custom_features: ::core::option::Option<::prost_types::Struct>,
+}
+/// Details of the mappings of a database entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntityMapping {
+    /// Source entity full name.
+    /// The source entity can also be a column, index or constraint using the
+    /// same naming notation schema.table.column.
+    #[prost(string, tag = "1")]
+    pub source_entity: ::prost::alloc::string::String,
+    /// Target entity full name.
+    /// The draft entity can also include a column, index or constraint using the
+    /// same naming notation schema.table.column.
+    #[prost(string, tag = "2")]
+    pub draft_entity: ::prost::alloc::string::String,
+    /// Type of source entity.
+    #[prost(enumeration = "DatabaseEntityType", tag = "4")]
+    pub source_type: i32,
+    /// Type of draft entity.
+    #[prost(enumeration = "DatabaseEntityType", tag = "5")]
+    pub draft_type: i32,
+    /// Entity mapping log entries.
+    /// Multiple rules can be effective and contribute changes to a converted
+    /// entity, such as a rule can handle the entity name, another rule can handle
+    /// an entity type. In addition, rules which did not change the entity are also
+    /// logged along with the reason preventing them to do so.
+    #[prost(message, repeated, tag = "3")]
+    pub mapping_log: ::prost::alloc::vec::Vec<EntityMappingLogEntry>,
+}
+/// A single record of a rule which was used for a mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntityMappingLogEntry {
+    /// Which rule caused this log entry.
+    #[prost(string, tag = "1")]
+    pub rule_id: ::prost::alloc::string::String,
+    /// Rule revision ID.
+    #[prost(string, tag = "2")]
+    pub rule_revision_id: ::prost::alloc::string::String,
+    /// Comment.
+    #[prost(string, tag = "3")]
+    pub mapping_comment: ::prost::alloc::string::String,
+}
+/// The type of database entities supported,
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DatabaseEntityType {
+    /// Unspecified database entity type.
+    Unspecified = 0,
+    /// Schema.
+    Schema = 1,
+    /// Table.
+    Table = 2,
+    /// Column.
+    Column = 3,
+    /// Constraint.
+    Constraint = 4,
+    /// Index.
+    Index = 5,
+    /// Trigger.
+    Trigger = 6,
+    /// View.
+    View = 7,
+    /// Sequence.
+    Sequence = 8,
+    /// Stored Procedure.
+    StoredProcedure = 9,
+    /// Function.
+    Function = 10,
+    /// Synonym.
+    Synonym = 11,
+    /// Package.
+    DatabasePackage = 12,
+    /// UDT.
+    Udt = 13,
+    /// Materialized View.
+    MaterializedView = 14,
+    /// Database.
+    Database = 15,
+}
+impl DatabaseEntityType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DatabaseEntityType::Unspecified => "DATABASE_ENTITY_TYPE_UNSPECIFIED",
+            DatabaseEntityType::Schema => "DATABASE_ENTITY_TYPE_SCHEMA",
+            DatabaseEntityType::Table => "DATABASE_ENTITY_TYPE_TABLE",
+            DatabaseEntityType::Column => "DATABASE_ENTITY_TYPE_COLUMN",
+            DatabaseEntityType::Constraint => "DATABASE_ENTITY_TYPE_CONSTRAINT",
+            DatabaseEntityType::Index => "DATABASE_ENTITY_TYPE_INDEX",
+            DatabaseEntityType::Trigger => "DATABASE_ENTITY_TYPE_TRIGGER",
+            DatabaseEntityType::View => "DATABASE_ENTITY_TYPE_VIEW",
+            DatabaseEntityType::Sequence => "DATABASE_ENTITY_TYPE_SEQUENCE",
+            DatabaseEntityType::StoredProcedure => {
+                "DATABASE_ENTITY_TYPE_STORED_PROCEDURE"
+            }
+            DatabaseEntityType::Function => "DATABASE_ENTITY_TYPE_FUNCTION",
+            DatabaseEntityType::Synonym => "DATABASE_ENTITY_TYPE_SYNONYM",
+            DatabaseEntityType::DatabasePackage => {
+                "DATABASE_ENTITY_TYPE_DATABASE_PACKAGE"
+            }
+            DatabaseEntityType::Udt => "DATABASE_ENTITY_TYPE_UDT",
+            DatabaseEntityType::MaterializedView => {
+                "DATABASE_ENTITY_TYPE_MATERIALIZED_VIEW"
+            }
+            DatabaseEntityType::Database => "DATABASE_ENTITY_TYPE_DATABASE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATABASE_ENTITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DATABASE_ENTITY_TYPE_SCHEMA" => Some(Self::Schema),
+            "DATABASE_ENTITY_TYPE_TABLE" => Some(Self::Table),
+            "DATABASE_ENTITY_TYPE_COLUMN" => Some(Self::Column),
+            "DATABASE_ENTITY_TYPE_CONSTRAINT" => Some(Self::Constraint),
+            "DATABASE_ENTITY_TYPE_INDEX" => Some(Self::Index),
+            "DATABASE_ENTITY_TYPE_TRIGGER" => Some(Self::Trigger),
+            "DATABASE_ENTITY_TYPE_VIEW" => Some(Self::View),
+            "DATABASE_ENTITY_TYPE_SEQUENCE" => Some(Self::Sequence),
+            "DATABASE_ENTITY_TYPE_STORED_PROCEDURE" => Some(Self::StoredProcedure),
+            "DATABASE_ENTITY_TYPE_FUNCTION" => Some(Self::Function),
+            "DATABASE_ENTITY_TYPE_SYNONYM" => Some(Self::Synonym),
+            "DATABASE_ENTITY_TYPE_DATABASE_PACKAGE" => Some(Self::DatabasePackage),
+            "DATABASE_ENTITY_TYPE_UDT" => Some(Self::Udt),
+            "DATABASE_ENTITY_TYPE_MATERIALIZED_VIEW" => Some(Self::MaterializedView),
+            "DATABASE_ENTITY_TYPE_DATABASE" => Some(Self::Database),
+            _ => None,
+        }
+    }
+}
+/// The types of jobs that can be executed in the background.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum BackgroundJobType {
+    /// Unspecified background job type.
+    Unspecified = 0,
+    /// Job to seed from the source database.
+    SourceSeed = 1,
+    /// Job to convert the source database into a draft of the destination
+    /// database.
+    Convert = 2,
+    /// Job to apply the draft tree onto the destination.
+    ApplyDestination = 3,
+    /// Job to import and convert mapping rules from an external source such as an
+    /// ora2pg config file.
+    ImportRulesFile = 5,
+}
+impl BackgroundJobType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            BackgroundJobType::Unspecified => "BACKGROUND_JOB_TYPE_UNSPECIFIED",
+            BackgroundJobType::SourceSeed => "BACKGROUND_JOB_TYPE_SOURCE_SEED",
+            BackgroundJobType::Convert => "BACKGROUND_JOB_TYPE_CONVERT",
+            BackgroundJobType::ApplyDestination => {
+                "BACKGROUND_JOB_TYPE_APPLY_DESTINATION"
+            }
+            BackgroundJobType::ImportRulesFile => "BACKGROUND_JOB_TYPE_IMPORT_RULES_FILE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BACKGROUND_JOB_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BACKGROUND_JOB_TYPE_SOURCE_SEED" => Some(Self::SourceSeed),
+            "BACKGROUND_JOB_TYPE_CONVERT" => Some(Self::Convert),
+            "BACKGROUND_JOB_TYPE_APPLY_DESTINATION" => Some(Self::ApplyDestination),
+            "BACKGROUND_JOB_TYPE_IMPORT_RULES_FILE" => Some(Self::ImportRulesFile),
+            _ => None,
+        }
+    }
+}
+/// The format for the import rules file.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ImportRulesFileFormat {
+    /// Unspecified rules format.
+    Unspecified = 0,
+    /// HarbourBridge session file.
+    HarbourBridgeSessionFile = 1,
+    /// Ora2Pg configuration file.
+    OratopgConfigFile = 2,
+}
+impl ImportRulesFileFormat {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ImportRulesFileFormat::Unspecified => "IMPORT_RULES_FILE_FORMAT_UNSPECIFIED",
+            ImportRulesFileFormat::HarbourBridgeSessionFile => {
+                "IMPORT_RULES_FILE_FORMAT_HARBOUR_BRIDGE_SESSION_FILE"
+            }
+            ImportRulesFileFormat::OratopgConfigFile => {
+                "IMPORT_RULES_FILE_FORMAT_ORATOPG_CONFIG_FILE"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "IMPORT_RULES_FILE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "IMPORT_RULES_FILE_FORMAT_HARBOUR_BRIDGE_SESSION_FILE" => {
+                Some(Self::HarbourBridgeSessionFile)
+            }
+            "IMPORT_RULES_FILE_FORMAT_ORATOPG_CONFIG_FILE" => {
+                Some(Self::OratopgConfigFile)
+            }
+            _ => None,
+        }
+    }
+}
+/// Retrieves a list of all migration jobs in a given project and location.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigrationJobsRequest {
-    /// Required. The parent, which owns this collection of migrationJobs.
+    /// Required. The parent which owns this collection of migrationJobs.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of migration jobs to return. The service may return
     /// fewer than this value. If unspecified, at most 50 migration jobs will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// returned. The maximum value is 1000; values above 1000 are coerced to
     /// 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1174,7 +2553,7 @@ pub struct ListMigrationJobsResponse {
     /// The list of migration jobs objects.
     #[prost(message, repeated, tag = "1")]
     pub migration_jobs: ::prost::alloc::vec::Vec<MigrationJob>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// A token which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1195,7 +2574,7 @@ pub struct GetMigrationJobRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMigrationJobRequest {
-    /// Required. The parent, which owns this collection of migration jobs.
+    /// Required. The parent which owns this collection of migration jobs.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the instance to create.
@@ -1206,12 +2585,12 @@ pub struct CreateMigrationJobRequest {
     /// object.
     #[prost(message, optional, tag = "3")]
     pub migration_job: ::core::option::Option<MigrationJob>,
-    /// A unique id used to identify the request. If the server receives two
-    /// requests with the same id, then the second request will be ignored.
+    /// A unique ID used to identify the request. If the server receives two
+    /// requests with the same ID, then the second request is ignored.
     ///
     /// It is recommended to always set this value to a UUID.
     ///
-    /// The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
     /// (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
@@ -1220,19 +2599,19 @@ pub struct CreateMigrationJobRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMigrationJobRequest {
-    /// Required. Field mask is used to specify the fields to be overwritten in the
-    /// migration job resource by the update.
+    /// Required. Field mask is used to specify the fields to be overwritten by the
+    /// update in the conversion workspace resource.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The migration job parameters to update.
     #[prost(message, optional, tag = "2")]
     pub migration_job: ::core::option::Option<MigrationJob>,
-    /// A unique id used to identify the request. If the server receives two
-    /// requests with the same id, then the second request will be ignored.
+    /// A unique ID used to identify the request. If the server receives two
+    /// requests with the same ID, then the second request is ignored.
     ///
     /// It is recommended to always set this value to a UUID.
     ///
-    /// The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
     /// (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
@@ -1244,12 +2623,12 @@ pub struct DeleteMigrationJobRequest {
     /// Required. Name of the migration job resource to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// A unique id used to identify the request. If the server receives two
-    /// requests with the same id, then the second request will be ignored.
+    /// A unique ID used to identify the request. If the server receives two
+    /// requests with the same ID, then the second request is ignored.
     ///
     /// It is recommended to always set this value to a UUID.
     ///
-    /// The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
     /// (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
@@ -1317,7 +2696,7 @@ pub struct GenerateSshScriptRequest {
     /// Required. Bastion VM Instance name to use or to create.
     #[prost(string, tag = "2")]
     pub vm: ::prost::alloc::string::String,
-    /// The port that will be open on the bastion host
+    /// The port that will be open on the bastion host.
     #[prost(int32, tag = "3")]
     pub vm_port: i32,
     /// The VM configuration
@@ -1372,12 +2751,12 @@ pub struct SshScript {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionProfilesRequest {
-    /// Required. The parent, which owns this collection of connection profiles.
+    /// Required. The parent which owns this collection of connection profiles.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of connection profiles to return. The service may return
     /// fewer than this value. If unspecified, at most 50 connection profiles will
-    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// be returned. The maximum value is 1000; values above 1000 are coerced
     /// to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1399,7 +2778,7 @@ pub struct ListConnectionProfilesRequest {
     /// connect with a specific username.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// the order by fields for the result.
+    /// A comma-separated list of fields to order results according to.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1410,7 +2789,7 @@ pub struct ListConnectionProfilesResponse {
     /// The response list of connection profiles.
     #[prost(message, repeated, tag = "1")]
     pub connection_profiles: ::prost::alloc::vec::Vec<ConnectionProfile>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// A token which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1430,7 +2809,7 @@ pub struct GetConnectionProfileRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionProfileRequest {
-    /// Required. The parent, which owns this collection of connection profiles.
+    /// Required. The parent which owns this collection of connection profiles.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The connection profile identifier.
@@ -1439,36 +2818,56 @@ pub struct CreateConnectionProfileRequest {
     /// Required. The create request body including the connection profile data
     #[prost(message, optional, tag = "3")]
     pub connection_profile: ::core::option::Option<ConnectionProfile>,
-    /// A unique id used to identify the request. If the server receives two
-    /// requests with the same id, then the second request will be ignored.
+    /// Optional. A unique ID used to identify the request. If the server receives
+    /// two requests with the same ID, then the second request is ignored.
     ///
     /// It is recommended to always set this value to a UUID.
     ///
-    /// The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
     /// (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. Only validate the connection profile, but don't create any
+    /// resources. The default is false. Only supported for Oracle connection
+    /// profiles.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+    /// Optional. Create the connection profile without validating it.
+    /// The default is false.
+    /// Only supported for Oracle connection profiles.
+    #[prost(bool, tag = "6")]
+    pub skip_validation: bool,
 }
 /// Request message for 'UpdateConnectionProfile' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionProfileRequest {
-    /// Required. Field mask is used to specify the fields to be overwritten in the
-    /// connection profile resource by the update.
+    /// Required. Field mask is used to specify the fields to be overwritten by the
+    /// update in the conversion workspace resource.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The connection profile parameters to update.
     #[prost(message, optional, tag = "2")]
     pub connection_profile: ::core::option::Option<ConnectionProfile>,
-    /// A unique id used to identify the request. If the server receives two
-    /// requests with the same id, then the second request will be ignored.
+    /// Optional. A unique ID used to identify the request. If the server receives
+    /// two requests with the same ID, then the second request is ignored.
     ///
     /// It is recommended to always set this value to a UUID.
     ///
-    /// The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
     /// (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. Only validate the connection profile, but don't update any
+    /// resources. The default is false. Only supported for Oracle connection
+    /// profiles.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+    /// Optional. Update the connection profile without validating it.
+    /// The default is false.
+    /// Only supported for Oracle connection profiles.
+    #[prost(bool, tag = "5")]
+    pub skip_validation: bool,
 }
 /// Request message for 'DeleteConnectionProfile' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1477,12 +2876,12 @@ pub struct DeleteConnectionProfileRequest {
     /// Required. Name of the connection profile resource to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// A unique id used to identify the request. If the server receives two
-    /// requests with the same id, then the second request will be ignored.
+    /// A unique ID used to identify the request. If the server receives two
+    /// requests with the same ID, then the second request is ignored.
     ///
     /// It is recommended to always set this value to a UUID.
     ///
-    /// The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
     /// (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
@@ -1490,6 +2889,106 @@ pub struct DeleteConnectionProfileRequest {
     /// (only for CloudSQL connection profile).
     #[prost(bool, tag = "3")]
     pub force: bool,
+}
+/// Request message to create a new private connection in the specified project
+/// and region.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePrivateConnectionRequest {
+    /// Required. The parent that owns the collection of PrivateConnections.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The private connection identifier.
+    #[prost(string, tag = "2")]
+    pub private_connection_id: ::prost::alloc::string::String,
+    /// Required. The private connection resource to create.
+    #[prost(message, optional, tag = "3")]
+    pub private_connection: ::core::option::Option<PrivateConnection>,
+    /// Optional. A unique ID used to identify the request. If the server receives
+    /// two requests with the same ID, then the second request is ignored.
+    ///
+    /// It is recommended to always set this value to a UUID.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, will skip validations.
+    #[prost(bool, tag = "5")]
+    pub skip_validation: bool,
+}
+/// Request message to retrieve a list of private connections in a given project
+/// and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateConnectionsRequest {
+    /// Required. The parent that owns the collection of private connections.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of private connections to return.
+    /// If unspecified, at most 50 private connections that are returned.
+    /// The maximum value is 1000; values above 1000 are coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Page token received from a previous `ListPrivateConnections` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListPrivateConnections` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that filters private connections listed in the
+    /// response. The expression must specify the field name, a comparison
+    /// operator, and the value that you want to use for filtering. The value must
+    /// be a string, a number, or a boolean. The comparison operator must be either
+    /// =, !=, >, or <. For example, list private connections created this year by
+    /// specifying **createTime %gt; 2021-01-01T00:00:00.000000000Z**.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for 'ListPrivateConnections' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateConnectionsResponse {
+    /// List of private connections.
+    #[prost(message, repeated, tag = "1")]
+    pub private_connections: ::prost::alloc::vec::Vec<PrivateConnection>,
+    /// A token which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message to delete a private connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePrivateConnectionRequest {
+    /// Required. The name of the private connection to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique ID used to identify the request. If the server receives
+    /// two requests with the same ID, then the second request is ignored.
+    ///
+    /// It is recommended to always set this value to a UUID.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to get a private connection resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPrivateConnectionRequest {
+    /// Required. The name of the private connection to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1512,13 +3011,443 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// Retrieve a list of all conversion workspaces in a given project and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConversionWorkspacesRequest {
+    /// Required. The parent which owns this collection of conversion workspaces.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of conversion workspaces to return. The service may
+    /// return fewer than this value. If unspecified, at most 50 sets are returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The nextPageToken value received in the previous call to
+    /// conversionWorkspaces.list, used in the subsequent request to retrieve the
+    /// next page of results. On first call this should be left blank. When
+    /// paginating, all other parameters provided to conversionWorkspaces.list must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that filters conversion workspaces listed in the
+    /// response. The expression must specify the field name, a comparison
+    /// operator, and the value that you want to use for filtering. The value must
+    /// be a string, a number, or a boolean. The comparison operator must be either
+    /// =, !=, >, or <. For example, list conversion workspaces created this year
+    /// by specifying **createTime %gt; 2020-01-01T00:00:00.000000000Z.** You can
+    /// also filter nested fields. For example, you could specify
+    /// **source.version = "12.c.1"** to select all conversion workspaces with
+    /// source database version equal to 12.c.1.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for 'ListConversionWorkspaces' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConversionWorkspacesResponse {
+    /// The list of conversion workspace objects.
+    #[prost(message, repeated, tag = "1")]
+    pub conversion_workspaces: ::prost::alloc::vec::Vec<ConversionWorkspace>,
+    /// A token which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for 'GetConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetConversionWorkspaceRequest {
+    /// Required. Name of the conversion workspace resource to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to create a new Conversion Workspace
+/// in the specified project and region.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateConversionWorkspaceRequest {
+    /// Required. The parent which owns this collection of conversion workspaces.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the conversion workspace to create.
+    #[prost(string, tag = "2")]
+    pub conversion_workspace_id: ::prost::alloc::string::String,
+    /// Required. Represents a conversion workspace object.
+    #[prost(message, optional, tag = "3")]
+    pub conversion_workspace: ::core::option::Option<ConversionWorkspace>,
+    /// A unique ID used to identify the request. If the server receives two
+    /// requests with the same ID, then the second request is ignored.
+    ///
+    /// It is recommended to always set this value to a UUID.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for 'UpdateConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConversionWorkspaceRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten by the
+    /// update in the conversion workspace resource.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The conversion workspace parameters to update.
+    #[prost(message, optional, tag = "2")]
+    pub conversion_workspace: ::core::option::Option<ConversionWorkspace>,
+    /// A unique ID used to identify the request. If the server receives two
+    /// requests with the same ID, then the second request is ignored.
+    ///
+    /// It is recommended to always set this value to a UUID.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for 'DeleteConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteConversionWorkspaceRequest {
+    /// Required. Name of the conversion workspace resource to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// A unique ID used to identify the request. If the server receives two
+    /// requests with the same ID, then the second request is ignored.
+    ///
+    /// It is recommended to always set this value to a UUID.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for 'CommitConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommitConversionWorkspaceRequest {
+    /// Required. Name of the conversion workspace resource to commit.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Optional name of the commit.
+    #[prost(string, tag = "2")]
+    pub commit_name: ::prost::alloc::string::String,
+}
+/// Request message for 'RollbackConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RollbackConversionWorkspaceRequest {
+    /// Required. Name of the conversion workspace resource to roll back to.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for 'ApplyConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApplyConversionWorkspaceRequest {
+    /// Required. The name of the conversion workspace resource for which to apply
+    /// the draft tree. Must be in the form of:
+    ///   projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Filter which entities to apply. Leaving this field empty will apply all of
+    /// the entities. Supports Google AIP 160 based filtering.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Which destination to use when applying the conversion workspace.
+    #[prost(oneof = "apply_conversion_workspace_request::Destination", tags = "100")]
+    pub destination: ::core::option::Option<
+        apply_conversion_workspace_request::Destination,
+    >,
+}
+/// Nested message and enum types in `ApplyConversionWorkspaceRequest`.
+pub mod apply_conversion_workspace_request {
+    /// Which destination to use when applying the conversion workspace.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Fully qualified (Uri) name of the destination connection profile.
+        #[prost(string, tag = "100")]
+        ConnectionProfile(::prost::alloc::string::String),
+    }
+}
+/// Request message for 'SeedConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SeedConversionWorkspaceRequest {
+    /// Name of the conversion workspace resource to seed with new database
+    /// structure, in the form of:
+    /// projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Should the conversion workspace be committed automatically after the
+    /// seed operation.
+    #[prost(bool, tag = "2")]
+    pub auto_commit: bool,
+    /// The input to be used for seeding the conversion workspace. The input can
+    /// either be from the source or destination databases and it can be provided
+    /// through a connection profile or a DDL file.
+    #[prost(oneof = "seed_conversion_workspace_request::SeedFrom", tags = "100, 101")]
+    pub seed_from: ::core::option::Option<seed_conversion_workspace_request::SeedFrom>,
+}
+/// Nested message and enum types in `SeedConversionWorkspaceRequest`.
+pub mod seed_conversion_workspace_request {
+    /// The input to be used for seeding the conversion workspace. The input can
+    /// either be from the source or destination databases and it can be provided
+    /// through a connection profile or a DDL file.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SeedFrom {
+        /// Fully qualified (Uri) name of the source connection profile.
+        #[prost(string, tag = "100")]
+        SourceConnectionProfile(::prost::alloc::string::String),
+        /// Fully qualified (Uri) name of the destination connection profile.
+        #[prost(string, tag = "101")]
+        DestinationConnectionProfile(::prost::alloc::string::String),
+    }
+}
+/// Request message for 'ConvertConversionWorkspace' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConvertConversionWorkspaceRequest {
+    /// Name of the conversion workspace resource to convert in the form of:
+    /// projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Specifies whether the conversion workspace is to be committed automatically
+    /// after the conversion.
+    #[prost(bool, tag = "4")]
+    pub auto_commit: bool,
+    /// Filter the entities to convert. Leaving this field empty will convert all
+    /// of the entities. Supports Google AIP-160 style filtering.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Request message for 'ImportMappingRules' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportMappingRulesRequest {
+    /// Required. Name of the conversion workspace resource to import the rules to
+    /// in the form of:
+    /// projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The format of the rules content file.
+    #[prost(enumeration = "ImportRulesFileFormat", tag = "2")]
+    pub rules_format: i32,
+    /// One or more rules files.
+    #[prost(message, repeated, tag = "3")]
+    pub rules_files: ::prost::alloc::vec::Vec<import_mapping_rules_request::RulesFile>,
+    /// Should the conversion workspace be committed automatically after the
+    /// import operation.
+    #[prost(bool, tag = "6")]
+    pub auto_commit: bool,
+}
+/// Nested message and enum types in `ImportMappingRulesRequest`.
+pub mod import_mapping_rules_request {
+    /// Details of a single rules file.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RulesFile {
+        /// The filename of the rules that needs to be converted. The filename is
+        /// used mainly so that future logs of the import rules job contain it, and
+        /// can therefore be searched by it.
+        #[prost(string, tag = "1")]
+        pub rules_source_filename: ::prost::alloc::string::String,
+        /// The text content of the rules that needs to be converted.
+        #[prost(string, tag = "2")]
+        pub rules_content: ::prost::alloc::string::String,
+    }
+}
+/// Request message for 'DescribeDatabaseEntities' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DescribeDatabaseEntitiesRequest {
+    /// Required. Name of the conversion workspace resource whose database entities
+    /// are described. Must be in the form of:
+    /// projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub conversion_workspace: ::prost::alloc::string::String,
+    /// The maximum number of entities to return. The service may return
+    /// fewer entities than the value specifies.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// The nextPageToken value received in the previous call to
+    /// conversionWorkspace.describeDatabaseEntities, used in the subsequent
+    /// request to retrieve the next page of results. On first call this should be
+    /// left blank. When paginating, all other parameters provided to
+    /// conversionWorkspace.describeDatabaseEntities must match the call that
+    /// provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// The tree to fetch.
+    #[prost(enumeration = "describe_database_entities_request::DbTreeType", tag = "6")]
+    pub tree: i32,
+    /// Whether to retrieve the latest committed version of the entities or the
+    /// latest version. This field is ignored if a specific commit_id is specified.
+    #[prost(bool, tag = "11")]
+    pub uncommitted: bool,
+    /// Request a specific commit ID. If not specified, the entities from the
+    /// latest commit are returned.
+    #[prost(string, tag = "12")]
+    pub commit_id: ::prost::alloc::string::String,
+    /// Filter the returned entities based on AIP-160 standard.
+    #[prost(string, tag = "13")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `DescribeDatabaseEntitiesRequest`.
+pub mod describe_database_entities_request {
+    /// The type of a tree to return
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DbTreeType {
+        /// Unspecified tree type.
+        Unspecified = 0,
+        /// The source database tree.
+        SourceTree = 1,
+        /// The draft database tree.
+        DraftTree = 2,
+        /// The destination database tree.
+        DestinationTree = 3,
+    }
+    impl DbTreeType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DbTreeType::Unspecified => "DB_TREE_TYPE_UNSPECIFIED",
+                DbTreeType::SourceTree => "SOURCE_TREE",
+                DbTreeType::DraftTree => "DRAFT_TREE",
+                DbTreeType::DestinationTree => "DESTINATION_TREE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DB_TREE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SOURCE_TREE" => Some(Self::SourceTree),
+                "DRAFT_TREE" => Some(Self::DraftTree),
+                "DESTINATION_TREE" => Some(Self::DestinationTree),
+                _ => None,
+            }
+        }
+    }
+}
+/// Response message for 'DescribeDatabaseEntities' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DescribeDatabaseEntitiesResponse {
+    /// The list of database entities for the conversion workspace.
+    #[prost(message, repeated, tag = "1")]
+    pub database_entities: ::prost::alloc::vec::Vec<DatabaseEntity>,
+    /// A token which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for 'SearchBackgroundJobs' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchBackgroundJobsRequest {
+    /// Required. Name of the conversion workspace resource whose jobs are listed,
+    /// in the form of:
+    /// projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub conversion_workspace: ::prost::alloc::string::String,
+    /// Optional. Whether or not to return just the most recent job per job type,
+    #[prost(bool, tag = "2")]
+    pub return_most_recent_per_job_type: bool,
+    /// Optional. The maximum number of jobs to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 jobs are
+    /// returned. The maximum value is 100; values above 100 are coerced to
+    /// 100.
+    #[prost(int32, tag = "3")]
+    pub max_size: i32,
+    /// Optional. If provided, only returns jobs that completed until (not
+    /// including) the given timestamp.
+    #[prost(message, optional, tag = "4")]
+    pub completed_until_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Response message for 'SearchBackgroundJobs' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchBackgroundJobsResponse {
+    /// The list of conversion workspace mapping rules.
+    #[prost(message, repeated, tag = "1")]
+    pub jobs: ::prost::alloc::vec::Vec<BackgroundJobLogEntry>,
+}
+/// Request message for 'DescribeConversionWorkspaceRevisions' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DescribeConversionWorkspaceRevisionsRequest {
+    /// Required. Name of the conversion workspace resource whose revisions are
+    /// listed. Must be in the form of:
+    /// projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+    #[prost(string, tag = "1")]
+    pub conversion_workspace: ::prost::alloc::string::String,
+    /// Optional. Optional filter to request a specific commit ID.
+    #[prost(string, tag = "2")]
+    pub commit_id: ::prost::alloc::string::String,
+}
+/// Response message for 'DescribeConversionWorkspaceRevisions' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DescribeConversionWorkspaceRevisionsResponse {
+    /// The list of conversion workspace revisions.
+    #[prost(message, repeated, tag = "1")]
+    pub revisions: ::prost::alloc::vec::Vec<ConversionWorkspace>,
+}
+/// Request message for 'FetchStaticIps' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchStaticIpsRequest {
+    /// Required. The resource name for the location for which static IPs should be
+    /// returned. Must be in the format `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Maximum number of IPs to return.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `FetchStaticIps` call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for a 'FetchStaticIps' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchStaticIpsResponse {
+    /// List of static IPs.
+    #[prost(string, repeated, tag = "1")]
+    pub static_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod data_migration_service_client {
@@ -1978,7 +3907,8 @@ pub mod data_migration_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Retrieve a list of all connection profiles in a given project and location.
+        /// Retrieves a list of all connection profiles in a given project and
+        /// location.
         pub async fn list_connection_profiles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConnectionProfilesRequest>,
@@ -2131,6 +4061,611 @@ pub mod data_migration_service_client {
                     GrpcMethod::new(
                         "google.cloud.clouddms.v1.DataMigrationService",
                         "DeleteConnectionProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new private connection in a given project and location.
+        pub async fn create_private_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePrivateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/CreatePrivateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "CreatePrivateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single private connection.
+        pub async fn get_private_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPrivateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PrivateConnection>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/GetPrivateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "GetPrivateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a list of private connections in a given project and location.
+        pub async fn list_private_connections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPrivateConnectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPrivateConnectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/ListPrivateConnections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ListPrivateConnections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single Database Migration Service private connection.
+        pub async fn delete_private_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePrivateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/DeletePrivateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "DeletePrivateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single conversion workspace.
+        pub async fn get_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ConversionWorkspace>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "GetConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists conversion workspaces in a given project and location.
+        pub async fn list_conversion_workspaces(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListConversionWorkspacesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListConversionWorkspacesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/ListConversionWorkspaces",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ListConversionWorkspaces",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new conversion workspace in a given project and location.
+        pub async fn create_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/CreateConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "CreateConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single conversion workspace.
+        pub async fn update_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/UpdateConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "UpdateConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single conversion workspace.
+        pub async fn delete_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/DeleteConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "DeleteConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Imports a snapshot of the source database into the
+        /// conversion workspace.
+        pub async fn seed_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SeedConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/SeedConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "SeedConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Imports the mapping rules for a given conversion workspace.
+        /// Supports various formats of external rules files.
+        pub async fn import_mapping_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportMappingRulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/ImportMappingRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ImportMappingRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a draft tree schema for the destination database.
+        pub async fn convert_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ConvertConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/ConvertConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ConvertConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Marks all the data in the conversion workspace as committed.
+        pub async fn commit_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CommitConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/CommitConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "CommitConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Rolls back a conversion workspace to the last committed snapshot.
+        pub async fn rollback_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RollbackConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/RollbackConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "RollbackConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Applies draft tree onto a specific destination database.
+        pub async fn apply_conversion_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ApplyConversionWorkspaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/ApplyConversionWorkspace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "ApplyConversionWorkspace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Describes the database entities tree for a specific conversion workspace
+        /// and a specific tree type.
+        ///
+        /// Database entities are not resources like conversion workspaces or mapping
+        /// rules, and they can't be created, updated or deleted. Instead, they are
+        /// simple data objects describing the structure of the client database.
+        pub async fn describe_database_entities(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DescribeDatabaseEntitiesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DescribeDatabaseEntitiesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/DescribeDatabaseEntities",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "DescribeDatabaseEntities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Searches/lists the background jobs for a specific
+        /// conversion workspace.
+        ///
+        /// The background jobs are not resources like conversion workspaces or
+        /// mapping rules, and they can't be created, updated or deleted.
+        /// Instead, they are a way to expose the data plane jobs log.
+        pub async fn search_background_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchBackgroundJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchBackgroundJobsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/SearchBackgroundJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "SearchBackgroundJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a list of committed revisions of a specific conversion
+        /// workspace.
+        pub async fn describe_conversion_workspace_revisions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::DescribeConversionWorkspaceRevisionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::DescribeConversionWorkspaceRevisionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/DescribeConversionWorkspaceRevisions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "DescribeConversionWorkspaceRevisions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches a set of static IP addresses that need to be allowlisted by the
+        /// customer when using the static-IP connectivity method.
+        pub async fn fetch_static_ips(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchStaticIpsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchStaticIpsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.clouddms.v1.DataMigrationService/FetchStaticIps",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.clouddms.v1.DataMigrationService",
+                        "FetchStaticIps",
                     ),
                 );
             self.inner.unary(req, path, codec).await

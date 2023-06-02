@@ -4,10 +4,8 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. The Google Cloud Storage URI for the exported objects. A URI is
-    /// of the form:
-    ///    gs://bucket/object-name-or-prefix
-    /// Whether a full object name, or just a prefix, its usage depends on the
-    /// Dialogflow operation.
+    /// of the form: `gs://bucket/object-name-or-prefix` Whether a full object
+    /// name, or just a prefix, its usage depends on the Dialogflow operation.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
@@ -122,6 +120,12 @@ pub struct InputAudioConfig {
     /// [Cloud Speech API
     /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
     /// for more details.
+    /// If you specify a model, the following models typically have the best
+    /// performance:
+    ///
+    /// - phone_call (best for Agent Assist and telephony)
+    /// - latest_short (best for Dialogflow non-telephony)
+    /// - command_and_search (best for very short utterances and commands)
     #[prost(string, tag = "7")]
     pub model: ::prost::alloc::string::String,
     /// Optional. Which variant of the [Speech
@@ -212,13 +216,23 @@ pub struct OutputAudioConfig {
     #[prost(message, optional, tag = "3")]
     pub synthesize_speech_config: ::core::option::Option<SynthesizeSpeechConfig>,
 }
-/// Settings related to speech generating.
+/// Settings related to speech synthesizing.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextToSpeechSettings {
-    /// Configuration of how speech should be synthesized, mapping from
-    /// language (<https://dialogflow.com/docs/reference/language>) to
+    /// Configuration of how speech should be synthesized, mapping from language
+    /// (<https://cloud.google.com/dialogflow/cx/docs/reference/language>) to
     /// SynthesizeSpeechConfig.
+    ///
+    /// These settings affect:
+    ///
+    ///   - The synthesize configuration used in [phone
+    ///     gateway](<https://cloud.google.com/dialogflow/cx/docs/concept/integration/phone-gateway>).
+    ///
+    ///   - You no longer need to specify
+    ///     \[OutputAudioConfig.synthesize_speech_config][google.cloud.dialogflow.cx.v3beta1.OutputAudioConfig.synthesize_speech_config\]
+    ///     when invoking API calls. Your agent will use the pre-configured options
+    ///     for speech synthesizing.
     #[prost(map = "string, message", tag = "1")]
     pub synthesize_speech_configs: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3001,7 +3015,7 @@ pub mod export_agent_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Agent {
         /// The URI to a file containing the exported agent. This field is populated
-        /// only if `agent_uri` is specified in
+        /// if `agent_uri` is specified in
         /// \[ExportAgentRequest][google.cloud.dialogflow.cx.v3beta1.ExportAgentRequest\].
         #[prost(string, tag = "1")]
         AgentUri(::prost::alloc::string::String),
@@ -5822,6 +5836,84 @@ pub struct StreamingDetectIntentRequest {
     /// responses.
     #[prost(bool, tag = "5")]
     pub enable_partial_response: bool,
+    /// If true, `StreamingDetectIntentResponse.debugging_info` will get populated.
+    #[prost(bool, tag = "8")]
+    pub enable_debugging_info: bool,
+}
+/// Cloud conversation info for easier debugging.
+/// It will get populated in `StreamingDetectIntentResponse` or
+/// `StreamingAnalyzeContentResponse` when the flag `enable_debugging_info` is
+/// set to true in corresponding requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudConversationDebuggingInfo {
+    /// Number of input audio data chunks in streaming requests.
+    #[prost(int32, tag = "1")]
+    pub audio_data_chunks: i32,
+    /// Time offset of the end of speech utterance relative to the
+    /// beginning of the first audio chunk.
+    #[prost(message, optional, tag = "2")]
+    pub result_end_time_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Duration of first audio chunk.
+    #[prost(message, optional, tag = "3")]
+    pub first_audio_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Whether client used single utterance mode.
+    #[prost(bool, tag = "5")]
+    pub single_utterance: bool,
+    /// Time offsets of the speech partial results relative to the beginning of
+    /// the stream.
+    #[prost(message, repeated, tag = "6")]
+    pub speech_partial_results_end_times: ::prost::alloc::vec::Vec<
+        ::prost_types::Duration,
+    >,
+    /// Time offsets of the speech final results (is_final=true) relative to the
+    /// beginning of the stream.
+    #[prost(message, repeated, tag = "7")]
+    pub speech_final_results_end_times: ::prost::alloc::vec::Vec<
+        ::prost_types::Duration,
+    >,
+    /// Total number of partial responses.
+    #[prost(int32, tag = "8")]
+    pub partial_responses: i32,
+    /// Time offset of Speaker ID stream close time relative to the Speech stream
+    /// close time in milliseconds. Only meaningful for conversations involving
+    /// passive verification.
+    #[prost(int32, tag = "9")]
+    pub speaker_id_passive_latency_ms_offset: i32,
+    /// Whether a barge-in event is triggered in this request.
+    #[prost(bool, tag = "10")]
+    pub bargein_event_triggered: bool,
+    /// Whether speech uses single utterance mode.
+    #[prost(bool, tag = "11")]
+    pub speech_single_utterance: bool,
+    /// Time offsets of the DTMF partial results relative to the beginning of
+    /// the stream.
+    #[prost(message, repeated, tag = "12")]
+    pub dtmf_partial_results_times: ::prost::alloc::vec::Vec<::prost_types::Duration>,
+    /// Time offsets of the DTMF final results relative to the beginning of
+    /// the stream.
+    #[prost(message, repeated, tag = "13")]
+    pub dtmf_final_results_times: ::prost::alloc::vec::Vec<::prost_types::Duration>,
+    /// Time offset of the end-of-single-utterance signal relative to the
+    /// beginning of the stream.
+    #[prost(message, optional, tag = "14")]
+    pub single_utterance_end_time_offset: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
+    /// No speech timeout settings observed at runtime.
+    #[prost(message, optional, tag = "15")]
+    pub no_speech_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Whether the streaming terminates with an injected text query.
+    #[prost(bool, tag = "16")]
+    pub is_input_text: bool,
+    /// Client half close time in terms of input audio duration.
+    #[prost(message, optional, tag = "17")]
+    pub client_half_close_time_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Client half close time in terms of API streaming duration.
+    #[prost(message, optional, tag = "18")]
+    pub client_half_close_streaming_time_offset: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
 }
 /// The top-level message returned from the
 /// \[StreamingDetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.StreamingDetectIntent\]
@@ -5854,6 +5946,10 @@ pub struct StreamingDetectIntentRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingDetectIntentResponse {
+    /// Debugging info that would get populated when
+    /// `StreamingDetectIntentRequest.enable_debugging_info` is set to true.
+    #[prost(message, optional, tag = "4")]
+    pub debugging_info: ::core::option::Option<CloudConversationDebuggingInfo>,
     /// The output response.
     #[prost(oneof = "streaming_detect_intent_response::Response", tags = "1, 2")]
     pub response: ::core::option::Option<streaming_detect_intent_response::Response>,
@@ -6139,6 +6235,7 @@ pub struct QueryParameters {
 ///
 /// 4.  An event to be triggered.
 ///
+/// 5.  DTMF digits to invoke an intent and fill in parameter value.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryInput {
@@ -6301,8 +6398,9 @@ pub mod query_result {
         /// as input, this field will contain the name of the event.
         #[prost(string, tag = "14")]
         TriggerEvent(::prost::alloc::string::String),
-        /// If a \[DTMF][DTMFInput\] was provided as input, this field will contain
-        /// a copy of the \[DTMFInput][\].
+        /// If a \[DTMF][google.cloud.dialogflow.cx.v3beta1.DtmfInput\] was provided as
+        /// input, this field will contain a copy of the
+        /// \[DtmfInput][google.cloud.dialogflow.cx.v3beta1.DtmfInput\].
         #[prost(message, tag = "23")]
         Dtmf(super::DtmfInput),
     }
@@ -7480,6 +7578,8 @@ pub mod test_run_difference {
         Parameters = 3,
         /// The message utterance.
         Utterance = 4,
+        /// The flow.
+        Flow = 5,
     }
     impl DiffType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7493,6 +7593,7 @@ pub mod test_run_difference {
                 DiffType::Page => "PAGE",
                 DiffType::Parameters => "PARAMETERS",
                 DiffType::Utterance => "UTTERANCE",
+                DiffType::Flow => "FLOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7503,6 +7604,7 @@ pub mod test_run_difference {
                 "PAGE" => Some(Self::Page),
                 "PARAMETERS" => Some(Self::Parameters),
                 "UTTERANCE" => Some(Self::Utterance),
+                "FLOW" => Some(Self::Flow),
                 _ => None,
             }
         }
@@ -7562,7 +7664,7 @@ pub mod transition_coverage {
         /// The end node of a transition.
         #[prost(message, optional, tag = "2")]
         pub target: ::core::option::Option<TransitionNode>,
-        /// Whether or not the transition is covered by at least one of the
+        /// Whether the transition is covered by at least one of the
         /// agent's test cases.
         #[prost(bool, tag = "3")]
         pub covered: bool,
@@ -7625,7 +7727,7 @@ pub mod transition_route_group_coverage {
             /// Intent route or condition route.
             #[prost(message, optional, tag = "1")]
             pub transition_route: ::core::option::Option<super::super::TransitionRoute>,
-            /// Whether or not the transition route is covered by at least one of the
+            /// Whether the transition route is covered by at least one of the
             /// agent's test cases.
             #[prost(bool, tag = "2")]
             pub covered: bool,
@@ -7653,7 +7755,7 @@ pub mod intent_coverage {
         /// The intent full resource name
         #[prost(string, tag = "1")]
         pub intent: ::prost::alloc::string::String,
-        /// Whether or not the intent is covered by at least one of the agent's
+        /// Whether the intent is covered by at least one of the agent's
         /// test cases.
         #[prost(bool, tag = "2")]
         pub covered: bool,
@@ -8990,7 +9092,7 @@ pub struct WebhookRequest {
         webhook_request::SentimentAnalysisResult,
     >,
     /// The original conversational query.
-    #[prost(oneof = "webhook_request::Query", tags = "10, 11, 12, 14")]
+    #[prost(oneof = "webhook_request::Query", tags = "10, 11, 12, 14, 17")]
     pub query: ::core::option::Option<webhook_request::Query>,
 }
 /// Nested message and enum types in `WebhookRequest`.
@@ -9089,6 +9191,10 @@ pub mod webhook_request {
         /// as input, this field will contain the name of the event.
         #[prost(string, tag = "14")]
         TriggerEvent(::prost::alloc::string::String),
+        /// If \[DTMF][google.cloud.dialogflow.cx.v3beta1.DtmfInput\] was provided as
+        /// input, this field will contain the DTMF digits.
+        #[prost(string, tag = "17")]
+        DtmfDigits(::prost::alloc::string::String),
     }
 }
 /// The response message for a webhook call.

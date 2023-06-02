@@ -5600,13 +5600,13 @@ pub struct InternalChecker {
     ///
     ///      projects/\[PROJECT_ID_OR_NUMBER]/internalCheckers/[INTERNAL_CHECKER_ID\]
     ///
-    /// `\[PROJECT_ID_OR_NUMBER\]` is the Stackdriver Workspace project for the
-    /// Uptime check config associated with the internal checker.
+    /// `\[PROJECT_ID_OR_NUMBER\]` is the Cloud Monitoring Metrics Scope project for
+    /// the Uptime check config associated with the internal checker.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The checker's human-readable name. The display name
-    /// should be unique within a Stackdriver Workspace in order to make it easier
-    /// to identify; however, uniqueness is not enforced.
+    /// should be unique within a Cloud Monitoring Metrics Scope in order to make
+    /// it easier to identify; however, uniqueness is not enforced.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// The [GCP VPC network](<https://cloud.google.com/vpc/docs/vpc>) where the
@@ -5618,7 +5618,7 @@ pub struct InternalChecker {
     #[prost(string, tag = "4")]
     pub gcp_zone: ::prost::alloc::string::String,
     /// The GCP project ID where the internal checker lives. Not necessary
-    /// the same as the Workspace project.
+    /// the same as the Metrics Scope project.
     #[prost(string, tag = "6")]
     pub peer_project_id: ::prost::alloc::string::String,
     /// The current operational state of the internal checker.
@@ -5699,8 +5699,8 @@ pub struct UptimeCheckConfig {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A human-friendly name for the Uptime check configuration. The display name
-    /// should be unique within a Stackdriver Workspace in order to make it easier
-    /// to identify; however, uniqueness is not enforced. Required.
+    /// should be unique within a Cloud Monitoring Workspace in order to make it
+    /// easier to identify; however, uniqueness is not enforced. Required.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// How often, in seconds, the Uptime check is performed.
@@ -5720,6 +5720,9 @@ pub struct UptimeCheckConfig {
     /// content match is required as part of the/ Uptime check.
     #[prost(message, repeated, tag = "9")]
     pub content_matchers: ::prost::alloc::vec::Vec<uptime_check_config::ContentMatcher>,
+    /// The type of checkers to use to execute the Uptime check.
+    #[prost(enumeration = "uptime_check_config::CheckerType", tag = "17")]
+    pub checker_type: i32,
     /// The list of regions from which the check will be run.
     /// Some regions contain one location, and others contain more than one.
     /// If this field is specified, enough regions must be provided to include a
@@ -5741,6 +5744,18 @@ pub struct UptimeCheckConfig {
     #[deprecated]
     #[prost(message, repeated, tag = "14")]
     pub internal_checkers: ::prost::alloc::vec::Vec<InternalChecker>,
+    /// User-supplied key/value data to be used for organizing and
+    /// identifying the `UptimeCheckConfig` objects.
+    ///
+    /// The field can contain up to 64 entries. Each key and value is limited to
+    /// 63 Unicode characters or 128 bytes, whichever is smaller. Labels and
+    /// values can contain only lowercase letters, numerals, underscores, and
+    /// dashes. Keys must begin with a letter.
+    #[prost(map = "string, string", tag = "20")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The resource the check is checking. Required.
     #[prost(oneof = "uptime_check_config::Resource", tags = "3, 4")]
     pub resource: ::core::option::Option<uptime_check_config::Resource>,
@@ -5765,6 +5780,16 @@ pub mod uptime_check_config {
         /// The resource type of the group members.
         #[prost(enumeration = "super::GroupResourceType", tag = "2")]
         pub resource_type: i32,
+    }
+    /// Information involved in sending ICMP pings alongside public HTTP/TCP
+    /// checks. For HTTP, the pings are performed for each part of the redirect
+    /// chain.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PingConfig {
+        /// Number of ICMP pings. A maximum of 3 ICMP pings is currently supported.
+        #[prost(int32, tag = "1")]
+        pub pings_count: i32,
     }
     /// Information involved in an HTTP/HTTPS Uptime check request.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5825,6 +5850,14 @@ pub mod uptime_check_config {
         /// `headers` field. The `content_type` field should be used instead.
         #[prost(enumeration = "http_check::ContentType", tag = "9")]
         pub content_type: i32,
+        /// A user provided content type header to use for the check. The invalid
+        /// configurations outlined in the `content_type` field apply to
+        /// `custom_content_type`, as well as the following:
+        /// 1. `content_type` is `URL_ENCODED` and `custom_content_type` is set.
+        /// 2. `content_type` is `USER_PROVIDED` and `custom_content_type` is not
+        /// set.
+        #[prost(string, tag = "13")]
+        pub custom_content_type: ::prost::alloc::string::String,
         /// Boolean specifying whether to include SSL certificate validation as a
         /// part of the Uptime check. Only applies to checks where
         /// `monitored_resource` is set to `uptime_url`. If `use_ssl` is `false`,
@@ -5835,12 +5868,23 @@ pub mod uptime_check_config {
         /// is `URL_ENCODED`, the body passed in must be URL-encoded. Users can
         /// provide a `Content-Length` header via the `headers` field or the API will
         /// do so. If the `request_method` is `GET` and `body` is not empty, the API
-        /// will return an error. The maximum byte size is 1 megabyte. Note: As with
-        /// all `bytes` fields, JSON representations are base64 encoded. e.g.:
-        /// "foo=bar" in URL-encoded form is "foo%3Dbar" and in base64 encoding is
-        /// "Zm9vJTI1M0RiYXI=".
+        /// will return an error. The maximum byte size is 1 megabyte.
+        ///
+        /// Note: If client libraries aren't used (which performs the conversion
+        /// automatically) base64 encode your `body` data since the field is of
+        /// `bytes` type.
         #[prost(bytes = "vec", tag = "10")]
         pub body: ::prost::alloc::vec::Vec<u8>,
+        /// If present, the check will only pass if the HTTP response status code is
+        /// in this set of status codes. If empty, the HTTP status code will only
+        /// pass if the HTTP status code is 200-299.
+        #[prost(message, repeated, tag = "11")]
+        pub accepted_response_status_codes: ::prost::alloc::vec::Vec<
+            http_check::ResponseStatusCode,
+        >,
+        /// Contains information needed to add pings to an HTTP check.
+        #[prost(message, optional, tag = "12")]
+        pub ping_config: ::core::option::Option<PingConfig>,
     }
     /// Nested message and enum types in `HttpCheck`.
     pub mod http_check {
@@ -5857,6 +5901,88 @@ pub mod uptime_check_config {
             /// The password to use when authenticating with the HTTP server.
             #[prost(string, tag = "2")]
             pub password: ::prost::alloc::string::String,
+        }
+        /// A status to accept. Either a status code class like "2xx", or an integer
+        /// status code like "200".
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ResponseStatusCode {
+            /// Either a specific value or a class of status codes.
+            #[prost(oneof = "response_status_code::StatusCode", tags = "1, 2")]
+            pub status_code: ::core::option::Option<response_status_code::StatusCode>,
+        }
+        /// Nested message and enum types in `ResponseStatusCode`.
+        pub mod response_status_code {
+            /// An HTTP status code class.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum StatusClass {
+                /// Default value that matches no status codes.
+                Unspecified = 0,
+                /// The class of status codes between 100 and 199.
+                StatusClass1xx = 100,
+                /// The class of status codes between 200 and 299.
+                StatusClass2xx = 200,
+                /// The class of status codes between 300 and 399.
+                StatusClass3xx = 300,
+                /// The class of status codes between 400 and 499.
+                StatusClass4xx = 400,
+                /// The class of status codes between 500 and 599.
+                StatusClass5xx = 500,
+                /// The class of all status codes.
+                Any = 1000,
+            }
+            impl StatusClass {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        StatusClass::Unspecified => "STATUS_CLASS_UNSPECIFIED",
+                        StatusClass::StatusClass1xx => "STATUS_CLASS_1XX",
+                        StatusClass::StatusClass2xx => "STATUS_CLASS_2XX",
+                        StatusClass::StatusClass3xx => "STATUS_CLASS_3XX",
+                        StatusClass::StatusClass4xx => "STATUS_CLASS_4XX",
+                        StatusClass::StatusClass5xx => "STATUS_CLASS_5XX",
+                        StatusClass::Any => "STATUS_CLASS_ANY",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "STATUS_CLASS_UNSPECIFIED" => Some(Self::Unspecified),
+                        "STATUS_CLASS_1XX" => Some(Self::StatusClass1xx),
+                        "STATUS_CLASS_2XX" => Some(Self::StatusClass2xx),
+                        "STATUS_CLASS_3XX" => Some(Self::StatusClass3xx),
+                        "STATUS_CLASS_4XX" => Some(Self::StatusClass4xx),
+                        "STATUS_CLASS_5XX" => Some(Self::StatusClass5xx),
+                        "STATUS_CLASS_ANY" => Some(Self::Any),
+                        _ => None,
+                    }
+                }
+            }
+            /// Either a specific value or a class of status codes.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum StatusCode {
+                /// A status code to accept.
+                #[prost(int32, tag = "1")]
+                StatusValue(i32),
+                /// A class of status codes to accept.
+                #[prost(enumeration = "StatusClass", tag = "2")]
+                StatusClass(i32),
+            }
         }
         /// The HTTP request method options.
         #[derive(
@@ -5920,6 +6046,10 @@ pub mod uptime_check_config {
             /// `body` is in URL-encoded form. Equivalent to setting the `Content-Type`
             /// to `application/x-www-form-urlencoded` in the HTTP request.
             UrlEncoded = 1,
+            /// `body` is in `custom_content_type` form. Equivalent to setting the
+            /// `Content-Type` to the contents of `custom_content_type` in the HTTP
+            /// request.
+            UserProvided = 2,
         }
         impl ContentType {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -5930,6 +6060,7 @@ pub mod uptime_check_config {
                 match self {
                     ContentType::TypeUnspecified => "TYPE_UNSPECIFIED",
                     ContentType::UrlEncoded => "URL_ENCODED",
+                    ContentType::UserProvided => "USER_PROVIDED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5937,6 +6068,7 @@ pub mod uptime_check_config {
                 match value {
                     "TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
                     "URL_ENCODED" => Some(Self::UrlEncoded),
+                    "USER_PROVIDED" => Some(Self::UserProvided),
                     _ => None,
                 }
             }
@@ -5951,6 +6083,9 @@ pub mod uptime_check_config {
         /// construct the full URL. Required.
         #[prost(int32, tag = "1")]
         pub port: i32,
+        /// Contains information needed to add pings to a TCP check.
+        #[prost(message, optional, tag = "2")]
+        pub ping_config: ::core::option::Option<PingConfig>,
     }
     /// Optional. Used to perform content matching. This allows matching based on
     /// substrings and regular expressions, together with their negations. Only the
@@ -5960,17 +6095,91 @@ pub mod uptime_check_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ContentMatcher {
-        /// String or regex content to match. Maximum 1024 bytes. An empty `content`
-        /// string indicates no content matching is to be performed.
+        /// String, regex or JSON content to match. Maximum 1024 bytes. An empty
+        /// `content` string indicates no content matching is to be performed.
         #[prost(string, tag = "1")]
         pub content: ::prost::alloc::string::String,
         /// The type of content matcher that will be applied to the server output,
         /// compared to the `content` string when the check is run.
         #[prost(enumeration = "content_matcher::ContentMatcherOption", tag = "2")]
         pub matcher: i32,
+        /// Certain `ContentMatcherOption` types require additional information.
+        /// `MATCHES_JSON_PATH` or `NOT_MATCHES_JSON_PATH` require a
+        /// `JsonPathMatcher`; not used for other options.
+        #[prost(oneof = "content_matcher::AdditionalMatcherInfo", tags = "3")]
+        pub additional_matcher_info: ::core::option::Option<
+            content_matcher::AdditionalMatcherInfo,
+        >,
     }
     /// Nested message and enum types in `ContentMatcher`.
     pub mod content_matcher {
+        /// Information needed to perform a JSONPath content match.
+        /// Used for `ContentMatcherOption::MATCHES_JSON_PATH` and
+        /// `ContentMatcherOption::NOT_MATCHES_JSON_PATH`.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct JsonPathMatcher {
+            /// JSONPath within the response output pointing to the expected
+            /// `ContentMatcher::content` to match against.
+            #[prost(string, tag = "1")]
+            pub json_path: ::prost::alloc::string::String,
+            /// The type of JSONPath match that will be applied to the JSON output
+            /// (`ContentMatcher.content`)
+            #[prost(enumeration = "json_path_matcher::JsonPathMatcherOption", tag = "2")]
+            pub json_matcher: i32,
+        }
+        /// Nested message and enum types in `JsonPathMatcher`.
+        pub mod json_path_matcher {
+            /// Options to perform JSONPath content matching.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum JsonPathMatcherOption {
+                /// No JSONPath matcher type specified (not valid).
+                Unspecified = 0,
+                /// Selects 'exact string' matching. The match succeeds if the content at
+                /// the `json_path` within the output is exactly the same as the
+                /// `content` string.
+                ExactMatch = 1,
+                /// Selects regular-expression matching. The match succeeds if the
+                /// content at the `json_path` within the output matches the regular
+                /// expression specified in the `content` string.
+                RegexMatch = 2,
+            }
+            impl JsonPathMatcherOption {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        JsonPathMatcherOption::Unspecified => {
+                            "JSON_PATH_MATCHER_OPTION_UNSPECIFIED"
+                        }
+                        JsonPathMatcherOption::ExactMatch => "EXACT_MATCH",
+                        JsonPathMatcherOption::RegexMatch => "REGEX_MATCH",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "JSON_PATH_MATCHER_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                        "EXACT_MATCH" => Some(Self::ExactMatch),
+                        "REGEX_MATCH" => Some(Self::RegexMatch),
+                        _ => None,
+                    }
+                }
+            }
+        }
         /// Options to perform content matching.
         #[derive(
             Clone,
@@ -5997,7 +6206,7 @@ pub mod uptime_check_config {
             /// Selects negation of substring matching. The match succeeds if the
             /// output does _NOT_ contain the `content` string.
             NotContainsString = 2,
-            /// Selects regular-expression matching. The match succeeds of the output
+            /// Selects regular-expression matching. The match succeeds if the output
             /// matches the regular expression specified in the `content` string.
             /// Regex matching is only supported for HTTP/HTTPS checks.
             MatchesRegex = 3,
@@ -6006,6 +6215,14 @@ pub mod uptime_check_config {
             /// `content` string. Regex matching is only supported for HTTP/HTTPS
             /// checks.
             NotMatchesRegex = 4,
+            /// Selects JSONPath matching. See `JsonPathMatcher` for details on when
+            /// the match succeeds. JSONPath matching is only supported for HTTP/HTTPS
+            /// checks.
+            MatchesJsonPath = 5,
+            /// Selects JSONPath matching. See `JsonPathMatcher` for details on when
+            /// the match succeeds. Succeeds when output does _NOT_ match as specified.
+            /// JSONPath is only supported for HTTP/HTTPS checks.
+            NotMatchesJsonPath = 6,
         }
         impl ContentMatcherOption {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -6021,6 +6238,8 @@ pub mod uptime_check_config {
                     ContentMatcherOption::NotContainsString => "NOT_CONTAINS_STRING",
                     ContentMatcherOption::MatchesRegex => "MATCHES_REGEX",
                     ContentMatcherOption::NotMatchesRegex => "NOT_MATCHES_REGEX",
+                    ContentMatcherOption::MatchesJsonPath => "MATCHES_JSON_PATH",
+                    ContentMatcherOption::NotMatchesJsonPath => "NOT_MATCHES_JSON_PATH",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6031,8 +6250,68 @@ pub mod uptime_check_config {
                     "NOT_CONTAINS_STRING" => Some(Self::NotContainsString),
                     "MATCHES_REGEX" => Some(Self::MatchesRegex),
                     "NOT_MATCHES_REGEX" => Some(Self::NotMatchesRegex),
+                    "MATCHES_JSON_PATH" => Some(Self::MatchesJsonPath),
+                    "NOT_MATCHES_JSON_PATH" => Some(Self::NotMatchesJsonPath),
                     _ => None,
                 }
+            }
+        }
+        /// Certain `ContentMatcherOption` types require additional information.
+        /// `MATCHES_JSON_PATH` or `NOT_MATCHES_JSON_PATH` require a
+        /// `JsonPathMatcher`; not used for other options.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum AdditionalMatcherInfo {
+            /// Matcher information for `MATCHES_JSON_PATH` and `NOT_MATCHES_JSON_PATH`
+            #[prost(message, tag = "3")]
+            JsonPathMatcher(JsonPathMatcher),
+        }
+    }
+    /// What kind of checkers are available to be used by the check.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CheckerType {
+        /// The default checker type. Currently converted to `STATIC_IP_CHECKERS`
+        /// on creation, the default conversion behavior may change in the future.
+        Unspecified = 0,
+        /// `STATIC_IP_CHECKERS` are used for uptime checks that perform egress
+        /// across the public internet. `STATIC_IP_CHECKERS` use the static IP
+        /// addresses returned by `ListUptimeCheckIps`.
+        StaticIpCheckers = 1,
+        /// `VPC_CHECKERS` are used for uptime checks that perform egress using
+        /// Service Directory and private network access. When using `VPC_CHECKERS`,
+        /// the monitored resource type must be `servicedirectory_service`.
+        VpcCheckers = 3,
+    }
+    impl CheckerType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CheckerType::Unspecified => "CHECKER_TYPE_UNSPECIFIED",
+                CheckerType::StaticIpCheckers => "STATIC_IP_CHECKERS",
+                CheckerType::VpcCheckers => "VPC_CHECKERS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHECKER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STATIC_IP_CHECKERS" => Some(Self::StaticIpCheckers),
+                "VPC_CHECKERS" => Some(Self::VpcCheckers),
+                _ => None,
             }
         }
     }
@@ -6050,6 +6329,8 @@ pub mod uptime_check_config {
         ///    `aws_ec2_instance`,
         ///    `aws_elb_load_balancer`
         ///    `k8s_service`
+        ///    `servicedirectory_service`
+        ///    `cloud_run_revision`
         #[prost(message, tag = "3")]
         MonitoredResource(super::super::super::api::MonitoredResource),
         /// The group resource associated with the configuration.
@@ -6106,6 +6387,15 @@ pub enum UptimeCheckRegion {
     /// Allows checks to run from locations within the Asia Pacific area (ex:
     /// Singapore).
     AsiaPacific = 4,
+    /// Allows checks to run from locations within the western United States of
+    /// America
+    UsaOregon = 5,
+    /// Allows checks to run from locations within the central United States of
+    /// America
+    UsaIowa = 6,
+    /// Allows checks to run from locations within the eastern United States of
+    /// America
+    UsaVirginia = 7,
 }
 impl UptimeCheckRegion {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -6119,6 +6409,9 @@ impl UptimeCheckRegion {
             UptimeCheckRegion::Europe => "EUROPE",
             UptimeCheckRegion::SouthAmerica => "SOUTH_AMERICA",
             UptimeCheckRegion::AsiaPacific => "ASIA_PACIFIC",
+            UptimeCheckRegion::UsaOregon => "USA_OREGON",
+            UptimeCheckRegion::UsaIowa => "USA_IOWA",
+            UptimeCheckRegion::UsaVirginia => "USA_VIRGINIA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6129,6 +6422,9 @@ impl UptimeCheckRegion {
             "EUROPE" => Some(Self::Europe),
             "SOUTH_AMERICA" => Some(Self::SouthAmerica),
             "ASIA_PACIFIC" => Some(Self::AsiaPacific),
+            "USA_OREGON" => Some(Self::UsaOregon),
+            "USA_IOWA" => Some(Self::UsaIowa),
+            "USA_VIRGINIA" => Some(Self::UsaVirginia),
             _ => None,
         }
     }
@@ -6182,6 +6478,13 @@ pub struct ListUptimeCheckConfigsRequest {
     ///      projects/\[PROJECT_ID_OR_NUMBER\]
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// If provided, this field specifies the criteria that must be met by
+    /// uptime checks to be included in the response.
+    ///
+    /// For more details, see [Filtering
+    /// syntax](<https://cloud.google.com/monitoring/api/v3/sorting-and-filtering#filter_syntax>).
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. The server
     /// may further constrain the maximum number of results returned in a single
     /// page. If the page_size is <=0, the server will decide the number of results
@@ -6252,7 +6555,7 @@ pub struct UpdateUptimeCheckConfigRequest {
     /// the values for the set of fields mentioned in the `updateMask`. If an
     /// `updateMask` has not been given, this Uptime check configuration replaces
     /// the current configuration. If a field is mentioned in `updateMask` but
-    /// the corresonding field is omitted in this partial Uptime check
+    /// the corresponding field is omitted in this partial Uptime check
     /// configuration, it has the effect of deleting/clearing the field from the
     /// configuration on the server.
     ///
@@ -6313,13 +6616,13 @@ pub mod uptime_check_service_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The UptimeCheckService API is used to manage (list, create, delete, edit)
-    /// Uptime check configurations in the Stackdriver Monitoring product. An Uptime
+    /// Uptime check configurations in the Cloud Monitoring product. An Uptime
     /// check is a piece of configuration that determines which resources and
     /// services to monitor for availability. These configurations can also be
-    /// configured interactively by navigating to the [Cloud Console]
-    /// (http://console.cloud.google.com), selecting the appropriate project,
-    /// clicking on "Monitoring" on the left-hand side to navigate to Stackdriver,
-    /// and then clicking on "Uptime".
+    /// configured interactively by navigating to the [Cloud console]
+    /// (https://console.cloud.google.com), selecting the appropriate project,
+    /// clicking on "Monitoring" on the left-hand side to navigate to Cloud
+    /// Monitoring, and then clicking on "Uptime".
     #[derive(Debug, Clone)]
     pub struct UptimeCheckServiceClient<T> {
         inner: tonic::client::Grpc<T>,

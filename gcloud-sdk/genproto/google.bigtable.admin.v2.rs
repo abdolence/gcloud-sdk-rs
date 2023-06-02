@@ -1726,6 +1726,18 @@ pub mod restore_info {
         BackupInfo(super::BackupInfo),
     }
 }
+/// Change stream configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChangeStreamConfig {
+    /// How long the change stream should be retained. Change stream data older
+    /// than the retention period will not be returned when reading the change
+    /// stream from the table.
+    /// Values must be at least 1 day and at most 7 days, and will be truncated to
+    /// microsecond granularity.
+    #[prost(message, optional, tag = "1")]
+    pub retention_period: ::core::option::Option<::prost_types::Duration>,
+}
 /// A collection of user data indexed by row, column, and timestamp.
 /// Each table is served using the resources of its parent cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1763,6 +1775,11 @@ pub struct Table {
     /// field will be populated with information about the restore.
     #[prost(message, optional, tag = "6")]
     pub restore_info: ::core::option::Option<RestoreInfo>,
+    /// If specified, enable the change stream on this table.
+    /// Otherwise, the change stream is disabled and the change stream is not
+    /// retained.
+    #[prost(message, optional, tag = "8")]
+    pub change_stream_config: ::core::option::Option<ChangeStreamConfig>,
     /// Set to true to make the table protected against data loss. i.e. deleting
     /// the following resources through Admin APIs are prohibited:
     ///    - The table.
@@ -2573,11 +2590,15 @@ pub struct UpdateTableRequest {
     #[prost(message, optional, tag = "1")]
     pub table: ::core::option::Option<Table>,
     /// Required. The list of fields to update.
-    /// A mask specifying which fields (e.g. `deletion_protection`) in the `table`
+    /// A mask specifying which fields (e.g. `change_stream_config`) in the `table`
     /// field should be updated. This mask is relative to the `table` field, not to
     /// the request message. The wildcard (*) path is currently not supported.
-    /// Currently UpdateTable is only supported for the following field:
-    ///   * `deletion_protection`
+    /// Currently UpdateTable is only supported for the following fields:
+    ///
+    /// * `change_stream_config`
+    /// * `change_stream_config.retention_period`
+    /// * `deletion_protection`
+    ///
     /// If `column_families` is set in `update_mask`, it will return an
     /// UNIMPLEMENTED error.
     #[prost(message, optional, tag = "2")]

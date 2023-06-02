@@ -464,6 +464,8 @@ pub enum ApiType {
     Voucher = 13,
     /// Voucher confirmation API. Maps to UPI's `VoucherConfirmation` API.
     VoucherConfirmation = 14,
+    /// Activation API. Maps to UPI's `Activation` API.
+    Activation = 15,
 }
 impl ApiType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -487,6 +489,7 @@ impl ApiType {
             ApiType::ValidateCustomer => "VALIDATE_CUSTOMER",
             ApiType::Voucher => "VOUCHER",
             ApiType::VoucherConfirmation => "VOUCHER_CONFIRMATION",
+            ApiType::Activation => "ACTIVATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -507,6 +510,7 @@ impl ApiType {
             "VALIDATE_CUSTOMER" => Some(Self::ValidateCustomer),
             "VOUCHER" => Some(Self::Voucher),
             "VOUCHER_CONFIRMATION" => Some(Self::VoucherConfirmation),
+            "ACTIVATION" => Some(Self::Activation),
             _ => None,
         }
     }
@@ -594,6 +598,12 @@ pub enum TransactionType {
     /// Validate customer transaction type. This is associated with
     /// `VALIDATE_CUSTOMER` API type. Maps to UPI's `ValCust` type.
     ValidateCustomer = 25,
+    /// Activation international transaction type. This is associated with
+    /// 'ACTIVATION' API type. Maps to UPI's `International` type.
+    ActivationInternational = 26,
+    /// Activation UPI services transaction type. This is associated with
+    /// 'ACTIVATION' API type. Maps to UPI's `UPI Services` type.
+    ActivationUpiServices = 27,
 }
 impl TransactionType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -630,6 +640,12 @@ impl TransactionType {
             TransactionType::Update => "TRANSACTION_TYPE_UPDATE",
             TransactionType::UpdateCredentials => "TRANSACTION_TYPE_UPDATE_CREDENTIALS",
             TransactionType::ValidateCustomer => "TRANSACTION_TYPE_VALIDATE_CUSTOMER",
+            TransactionType::ActivationInternational => {
+                "TRANSACTION_TYPE_ACTIVATION_INTERNATIONAL"
+            }
+            TransactionType::ActivationUpiServices => {
+                "TRANSACTION_TYPE_ACTIVATION_UPI_SERVICES"
+            }
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -661,6 +677,12 @@ impl TransactionType {
             "TRANSACTION_TYPE_UPDATE" => Some(Self::Update),
             "TRANSACTION_TYPE_UPDATE_CREDENTIALS" => Some(Self::UpdateCredentials),
             "TRANSACTION_TYPE_VALIDATE_CUSTOMER" => Some(Self::ValidateCustomer),
+            "TRANSACTION_TYPE_ACTIVATION_INTERNATIONAL" => {
+                Some(Self::ActivationInternational)
+            }
+            "TRANSACTION_TYPE_ACTIVATION_UPI_SERVICES" => {
+                Some(Self::ActivationUpiServices)
+            }
             _ => None,
         }
     }
@@ -738,6 +760,10 @@ pub enum XmlApiType {
     /// Transaction confirmation response API type. Maps to UPI's
     /// `RespTxnConfirmation` API.
     RespTxnConfirmation = 30,
+    /// Activation request API type. Maps to UPI's `ReqActivation` API.
+    ReqActivation = 31,
+    /// Activation response API type. Maps to UPI's `RespActivation` API.
+    RespActivation = 32,
 }
 impl XmlApiType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -777,6 +803,8 @@ impl XmlApiType {
             XmlApiType::RespVoucher => "RESP_VOUCHER",
             XmlApiType::RespVoucherConfirmation => "RESP_VOUCHER_CONFIRMATION",
             XmlApiType::RespTxnConfirmation => "RESP_TXN_CONFIRMATION",
+            XmlApiType::ReqActivation => "REQ_ACTIVATION",
+            XmlApiType::RespActivation => "RESP_ACTIVATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -813,6 +841,8 @@ impl XmlApiType {
             "RESP_VOUCHER" => Some(Self::RespVoucher),
             "RESP_VOUCHER_CONFIRMATION" => Some(Self::RespVoucherConfirmation),
             "RESP_TXN_CONFIRMATION" => Some(Self::RespTxnConfirmation),
+            "REQ_ACTIVATION" => Some(Self::ReqActivation),
+            "RESP_ACTIVATION" => Some(Self::RespActivation),
             _ => None,
         }
     }
@@ -2747,6 +2777,10 @@ pub mod transaction_info {
         /// with the transaction type as `TRANSACTION_TYPE_CREDIT` when the payment
         /// was initiated in response to a refund.
         Refund = 6,
+        /// Credit subtype. This is used in a `SETTLE_PAYMENT` API type transaction,
+        /// with the transaction type as `TRANSACTION_TYPE_REVERSAL` when the
+        /// original payment was a credit request.
+        Credit = 7,
     }
     impl TransactionSubType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2762,6 +2796,7 @@ pub mod transaction_info {
                 TransactionSubType::Beneficiary => "BENEFICIARY",
                 TransactionSubType::Remitter => "REMITTER",
                 TransactionSubType::Refund => "REFUND",
+                TransactionSubType::Credit => "CREDIT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2774,6 +2809,7 @@ pub mod transaction_info {
                 "BENEFICIARY" => Some(Self::Beneficiary),
                 "REMITTER" => Some(Self::Remitter),
                 "REFUND" => Some(Self::Refund),
+                "CREDIT" => Some(Self::Credit),
                 _ => None,
             }
         }
@@ -3274,12 +3310,6 @@ pub struct ListFinancialTransactionsRequest {
     /// The following fields in the `FinancialTransaction` are eligible for
     /// filtering:
     ///
-    ///    * `transactionType` - The transaction type of the financial
-    ///    transaction. Must be one of
-    ///    \[TransactionType][google.cloud.paymentgateway.issuerswitch.v1.TransactionType\]
-    ///    values. For financial transactions, only valid transaction types are
-    ///    `TRANSACTION_TYPE_CREDIT`, `TRANSACTION_TYPE_DEBIT` and
-    ///    `TRANSACTION_TYPE_REVERSAL`. Allowed comparison operators: `=`.
     ///    * `transactionID` - The UPI transaction ID of the financial
     ///    transaction. Allowed comparison operators: `=`.
     ///    * `RRN` - The retrieval reference number of the transaction. Allowed
@@ -3292,20 +3322,10 @@ pub struct ListFinancialTransactionsRequest {
     ///       transaction. Allowed comparison operators: `=`.
     ///    * `payeeMobileNumber` - The mobile number of the payee in a financial
     ///       transaction. Allowed comparison operators: `=`.
-    ///    * `payeeMerchantId` - The merchant id of the payee in a financial
-    ///       transaction. Allowed comparison operators: `=`.
     ///    * `createTime` - The time at which the transaction was created
     ///    (received) by the issuer switch. The value should be in
     ///    the format `YYYY-MM-DDTHH:MM:SSZ`. Allowed comparison operators: `>`,
     ///    `<`.
-    ///    * `state` - The state of the transaction. Must be one of
-    ///    \[TransactionInfo.State][google.cloud.paymentgateway.issuerswitch.v1.TransactionInfo.State\]
-    ///    values. Allowed comparison operators: `=`.
-    ///    * `errorCode` - Use this filter to list financial transactions which
-    ///    have failed a particular error code. Allowed comparison operators: `=`.
-    ///    * `adapterRequestID` - Adapter request ID used when invoking the Bank or
-    ///    Card Adapter API for fulfilling a transaction request. Allowed comparison
-    ///    operators: `=`.
     ///
     /// You can combine multiple expressions by enclosing each expression in
     /// parentheses. Expressions are combined with AND logic. No other logical
@@ -3313,12 +3333,11 @@ pub struct ListFinancialTransactionsRequest {
     ///
     /// Here are a few examples:
     ///
-    ///    * `transactionType = CREDIT` - The transaction type is _CREDIT_.
-    ///    * `state = SUCCEEDED` - The transaction's state is _SUCCEEDED_.
-    ///    * `payerVpa = example@okbank` - The VPA of the payer is the string
-    ///    _example@okbank_.
-    ///    * `(transactionType = DEBIT) AND (createTime < "2021-08-15T14:50:00Z")`
-    ///    - The transaction type is _DEBIT_ and the transaction was received
+    ///    * `rrn = 123456789123` - The RRN is _123456789123_.
+    ///    * `payerVpa = example@goog` - The VPA of the payer is the string
+    ///    _example@goog_.
+    ///    * `(payeeVpa = example@goog) AND (createTime < "2021-08-15T14:50:00Z")`
+    ///    - The VPA of the payee is _example@goog_ and the transaction was received
     ///    before _2021-08-15 14:50:00 UTC_.
     ///    * `createTime > "2021-08-15T14:50:00Z" AND createTime <
     ///    "2021-08-16T14:50:00Z"` - The transaction was received between
@@ -4344,12 +4363,12 @@ pub mod issuer_switch_transactions_client {
         /// 1. `StartDate`
         ///     * **Min Length** - 10 characters
         ///     * **Max Length** - 10 characters
-        ///     * **Description** - The start date of the mandate in `YYYY-MM-DD`
+        ///     * **Description** - The start date of the mandate in `DD-MM-YYYY`
         ///     format.
         /// 1. `EndDate`
         ///     * **Min Length** - 10 characters
         ///     * **Max Length** - 10 characters
-        ///     * **Description** - The end date of the mandate in `YYYY-MM-DD` format.
+        ///     * **Description** - The end date of the mandate in `DD-MM-YYYY` format.
         /// 1. `AmountRuleType`
         ///     * **Description** - The amount rule of the mandate. The value will be
         ///     of the

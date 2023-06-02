@@ -489,21 +489,22 @@ pub mod text_to_speech_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeLongAudioRequest {
     /// The resource states of the request in the form of
-    /// `projects/*/locations/*/voices/*`.
+    /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Synthesizer requires either plain text or SSML as input.
+    /// While Long Audio is in preview, SSML is temporarily unsupported.
     #[prost(message, optional, tag = "2")]
     pub input: ::core::option::Option<SynthesisInput>,
     /// Required. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "3")]
     pub audio_config: ::core::option::Option<AudioConfig>,
-    /// Specifies a Cloud Storage URI for the synthesis results. Must be
+    /// Required. Specifies a Cloud Storage URI for the synthesis results. Must be
     /// specified in the format: `gs://bucket_name/object_name`, and the bucket
     /// must already exist.
     #[prost(string, tag = "4")]
     pub output_gcs_uri: ::prost::alloc::string::String,
-    /// The desired voice of the synthesized audio.
+    /// Required. The desired voice of the synthesized audio.
     #[prost(message, optional, tag = "5")]
     pub voice: ::core::option::Option<VoiceSelectionParams>,
 }

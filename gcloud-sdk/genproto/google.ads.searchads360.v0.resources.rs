@@ -27,6 +27,34 @@ pub struct Ad {
     /// ShoppingComparisonListingAd and VideoAd.
     #[prost(string, optional, tag = "47")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Details pertinent to the ad type. Exactly one value must be set.
+    #[prost(oneof = "ad::AdData", tags = "55, 56, 57, 58, 59")]
+    pub ad_data: ::core::option::Option<ad::AdData>,
+}
+/// Nested message and enum types in `Ad`.
+pub mod ad {
+    /// Details pertinent to the ad type. Exactly one value must be set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AdData {
+        /// Immutable. Details pertaining to a text ad.
+        #[prost(message, tag = "55")]
+        TextAd(super::super::common::SearchAds360TextAdInfo),
+        /// Immutable. Details pertaining to an expanded text ad.
+        #[prost(message, tag = "56")]
+        ExpandedTextAd(super::super::common::SearchAds360ExpandedTextAdInfo),
+        /// Immutable. Details pertaining to a responsive search ad.
+        #[prost(message, tag = "57")]
+        ResponsiveSearchAd(super::super::common::SearchAds360ResponsiveSearchAdInfo),
+        /// Immutable. Details pertaining to a product ad.
+        #[prost(message, tag = "58")]
+        ProductAd(super::super::common::SearchAds360ProductAdInfo),
+        /// Immutable. Details pertaining to an expanded dynamic search ad.
+        #[prost(message, tag = "59")]
+        ExpandedDynamicSearchAd(
+            super::super::common::SearchAds360ExpandedDynamicSearchAdInfo,
+        ),
+    }
 }
 /// An ad group.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -374,7 +402,7 @@ pub mod ad_group_criterion {
         /// Immutable. Webpage
         #[prost(message, tag = "46")]
         Webpage(super::super::common::WebpageInfo),
-        /// Immutable. Location.
+        /// Output only. Location.
         #[prost(message, tag = "82")]
         Location(super::super::common::LocationInfo),
     }

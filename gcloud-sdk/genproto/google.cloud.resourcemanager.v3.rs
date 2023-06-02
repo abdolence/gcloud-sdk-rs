@@ -2370,22 +2370,25 @@ pub struct EffectiveTag {
     /// Resource name for TagValue in the format `tagValues/456`.
     #[prost(string, tag = "1")]
     pub tag_value: ::prost::alloc::string::String,
-    /// Namespaced name of the TagValue. Now only supported in the format
-    /// `{organization_id}/{tag_key_short_name}/{tag_value_short_name}`.
-    /// Other formats will be supported when we add non-org parented tags.
+    /// The namespaced name of the TagValue. Can be in the form
+    /// `{organization_id}/{tag_key_short_name}/{tag_value_short_name}` or
+    /// `{project_id}/{tag_key_short_name}/{tag_value_short_name}` or
+    /// `{project_number}/{tag_key_short_name}/{tag_value_short_name}`.
     #[prost(string, tag = "2")]
     pub namespaced_tag_value: ::prost::alloc::string::String,
     /// The name of the TagKey, in the format `tagKeys/{id}`, such as
     /// `tagKeys/123`.
     #[prost(string, tag = "3")]
     pub tag_key: ::prost::alloc::string::String,
-    /// The namespaced_name of the TagKey. Now only supported in the format of
-    /// `{organization_id}/{tag_key_short_name}`. Other formats will be
-    /// supported when we add non-org parented tags.
+    /// The namespaced name of the TagKey. Can be in the form
+    /// `{organization_id}/{tag_key_short_name}` or
+    /// `{project_id}/{tag_key_short_name}` or
+    /// `{project_number}/{tag_key_short_name}`.
     #[prost(string, tag = "4")]
     pub namespaced_tag_key: ::prost::alloc::string::String,
     /// The parent name of the tag key.
-    /// Must be in the format `organizations/{organization_id}`.
+    /// Must be in the format `organizations/{organization_id}` or
+    /// `projects/{project_number}`
     #[prost(string, tag = "6")]
     pub tag_key_parent_name: ::prost::alloc::string::String,
     /// Indicates the inheritance status of a tag value
@@ -2934,8 +2937,11 @@ pub struct TagKey {
     /// the TagKey.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. The resource name of the new TagKey's parent.
-    /// Must be of the form `organizations/{org_id}`.
+    /// Immutable. The resource name of the TagKey's parent. A TagKey can be
+    /// parented by an Organization or a Project. For a TagKey parented by an
+    /// Organization, its parent must be in the form `organizations/{org_id}`. For
+    /// a TagKey parented by a Project, its parent can be in the form
+    /// `projects/{project_id}` or `projects/{project_number}`.
     #[prost(string, tag = "2")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Immutable. The user friendly name for a TagKey. The short name
@@ -2989,8 +2995,9 @@ pub struct TagKey {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagKeysRequest {
-    /// Required. The resource name of the new TagKey's parent.
-    /// Must be of the form `folders/{folder_id}` or `organizations/{org_id}`.
+    /// Required. The resource name of the TagKey's parent.
+    /// Must be of the form `organizations/{org_id}` or `projects/{project_id}` or
+    /// `projects/{project_number}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of TagKeys to return in the response. The
@@ -3107,15 +3114,19 @@ pub enum Purpose {
     /// Unspecified purpose.
     Unspecified = 0,
     /// Purpose for Compute Engine firewalls.
-    /// A corresponding purpose_data should be set for the network the tag is
-    /// intended for. The key should be 'network' and the value should be in
+    /// A corresponding `purpose_data` should be set for the network the tag is
+    /// intended for. The key should be `network` and the value should be in
     /// either of these two formats:
-    /// -<https://www.googleapis.com/compute/{compute_version}/projects/{project_id}/global/networks/{network_id}>
-    /// -{project_id}/{network_name}
+    ///
+    /// -
+    /// `<https://www.googleapis.com/compute/{compute_version}/projects/{project_id}/global/networks/{network_id}`>
+    /// - `{project_id}/{network_name}`
     ///
     /// Examples:
-    /// -<https://www.googleapis.com/compute/staging_v1/projects/fail-closed-load-testing/global/networks/6992953698831725600>
-    /// -fail-closed-load-testing/load-testing-network
+    ///
+    /// -
+    /// `<https://www.googleapis.com/compute/staging_v1/projects/fail-closed-load-testing/global/networks/6992953698831725600`>
+    /// - `fail-closed-load-testing/load-testing-network`
     GceFirewall = 1,
 }
 impl Purpose {
@@ -3547,10 +3558,10 @@ pub struct TagValue {
     /// dots (.), and alphanumerics between.
     #[prost(string, tag = "3")]
     pub short_name: ::prost::alloc::string::String,
-    /// Output only. Namespaced name of the TagValue. Now only supported in the
-    /// format
-    /// `{organization_id}/{tag_key_short_name}/{short_name}`. Other
-    /// formats will be supported when we add non-org parented tags.
+    /// Output only. The namespaced name of the TagValue. Can be in the form
+    /// `{organization_id}/{tag_key_short_name}/{tag_value_short_name}` or
+    /// `{project_id}/{tag_key_short_name}/{tag_value_short_name}` or
+    /// `{project_number}/{tag_key_short_name}/{tag_value_short_name}`.
     #[prost(string, tag = "4")]
     pub namespaced_name: ::prost::alloc::string::String,
     /// Optional. User-assigned description of the TagValue.

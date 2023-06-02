@@ -2275,13 +2275,15 @@ pub struct SearchVehiclesRequest {
     /// ```
     /// (required_attributes\[0\] AND required_attributes\[1\] AND ...)
     /// AND
-    /// (required_one_of_attribute_sets\[0][0\] AND
-    /// required_one_of_attribute_sets\[0][1\] AND
-    /// ...)
-    /// OR
-    /// (required_one_of_attribute_sets\[1][0\] AND
-    /// required_one_of_attribute_sets\[1][1\] AND
-    /// ...)
+    /// (
+    ///    (required_one_of_attribute_sets\[0][0\] AND
+    ///    required_one_of_attribute_sets\[0][1\] AND
+    ///    ...)
+    ///    OR
+    ///    (required_one_of_attribute_sets\[1][0\] AND
+    ///    required_one_of_attribute_sets\[1][1\] AND
+    ///    ...)
+    /// )
     /// ```
     ///
     /// Restricts the search to only those vehicles with all the attributes in a
@@ -2507,9 +2509,9 @@ pub struct ListVehiclesRequest {
     /// ```
     ///
     /// Restricts the response to vehicles with the specified attributes. This
-    /// field is a conjunction/AND operation. Your app can specify up to 100
-    /// attributes; however, the combined key:value string length cannot exceed
-    /// 1024 characters.
+    /// field is a conjunction/AND operation. A max of 50 required_attributes is
+    /// allowed. This matches the maximum number of attributes allowed on a
+    /// vehicle. Each repeated string should be of the format "key:value".
     #[prost(string, repeated, tag = "10")]
     pub required_attributes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Restricts the response to vehicles with at least one of the specified
@@ -2517,7 +2519,8 @@ pub struct ListVehiclesRequest {
     /// match at least one of the attributes. This field is an inclusive
     /// disjunction/OR operation in each `VehicleAttributeList` and a
     /// conjunction/AND operation across the collection of `VehicleAttributeList`.
-    /// Format: key1:value1|key2:value2|key3:value3...
+    /// Each repeated string should be of the format
+    /// "key1:value1|key2:value2|key3:value3".
     #[prost(string, repeated, tag = "13")]
     pub required_one_of_attributes: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -2531,11 +2534,15 @@ pub struct ListVehiclesRequest {
     /// ```
     /// (required_attributes\[0\] AND required_attributes\[1\] AND ...)
     /// AND
-    /// (required_one_of_attributes\[0][0\] AND required_one_of_attributes\[0][1\] AND
-    /// ...)
-    /// OR
-    /// (required_one_of_attributes\[1][0\] AND required_one_of_attributes\[1][1\] AND
-    /// ...)
+    /// (
+    ///    (required_one_of_attribute_sets\[0][0\] AND
+    ///    required_one_of_attribute_sets\[0][1\] AND
+    ///    ...)
+    ///    OR
+    ///    (required_one_of_attribute_sets\[1][0\] AND
+    ///    required_one_of_attribute_sets\[1][1\] AND
+    ///    ...)
+    /// )
     /// ```
     ///
     /// Restricts the response to vehicles that match all the attributes in a

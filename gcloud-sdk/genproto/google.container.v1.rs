@@ -398,6 +398,9 @@ pub struct NodeConfig {
     pub ephemeral_storage_local_ssd_config: ::core::option::Option<
         EphemeralStorageLocalSsdConfig,
     >,
+    /// Parameters for node pools to be backed by shared sole tenant node groups.
+    #[prost(message, optional, tag = "42")]
+    pub sole_tenant_config: ::core::option::Option<SoleTenantConfig>,
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -679,6 +682,81 @@ pub mod reservation_affinity {
                 "ANY_RESERVATION" => Some(Self::AnyReservation),
                 "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
                 _ => None,
+            }
+        }
+    }
+}
+/// SoleTenantConfig contains the NodeAffinities to specify what shared sole
+/// tenant node groups should back the node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SoleTenantConfig {
+    /// NodeAffinities used to match to a shared sole tenant node group.
+    #[prost(message, repeated, tag = "1")]
+    pub node_affinities: ::prost::alloc::vec::Vec<sole_tenant_config::NodeAffinity>,
+}
+/// Nested message and enum types in `SoleTenantConfig`.
+pub mod sole_tenant_config {
+    /// Specifies the NodeAffinity key, values, and affinity operator according to
+    /// [shared sole tenant node group
+    /// affinities](<https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_affinity_and_anti-affinity>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NodeAffinity {
+        /// Key for NodeAffinity.
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Operator for NodeAffinity.
+        #[prost(enumeration = "node_affinity::Operator", tag = "2")]
+        pub operator: i32,
+        /// Values for NodeAffinity.
+        #[prost(string, repeated, tag = "3")]
+        pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Nested message and enum types in `NodeAffinity`.
+    pub mod node_affinity {
+        /// Operator allows user to specify affinity or anti-affinity for the
+        /// given key values.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Operator {
+            /// Invalid or unspecified affinity operator.
+            Unspecified = 0,
+            /// Affinity operator.
+            In = 1,
+            /// Anti-affinity operator.
+            NotIn = 2,
+        }
+        impl Operator {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Operator::In => "IN",
+                    Operator::NotIn => "NOT_IN",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IN" => Some(Self::In),
+                    "NOT_IN" => Some(Self::NotIn),
+                    _ => None,
+                }
             }
         }
     }
@@ -1615,7 +1693,12 @@ pub struct Cluster {
     /// Shielded Nodes configuration.
     #[prost(message, optional, tag = "40")]
     pub shielded_nodes: ::core::option::Option<ShieldedNodes>,
-    /// Release channel configuration.
+    /// Release channel configuration. If left unspecified on cluster creation and
+    /// a version is specified, the cluster is enrolled in the most mature release
+    /// channel where the version is available (first checking STABLE, then
+    /// REGULAR, and finally RAPID). Otherwise, if no release channel
+    /// configuration and no version is specified, the cluster is enrolled in the
+    /// REGULAR channel with its default version.
     #[prost(message, optional, tag = "41")]
     pub release_channel: ::core::option::Option<ReleaseChannel>,
     /// Configuration for the use of Kubernetes Service Accounts in GCP IAM
@@ -2057,6 +2140,9 @@ pub struct ClusterUpdate {
     /// The desired node pool logging configuration defaults for the cluster.
     #[prost(message, optional, tag = "116")]
     pub desired_node_pool_logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// The desired fleet configuration for the cluster.
+    #[prost(message, optional, tag = "117")]
+    pub desired_fleet: ::core::option::Option<Fleet>,
     /// The desired stack type of the cluster.
     /// If a stack type is provided and does not match the current stack type of
     /// the cluster, update will attempt to change the stack type to the new type.
@@ -2123,10 +2209,12 @@ pub struct Operation {
     /// Examples:
     ///
     /// -
+    /// ##
     /// `<https://container.googleapis.com/v1/projects/123/locations/us-central1/clusters/my-cluster`>
-    /// -
+    ///
+    /// ##
     /// `<https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np`>
-    /// -
+    ///
     /// `<https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np/node/my-node`>
     #[prost(string, tag = "7")]
     pub target_link: ::prost::alloc::string::String,
