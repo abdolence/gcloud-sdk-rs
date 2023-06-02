@@ -79,7 +79,9 @@ pub struct GcsProfile {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryProfile {}
-/// Static IP address connectivity.
+/// Static IP address connectivity. Used when the source database is configured
+/// to allow incoming connections from the Datastream public IP addresses
+/// for the region specified in the connection profile.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticServiceIpConnectivity {}
@@ -156,7 +158,8 @@ pub struct PrivateConnection {
     /// Output only. The state of the Private Connection.
     #[prost(enumeration = "private_connection::State", tag = "6")]
     pub state: i32,
-    /// Output only. In case of error, the details of the error in a user-friendly format.
+    /// Output only. In case of error, the details of the error in a user-friendly
+    /// format.
     #[prost(message, optional, tag = "7")]
     pub error: ::core::option::Option<Error>,
     /// VPC Peering Config.
@@ -280,8 +283,8 @@ pub struct MysqlSslConfig {
     /// Output only. Indicates whether the client_certificate field is set.
     #[prost(bool, tag = "4")]
     pub client_certificate_set: bool,
-    /// Input only. PEM-encoded certificate of the CA that signed the source database
-    /// server's certificate.
+    /// Input only. PEM-encoded certificate of the CA that signed the source
+    /// database server's certificate.
     #[prost(string, tag = "5")]
     pub ca_certificate: ::prost::alloc::string::String,
     /// Output only. Indicates whether the ca_certificate field is set.
@@ -429,10 +432,14 @@ pub struct OracleSourceConfig {
     /// Oracle objects to exclude from the stream.
     #[prost(message, optional, tag = "2")]
     pub exclude_objects: ::core::option::Option<OracleRdbms>,
-    /// Maximum number of concurrent CDC tasks. The number should be non negative.
-    /// If not set (or set to 0), the system's default value will be used.
+    /// Maximum number of concurrent CDC tasks. The number should be non-negative.
+    /// If not set (or set to 0), the system's default value is used.
     #[prost(int32, tag = "3")]
     pub max_concurrent_cdc_tasks: i32,
+    /// Maximum number of concurrent backfill tasks. The number should be
+    /// non-negative. If not set (or set to 0), the system's default value is used.
+    #[prost(int32, tag = "4")]
+    pub max_concurrent_backfill_tasks: i32,
     /// The configuration for handle Oracle large objects.
     #[prost(oneof = "oracle_source_config::LargeObjectsHandling", tags = "100, 102")]
     pub large_objects_handling: ::core::option::Option<
@@ -456,7 +463,7 @@ pub mod oracle_source_config {
         /// Drop large object values.
         #[prost(message, tag = "100")]
         DropLargeObjects(DropLargeObjects),
-        /// Stream large object values.
+        /// Stream large object values. NOTE: This feature is currently experimental.
         #[prost(message, tag = "102")]
         StreamLargeObjects(StreamLargeObjects),
     }
@@ -532,14 +539,19 @@ pub struct PostgresqlSourceConfig {
     /// PostgreSQL objects to exclude from the stream.
     #[prost(message, optional, tag = "2")]
     pub exclude_objects: ::core::option::Option<PostgresqlRdbms>,
-    /// Required. The name of the logical replication slot that's configured with the
-    /// pgoutput plugin.
+    /// Required. Immutable. The name of the logical replication slot that's
+    /// configured with the pgoutput plugin.
     #[prost(string, tag = "3")]
     pub replication_slot: ::prost::alloc::string::String,
-    /// Required. The name of the publication that includes the set of all tables that are
-    /// defined in the stream's include_objects.
+    /// Required. The name of the publication that includes the set of all tables
+    /// that are defined in the stream's include_objects.
     #[prost(string, tag = "4")]
     pub publication: ::prost::alloc::string::String,
+    /// Maximum number of concurrent backfill tasks. The number should be non
+    /// negative. If not set (or set to 0), the system's default value will be
+    /// used.
+    #[prost(int32, tag = "5")]
+    pub max_concurrent_backfill_tasks: i32,
 }
 /// MySQL Column.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -614,6 +626,11 @@ pub struct MysqlSourceConfig {
     /// If not set (or set to 0), the system's default value will be used.
     #[prost(int32, tag = "3")]
     pub max_concurrent_cdc_tasks: i32,
+    /// Maximum number of concurrent backfill tasks. The number should be non
+    /// negative. If not set (or set to 0), the system's default value will be
+    /// used.
+    #[prost(int32, tag = "4")]
+    pub max_concurrent_backfill_tasks: i32,
 }
 /// The configuration of the stream source.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -759,7 +776,8 @@ pub struct GcsDestinationConfig {
     #[prost(int32, tag = "2")]
     pub file_rotation_mb: i32,
     /// The maximum duration for which new events are added before a file is
-    /// closed and a new file is created.
+    /// closed and a new file is created. Values within the range of 15-60 seconds
+    /// are allowed.
     #[prost(message, optional, tag = "3")]
     pub file_rotation_interval: ::core::option::Option<::prost_types::Duration>,
     /// File Format that the data should be written in.
@@ -780,6 +798,7 @@ pub mod gcs_destination_config {
         JsonFileFormat(super::JsonFileFormat),
     }
 }
+/// BigQuery destination configuration
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDestinationConfig {
@@ -801,6 +820,7 @@ pub mod big_query_destination_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SingleTargetDataset {
+        /// The dataset ID of the target dataset.
         #[prost(string, tag = "1")]
         pub dataset_id: ::prost::alloc::string::String,
     }
@@ -809,6 +829,7 @@ pub mod big_query_destination_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourceHierarchyDatasets {
+        /// The dataset template to use for dynamic dataset creation.
         #[prost(message, optional, tag = "2")]
         pub dataset_template: ::core::option::Option<
             source_hierarchy_datasets::DatasetTemplate,
@@ -1434,8 +1455,8 @@ pub mod validation_message {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoverConnectionProfileRequest {
-    /// Required. The parent resource of the connection profile type. Must be in the
-    /// format `projects/*/locations/*`.
+    /// Required. The parent resource of the connection profile type. Must be in
+    /// the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The connection profile on which to run discover.
@@ -1529,8 +1550,8 @@ pub mod discover_connection_profile_response {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchStaticIpsRequest {
-    /// Required. The resource name for the location for which static IPs should be returned.
-    /// Must be in the format `projects/*/locations/*`.
+    /// Required. The resource name for the location for which static IPs should be
+    /// returned. Must be in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Maximum number of Ips to return, will likely not be specified.
@@ -1630,8 +1651,8 @@ pub struct CreateConnectionProfileRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. Only validate the connection profile, but don't create any resources.
-    /// The default is false.
+    /// Optional. Only validate the connection profile, but don't create any
+    /// resources. The default is false.
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
     /// Optional. Create the connection profile without validating it.
@@ -1667,8 +1688,8 @@ pub struct UpdateConnectionProfileRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. Only validate the connection profile, but don't update any resources.
-    /// The default is false.
+    /// Optional. Only validate the connection profile, but don't update any
+    /// resources. The default is false.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
     /// Optional. Update the connection profile without validating it.
@@ -1812,8 +1833,8 @@ pub struct UpdateStreamRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. Only validate the stream with the changes, without actually updating it.
-    /// The default is false.
+    /// Optional. Only validate the stream with the changes, without actually
+    /// updating it. The default is false.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
     /// Optional. Update the stream without validating it.
@@ -1867,7 +1888,8 @@ pub struct LookupStreamObjectRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartBackfillJobRequest {
-    /// Required. The name of the stream object resource to start a backfill job for.
+    /// Required. The name of the stream object resource to start a backfill job
+    /// for.
     #[prost(string, tag = "1")]
     pub object: ::prost::alloc::string::String,
 }
@@ -1884,7 +1906,8 @@ pub struct StartBackfillJobResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopBackfillJobRequest {
-    /// Required. The name of the stream object resource to stop the backfill job for.
+    /// Required. The name of the stream object resource to stop the backfill job
+    /// for.
     #[prost(string, tag = "1")]
     pub object: ::prost::alloc::string::String,
 }
@@ -1948,8 +1971,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -1987,12 +2011,16 @@ pub struct CreatePrivateConnectionRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, will skip validations.
+    #[prost(bool, tag = "6")]
+    pub force: bool,
 }
 /// Request for listing private connections.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateConnectionsRequest {
-    /// Required. The parent that owns the collection of private connectivity configurations.
+    /// Required. The parent that owns the collection of private connectivity
+    /// configurations.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of private connectivity configurations to return.
@@ -2053,8 +2081,8 @@ pub struct DeletePrivateConnectionRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. If set to true, any child routes that belong to this PrivateConnection will
-    /// also be deleted.
+    /// Optional. If set to true, any child routes that belong to this
+    /// PrivateConnection will also be deleted.
     #[prost(bool, tag = "3")]
     pub force: bool,
 }

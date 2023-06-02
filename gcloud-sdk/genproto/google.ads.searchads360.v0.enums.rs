@@ -2434,7 +2434,7 @@ pub mod asset_field_type_enum {
         Callout = 11,
         /// The asset is linked for use as a Structured Snippet extension.
         StructuredSnippet = 12,
-        /// The asset is linked for use as a Sitelink extension.
+        /// The asset is linked for use as a Sitelink.
         Sitelink = 13,
         /// The asset is linked for use as a Mobile App extension.
         MobileApp = 14,

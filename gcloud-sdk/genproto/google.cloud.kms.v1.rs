@@ -1515,6 +1515,21 @@ pub struct EkmConfig {
     #[prost(string, tag = "2")]
     pub default_ekm_connection: ::prost::alloc::string::String,
 }
+/// Request message for
+/// \[EkmService.VerifyConnectivity][google.cloud.kms.v1.EkmService.VerifyConnectivity\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyConnectivityRequest {
+    /// Required. The \[name][google.cloud.kms.v1.EkmConnection.name\] of the
+    /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] to verify.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[EkmService.VerifyConnectivity][google.cloud.kms.v1.EkmService.VerifyConnectivity\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyConnectivityResponse {}
 /// Generated client implementations.
 pub mod ekm_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -1768,6 +1783,41 @@ pub mod ekm_service_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.kms.v1.EkmService", "UpdateEkmConfig"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Verifies that Cloud KMS can successfully connect to the external key
+        /// manager specified by an [EkmConnection][google.cloud.kms.v1.EkmConnection].
+        /// If there is an error connecting to the EKM, this method returns a
+        /// FAILED_PRECONDITION status containing structured information as described
+        /// at https://cloud.google.com/kms/docs/reference/ekm_errors.
+        pub async fn verify_connectivity(
+            &mut self,
+            request: impl tonic::IntoRequest<super::VerifyConnectivityRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::VerifyConnectivityResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.EkmService/VerifyConnectivity",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.EkmService",
+                        "VerifyConnectivity",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

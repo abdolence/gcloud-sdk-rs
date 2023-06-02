@@ -502,7 +502,12 @@ pub struct AccessQuotaStatus {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceDimensionOrMetricFilter {
-    /// Required. Immutable. The dimension name or metric name to filter.
+    /// Required. Immutable. The dimension name or metric name to filter. If the
+    /// field name refers to a custom dimension or metric, a scope prefix will be
+    /// added to the front of the custom dimensions or metric name. For more on
+    /// scope prefixes or custom dimensions/metrics, reference the [Google
+    /// Analytics Data API documentation]
+    /// (<https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#custom_dimensions>).
     #[prost(string, tag = "1")]
     pub field_name: ::prost::alloc::string::String,
     /// Optional. Indicates whether this filter needs dynamic evaluation or not. If
@@ -516,7 +521,7 @@ pub struct AudienceDimensionOrMetricFilter {
     pub at_any_point_in_time: bool,
     /// Optional. If set, specifies the time window for which to evaluate data in
     /// number of days. If not set, then audience data is evaluated against
-    /// lifetime data (i.e., infinite time window).
+    /// lifetime data (For example, infinite time window).
     ///
     /// For example, if set to 1 day, only the current day's data is evaluated. The
     /// reference point is the current day when at_any_point_in_time is unset or
@@ -749,7 +754,7 @@ pub struct AudienceEventFilter {
     pub event_name: ::prost::alloc::string::String,
     /// Optional. If specified, this filter matches events that match both the
     /// single event name and the parameter filter expressions. AudienceEventFilter
-    /// inside the parameter filter expression cannot be set (i.e., nested
+    /// inside the parameter filter expression cannot be set (For example, nested
     /// event filters are not supported). This should be a single and_group of
     /// dimension_or_metric_filter or not_expression; ANDs of ORs are not
     /// supported. Also, if it includes a filter for "eventCount", only that one
@@ -782,9 +787,9 @@ pub mod audience_filter_expression {
         /// AudienceFilterExpressions with and_group or or_group.
         #[prost(message, tag = "2")]
         OrGroup(super::AudienceFilterExpressionList),
-        /// A filter expression to be NOT'ed (i.e., inverted, complemented). It
-        /// can only include a dimension_or_metric_filter. This cannot be set on the
-        /// top level AudienceFilterExpression.
+        /// A filter expression to be NOT'ed (For example, inverted, complemented).
+        /// It can only include a dimension_or_metric_filter. This cannot be set on
+        /// the top level AudienceFilterExpression.
         #[prost(message, tag = "3")]
         NotExpression(::prost::alloc::boxed::Box<super::AudienceFilterExpression>),
         /// A filter on a single dimension or metric. This cannot be set on the top
@@ -854,7 +859,7 @@ pub mod audience_sequence_filter {
         #[prost(bool, tag = "2")]
         pub immediately_follows: bool,
         /// Optional. When set, this step must be satisfied within the
-        /// constraint_duration of the previous step (i.e., t\[i\] - t\[i-1\] <=
+        /// constraint_duration of the previous step (For example,  t\[i\] - t\[i-1\] <=
         /// constraint_duration). If not set, there is no duration requirement (the
         /// duration is effectively unlimited). It is ignored for the first step.
         #[prost(message, optional, tag = "3")]
@@ -866,9 +871,9 @@ pub mod audience_sequence_filter {
     }
 }
 /// A clause for defining either a simple or sequence filter. A filter can be
-/// inclusive (i.e., users satisfying the filter clause are included in the
-/// Audience) or exclusive (i.e., users satisfying the filter clause are
-/// excluded from the Audience).
+/// inclusive (For example, users satisfying the filter clause are included in
+/// the Audience) or exclusive (For example, users satisfying the filter clause
+/// are excluded from the Audience).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceFilterClause {
@@ -1313,6 +1318,196 @@ pub struct ChannelGroup {
     /// updated.
     #[prost(bool, tag = "5")]
     pub system_defined: bool,
+}
+/// Defines an event parameter to mutate.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ParameterMutation {
+    /// Required. The name of the parameter to mutate.
+    /// This value must:
+    /// * be less than 40 characters.
+    /// * be unique across across all mutations within the rule
+    /// * consist only of letters, digits or _ (underscores)
+    /// For event edit rules, the name may also be set to 'event_name' to modify
+    /// the event_name in place.
+    #[prost(string, tag = "1")]
+    pub parameter: ::prost::alloc::string::String,
+    /// Required. The value mutation to perform.
+    /// * Must be less than 100 characters.
+    /// * To specify a constant value for the param, use the value's string.
+    /// * To copy value from another parameter, use syntax like
+    /// "\[[other_parameter]\]" For more details, see this [help center
+    /// article](<https://support.google.com/analytics/answer/10085872#modify-an-event&zippy=%2Cin-this-article%2Cmodify-parameters>).
+    #[prost(string, tag = "2")]
+    pub parameter_value: ::prost::alloc::string::String,
+}
+/// An Event Create Rule defines conditions that will trigger the creation
+/// of an entirely new event based upon matched criteria of a source event.
+/// Additional mutations of the parameters from the source event can be defined.
+///
+/// Unlike Event Edit rules, Event Creation Rules have no defined order.  They
+/// will all be run independently.
+///
+/// Event Edit and Event Create rules can't be used to modify an event created
+/// from an Event Create rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventCreateRule {
+    /// Output only. Resource name for this EventCreateRule resource.
+    /// Format:
+    /// properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the new event to be created.
+    ///
+    /// This value must:
+    /// * be less than 40 characters
+    /// * consist only of letters, digits or _ (underscores)
+    /// * start with a letter
+    #[prost(string, tag = "2")]
+    pub destination_event: ::prost::alloc::string::String,
+    /// Required. Must have at least one condition, and can have up to 10 max.
+    /// Conditions on the source event must match for this rule to be applied.
+    #[prost(message, repeated, tag = "3")]
+    pub event_conditions: ::prost::alloc::vec::Vec<MatchingCondition>,
+    /// If true, the source parameters are copied to the new event.
+    /// If false, or unset, all non-internal parameters are not copied from the
+    /// source event. Parameter mutations are applied after the parameters have
+    /// been copied.
+    #[prost(bool, tag = "4")]
+    pub source_copy_parameters: bool,
+    /// Parameter mutations define parameter behavior on the new event, and
+    /// are applied in order.
+    /// A maximum of 20 mutations can be applied.
+    #[prost(message, repeated, tag = "5")]
+    pub parameter_mutations: ::prost::alloc::vec::Vec<ParameterMutation>,
+}
+/// Defines a condition for when an Event Edit or Event Creation rule applies to
+/// an event.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MatchingCondition {
+    /// Required. The name of the field that is compared against for the condition.
+    /// If 'event_name' is specified this condition will apply to the name of the
+    /// event.  Otherwise the condition will apply to a parameter with the
+    /// specified name.
+    ///
+    /// This value cannot contain spaces.
+    #[prost(string, tag = "1")]
+    pub field: ::prost::alloc::string::String,
+    /// Required. The type of comparison to be applied to the value.
+    #[prost(enumeration = "matching_condition::ComparisonType", tag = "2")]
+    pub comparison_type: i32,
+    /// Required. The value being compared against for this condition.  The runtime
+    /// implementation may perform type coercion of this value to evaluate this
+    /// condition based on the type of the parameter value.
+    #[prost(string, tag = "3")]
+    pub value: ::prost::alloc::string::String,
+    /// Whether or not the result of the comparison should be negated. For example,
+    /// if `negated` is true, then 'equals' comparisons would function as 'not
+    /// equals'.
+    #[prost(bool, tag = "4")]
+    pub negated: bool,
+}
+/// Nested message and enum types in `MatchingCondition`.
+pub mod matching_condition {
+    /// Comparison type for matching condition
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ComparisonType {
+        /// Unknown
+        Unspecified = 0,
+        /// Equals, case sensitive
+        Equals = 1,
+        /// Equals, case insensitive
+        EqualsCaseInsensitive = 2,
+        /// Contains, case sensitive
+        Contains = 3,
+        /// Contains, case insensitive
+        ContainsCaseInsensitive = 4,
+        /// Starts with, case sensitive
+        StartsWith = 5,
+        /// Starts with, case insensitive
+        StartsWithCaseInsensitive = 6,
+        /// Ends with, case sensitive
+        EndsWith = 7,
+        /// Ends with, case insensitive
+        EndsWithCaseInsensitive = 8,
+        /// Greater than
+        GreaterThan = 9,
+        /// Greater than or equal
+        GreaterThanOrEqual = 10,
+        /// Less than
+        LessThan = 11,
+        /// Less than or equal
+        LessThanOrEqual = 12,
+        /// regular expression. Only supported for web streams.
+        RegularExpression = 13,
+        /// regular expression, case insensitive. Only supported for web streams.
+        RegularExpressionCaseInsensitive = 14,
+    }
+    impl ComparisonType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ComparisonType::Unspecified => "COMPARISON_TYPE_UNSPECIFIED",
+                ComparisonType::Equals => "EQUALS",
+                ComparisonType::EqualsCaseInsensitive => "EQUALS_CASE_INSENSITIVE",
+                ComparisonType::Contains => "CONTAINS",
+                ComparisonType::ContainsCaseInsensitive => "CONTAINS_CASE_INSENSITIVE",
+                ComparisonType::StartsWith => "STARTS_WITH",
+                ComparisonType::StartsWithCaseInsensitive => {
+                    "STARTS_WITH_CASE_INSENSITIVE"
+                }
+                ComparisonType::EndsWith => "ENDS_WITH",
+                ComparisonType::EndsWithCaseInsensitive => "ENDS_WITH_CASE_INSENSITIVE",
+                ComparisonType::GreaterThan => "GREATER_THAN",
+                ComparisonType::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+                ComparisonType::LessThan => "LESS_THAN",
+                ComparisonType::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
+                ComparisonType::RegularExpression => "REGULAR_EXPRESSION",
+                ComparisonType::RegularExpressionCaseInsensitive => {
+                    "REGULAR_EXPRESSION_CASE_INSENSITIVE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPARISON_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EQUALS" => Some(Self::Equals),
+                "EQUALS_CASE_INSENSITIVE" => Some(Self::EqualsCaseInsensitive),
+                "CONTAINS" => Some(Self::Contains),
+                "CONTAINS_CASE_INSENSITIVE" => Some(Self::ContainsCaseInsensitive),
+                "STARTS_WITH" => Some(Self::StartsWith),
+                "STARTS_WITH_CASE_INSENSITIVE" => Some(Self::StartsWithCaseInsensitive),
+                "ENDS_WITH" => Some(Self::EndsWith),
+                "ENDS_WITH_CASE_INSENSITIVE" => Some(Self::EndsWithCaseInsensitive),
+                "GREATER_THAN" => Some(Self::GreaterThan),
+                "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                "LESS_THAN" => Some(Self::LessThan),
+                "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                "REGULAR_EXPRESSION" => Some(Self::RegularExpression),
+                "REGULAR_EXPRESSION_CASE_INSENSITIVE" => {
+                    Some(Self::RegularExpressionCaseInsensitive)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// A specific filter for a single dimension
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2016,7 +2211,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 27, 28, 29"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2086,6 +2281,15 @@ pub mod change_history_change {
             /// A snapshot of EnhancedMeasurementSettings resource in change history.
             #[prost(message, tag = "24")]
             EnhancedMeasurementSettings(super::super::EnhancedMeasurementSettings),
+            /// A snapshot of an AdSenseLink resource in change history.
+            #[prost(message, tag = "27")]
+            AdsenseLink(super::super::AdSenseLink),
+            /// A snapshot of an Audience resource in change history.
+            #[prost(message, tag = "28")]
+            Audience(super::super::Audience),
+            /// A snapshot of an EventCreateRule resource in change history.
+            #[prost(message, tag = "29")]
+            EventCreateRule(super::super::EventCreateRule),
         }
     }
 }
@@ -3050,6 +3254,20 @@ pub struct ConnectedSiteTag {
     #[prost(string, tag = "2")]
     pub tag_id: ::prost::alloc::string::String,
 }
+/// A link between a GA4 Property and an AdSense for Content ad client.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdSenseLink {
+    /// Output only. The resource name for this AdSense Link resource.
+    /// Format: properties/{propertyId}/adSenseLinks/{linkId}
+    /// Example: properties/1234/adSenseLinks/6789
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The AdSense ad client code that the GA4 property is linked to.
+    /// Example format: "ca-pub-1234567890"
+    #[prost(string, tag = "2")]
+    pub ad_client_code: ::prost::alloc::string::String,
+}
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -3331,6 +3549,12 @@ pub enum ChangeHistoryResourceType {
     ChannelGroup = 22,
     /// EnhancedMeasurementSettings resource
     EnhancedMeasurementSettings = 24,
+    /// AdSenseLink resource
+    AdsenseLink = 27,
+    /// Audience resource
+    Audience = 28,
+    /// EventCreateRule resource
+    EventCreateRule = 29,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3368,6 +3592,9 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::EnhancedMeasurementSettings => {
                 "ENHANCED_MEASUREMENT_SETTINGS"
             }
+            ChangeHistoryResourceType::AdsenseLink => "ADSENSE_LINK",
+            ChangeHistoryResourceType::Audience => "AUDIENCE",
+            ChangeHistoryResourceType::EventCreateRule => "EVENT_CREATE_RULE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3396,6 +3623,9 @@ impl ChangeHistoryResourceType {
             "EXPANDED_DATA_SET" => Some(Self::ExpandedDataSet),
             "CHANNEL_GROUP" => Some(Self::ChannelGroup),
             "ENHANCED_MEASUREMENT_SETTINGS" => Some(Self::EnhancedMeasurementSettings),
+            "ADSENSE_LINK" => Some(Self::AdsenseLink),
+            "AUDIENCE" => Some(Self::Audience),
+            "EVENT_CREATE_RULE" => Some(Self::EventCreateRule),
             _ => None,
         }
     }
@@ -5617,6 +5847,73 @@ pub struct ListConnectedSiteTagsResponse {
     #[prost(message, repeated, tag = "1")]
     pub connected_site_tags: ::prost::alloc::vec::Vec<ConnectedSiteTag>,
 }
+/// Request message to be passed to CreateAdSenseLink method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAdSenseLinkRequest {
+    /// Required. The property for which to create an AdSense Link.
+    /// Format: properties/{propertyId}
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The AdSense Link to create
+    #[prost(message, optional, tag = "2")]
+    pub adsense_link: ::core::option::Option<AdSenseLink>,
+}
+/// Request message to be passed to GetAdSenseLink method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdSenseLinkRequest {
+    /// Required. Unique identifier for the AdSense Link requested.
+    /// Format: properties/{propertyId}/adSenseLinks/{linkId}
+    /// Example: properties/1234/adSenseLinks/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to be passed to DeleteAdSenseLink method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAdSenseLinkRequest {
+    /// Required. Unique identifier for the AdSense Link to be deleted.
+    /// Format: properties/{propertyId}/adSenseLinks/{linkId}
+    /// Example: properties/1234/adSenseLinks/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to be passed to ListAdSenseLinks method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdSenseLinksRequest {
+    /// Required. Resource name of the parent property.
+    /// Format: properties/{propertyId}
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token received from a previous `ListAdSenseLinks` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListAdSenseLinks` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListAdSenseLinks method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdSenseLinksResponse {
+    /// List of AdSenseLinks.
+    #[prost(message, repeated, tag = "1")]
+    pub adsense_links: ::prost::alloc::vec::Vec<AdSenseLink>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Request for looking up GA4 property connected to a UA property.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5639,6 +5936,84 @@ pub struct FetchConnectedGa4PropertyResponse {
     /// Example: properties/1234
     #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
+}
+/// Request message for CreateEventCreateRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEventCreateRuleRequest {
+    /// Required. Example format: properties/123/dataStreams/456
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The EventCreateRule to create.
+    #[prost(message, optional, tag = "2")]
+    pub event_create_rule: ::core::option::Option<EventCreateRule>,
+}
+/// Request message for UpdateEventCreateRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEventCreateRuleRequest {
+    /// Required. The EventCreateRule to update.
+    /// The resource's `name` field is used to identify the EventCreateRule to be
+    /// updated.
+    #[prost(message, optional, tag = "1")]
+    pub event_create_rule: ::core::option::Option<EventCreateRule>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteEventCreateRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEventCreateRuleRequest {
+    /// Required. Example format:
+    /// properties/123/dataStreams/456/eventCreateRules/789
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetEventCreateRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEventCreateRuleRequest {
+    /// Required. The name of the EventCreateRule to get.
+    /// Example format: properties/123/dataStreams/456/eventCreateRules/789
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListEventCreateRules RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEventCreateRulesRequest {
+    /// Required. Example format: properties/123/dataStreams/456
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListEventCreateRules` call. Provide
+    /// this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListEventCreateRules`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListEventCreateRules RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEventCreateRulesResponse {
+    /// List of EventCreateRules. These will be ordered stably, but in an arbitrary
+    /// order.
+    #[prost(message, repeated, tag = "1")]
+    pub event_create_rules: ::prost::alloc::vec::Vec<EventCreateRule>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod analytics_admin_service_client {
@@ -9222,6 +9597,273 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "FetchConnectedGa4Property",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Looks up a single AdSenseLink.
+        pub async fn get_ad_sense_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdSenseLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::AdSenseLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetAdSenseLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetAdSenseLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an AdSenseLink.
+        pub async fn create_ad_sense_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAdSenseLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::AdSenseLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateAdSenseLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateAdSenseLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an AdSenseLink.
+        pub async fn delete_ad_sense_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAdSenseLinkRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteAdSenseLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteAdSenseLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists AdSenseLinks on a property.
+        pub async fn list_ad_sense_links(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAdSenseLinksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAdSenseLinksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListAdSenseLinks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListAdSenseLinks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lookup for a single EventCreateRule.
+        pub async fn get_event_create_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEventCreateRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::EventCreateRule>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEventCreateRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetEventCreateRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists EventCreateRules on a web data stream.
+        pub async fn list_event_create_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEventCreateRulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEventCreateRulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListEventCreateRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListEventCreateRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an EventCreateRule.
+        pub async fn create_event_create_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEventCreateRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::EventCreateRule>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateEventCreateRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateEventCreateRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an EventCreateRule.
+        pub async fn update_event_create_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEventCreateRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::EventCreateRule>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEventCreateRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateEventCreateRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an EventCreateRule.
+        pub async fn delete_event_create_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEventCreateRuleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteEventCreateRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteEventCreateRule",
                     ),
                 );
             self.inner.unary(req, path, codec).await

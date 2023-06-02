@@ -1,3 +1,87 @@
+/// A Search Ads 360 text ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchAds360TextAdInfo {
+    /// The headline of the ad.
+    #[prost(string, optional, tag = "1")]
+    pub headline: ::core::option::Option<::prost::alloc::string::String>,
+    /// The first line of the ad's description.
+    #[prost(string, optional, tag = "2")]
+    pub description1: ::core::option::Option<::prost::alloc::string::String>,
+    /// The second line of the ad's description.
+    #[prost(string, optional, tag = "3")]
+    pub description2: ::core::option::Option<::prost::alloc::string::String>,
+    /// The displayed URL of the ad.
+    #[prost(string, optional, tag = "4")]
+    pub display_url: ::core::option::Option<::prost::alloc::string::String>,
+    /// The displayed mobile URL of the ad.
+    #[prost(string, optional, tag = "5")]
+    pub display_mobile_url: ::core::option::Option<::prost::alloc::string::String>,
+    /// The tracking id of the ad.
+    #[prost(int64, optional, tag = "6")]
+    pub ad_tracking_id: ::core::option::Option<i64>,
+}
+/// A Search Ads 360 expanded text ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchAds360ExpandedTextAdInfo {
+    /// The headline of the ad.
+    #[prost(string, optional, tag = "1")]
+    pub headline: ::core::option::Option<::prost::alloc::string::String>,
+    /// The second headline of the ad.
+    #[prost(string, optional, tag = "2")]
+    pub headline2: ::core::option::Option<::prost::alloc::string::String>,
+    /// The third headline of the ad.
+    #[prost(string, optional, tag = "3")]
+    pub headline3: ::core::option::Option<::prost::alloc::string::String>,
+    /// The first line of the ad's description.
+    #[prost(string, optional, tag = "4")]
+    pub description1: ::core::option::Option<::prost::alloc::string::String>,
+    /// The second line of the ad's description.
+    #[prost(string, optional, tag = "5")]
+    pub description2: ::core::option::Option<::prost::alloc::string::String>,
+    /// Text appended to the auto-generated visible URL with a delimiter.
+    #[prost(string, optional, tag = "6")]
+    pub path1: ::core::option::Option<::prost::alloc::string::String>,
+    /// Text appended to path1 with a delimiter.
+    #[prost(string, optional, tag = "7")]
+    pub path2: ::core::option::Option<::prost::alloc::string::String>,
+    /// The tracking id of the ad.
+    #[prost(int64, optional, tag = "8")]
+    pub ad_tracking_id: ::core::option::Option<i64>,
+}
+/// An expanded dynamic search ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchAds360ExpandedDynamicSearchAdInfo {
+    /// The first line of the ad's description.
+    #[prost(string, optional, tag = "1")]
+    pub description1: ::core::option::Option<::prost::alloc::string::String>,
+    /// The second line of the ad's description.
+    #[prost(string, optional, tag = "2")]
+    pub description2: ::core::option::Option<::prost::alloc::string::String>,
+    /// The tracking id of the ad.
+    #[prost(int64, optional, tag = "3")]
+    pub ad_tracking_id: ::core::option::Option<i64>,
+}
+/// A Search Ads 360 product ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchAds360ProductAdInfo {}
+/// A Search Ads 360 responsive search ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchAds360ResponsiveSearchAdInfo {
+    /// Text appended to the auto-generated visible URL with a delimiter.
+    #[prost(string, optional, tag = "1")]
+    pub path1: ::core::option::Option<::prost::alloc::string::String>,
+    /// Text appended to path1 with a delimiter.
+    #[prost(string, optional, tag = "2")]
+    pub path2: ::core::option::Option<::prost::alloc::string::String>,
+    /// The tracking id of the ad.
+    #[prost(int64, optional, tag = "3")]
+    pub ad_tracking_id: ::core::option::Option<i64>,
+}
 /// An automated bidding strategy that raises bids for clicks
 /// that seem more likely to lead to a conversion and lowers
 /// them for clicks where they seem less likely.
@@ -741,6 +825,9 @@ pub struct Segments {
     /// Device to which metrics apply.
     #[prost(enumeration = "super::enums::device_enum::Device", tag = "1")]
     pub device: i32,
+    /// Keyword criterion.
+    #[prost(message, optional, tag = "61")]
+    pub keyword: ::core::option::Option<Keyword>,
     /// Month as represented by the date of the first day of a month. Formatted as
     /// yyyy-MM-dd.
     #[prost(string, optional, tag = "90")]
@@ -757,6 +844,17 @@ pub struct Segments {
     /// Year, formatted as yyyy.
     #[prost(int32, optional, tag = "131")]
     pub year: ::core::option::Option<i32>,
+}
+/// A Keyword criterion segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Keyword {
+    /// The AdGroupCriterion resource name.
+    #[prost(string, optional, tag = "3")]
+    pub ad_group_criterion: ::core::option::Option<::prost::alloc::string::String>,
+    /// Keyword info.
+    #[prost(message, optional, tag = "2")]
+    pub info: ::core::option::Option<KeywordInfo>,
 }
 /// Settings for the targeting-related features, at the campaign and ad group
 /// levels. For more details about the targeting setting, visit

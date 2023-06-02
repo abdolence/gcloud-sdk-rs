@@ -259,6 +259,9 @@ pub struct Node {
     /// Shielded Instance options.
     #[prost(message, optional, tag = "45")]
     pub shielded_instance_config: ::core::option::Option<ShieldedInstanceConfig>,
+    /// Output only. Whether the Node belongs to a Multislice group.
+    #[prost(bool, tag = "47")]
+    pub multislice_node: bool,
 }
 /// Nested message and enum types in `Node`.
 pub mod node {
@@ -909,15 +912,13 @@ pub struct DeleteQueuedResourceRequest {
     /// Idempotent request UUID.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-}
-/// Request for
-/// \[ResetQueuedResource][google.cloud.tpu.v2alpha1.Tpu.ResetQueuedResource\].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResetQueuedResourceRequest {
-    /// Required. The name of the queued resource.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
+    /// If set to true, all running nodes belonging to this queued resource will
+    /// be deleted first and then the queued resource will be deleted.
+    /// Otherwise (i.e. force=false), the queued resource will only be deleted if
+    /// its nodes have already been deleted or the queued resource is in the
+    /// ACCEPTED, FAILED, or SUSPENDED state.
+    #[prost(bool, tag = "3")]
+    pub force: bool,
 }
 /// The per-product per-project service identity for Cloud TPU service.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1658,37 +1659,6 @@ pub mod tpu_client {
                     GrpcMethod::new(
                         "google.cloud.tpu.v2alpha1.Tpu",
                         "DeleteQueuedResource",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Resets a QueuedResource TPU instance
-        pub async fn reset_queued_resource(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ResetQueuedResourceRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.tpu.v2alpha1.Tpu/ResetQueuedResource",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.tpu.v2alpha1.Tpu",
-                        "ResetQueuedResource",
                     ),
                 );
             self.inner.unary(req, path, codec).await

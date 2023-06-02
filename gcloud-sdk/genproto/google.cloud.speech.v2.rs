@@ -132,8 +132,8 @@ pub struct ListRecognizersRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of Recognizers to return. The service may return fewer
-    /// than this value. If unspecified, at most 20 Recognizers will be returned.
-    /// The maximum value is 20; values above 20 will be coerced to 20.
+    /// than this value. If unspecified, at most 5 Recognizers will be returned.
+    /// The maximum value is 100; values above 100 will be coerced to 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous
@@ -255,56 +255,19 @@ pub struct Recognizer {
     /// Required. Which model to use for recognition requests. Select the model
     /// best suited to your domain to get best results.
     ///
-    /// Supported models:
-    ///
-    /// - `latest_long`
-    ///
-    ///    Best for long form content like media or conversation.
-    ///
-    /// - `latest_short`
-    ///
-    ///    Best for short form content like commands or single shot directed speech.
-    ///    When using this model, the service will stop transcribing audio after the
-    ///    first utterance is detected and completed.
-    ///
-    ///    When using this model,
-    ///    \[SEPARATE_RECOGNITION_PER_CHANNEL][google.cloud.speech.v2.RecognitionFeatures.MultiChannelMode.SEPARATE_RECOGNITION_PER_CHANNEL\]
-    ///    is not supported; multi-channel audio is accepted, but only the first
-    ///    channel will be processed and transcribed.
-    ///
-    /// - `telephony`
-    ///
-    ///    Best for audio that originated from a phone call (typically recorded at
-    ///    an 8khz sampling rate).
-    ///
-    /// - `medical_conversation`
-    ///
-    ///    For conversations between a medical provider—for example, a doctor or
-    ///    nurse—and a patient. Use this model when both a provider and a patient
-    ///    are speaking. Words uttered by each speaker are automatically detected
-    ///    and labeled in the returned transcript.
-    ///
-    ///    For supported features please see [medical models
-    ///    documentation](<https://cloud.google.com/speech-to-text/docs/medical-models>).
-    ///
-    /// - `medical_dictation`
-    ///
-    ///    For dictated notes spoken by a single medical provider—for example, a
-    ///    doctor dictating notes about a patient's blood test results.
-    ///
-    ///    For supported features please see [medical models
-    ///    documentation](<https://cloud.google.com/speech-to-text/docs/medical-models>).
-    ///
-    /// - `usm`
-    ///
-    ///    The next generation of Speech-to-Text models from Google.
+    /// Guidance for choosing which model to use can be found in the [Transcription
+    /// Models
+    /// Documentation](<https://cloud.google.com/speech-to-text/v2/docs/transcription-model>)
+    /// and the models supported in each region can be found in the [Table Of
+    /// Supported
+    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
     #[prost(string, tag = "4")]
     pub model: ::prost::alloc::string::String,
     /// Required. The language of the supplied audio as a
     /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     ///
-    /// Supported languages for each model are listed at:
-    /// <https://cloud.google.com/speech-to-text/docs/languages>
+    /// Supported languages for each model are listed in the [Table of Supported
+    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
     ///
     /// If additional languages are provided, recognition result will contain
     /// recognition in the most likely language detected. The recognition result
@@ -1049,6 +1012,53 @@ pub struct BatchRecognizeRequest {
     /// Configuration options for where to output the transcripts of each file.
     #[prost(message, optional, tag = "6")]
     pub recognition_output_config: ::core::option::Option<RecognitionOutputConfig>,
+    /// Processing strategy to use for this request.
+    #[prost(enumeration = "batch_recognize_request::ProcessingStrategy", tag = "7")]
+    pub processing_strategy: i32,
+}
+/// Nested message and enum types in `BatchRecognizeRequest`.
+pub mod batch_recognize_request {
+    /// Possible processing strategies for batch requests.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ProcessingStrategy {
+        /// Default value for the processing strategy. The request is processed as
+        /// soon as its received.
+        Unspecified = 0,
+        /// If selected, processes the request during lower utilization periods for a
+        /// price discount. The request is fulfilled within 24 hours.
+        DynamicBatching = 1,
+    }
+    impl ProcessingStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ProcessingStrategy::Unspecified => "PROCESSING_STRATEGY_UNSPECIFIED",
+                ProcessingStrategy::DynamicBatching => "DYNAMIC_BATCHING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROCESSING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DYNAMIC_BATCHING" => Some(Self::DynamicBatching),
+                _ => None,
+            }
+        }
+    }
 }
 /// Output configurations for Cloud Storage.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1731,10 +1741,10 @@ pub struct ListCustomClassesRequest {
     /// expected format is `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Number of results per requests. A valid page_size ranges from 0 to 20
+    /// Number of results per requests. A valid page_size ranges from 0 to 100
     /// inclusive. If the page_size is zero or unspecified, a page size of 5 will
-    /// be chosen. If the page size exceeds 20, it will be coerced down to 20. Note
-    /// that a call might return fewer results than the requested page size.
+    /// be chosen. If the page size exceeds 100, it will be coerced down to 100.
+    /// Note that a call might return fewer results than the requested page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous
@@ -1875,8 +1885,8 @@ pub struct ListPhraseSetsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of PhraseSets to return. The service may return fewer
-    /// than this value. If unspecified, at most 20 PhraseSets will be returned.
-    /// The maximum value is 20; values above 20 will be coerced to 20.
+    /// than this value. If unspecified, at most 5 PhraseSets will be returned.
+    /// The maximum value is 100; values above 100 will be coerced to 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous

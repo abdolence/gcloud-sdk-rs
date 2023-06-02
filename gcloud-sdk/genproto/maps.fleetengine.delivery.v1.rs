@@ -3,7 +3,7 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryVehicleAttribute {
-    /// The attribute's key. Keys may not contain the colon character (:).
+    /// The attribute's key.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
     /// The attribute's value.
@@ -131,6 +131,37 @@ pub struct TimeWindow {
     /// Required. The end time of the time window (inclusive).
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Describes a task attribute as a key-value pair. The "key:value" string length
+/// cannot exceed 256 characters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskAttribute {
+    /// The attribute's key. Keys may not contain the colon character (:).
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// The attribute's value, can be in string, bool, or double type. If none are
+    /// set the TaskAttribute string_value will be stored as the empty string "".
+    #[prost(oneof = "task_attribute::TaskAttributeValue", tags = "2, 3, 4")]
+    pub task_attribute_value: ::core::option::Option<task_attribute::TaskAttributeValue>,
+}
+/// Nested message and enum types in `TaskAttribute`.
+pub mod task_attribute {
+    /// The attribute's value, can be in string, bool, or double type. If none are
+    /// set the TaskAttribute string_value will be stored as the empty string "".
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TaskAttributeValue {
+        /// String typed attribute value.
+        #[prost(string, tag = "2")]
+        StringValue(::prost::alloc::string::String),
+        /// Boolean typed attribute value.
+        #[prost(bool, tag = "3")]
+        BoolValue(bool),
+        /// Double typed attribute value.
+        #[prost(double, tag = "4")]
+        NumberValue(f64),
+    }
 }
 /// The sensor or methodology used to determine the location.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -719,6 +750,13 @@ pub struct Task {
     /// `CLOSED`.
     #[prost(message, optional, tag = "8")]
     pub journey_sharing_info: ::core::option::Option<task::JourneySharingInfo>,
+    /// The configuration for task tracking that specifies which data elements are
+    /// visible to the end users under what circumstances.
+    #[prost(message, optional, tag = "13")]
+    pub task_tracking_view_config: ::core::option::Option<TaskTrackingViewConfig>,
+    /// A list of custom Task attributes. Each attribute must have a unique key.
+    #[prost(message, repeated, tag = "15")]
+    pub attributes: ::prost::alloc::vec::Vec<TaskAttribute>,
 }
 /// Nested message and enum types in `Task`.
 pub mod task {
@@ -951,6 +989,95 @@ pub mod task {
         }
     }
 }
+/// The configuration message that defines when a data element of a Task should
+/// be visible to the end users.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskTrackingViewConfig {
+    /// The field that specifies when route polyline points can be visible. If this
+    /// field is not specified, the project level default visibility configuration
+    /// for this data will be used.
+    #[prost(message, optional, tag = "1")]
+    pub route_polyline_points_visibility: ::core::option::Option<
+        task_tracking_view_config::VisibilityOption,
+    >,
+    /// The field that specifies when estimated arrival time can be visible. If
+    /// this field is not specified, the project level default visibility
+    /// configuration for this data will be used.
+    #[prost(message, optional, tag = "2")]
+    pub estimated_arrival_time_visibility: ::core::option::Option<
+        task_tracking_view_config::VisibilityOption,
+    >,
+    /// The field that specifies when estimated task completion time can be
+    /// visible. If this field is not specified, the project level default
+    /// visibility configuration for this data will be used.
+    #[prost(message, optional, tag = "3")]
+    pub estimated_task_completion_time_visibility: ::core::option::Option<
+        task_tracking_view_config::VisibilityOption,
+    >,
+    /// The field that specifies when remaining driving distance can be visible. If
+    /// this field is not specified, the project level default visibility
+    /// configuration for this data will be used.
+    #[prost(message, optional, tag = "4")]
+    pub remaining_driving_distance_visibility: ::core::option::Option<
+        task_tracking_view_config::VisibilityOption,
+    >,
+    /// The field that specifies when remaining stop count can be visible. If this
+    /// field is not specified, the project level default visibility configuration
+    /// for this data will be used.
+    #[prost(message, optional, tag = "5")]
+    pub remaining_stop_count_visibility: ::core::option::Option<
+        task_tracking_view_config::VisibilityOption,
+    >,
+    /// The field that specifies when vehicle location can be visible. If this
+    /// field is not specified, the project level default visibility configuration
+    /// for this data will be used.
+    #[prost(message, optional, tag = "6")]
+    pub vehicle_location_visibility: ::core::option::Option<
+        task_tracking_view_config::VisibilityOption,
+    >,
+}
+/// Nested message and enum types in `TaskTrackingViewConfig`.
+pub mod task_tracking_view_config {
+    /// The option message that defines when a data element should be visible to
+    /// the end users.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VisibilityOption {
+        #[prost(oneof = "visibility_option::VisibilityOption", tags = "1, 2, 3, 4, 5")]
+        pub visibility_option: ::core::option::Option<
+            visibility_option::VisibilityOption,
+        >,
+    }
+    /// Nested message and enum types in `VisibilityOption`.
+    pub mod visibility_option {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum VisibilityOption {
+            /// This data element is visible to the end users if the remaining stop
+            /// count <= remaining_stop_count_threshold.
+            #[prost(int32, tag = "1")]
+            RemainingStopCountThreshold(i32),
+            /// This data element is visible to the end users if the ETA to the stop
+            /// <= duration_until_estimated_arrival_time_threshold.
+            #[prost(message, tag = "2")]
+            DurationUntilEstimatedArrivalTimeThreshold(::prost_types::Duration),
+            /// This data element is visible to the end users if the remaining
+            /// driving distance in meters <=
+            /// remaining_driving_distance_meters_threshold.
+            #[prost(int32, tag = "3")]
+            RemainingDrivingDistanceMetersThreshold(i32),
+            /// If set to true, this data element is always visible to the end users
+            /// with no thresholds. This field cannot be set to false.
+            #[prost(bool, tag = "4")]
+            Always(bool),
+            /// If set to true, this data element is always hidden from the end users
+            /// with no thresholds. This field cannot be set to false.
+            #[prost(bool, tag = "5")]
+            Never(bool),
+        }
+    }
+}
 /// The `TaskTrackingInfo` message. The message contains task tracking
 /// information which will be used for display. If a tracking ID is associated
 /// with multiple Tasks, Fleet Engine uses a heuristic to decide which Task's
@@ -1011,6 +1138,9 @@ pub struct TaskTrackingInfo {
     /// The time window during which the task should be completed.
     #[prost(message, optional, tag = "13")]
     pub target_time_window: ::core::option::Option<TimeWindow>,
+    /// The custom attributes set on the task.
+    #[prost(message, repeated, tag = "14")]
+    pub attributes: ::prost::alloc::vec::Vec<TaskAttribute>,
 }
 /// The `CreateDeliveryVehicle` request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1046,7 +1176,6 @@ pub struct CreateDeliveryVehicleRequest {
     pub delivery_vehicle: ::core::option::Option<DeliveryVehicle>,
 }
 /// The `GetDeliveryVehicle` request message.
-/// Next id: 4
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeliveryVehicleRequest {

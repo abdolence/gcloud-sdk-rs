@@ -2,9 +2,9 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeThreatListDiffRequest {
-    /// Required. The threat list to update. Only a single ThreatType should be specified
-    /// per request. If you want to handle multiple ThreatTypes, you must make one
-    /// request per ThreatType.
+    /// Required. The threat list to update. Only a single ThreatType should be
+    /// specified per request. If you want to handle multiple ThreatTypes, you must
+    /// make one request per ThreatType.
     #[prost(enumeration = "ThreatType", tag = "1")]
     pub threat_type: i32,
     /// The current version token of the client for the requested list (the
@@ -137,7 +137,8 @@ pub struct SearchUrisRequest {
     /// Required. The URI to be checked for matches.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
-    /// Required. The ThreatLists to search in. Multiple ThreatLists may be specified.
+    /// Required. The ThreatLists to search in. Multiple ThreatLists may be
+    /// specified.
     #[prost(enumeration = "ThreatType", repeated, packed = "false", tag = "2")]
     pub threat_types: ::prost::alloc::vec::Vec<i32>,
 }
@@ -173,7 +174,8 @@ pub struct SearchHashesRequest {
     /// the web safe base64 variant (RFC 4648).
     #[prost(bytes = "vec", tag = "1")]
     pub hash_prefix: ::prost::alloc::vec::Vec<u8>,
-    /// Required. The ThreatLists to search in. Multiple ThreatLists may be specified.
+    /// Required. The ThreatLists to search in. Multiple ThreatLists may be
+    /// specified.
     #[prost(enumeration = "ThreatType", repeated, packed = "false", tag = "2")]
     pub threat_types: ::prost::alloc::vec::Vec<i32>,
 }
@@ -295,21 +297,384 @@ pub struct RiceDeltaEncoding {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Submission {
-    /// Required. The URI that is being reported for malicious content to be analyzed.
+    /// Required. The URI that is being reported for malicious content to be
+    /// analyzed.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
+    /// Output only. ThreatTypes found to be associated with the submitted URI
+    /// after reviewing it. This might be empty if the URI was not added to any
+    /// list.
+    #[prost(enumeration = "ThreatType", repeated, packed = "false", tag = "2")]
+    pub threat_types: ::prost::alloc::vec::Vec<i32>,
+}
+/// Context about the submission including the type of abuse found on the URI and
+/// supporting details.
+/// option (google.api.message_visibility).restriction = "TRUSTED_TESTER";
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ThreatInfo {
+    /// The type of abuse.
+    #[prost(enumeration = "threat_info::AbuseType", tag = "1")]
+    pub abuse_type: i32,
+    /// Confidence that the URI is unsafe.
+    #[prost(message, optional, tag = "2")]
+    pub threat_confidence: ::core::option::Option<threat_info::Confidence>,
+    /// Context about why the URI is unsafe.
+    #[prost(message, optional, tag = "3")]
+    pub threat_justification: ::core::option::Option<threat_info::ThreatJustification>,
+}
+/// Nested message and enum types in `ThreatInfo`.
+pub mod threat_info {
+    /// Confidence that a URI is unsafe.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Confidence {
+        #[prost(oneof = "confidence::Value", tags = "1, 2")]
+        pub value: ::core::option::Option<confidence::Value>,
+    }
+    /// Nested message and enum types in `Confidence`.
+    pub mod confidence {
+        /// Enum representation of confidence.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ConfidenceLevel {
+            /// Default.
+            Unspecified = 0,
+            /// Less than 60% confidence that the URI is unsafe.
+            Low = 1,
+            /// Between 60% and 80% confidence that the URI is unsafe.
+            Medium = 2,
+            /// Greater than 80% confidence that the URI is unsafe.
+            High = 3,
+        }
+        impl ConfidenceLevel {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ConfidenceLevel::Unspecified => "CONFIDENCE_LEVEL_UNSPECIFIED",
+                    ConfidenceLevel::Low => "LOW",
+                    ConfidenceLevel::Medium => "MEDIUM",
+                    ConfidenceLevel::High => "HIGH",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CONFIDENCE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LOW" => Some(Self::Low),
+                    "MEDIUM" => Some(Self::Medium),
+                    "HIGH" => Some(Self::High),
+                    _ => None,
+                }
+            }
+        }
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Value {
+            /// A decimal representation of confidence in the range of 0
+            /// to 1 where 0 indicates no confidence and 1 indicates
+            /// complete confidence.
+            #[prost(float, tag = "1")]
+            Score(f32),
+            /// Enum representation of confidence.
+            #[prost(enumeration = "ConfidenceLevel", tag = "2")]
+            Level(i32),
+        }
+    }
+    /// Context about why the URI is unsafe.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ThreatJustification {
+        /// Labels associated with this URI that explain how it was classified.
+        #[prost(
+            enumeration = "threat_justification::JustificationLabel",
+            repeated,
+            tag = "1"
+        )]
+        pub labels: ::prost::alloc::vec::Vec<i32>,
+        /// Free-form context on why this URI is unsafe.
+        #[prost(string, repeated, tag = "2")]
+        pub comments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Nested message and enum types in `ThreatJustification`.
+    pub mod threat_justification {
+        /// Labels that explain how the URI was classified.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum JustificationLabel {
+            /// Default.
+            Unspecified = 0,
+            /// The submitter manually verified that the submission is unsafe.
+            ManualVerification = 1,
+            /// The submitter received the submission from an end user.
+            UserReport = 2,
+            /// The submitter received the submission from an automated system.
+            AutomatedReport = 3,
+        }
+        impl JustificationLabel {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    JustificationLabel::Unspecified => "JUSTIFICATION_LABEL_UNSPECIFIED",
+                    JustificationLabel::ManualVerification => "MANUAL_VERIFICATION",
+                    JustificationLabel::UserReport => "USER_REPORT",
+                    JustificationLabel::AutomatedReport => "AUTOMATED_REPORT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "JUSTIFICATION_LABEL_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MANUAL_VERIFICATION" => Some(Self::ManualVerification),
+                    "USER_REPORT" => Some(Self::UserReport),
+                    "AUTOMATED_REPORT" => Some(Self::AutomatedReport),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The abuse type found on the URI.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AbuseType {
+        /// Default.
+        Unspecified = 0,
+        /// The URI contains malware.
+        Malware = 1,
+        /// The URI contains social engineering.
+        SocialEngineering = 2,
+        /// The URI contains unwanted software.
+        UnwantedSoftware = 3,
+    }
+    impl AbuseType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AbuseType::Unspecified => "ABUSE_TYPE_UNSPECIFIED",
+                AbuseType::Malware => "MALWARE",
+                AbuseType::SocialEngineering => "SOCIAL_ENGINEERING",
+                AbuseType::UnwantedSoftware => "UNWANTED_SOFTWARE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ABUSE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MALWARE" => Some(Self::Malware),
+                "SOCIAL_ENGINEERING" => Some(Self::SocialEngineering),
+                "UNWANTED_SOFTWARE" => Some(Self::UnwantedSoftware),
+                _ => None,
+            }
+        }
+    }
+}
+/// Details about how the threat was discovered.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ThreatDiscovery {
+    /// Platform on which the threat was discovered.
+    #[prost(enumeration = "threat_discovery::Platform", tag = "1")]
+    pub platform: i32,
+    /// CLDR region code of the countries/regions the URI poses a threat ordered
+    /// from most impact to least impact. Example: "US" for United States.
+    #[prost(string, repeated, tag = "2")]
+    pub region_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ThreatDiscovery`.
+pub mod threat_discovery {
+    /// Platform types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Platform {
+        /// Default.
+        Unspecified = 0,
+        /// General Android platform.
+        Android = 1,
+        /// General iOS platform.
+        Ios = 2,
+        /// General macOS platform.
+        Macos = 3,
+        /// General Windows platform.
+        Windows = 4,
+    }
+    impl Platform {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Platform::Unspecified => "PLATFORM_UNSPECIFIED",
+                Platform::Android => "ANDROID",
+                Platform::Ios => "IOS",
+                Platform::Macos => "MACOS",
+                Platform::Windows => "WINDOWS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                "MACOS" => Some(Self::Macos),
+                "WINDOWS" => Some(Self::Windows),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request to send a potentially phishy URI to WebRisk.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSubmissionRequest {
-    /// Required. The name of the project that is making the submission. This string is in
-    /// the format "projects/{project_number}".
+    /// Required. The name of the project that is making the submission. This
+    /// string is in the format "projects/{project_number}".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The submission that contains the content of the phishing report.
     #[prost(message, optional, tag = "2")]
     pub submission: ::core::option::Option<Submission>,
+}
+/// Request to send a potentially malicious URI to WebRisk.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubmitUriRequest {
+    /// Required. The name of the project that is making the submission. This
+    /// string is in the format "projects/{project_number}".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The submission that contains the URI to be scanned.
+    #[prost(message, optional, tag = "2")]
+    pub submission: ::core::option::Option<Submission>,
+    /// Provides additional information about the submission.
+    #[prost(message, optional, tag = "3")]
+    pub threat_info: ::core::option::Option<ThreatInfo>,
+    /// Provides additional information about how the submission was discovered.
+    #[prost(message, optional, tag = "4")]
+    pub threat_discovery: ::core::option::Option<ThreatDiscovery>,
+}
+/// Metadata for the Submit URI long-running operation.
+/// option (google.api.message_visibility).restriction = "TRUSTED_TESTER";
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubmitUriMetadata {
+    /// The state of the operation.
+    #[prost(enumeration = "submit_uri_metadata::State", tag = "1")]
+    pub state: i32,
+    /// Creation time of the operation.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Latest update time of the operation.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `SubmitUriMetadata`.
+pub mod submit_uri_metadata {
+    /// Enum that represents the state of the long-running operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default unspecified state.
+        Unspecified = 0,
+        /// The operation is currently running.
+        Running = 1,
+        /// The operation finished with a success status.
+        Succeeded = 2,
+        /// The operation was cancelled.
+        Cancelled = 3,
+        /// The operation finished with a failure status.
+        Failed = 4,
+        /// The operation was closed with no action taken.
+        Closed = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Running => "RUNNING",
+                State::Succeeded => "SUCCEEDED",
+                State::Cancelled => "CANCELLED",
+                State::Failed => "FAILED",
+                State::Closed => "CLOSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
+            }
+        }
+    }
 }
 /// The type of threat. This maps directly to the threat list a threat may
 /// belong to.
@@ -614,6 +979,46 @@ pub mod web_risk_service_client {
                     GrpcMethod::new(
                         "google.cloud.webrisk.v1.WebRiskService",
                         "CreateSubmission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Submits a URI suspected of containing malicious content to be reviewed.
+        /// Returns a google.longrunning.Operation which, once the review is complete,
+        /// is updated with its result. You can use the [Pub/Sub API]
+        /// (https://cloud.google.com/pubsub) to receive notifications for the returned
+        /// Operation. If the result verifies the existence of malicious content, the
+        /// site will be added to the [Google's Social Engineering lists]
+        /// (https://support.google.com/webmasters/answer/6350487/) in order to
+        /// protect users that could get exposed to this threat in the future. Only
+        /// allowlisted projects can use this method during Early Access. Please reach
+        /// out to Sales or your customer engineer to obtain access.
+        pub async fn submit_uri(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SubmitUriRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.webrisk.v1.WebRiskService/SubmitUri",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.webrisk.v1.WebRiskService",
+                        "SubmitUri",
                     ),
                 );
             self.inner.unary(req, path, codec).await

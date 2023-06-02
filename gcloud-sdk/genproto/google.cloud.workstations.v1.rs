@@ -39,7 +39,7 @@ pub struct WorkstationCluster {
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Checksum computed by the server. May be sent on update and delete requests
-    /// to ensure that the client has an up-to-date value before proceeding.
+    /// to make sure that the client has an up-to-date value before proceeding.
     #[prost(string, tag = "9")]
     pub etag: ::prost::alloc::string::String,
     /// Immutable. Name of the Compute Engine network in which instances associated
@@ -51,6 +51,12 @@ pub struct WorkstationCluster {
     /// subnetwork specified for this cluster.
     #[prost(string, tag = "11")]
     pub subnetwork: ::prost::alloc::string::String,
+    /// Output only. The private IP address of the control plane for this cluster.
+    /// Workstation VMs need access to this IP address to work with the service, so
+    /// make sure that your firewall rules allow egress from the workstation VMs to
+    /// this address.
+    #[prost(string, tag = "16")]
+    pub control_plane_ip: ::prost::alloc::string::String,
     /// Configuration for private cluster.
     #[prost(message, optional, tag = "12")]
     pub private_cluster_config: ::core::option::Option<
@@ -137,7 +143,7 @@ pub struct WorkstationConfig {
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Checksum computed by the server. May be sent on update and delete requests
-    /// to ensure that the client has an up-to-date value before proceeding.
+    /// to make sure that the client has an up-to-date value before proceeding.
     #[prost(string, tag = "9")]
     pub etag: ::prost::alloc::string::String,
     /// How long to wait before automatically stopping an instance that hasn't
@@ -163,7 +169,7 @@ pub struct WorkstationConfig {
     /// when that workstation is started.
     #[prost(message, optional, tag = "14")]
     pub container: ::core::option::Option<workstation_config::Container>,
-    /// Encrypts resources of this workstation configuration using a
+    /// Immutable. Encrypts resources of this workstation configuration using a
     /// customer-managed encryption key.
     ///
     /// If specified, the boot disk of the Compute Engine instance and the
@@ -179,6 +185,8 @@ pub struct WorkstationConfig {
     ///
     /// If the encryption key is revoked, the workstation session will
     /// automatically be stopped within 7 hours.
+    ///
+    /// Immutable after the workstation configuration is created.
     #[prost(message, optional, tag = "17")]
     pub encryption_key: ::core::option::Option<
         workstation_config::CustomerEncryptionKey,
@@ -211,10 +219,10 @@ pub mod workstation_config {
             /// The name of a Compute Engine machine type.
             #[prost(string, tag = "1")]
             pub machine_type: ::prost::alloc::string::String,
-            /// Email address of the service account that will be used on VM instances
-            /// used to support this config. If not set, VMs will run with a
+            /// Email address of the service account used on VM instances
+            /// used to support this configuration. If not set, VMs run with a
             /// Google-managed service account. This service account must have
-            /// permission to pull the specified container image, otherwise the image
+            /// permission to pull the specified container image; otherwise, the image
             /// must be publicly accessible.
             #[prost(string, tag = "2")]
             pub service_account: ::prost::alloc::string::String,
@@ -222,9 +230,13 @@ pub mod workstation_config {
             /// Workstations.
             #[prost(string, repeated, tag = "4")]
             pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Number of instances to pool for faster workstation starup.
+            /// Number of instances to pool for faster workstation startup.
             #[prost(int32, tag = "5")]
             pub pool_size: i32,
+            /// Output only. Number of instances currently available in the pool for
+            /// faster workstation startup.
+            #[prost(int32, tag = "12")]
+            pub pooled_instances: i32,
             /// Whether instances have no public IP address.
             #[prost(bool, tag = "6")]
             pub disable_public_ip_addresses: bool,
@@ -383,7 +395,7 @@ pub mod workstation_config {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Container {
         /// Docker image defining the container. This image must be accessible by the
-        /// config's service account.
+        /// service account specified in the workstation configuration.
         #[prost(string, tag = "1")]
         pub image: ::prost::alloc::string::String,
         /// If set, overrides the default ENTRYPOINT specified by the image.
@@ -392,7 +404,7 @@ pub mod workstation_config {
         /// Arguments passed to the entrypoint.
         #[prost(string, repeated, tag = "3")]
         pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Environment variables passed to the container.
+        /// Environment variables passed to the container's entrypoint.
         #[prost(map = "string, string", tag = "4")]
         pub env: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -410,11 +422,11 @@ pub mod workstation_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomerEncryptionKey {
-        /// The name of the Google Cloud KMS encryption key. For example,
+        /// Immutable. The name of the Google Cloud KMS encryption key. For example,
         /// `projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME`.
         #[prost(string, tag = "1")]
         pub kms_key: ::prost::alloc::string::String,
-        /// The service account to use with the specified
+        /// Immutable. The service account to use with the specified
         /// KMS key. We recommend that you use a separate service account
         /// and follow KMS best practices. For more information, see
         /// [Separation of
@@ -465,7 +477,7 @@ pub struct Workstation {
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Checksum computed by the server. May be sent on update and delete requests
-    /// to ensure that the client has an up-to-date value before proceeding.
+    /// to make sure that the client has an up-to-date value before proceeding.
     #[prost(string, tag = "9")]
     pub etag: ::prost::alloc::string::String,
     /// Output only. Current state of the workstation.
@@ -621,7 +633,7 @@ pub struct DeleteWorkstationClusterRequest {
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
     /// If set, the request will be rejected if the latest version of the
-    /// workstation cluster on the server does not have this etag.
+    /// workstation cluster on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
     /// If set, any workstation configurations and workstations in the
@@ -703,7 +715,7 @@ pub struct CreateWorkstationConfigRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. ID to use for the config.
+    /// Required. ID to use for the workstation configuration.
     #[prost(string, tag = "2")]
     pub workstation_config_id: ::prost::alloc::string::String,
     /// Required. Config to create.
@@ -721,15 +733,17 @@ pub struct UpdateWorkstationConfigRequest {
     /// Required. Config to update.
     #[prost(message, optional, tag = "1")]
     pub workstation_config: ::core::option::Option<WorkstationConfig>,
-    /// Required. Mask specifying which fields in the config should be updated.
+    /// Required. Mask specifying which fields in the workstation configuration
+    /// should be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If set, validate the request and preview the review, but do not actually
     /// apply it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set, and the config is not found, a new config will be created.
-    /// In this situation, update_mask is ignored.
+    /// If set and the workstation configuration is not found, a new
+    /// workstation configuration will be created. In this situation,
+    /// update_mask is ignored.
     #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
@@ -737,19 +751,20 @@ pub struct UpdateWorkstationConfigRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkstationConfigRequest {
-    /// Required. Name of the config to delete.
+    /// Required. Name of the workstation configuration to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If set, validate the request and preview the review, but do not actually
     /// apply it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// If set, the request will be rejected if the latest version of the config on
-    /// the server does not have this etag.
+    /// If set, the request is rejected if the latest version of the
+    /// workstation configuration on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
-    /// If set, any Workstations in the config will also be deleted. Otherwise,
-    /// the request will work only if the config has no workstations.
+    /// If set, any workstations in the workstation configuration are also deleted.
+    /// Otherwise, the request works only if the workstation configuration has
+    /// no workstations.
     #[prost(bool, tag = "4")]
     pub force: bool,
 }
@@ -844,15 +859,17 @@ pub struct UpdateWorkstationRequest {
     /// Required. Workstation to update.
     #[prost(message, optional, tag = "1")]
     pub workstation: ::core::option::Option<Workstation>,
-    /// Required. Mask specifying which fields in the config should be updated.
+    /// Required. Mask specifying which fields in the workstation configuration
+    /// should be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If set, validate the request and preview the review, but do not actually
     /// apply it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set, and the config is not found, a new config will be created.
-    /// In this situation, update_mask is ignored.
+    /// If set and the workstation configuration is not found, a new
+    /// workstation configuration is created. In this situation, update_mask
+    /// is ignored.
     #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
@@ -868,7 +885,7 @@ pub struct DeleteWorkstationRequest {
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
     /// If set, the request will be rejected if the latest version of the
-    /// workstation on the server does not have this etag.
+    /// workstation on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -884,7 +901,7 @@ pub struct StartWorkstationRequest {
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
     /// If set, the request will be rejected if the latest version of the
-    /// workstation on the server does not have this etag.
+    /// workstation on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -900,7 +917,7 @@ pub struct StopWorkstationRequest {
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
     /// If set, the request will be rejected if the latest version of the
-    /// workstation on the server does not have this etag.
+    /// workstation on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -941,7 +958,7 @@ pub mod generate_access_token_request {
 pub struct GenerateAccessTokenResponse {
     /// The generated bearer access token. To use this token, include it in an
     /// Authorization header of an HTTP request sent to the associated
-    /// workstation's hostname, for example, `Authorization: Bearer
+    /// workstation's hostname—for example, `Authorization: Bearer
     /// <access_token>`.
     #[prost(string, tag = "1")]
     pub access_token: ::prost::alloc::string::String,
@@ -1248,7 +1265,7 @@ pub mod workstations_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns all WorkstationConfigs in the specified cluster.
+        /// Returns all workstation configurations in the specified cluster.
         pub async fn list_workstation_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkstationConfigsRequest>,
@@ -1432,7 +1449,7 @@ pub mod workstations_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns all Workstations using the specified config.
+        /// Returns all Workstations using the specified workstation configuration.
         pub async fn list_workstations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkstationsRequest>,
@@ -1463,8 +1480,8 @@ pub mod workstations_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns all Workstations using the specified config on which the caller has
-        /// the "workstations.workstations.use" permission.
+        /// Returns all workstations using the specified workstation configuration
+        /// on which the caller has the "workstations.workstations.use" permission.
         pub async fn list_usable_workstations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListUsableWorkstationsRequest>,

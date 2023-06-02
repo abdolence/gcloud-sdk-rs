@@ -29,6 +29,278 @@ pub struct CitationSource {
     #[prost(string, optional, tag = "4")]
     pub license: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// Content filtering metadata associated with processing a single request.
+///
+/// ContentFilter contains a reason and an optional supporting string. The reason
+/// may be unspecified.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContentFilter {
+    /// The reason content was blocked during request processing.
+    #[prost(enumeration = "content_filter::BlockedReason", tag = "1")]
+    pub reason: i32,
+    /// A string that describes the filtering behavior in more detail.
+    #[prost(string, optional, tag = "2")]
+    pub message: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ContentFilter`.
+pub mod content_filter {
+    /// A list of reasons why content may have been blocked.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BlockedReason {
+        /// A blocked reason was not specified.
+        Unspecified = 0,
+        /// Content was blocked by safety settings.
+        Safety = 1,
+        /// Content was blocked, but the reason is uncategorized.
+        Other = 2,
+    }
+    impl BlockedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                BlockedReason::Unspecified => "BLOCKED_REASON_UNSPECIFIED",
+                BlockedReason::Safety => "SAFETY",
+                BlockedReason::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BLOCKED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "SAFETY" => Some(Self::Safety),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
+    }
+}
+/// Safety feedback for an entire request.
+///
+/// This field is populated if content in the input and/or response is blocked
+/// due to safety settings. SafetyFeedback may not exist for every HarmCategory.
+/// Each SafetyFeedback will return the safety settings used by the request as
+/// well as the lowest HarmProbability that should be allowed in order to return
+/// a result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetyFeedback {
+    /// Safety rating evaluated from content.
+    #[prost(message, optional, tag = "1")]
+    pub rating: ::core::option::Option<SafetyRating>,
+    /// Safety settings applied to the request.
+    #[prost(message, optional, tag = "2")]
+    pub setting: ::core::option::Option<SafetySetting>,
+}
+/// Safety rating for a piece of content.
+///
+/// The safety rating contains the category of harm and the
+/// harm probability level in that category for a piece of content.
+/// Content is classified for safety across a number of
+/// harm categories and the probability of the harm classification is included
+/// here.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetyRating {
+    /// Required. The category for this rating.
+    #[prost(enumeration = "HarmCategory", tag = "3")]
+    pub category: i32,
+    /// Required. The probability of harm for this content.
+    #[prost(enumeration = "safety_rating::HarmProbability", tag = "4")]
+    pub probability: i32,
+}
+/// Nested message and enum types in `SafetyRating`.
+pub mod safety_rating {
+    /// The probability that a piece of content is harmful.
+    ///
+    /// The classification system gives the probability of the content being
+    /// unsafe. This does not indicate the severity of harm for a piece of content.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmProbability {
+        /// Probability is unspecified.
+        Unspecified = 0,
+        /// Content has a negligible chance of being unsafe.
+        Negligible = 1,
+        /// Content has a low chance of being unsafe.
+        Low = 2,
+        /// Content has a medium chance of being unsafe.
+        Medium = 3,
+        /// Content has a high chance of being unsafe.
+        High = 4,
+    }
+    impl HarmProbability {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HarmProbability::Unspecified => "HARM_PROBABILITY_UNSPECIFIED",
+                HarmProbability::Negligible => "NEGLIGIBLE",
+                HarmProbability::Low => "LOW",
+                HarmProbability::Medium => "MEDIUM",
+                HarmProbability::High => "HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_PROBABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEGLIGIBLE" => Some(Self::Negligible),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
+    }
+}
+/// Safety setting, affecting the safety-blocking behavior.
+///
+/// Passing a safety setting for a category changes the allowed proability that
+/// content is blocked.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetySetting {
+    /// Required. The category for this setting.
+    #[prost(enumeration = "HarmCategory", tag = "3")]
+    pub category: i32,
+    /// Required. Controls the probability threshold at which harm is blocked.
+    #[prost(enumeration = "safety_setting::HarmBlockThreshold", tag = "4")]
+    pub threshold: i32,
+}
+/// Nested message and enum types in `SafetySetting`.
+pub mod safety_setting {
+    /// Block at and beyond a specified harm probability.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockThreshold {
+        /// Threshold is unspecified.
+        Unspecified = 0,
+        /// Content with NEGLIGIBLE will be allowed.
+        BlockLowAndAbove = 1,
+        /// Content with NEGLIGIBLE and LOW will be allowed.
+        BlockMediumAndAbove = 2,
+        /// Content with NEGLIGIBLE, LOW, and MEDIUM will be allowed.
+        BlockOnlyHigh = 3,
+        /// All content will be allowed.
+        BlockNone = 4,
+    }
+    impl HarmBlockThreshold {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HarmBlockThreshold::Unspecified => "HARM_BLOCK_THRESHOLD_UNSPECIFIED",
+                HarmBlockThreshold::BlockLowAndAbove => "BLOCK_LOW_AND_ABOVE",
+                HarmBlockThreshold::BlockMediumAndAbove => "BLOCK_MEDIUM_AND_ABOVE",
+                HarmBlockThreshold::BlockOnlyHigh => "BLOCK_ONLY_HIGH",
+                HarmBlockThreshold::BlockNone => "BLOCK_NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_THRESHOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "BLOCK_LOW_AND_ABOVE" => Some(Self::BlockLowAndAbove),
+                "BLOCK_MEDIUM_AND_ABOVE" => Some(Self::BlockMediumAndAbove),
+                "BLOCK_ONLY_HIGH" => Some(Self::BlockOnlyHigh),
+                "BLOCK_NONE" => Some(Self::BlockNone),
+                _ => None,
+            }
+        }
+    }
+}
+/// The category of a rating.
+///
+/// These categories cover various kinds of harms that developers
+/// may wish to adjust.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum HarmCategory {
+    /// Category is unspecified.
+    Unspecified = 0,
+    /// Negative or harmful comments targeting identity and/or protected attribute.
+    Derogatory = 1,
+    /// Content that is rude, disrepspectful, or profane.
+    Toxicity = 2,
+    /// Describes scenarios depictng violence against an individual or group, or
+    /// general descriptions of gore.
+    Violence = 3,
+    /// Contains references to sexual acts or other lewd content.
+    Sexual = 4,
+    /// Promotes unchecked medical advice.
+    Medical = 5,
+    /// Dangerous content that promotes, facilitates, or encourages harmful acts.
+    Dangerous = 6,
+}
+impl HarmCategory {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            HarmCategory::Unspecified => "HARM_CATEGORY_UNSPECIFIED",
+            HarmCategory::Derogatory => "HARM_CATEGORY_DEROGATORY",
+            HarmCategory::Toxicity => "HARM_CATEGORY_TOXICITY",
+            HarmCategory::Violence => "HARM_CATEGORY_VIOLENCE",
+            HarmCategory::Sexual => "HARM_CATEGORY_SEXUAL",
+            HarmCategory::Medical => "HARM_CATEGORY_MEDICAL",
+            HarmCategory::Dangerous => "HARM_CATEGORY_DANGEROUS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HARM_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "HARM_CATEGORY_DEROGATORY" => Some(Self::Derogatory),
+            "HARM_CATEGORY_TOXICITY" => Some(Self::Toxicity),
+            "HARM_CATEGORY_VIOLENCE" => Some(Self::Violence),
+            "HARM_CATEGORY_SEXUAL" => Some(Self::Sexual),
+            "HARM_CATEGORY_MEDICAL" => Some(Self::Medical),
+            "HARM_CATEGORY_DANGEROUS" => Some(Self::Dangerous),
+            _ => None,
+        }
+    }
+}
 /// Request to generate a message response from the model.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -89,6 +361,19 @@ pub struct GenerateMessageResponse {
     /// The conversation history used by the model.
     #[prost(message, repeated, tag = "2")]
     pub messages: ::prost::alloc::vec::Vec<Message>,
+    /// A set of content filtering metadata for the prompt and response
+    /// text.
+    ///
+    /// This indicates which `SafetyCategory`(s) blocked a
+    /// candidate from this response, the lowest `HarmProbability`
+    /// that triggered a block, and the HarmThreshold setting for that category.
+    /// This indicates the smallest change to the `SafetySettings` that would be
+    /// necessary to unblock at least 1 response.
+    ///
+    /// The blocking is configured by the `SafetySettings` in the request (or the
+    /// default `SafetySettings` of the API).
+    #[prost(message, repeated, tag = "3")]
+    pub filters: ::prost::alloc::vec::Vec<ContentFilter>,
 }
 /// The base unit of structured text.
 ///
@@ -377,7 +662,7 @@ pub struct Model {
     ///
     /// Examples:
     ///
-    /// * `models/chat-pison-001`
+    /// * `models/chat-bison-001`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The name of the base model, pass this to the generation request.
@@ -692,6 +977,18 @@ pub struct GenerateTextRequest {
     /// attribute of the `Model` returned the `getModel` function.
     #[prost(int32, optional, tag = "7")]
     pub top_k: ::core::option::Option<i32>,
+    /// A list of unique `SafetySetting` instances for blocking unsafe content.
+    ///
+    /// that will be enforced on the `GenerateTextRequest.prompt` and
+    /// `GenerateTextResponse.candidates`. There should not be more than one
+    /// setting for each `SafetyCategory` type. The API will block any prompts and
+    /// responses that fail to meet the thresholds set by these settings. This list
+    /// overrides the default settings for each `SafetyCategory` specified in the
+    /// safety_settings. If there is no `SafetySetting` for a given
+    /// `SafetyCategory` provided in the list, the API will use the default safety
+    /// setting for that category.
+    #[prost(message, repeated, tag = "8")]
+    pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
     /// The set of character sequences (up to 5) that will stop output generation.
     /// If specified, the API will stop at the first appearance of a stop
     /// sequence. The stop sequence will not be included as part of the response.
@@ -705,6 +1002,22 @@ pub struct GenerateTextResponse {
     /// Candidate responses from the model.
     #[prost(message, repeated, tag = "1")]
     pub candidates: ::prost::alloc::vec::Vec<TextCompletion>,
+    /// A set of content filtering metadata for the prompt and response
+    /// text.
+    ///
+    /// This indicates which `SafetyCategory`(s) blocked a
+    /// candidate from this response, the lowest `HarmProbability`
+    /// that triggered a block, and the HarmThreshold setting for that category.
+    /// This indicates the smallest change to the `SafetySettings` that would be
+    /// necessary to unblock at least 1 response.
+    ///
+    /// The blocking is configured by the `SafetySettings` in the request (or the
+    /// default `SafetySettings` of the API).
+    #[prost(message, repeated, tag = "3")]
+    pub filters: ::prost::alloc::vec::Vec<ContentFilter>,
+    /// Returns any safety feedback related to content filtering.
+    #[prost(message, repeated, tag = "4")]
+    pub safety_feedback: ::prost::alloc::vec::Vec<SafetyFeedback>,
 }
 /// Text given to the model as a prompt.
 ///
@@ -723,6 +1036,18 @@ pub struct TextCompletion {
     /// Output only. The generated text returned from the model.
     #[prost(string, tag = "1")]
     pub output: ::prost::alloc::string::String,
+    /// Ratings for the safety of a response.
+    ///
+    /// There is at most one rating per category.
+    #[prost(message, repeated, tag = "2")]
+    pub safety_ratings: ::prost::alloc::vec::Vec<SafetyRating>,
+    /// Output only. Citation information for model-generated `output` in this
+    /// `TextCompletion`.
+    ///
+    /// This field may be populated with attribution information for any text
+    /// included in the `output`.
+    #[prost(message, optional, tag = "3")]
+    pub citation_metadata: ::core::option::Option<CitationMetadata>,
 }
 /// Request to get a text embedding from the model.
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -157,6 +157,7 @@ pub mod test_specification {
 pub struct SystraceSetup {
     /// Systrace duration in seconds.
     /// Should be between 1 and 30 seconds. 0 disables systrace.
+    #[deprecated]
     #[prost(int32, tag = "1")]
     pub duration_seconds: i32,
 }
@@ -194,14 +195,10 @@ pub struct TestSetup {
     /// instrumentation tests).
     #[prost(message, repeated, tag = "6")]
     pub environment_variables: ::prost::alloc::vec::Vec<EnvironmentVariable>,
-    /// Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01.
-    /// Support of Systrace may stop at any time, at which point no Systrace file
-    /// will be provided in the results.
-    ///
     /// Systrace configuration for the run.
-    /// If set a systrace will be taken, starting on test start and lasting for the
-    /// configured duration. The systrace file thus obtained is put in the results
-    /// bucket together with the other artifacts from the run.
+    /// Deprecated: Systrace used Python 2 which was sunsetted on 2020-01-01.
+    /// Systrace is no longer supported in the Cloud Testing API, and no Systrace
+    /// file will be provided in the results.
     #[deprecated]
     #[prost(message, optional, tag = "9")]
     pub systrace: ::core::option::Option<SystraceSetup>,
@@ -1029,7 +1026,7 @@ pub mod invalid_request_detail {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShardingOption {
-    #[prost(oneof = "sharding_option::Option", tags = "1, 2")]
+    #[prost(oneof = "sharding_option::Option", tags = "1, 2, 3")]
     pub option: ::core::option::Option<sharding_option::Option>,
 }
 /// Nested message and enum types in `ShardingOption`.
@@ -1044,6 +1041,9 @@ pub mod sharding_option {
         /// methods.
         #[prost(message, tag = "2")]
         ManualSharding(super::ManualSharding),
+        /// Shards test based on previous test case timing records.
+        #[prost(message, tag = "3")]
+        SmartSharding(super::SmartSharding),
     }
 }
 /// Uniformly shards test cases given a total number of shards.
@@ -1094,6 +1094,49 @@ pub struct TestTargetsForShard {
     /// The number of test_targets must be greater than 0.
     #[prost(string, repeated, tag = "1")]
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Shards test based on previous test case timing records.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SmartSharding {
+    /// The amount of time tests within a shard should take.
+    ///
+    /// Default: 300 seconds (5 minutes).
+    /// The minimum allowed: 120 seconds (2 minutes).
+    ///
+    /// The shard count is dynamically set based on time, up to the maximum shard
+    /// limit (described below).  To guarantee at least one test case for each
+    /// shard, the number of shards will not exceed the number of test cases. Shard
+    /// duration will be exceeded if:
+    ///    - The maximum shard limit is reached and there is more calculated test
+    ///    time remaining to allocate into shards.
+    ///    - Any individual test is estimated to be longer than the targeted shard
+    ///    duration.
+    ///
+    /// Shard duration is not guaranteed because smart sharding uses test case
+    /// history and default durations which may not be accurate. The rules for
+    /// finding the test case timing records are:
+    ///   - If the service has seen a test case in the last 30 days, the record
+    ///   of the latest successful one will be used.
+    ///   - For new test cases, the average duration of other known test cases will
+    ///   be used.
+    ///   - If there are no previous test case timing records available, the test
+    ///   case is considered to be 15 seconds long by default.
+    ///
+    /// Because the actual shard duration can exceed the targeted shard duration,
+    /// we recommend setting the targeted value at least 5 minutes less than the
+    /// maximum allowed test timeout (45 minutes for physical devices and 60
+    /// minutes for virtual), or using the custom test timeout value you set. This
+    /// approach avoids cancelling the shard before all tests can finish.
+    ///
+    /// Note that there is a limit for maximum number of shards. When you select
+    /// one or more physical devices, the number of shards must be <= 50. When you
+    /// select one or more ARM virtual devices, it must be <= 100. When you select
+    /// only x86 virtual devices, it must be <= 500. To guarantee at least one test
+    /// case for per shard, the number of shards will not exceed the number of test
+    /// cases. Each shard created will count toward daily test quota.
+    #[prost(message, optional, tag = "1")]
+    pub targeted_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Output only. Details about the shard.
 #[allow(clippy::derive_partial_eq_without_eq)]

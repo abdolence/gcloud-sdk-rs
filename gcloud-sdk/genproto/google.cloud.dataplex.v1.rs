@@ -337,9 +337,8 @@ pub mod zone {
             /// discovery every 60 minutes. To explicitly set a timezone to the cron
             /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
             /// TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
-            /// from IANA time zone database. For example,
-            /// `CRON_TZ=America/New_York 1 * * * *`,
-            /// or `TZ=America/New_York 1 * * * *`.
+            /// from IANA time zone database. For example, `CRON_TZ=America/New_York 1
+            /// * * * *`, or `TZ=America/New_York 1 * * * *`.
             #[prost(string, tag = "10")]
             Schedule(::prost::alloc::string::String),
         }
@@ -888,9 +887,8 @@ pub mod asset {
             /// discovery every 60 minutes. To explicitly set a timezone to the cron
             /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
             /// TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
-            /// from IANA time zone database. For example,
-            /// `CRON_TZ=America/New_York 1 * * * *`,
-            /// or `TZ=America/New_York 1 * * * *`.
+            /// from IANA time zone database. For example, `CRON_TZ=America/New_York 1
+            /// * * * *`, or `TZ=America/New_York 1 * * * *`.
             #[prost(string, tag = "10")]
             Schedule(::prost::alloc::string::String),
         }
@@ -908,6 +906,10 @@ pub mod asset {
         /// Required. Immutable. Type of resource.
         #[prost(enumeration = "resource_spec::Type", tag = "2")]
         pub r#type: i32,
+        /// Optional. Determines how read permissions are handled for each asset and
+        /// their associated tables. Only available to storage buckets assets.
+        #[prost(enumeration = "resource_spec::AccessMode", tag = "5")]
+        pub read_access_mode: i32,
     }
     /// Nested message and enum types in `ResourceSpec`.
     pub mod resource_spec {
@@ -954,6 +956,50 @@ pub mod asset {
                 }
             }
         }
+        /// Access Mode determines how data stored within the resource is read. This
+        /// is only applicable to storage bucket assets.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum AccessMode {
+            /// Access mode unspecified.
+            Unspecified = 0,
+            /// Default. Data is accessed directly using storage APIs.
+            Direct = 1,
+            /// Data is accessed through a managed interface using BigQuery APIs.
+            Managed = 2,
+        }
+        impl AccessMode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    AccessMode::Unspecified => "ACCESS_MODE_UNSPECIFIED",
+                    AccessMode::Direct => "DIRECT",
+                    AccessMode::Managed => "MANAGED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ACCESS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DIRECT" => Some(Self::Direct),
+                    "MANAGED" => Some(Self::Managed),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Status of the resource referenced by an asset.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -968,6 +1014,9 @@ pub mod asset {
         /// Last update time of the status.
         #[prost(message, optional, tag = "3")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. Service account associated with the BigQuery Connection.
+        #[prost(string, tag = "4")]
+        pub managed_access_identity: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `ResourceStatus`.
     pub mod resource_status {
@@ -1279,6 +1328,7 @@ pub mod environment {
             OsImage(OsImageRuntime),
         }
     }
+    /// Configuration for sessions created for this environment.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SessionSpec {
@@ -1294,6 +1344,7 @@ pub mod environment {
         #[prost(bool, tag = "2")]
         pub enable_fast_startup: bool,
     }
+    /// Status of sessions created for this environment.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SessionStatus {
@@ -1302,6 +1353,7 @@ pub mod environment {
         #[prost(bool, tag = "1")]
         pub active: bool,
     }
+    /// URI Endpoints to access sessions associated with the Environment.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Endpoints {
@@ -1349,6 +1401,7 @@ pub struct Content {
     /// Only returned in `GetContent` requests and not in `ListContent` request.
     #[prost(oneof = "content::Data", tags = "9")]
     pub data: ::core::option::Option<content::Data>,
+    /// Types of content
     #[prost(oneof = "content::Content", tags = "100, 101")]
     pub content: ::core::option::Option<content::Content>,
 }
@@ -1462,6 +1515,7 @@ pub mod content {
         #[prost(string, tag = "9")]
         DataText(::prost::alloc::string::String),
     }
+    /// Types of content
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
@@ -1487,6 +1541,7 @@ pub struct Session {
     /// Output only. Session start time.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. State of Session
     #[prost(enumeration = "State", tag = "4")]
     pub state: i32,
 }
@@ -1989,14 +2044,14 @@ pub mod content_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trigger {
     /// DataScan scheduling and trigger settings.
-    /// If not specified, the default is OnDemand, which means the scan will not
-    /// run until the user calls RunDataScan API.
+    ///
+    /// If not specified, the default is `onDemand`.
     #[prost(oneof = "trigger::Mode", tags = "100, 101")]
     pub mode: ::core::option::Option<trigger::Mode>,
 }
 /// Nested message and enum types in `Trigger`.
 pub mod trigger {
-    /// The scan runs one-time via RunDataScan API.
+    /// The scan runs once via `RunDataScan` API.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OnDemand {}
@@ -2004,24 +2059,28 @@ pub mod trigger {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Schedule {
-        /// Required. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
+        /// Required. \[Cron\](<https://en.wikipedia.org/wiki/Cron>) schedule for running
         /// scans periodically.
-        /// To explicitly set a timezone to the cron tab, apply a prefix in the
-        /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
-        /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
-        /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
-        /// "TZ=America/New_York 1 * * * *".
+        ///
+        /// To explicitly set a timezone in the cron tab, apply a prefix in the
+        /// cron tab: **"CRON_TZ=${IANA_TIME_ZONE}"** or **"TZ=${IANA_TIME_ZONE}"**.
+        /// The **${IANA_TIME_ZONE}** may only be a valid string from IANA time zone
+        /// database
+        /// (\[wikipedia\](<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List>)).
+        /// For example, `CRON_TZ=America/New_York 1 * * * *`, or
+        /// `TZ=America/New_York 1 * * * *`.
+        ///
         /// This field is required for Schedule scans.
         #[prost(string, tag = "1")]
         pub cron: ::prost::alloc::string::String,
     }
     /// DataScan scheduling and trigger settings.
-    /// If not specified, the default is OnDemand, which means the scan will not
-    /// run until the user calls RunDataScan API.
+    ///
+    /// If not specified, the default is `onDemand`.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Mode {
-        /// The scan runs one-time shortly after DataScan Creation.
+        /// The scan runs once via `RunDataScan` API.
         #[prost(message, tag = "100")]
         OnDemand(OnDemand),
         /// The scan is scheduled to run periodically.
@@ -2033,23 +2092,29 @@ pub mod trigger {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSource {
-    /// The source is required and immutable which means once entity is set, it
-    /// cannot be change to others, and vice versa.
-    #[prost(oneof = "data_source::Source", tags = "100")]
+    /// The source is required and immutable. Once it is set, it cannot be change
+    /// to others.
+    #[prost(oneof = "data_source::Source", tags = "100, 101")]
     pub source: ::core::option::Option<data_source::Source>,
 }
 /// Nested message and enum types in `DataSource`.
 pub mod data_source {
-    /// The source is required and immutable which means once entity is set, it
-    /// cannot be change to others, and vice versa.
+    /// The source is required and immutable. Once it is set, it cannot be change
+    /// to others.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Immutable. The dataplex entity that contains the data for DataScan, of
-        /// the form:
+        /// Immutable. The Dataplex entity that represents the data source (e.g.
+        /// BigQuery table) for DataScan, of the form:
         /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
         #[prost(string, tag = "100")]
         Entity(::prost::alloc::string::String),
+        /// Immutable. The service-qualified full resource name of the cloud resource
+        /// for a DataScan job to scan against. The field could be: BigQuery table of
+        /// type "TABLE" for DataProfileScan/DataQualityScan Format:
+        /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+        #[prost(string, tag = "101")]
+        Resource(::prost::alloc::string::String),
     }
 }
 /// The data scanned during processing (e.g. in incremental DataScan)
@@ -2067,13 +2132,13 @@ pub mod scanned_data {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IncrementalField {
         /// The field that contains values which monotonically increases over time
-        /// (e.g. timestamp).
+        /// (e.g. a timestamp column).
         #[prost(string, tag = "1")]
         pub field: ::prost::alloc::string::String,
-        /// Value that marks the start of the range
+        /// Value that marks the start of the range.
         #[prost(string, tag = "2")]
         pub start: ::prost::alloc::string::String,
-        /// Value that marks the end of the range
+        /// Value that marks the end of the range.
         #[prost(string, tag = "3")]
         pub end: ::prost::alloc::string::String,
     }
@@ -2090,134 +2155,116 @@ pub mod scanned_data {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileSpec {}
-/// DataProfileResult defines the output of DataProfileScan.
-/// Each field of the table will have field type specific profile result.
+/// DataProfileResult defines the output of DataProfileScan. Each field of the
+/// table will have field type specific profile result.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileResult {
-    /// The count of all rows in the sampled data.
-    /// Return 0, if zero rows.
+    /// The count of rows scanned.
     #[prost(int64, tag = "3")]
     pub row_count: i64,
-    /// This represents the profile information per field.
+    /// The profile information per field.
     #[prost(message, optional, tag = "4")]
     pub profile: ::core::option::Option<data_profile_result::Profile>,
-    /// The data scanned for this profile.
+    /// The data scanned for this result.
     #[prost(message, optional, tag = "5")]
     pub scanned_data: ::core::option::Option<ScannedData>,
 }
 /// Nested message and enum types in `DataProfileResult`.
 pub mod data_profile_result {
-    /// Profile information describing the structure and layout of the data
-    /// and contains the profile info.
+    /// Contains name, type, mode and field type specific profile information.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Profile {
-        /// The sequence of fields describing data in table entities.
+        /// List of fields with structural and profile information for each field.
         #[prost(message, repeated, tag = "2")]
         pub fields: ::prost::alloc::vec::Vec<profile::Field>,
     }
     /// Nested message and enum types in `Profile`.
     pub mod profile {
-        /// Represents a column field within a table schema.
+        /// A field within a table.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Field {
             /// The name of the field.
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
-            /// The field data type. Possible values include:
-            ///
-            /// * STRING
-            /// * BYTE
-            /// * INT64
-            /// * INT32
-            /// * INT16
-            /// * DOUBLE
-            /// * FLOAT
-            /// * DECIMAL
-            /// * BOOLEAN
-            /// * BINARY
-            /// * TIMESTAMP
-            /// * DATE
-            /// * TIME
-            /// * NULL
-            /// * RECORD
+            /// The data type retrieved from the schema of the data source. For
+            /// instance, for a BigQuery native table, it is the [BigQuery Table
+            /// Schema](<https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema>).
+            /// For a Dataplex Entity, it is the [Entity
+            /// Schema](<https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3>).
             #[prost(string, tag = "2")]
             pub r#type: ::prost::alloc::string::String,
-            /// The mode of the field. Its value will be:
-            /// REQUIRED, if it is a required field.
-            /// NULLABLE, if it is an optional field.
-            /// REPEATED, if it is a repeated field.
+            /// The mode of the field. Possible values include:
+            ///
+            /// * REQUIRED, if it is a required field.
+            /// * NULLABLE, if it is an optional field.
+            /// * REPEATED, if it is a repeated field.
             #[prost(string, tag = "3")]
             pub mode: ::prost::alloc::string::String,
-            /// The profile information for the corresponding field.
+            /// Profile information for the corresponding field.
             #[prost(message, optional, tag = "4")]
             pub profile: ::core::option::Option<field::ProfileInfo>,
         }
         /// Nested message and enum types in `Field`.
         pub mod field {
-            /// ProfileInfo defines the profile information for each schema field type.
+            /// The profile information for each field type.
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ProfileInfo {
-                /// The ratio of null rows against the rows in the sampled data.
+                /// Ratio of rows with null value against total scanned rows.
                 #[prost(double, tag = "2")]
                 pub null_ratio: f64,
-                /// The ratio of rows that are distinct against the rows in the sampled
-                /// data.
+                /// Ratio of rows with distinct values against total scanned rows.
+                /// Not available for complex non-groupable field type RECORD and fields
+                /// with REPEATABLE mode.
                 #[prost(double, tag = "3")]
                 pub distinct_ratio: f64,
-                /// The array of top N values of the field in the sampled data.
-                /// Currently N is set as 10 or equal to distinct values in the field,
-                /// whichever is smaller. This will be optional for complex non-groupable
-                /// data-types such as JSON, ARRAY, JSON, STRUCT.
+                /// The list of top N non-null values and number of times they occur in
+                /// the scanned data. N is 10 or equal to the number of distinct values
+                /// in the field, whichever is smaller. Not available for complex
+                /// non-groupable field type RECORD and fields with REPEATABLE mode.
                 #[prost(message, repeated, tag = "4")]
                 pub top_n_values: ::prost::alloc::vec::Vec<profile_info::TopNValue>,
-                /// The corresponding profile for specific field type.
-                /// Each field will have only one field type specific profile output.
+                /// Structural and profile information for specific field type. Not
+                /// available, if mode is REPEATABLE.
                 #[prost(oneof = "profile_info::FieldInfo", tags = "101, 102, 103")]
                 pub field_info: ::core::option::Option<profile_info::FieldInfo>,
             }
             /// Nested message and enum types in `ProfileInfo`.
             pub mod profile_info {
-                /// StringFieldInfo defines output info for any string type field.
+                /// The profile information for a string type field.
                 #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct StringFieldInfo {
-                    /// The minimum length of the string field in the sampled data.
-                    /// Optional if zero non-null rows.
+                    /// Minimum length of non-null values in the scanned data.
                     #[prost(int64, tag = "1")]
                     pub min_length: i64,
-                    /// The maximum length of a string field in the sampled data.
-                    /// Optional if zero non-null rows.
+                    /// Maximum length of non-null values in the scanned data.
                     #[prost(int64, tag = "2")]
                     pub max_length: i64,
-                    /// The average length of a string field in the sampled data.
-                    /// Optional if zero non-null rows.
+                    /// Average length of non-null values in the scanned data.
                     #[prost(double, tag = "3")]
                     pub average_length: f64,
                 }
-                /// IntegerFieldInfo defines output for any integer type field.
+                /// The profile information for an integer type field.
                 #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct IntegerFieldInfo {
-                    /// The average of non-null values of integer field in the sampled
-                    /// data. Return NaN, if the field has a NaN. Optional if zero non-null
-                    /// rows.
+                    /// Average of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
                     #[prost(double, tag = "1")]
                     pub average: f64,
-                    /// The standard deviation of non-null of integer field in the sampled
-                    /// data. Return NaN, if the field has a NaN. Optional if zero non-null
-                    /// rows.
+                    /// Standard deviation of non-null values in the scanned data. NaN, if
+                    /// the field has a NaN.
                     #[prost(double, tag = "3")]
                     pub standard_deviation: f64,
-                    /// The minimum value of an integer field in the sampled data.
-                    /// Return NaN, if the field has a NaN. Optional if zero non-null
-                    /// rows.
+                    /// Minimum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
                     #[prost(int64, tag = "4")]
                     pub min: i64,
-                    /// A quartile divide the number of data points into four parts, or
+                    /// A quartile divides the number of data points into four parts, or
                     /// quarters, of more-or-less equal size. Three main quartiles used
                     /// are: The first quartile (Q1) splits off the lowest 25% of data from
                     /// the highest 75%. It is also known as the lower or 25th empirical
@@ -2225,36 +2272,33 @@ pub mod data_profile_result {
                     /// quartile (Q2) is the median of a data set. So, 50% of the data lies
                     /// below this point. The third quartile (Q3) splits off the highest
                     /// 25% of data from the lowest 75%. It is known as the upper or 75th
-                    /// empirical quartile, as 75% of the data lies below this point. So,
-                    /// here the quartiles is provided as an ordered list of quartile
-                    /// values, occurring in order Q1, median, Q3.
+                    /// empirical quartile, as 75% of the data lies below this point.
+                    /// Here, the quartiles is provided as an ordered list of quartile
+                    /// values for the scanned data, occurring in order Q1, median, Q3.
                     #[prost(int64, repeated, tag = "6")]
                     pub quartiles: ::prost::alloc::vec::Vec<i64>,
-                    /// The maximum value of an integer field in the sampled data.
-                    /// Return NaN, if the field has a NaN. Optional if zero non-null
-                    /// rows.
+                    /// Maximum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
                     #[prost(int64, tag = "5")]
                     pub max: i64,
                 }
-                /// DoubleFieldInfo defines output for any double type field.
+                /// The profile information for a double type field.
                 #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct DoubleFieldInfo {
-                    /// The average of non-null values of double field in the sampled data.
-                    /// Return NaN, if the field has a NaN. Optional if zero non-null rows.
+                    /// Average of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
                     #[prost(double, tag = "1")]
                     pub average: f64,
-                    /// The standard deviation of non-null of double field in the sampled
-                    /// data. Return NaN, if the field has a NaN. Optional if zero non-null
-                    /// rows.
+                    /// Standard deviation of non-null values in the scanned data. NaN, if
+                    /// the field has a NaN.
                     #[prost(double, tag = "3")]
                     pub standard_deviation: f64,
-                    /// The minimum value of a double field in the sampled data.
-                    /// Return NaN, if the field has a NaN. Optional if zero non-null
-                    /// rows.
+                    /// Minimum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
                     #[prost(double, tag = "4")]
                     pub min: f64,
-                    /// A quartile divide the numebr of data points into four parts, or
+                    /// A quartile divides the number of data points into four parts, or
                     /// quarters, of more-or-less equal size. Three main quartiles used
                     /// are: The first quartile (Q1) splits off the lowest 25% of data from
                     /// the highest 75%. It is also known as the lower or 25th empirical
@@ -2262,41 +2306,39 @@ pub mod data_profile_result {
                     /// quartile (Q2) is the median of a data set. So, 50% of the data lies
                     /// below this point. The third quartile (Q3) splits off the highest
                     /// 25% of data from the lowest 75%. It is known as the upper or 75th
-                    /// empirical quartile, as 75% of the data lies below this point. So,
-                    /// here the quartiles is provided as an ordered list of quartile
-                    /// values, occurring in order Q1, median, Q3.
+                    /// empirical quartile, as 75% of the data lies below this point.
+                    /// Here, the quartiles is provided as an ordered list of quartile
+                    /// values for the scanned data, occurring in order Q1, median, Q3.
                     #[prost(double, repeated, tag = "6")]
                     pub quartiles: ::prost::alloc::vec::Vec<f64>,
-                    /// The maximum value of a double field in the sampled data.
-                    /// Return NaN, if the field has a NaN. Optional if zero non-null
-                    /// rows.
+                    /// Maximum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
                     #[prost(double, tag = "5")]
                     pub max: f64,
                 }
-                /// The TopNValue defines the structure of output of top N values of a
-                /// field.
+                /// Top N non-null values in the scanned data.
                 #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct TopNValue {
-                    /// The value is the string value of the actual value from the field.
+                    /// String value of a top N non-null value.
                     #[prost(string, tag = "1")]
                     pub value: ::prost::alloc::string::String,
-                    /// The frequency count of the corresponding value in the field.
+                    /// Count of the corresponding value in the scanned data.
                     #[prost(int64, tag = "2")]
                     pub count: i64,
                 }
-                /// The corresponding profile for specific field type.
-                /// Each field will have only one field type specific profile output.
+                /// Structural and profile information for specific field type. Not
+                /// available, if mode is REPEATABLE.
                 #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
                 pub enum FieldInfo {
-                    /// The corresponding string field profile.
+                    /// String type field information.
                     #[prost(message, tag = "101")]
                     StringProfile(StringFieldInfo),
-                    /// The corresponding integer field profile.
+                    /// Integer type field information.
                     #[prost(message, tag = "102")]
                     IntegerProfile(IntegerFieldInfo),
-                    /// The corresponding double field profile.
+                    /// Double type field information.
                     #[prost(message, tag = "103")]
                     DoubleProfile(DoubleFieldInfo),
                 }
@@ -2320,7 +2362,7 @@ pub struct DataQualityResult {
     /// Overall data quality result -- `true` if all rules passed.
     #[prost(bool, tag = "5")]
     pub passed: bool,
-    /// A list of results at the dimension-level.
+    /// A list of results at the dimension level.
     #[prost(message, repeated, tag = "2")]
     pub dimensions: ::prost::alloc::vec::Vec<DataQualityDimensionResult>,
     /// A list of all the rules in a job, and their results.
@@ -2333,8 +2375,7 @@ pub struct DataQualityResult {
     #[prost(message, optional, tag = "7")]
     pub scanned_data: ::core::option::Option<ScannedData>,
 }
-/// DataQualityRuleResult provides a more detailed, per-rule level view of the
-/// results.
+/// DataQualityRuleResult provides a more detailed, per-rule view of the results.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualityRuleResult {
@@ -2344,12 +2385,15 @@ pub struct DataQualityRuleResult {
     /// Whether the rule passed or failed.
     #[prost(bool, tag = "7")]
     pub passed: bool,
-    /// The number of rows a rule was evaluated against.
-    /// This field is only valid for ColumnMap type rules.
+    /// The number of rows a rule was evaluated against. This field is only valid
+    /// for ColumnMap type rules.
+    ///
     /// Evaluated count can be configured to either
-    /// (1) include all rows (default) - with null rows automatically failing rule
-    /// evaluation  OR (2) exclude null rows from the evaluated_count, by setting
-    /// ignore_nulls = true
+    ///
+    /// * include all rows (default) - with `null` rows automatically failing rule
+    /// evaluation, or
+    /// * exclude `null` rows from the `evaluated_count`, by setting
+    /// `ignore_nulls = true`.
     #[prost(int64, tag = "9")]
     pub evaluated_count: i64,
     /// The number of rows which passed a rule evaluation.
@@ -2359,7 +2403,7 @@ pub struct DataQualityRuleResult {
     /// The number of rows with null values in the specified column.
     #[prost(int64, tag = "5")]
     pub null_count: i64,
-    /// The ratio of passed_count / evaluated_count.
+    /// The ratio of **passed_count / evaluated_count**.
     /// This field is only valid for ColumnMap type rules.
     #[prost(double, tag = "6")]
     pub pass_ratio: f64,
@@ -2368,8 +2412,8 @@ pub struct DataQualityRuleResult {
     #[prost(string, tag = "10")]
     pub failing_rows_query: ::prost::alloc::string::String,
 }
-/// DataQualityDimensionResult provides a more detailed, per-dimension level view
-/// of the results.
+/// DataQualityDimensionResult provides a more detailed, per-dimension view of
+/// the results.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualityDimensionResult {
@@ -2384,22 +2428,25 @@ pub struct DataQualityRule {
     /// Optional. The unnested column which this rule is evaluated against.
     #[prost(string, tag = "500")]
     pub column: ::prost::alloc::string::String,
-    /// Optional. Rows with null values will automatically fail a rule, unless
-    /// ignore_null is true. In that case, such null rows are trivially considered
-    /// passing. Only applicable to ColumnMap rules.
+    /// Optional. Rows with `null` values will automatically fail a rule, unless
+    /// `ignore_null` is `true`. In that case, such `null` rows are trivially
+    /// considered passing.
+    ///
+    /// Only applicable to ColumnMap rules.
     #[prost(bool, tag = "501")]
     pub ignore_null: bool,
     /// Required. The dimension a rule belongs to. Results are also aggregated at
-    /// the dimension-level. Supported dimensions are ["COMPLETENESS", "ACCURACY",
-    /// "CONSISTENCY", "VALIDITY", "UNIQUENESS", "INTEGRITY"]
+    /// the dimension level. Supported dimensions are **["COMPLETENESS",
+    /// "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS", "INTEGRITY"]**
     #[prost(string, tag = "502")]
     pub dimension: ::prost::alloc::string::String,
-    /// Optional. The minimum ratio of passing_rows / total_rows required to pass
-    /// this rule, with a range of [0.0, 1.0]
+    /// Optional. The minimum ratio of **passing_rows / total_rows** required to
+    /// pass this rule, with a range of [0.0, 1.0].
     ///
-    /// 0 indicates default value (i.e. 1.0)
+    /// 0 indicates default value (i.e. 1.0).
     #[prost(double, tag = "503")]
     pub threshold: f64,
+    /// The rule-specific configuration.
     #[prost(
         oneof = "data_quality_rule::RuleType",
         tags = "1, 2, 3, 4, 100, 101, 200, 201"
@@ -2413,21 +2460,25 @@ pub mod data_quality_rule {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RangeExpectation {
         /// Optional. The minimum column value allowed for a row to pass this
-        /// validation. At least one of min_value and max_value need to be provided.
+        /// validation. At least one of `min_value` and `max_value` need to be
+        /// provided.
         #[prost(string, tag = "1")]
         pub min_value: ::prost::alloc::string::String,
         /// Optional. The maximum column value allowed for a row to pass this
-        /// validation. At least one of min_value and max_value need to be provided.
+        /// validation. At least one of `min_value` and `max_value` need to be
+        /// provided.
         #[prost(string, tag = "2")]
         pub max_value: ::prost::alloc::string::String,
         /// Optional. Whether each value needs to be strictly greater than ('>') the
-        /// minimum, or if equality is allowed. Only relevant if a min_value has been
-        /// defined. Default = false.
+        /// minimum, or if equality is allowed.
+        ///
+        /// Only relevant if a `min_value` has been defined. Default = false.
         #[prost(bool, tag = "3")]
         pub strict_min_enabled: bool,
         /// Optional. Whether each value needs to be strictly lesser than ('<') the
-        /// maximum, or if equality is allowed. Only relevant if a max_value has been
-        /// defined. Default = false.
+        /// maximum, or if equality is allowed.
+        ///
+        /// Only relevant if a `max_value` has been defined. Default = false.
         #[prost(bool, tag = "4")]
         pub strict_max_enabled: bool,
     }
@@ -2439,6 +2490,7 @@ pub mod data_quality_rule {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SetExpectation {
+        /// Expected values for the column value.
         #[prost(string, repeated, tag = "1")]
         pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -2446,6 +2498,7 @@ pub mod data_quality_rule {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RegexExpectation {
+        /// A regular expression the column value is expected to match.
         #[prost(string, tag = "1")]
         pub regex: ::prost::alloc::string::String,
     }
@@ -2458,31 +2511,37 @@ pub mod data_quality_rule {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StatisticRangeExpectation {
+        /// The aggregate metric to evaluate.
         #[prost(enumeration = "statistic_range_expectation::ColumnStatistic", tag = "1")]
         pub statistic: i32,
         /// The minimum column statistic value allowed for a row to pass this
         /// validation.
-        /// At least one of min_value and max_value need to be provided.
+        ///
+        /// At least one of `min_value` and `max_value` need to be provided.
         #[prost(string, tag = "2")]
         pub min_value: ::prost::alloc::string::String,
         /// The maximum column statistic value allowed for a row to pass this
         /// validation.
-        /// At least one of min_value and max_value need to be provided.
+        ///
+        /// At least one of `min_value` and `max_value` need to be provided.
         #[prost(string, tag = "3")]
         pub max_value: ::prost::alloc::string::String,
         /// Whether column statistic needs to be strictly greater than ('>')
-        /// the minimum, or if equality is allowed. Only relevant if a min_value has
-        /// been defined. Default = false.
+        /// the minimum, or if equality is allowed.
+        ///
+        /// Only relevant if a `min_value` has been defined. Default = false.
         #[prost(bool, tag = "4")]
         pub strict_min_enabled: bool,
         /// Whether column statistic needs to be strictly lesser than ('<') the
-        /// maximum, or if equality is allowed. Only relevant if a max_value has been
-        /// defined. Default = false.
+        /// maximum, or if equality is allowed.
+        ///
+        /// Only relevant if a `max_value` has been defined. Default = false.
         #[prost(bool, tag = "5")]
         pub strict_max_enabled: bool,
     }
     /// Nested message and enum types in `StatisticRangeExpectation`.
     pub mod statistic_range_expectation {
+        /// The list of aggregate metrics a rule can be evaluated against.
         #[derive(
             Clone,
             Copy,
@@ -2531,25 +2590,32 @@ pub mod data_quality_rule {
         }
     }
     /// Evaluates whether each row passes the specified condition.
+    ///
     /// The SQL expression needs to use BigQuery standard SQL syntax and should
-    /// produce a boolean per row as the result.
+    /// produce a boolean value per row as the result.
+    ///
     /// Example: col1 >= 0 AND col2 < 10
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RowConditionExpectation {
+        /// The SQL expression.
         #[prost(string, tag = "1")]
         pub sql_expression: ::prost::alloc::string::String,
     }
     /// Evaluates whether the provided expression is true.
+    ///
     /// The SQL expression needs to use BigQuery standard SQL syntax and should
     /// produce a scalar boolean result.
+    ///
     /// Example: MIN(col1) >= 0
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableConditionExpectation {
+        /// The SQL expression.
         #[prost(string, tag = "1")]
         pub sql_expression: ::prost::alloc::string::String,
     }
+    /// The rule-specific configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RuleType {
@@ -2584,6 +2650,2324 @@ pub mod data_quality_rule {
         TableConditionExpectation(TableConditionExpectation),
     }
 }
+/// A task represents a user-visible job.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Task {
+    /// Output only. The relative resource name of the task, of the form:
+    /// projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
+    /// tasks/{task_id}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the task. This ID will
+    /// be different if the task is deleted and re-created with the same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the task was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the task was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Description of the task.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. User friendly display name.
+    #[prost(string, tag = "6")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. Current state of the task.
+    #[prost(enumeration = "State", tag = "7")]
+    pub state: i32,
+    /// Optional. User-defined labels for the task.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. Spec related to how often and when a task should be triggered.
+    #[prost(message, optional, tag = "100")]
+    pub trigger_spec: ::core::option::Option<task::TriggerSpec>,
+    /// Required. Spec related to how a task is executed.
+    #[prost(message, optional, tag = "101")]
+    pub execution_spec: ::core::option::Option<task::ExecutionSpec>,
+    /// Output only. Status of the latest task executions.
+    #[prost(message, optional, tag = "201")]
+    pub execution_status: ::core::option::Option<task::ExecutionStatus>,
+    /// Task template specific user-specified config.
+    #[prost(oneof = "task::Config", tags = "300, 302")]
+    pub config: ::core::option::Option<task::Config>,
+}
+/// Nested message and enum types in `Task`.
+pub mod task {
+    /// Configuration for the underlying infrastructure used to run workloads.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InfrastructureSpec {
+        /// Hardware config.
+        #[prost(oneof = "infrastructure_spec::Resources", tags = "52")]
+        pub resources: ::core::option::Option<infrastructure_spec::Resources>,
+        /// Software config.
+        #[prost(oneof = "infrastructure_spec::Runtime", tags = "101")]
+        pub runtime: ::core::option::Option<infrastructure_spec::Runtime>,
+        /// Networking config.
+        #[prost(oneof = "infrastructure_spec::Network", tags = "150")]
+        pub network: ::core::option::Option<infrastructure_spec::Network>,
+    }
+    /// Nested message and enum types in `InfrastructureSpec`.
+    pub mod infrastructure_spec {
+        /// Batch compute resources associated with the task.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BatchComputeResources {
+            /// Optional. Total number of job executors.
+            /// Executor Count should be between 2 and 100. \[Default=2\]
+            #[prost(int32, tag = "1")]
+            pub executors_count: i32,
+            /// Optional. Max configurable executors.
+            /// If max_executors_count > executors_count, then auto-scaling is enabled.
+            /// Max Executor Count should be between 2 and 1000. \[Default=1000\]
+            #[prost(int32, tag = "2")]
+            pub max_executors_count: i32,
+        }
+        /// Container Image Runtime Configuration used with Batch execution.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ContainerImageRuntime {
+            /// Optional. Container image to use.
+            #[prost(string, tag = "1")]
+            pub image: ::prost::alloc::string::String,
+            /// Optional. A list of Java JARS to add to the classpath.
+            /// Valid input includes Cloud Storage URIs to Jar binaries.
+            /// For example, gs://bucket-name/my/path/to/file.jar
+            #[prost(string, repeated, tag = "2")]
+            pub java_jars: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Optional. A list of python packages to be installed.
+            /// Valid formats include Cloud Storage URI to a PIP installable library.
+            /// For example, gs://bucket-name/my/path/to/lib.tar.gz
+            #[prost(string, repeated, tag = "3")]
+            pub python_packages: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. Override to common configuration of open source components
+            /// installed on the Dataproc cluster. The properties to set on daemon
+            /// config files. Property keys are specified in `prefix:property` format,
+            /// for example `core:hadoop.tmp.dir`. For more information, see [Cluster
+            /// properties](<https://cloud.google.com/dataproc/docs/concepts/cluster-properties>).
+            #[prost(map = "string, string", tag = "4")]
+            pub properties: ::std::collections::HashMap<
+                ::prost::alloc::string::String,
+                ::prost::alloc::string::String,
+            >,
+        }
+        /// Cloud VPC Network used to run the infrastructure.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct VpcNetwork {
+            /// Optional. List of network tags to apply to the job.
+            #[prost(string, repeated, tag = "3")]
+            pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// The Cloud VPC network identifier.
+            #[prost(oneof = "vpc_network::NetworkName", tags = "1, 2")]
+            pub network_name: ::core::option::Option<vpc_network::NetworkName>,
+        }
+        /// Nested message and enum types in `VpcNetwork`.
+        pub mod vpc_network {
+            /// The Cloud VPC network identifier.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum NetworkName {
+                /// Optional. The Cloud VPC network in which the job is run. By default,
+                /// the Cloud VPC network named Default within the project is used.
+                #[prost(string, tag = "1")]
+                Network(::prost::alloc::string::String),
+                /// Optional. The Cloud VPC sub-network in which the job is run.
+                #[prost(string, tag = "2")]
+                SubNetwork(::prost::alloc::string::String),
+            }
+        }
+        /// Hardware config.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Resources {
+            /// Compute resources needed for a Task when using Dataproc Serverless.
+            #[prost(message, tag = "52")]
+            Batch(BatchComputeResources),
+        }
+        /// Software config.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Runtime {
+            /// Container Image Runtime Configuration.
+            #[prost(message, tag = "101")]
+            ContainerImage(ContainerImageRuntime),
+        }
+        /// Networking config.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Network {
+            /// Vpc network.
+            #[prost(message, tag = "150")]
+            VpcNetwork(VpcNetwork),
+        }
+    }
+    /// Task scheduling and trigger settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TriggerSpec {
+        /// Required. Immutable. Trigger type of the user-specified Task.
+        #[prost(enumeration = "trigger_spec::Type", tag = "5")]
+        pub r#type: i32,
+        /// Optional. The first run of the task will be after this time.
+        /// If not specified, the task will run shortly after being submitted if
+        /// ON_DEMAND and based on the schedule if RECURRING.
+        #[prost(message, optional, tag = "6")]
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Optional. Prevent the task from executing.
+        /// This does not cancel already running tasks. It is intended to temporarily
+        /// disable RECURRING tasks.
+        #[prost(bool, tag = "4")]
+        pub disabled: bool,
+        /// Optional. Number of retry attempts before aborting.
+        /// Set to zero to never attempt to retry a failed task.
+        #[prost(int32, tag = "7")]
+        pub max_retries: i32,
+        /// Trigger only applies for RECURRING tasks.
+        #[prost(oneof = "trigger_spec::Trigger", tags = "100")]
+        pub trigger: ::core::option::Option<trigger_spec::Trigger>,
+    }
+    /// Nested message and enum types in `TriggerSpec`.
+    pub mod trigger_spec {
+        /// Determines how often and when the job will run.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// Unspecified trigger type.
+            Unspecified = 0,
+            /// The task runs one-time shortly after Task Creation.
+            OnDemand = 1,
+            /// The task is scheduled to run periodically.
+            Recurring = 2,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Type::Unspecified => "TYPE_UNSPECIFIED",
+                    Type::OnDemand => "ON_DEMAND",
+                    Type::Recurring => "RECURRING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ON_DEMAND" => Some(Self::OnDemand),
+                    "RECURRING" => Some(Self::Recurring),
+                    _ => None,
+                }
+            }
+        }
+        /// Trigger only applies for RECURRING tasks.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Trigger {
+            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
+            /// running tasks periodically. To explicitly set a timezone to the cron
+            /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
+            /// "TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid
+            /// string from IANA time zone database. For example,
+            /// `CRON_TZ=America/New_York 1 * * * *`, or `TZ=America/New_York 1 * * *
+            /// *`. This field is required for RECURRING tasks.
+            #[prost(string, tag = "100")]
+            Schedule(::prost::alloc::string::String),
+        }
+    }
+    /// Execution related settings, like retry and service_account.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExecutionSpec {
+        /// Optional. The arguments to pass to the task.
+        /// The args can use placeholders of the format ${placeholder} as
+        /// part of key/value string. These will be interpolated before passing the
+        /// args to the driver. Currently supported placeholders:
+        /// - ${task_id}
+        /// - ${job_time}
+        /// To pass positional args, set the key as TASK_ARGS. The value should be a
+        /// comma-separated string of all the positional arguments. To use a
+        /// delimiter other than comma, refer to
+        /// <https://cloud.google.com/sdk/gcloud/reference/topic/escaping.> In case of
+        /// other keys being present in the args, then TASK_ARGS will be passed as
+        /// the last argument.
+        #[prost(map = "string, string", tag = "4")]
+        pub args: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Required. Service account to use to execute a task.
+        /// If not provided, the default Compute service account for the project is
+        /// used.
+        #[prost(string, tag = "5")]
+        pub service_account: ::prost::alloc::string::String,
+        /// Optional. The project in which jobs are run. By default, the project
+        /// containing the Lake is used. If a project is provided, the
+        /// \[ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account\]
+        /// must belong to this project.
+        #[prost(string, tag = "7")]
+        pub project: ::prost::alloc::string::String,
+        /// Optional. The maximum duration after which the job execution is expired.
+        #[prost(message, optional, tag = "8")]
+        pub max_job_execution_lifetime: ::core::option::Option<::prost_types::Duration>,
+        /// Optional. The Cloud KMS key to use for encryption, of the form:
+        /// `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.
+        #[prost(string, tag = "9")]
+        pub kms_key: ::prost::alloc::string::String,
+    }
+    /// User-specified config for running a Spark task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SparkTaskConfig {
+        /// Optional. Cloud Storage URIs of files to be placed in the working
+        /// directory of each executor.
+        #[prost(string, repeated, tag = "3")]
+        pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Cloud Storage URIs of archives to be extracted into the working
+        /// directory of each executor. Supported file types: .jar, .tar, .tar.gz,
+        /// .tgz, and .zip.
+        #[prost(string, repeated, tag = "4")]
+        pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Infrastructure specification for the execution.
+        #[prost(message, optional, tag = "6")]
+        pub infrastructure_spec: ::core::option::Option<InfrastructureSpec>,
+        /// Required. The specification of the main method to call to drive the
+        /// job. Specify either the jar file that contains the main class or the
+        /// main class name.
+        #[prost(oneof = "spark_task_config::Driver", tags = "100, 101, 102, 104, 105")]
+        pub driver: ::core::option::Option<spark_task_config::Driver>,
+    }
+    /// Nested message and enum types in `SparkTaskConfig`.
+    pub mod spark_task_config {
+        /// Required. The specification of the main method to call to drive the
+        /// job. Specify either the jar file that contains the main class or the
+        /// main class name.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Driver {
+            /// The Cloud Storage URI of the jar file that contains the main class.
+            /// The execution args are passed in as a sequence of named process
+            /// arguments (`--key=value`).
+            #[prost(string, tag = "100")]
+            MainJarFileUri(::prost::alloc::string::String),
+            /// The name of the driver's main class. The jar file that contains the
+            /// class must be in the default CLASSPATH or specified in
+            /// `jar_file_uris`.
+            /// The execution args are passed in as a sequence of named process
+            /// arguments (`--key=value`).
+            #[prost(string, tag = "101")]
+            MainClass(::prost::alloc::string::String),
+            /// The Gcloud Storage URI of the main Python file to use as the driver.
+            /// Must be a .py file. The execution args are passed in as a sequence of
+            /// named process arguments (`--key=value`).
+            #[prost(string, tag = "102")]
+            PythonScriptFile(::prost::alloc::string::String),
+            /// A reference to a query file. This can be the Cloud Storage URI of the
+            /// query file or it can the path to a SqlScript Content. The execution
+            /// args are used to declare a set of script variables
+            /// (`set key="value";`).
+            #[prost(string, tag = "104")]
+            SqlScriptFile(::prost::alloc::string::String),
+            /// The query text.
+            /// The execution args are used to declare a set of script variables
+            /// (`set key="value";`).
+            #[prost(string, tag = "105")]
+            SqlScript(::prost::alloc::string::String),
+        }
+    }
+    /// Config for running scheduled notebooks.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NotebookTaskConfig {
+        /// Required. Path to input notebook. This can be the Cloud Storage URI of
+        /// the notebook file or the path to a Notebook Content. The execution args
+        /// are accessible as environment variables
+        /// (`TASK_key=value`).
+        #[prost(string, tag = "4")]
+        pub notebook: ::prost::alloc::string::String,
+        /// Optional. Infrastructure specification for the execution.
+        #[prost(message, optional, tag = "3")]
+        pub infrastructure_spec: ::core::option::Option<InfrastructureSpec>,
+        /// Optional. Cloud Storage URIs of files to be placed in the working
+        /// directory of each executor.
+        #[prost(string, repeated, tag = "5")]
+        pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Cloud Storage URIs of archives to be extracted into the working
+        /// directory of each executor. Supported file types: .jar, .tar, .tar.gz,
+        /// .tgz, and .zip.
+        #[prost(string, repeated, tag = "6")]
+        pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Status of the task execution (e.g. Jobs).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExecutionStatus {
+        /// Output only. Last update time of the status.
+        #[prost(message, optional, tag = "3")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. latest job execution
+        #[prost(message, optional, tag = "9")]
+        pub latest_job: ::core::option::Option<super::Job>,
+    }
+    /// Task template specific user-specified config.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Config {
+        /// Config related to running custom Spark tasks.
+        #[prost(message, tag = "300")]
+        Spark(SparkTaskConfig),
+        /// Config related to running scheduled Notebooks.
+        #[prost(message, tag = "302")]
+        Notebook(NotebookTaskConfig),
+    }
+}
+/// A job represents an instance of a task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Job {
+    /// Output only. The relative resource name of the job, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the job.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the job was started.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the job ended.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Execution state for the job.
+    #[prost(enumeration = "job::State", tag = "5")]
+    pub state: i32,
+    /// Output only. The number of times the job has been retried (excluding the
+    /// initial attempt).
+    #[prost(uint32, tag = "6")]
+    pub retry_count: u32,
+    /// Output only. The underlying service running a job.
+    #[prost(enumeration = "job::Service", tag = "7")]
+    pub service: i32,
+    /// Output only. The full resource name for the job run under a particular
+    /// service.
+    #[prost(string, tag = "8")]
+    pub service_job: ::prost::alloc::string::String,
+    /// Output only. Additional information about the current state.
+    #[prost(string, tag = "9")]
+    pub message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Job`.
+pub mod job {
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Service {
+        /// Service used to run the job is unspecified.
+        Unspecified = 0,
+        /// Dataproc service is used to run this job.
+        Dataproc = 1,
+    }
+    impl Service {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Service::Unspecified => "SERVICE_UNSPECIFIED",
+                Service::Dataproc => "DATAPROC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATAPROC" => Some(Self::Dataproc),
+                _ => None,
+            }
+        }
+    }
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The job state is unknown.
+        Unspecified = 0,
+        /// The job is running.
+        Running = 1,
+        /// The job is cancelling.
+        Cancelling = 2,
+        /// The job cancellation was successful.
+        Cancelled = 3,
+        /// The job completed successfully.
+        Succeeded = 4,
+        /// The job is no longer running due to an error.
+        Failed = 5,
+        /// The job was cancelled outside of Dataplex.
+        Aborted = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Running => "RUNNING",
+                State::Cancelling => "CANCELLING",
+                State::Cancelled => "CANCELLED",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+                State::Aborted => "ABORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "ABORTED" => Some(Self::Aborted),
+                _ => None,
+            }
+        }
+    }
+}
+/// Create lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateLakeRequest {
+    /// Required. The resource name of the lake location, of the form:
+    /// projects/{project_number}/locations/{location_id}
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Lake identifier.
+    /// This ID will be used to generate names such as database and dataset names
+    /// when publishing metadata to Hive Metastore and BigQuery.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must be unique within the customer project / location.
+    #[prost(string, tag = "2")]
+    pub lake_id: ::prost::alloc::string::String,
+    /// Required. Lake resource
+    #[prost(message, optional, tag = "3")]
+    pub lake: ::core::option::Option<Lake>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateLakeRequest {
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "2")]
+    pub lake: ::core::option::Option<Lake>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delete lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteLakeRequest {
+    /// Required. The resource name of the lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List lakes request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLakesRequest {
+    /// Required. The resource name of the lake location, of the form:
+    /// `projects/{project_number}/locations/{location_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of Lakes to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 lakes will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListLakes` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListLakes` must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List lakes response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLakesResponse {
+    /// Lakes under the given parent location.
+    #[prost(message, repeated, tag = "1")]
+    pub lakes: ::prost::alloc::vec::Vec<Lake>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// List lake actions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLakeActionsRequest {
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of actions to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 actions will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListLakeActions` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListLakeActions` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// List actions response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListActionsResponse {
+    /// Actions under the given parent lake/zone/asset.
+    #[prost(message, repeated, tag = "1")]
+    pub actions: ::prost::alloc::vec::Vec<Action>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Get lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetLakeRequest {
+    /// Required. The resource name of the lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Create zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateZoneRequest {
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Zone identifier.
+    /// This ID will be used to generate names such as database and dataset names
+    /// when publishing metadata to Hive Metastore and BigQuery.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must be unique across all lakes from all locations in a project.
+    /// * Must not be one of the reserved IDs (i.e. "default", "global-temp")
+    #[prost(string, tag = "2")]
+    pub zone_id: ::prost::alloc::string::String,
+    /// Required. Zone resource.
+    #[prost(message, optional, tag = "3")]
+    pub zone: ::core::option::Option<Zone>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateZoneRequest {
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "2")]
+    pub zone: ::core::option::Option<Zone>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delete zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteZoneRequest {
+    /// Required. The resource name of the zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List zones request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListZonesRequest {
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of zones to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 zones will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListZones` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListZones` must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List zones response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListZonesResponse {
+    /// Zones under the given parent lake.
+    #[prost(message, repeated, tag = "1")]
+    pub zones: ::prost::alloc::vec::Vec<Zone>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// List zone actions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListZoneActionsRequest {
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of actions to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 actions will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListZoneActions` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListZoneActions` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Get zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetZoneRequest {
+    /// Required. The resource name of the zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Create asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAssetRequest {
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Asset identifier.
+    /// This ID will be used to generate names such as table names when publishing
+    /// metadata to Hive Metastore and BigQuery.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must be unique within the zone.
+    #[prost(string, tag = "2")]
+    pub asset_id: ::prost::alloc::string::String,
+    /// Required. Asset resource.
+    #[prost(message, optional, tag = "3")]
+    pub asset: ::core::option::Option<Asset>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAssetRequest {
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "2")]
+    pub asset: ::core::option::Option<Asset>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delete asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAssetRequest {
+    /// Required. The resource name of the asset:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List assets request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAssetsRequest {
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of asset to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 assets will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListAssets` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListAssets` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List assets response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAssetsResponse {
+    /// Asset under the given parent zone.
+    #[prost(message, repeated, tag = "1")]
+    pub assets: ::prost::alloc::vec::Vec<Asset>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// List asset actions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAssetActionsRequest {
+    /// Required. The resource name of the parent asset:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of actions to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 actions will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListAssetActions` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListAssetActions` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Get asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAssetRequest {
+    /// Required. The resource name of the asset:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Represents the metadata of a long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. Name of the verb executed by the operation.
+    #[prost(string, tag = "4")]
+    pub verb: ::prost::alloc::string::String,
+    /// Output only. Human-readable status of the operation, if any.
+    #[prost(string, tag = "5")]
+    pub status_message: ::prost::alloc::string::String,
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
+    #[prost(bool, tag = "6")]
+    pub requested_cancellation: bool,
+    /// Output only. API version used to start the operation.
+    #[prost(string, tag = "7")]
+    pub api_version: ::prost::alloc::string::String,
+}
+/// Create task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateTaskRequest {
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Task identifier.
+    #[prost(string, tag = "2")]
+    pub task_id: ::prost::alloc::string::String,
+    /// Required. Task resource.
+    #[prost(message, optional, tag = "3")]
+    pub task: ::core::option::Option<Task>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateTaskRequest {
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "2")]
+    pub task: ::core::option::Option<Task>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delete task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteTaskRequest {
+    /// Required. The resource name of the task:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List tasks request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTasksRequest {
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of tasks to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 tasks will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListZones` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListZones` must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List tasks response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTasksResponse {
+    /// Tasks under the given parent lake.
+    #[prost(message, repeated, tag = "1")]
+    pub tasks: ::prost::alloc::vec::Vec<Task>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Get task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTaskRequest {
+    /// Required. The resource name of the task:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Get job request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetJobRequest {
+    /// Required. The resource name of the job:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunTaskRequest {
+    /// Required. The resource name of the task:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunTaskResponse {
+    /// Jobs created by RunTask API.
+    #[prost(message, optional, tag = "1")]
+    pub job: ::core::option::Option<Job>,
+}
+/// List jobs request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListJobsRequest {
+    /// Required. The resource name of the parent environment:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of jobs to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 jobs will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListJobs` call. Provide this
+    /// to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListJobs` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// List jobs response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListJobsResponse {
+    /// Jobs under a given task.
+    #[prost(message, repeated, tag = "1")]
+    pub jobs: ::prost::alloc::vec::Vec<Job>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Cancel task jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelJobRequest {
+    /// Required. The resource name of the job:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}/job/{job_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Create environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEnvironmentRequest {
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Environment identifier.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must end with a number or a letter.
+    /// * Must be unique within the lake.
+    #[prost(string, tag = "2")]
+    pub environment_id: ::prost::alloc::string::String,
+    /// Required. Environment resource.
+    #[prost(message, optional, tag = "3")]
+    pub environment: ::core::option::Option<Environment>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEnvironmentRequest {
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "2")]
+    pub environment: ::core::option::Option<Environment>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delete environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEnvironmentRequest {
+    /// Required. The resource name of the environment:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List environments request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEnvironmentsRequest {
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of environments to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 environments will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListEnvironments` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListEnvironments` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List environments response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEnvironmentsResponse {
+    /// Environments under the given parent lake.
+    #[prost(message, repeated, tag = "1")]
+    pub environments: ::prost::alloc::vec::Vec<Environment>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Get environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEnvironmentRequest {
+    /// Required. The resource name of the environment:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List sessions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionsRequest {
+    /// Required. The resource name of the parent environment:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of sessions to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 sessions will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListSessions` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListSessions` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request. The following `mode` filter is supported to
+    /// return only the sessions belonging to the requester when the mode is USER
+    /// and return sessions of all the users when the mode is ADMIN. When no filter
+    /// is sent default to USER mode. NOTE: When the mode is ADMIN, the requester
+    /// should have `dataplex.environments.listAllSessions` permission to list all
+    /// sessions, in absence of the permission, the request fails.
+    ///
+    /// mode = ADMIN | USER
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// List sessions response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionsResponse {
+    /// Sessions under a given environment.
+    #[prost(message, repeated, tag = "1")]
+    pub sessions: ::prost::alloc::vec::Vec<Session>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod dataplex_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Dataplex service provides data lakes as a service. The primary resources
+    /// offered by this service are Lakes, Zones and Assets which collectively allow
+    /// a data administrator to organize, manage, secure and catalog data across
+    /// their organization located across cloud projects in a variety of storage
+    /// systems including Cloud Storage and BigQuery.
+    #[derive(Debug, Clone)]
+    pub struct DataplexServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DataplexServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DataplexServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DataplexServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            DataplexServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a lake resource.
+        pub async fn create_lake(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateLakeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/CreateLake",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a lake resource.
+        pub async fn update_lake(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateLakeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/UpdateLake",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a lake resource. All zones within the lake must be deleted before
+        /// the lake can be deleted.
+        pub async fn delete_lake(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteLakeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/DeleteLake",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists lake resources in a project and location.
+        pub async fn list_lakes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListLakesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListLakesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListLakes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListLakes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a lake resource.
+        pub async fn get_lake(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetLakeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Lake>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/GetLake",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetLake",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists action resources in a lake.
+        pub async fn list_lake_actions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListLakeActionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListActionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListLakeActions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListLakeActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a zone resource within a lake.
+        pub async fn create_zone(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateZoneRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/CreateZone",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a zone resource.
+        pub async fn update_zone(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateZoneRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/UpdateZone",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a zone resource. All assets within a zone must be deleted before
+        /// the zone can be deleted.
+        pub async fn delete_zone(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteZoneRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/DeleteZone",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists zone resources in a lake.
+        pub async fn list_zones(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListZonesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListZonesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListZones",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListZones",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a zone resource.
+        pub async fn get_zone(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetZoneRequest>,
+        ) -> std::result::Result<tonic::Response<super::Zone>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/GetZone",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetZone",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists action resources in a zone.
+        pub async fn list_zone_actions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListZoneActionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListActionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListZoneActions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListZoneActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an asset resource.
+        pub async fn create_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/CreateAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an asset resource.
+        pub async fn update_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/UpdateAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an asset resource. The referenced storage resource is detached
+        /// (default) or deleted based on the associated Lifecycle policy.
+        pub async fn delete_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/DeleteAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists asset resources in a zone.
+        pub async fn list_assets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAssetsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAssetsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListAssets",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves an asset resource.
+        pub async fn get_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAssetRequest>,
+        ) -> std::result::Result<tonic::Response<super::Asset>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/GetAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists action resources in an asset.
+        pub async fn list_asset_actions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAssetActionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListActionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListAssetActions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListAssetActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a task resource within a lake.
+        pub async fn create_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateTaskRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/CreateTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update the task resource.
+        pub async fn update_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateTaskRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/UpdateTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete the task resource.
+        pub async fn delete_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTaskRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/DeleteTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists tasks under the given lake.
+        pub async fn list_tasks(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTasksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTasksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListTasks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get task resource.
+        pub async fn get_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTaskRequest>,
+        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/GetTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Jobs under the given task.
+        pub async fn list_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListJobsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Run an on demand execution of a Task.
+        pub async fn run_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunTaskRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RunTaskResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/RunTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "RunTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get job resource.
+        pub async fn get_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetJobRequest>,
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/GetJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.dataplex.v1.DataplexService", "GetJob"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancel jobs running for the task resource.
+        pub async fn cancel_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelJobRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/CancelJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CancelJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create an environment resource.
+        pub async fn create_environment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEnvironmentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/CreateEnvironment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "CreateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update the environment resource.
+        pub async fn update_environment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEnvironmentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/UpdateEnvironment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "UpdateEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete the environment resource. All the child resources must have been
+        /// deleted before environment deletion can be initiated.
+        pub async fn delete_environment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEnvironmentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/DeleteEnvironment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "DeleteEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists environments under the given lake.
+        pub async fn list_environments(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEnvironmentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEnvironmentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListEnvironments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListEnvironments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get environment resource.
+        pub async fn get_environment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEnvironmentRequest>,
+        ) -> std::result::Result<tonic::Response<super::Environment>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/GetEnvironment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "GetEnvironment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists session resources in an environment.
+        pub async fn list_sessions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSessionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSessionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataplexService/ListSessions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataplexService",
+                        "ListSessions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Create dataScan request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2606,6 +4990,10 @@ pub struct CreateDataScanRequest {
     /// * Must be unique within the customer project / location.
     #[prost(string, tag = "3")]
     pub data_scan_id: ::prost::alloc::string::String,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is `false`.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
 }
 /// Update dataScan request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2619,6 +5007,10 @@ pub struct UpdateDataScanRequest {
     /// Required. Mask of fields to update.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is `false`.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
 }
 /// Delete dataScan request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2702,7 +5094,7 @@ pub struct ListDataScansRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of dataScans to return. The service may return
-    /// fewer than this value. If unspecified, at most 10 scans will be returned.
+    /// fewer than this value. If unspecified, at most 500 scans will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -2761,7 +5153,7 @@ pub struct RunDataScanResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataScanJobRequest {
     /// Required. The resource name of the DataScanJob:
-    /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}`
+    /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}`
     /// where `project` refers to a *project_id* or *project_number* and
     /// `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
@@ -4605,8 +6997,7 @@ pub struct Entity {
     /// published table name. Specifying a new ID in an update entity
     /// request will override the existing value.
     /// The ID must contain only letters (a-z, A-Z), numbers (0-9), and
-    /// underscores. Must begin with a letter and consist of 256 or fewer
-    /// characters.
+    /// underscores, and consist of 256 or fewer characters.
     #[prost(string, tag = "7")]
     pub id: ::prost::alloc::string::String,
     /// Optional. The etag associated with the entity, which can be retrieved with
@@ -4646,6 +7037,14 @@ pub struct Entity {
     /// Output only. Metadata stores that the entity is compatible with.
     #[prost(message, optional, tag = "19")]
     pub compatibility: ::core::option::Option<entity::CompatibilityStatus>,
+    /// Output only. Identifies the access mechanism to the entity. Not user
+    /// settable.
+    #[prost(message, optional, tag = "21")]
+    pub access: ::core::option::Option<StorageAccess>,
+    /// Output only. System generated unique ID for the Entity. This ID will be
+    /// different if the Entity is deleted and re-created with the same name.
+    #[prost(string, tag = "22")]
+    pub uid: ::prost::alloc::string::String,
     /// Required. The description of the data structure and layout.
     /// The schema is not included in list responses. It is only included in
     /// `SCHEMA` and `FULL` entity views of a `GetEntity` response.
@@ -5225,6 +7624,61 @@ pub mod storage_format {
         Iceberg(IcebergOptions),
     }
 }
+/// Describes the access mechanism of the data within its storage location.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StorageAccess {
+    /// Output only. Describes the read access mechanism of the data. Not user
+    /// settable.
+    #[prost(enumeration = "storage_access::AccessMode", tag = "21")]
+    pub read: i32,
+}
+/// Nested message and enum types in `StorageAccess`.
+pub mod storage_access {
+    /// Access Mode determines how data stored within the Entity is read.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AccessMode {
+        /// Access mode unspecified.
+        Unspecified = 0,
+        /// Default. Data is accessed directly using storage APIs.
+        Direct = 1,
+        /// Data is accessed through a managed interface using BigQuery APIs.
+        Managed = 2,
+    }
+    impl AccessMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AccessMode::Unspecified => "ACCESS_MODE_UNSPECIFIED",
+                AccessMode::Direct => "DIRECT",
+                AccessMode::Managed => "MANAGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCESS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIRECT" => Some(Self::Direct),
+                "MANAGED" => Some(Self::Managed),
+                _ => None,
+            }
+        }
+    }
+}
 /// Identifies the cloud system that manages the data storage.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -5599,2279 +8053,6 @@ pub mod metadata_service_client {
                     GrpcMethod::new(
                         "google.cloud.dataplex.v1.MetadataService",
                         "ListPartitions",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// A task represents a user-visible job.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Task {
-    /// Output only. The relative resource name of the task, of the form:
-    /// projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
-    /// tasks/{task_id}.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the task. This ID will
-    /// be different if the task is deleted and re-created with the same name.
-    #[prost(string, tag = "2")]
-    pub uid: ::prost::alloc::string::String,
-    /// Output only. The time when the task was created.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the task was last updated.
-    #[prost(message, optional, tag = "4")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. Description of the task.
-    #[prost(string, tag = "5")]
-    pub description: ::prost::alloc::string::String,
-    /// Optional. User friendly display name.
-    #[prost(string, tag = "6")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Output only. Current state of the task.
-    #[prost(enumeration = "State", tag = "7")]
-    pub state: i32,
-    /// Optional. User-defined labels for the task.
-    #[prost(map = "string, string", tag = "8")]
-    pub labels: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Required. Spec related to how often and when a task should be triggered.
-    #[prost(message, optional, tag = "100")]
-    pub trigger_spec: ::core::option::Option<task::TriggerSpec>,
-    /// Required. Spec related to how a task is executed.
-    #[prost(message, optional, tag = "101")]
-    pub execution_spec: ::core::option::Option<task::ExecutionSpec>,
-    /// Output only. Status of the latest task executions.
-    #[prost(message, optional, tag = "201")]
-    pub execution_status: ::core::option::Option<task::ExecutionStatus>,
-    /// Task template specific user-specified config.
-    #[prost(oneof = "task::Config", tags = "300, 302")]
-    pub config: ::core::option::Option<task::Config>,
-}
-/// Nested message and enum types in `Task`.
-pub mod task {
-    /// Configuration for the underlying infrastructure used to run workloads.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct InfrastructureSpec {
-        /// Hardware config.
-        #[prost(oneof = "infrastructure_spec::Resources", tags = "52")]
-        pub resources: ::core::option::Option<infrastructure_spec::Resources>,
-        /// Software config.
-        #[prost(oneof = "infrastructure_spec::Runtime", tags = "101")]
-        pub runtime: ::core::option::Option<infrastructure_spec::Runtime>,
-        /// Networking config.
-        #[prost(oneof = "infrastructure_spec::Network", tags = "150")]
-        pub network: ::core::option::Option<infrastructure_spec::Network>,
-    }
-    /// Nested message and enum types in `InfrastructureSpec`.
-    pub mod infrastructure_spec {
-        /// Batch compute resources associated with the task.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct BatchComputeResources {
-            /// Optional. Total number of job executors.
-            /// Executor Count should be between 2 and 100. \[Default=2\]
-            #[prost(int32, tag = "1")]
-            pub executors_count: i32,
-            /// Optional. Max configurable executors.
-            /// If max_executors_count > executors_count, then auto-scaling is enabled.
-            /// Max Executor Count should be between 2 and 1000. \[Default=1000\]
-            #[prost(int32, tag = "2")]
-            pub max_executors_count: i32,
-        }
-        /// Container Image Runtime Configuration used with Batch execution.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct ContainerImageRuntime {
-            /// Optional. Container image to use.
-            #[prost(string, tag = "1")]
-            pub image: ::prost::alloc::string::String,
-            /// Optional. A list of Java JARS to add to the classpath.
-            /// Valid input includes Cloud Storage URIs to Jar binaries.
-            /// For example, gs://bucket-name/my/path/to/file.jar
-            #[prost(string, repeated, tag = "2")]
-            pub java_jars: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Optional. A list of python packages to be installed.
-            /// Valid formats include Cloud Storage URI to a PIP installable library.
-            /// For example, gs://bucket-name/my/path/to/lib.tar.gz
-            #[prost(string, repeated, tag = "3")]
-            pub python_packages: ::prost::alloc::vec::Vec<
-                ::prost::alloc::string::String,
-            >,
-            /// Optional. Override to common configuration of open source components
-            /// installed on the Dataproc cluster. The properties to set on daemon
-            /// config files. Property keys are specified in `prefix:property` format,
-            /// for example `core:hadoop.tmp.dir`. For more information, see [Cluster
-            /// properties](<https://cloud.google.com/dataproc/docs/concepts/cluster-properties>).
-            #[prost(map = "string, string", tag = "4")]
-            pub properties: ::std::collections::HashMap<
-                ::prost::alloc::string::String,
-                ::prost::alloc::string::String,
-            >,
-        }
-        /// Cloud VPC Network used to run the infrastructure.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct VpcNetwork {
-            /// Optional. List of network tags to apply to the job.
-            #[prost(string, repeated, tag = "3")]
-            pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// The Cloud VPC network identifier.
-            #[prost(oneof = "vpc_network::NetworkName", tags = "1, 2")]
-            pub network_name: ::core::option::Option<vpc_network::NetworkName>,
-        }
-        /// Nested message and enum types in `VpcNetwork`.
-        pub mod vpc_network {
-            /// The Cloud VPC network identifier.
-            #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
-            pub enum NetworkName {
-                /// Optional. The Cloud VPC network in which the job is run. By default,
-                /// the Cloud VPC network named Default within the project is used.
-                #[prost(string, tag = "1")]
-                Network(::prost::alloc::string::String),
-                /// Optional. The Cloud VPC sub-network in which the job is run.
-                #[prost(string, tag = "2")]
-                SubNetwork(::prost::alloc::string::String),
-            }
-        }
-        /// Hardware config.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum Resources {
-            /// Compute resources needed for a Task when using Dataproc Serverless.
-            #[prost(message, tag = "52")]
-            Batch(BatchComputeResources),
-        }
-        /// Software config.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum Runtime {
-            /// Container Image Runtime Configuration.
-            #[prost(message, tag = "101")]
-            ContainerImage(ContainerImageRuntime),
-        }
-        /// Networking config.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum Network {
-            /// Vpc network.
-            #[prost(message, tag = "150")]
-            VpcNetwork(VpcNetwork),
-        }
-    }
-    /// Task scheduling and trigger settings.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct TriggerSpec {
-        /// Required. Immutable. Trigger type of the user-specified Task.
-        #[prost(enumeration = "trigger_spec::Type", tag = "5")]
-        pub r#type: i32,
-        /// Optional. The first run of the task will be after this time.
-        /// If not specified, the task will run shortly after being submitted if
-        /// ON_DEMAND and based on the schedule if RECURRING.
-        #[prost(message, optional, tag = "6")]
-        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Optional. Prevent the task from executing.
-        /// This does not cancel already running tasks. It is intended to temporarily
-        /// disable RECURRING tasks.
-        #[prost(bool, tag = "4")]
-        pub disabled: bool,
-        /// Optional. Number of retry attempts before aborting.
-        /// Set to zero to never attempt to retry a failed task.
-        #[prost(int32, tag = "7")]
-        pub max_retries: i32,
-        /// Trigger only applies for RECURRING tasks.
-        #[prost(oneof = "trigger_spec::Trigger", tags = "100")]
-        pub trigger: ::core::option::Option<trigger_spec::Trigger>,
-    }
-    /// Nested message and enum types in `TriggerSpec`.
-    pub mod trigger_spec {
-        /// Determines how often and when the job will run.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum Type {
-            /// Unspecified trigger type.
-            Unspecified = 0,
-            /// The task runs one-time shortly after Task Creation.
-            OnDemand = 1,
-            /// The task is scheduled to run periodically.
-            Recurring = 2,
-        }
-        impl Type {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::OnDemand => "ON_DEMAND",
-                    Type::Recurring => "RECURRING",
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                    "ON_DEMAND" => Some(Self::OnDemand),
-                    "RECURRING" => Some(Self::Recurring),
-                    _ => None,
-                }
-            }
-        }
-        /// Trigger only applies for RECURRING tasks.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum Trigger {
-            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
-            /// running tasks periodically. To explicitly set a timezone to the cron
-            /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
-            /// "TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid
-            /// string from IANA time zone database. For example,
-            /// `CRON_TZ=America/New_York 1 * * * *`,
-            /// or `TZ=America/New_York 1 * * * *`.
-            /// This field is required for RECURRING tasks.
-            #[prost(string, tag = "100")]
-            Schedule(::prost::alloc::string::String),
-        }
-    }
-    /// Execution related settings, like retry and service_account.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ExecutionSpec {
-        /// Optional. The arguments to pass to the task.
-        /// The args can use placeholders of the format ${placeholder} as
-        /// part of key/value string. These will be interpolated before passing the
-        /// args to the driver. Currently supported placeholders:
-        /// - ${task_id}
-        /// - ${job_time}
-        /// To pass positional args, set the key as TASK_ARGS. The value should be a
-        /// comma-separated string of all the positional arguments. To use a
-        /// delimiter other than comma, refer to
-        /// <https://cloud.google.com/sdk/gcloud/reference/topic/escaping.> In case of
-        /// other keys being present in the args, then TASK_ARGS will be passed as
-        /// the last argument.
-        #[prost(map = "string, string", tag = "4")]
-        pub args: ::std::collections::HashMap<
-            ::prost::alloc::string::String,
-            ::prost::alloc::string::String,
-        >,
-        /// Required. Service account to use to execute a task.
-        /// If not provided, the default Compute service account for the project is
-        /// used.
-        #[prost(string, tag = "5")]
-        pub service_account: ::prost::alloc::string::String,
-        /// Optional. The project in which jobs are run. By default, the project
-        /// containing the Lake is used. If a project is provided, the
-        /// \[ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account\]
-        /// must belong to this project.
-        #[prost(string, tag = "7")]
-        pub project: ::prost::alloc::string::String,
-        /// Optional. The maximum duration after which the job execution is expired.
-        #[prost(message, optional, tag = "8")]
-        pub max_job_execution_lifetime: ::core::option::Option<::prost_types::Duration>,
-        /// Optional. The Cloud KMS key to use for encryption, of the form:
-        /// `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.
-        #[prost(string, tag = "9")]
-        pub kms_key: ::prost::alloc::string::String,
-    }
-    /// User-specified config for running a Spark task.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SparkTaskConfig {
-        /// Optional. Cloud Storage URIs of files to be placed in the working
-        /// directory of each executor.
-        #[prost(string, repeated, tag = "3")]
-        pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. Cloud Storage URIs of archives to be extracted into the working
-        /// directory of each executor. Supported file types: .jar, .tar, .tar.gz,
-        /// .tgz, and .zip.
-        #[prost(string, repeated, tag = "4")]
-        pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. Infrastructure specification for the execution.
-        #[prost(message, optional, tag = "6")]
-        pub infrastructure_spec: ::core::option::Option<InfrastructureSpec>,
-        /// Required. The specification of the main method to call to drive the
-        /// job. Specify either the jar file that contains the main class or the
-        /// main class name.
-        #[prost(oneof = "spark_task_config::Driver", tags = "100, 101, 102, 104, 105")]
-        pub driver: ::core::option::Option<spark_task_config::Driver>,
-    }
-    /// Nested message and enum types in `SparkTaskConfig`.
-    pub mod spark_task_config {
-        /// Required. The specification of the main method to call to drive the
-        /// job. Specify either the jar file that contains the main class or the
-        /// main class name.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum Driver {
-            /// The Cloud Storage URI of the jar file that contains the main class.
-            /// The execution args are passed in as a sequence of named process
-            /// arguments (`--key=value`).
-            #[prost(string, tag = "100")]
-            MainJarFileUri(::prost::alloc::string::String),
-            /// The name of the driver's main class. The jar file that contains the
-            /// class must be in the default CLASSPATH or specified in
-            /// `jar_file_uris`.
-            /// The execution args are passed in as a sequence of named process
-            /// arguments (`--key=value`).
-            #[prost(string, tag = "101")]
-            MainClass(::prost::alloc::string::String),
-            /// The Gcloud Storage URI of the main Python file to use as the driver.
-            /// Must be a .py file. The execution args are passed in as a sequence of
-            /// named process arguments (`--key=value`).
-            #[prost(string, tag = "102")]
-            PythonScriptFile(::prost::alloc::string::String),
-            /// A reference to a query file. This can be the Cloud Storage URI of the
-            /// query file or it can the path to a SqlScript Content. The execution
-            /// args are used to declare a set of script variables
-            /// (`set key="value";`).
-            #[prost(string, tag = "104")]
-            SqlScriptFile(::prost::alloc::string::String),
-            /// The query text.
-            /// The execution args are used to declare a set of script variables
-            /// (`set key="value";`).
-            #[prost(string, tag = "105")]
-            SqlScript(::prost::alloc::string::String),
-        }
-    }
-    /// Config for running scheduled notebooks.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct NotebookTaskConfig {
-        /// Required. Path to input notebook. This can be the Cloud Storage URI of
-        /// the notebook file or the path to a Notebook Content. The execution args
-        /// are accessible as environment variables
-        /// (`TASK_key=value`).
-        #[prost(string, tag = "4")]
-        pub notebook: ::prost::alloc::string::String,
-        /// Optional. Infrastructure specification for the execution.
-        #[prost(message, optional, tag = "3")]
-        pub infrastructure_spec: ::core::option::Option<InfrastructureSpec>,
-        /// Optional. Cloud Storage URIs of files to be placed in the working
-        /// directory of each executor.
-        #[prost(string, repeated, tag = "5")]
-        pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. Cloud Storage URIs of archives to be extracted into the working
-        /// directory of each executor. Supported file types: .jar, .tar, .tar.gz,
-        /// .tgz, and .zip.
-        #[prost(string, repeated, tag = "6")]
-        pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    }
-    /// Status of the task execution (e.g. Jobs).
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ExecutionStatus {
-        /// Output only. Last update time of the status.
-        #[prost(message, optional, tag = "3")]
-        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Output only. latest job execution
-        #[prost(message, optional, tag = "9")]
-        pub latest_job: ::core::option::Option<super::Job>,
-    }
-    /// Task template specific user-specified config.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Config {
-        /// Config related to running custom Spark tasks.
-        #[prost(message, tag = "300")]
-        Spark(SparkTaskConfig),
-        /// Config related to running scheduled Notebooks.
-        #[prost(message, tag = "302")]
-        Notebook(NotebookTaskConfig),
-    }
-}
-/// A job represents an instance of a task.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Job {
-    /// Output only. The relative resource name of the job, of the form:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the job.
-    #[prost(string, tag = "2")]
-    pub uid: ::prost::alloc::string::String,
-    /// Output only. The time when the job was started.
-    #[prost(message, optional, tag = "3")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the job ended.
-    #[prost(message, optional, tag = "4")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Execution state for the job.
-    #[prost(enumeration = "job::State", tag = "5")]
-    pub state: i32,
-    /// Output only. The number of times the job has been retried (excluding the
-    /// initial attempt).
-    #[prost(uint32, tag = "6")]
-    pub retry_count: u32,
-    /// Output only. The underlying service running a job.
-    #[prost(enumeration = "job::Service", tag = "7")]
-    pub service: i32,
-    /// Output only. The full resource name for the job run under a particular
-    /// service.
-    #[prost(string, tag = "8")]
-    pub service_job: ::prost::alloc::string::String,
-    /// Output only. Additional information about the current state.
-    #[prost(string, tag = "9")]
-    pub message: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `Job`.
-pub mod job {
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Service {
-        /// Service used to run the job is unspecified.
-        Unspecified = 0,
-        /// Dataproc service is used to run this job.
-        Dataproc = 1,
-    }
-    impl Service {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Service::Unspecified => "SERVICE_UNSPECIFIED",
-                Service::Dataproc => "DATAPROC",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
-                "DATAPROC" => Some(Self::Dataproc),
-                _ => None,
-            }
-        }
-    }
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// The job state is unknown.
-        Unspecified = 0,
-        /// The job is running.
-        Running = 1,
-        /// The job is cancelling.
-        Cancelling = 2,
-        /// The job cancellation was successful.
-        Cancelled = 3,
-        /// The job completed successfully.
-        Succeeded = 4,
-        /// The job is no longer running due to an error.
-        Failed = 5,
-        /// The job was cancelled outside of Dataplex.
-        Aborted = 6,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Cancelling => "CANCELLING",
-                State::Cancelled => "CANCELLED",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Aborted => "ABORTED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "RUNNING" => Some(Self::Running),
-                "CANCELLING" => Some(Self::Cancelling),
-                "CANCELLED" => Some(Self::Cancelled),
-                "SUCCEEDED" => Some(Self::Succeeded),
-                "FAILED" => Some(Self::Failed),
-                "ABORTED" => Some(Self::Aborted),
-                _ => None,
-            }
-        }
-    }
-}
-/// Create lake request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateLakeRequest {
-    /// Required. The resource name of the lake location, of the form:
-    /// projects/{project_number}/locations/{location_id}
-    /// where `location_id` refers to a GCP region.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Lake identifier.
-    /// This ID will be used to generate names such as database and dataset names
-    /// when publishing metadata to Hive Metastore and BigQuery.
-    /// * Must contain only lowercase letters, numbers and hyphens.
-    /// * Must start with a letter.
-    /// * Must end with a number or a letter.
-    /// * Must be between 1-63 characters.
-    /// * Must be unique within the customer project / location.
-    #[prost(string, tag = "2")]
-    pub lake_id: ::prost::alloc::string::String,
-    /// Required. Lake resource
-    #[prost(message, optional, tag = "3")]
-    pub lake: ::core::option::Option<Lake>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// Update lake request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateLakeRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub lake: ::core::option::Option<Lake>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete lake request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteLakeRequest {
-    /// Required. The resource name of the lake:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List lakes request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListLakesRequest {
-    /// Required. The resource name of the lake location, of the form:
-    /// `projects/{project_number}/locations/{location_id}`
-    /// where `location_id` refers to a GCP region.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of Lakes to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 lakes will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListLakes` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListLakes` must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. Order by fields for the result.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// List lakes response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListLakesResponse {
-    /// Lakes under the given parent location.
-    #[prost(message, repeated, tag = "1")]
-    pub lakes: ::prost::alloc::vec::Vec<Lake>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// List lake actions request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListLakeActionsRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of actions to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 actions will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListLakeActions` call.
-    /// Provide this to retrieve the subsequent page. When paginating, all other
-    /// parameters provided to `ListLakeActions` must match the call that provided
-    /// the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// List actions response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListActionsResponse {
-    /// Actions under the given parent lake/zone/asset.
-    #[prost(message, repeated, tag = "1")]
-    pub actions: ::prost::alloc::vec::Vec<Action>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Get lake request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetLakeRequest {
-    /// Required. The resource name of the lake:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Create zone request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateZoneRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Zone identifier.
-    /// This ID will be used to generate names such as database and dataset names
-    /// when publishing metadata to Hive Metastore and BigQuery.
-    /// * Must contain only lowercase letters, numbers and hyphens.
-    /// * Must start with a letter.
-    /// * Must end with a number or a letter.
-    /// * Must be between 1-63 characters.
-    /// * Must be unique across all lakes from all locations in a project.
-    /// * Must not be one of the reserved IDs (i.e. "default", "global-temp")
-    #[prost(string, tag = "2")]
-    pub zone_id: ::prost::alloc::string::String,
-    /// Required. Zone resource.
-    #[prost(message, optional, tag = "3")]
-    pub zone: ::core::option::Option<Zone>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// Update zone request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateZoneRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub zone: ::core::option::Option<Zone>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete zone request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteZoneRequest {
-    /// Required. The resource name of the zone:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List zones request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListZonesRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of zones to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 zones will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListZones` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListZones` must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. Order by fields for the result.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// List zones response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListZonesResponse {
-    /// Zones under the given parent lake.
-    #[prost(message, repeated, tag = "1")]
-    pub zones: ::prost::alloc::vec::Vec<Zone>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// List zone actions request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListZoneActionsRequest {
-    /// Required. The resource name of the parent zone:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of actions to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 actions will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListZoneActions` call.
-    /// Provide this to retrieve the subsequent page. When paginating, all other
-    /// parameters provided to `ListZoneActions` must match the call that provided
-    /// the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Get zone request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetZoneRequest {
-    /// Required. The resource name of the zone:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Create asset request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateAssetRequest {
-    /// Required. The resource name of the parent zone:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Asset identifier.
-    /// This ID will be used to generate names such as table names when publishing
-    /// metadata to Hive Metastore and BigQuery.
-    /// * Must contain only lowercase letters, numbers and hyphens.
-    /// * Must start with a letter.
-    /// * Must end with a number or a letter.
-    /// * Must be between 1-63 characters.
-    /// * Must be unique within the zone.
-    #[prost(string, tag = "2")]
-    pub asset_id: ::prost::alloc::string::String,
-    /// Required. Asset resource.
-    #[prost(message, optional, tag = "3")]
-    pub asset: ::core::option::Option<Asset>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// Update asset request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateAssetRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub asset: ::core::option::Option<Asset>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete asset request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteAssetRequest {
-    /// Required. The resource name of the asset:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List assets request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListAssetsRequest {
-    /// Required. The resource name of the parent zone:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of asset to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 assets will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListAssets` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListAssets` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. Order by fields for the result.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// List assets response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListAssetsResponse {
-    /// Asset under the given parent zone.
-    #[prost(message, repeated, tag = "1")]
-    pub assets: ::prost::alloc::vec::Vec<Asset>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// List asset actions request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListAssetActionsRequest {
-    /// Required. The resource name of the parent asset:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of actions to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 actions will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListAssetActions` call.
-    /// Provide this to retrieve the subsequent page. When paginating, all other
-    /// parameters provided to `ListAssetActions` must match the call that provided
-    /// the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Get asset request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAssetRequest {
-    /// Required. The resource name of the asset:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Represents the metadata of a long-running operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationMetadata {
-    /// Output only. The time the operation was created.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Server-defined resource path for the target of the operation.
-    #[prost(string, tag = "3")]
-    pub target: ::prost::alloc::string::String,
-    /// Output only. Name of the verb executed by the operation.
-    #[prost(string, tag = "4")]
-    pub verb: ::prost::alloc::string::String,
-    /// Output only. Human-readable status of the operation, if any.
-    #[prost(string, tag = "5")]
-    pub status_message: ::prost::alloc::string::String,
-    /// Output only. Identifies whether the user has requested cancellation
-    /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
-    /// `Code.CANCELLED`.
-    #[prost(bool, tag = "6")]
-    pub requested_cancellation: bool,
-    /// Output only. API version used to start the operation.
-    #[prost(string, tag = "7")]
-    pub api_version: ::prost::alloc::string::String,
-}
-/// Create task request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateTaskRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Task identifier.
-    #[prost(string, tag = "2")]
-    pub task_id: ::prost::alloc::string::String,
-    /// Required. Task resource.
-    #[prost(message, optional, tag = "3")]
-    pub task: ::core::option::Option<Task>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// Update task request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateTaskRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub task: ::core::option::Option<Task>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete task request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteTaskRequest {
-    /// Required. The resource name of the task:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List tasks request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListTasksRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of tasks to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 tasks will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListZones` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListZones` must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. Order by fields for the result.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// List tasks response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListTasksResponse {
-    /// Tasks under the given parent lake.
-    #[prost(message, repeated, tag = "1")]
-    pub tasks: ::prost::alloc::vec::Vec<Task>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Get task request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetTaskRequest {
-    /// Required. The resource name of the task:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Get job request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetJobRequest {
-    /// Required. The resource name of the job:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List jobs request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListJobsRequest {
-    /// Required. The resource name of the parent environment:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of jobs to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 jobs will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListJobs` call. Provide this
-    /// to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListJobs` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// List jobs response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListJobsResponse {
-    /// Jobs under a given task.
-    #[prost(message, repeated, tag = "1")]
-    pub jobs: ::prost::alloc::vec::Vec<Job>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Cancel task jobs.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CancelJobRequest {
-    /// Required. The resource name of the job:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}/job/{job_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Create environment request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateEnvironmentRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Environment identifier.
-    /// * Must contain only lowercase letters, numbers and hyphens.
-    /// * Must start with a letter.
-    /// * Must be between 1-63 characters.
-    /// * Must end with a number or a letter.
-    /// * Must be unique within the lake.
-    #[prost(string, tag = "2")]
-    pub environment_id: ::prost::alloc::string::String,
-    /// Required. Environment resource.
-    #[prost(message, optional, tag = "3")]
-    pub environment: ::core::option::Option<Environment>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// Update environment request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateEnvironmentRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub environment: ::core::option::Option<Environment>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete environment request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteEnvironmentRequest {
-    /// Required. The resource name of the environment:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List environments request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListEnvironmentsRequest {
-    /// Required. The resource name of the parent lake:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of environments to return. The service may return
-    /// fewer than this value. If unspecified, at most 10 environments will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListEnvironments` call.
-    /// Provide this to retrieve the subsequent page. When paginating, all other
-    /// parameters provided to `ListEnvironments` must match the call that provided
-    /// the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. Order by fields for the result.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// List environments response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListEnvironmentsResponse {
-    /// Environments under the given parent lake.
-    #[prost(message, repeated, tag = "1")]
-    pub environments: ::prost::alloc::vec::Vec<Environment>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Get environment request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetEnvironmentRequest {
-    /// Required. The resource name of the environment:
-    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List sessions request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListSessionsRequest {
-    /// Required. The resource name of the parent environment:
-    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of sessions to return. The service may return
-    /// fewer than this value. If unspecified, at most 10 sessions will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListSessions` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListSessions` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request. The following `mode` filter is supported to
-    /// return only the sessions belonging to the requester when the mode is USER
-    /// and return sessions of all the users when the mode is ADMIN. When no filter
-    /// is sent default to USER mode. NOTE: When the mode is ADMIN, the requester
-    /// should have `dataplex.environments.listAllSessions` permission to list all
-    /// sessions, in absence of the permission, the request fails.
-    ///
-    /// mode = ADMIN | USER
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-}
-/// List sessions response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListSessionsResponse {
-    /// Sessions under a given environment.
-    #[prost(message, repeated, tag = "1")]
-    pub sessions: ::prost::alloc::vec::Vec<Session>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Generated client implementations.
-pub mod dataplex_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// Dataplex service provides data lakes as a service. The primary resources
-    /// offered by this service are Lakes, Zones and Assets which collectively allow
-    /// a data administrator to organize, manage, secure and catalog data across
-    /// their organization located across cloud projects in a variety of storage
-    /// systems including Cloud Storage and BigQuery.
-    #[derive(Debug, Clone)]
-    pub struct DataplexServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl DataplexServiceClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> DataplexServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> DataplexServiceClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
-        {
-            DataplexServiceClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Creates a lake resource.
-        pub async fn create_lake(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateLakeRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/CreateLake",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "CreateLake",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates a lake resource.
-        pub async fn update_lake(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateLakeRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/UpdateLake",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "UpdateLake",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes a lake resource. All zones within the lake must be deleted before
-        /// the lake can be deleted.
-        pub async fn delete_lake(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteLakeRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/DeleteLake",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "DeleteLake",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists lake resources in a project and location.
-        pub async fn list_lakes(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListLakesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListLakesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListLakes",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListLakes",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves a lake resource.
-        pub async fn get_lake(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetLakeRequest>,
-        ) -> std::result::Result<tonic::Response<super::Lake>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/GetLake",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "GetLake",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists action resources in a lake.
-        pub async fn list_lake_actions(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListLakeActionsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListActionsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListLakeActions",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListLakeActions",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates a zone resource within a lake.
-        pub async fn create_zone(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateZoneRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/CreateZone",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "CreateZone",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates a zone resource.
-        pub async fn update_zone(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateZoneRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/UpdateZone",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "UpdateZone",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes a zone resource. All assets within a zone must be deleted before
-        /// the zone can be deleted.
-        pub async fn delete_zone(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteZoneRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/DeleteZone",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "DeleteZone",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists zone resources in a lake.
-        pub async fn list_zones(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListZonesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListZonesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListZones",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListZones",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves a zone resource.
-        pub async fn get_zone(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetZoneRequest>,
-        ) -> std::result::Result<tonic::Response<super::Zone>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/GetZone",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "GetZone",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists action resources in a zone.
-        pub async fn list_zone_actions(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListZoneActionsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListActionsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListZoneActions",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListZoneActions",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates an asset resource.
-        pub async fn create_asset(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateAssetRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/CreateAsset",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "CreateAsset",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates an asset resource.
-        pub async fn update_asset(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateAssetRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/UpdateAsset",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "UpdateAsset",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes an asset resource. The referenced storage resource is detached
-        /// (default) or deleted based on the associated Lifecycle policy.
-        pub async fn delete_asset(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteAssetRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/DeleteAsset",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "DeleteAsset",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists asset resources in a zone.
-        pub async fn list_assets(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListAssetsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListAssetsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListAssets",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListAssets",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves an asset resource.
-        pub async fn get_asset(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAssetRequest>,
-        ) -> std::result::Result<tonic::Response<super::Asset>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/GetAsset",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "GetAsset",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists action resources in an asset.
-        pub async fn list_asset_actions(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListAssetActionsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListActionsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListAssetActions",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListAssetActions",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates a task resource within a lake.
-        pub async fn create_task(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateTaskRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/CreateTask",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "CreateTask",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Update the task resource.
-        pub async fn update_task(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateTaskRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/UpdateTask",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "UpdateTask",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Delete the task resource.
-        pub async fn delete_task(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteTaskRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/DeleteTask",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "DeleteTask",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists tasks under the given lake.
-        pub async fn list_tasks(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListTasksRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListTasksResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListTasks",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListTasks",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Get task resource.
-        pub async fn get_task(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetTaskRequest>,
-        ) -> std::result::Result<tonic::Response<super::Task>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/GetTask",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "GetTask",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists Jobs under the given task.
-        pub async fn list_jobs(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListJobsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListJobsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListJobs",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListJobs",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Get job resource.
-        pub async fn get_job(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetJobRequest>,
-        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/GetJob",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new("google.cloud.dataplex.v1.DataplexService", "GetJob"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Cancel jobs running for the task resource.
-        pub async fn cancel_job(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CancelJobRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/CancelJob",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "CancelJob",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Create an environment resource.
-        pub async fn create_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateEnvironmentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/CreateEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "CreateEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Update the environment resource.
-        pub async fn update_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateEnvironmentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/UpdateEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "UpdateEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Delete the environment resource. All the child resources must have been
-        /// deleted before environment deletion can be initiated.
-        pub async fn delete_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteEnvironmentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/DeleteEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "DeleteEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists environments under the given lake.
-        pub async fn list_environments(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListEnvironmentsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListEnvironmentsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListEnvironments",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListEnvironments",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Get environment resource.
-        pub async fn get_environment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetEnvironmentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Environment>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/GetEnvironment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "GetEnvironment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists session resources in an environment.
-        pub async fn list_sessions(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListSessionsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListSessionsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.DataplexService/ListSessions",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.DataplexService",
-                        "ListSessions",
                     ),
                 );
             self.inner.unary(req, path, codec).await

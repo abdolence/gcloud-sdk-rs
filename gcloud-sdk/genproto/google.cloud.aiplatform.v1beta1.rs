@@ -1490,11 +1490,74 @@ pub struct Examples {
     /// The number of neighbors to return when querying for examples.
     #[prost(int32, tag = "3")]
     pub neighbor_count: i32,
+    #[prost(oneof = "examples::Source", tags = "5")]
+    pub source: ::core::option::Option<examples::Source>,
     #[prost(oneof = "examples::Config", tags = "2, 4")]
     pub config: ::core::option::Option<examples::Config>,
 }
 /// Nested message and enum types in `Examples`.
 pub mod examples {
+    /// The Cloud Storage input instances.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExampleGcsSource {
+        /// The format in which instances are given, if not specified, assume it's
+        /// JSONL format. Currently only JSONL format is supported.
+        #[prost(enumeration = "example_gcs_source::DataFormat", tag = "1")]
+        pub data_format: i32,
+        /// The Cloud Storage location for the input instances.
+        #[prost(message, optional, tag = "2")]
+        pub gcs_source: ::core::option::Option<super::GcsSource>,
+    }
+    /// Nested message and enum types in `ExampleGcsSource`.
+    pub mod example_gcs_source {
+        /// The format of the input example instances.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum DataFormat {
+            /// Format unspecified, used when unset.
+            Unspecified = 0,
+            /// Examples are stored in JSONL files.
+            Jsonl = 1,
+        }
+        impl DataFormat {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
+                    DataFormat::Jsonl => "JSONL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JSONL" => Some(Self::Jsonl),
+                    _ => None,
+                }
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The Cloud Storage input instances.
+        #[prost(message, tag = "5")]
+        ExampleGcsSource(ExampleGcsSource),
+    }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
@@ -3333,8 +3396,8 @@ pub mod model {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LargeModelReference {
     /// Required. The unique name of the large Foundation or pre-built model. Like
-    /// "chat-panda", "text-panda". Or model name with version ID, like
-    /// "chat-panda-001", "text-panda-005", etc.
+    /// "chat-bison", "text-bison". Or model name with version ID, like
+    /// "chat-bison@001", "text-bison@005", etc.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9015,7 +9078,7 @@ pub struct ImportFeatureValuesRequest {
     #[prost(string, tag = "1")]
     pub entity_type: ::prost::alloc::string::String,
     /// Source column that holds entity IDs. If not provided, entity IDs are
-    /// extracted from the column named `entity_id`.
+    /// extracted from the column named entity_id.
     #[prost(string, tag = "5")]
     pub entity_id_field: ::prost::alloc::string::String,
     /// Required. Specifications defining which Feature values to import from the
@@ -9843,6 +9906,10 @@ pub struct ImportFeatureValuesOperationMetadata {
     /// retention boundary.
     #[prost(int64, tag = "7")]
     pub timestamp_outside_retention_rows_count: i64,
+    /// List of ImportFeatureValues operations running under a single EntityType
+    /// that are blocking this operation.
+    #[prost(int64, repeated, tag = "8")]
+    pub blocking_operation_ids: ::prost::alloc::vec::Vec<i64>,
 }
 /// Details of operations that exports Features values.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -10025,7 +10092,7 @@ pub mod delete_feature_values_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityIdSelector {
     /// Source column that holds entity IDs. If not provided, entity IDs are
-    /// extracted from the column named `entity_id`.
+    /// extracted from the column named entity_id.
     #[prost(string, tag = "5")]
     pub entity_id_field: ::prost::alloc::string::String,
     /// Details about the source data, including the location of the storage and
@@ -12129,17 +12196,16 @@ pub struct DeployedIndex {
     /// Output only. The DeployedIndex may depend on various data on its original
     /// Index. Additionally when certain changes to the original Index are being
     /// done (e.g. when what the Index contains is being changed) the DeployedIndex
-    /// may be asynchronously updated in the background to reflect this changes. If
-    /// this timestamp's value is at least the
+    /// may be asynchronously updated in the background to reflect these changes.
+    /// If this timestamp's value is at least the
     /// \[Index.update_time][google.cloud.aiplatform.v1beta1.Index.update_time\] of
     /// the original Index, it means that this DeployedIndex and the original Index
     /// are in sync. If this timestamp is older, then to see which updates this
-    /// DeployedIndex already contains (and which not), one must
-    /// \[list][Operations.ListOperations\] \[Operations][Operation\]
-    /// \[working][Operation.name\] on the original Index. Only
-    /// the successfully completed Operations with
-    /// \[Operations.metadata.generic_metadata.update_time\]
-    /// \[google.cloud.aiplatform.v1beta1.GenericOperationMetadata.update_time\]
+    /// DeployedIndex already contains (and which it does not), one must
+    /// \[list][google.longrunning.Operations.ListOperations\] the operations that
+    /// are running on the original Index. Only the successfully completed
+    /// Operations with
+    /// \[update_time][google.cloud.aiplatform.v1beta1.GenericOperationMetadata.update_time\]
     /// equal or before this sync time are contained in this DeployedIndex.
     #[prost(message, optional, tag = "6")]
     pub index_sync_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -16450,6 +16516,9 @@ pub struct ListArtifactsRequest {
     ///      To filter on metadata fields use traversal operation as follows:
     ///      `metadata.<field_name>.<type_value>`.
     ///      For example: `metadata.field_1.number_value = 10.0`
+    ///      In case the field name contains special characters (such as colon), one
+    ///      can embed it inside double quote.
+    ///      For example: `metadata."field:1".number_value = 10.0`
     /// *   **Context based filtering**:
     ///      To filter Artifacts based on the contexts to which they belong, use the
     ///      function operator with the full resource name
@@ -16501,7 +16570,6 @@ pub struct UpdateArtifactRequest {
     #[prost(message, optional, tag = "1")]
     pub artifact: ::core::option::Option<Artifact>,
     /// Optional. A FieldMask indicating which fields should be updated.
-    /// Functionality of this field is not yet supported.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If set to true, and the
@@ -16643,6 +16711,9 @@ pub struct ListContextsRequest {
     ///     To filter on metadata fields use traversal operation as follows:
     ///     `metadata.<field_name>.<type_value>`.
     ///     For example: `metadata.field_1.number_value = 10.0`.
+    ///     In case the field name contains special characters (such as colon), one
+    ///     can embed it inside double quote.
+    ///     For example: `metadata."field:1".number_value = 10.0`
     /// *  **Parent Child filtering**:
     ///     To filter Contexts based on parent-child relationship use the HAS
     ///     operator as follows:
@@ -16697,7 +16768,6 @@ pub struct UpdateContextRequest {
     #[prost(message, optional, tag = "1")]
     pub context: ::core::option::Option<Context>,
     /// Optional. A FieldMask indicating which fields should be updated.
-    /// Functionality of this field is not yet supported.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If set to true, and the \[Context][google.cloud.aiplatform.v1beta1.Context\]
@@ -16930,6 +17000,9 @@ pub struct ListExecutionsRequest {
     ///     To filter on metadata fields use traversal operation as follows:
     ///     `metadata.<field_name>.<type_value>`
     ///     For example: `metadata.field_1.number_value = 10.0`
+    ///     In case the field name contains special characters (such as colon), one
+    ///     can embed it inside double quote.
+    ///     For example: `metadata."field:1".number_value = 10.0`
     /// *  **Context based filtering**:
     ///     To filter Executions based on the contexts to which they belong use
     ///     the function operator with the full resource name:
@@ -16981,7 +17054,6 @@ pub struct UpdateExecutionRequest {
     #[prost(message, optional, tag = "1")]
     pub execution: ::core::option::Option<Execution>,
     /// Optional. A FieldMask indicating which fields should be updated.
-    /// Functionality of this field is not yet supported.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If set to true, and the
@@ -17197,6 +17269,9 @@ pub struct QueryArtifactLineageSubgraphRequest {
     ///     To filter on metadata fields use traversal operation as follows:
     ///     `metadata.<field_name>.<type_value>`.
     ///     For example: `metadata.field_1.number_value = 10.0`
+    ///     In case the field name contains special characters (such as colon), one
+    ///     can embed it inside double quote.
+    ///     For example: `metadata."field:1".number_value = 10.0`
     ///
     /// Each of the above supported filter types can be combined together using
     /// logical operators (`AND` & `OR`). Maximum nested expression depth allowed
@@ -18835,8 +18910,9 @@ pub struct ModelEvaluation {
     /// Output only. Timestamp when this ModelEvaluation was created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// All possible \[dimensions][ModelEvaluationSlice.slice.dimension\] of
-    /// ModelEvaluationSlices. The dimensions can be used as the filter of the
+    /// All possible
+    /// \[dimensions][google.cloud.aiplatform.v1beta1.ModelEvaluationSlice.Slice.dimension\]
+    /// of ModelEvaluationSlices. The dimensions can be used as the filter of the
     /// \[ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluationSlices\]
     /// request, in the form of `slice.dimension = <dimension>`.
     #[prost(string, repeated, tag = "5")]
@@ -19094,6 +19170,9 @@ pub struct PublisherModel {
     /// Optional. Additional information about the model's Frameworks.
     #[prost(string, repeated, tag = "23")]
     pub frameworks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Indicates the launch stage of the model.
+    #[prost(enumeration = "publisher_model::LaunchStage", tag = "29")]
+    pub launch_stage: i32,
     /// Optional. Output only. Immutable. Used to indicate this model has a
     /// publisher model and provide the template of the publisher model resource
     /// name.
@@ -19122,7 +19201,7 @@ pub mod publisher_model {
             /// The URI of the resource.
             #[prost(string, tag = "1")]
             Uri(::prost::alloc::string::String),
-            /// The resource name of the GCP resource.
+            /// The resource name of the Google Cloud resource.
             #[prost(string, tag = "2")]
             ResourceName(::prost::alloc::string::String),
         }
@@ -19177,6 +19256,11 @@ pub mod publisher_model {
         /// Optional. Open in Generation AI Studio.
         #[prost(message, optional, tag = "8")]
         pub open_generation_ai_studio: ::core::option::Option<
+            call_to_action::RegionalResourceReferences,
+        >,
+        /// Optional. Request for access.
+        #[prost(message, optional, tag = "9")]
+        pub request_access: ::core::option::Option<
             call_to_action::RegionalResourceReferences,
         >,
     }
@@ -19325,6 +19409,57 @@ pub mod publisher_model {
                 }
                 "GOOGLE_OWNED_OSS" => Some(Self::GoogleOwnedOss),
                 "THIRD_PARTY_OWNED_OSS" => Some(Self::ThirdPartyOwnedOss),
+                _ => None,
+            }
+        }
+    }
+    /// An enum representing the launch stage of a PublisherModel.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LaunchStage {
+        /// The model launch stage is unspecified.
+        Unspecified = 0,
+        /// Used to indicate the PublisherModel is at Experimental launch stage.
+        Experimental = 1,
+        /// Used to indicate the PublisherModel is at Private Preview launch stage.
+        PrivatePreview = 2,
+        /// Used to indicate the PublisherModel is at Public Preview launch stage.
+        PublicPreview = 3,
+        /// Used to indicate the PublisherModel is at GA launch stage.
+        Ga = 4,
+    }
+    impl LaunchStage {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                LaunchStage::Unspecified => "LAUNCH_STAGE_UNSPECIFIED",
+                LaunchStage::Experimental => "EXPERIMENTAL",
+                LaunchStage::PrivatePreview => "PRIVATE_PREVIEW",
+                LaunchStage::PublicPreview => "PUBLIC_PREVIEW",
+                LaunchStage::Ga => "GA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LAUNCH_STAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXPERIMENTAL" => Some(Self::Experimental),
+                "PRIVATE_PREVIEW" => Some(Self::PrivatePreview),
+                "PUBLIC_PREVIEW" => Some(Self::PublicPreview),
+                "GA" => Some(Self::Ga),
                 _ => None,
             }
         }
@@ -22790,8 +22925,7 @@ pub mod prediction_service_client {
         /// [deployed_model_id][google.cloud.aiplatform.v1beta1.ExplainRequest.deployed_model_id]
         /// is not specified, all DeployedModels must have
         /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]
-        /// populated. Only deployed AutoML tabular Models have
-        /// explanation_spec.
+        /// populated.
         pub async fn explain(
             &mut self,
             request: impl tonic::IntoRequest<super::ExplainRequest>,
@@ -23156,6 +23290,22 @@ pub struct ResumeScheduleRequest {
     #[prost(bool, tag = "2")]
     pub catch_up: bool,
 }
+/// Request message for
+/// \[ScheduleService.UpdateSchedule][google.cloud.aiplatform.v1beta1.ScheduleService.UpdateSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateScheduleRequest {
+    /// Required. The Schedule which replaces the resource on the server.
+    /// The following restrictions will be applied:
+    ///    * The scheduled request type cannot be changed.
+    ///    * The output_only fields will be ignored if specified.
+    #[prost(message, optional, tag = "1")]
+    pub schedule: ::core::option::Option<Schedule>,
+    /// Required. The update mask applies to the resource. See
+    /// \[google.protobuf.FieldMask][google.protobuf.FieldMask\].
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Generated client implementations.
 pub mod schedule_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -23423,6 +23573,40 @@ pub mod schedule_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.ScheduleService",
                         "ResumeSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an active or paused Schedule.
+        ///
+        /// When the Schedule is updated, new runs will be scheduled starting from the
+        /// updated next execution time after the update time based on the
+        /// time_specification in the updated Schedule. All unstarted runs before the
+        /// update time will be skipped while already created runs will NOT be paused
+        /// or canceled.
+        pub async fn update_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::Schedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ScheduleService/UpdateSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ScheduleService",
+                        "UpdateSchedule",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -24106,7 +24290,8 @@ pub struct TensorboardExperiment {
     /// Output only. Timestamp when this TensorboardExperiment was last updated.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The labels with user-defined metadata to organize your Datasets.
+    /// The labels with user-defined metadata to organize your
+    /// TensorboardExperiment.
     ///
     /// Label keys and values cannot be longer than 64 characters
     /// (Unicode codepoints), can only contain lowercase letters, numeric
@@ -26457,7 +26642,8 @@ pub mod vizier_service_client {
         /// suggested by Vertex AI Vizier. Returns a long-running
         /// operation associated with the generation of Trial suggestions.
         /// When this long-running operation succeeds, it will contain
-        /// a [SuggestTrialsResponse][google.cloud.ml.v1.SuggestTrialsResponse].
+        /// a
+        /// [SuggestTrialsResponse][google.cloud.aiplatform.v1beta1.SuggestTrialsResponse].
         pub async fn suggest_trials(
             &mut self,
             request: impl tonic::IntoRequest<super::SuggestTrialsRequest>,
