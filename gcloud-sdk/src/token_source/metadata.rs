@@ -2,9 +2,10 @@ use url::form_urlencoded::Serializer;
 
 use async_trait::async_trait;
 use hyper::http::uri::PathAndQuery;
+use secret_vault_value::SecretValue;
 use std::convert::TryFrom;
 use std::str::FromStr;
-use tracing::trace;
+use tracing::*;
 
 use crate::token_source::{BoxSource, Source, Token, TokenResponse};
 
@@ -41,6 +42,22 @@ impl Metadata {
 
     pub async fn detect_google_project_id(&self) -> Option<String> {
         self.gcemeta_client.project_id().await.ok()
+    }
+
+    pub async fn id_token(&self, audience: &str) -> crate::error::Result<SecretValue> {
+        let url = PathAndQuery::from_str(
+            format!(
+                "/computeMetadata/v1/instance/service-accounts/{}/identity?audience={}",
+                self.account, audience
+            )
+            .as_str(),
+        )?;
+        trace!(
+            "Receiving a new ID token from Metadata Server using '{}'",
+            url
+        );
+        let resp = self.gcemeta_client.get(url, false).await?;
+        Ok(SecretValue::from(resp))
     }
 }
 
