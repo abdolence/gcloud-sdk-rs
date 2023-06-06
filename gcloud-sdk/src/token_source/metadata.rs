@@ -5,7 +5,7 @@ use hyper::http::uri::PathAndQuery;
 use secret_vault_value::SecretValue;
 use std::convert::TryFrom;
 use std::str::FromStr;
-use tracing::*;
+use tracing::trace;
 
 use crate::token_source::{BoxSource, Source, Token, TokenResponse};
 
