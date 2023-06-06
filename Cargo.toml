@@ -7,4 +7,5 @@ members = [
     "examples/gcs-rest-client",
     "examples/simple-api-client",
     "examples/bigquery-storage-write-client",
+    "examples/id-token",
 ]
