@@ -1987,13 +1987,13 @@ pub struct CreateApplicationInstancesRequest {
     /// Required. The resources being created.
     #[prost(message, repeated, tag = "2")]
     pub application_instances: ::prost::alloc::vec::Vec<ApplicationInstance>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2015,13 +2015,13 @@ pub struct DeleteApplicationInstancesRequest {
     /// Required. Id of the requesting object.
     #[prost(string, repeated, tag = "2")]
     pub instance_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2108,13 +2108,13 @@ pub struct CreateApplicationRequest {
     /// Required. The resource being created.
     #[prost(message, optional, tag = "3")]
     pub application: ::core::option::Option<Application>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2138,13 +2138,13 @@ pub struct UpdateApplicationRequest {
     /// Required. The resource being updated.
     #[prost(message, optional, tag = "2")]
     pub application: ::core::option::Option<Application>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2161,13 +2161,13 @@ pub struct DeleteApplicationRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2176,9 +2176,9 @@ pub struct DeleteApplicationRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. If set to true, any instances and drafts from this application will also be
-    /// deleted. (Otherwise, the request will only work if the application has no
-    /// instances and drafts.)
+    /// Optional. If set to true, any instances and drafts from this application
+    /// will also be deleted. (Otherwise, the request will only work if the
+    /// application has no instances and drafts.)
     #[prost(bool, tag = "3")]
     pub force: bool,
 }
@@ -2195,13 +2195,13 @@ pub struct DeployApplicationRequest {
     /// actually deploy it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2210,7 +2210,8 @@ pub struct DeployApplicationRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. Whether or not to enable monitoring for the application on deployment.
+    /// Optional. Whether or not to enable monitoring for the application on
+    /// deployment.
     #[prost(bool, tag = "4")]
     pub enable_monitoring: bool,
 }
@@ -2223,13 +2224,13 @@ pub struct UndeployApplicationRequest {
     /// "projects/{project}/locations/{location}/applications/{application}"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2259,13 +2260,13 @@ pub struct AddApplicationStreamInputRequest {
     /// StreamInput, and it must be unique within each application.
     #[prost(message, repeated, tag = "2")]
     pub application_stream_inputs: ::prost::alloc::vec::Vec<ApplicationStreamInput>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2288,13 +2289,13 @@ pub struct UpdateApplicationStreamInputRequest {
     /// StreamInput, and it must be unique within each application.
     #[prost(message, repeated, tag = "2")]
     pub application_stream_inputs: ::prost::alloc::vec::Vec<ApplicationStreamInput>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2322,13 +2323,13 @@ pub struct RemoveApplicationStreamInputRequest {
     pub target_stream_inputs: ::prost::alloc::vec::Vec<
         remove_application_stream_input_request::TargetStreamInput,
     >,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2447,13 +2448,13 @@ pub struct CreateDraftRequest {
     /// Required. The resource being created.
     #[prost(message, optional, tag = "3")]
     pub draft: ::core::option::Option<Draft>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2463,7 +2464,7 @@ pub struct CreateDraftRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Message for updating an Draft.
+/// Message for updating a Draft.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDraftRequest {
@@ -2477,13 +2478,13 @@ pub struct UpdateDraftRequest {
     /// Required. The resource being updated.
     #[prost(message, optional, tag = "2")]
     pub draft: ::core::option::Option<Draft>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2510,13 +2511,13 @@ pub struct UpdateApplicationInstancesRequest {
     pub application_instances: ::prost::alloc::vec::Vec<
         update_application_instances_request::UpdateApplicationInstance,
     >,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2535,11 +2536,11 @@ pub mod update_application_instances_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UpdateApplicationInstance {
-        /// Optional. Field mask is used to specify the fields to be overwritten in the
-        /// Draft resource by the update.
-        /// The fields specified in the update_mask are relative to the resource, not
-        /// the full request. A field will be overwritten if it is in the mask. If
-        /// the user does not provide a mask then all fields will be overwritten.
+        /// Optional. Field mask is used to specify the fields to be overwritten in
+        /// the Draft resource by the update. The fields specified in the update_mask
+        /// are relative to the resource, not the full request. A field will be
+        /// overwritten if it is in the mask. If the user does not provide a mask
+        /// then all fields will be overwritten.
         #[prost(message, optional, tag = "1")]
         pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
         /// Required. The resource being updated.
@@ -2550,20 +2551,20 @@ pub mod update_application_instances_request {
         pub instance_id: ::prost::alloc::string::String,
     }
 }
-/// Message for deleting an Draft.
+/// Message for deleting a Draft.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDraftRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2645,13 +2646,13 @@ pub struct CreateProcessorRequest {
     /// Required. The resource being created.
     #[prost(message, optional, tag = "3")]
     pub processor: ::core::option::Option<Processor>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2675,13 +2676,13 @@ pub struct UpdateProcessorRequest {
     /// Required. The resource being updated.
     #[prost(message, optional, tag = "2")]
     pub processor: ::core::option::Option<Processor>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2698,13 +2699,13 @@ pub struct DeleteProcessorRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -2742,13 +2743,16 @@ pub struct Application {
     /// Application graph configuration.
     #[prost(message, optional, tag = "7")]
     pub application_configs: ::core::option::Option<ApplicationConfigs>,
-    /// Output only. Application graph runtime info. Only exists when application state equals
-    /// to DEPLOYED.
+    /// Output only. Application graph runtime info. Only exists when application
+    /// state equals to DEPLOYED.
     #[prost(message, optional, tag = "8")]
     pub runtime_info: ::core::option::Option<application::ApplicationRuntimeInfo>,
     /// Output only. State of the application.
     #[prost(enumeration = "application::State", tag = "9")]
     pub state: i32,
+    /// Billing mode of the application.
+    #[prost(enumeration = "application::BillingMode", tag = "12")]
+    pub billing_mode: i32,
 }
 /// Nested message and enum types in `Application`.
 pub mod application {
@@ -2872,6 +2876,49 @@ pub mod application {
                 "UPDATING" => Some(Self::Updating),
                 "DELETING" => Some(Self::Deleting),
                 "FIXING" => Some(Self::Fixing),
+                _ => None,
+            }
+        }
+    }
+    /// Billing mode of the Application
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BillingMode {
+        /// The default value.
+        Unspecified = 0,
+        /// Pay as you go billing mode.
+        Payg = 1,
+        /// Monthly billing mode.
+        Monthly = 2,
+    }
+    impl BillingMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                BillingMode::Unspecified => "BILLING_MODE_UNSPECIFIED",
+                BillingMode::Payg => "PAYG",
+                BillingMode::Monthly => "MONTHLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BILLING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PAYG" => Some(Self::Payg),
+                "MONTHLY" => Some(Self::Monthly),
                 _ => None,
             }
         }
@@ -3027,9 +3074,12 @@ pub struct Instance {
     /// Required. A user friendly display name for the solution.
     #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
-    /// A description for this application.
+    /// A description for this instance.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
+    /// The instance type for the current instance.
+    #[prost(enumeration = "instance::InstanceType", tag = "10")]
+    pub instance_type: i32,
     /// The input resources for the current application instance.
     /// For example:
     /// input_resources:
@@ -3049,6 +3099,9 @@ pub mod instance {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputResource {
+        /// Data type for the current input resource.
+        #[prost(enumeration = "super::DataType", tag = "6")]
+        pub data_type: i32,
         /// The name of graph node who receives the input resource.
         /// For example:
         /// input_resource:
@@ -3076,6 +3129,11 @@ pub mod instance {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum InputResourceInformation {
             /// The direct input resource name.
+            /// If the instance type is STREAMING_PREDICTION, the input resource is in
+            /// format of
+            /// "projects/123/locations/us-central1/clusters/456/streams/stream-a".
+            /// If the instance type is BATCH_PREDICTION from Cloud Storage input
+            /// container, the input resource is in format of "gs://bucket-a".
             #[prost(string, tag = "1")]
             InputResource(::prost::alloc::string::String),
             /// If the input resource is VisionAI Stream, the associated annotations
@@ -3102,16 +3160,64 @@ pub mod instance {
         /// OutputResource.
         #[prost(string, tag = "4")]
         pub output_resource_binding: ::prost::alloc::string::String,
-        /// Output only. Whether the output resource is temporary which means the resource is
-        /// generated during the deployment of the application.
-        /// Temporary resource will be deleted during the undeployment of the
-        /// application.
+        /// Output only. Whether the output resource is temporary which means the
+        /// resource is generated during the deployment of the application. Temporary
+        /// resource will be deleted during the undeployment of the application.
         #[prost(bool, tag = "3")]
         pub is_temporary: bool,
-        /// Output only. Whether the output resource is created automatically by the Vision AI App
-        /// Platform.
+        /// Output only. Whether the output resource is created automatically by the
+        /// Vision AI App Platform.
         #[prost(bool, tag = "5")]
         pub autogen: bool,
+    }
+    /// All the supported instance types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum InstanceType {
+        /// Unspecified instance type.
+        /// If the instance type is not specified, the default one is
+        /// STREAMING_PREDICTION.
+        Unspecified = 0,
+        /// Instance type for streaming prediction.
+        StreamingPrediction = 1,
+        /// Instance type for batch prediction.
+        BatchPrediction = 2,
+        /// Instance type for online prediction.
+        OnlinePrediction = 3,
+    }
+    impl InstanceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                InstanceType::Unspecified => "INSTANCE_TYPE_UNSPECIFIED",
+                InstanceType::StreamingPrediction => "STREAMING_PREDICTION",
+                InstanceType::BatchPrediction => "BATCH_PREDICTION",
+                InstanceType::OnlinePrediction => "ONLINE_PREDICTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INSTANCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STREAMING_PREDICTION" => Some(Self::StreamingPrediction),
+                "BATCH_PREDICTION" => Some(Self::BatchPrediction),
+                "ONLINE_PREDICTION" => Some(Self::OnlinePrediction),
+                _ => None,
+            }
+        }
     }
     /// State of the Instance
     #[derive(
@@ -3149,6 +3255,8 @@ pub mod instance {
         Deleting = 9,
         /// State Fixing.
         Fixing = 10,
+        /// State Finished.
+        Finished = 11,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3168,6 +3276,7 @@ pub mod instance {
                 State::Updating => "UPDATING",
                 State::Deleting => "DELETING",
                 State::Fixing => "FIXING",
+                State::Finished => "FINISHED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3184,6 +3293,7 @@ pub mod instance {
                 "UPDATING" => Some(Self::Updating),
                 "DELETING" => Some(Self::Deleting),
                 "FIXING" => Some(Self::Fixing),
+                "FINISHED" => Some(Self::Finished),
                 _ => None,
             }
         }
@@ -3201,7 +3311,7 @@ pub struct ApplicationInstance {
     pub instance: ::core::option::Option<Instance>,
 }
 /// Message describing Processor object.
-/// Next ID: 18
+/// Next ID: 19
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Processor {
@@ -3238,13 +3348,13 @@ pub struct Processor {
     /// Output only. State of the Processor.
     #[prost(enumeration = "processor::ProcessorState", tag = "8")]
     pub state: i32,
-    /// Output only. [Output only] The input / output specifications of a processor, each type
-    /// of processor has fixed input / output specs which cannot be altered by
-    /// customer.
+    /// Output only. [Output only] The input / output specifications of a
+    /// processor, each type of processor has fixed input / output specs which
+    /// cannot be altered by customer.
     #[prost(message, optional, tag = "11")]
     pub processor_io_spec: ::core::option::Option<ProcessorIoSpec>,
-    /// Output only. The corresponding configuration can be used in the Application to customize
-    /// the behavior of the processor.
+    /// Output only. The corresponding configuration can be used in the Application
+    /// to customize the behavior of the processor.
     #[prost(string, tag = "14")]
     pub configuration_typeurl: ::prost::alloc::string::String,
     #[prost(
@@ -3257,6 +3367,10 @@ pub struct Processor {
     /// Indicates if the processor supports post processing.
     #[prost(bool, tag = "17")]
     pub supports_post_processing: bool,
+    /// Which instance types this processor supports; if empty, this default to
+    /// STREAMING_PREDICTION.
+    #[prost(enumeration = "instance::InstanceType", repeated, tag = "18")]
+    pub supported_instance_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Processor`.
 pub mod processor {
@@ -3409,7 +3523,7 @@ pub mod processor_io_spec {
         /// The data types of the current input channel.
         /// When this field has more than 1 value, it means this input channel can be
         /// connected to either of these different data types.
-        #[prost(enumeration = "DataType", tag = "2")]
+        #[prost(enumeration = "super::DataType", tag = "2")]
         pub data_type: i32,
         /// If specified, only those detailed data types can be connected to the
         /// processor. For example, jpeg stream for MEDIA, or PredictionResult proto
@@ -3437,7 +3551,7 @@ pub mod processor_io_spec {
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// The data type of the current output channel.
-        #[prost(enumeration = "DataType", tag = "2")]
+        #[prost(enumeration = "super::DataType", tag = "2")]
         pub data_type: i32,
         #[prost(string, tag = "3")]
         pub data_type_uri: ::prost::alloc::string::String,
@@ -3489,49 +3603,6 @@ pub mod processor_io_spec {
         #[prost(bool, tag = "3")]
         pub explicit: bool,
     }
-    /// High level data types supported by the processor.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum DataType {
-        /// The default value of DataType.
-        Unspecified = 0,
-        /// Video data type like H264.
-        Video = 1,
-        /// Protobuf data type, usually used for general data blob.
-        Proto = 2,
-    }
-    impl DataType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
-                DataType::Video => "VIDEO",
-                DataType::Proto => "PROTO",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "VIDEO" => Some(Self::Video),
-                "PROTO" => Some(Self::Proto),
-                _ => None,
-            }
-        }
-    }
 }
 /// Describes the source info for a custom processor.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3555,13 +3626,27 @@ pub struct CustomProcessorSourceInfo {
     #[prost(message, optional, tag = "5")]
     pub model_schema: ::core::option::Option<custom_processor_source_info::ModelSchema>,
     /// The path where App Platform loads the artifacts for the custom processor.
-    #[prost(oneof = "custom_processor_source_info::ArtifactPath", tags = "2")]
+    #[prost(oneof = "custom_processor_source_info::ArtifactPath", tags = "2, 3")]
     pub artifact_path: ::core::option::Option<
         custom_processor_source_info::ArtifactPath,
     >,
 }
 /// Nested message and enum types in `CustomProcessorSourceInfo`.
 pub mod custom_processor_source_info {
+    /// Message describes product recognizer artifact.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductRecognizerArtifact {
+        /// Required. Resource name of RetailProductRecognitionIndex.
+        /// Format is
+        /// 'projects/*/locations/*/retailCatalogs/*/retailProductRecognitionIndexes/*'
+        #[prost(string, tag = "1")]
+        pub retail_product_recognition_index: ::prost::alloc::string::String,
+        /// Optional. The resource name of embedding model hosted in Vertex AI
+        /// Platform.
+        #[prost(string, tag = "2")]
+        pub vertex_model: ::prost::alloc::string::String,
+    }
     /// The schema is defined as an OpenAPI 3.0.2 [Schema
     /// Object](<https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject>).
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3600,6 +3685,8 @@ pub mod custom_processor_source_info {
         VertexAutoml = 1,
         /// Custom processors coming from general custom models from Vertex.
         VertexCustom = 2,
+        /// Source for Product Recognizer.
+        ProductRecognizer = 3,
     }
     impl SourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3611,6 +3698,7 @@ pub mod custom_processor_source_info {
                 SourceType::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
                 SourceType::VertexAutoml => "VERTEX_AUTOML",
                 SourceType::VertexCustom => "VERTEX_CUSTOM",
+                SourceType::ProductRecognizer => "PRODUCT_RECOGNIZER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3619,6 +3707,7 @@ pub mod custom_processor_source_info {
                 "SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "VERTEX_AUTOML" => Some(Self::VertexAutoml),
                 "VERTEX_CUSTOM" => Some(Self::VertexCustom),
+                "PRODUCT_RECOGNIZER" => Some(Self::ProductRecognizer),
                 _ => None,
             }
         }
@@ -3630,15 +3719,22 @@ pub mod custom_processor_source_info {
         /// The resource name original model hosted in the vertex AI platform.
         #[prost(string, tag = "2")]
         VertexModel(::prost::alloc::string::String),
+        /// Artifact for product recognizer.
+        #[prost(message, tag = "3")]
+        ProductRecognizerArtifact(ProductRecognizerArtifact),
     }
 }
-/// Next ID: 24
+/// Next ID: 33
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessorConfig {
+    /// Experimental configurations. Structured object containing not-yet-stable
+    /// processor parameters.
+    #[prost(message, optional, tag = "26")]
+    pub experimental_config: ::core::option::Option<::prost_types::Struct>,
     #[prost(
         oneof = "processor_config::ProcessorConfig",
-        tags = "9, 20, 10, 11, 12, 15, 13, 14, 17, 18, 19, 22"
+        tags = "9, 20, 10, 11, 12, 15, 13, 14, 17, 18, 19, 27, 21, 22, 25, 28"
     )]
     pub processor_config: ::core::option::Option<processor_config::ProcessorConfig>,
 }
@@ -3680,11 +3776,23 @@ pub mod processor_config {
         /// Configs of BigQuery processor.
         #[prost(message, tag = "19")]
         BigQueryConfig(super::BigQueryConfig),
+        /// Configs of Cloud Storage output processor.
+        #[prost(message, tag = "27")]
+        GcsOutputConfig(super::GcsOutputConfig),
+        /// Runtime configs of Product Recognizer processor.
+        #[prost(message, tag = "21")]
+        ProductRecognizerConfig(super::ProductRecognizerConfig),
         /// Configs of personal_protective_equipment_detection_config
         #[prost(message, tag = "22")]
         PersonalProtectiveEquipmentDetectionConfig(
             super::PersonalProtectiveEquipmentDetectionConfig,
         ),
+        /// Runtime configs of Tag Recognizer processor.
+        #[prost(message, tag = "25")]
+        TagRecognizerConfig(super::TagRecognizerConfig),
+        /// Runtime configs of UniversalInput processor.
+        #[prost(message, tag = "28")]
+        UniversalInputConfig(super::UniversalInputConfig),
     }
 }
 /// Message describing Vision AI stream with application specific annotations.
@@ -4023,6 +4131,18 @@ pub struct VertexCustomConfig {
     #[prost(bool, tag = "4")]
     pub attach_application_metadata: bool,
 }
+/// Message describing GcsOutputConfig.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsOutputConfig {
+    /// The Cloud Storage path for Vision AI Platform to ingest annotations to.
+    #[prost(string, tag = "1")]
+    pub gcs_path: ::prost::alloc::string::String,
+}
+/// Message describing UniversalInputConfig.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UniversalInputConfig {}
 /// Specification of a single machine.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4040,7 +4160,8 @@ pub struct MachineSpec {
     /// \[WorkerPoolSpec][\] this field is required.
     #[prost(string, tag = "1")]
     pub machine_type: ::prost::alloc::string::String,
-    /// Immutable. The type of accelerator(s) that may be attached to the machine as per
+    /// Immutable. The type of accelerator(s) that may be attached to the machine
+    /// as per
     /// \[accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count\].
     #[prost(enumeration = "AcceleratorType", tag = "2")]
     pub accelerator_type: i32,
@@ -4074,25 +4195,28 @@ pub struct AutoscalingMetricSpec {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DedicatedResources {
-    /// Required. Immutable. The specification of a single machine used by the prediction.
+    /// Required. Immutable. The specification of a single machine used by the
+    /// prediction.
     #[prost(message, optional, tag = "1")]
     pub machine_spec: ::core::option::Option<MachineSpec>,
-    /// Required. Immutable. The minimum number of machine replicas this DeployedModel will be always
-    /// deployed on. This value must be greater than or equal to 1.
+    /// Required. Immutable. The minimum number of machine replicas this
+    /// DeployedModel will be always deployed on. This value must be greater than
+    /// or equal to 1.
     ///
     /// If traffic against the DeployedModel increases, it may dynamically be
     /// deployed onto more replicas, and as traffic decreases, some of these extra
     /// replicas may be freed.
     #[prost(int32, tag = "2")]
     pub min_replica_count: i32,
-    /// Immutable. The maximum number of replicas this DeployedModel may be deployed on when
-    /// the traffic against it increases. If the requested value is too large,
-    /// the deployment will error, but if deployment succeeds then the ability
-    /// to scale the model to that many replicas is guaranteed (barring service
-    /// outages). If traffic against the DeployedModel increases beyond what its
-    /// replicas at maximum may handle, a portion of the traffic will be dropped.
-    /// If this value is not provided, will use \[min_replica_count][google.cloud.visionai.v1.DedicatedResources.min_replica_count\] as the
-    /// default value.
+    /// Immutable. The maximum number of replicas this DeployedModel may be
+    /// deployed on when the traffic against it increases. If the requested value
+    /// is too large, the deployment will error, but if deployment succeeds then
+    /// the ability to scale the model to that many replicas is guaranteed (barring
+    /// service outages). If traffic against the DeployedModel increases beyond
+    /// what its replicas at maximum may handle, a portion of the traffic will be
+    /// dropped. If this value is not provided, will use
+    /// \[min_replica_count][google.cloud.visionai.v1.DedicatedResources.min_replica_count\]
+    /// as the default value.
     ///
     /// The value of this field impacts the charge against Vertex CPU and GPU
     /// quotas. Specifically, you will be charged for max_replica_count *
@@ -4105,23 +4229,131 @@ pub struct DedicatedResources {
     /// target value (default to 60 if not set). At most one entry is allowed per
     /// metric.
     ///
-    /// If \[machine_spec.accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count\] is
-    /// above 0, the autoscaling will be based on both CPU utilization and
+    /// If
+    /// \[machine_spec.accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count\]
+    /// is above 0, the autoscaling will be based on both CPU utilization and
     /// accelerator's duty cycle metrics and scale up when either metrics exceeds
     /// its target value while scale down if both metrics are under their target
     /// value. The default target value is 60 for both metrics.
     ///
-    /// If \[machine_spec.accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count\] is
-    /// 0, the autoscaling will be based on CPU utilization metric only with
+    /// If
+    /// \[machine_spec.accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count\]
+    /// is 0, the autoscaling will be based on CPU utilization metric only with
     /// default target value 60 if not explicitly set.
     ///
     /// For example, in the case of Online Prediction, if you want to override
     /// target CPU utilization to 80, you should set
     /// \[autoscaling_metric_specs.metric_name][google.cloud.visionai.v1.AutoscalingMetricSpec.metric_name\]
     /// to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
-    /// \[autoscaling_metric_specs.target][google.cloud.visionai.v1.AutoscalingMetricSpec.target\] to `80`.
+    /// \[autoscaling_metric_specs.target][google.cloud.visionai.v1.AutoscalingMetricSpec.target\]
+    /// to `80`.
     #[prost(message, repeated, tag = "4")]
     pub autoscaling_metric_specs: ::prost::alloc::vec::Vec<AutoscalingMetricSpec>,
+}
+/// Message describing ProductRecognizerConfig.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProductRecognizerConfig {
+    /// The resource name of retail endpoint to use.
+    #[prost(string, tag = "1")]
+    pub retail_endpoint: ::prost::alloc::string::String,
+    /// Confidence threshold to filter detection results. If not set, a system
+    /// default value will be used.
+    #[prost(float, tag = "2")]
+    pub recognition_confidence_threshold: f32,
+}
+/// Message describing TagRecognizerConfig.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TagRecognizerConfig {
+    /// Confidence threshold to filter detection results. If not set, a system
+    /// default value will be used.
+    #[prost(float, tag = "1")]
+    pub entity_detection_confidence_threshold: f32,
+    /// Configuration to customize how tags are parsed.
+    #[prost(message, optional, tag = "2")]
+    pub tag_parsing_config: ::core::option::Option<TagParsingConfig>,
+}
+/// Configuration for tag parsing.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TagParsingConfig {
+    /// Each tag entity class may have an optional EntityParsingConfig which is
+    /// used to help parse the entities of the class.
+    #[prost(message, repeated, tag = "1")]
+    pub entity_parsing_configs: ::prost::alloc::vec::Vec<
+        tag_parsing_config::EntityParsingConfig,
+    >,
+}
+/// Nested message and enum types in `TagParsingConfig`.
+pub mod tag_parsing_config {
+    /// Configuration for parsing a tag entity class.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EntityParsingConfig {
+        /// Required. The tag entity class name. This should match the class name
+        /// produced by the tag entity detection model.
+        #[prost(string, tag = "1")]
+        pub entity_class: ::prost::alloc::string::String,
+        /// Optional. An regular expression hint.
+        #[prost(string, tag = "2")]
+        pub regex: ::prost::alloc::string::String,
+        /// Optional. Entity matching strategy.
+        #[prost(
+            enumeration = "entity_parsing_config::EntityMatchingStrategy",
+            tag = "3"
+        )]
+        pub entity_matching_strategy: i32,
+    }
+    /// Nested message and enum types in `EntityParsingConfig`.
+    pub mod entity_parsing_config {
+        /// Type of entity matching strategy.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EntityMatchingStrategy {
+            /// If unspecified, multi-line matching will be used by default.
+            Unspecified = 0,
+            /// Matches multiple lines of text.
+            MultiLineMatching = 1,
+            /// Matches the line with the maximum overlap area with entity bounding
+            /// box.
+            MaxOverlapArea = 2,
+        }
+        impl EntityMatchingStrategy {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    EntityMatchingStrategy::Unspecified => {
+                        "ENTITY_MATCHING_STRATEGY_UNSPECIFIED"
+                    }
+                    EntityMatchingStrategy::MultiLineMatching => "MULTI_LINE_MATCHING",
+                    EntityMatchingStrategy::MaxOverlapArea => "MAX_OVERLAP_AREA",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENTITY_MATCHING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MULTI_LINE_MATCHING" => Some(Self::MultiLineMatching),
+                    "MAX_OVERLAP_AREA" => Some(Self::MaxOverlapArea),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// All the supported model types in Vision AI App Platform.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4145,6 +4377,10 @@ pub enum ModelType {
     PersonBlur = 7,
     /// Model Type Vertex Custom.
     VertexCustom = 8,
+    /// Model Type Product Recognizer.
+    ProductRecognizer = 9,
+    /// Model Type Tag Recognizer.
+    TagRecognizer = 10,
 }
 impl ModelType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -4162,6 +4398,8 @@ impl ModelType {
             ModelType::OccupancyCounting => "OCCUPANCY_COUNTING",
             ModelType::PersonBlur => "PERSON_BLUR",
             ModelType::VertexCustom => "VERTEX_CUSTOM",
+            ModelType::ProductRecognizer => "PRODUCT_RECOGNIZER",
+            ModelType::TagRecognizer => "TAG_RECOGNIZER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4176,6 +4414,8 @@ impl ModelType {
             "OCCUPANCY_COUNTING" => Some(Self::OccupancyCounting),
             "PERSON_BLUR" => Some(Self::PersonBlur),
             "VERTEX_CUSTOM" => Some(Self::VertexCustom),
+            "PRODUCT_RECOGNIZER" => Some(Self::ProductRecognizer),
+            "TAG_RECOGNIZER" => Some(Self::TagRecognizer),
             _ => None,
         }
     }
@@ -4233,6 +4473,49 @@ impl AcceleratorType {
             "NVIDIA_TESLA_A100" => Some(Self::NvidiaTeslaA100),
             "TPU_V2" => Some(Self::TpuV2),
             "TPU_V3" => Some(Self::TpuV3),
+            _ => None,
+        }
+    }
+}
+/// All supported data types.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DataType {
+    /// The default value of DataType.
+    Unspecified = 0,
+    /// Video data type like H264.
+    Video = 1,
+    /// Image data type.
+    Image = 3,
+    /// Protobuf data type, usually used for general data blob.
+    Proto = 2,
+    /// A placeholder data type, applicable for the universal input processor which
+    /// supports any data type. This will be instantiated and replaced by a
+    /// concrete underlying `DataType` during instance deployment.
+    Placeholder = 4,
+}
+impl DataType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
+            DataType::Video => "VIDEO",
+            DataType::Image => "IMAGE",
+            DataType::Proto => "PROTO",
+            DataType::Placeholder => "PLACEHOLDER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "VIDEO" => Some(Self::Video),
+            "IMAGE" => Some(Self::Image),
+            "PROTO" => Some(Self::Proto),
+            "PLACEHOLDER" => Some(Self::Placeholder),
             _ => None,
         }
     }

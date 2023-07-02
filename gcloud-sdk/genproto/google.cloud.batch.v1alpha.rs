@@ -1177,7 +1177,6 @@ pub mod allocation_policy {
         /// The minimum CPU platform.
         /// See
         /// <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.>
-        /// Not yet implemented.
         #[prost(string, tag = "3")]
         pub min_cpu_platform: ::prost::alloc::string::String,
         /// The provisioning model.
@@ -1344,8 +1343,7 @@ pub mod allocation_policy {
         }
     }
 }
-/// A TaskGroup contains one or multiple Tasks that share the same
-/// Runnable but with different runtime parameters.
+/// A TaskGroup defines one or more Tasks that all share the same TaskSpec.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskGroup {
@@ -1395,8 +1393,6 @@ pub struct TaskGroup {
     /// addition to any environment variables set in task_environments, specifying
     /// the number of Tasks in the Task's parent TaskGroup, and the specific Task's
     /// index in the TaskGroup (0 through BATCH_TASK_COUNT - 1).
-    ///
-    /// task_environments supports up to 200 entries.
     #[prost(message, repeated, tag = "9")]
     pub task_environments: ::prost::alloc::vec::Vec<Environment>,
     /// Max number of tasks that can be run on a VM at the same time.
@@ -1438,8 +1434,6 @@ pub mod task_group {
         /// task_count values.
         AsSoonAsPossible = 1,
         /// Run Tasks sequentially with increased task index.
-        ///
-        /// Not yet implemented.
         InOrder = 2,
     }
     impl SchedulingPolicy {

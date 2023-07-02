@@ -19334,6 +19334,28 @@ pub struct UpdateModelRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
+/// \[ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExplanationDatasetRequest {
+    /// Required. The resource name of the Model to update.
+    /// Format: `projects/{project}/locations/{location}/models/{model}`
+    #[prost(string, tag = "1")]
+    pub model: ::prost::alloc::string::String,
+    /// The example config containing the location of the dataset.
+    #[prost(message, optional, tag = "2")]
+    pub examples: ::core::option::Option<Examples>,
+}
+/// Runtime operation information for
+/// \[ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExplanationDatasetOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
 /// \[ModelService.DeleteModel][google.cloud.aiplatform.v1.ModelService.DeleteModel\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19428,6 +19450,12 @@ pub mod export_model_request {
         >,
     }
 }
+/// Response message of
+/// \[ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset\]
+/// operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExplanationDatasetResponse {}
 /// Details of
 /// \[ModelService.ExportModel][google.cloud.aiplatform.v1.ModelService.ExportModel\]
 /// operation.
@@ -19934,6 +19962,37 @@ pub mod model_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.ModelService",
                         "UpdateModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Incrementally update the dataset used for an examples model.
+        pub async fn update_explanation_dataset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateExplanationDatasetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ModelService/UpdateExplanationDataset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ModelService",
+                        "UpdateExplanationDataset",
                     ),
                 );
             self.inner.unary(req, path, codec).await

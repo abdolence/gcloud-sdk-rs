@@ -975,7 +975,6 @@ pub mod allocation_policy {
         /// The minimum CPU platform.
         /// See
         /// <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.>
-        /// Not yet implemented.
         #[prost(string, tag = "3")]
         pub min_cpu_platform: ::prost::alloc::string::String,
         /// The provisioning model.
@@ -1138,8 +1137,7 @@ pub mod allocation_policy {
         }
     }
 }
-/// A TaskGroup contains one or multiple Tasks that share the same
-/// Runnable but with different runtime parameters.
+/// A TaskGroup defines one or more Tasks that all share the same TaskSpec.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskGroup {
@@ -1161,6 +1159,10 @@ pub struct TaskGroup {
     /// Field parallelism must be 1 if the scheduling_policy is IN_ORDER.
     #[prost(int64, tag = "5")]
     pub parallelism: i64,
+    /// Scheduling policy for Tasks in the TaskGroup.
+    /// The default value is AS_SOON_AS_POSSIBLE.
+    #[prost(enumeration = "task_group::SchedulingPolicy", tag = "6")]
+    pub scheduling_policy: i32,
     /// An array of environment variable mappings, which are passed to Tasks with
     /// matching indices. If task_environments is used then task_count should
     /// not be specified in the request (and will be ignored). Task count will be
@@ -1170,8 +1172,6 @@ pub struct TaskGroup {
     /// addition to any environment variables set in task_environments, specifying
     /// the number of Tasks in the Task's parent TaskGroup, and the specific Task's
     /// index in the TaskGroup (0 through BATCH_TASK_COUNT - 1).
-    ///
-    /// task_environments supports up to 200 entries.
     #[prost(message, repeated, tag = "9")]
     pub task_environments: ::prost::alloc::vec::Vec<Environment>,
     /// Max number of tasks that can be run on a VM at the same time.
@@ -1188,6 +1188,55 @@ pub struct TaskGroup {
     /// VMs running the Batch tasks in the same TaskGroup.
     #[prost(bool, tag = "12")]
     pub permissive_ssh: bool,
+}
+/// Nested message and enum types in `TaskGroup`.
+pub mod task_group {
+    /// How Tasks in the TaskGroup should be scheduled relative to each other.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SchedulingPolicy {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Run Tasks as soon as resources are available.
+        ///
+        /// Tasks might be executed in parallel depending on parallelism and
+        /// task_count values.
+        AsSoonAsPossible = 1,
+        /// Run Tasks sequentially with increased task index.
+        InOrder = 2,
+    }
+    impl SchedulingPolicy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SchedulingPolicy::Unspecified => "SCHEDULING_POLICY_UNSPECIFIED",
+                SchedulingPolicy::AsSoonAsPossible => "AS_SOON_AS_POSSIBLE",
+                SchedulingPolicy::InOrder => "IN_ORDER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCHEDULING_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AS_SOON_AS_POSSIBLE" => Some(Self::AsSoonAsPossible),
+                "IN_ORDER" => Some(Self::InOrder),
+                _ => None,
+            }
+        }
+    }
 }
 /// Carries information about a Google Cloud service account.
 #[allow(clippy::derive_partial_eq_without_eq)]

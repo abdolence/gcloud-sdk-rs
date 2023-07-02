@@ -140,7 +140,7 @@ pub mod encryption_info {
         }
     }
 }
-/// SSL configuration for an AlloyDB Cluster.
+/// SSL configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslConfig {
@@ -168,7 +168,7 @@ pub mod ssl_config {
     )]
     #[repr(i32)]
     pub enum SslMode {
-        /// SSL mode not specified. Defaults to SSL_MODE_ALLOW.
+        /// SSL mode not specified. Defaults to ENCRYPTED_ONLY.
         Unspecified = 0,
         /// SSL connections are optional. CA verification not enforced.
         Allow = 1,
@@ -180,6 +180,10 @@ pub mod ssl_config {
         /// Clients must have certificates signed by a Cluster CA, e.g. via
         /// GenerateClientCertificate.
         VerifyCa = 3,
+        /// SSL connections are optional. CA verification not enforced.
+        AllowUnencryptedAndEncrypted = 4,
+        /// SSL connections are required. CA verification not enforced.
+        EncryptedOnly = 5,
     }
     impl SslMode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -192,6 +196,10 @@ pub mod ssl_config {
                 SslMode::Allow => "SSL_MODE_ALLOW",
                 SslMode::Require => "SSL_MODE_REQUIRE",
                 SslMode::VerifyCa => "SSL_MODE_VERIFY_CA",
+                SslMode::AllowUnencryptedAndEncrypted => {
+                    "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+                }
+                SslMode::EncryptedOnly => "ENCRYPTED_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -201,6 +209,10 @@ pub mod ssl_config {
                 "SSL_MODE_ALLOW" => Some(Self::Allow),
                 "SSL_MODE_REQUIRE" => Some(Self::Require),
                 "SSL_MODE_VERIFY_CA" => Some(Self::VerifyCa),
+                "ALLOW_UNENCRYPTED_AND_ENCRYPTED" => {
+                    Some(Self::AllowUnencryptedAndEncrypted)
+                }
+                "ENCRYPTED_ONLY" => Some(Self::EncryptedOnly),
                 _ => None,
             }
         }
@@ -388,6 +400,53 @@ pub mod automated_backup_policy {
         QuantityBasedRetention(QuantityBasedRetention),
     }
 }
+/// ContinuousBackupConfig describes the continuous backups recovery
+/// configurations of a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContinuousBackupConfig {
+    /// Whether ContinuousBackup is enabled.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
+    /// The number of days backups and logs will be retained, which determines the
+    /// window of time that data is recoverable for. If not set, it defaults to 14
+    /// days.
+    #[prost(int32, tag = "4")]
+    pub recovery_window_days: i32,
+    /// The encryption config can be specified to encrypt the
+    /// backups with a customer-managed encryption key (CMEK). When this field is
+    /// not specified, the backup will then use default encryption scheme to
+    /// protect the user data.
+    #[prost(message, optional, tag = "3")]
+    pub encryption_config: ::core::option::Option<EncryptionConfig>,
+}
+/// ContinuousBackupInfo describes the continuous backup properties of a
+/// cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContinuousBackupInfo {
+    /// Output only. The encryption information for the WALs and backups required
+    /// for ContinuousBackup.
+    #[prost(message, optional, tag = "1")]
+    pub encryption_info: ::core::option::Option<EncryptionInfo>,
+    /// Output only. When ContinuousBackup was most recently enabled. Set to null
+    /// if ContinuousBackup is not enabled.
+    #[prost(message, optional, tag = "2")]
+    pub enabled_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Days of the week on which a continuous backup is taken. Output
+    /// only field. Ignored if passed into the request.
+    #[prost(
+        enumeration = "super::super::super::r#type::DayOfWeek",
+        repeated,
+        packed = "false",
+        tag = "3"
+    )]
+    pub schedule: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. The earliest restorable time that can be restored to. Output
+    /// only field.
+    #[prost(message, optional, tag = "4")]
+    pub earliest_restorable_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Message describing a BackupSource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -401,6 +460,19 @@ pub struct BackupSource {
     ///   * projects/{project}/locations/{region}/backups/{backup_id}
     #[prost(string, tag = "1")]
     pub backup_name: ::prost::alloc::string::String,
+}
+/// Message describing a ContinuousBackupSource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContinuousBackupSource {
+    /// Required. The source cluster from which to restore. This cluster must have
+    /// continuous backup enabled for this operation to succeed. For the required
+    /// format, see the comment on the Cluster.name field.
+    #[prost(string, tag = "1")]
+    pub cluster: ::prost::alloc::string::String,
+    /// Required. The point in time to restore to.
+    #[prost(message, optional, tag = "2")]
+    pub point_in_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A cluster is a collection of regional AlloyDB resources. It can include a
 /// primary instance and one or more read pool instances.
@@ -490,7 +562,8 @@ pub struct Cluster {
     /// documentation for the message type.
     #[prost(message, optional, tag = "17")]
     pub automated_backup_policy: ::core::option::Option<AutomatedBackupPolicy>,
-    /// SSL configuration for this AlloyDB Cluster.
+    /// SSL configuration for this AlloyDB cluster.
+    #[deprecated]
     #[prost(message, optional, tag = "18")]
     pub ssl_config: ::core::option::Option<SslConfig>,
     /// Optional. The encryption config can be specified to encrypt the data disks
@@ -503,6 +576,12 @@ pub struct Cluster {
     /// Output only. The encryption information for the cluster.
     #[prost(message, optional, tag = "20")]
     pub encryption_info: ::core::option::Option<EncryptionInfo>,
+    /// Optional. Continuous backup configuration for this cluster.
+    #[prost(message, optional, tag = "27")]
+    pub continuous_backup_config: ::core::option::Option<ContinuousBackupConfig>,
+    /// Output only. Continuous backup properties for this cluster.
+    #[prost(message, optional, tag = "28")]
+    pub continuous_backup_info: ::core::option::Option<ContinuousBackupInfo>,
     /// Cross Region replication config specific to SECONDARY cluster.
     #[prost(message, optional, tag = "22")]
     pub secondary_config: ::core::option::Option<cluster::SecondaryConfig>,
@@ -724,8 +803,11 @@ pub struct Instance {
     #[prost(message, optional, tag = "10")]
     pub machine_config: ::core::option::Option<instance::MachineConfig>,
     /// Availability type of an Instance.
-    /// Defaults to REGIONAL for both primary and read instances.
-    /// Note that primary and read instances can have different availability types.
+    /// If empty, defaults to REGIONAL for primary instances.
+    /// For read pools, availability_type is always UNSPECIFIED. Instances in the
+    /// read pools are evenly distributed across available zones within the region
+    /// (i.e. read pools with more than one node will have a node in at
+    /// least two zones).
     #[prost(enumeration = "instance::AvailabilityType", tag = "11")]
     pub availability_type: i32,
     /// The Compute Engine zone that the instance should serve from, per
@@ -982,10 +1064,11 @@ pub mod instance {
         }
     }
     /// The Availability type of an instance. Potential values:
+    ///
     /// - ZONAL: The instance serves data from only one zone. Outages in that
-    /// zone affect instance availability.
+    ///      zone affect instance availability.
     /// - REGIONAL: The instance can serve data from more than one zone in a
-    /// region (it is highly available).
+    ///      region (it is highly available).
     #[derive(
         Clone,
         Copy,
@@ -1080,7 +1163,7 @@ pub struct Backup {
     #[prost(string, tag = "18")]
     pub cluster_uid: ::prost::alloc::string::String,
     /// Required. The full resource name of the backup source cluster
-    /// (e.g., projects/<project>/locations/<location>/clusters/<cluster_id>).
+    /// (e.g., projects/{project}/locations/{region}/clusters/{cluster_id}).
     #[prost(string, tag = "10")]
     pub cluster_name: ::prost::alloc::string::String,
     /// Output only. Reconciling (<https://google.aip.dev/128#reconciliation>), if
@@ -1345,36 +1428,69 @@ pub mod supported_database_flag {
         IntegerRestrictions(IntegerRestrictions),
     }
 }
-/// The supported database engine versions.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum DatabaseVersion {
-    /// This is an unknown database version.
-    Unspecified = 0,
-    /// DEPRECATED - The database version is Postgres 13.
-    Postgres13 = 1,
-    /// The database version is Postgres 14.
-    Postgres14 = 2,
+/// Message describing User object.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct User {
+    /// Output only. Name of the resource in the form of
+    /// projects/{project}/locations/{location}/cluster/{cluster}/users/{user}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Input only. Password for the user.
+    #[prost(string, tag = "2")]
+    pub password: ::prost::alloc::string::String,
+    /// Optional. List of database roles this user has.
+    /// The database role strings are subject to the PostgreSQL naming conventions.
+    #[prost(string, repeated, tag = "4")]
+    pub database_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Type of this user.
+    #[prost(enumeration = "user::UserType", tag = "5")]
+    pub user_type: i32,
 }
-impl DatabaseVersion {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            DatabaseVersion::Unspecified => "DATABASE_VERSION_UNSPECIFIED",
-            DatabaseVersion::Postgres13 => "POSTGRES_13",
-            DatabaseVersion::Postgres14 => "POSTGRES_14",
-        }
+/// Nested message and enum types in `User`.
+pub mod user {
+    /// Enum that details the user type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum UserType {
+        /// Unspecified user type.
+        Unspecified = 0,
+        /// The default user type that authenticates via password-based
+        /// authentication.
+        AlloydbBuiltIn = 1,
+        /// Database user that can authenticate via IAM-Based authentication.
+        AlloydbIamUser = 2,
     }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "DATABASE_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
-            "POSTGRES_13" => Some(Self::Postgres13),
-            "POSTGRES_14" => Some(Self::Postgres14),
-            _ => None,
+    impl UserType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                UserType::Unspecified => "USER_TYPE_UNSPECIFIED",
+                UserType::AlloydbBuiltIn => "ALLOYDB_BUILT_IN",
+                UserType::AlloydbIamUser => "ALLOYDB_IAM_USER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOYDB_BUILT_IN" => Some(Self::AlloydbBuiltIn),
+                "ALLOYDB_IAM_USER" => Some(Self::AlloydbIamUser),
+                _ => None,
+            }
         }
     }
 }
@@ -1411,6 +1527,77 @@ impl InstanceView {
             "INSTANCE_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
             "INSTANCE_VIEW_BASIC" => Some(Self::Basic),
             "INSTANCE_VIEW_FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
+}
+/// View on Cluster. Pass this enum to rpcs that returns a cluster message to
+/// control which subsets of fields to get.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ClusterView {
+    /// CLUSTER_VIEW_UNSPECIFIED Not specified, equivalent to BASIC.
+    Unspecified = 0,
+    /// BASIC server responses include all the relevant cluster details, excluding
+    /// Cluster.ContinuousBackupInfo.EarliestRestorableTime and other view-specific
+    /// fields. The default value.
+    Basic = 1,
+    /// CONTINUOUS_BACKUP response returns all the fields from BASIC plus
+    /// the earliest restorable time if continuous backups are enabled.
+    /// May increase latency.
+    ContinuousBackup = 2,
+}
+impl ClusterView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ClusterView::Unspecified => "CLUSTER_VIEW_UNSPECIFIED",
+            ClusterView::Basic => "CLUSTER_VIEW_BASIC",
+            ClusterView::ContinuousBackup => "CLUSTER_VIEW_CONTINUOUS_BACKUP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CLUSTER_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "CLUSTER_VIEW_BASIC" => Some(Self::Basic),
+            "CLUSTER_VIEW_CONTINUOUS_BACKUP" => Some(Self::ContinuousBackup),
+            _ => None,
+        }
+    }
+}
+/// The supported database engine versions.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DatabaseVersion {
+    /// This is an unknown database version.
+    Unspecified = 0,
+    /// DEPRECATED - The database version is Postgres 13.
+    Postgres13 = 1,
+    /// The database version is Postgres 14.
+    Postgres14 = 2,
+}
+impl DatabaseVersion {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DatabaseVersion::Unspecified => "DATABASE_VERSION_UNSPECIFIED",
+            DatabaseVersion::Postgres13 => "POSTGRES_13",
+            DatabaseVersion::Postgres14 => "POSTGRES_14",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATABASE_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+            "POSTGRES_13" => Some(Self::Postgres13),
+            "POSTGRES_14" => Some(Self::Postgres14),
             _ => None,
         }
     }
@@ -1461,12 +1648,50 @@ pub struct GetClusterRequest {
     /// comment on the Cluster.name field.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The view of the cluster to return. Returns all default fields if
+    /// not set.
+    #[prost(enumeration = "ClusterView", tag = "2")]
+    pub view: i32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSecondaryClusterRequest {
+    /// Required. The location of the new cluster. For the required
+    /// format, see the comment on the Cluster.name field.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the requesting object (the secondary cluster).
+    #[prost(string, tag = "2")]
+    pub cluster_id: ::prost::alloc::string::String,
+    /// Required. Configuration of the requesting object (the secondary cluster).
+    #[prost(message, optional, tag = "3")]
+    pub cluster: ::core::option::Option<Cluster>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "5")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set, performs request validation (e.g. permission checks and
+    /// any other type of validation), but do not actually execute the create
+    /// request.
+    #[prost(bool, tag = "6")]
+    pub validate_only: bool,
 }
 /// Message for creating a Cluster
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
-    /// Required. The name of the parent resource. For the required format, see the
+    /// Required. The location of the new cluster. For the required format, see the
     /// comment on the Cluster.name field.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1572,6 +1797,39 @@ pub struct DeleteClusterRequest {
     #[prost(bool, tag = "5")]
     pub force: bool,
 }
+/// Message for promoting a Cluster
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PromoteClusterRequest {
+    /// Required. The name of the resource. For the required format, see the
+    /// comment on the Cluster.name field
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. The current etag of the Cluster.
+    /// If an etag is provided and does not match the current etag of the Cluster,
+    /// deletion will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. If set, performs request validation (e.g. permission checks and
+    /// any other type of validation), but do not actually execute the delete.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
 /// Message for restoring a Cluster from a backup or another cluster at a given
 /// point in time.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1609,7 +1867,7 @@ pub struct RestoreClusterRequest {
     pub validate_only: bool,
     /// Required.
     /// The source to import from.
-    #[prost(oneof = "restore_cluster_request::Source", tags = "4")]
+    #[prost(oneof = "restore_cluster_request::Source", tags = "4, 8")]
     pub source: ::core::option::Option<restore_cluster_request::Source>,
 }
 /// Nested message and enum types in `RestoreClusterRequest`.
@@ -1622,6 +1880,10 @@ pub mod restore_cluster_request {
         /// Backup source.
         #[prost(message, tag = "4")]
         BackupSource(super::BackupSource),
+        /// ContinuousBackup source. Continuous backup needs to be enabled in the
+        /// source cluster for this operation to succeed.
+        #[prost(message, tag = "8")]
+        ContinuousBackupSource(super::ContinuousBackupSource),
     }
 }
 /// Message for requesting list of Instances
@@ -1711,6 +1973,41 @@ pub struct CreateInstanceRequest {
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
 }
+/// Message for creating a Secondary Instance
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSecondaryInstanceRequest {
+    /// Required. The name of the parent resource. For the required format, see the
+    /// comment on the Instance.name field.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the requesting object.
+    #[prost(string, tag = "2")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Required. The resource being created
+    #[prost(message, optional, tag = "3")]
+    pub instance: ::core::option::Option<Instance>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set, performs request validation (e.g. permission checks and
+    /// any other type of validation), but do not actually execute the create
+    /// request.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
 /// See usage below for notes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1755,6 +2052,7 @@ pub struct BatchCreateInstancesResponse {
     pub instances: ::prost::alloc::vec::Vec<Instance>,
 }
 /// Message for metadata that is specific to BatchCreateInstances API.
+/// NEXT_ID: 3
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateInstancesMetadata {
@@ -1787,6 +2085,7 @@ pub struct BatchCreateInstancesMetadata {
 ///    2. Instance2 = ROLLED_BACK
 ///    3. Instance3 = FAILED
 ///    4. Instance4 = FAILED
+///
 /// However, while the operation is running, the instance might be in other
 /// states including PENDING_CREATE, ACTIVE, DELETING and CREATING. The states
 /// / do not get further updated once the operation is done.
@@ -1980,6 +2279,81 @@ pub struct FailoverInstanceRequest {
     /// any other type of validation), but do not actually execute the failover.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
+}
+/// Message for triggering fault injection on an instance
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InjectFaultRequest {
+    /// Required. The type of fault to be injected in an instance.
+    #[prost(enumeration = "inject_fault_request::FaultType", tag = "1")]
+    pub fault_type: i32,
+    /// Required. The name of the resource. For the required format, see the
+    /// comment on the Instance.name field.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set, performs request validation (e.g. permission checks and
+    /// any other type of validation), but do not actually execute the fault
+    /// injection.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Nested message and enum types in `InjectFaultRequest`.
+pub mod inject_fault_request {
+    /// FaultType contains all valid types of faults that can be injected to an
+    /// instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FaultType {
+        /// The fault type is unknown.
+        Unspecified = 0,
+        /// Stop the VM
+        StopVm = 1,
+    }
+    impl FaultType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FaultType::Unspecified => "FAULT_TYPE_UNSPECIFIED",
+                FaultType::StopVm => "STOP_VM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FAULT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STOP_VM" => Some(Self::StopVm),
+                _ => None,
+            }
+        }
+    }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2231,6 +2605,148 @@ pub mod operation_metadata {
         BatchCreateInstancesMetadata(super::BatchCreateInstancesMetadata),
     }
 }
+/// Message for requesting list of Users
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUsersRequest {
+    /// Required. Parent value for ListUsersRequest
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filtering results
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Hint for how to order the results
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Message for response to listing Users
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUsersResponse {
+    /// The list of User
+    #[prost(message, repeated, tag = "1")]
+    pub users: ::prost::alloc::vec::Vec<User>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Message for getting a User
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetUserRequest {
+    /// Required. The name of the resource. For the required format, see the
+    /// comment on the User.name field.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for creating a User
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateUserRequest {
+    /// Required. Value for parent.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the requesting object.
+    #[prost(string, tag = "2")]
+    pub user_id: ::prost::alloc::string::String,
+    /// Required. The resource being created
+    #[prost(message, optional, tag = "3")]
+    pub user: ::core::option::Option<User>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set, the backend validates the request, but doesn't actually
+    /// execute it.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
+/// Message for updating a User
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateUserRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// User resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The resource being updated
+    #[prost(message, optional, tag = "2")]
+    pub user: ::core::option::Option<User>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set, the backend validates the request, but doesn't actually
+    /// execute it.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+    /// Optional. Allow missing fields in the update mask.
+    #[prost(bool, tag = "5")]
+    pub allow_missing: bool,
+}
+/// Message for deleting a User
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteUserRequest {
+    /// Required. The name of the resource. For the required format, see the
+    /// comment on the User.name field.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set, the backend validates the request, but doesn't actually
+    /// execute it.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
 /// Generated client implementations.
 pub mod alloy_db_admin_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -2466,6 +2982,40 @@ pub mod alloy_db_admin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Promotes a SECONDARY cluster. This turns down replication
+        /// from the PRIMARY cluster and promotes a secondary cluster
+        /// into its own standalone cluster.
+        /// Imperative only.
+        pub async fn promote_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PromoteClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/PromoteCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "PromoteCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Creates a new Cluster in a given project and location, with a volume
         /// restored from the provided source, either a backup ID or a point-in-time
         /// and a source cluster.
@@ -2495,6 +3045,38 @@ pub mod alloy_db_admin_client {
                     GrpcMethod::new(
                         "google.cloud.alloydb.v1.AlloyDBAdmin",
                         "RestoreCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a cluster of type SECONDARY in the given location using
+        /// the primary cluster as the source.
+        pub async fn create_secondary_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSecondaryClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateSecondaryCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "CreateSecondaryCluster",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2585,6 +3167,37 @@ pub mod alloy_db_admin_client {
                     GrpcMethod::new(
                         "google.cloud.alloydb.v1.AlloyDBAdmin",
                         "CreateInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new SECONDARY Instance in a given project and location.
+        pub async fn create_secondary_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSecondaryInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateSecondaryInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "CreateSecondaryInstance",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2720,6 +3333,38 @@ pub mod alloy_db_admin_client {
                     GrpcMethod::new(
                         "google.cloud.alloydb.v1.AlloyDBAdmin",
                         "FailoverInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Injects fault in an instance.
+        /// Imperative only.
+        pub async fn inject_fault(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InjectFaultRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/InjectFault",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "InjectFault",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2933,6 +3578,134 @@ pub mod alloy_db_admin_client {
                         "google.cloud.alloydb.v1.AlloyDBAdmin",
                         "ListSupportedDatabaseFlags",
                     ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Users in a given project and location.
+        pub async fn list_users(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListUsersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListUsersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/ListUsers",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.alloydb.v1.AlloyDBAdmin", "ListUsers"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single User.
+        pub async fn get_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetUserRequest>,
+        ) -> std::result::Result<tonic::Response<super::User>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/GetUser",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.alloydb.v1.AlloyDBAdmin", "GetUser"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new User in a given project, location, and cluster.
+        pub async fn create_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateUserRequest>,
+        ) -> std::result::Result<tonic::Response<super::User>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateUser",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.alloydb.v1.AlloyDBAdmin", "CreateUser"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single User.
+        pub async fn update_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateUserRequest>,
+        ) -> std::result::Result<tonic::Response<super::User>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/UpdateUser",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.alloydb.v1.AlloyDBAdmin", "UpdateUser"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single User.
+        pub async fn delete_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteUserRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/DeleteUser",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.alloydb.v1.AlloyDBAdmin", "DeleteUser"),
                 );
             self.inner.unary(req, path, codec).await
         }

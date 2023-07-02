@@ -148,6 +148,12 @@ pub mod crypto_key {
         /// \[GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey\].
         AsymmetricDecrypt = 6,
         /// \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] with this purpose may be used
+        /// with \[RawEncrypt][google.cloud.kms.v1.KeyManagementService.RawEncrypt\]
+        /// and \[RawDecrypt][google.cloud.kms.v1.KeyManagementService.RawDecrypt\].
+        /// This purpose is meant to be used for interoperable symmetric
+        /// encryption and does not support automatic CryptoKey rotation.
+        RawEncryptDecrypt = 7,
+        /// \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] with this purpose may be used
         /// with \[MacSign][google.cloud.kms.v1.KeyManagementService.MacSign\].
         Mac = 9,
     }
@@ -162,6 +168,7 @@ pub mod crypto_key {
                 CryptoKeyPurpose::EncryptDecrypt => "ENCRYPT_DECRYPT",
                 CryptoKeyPurpose::AsymmetricSign => "ASYMMETRIC_SIGN",
                 CryptoKeyPurpose::AsymmetricDecrypt => "ASYMMETRIC_DECRYPT",
+                CryptoKeyPurpose::RawEncryptDecrypt => "RAW_ENCRYPT_DECRYPT",
                 CryptoKeyPurpose::Mac => "MAC",
             }
         }
@@ -172,6 +179,7 @@ pub mod crypto_key {
                 "ENCRYPT_DECRYPT" => Some(Self::EncryptDecrypt),
                 "ASYMMETRIC_SIGN" => Some(Self::AsymmetricSign),
                 "ASYMMETRIC_DECRYPT" => Some(Self::AsymmetricDecrypt),
+                "RAW_ENCRYPT_DECRYPT" => Some(Self::RawEncryptDecrypt),
                 "MAC" => Some(Self::Mac),
                 _ => None,
             }
@@ -483,6 +491,10 @@ pub mod crypto_key_version {
         Unspecified = 0,
         /// Creates symmetric encryption keys.
         GoogleSymmetricEncryption = 1,
+        /// AES-GCM (Galois Counter Mode) using 128-bit keys.
+        Aes128Gcm = 41,
+        /// AES-GCM (Galois Counter Mode) using 256-bit keys.
+        Aes256Gcm = 19,
         /// RSASSA-PSS 2048 bit key with a SHA256 digest.
         RsaSignPss2048Sha256 = 2,
         /// RSASSA-PSS 3072 bit key with a SHA256 digest.
@@ -558,6 +570,8 @@ pub mod crypto_key_version {
                 CryptoKeyVersionAlgorithm::GoogleSymmetricEncryption => {
                     "GOOGLE_SYMMETRIC_ENCRYPTION"
                 }
+                CryptoKeyVersionAlgorithm::Aes128Gcm => "AES_128_GCM",
+                CryptoKeyVersionAlgorithm::Aes256Gcm => "AES_256_GCM",
                 CryptoKeyVersionAlgorithm::RsaSignPss2048Sha256 => {
                     "RSA_SIGN_PSS_2048_SHA256"
                 }
@@ -632,6 +646,8 @@ pub mod crypto_key_version {
             match value {
                 "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
                 "GOOGLE_SYMMETRIC_ENCRYPTION" => Some(Self::GoogleSymmetricEncryption),
+                "AES_128_GCM" => Some(Self::Aes128Gcm),
+                "AES_256_GCM" => Some(Self::Aes256Gcm),
                 "RSA_SIGN_PSS_2048_SHA256" => Some(Self::RsaSignPss2048Sha256),
                 "RSA_SIGN_PSS_3072_SHA256" => Some(Self::RsaSignPss3072Sha256),
                 "RSA_SIGN_PSS_4096_SHA256" => Some(Self::RsaSignPss4096Sha256),
@@ -2407,6 +2423,185 @@ pub struct DecryptRequest {
     pub additional_authenticated_data_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for
+/// \[KeyManagementService.RawEncrypt][google.cloud.kms.v1.KeyManagementService.RawEncrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawEncryptRequest {
+    /// Required. The resource name of the
+    /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to use for
+    /// encryption.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The data to encrypt. Must be no larger than 64KiB.
+    ///
+    /// The maximum size depends on the key version's
+    /// \[protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level\].
+    /// For \[SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE\] keys, the
+    /// plaintext must be no larger than 64KiB. For
+    /// \[HSM][google.cloud.kms.v1.ProtectionLevel.HSM\] keys, the combined length of
+    /// the plaintext and additional_authenticated_data fields must be no larger
+    /// than 8KiB.
+    #[prost(bytes = "vec", tag = "2")]
+    pub plaintext: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. Optional data that, if specified, must also be provided during
+    /// decryption through
+    /// \[RawDecryptRequest.additional_authenticated_data][google.cloud.kms.v1.RawDecryptRequest.additional_authenticated_data\].
+    ///
+    /// This field may only be used in conjunction with an
+    /// \[algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm\] that accepts
+    /// additional authenticated data (for example, AES-GCM).
+    ///
+    /// The maximum size depends on the key version's
+    /// \[protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level\].
+    /// For \[SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE\] keys, the
+    /// plaintext must be no larger than 64KiB. For
+    /// \[HSM][google.cloud.kms.v1.ProtectionLevel.HSM\] keys, the combined length of
+    /// the plaintext and additional_authenticated_data fields must be no larger
+    /// than 8KiB.
+    #[prost(bytes = "vec", tag = "3")]
+    pub additional_authenticated_data: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. An optional CRC32C checksum of the
+    /// \[RawEncryptRequest.plaintext][google.cloud.kms.v1.RawEncryptRequest.plaintext\].
+    /// If specified,
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// verify the integrity of the received plaintext using this checksum.
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// report an error if the checksum verification fails. If you receive a
+    /// checksum error, your client should verify that CRC32C(plaintext) is equal
+    /// to plaintext_crc32c, and if so, perform a limited number of retries. A
+    /// persistent mismatch may indicate an issue in your computation of the CRC32C
+    /// checksum. Note: This field is defined as int64 for reasons of compatibility
+    /// across different languages. However, it is a non-negative integer, which
+    /// will never exceed 2^32-1, and can be safely downconverted to uint32 in
+    /// languages that support this type.
+    #[prost(message, optional, tag = "4")]
+    pub plaintext_crc32c: ::core::option::Option<i64>,
+    /// Optional. An optional CRC32C checksum of the
+    /// \[RawEncryptRequest.additional_authenticated_data][google.cloud.kms.v1.RawEncryptRequest.additional_authenticated_data\].
+    /// If specified,
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// verify the integrity of the received additional_authenticated_data using
+    /// this checksum.
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// report an error if the checksum verification fails. If you receive a
+    /// checksum error, your client should verify that
+    /// CRC32C(additional_authenticated_data) is equal to
+    /// additional_authenticated_data_crc32c, and if so, perform
+    /// a limited number of retries. A persistent mismatch may indicate an issue in
+    /// your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    #[prost(message, optional, tag = "5")]
+    pub additional_authenticated_data_crc32c: ::core::option::Option<i64>,
+    /// Optional. A customer-supplied initialization vector that will be used for
+    /// encryption. If it is not provided for AES-CBC and AES-CTR, one will be
+    /// generated. It will be returned in
+    /// \[RawEncryptResponse.initialization_vector][google.cloud.kms.v1.RawEncryptResponse.initialization_vector\].
+    #[prost(bytes = "vec", tag = "6")]
+    pub initialization_vector: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. An optional CRC32C checksum of the
+    /// \[RawEncryptRequest.initialization_vector][google.cloud.kms.v1.RawEncryptRequest.initialization_vector\].
+    /// If specified,
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// verify the integrity of the received initialization_vector using this
+    /// checksum. \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]
+    /// will report an error if the checksum verification fails. If you receive a
+    /// checksum error, your client should verify that
+    /// CRC32C(initialization_vector) is equal to
+    /// initialization_vector_crc32c, and if so, perform
+    /// a limited number of retries. A persistent mismatch may indicate an issue in
+    /// your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    #[prost(message, optional, tag = "7")]
+    pub initialization_vector_crc32c: ::core::option::Option<i64>,
+}
+/// Request message for
+/// \[KeyManagementService.RawDecrypt][google.cloud.kms.v1.KeyManagementService.RawDecrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawDecryptRequest {
+    /// Required. The resource name of the
+    /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to use for
+    /// decryption.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The encrypted data originally returned in
+    /// \[RawEncryptResponse.ciphertext][google.cloud.kms.v1.RawEncryptResponse.ciphertext\].
+    #[prost(bytes = "vec", tag = "2")]
+    pub ciphertext: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. Optional data that must match the data originally supplied in
+    /// \[RawEncryptRequest.additional_authenticated_data][google.cloud.kms.v1.RawEncryptRequest.additional_authenticated_data\].
+    #[prost(bytes = "vec", tag = "3")]
+    pub additional_authenticated_data: ::prost::alloc::vec::Vec<u8>,
+    /// Required. The initialization vector (IV) used during encryption, which must
+    /// match the data originally provided in
+    /// \[RawEncryptResponse.initialization_vector][google.cloud.kms.v1.RawEncryptResponse.initialization_vector\].
+    #[prost(bytes = "vec", tag = "4")]
+    pub initialization_vector: ::prost::alloc::vec::Vec<u8>,
+    /// The length of the authentication tag that is appended to the end of
+    /// the ciphertext. If unspecified (0), the default value for the key's
+    /// algorithm will be used (for AES-GCM, the default value is 16).
+    #[prost(int32, tag = "5")]
+    pub tag_length: i32,
+    /// Optional. An optional CRC32C checksum of the
+    /// \[RawDecryptRequest.ciphertext][google.cloud.kms.v1.RawDecryptRequest.ciphertext\].
+    /// If specified,
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// verify the integrity of the received ciphertext using this checksum.
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// report an error if the checksum verification fails. If you receive a
+    /// checksum error, your client should verify that CRC32C(ciphertext) is equal
+    /// to ciphertext_crc32c, and if so, perform a limited number of retries. A
+    /// persistent mismatch may indicate an issue in your computation of the CRC32C
+    /// checksum. Note: This field is defined as int64 for reasons of compatibility
+    /// across different languages. However, it is a non-negative integer, which
+    /// will never exceed 2^32-1, and can be safely downconverted to uint32 in
+    /// languages that support this type.
+    #[prost(message, optional, tag = "6")]
+    pub ciphertext_crc32c: ::core::option::Option<i64>,
+    /// Optional. An optional CRC32C checksum of the
+    /// \[RawDecryptRequest.additional_authenticated_data][google.cloud.kms.v1.RawDecryptRequest.additional_authenticated_data\].
+    /// If specified,
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// verify the integrity of the received additional_authenticated_data using
+    /// this checksum.
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// report an error if the checksum verification fails. If you receive a
+    /// checksum error, your client should verify that
+    /// CRC32C(additional_authenticated_data) is equal to
+    /// additional_authenticated_data_crc32c, and if so, perform
+    /// a limited number of retries. A persistent mismatch may indicate an issue in
+    /// your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    #[prost(message, optional, tag = "7")]
+    pub additional_authenticated_data_crc32c: ::core::option::Option<i64>,
+    /// Optional. An optional CRC32C checksum of the
+    /// \[RawDecryptRequest.initialization_vector][google.cloud.kms.v1.RawDecryptRequest.initialization_vector\].
+    /// If specified,
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] will
+    /// verify the integrity of the received initialization_vector using this
+    /// checksum. \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]
+    /// will report an error if the checksum verification fails. If you receive a
+    /// checksum error, your client should verify that
+    /// CRC32C(initialization_vector) is equal to initialization_vector_crc32c, and
+    /// if so, perform a limited number of retries. A persistent mismatch may
+    /// indicate an issue in your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    #[prost(message, optional, tag = "8")]
+    pub initialization_vector_crc32c: ::core::option::Option<i64>,
+}
+/// Request message for
 /// \[KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2688,6 +2883,183 @@ pub struct EncryptResponse {
     /// encryption.
     #[prost(enumeration = "ProtectionLevel", tag = "7")]
     pub protection_level: i32,
+}
+/// Response message for
+/// \[KeyManagementService.RawEncrypt][google.cloud.kms.v1.KeyManagementService.RawEncrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawEncryptResponse {
+    /// The encrypted data. In the case of AES-GCM, the authentication tag
+    /// is the \[tag_length][google.cloud.kms.v1.RawEncryptResponse.tag_length\]
+    /// bytes at the end of this field.
+    #[prost(bytes = "vec", tag = "1")]
+    pub ciphertext: ::prost::alloc::vec::Vec<u8>,
+    /// The initialization vector (IV) generated by the service during
+    /// encryption. This value must be stored and provided in
+    /// \[RawDecryptRequest.initialization_vector][google.cloud.kms.v1.RawDecryptRequest.initialization_vector\]
+    /// at decryption time.
+    #[prost(bytes = "vec", tag = "2")]
+    pub initialization_vector: ::prost::alloc::vec::Vec<u8>,
+    /// The length of the authentication tag that is appended to
+    /// the end of the ciphertext.
+    #[prost(int32, tag = "3")]
+    pub tag_length: i32,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// \[RawEncryptResponse.ciphertext][google.cloud.kms.v1.RawEncryptResponse.ciphertext\].
+    /// An integrity check of ciphertext can be performed by computing the CRC32C
+    /// checksum of ciphertext and comparing your results to this field. Discard
+    /// the response in case of non-matching checksum values, and perform a limited
+    /// number of retries. A persistent mismatch may indicate an issue in your
+    /// computation of the CRC32C checksum. Note: This field is defined as int64
+    /// for reasons of compatibility across different languages. However, it is a
+    /// non-negative integer, which will never exceed 2^32-1, and can be safely
+    /// downconverted to uint32 in languages that support this type.
+    #[prost(message, optional, tag = "4")]
+    pub ciphertext_crc32c: ::core::option::Option<i64>,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// \[RawEncryptResponse.initialization_vector][google.cloud.kms.v1.RawEncryptResponse.initialization_vector\].
+    /// An integrity check of initialization_vector can be performed by computing
+    /// the CRC32C checksum of initialization_vector and comparing your results to
+    /// this field. Discard the response in case of non-matching checksum values,
+    /// and perform a limited number of retries. A persistent mismatch may indicate
+    /// an issue in your computation of the CRC32C checksum. Note: This field is
+    /// defined as int64 for reasons of compatibility across different languages.
+    /// However, it is a non-negative integer, which will never exceed 2^32-1, and
+    /// can be safely downconverted to uint32 in languages that support this type.
+    #[prost(message, optional, tag = "5")]
+    pub initialization_vector_crc32c: ::core::option::Option<i64>,
+    /// Integrity verification field. A flag indicating whether
+    /// \[RawEncryptRequest.plaintext_crc32c][google.cloud.kms.v1.RawEncryptRequest.plaintext_crc32c\]
+    /// was received by
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] and used
+    /// for the integrity verification of the plaintext. A false value of this
+    /// field indicates either that
+    /// \[RawEncryptRequest.plaintext_crc32c][google.cloud.kms.v1.RawEncryptRequest.plaintext_crc32c\]
+    /// was left unset or that it was not delivered to
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]. If you've
+    /// set
+    /// \[RawEncryptRequest.plaintext_crc32c][google.cloud.kms.v1.RawEncryptRequest.plaintext_crc32c\]
+    /// but this field is still false, discard the response and perform a limited
+    /// number of retries.
+    #[prost(bool, tag = "6")]
+    pub verified_plaintext_crc32c: bool,
+    /// Integrity verification field. A flag indicating whether
+    /// \[RawEncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.RawEncryptRequest.additional_authenticated_data_crc32c\]
+    /// was received by
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] and used
+    /// for the integrity verification of additional_authenticated_data. A false
+    /// value of this field indicates either that //
+    /// \[RawEncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.RawEncryptRequest.additional_authenticated_data_crc32c\]
+    /// was left unset or that it was not delivered to
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]. If you've
+    /// set
+    /// \[RawEncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.RawEncryptRequest.additional_authenticated_data_crc32c\]
+    /// but this field is still false, discard the response and perform a limited
+    /// number of retries.
+    #[prost(bool, tag = "7")]
+    pub verified_additional_authenticated_data_crc32c: bool,
+    /// Integrity verification field. A flag indicating whether
+    /// \[RawEncryptRequest.initialization_vector_crc32c][google.cloud.kms.v1.RawEncryptRequest.initialization_vector_crc32c\]
+    /// was received by
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] and used
+    /// for the integrity verification of initialization_vector. A false value of
+    /// this field indicates either that
+    /// \[RawEncryptRequest.initialization_vector_crc32c][google.cloud.kms.v1.RawEncryptRequest.initialization_vector_crc32c\]
+    /// was left unset or that it was not delivered to
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]. If you've
+    /// set
+    /// \[RawEncryptRequest.initialization_vector_crc32c][google.cloud.kms.v1.RawEncryptRequest.initialization_vector_crc32c\]
+    /// but this field is still false, discard the response and perform a limited
+    /// number of retries.
+    #[prost(bool, tag = "10")]
+    pub verified_initialization_vector_crc32c: bool,
+    /// The resource name of the
+    /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used in
+    /// encryption. Check this field to verify that the intended resource was used
+    /// for encryption.
+    #[prost(string, tag = "8")]
+    pub name: ::prost::alloc::string::String,
+    /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
+    /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used in
+    /// encryption.
+    #[prost(enumeration = "ProtectionLevel", tag = "9")]
+    pub protection_level: i32,
+}
+/// Response message for
+/// \[KeyManagementService.RawDecrypt][google.cloud.kms.v1.KeyManagementService.RawDecrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawDecryptResponse {
+    /// The decrypted data.
+    #[prost(bytes = "vec", tag = "1")]
+    pub plaintext: ::prost::alloc::vec::Vec<u8>,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// \[RawDecryptResponse.plaintext][google.cloud.kms.v1.RawDecryptResponse.plaintext\].
+    /// An integrity check of plaintext can be performed by computing the CRC32C
+    /// checksum of plaintext and comparing your results to this field. Discard the
+    /// response in case of non-matching checksum values, and perform a limited
+    /// number of retries. A persistent mismatch may indicate an issue in your
+    /// computation of the CRC32C checksum. Note: receiving this response message
+    /// indicates that
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] is able to
+    /// successfully decrypt the
+    /// \[ciphertext][google.cloud.kms.v1.RawDecryptRequest.ciphertext\].
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    #[prost(message, optional, tag = "2")]
+    pub plaintext_crc32c: ::core::option::Option<i64>,
+    /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
+    /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used in
+    /// decryption.
+    #[prost(enumeration = "ProtectionLevel", tag = "3")]
+    pub protection_level: i32,
+    /// Integrity verification field. A flag indicating whether
+    /// \[RawDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.RawDecryptRequest.ciphertext_crc32c\]
+    /// was received by
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] and used
+    /// for the integrity verification of the ciphertext. A false value of this
+    /// field indicates either that
+    /// \[RawDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.RawDecryptRequest.ciphertext_crc32c\]
+    /// was left unset or that it was not delivered to
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]. If you've
+    /// set
+    /// \[RawDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.RawDecryptRequest.ciphertext_crc32c\]
+    /// but this field is still false, discard the response and perform a limited
+    /// number of retries.
+    #[prost(bool, tag = "4")]
+    pub verified_ciphertext_crc32c: bool,
+    /// Integrity verification field. A flag indicating whether
+    /// \[RawDecryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.RawDecryptRequest.additional_authenticated_data_crc32c\]
+    /// was received by
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] and used
+    /// for the integrity verification of additional_authenticated_data. A false
+    /// value of this field indicates either that //
+    /// \[RawDecryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.RawDecryptRequest.additional_authenticated_data_crc32c\]
+    /// was left unset or that it was not delivered to
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]. If you've
+    /// set
+    /// \[RawDecryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.RawDecryptRequest.additional_authenticated_data_crc32c\]
+    /// but this field is still false, discard the response and perform a limited
+    /// number of retries.
+    #[prost(bool, tag = "5")]
+    pub verified_additional_authenticated_data_crc32c: bool,
+    /// Integrity verification field. A flag indicating whether
+    /// \[RawDecryptRequest.initialization_vector_crc32c][google.cloud.kms.v1.RawDecryptRequest.initialization_vector_crc32c\]
+    /// was received by
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] and used
+    /// for the integrity verification of initialization_vector. A false value of
+    /// this field indicates either that
+    /// \[RawDecryptRequest.initialization_vector_crc32c][google.cloud.kms.v1.RawDecryptRequest.initialization_vector_crc32c\]
+    /// was left unset or that it was not delivered to
+    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\]. If you've
+    /// set
+    /// \[RawDecryptRequest.initialization_vector_crc32c][google.cloud.kms.v1.RawDecryptRequest.initialization_vector_crc32c\]
+    /// but this field is still false, discard the response and perform a limited
+    /// number of retries.
+    #[prost(bool, tag = "6")]
+    pub verified_initialization_vector_crc32c: bool,
 }
 /// Response message for
 /// \[KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign\].
@@ -3773,6 +4145,76 @@ pub mod key_management_service_client {
                     GrpcMethod::new(
                         "google.cloud.kms.v1.KeyManagementService",
                         "Decrypt",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Encrypts data using portable cryptographic primitives. Most users should
+        /// choose [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt] and
+        /// [Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt] rather than
+        /// their raw counterparts. The
+        /// [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must be
+        /// [RAW_ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.RAW_ENCRYPT_DECRYPT].
+        pub async fn raw_encrypt(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RawEncryptRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RawEncryptResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/RawEncrypt",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "RawEncrypt",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Decrypts data that was originally encrypted using a raw cryptographic
+        /// mechanism. The [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
+        /// must be
+        /// [RAW_ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.RAW_ENCRYPT_DECRYPT].
+        pub async fn raw_decrypt(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RawDecryptRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RawDecryptResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.KeyManagementService/RawDecrypt",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.KeyManagementService",
+                        "RawDecrypt",
                     ),
                 );
             self.inner.unary(req, path, codec).await

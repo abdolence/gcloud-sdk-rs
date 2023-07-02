@@ -512,6 +512,7 @@ pub struct AndroidInstrumentationTest {
     pub test_runner_class: ::prost::alloc::string::String,
     /// Each target must be fully qualified with the package name or class name,
     /// in one of these formats:
+    ///
     ///   - "package package_name"
     ///   - "class package_name.class_name"
     ///   - "class package_name.class_name#method_name"
@@ -524,6 +525,7 @@ pub struct AndroidInstrumentationTest {
     /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
     /// higher! **
     /// Orchestrator offers the following benefits:
+    ///
     ///   - No shared state
     ///   - Crashes are isolated
     ///   - Logs are scoped per test
@@ -649,7 +651,7 @@ pub struct RoboStartingIntent {
     #[prost(message, optional, tag = "3")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Required. Intent details to start an activity.
-    #[prost(oneof = "robo_starting_intent::StartingIntent", tags = "1, 2")]
+    #[prost(oneof = "robo_starting_intent::StartingIntent", tags = "1, 2, 4")]
     pub starting_intent: ::core::option::Option<robo_starting_intent::StartingIntent>,
 }
 /// Nested message and enum types in `RoboStartingIntent`.
@@ -664,6 +666,9 @@ pub mod robo_starting_intent {
         /// An intent that starts an activity with specific details.
         #[prost(message, tag = "2")]
         StartActivity(super::StartActivityIntent),
+        /// Skips the starting activity
+        #[prost(message, tag = "4")]
+        NoActivity(super::NoActivityIntent),
     }
 }
 /// Specifies an intent that starts the main launcher activity.
@@ -685,6 +690,10 @@ pub struct StartActivityIntent {
     #[prost(string, repeated, tag = "4")]
     pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Skips the starting activity
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NoActivityIntent {}
 /// The matrix of environments in which the test is to be executed.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1105,36 +1114,39 @@ pub struct SmartSharding {
     /// The minimum allowed: 120 seconds (2 minutes).
     ///
     /// The shard count is dynamically set based on time, up to the maximum shard
-    /// limit (described below).  To guarantee at least one test case for each
+    /// limit (described below). To guarantee at least one test case for each
     /// shard, the number of shards will not exceed the number of test cases. Shard
     /// duration will be exceeded if:
-    ///    - The maximum shard limit is reached and there is more calculated test
-    ///    time remaining to allocate into shards.
-    ///    - Any individual test is estimated to be longer than the targeted shard
-    ///    duration.
+    ///
+    /// - The maximum shard limit is reached and there is more calculated test time
+    /// remaining to allocate into shards.
+    /// - Any individual test is estimated to be longer than the targeted shard
+    /// duration.
     ///
     /// Shard duration is not guaranteed because smart sharding uses test case
     /// history and default durations which may not be accurate. The rules for
     /// finding the test case timing records are:
-    ///   - If the service has seen a test case in the last 30 days, the record
-    ///   of the latest successful one will be used.
-    ///   - For new test cases, the average duration of other known test cases will
+    ///
+    /// - If the service has processed a test case in the last 30 days, the record
+    ///   of the latest successful test case will be used.
+    /// - For new test cases, the average duration of other known test cases will
     ///   be used.
-    ///   - If there are no previous test case timing records available, the test
-    ///   case is considered to be 15 seconds long by default.
+    /// - If there are no previous test case timing records available, the default
+    ///   test case duration is 15 seconds.
     ///
     /// Because the actual shard duration can exceed the targeted shard duration,
-    /// we recommend setting the targeted value at least 5 minutes less than the
-    /// maximum allowed test timeout (45 minutes for physical devices and 60
-    /// minutes for virtual), or using the custom test timeout value you set. This
-    /// approach avoids cancelling the shard before all tests can finish.
+    /// we recommend that you set the targeted value at least 5 minutes less than
+    /// the maximum allowed test timeout (45 minutes for physical devices and 60
+    /// minutes for virtual), or that you use the custom test timeout value that
+    /// you set. This approach avoids cancelling the shard before all tests can
+    /// finish.
     ///
     /// Note that there is a limit for maximum number of shards. When you select
     /// one or more physical devices, the number of shards must be <= 50. When you
     /// select one or more ARM virtual devices, it must be <= 100. When you select
     /// only x86 virtual devices, it must be <= 500. To guarantee at least one test
     /// case for per shard, the number of shards will not exceed the number of test
-    /// cases. Each shard created will count toward daily test quota.
+    /// cases. Each shard created counts toward daily test quota.
     #[prost(message, optional, tag = "1")]
     pub targeted_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
@@ -1151,6 +1163,10 @@ pub struct Shard {
     /// Output only. Test targets for each shard. Only set for manual sharding.
     #[prost(message, optional, tag = "3")]
     pub test_targets_for_shard: ::core::option::Option<TestTargetsForShard>,
+    /// Output only. The estimated shard duration based on previous test case
+    /// timing records, if available.
+    #[prost(message, optional, tag = "4")]
+    pub estimated_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request to submit a matrix of tests for execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1348,9 +1364,10 @@ pub enum InvalidMatrixDetails {
     /// Orchestrator can be disabled by using DO_NOT_USE_ORCHESTRATOR
     /// OrchestratorOption.
     InstrumentationOrchestratorIncompatible = 18,
-    /// The test APK does not contain the test runner class specified by user or in
-    /// the manifest file.
-    /// This can be caused by either of the following reasons:
+    /// The test APK does not contain the test runner class specified by the user
+    /// or in the manifest file. This can be caused by one of the following
+    /// reasons:
+    ///
     /// - the user provided a runner class name that's incorrect, or
     /// - the test runner isn't built into the test APK (might be in the app APK
     /// instead).
@@ -1629,11 +1646,13 @@ pub enum OutcomeSummary {
     /// Do not use. For proto versioning only.
     Unspecified = 0,
     /// The test matrix run was successful, for instance:
+    ///
     /// - All the test cases passed.
     /// - Robo did not detect a crash of the application under test.
     Success = 1,
     /// A run failed, for instance:
-    /// - One or more test case failed.
+    ///
+    /// - One or more test cases failed.
     /// - A test timed out.
     /// - The application under test crashed.
     Failure = 2,
@@ -1642,6 +1661,7 @@ pub enum OutcomeSummary {
     /// test might be successful.
     Inconclusive = 3,
     /// All tests were skipped, for instance:
+    ///
     /// - All device configurations were incompatible.
     Skipped = 4,
 }
@@ -1784,9 +1804,9 @@ pub mod test_execution_service_client {
         /// Unsupported environments will be returned in the state UNSUPPORTED.
         /// A test matrix is limited to use at most 2000 devices in parallel.
         ///
-        /// The returned matrix will not yet contain
-        /// the executions that will be created for this matrix. That happens later on
-        /// and will require a call to GetTestMatrix.
+        /// The returned matrix will not yet contain the executions that will be
+        /// created for this matrix. Execution creation happens later on and will
+        /// require a call to GetTestMatrix.
         ///
         /// May return any of the following canonical error codes:
         ///
@@ -1826,8 +1846,7 @@ pub mod test_execution_service_client {
         /// The test matrix will contain the list of test executions to run if and only
         /// if the resultStorage.toolResultsExecution fields have been populated.
         ///
-        /// Note: Flaky test executions may still be added to the matrix at a later
-        /// stage.
+        /// Note: Flaky test executions may be added to the matrix at a later stage.
         ///
         /// May return any of the following canonical error codes:
         ///
@@ -1948,6 +1967,21 @@ pub struct ApkManifest {
     /// Feature usage tags defined in the manifest.
     #[prost(message, repeated, tag = "11")]
     pub uses_feature: ::prost::alloc::vec::Vec<UsesFeature>,
+    /// Services contained in the <application> tag.
+    #[prost(message, repeated, tag = "12")]
+    pub services: ::prost::alloc::vec::Vec<Service>,
+}
+/// The <service> section of an <application> tag.
+/// <https://developer.android.com/guide/topics/manifest/service-element>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Service {
+    /// The android:name value
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Intent filters in the service
+    #[prost(message, repeated, tag = "2")]
+    pub intent_filter: ::prost::alloc::vec::Vec<IntentFilter>,
 }
 /// The <intent-filter> section of an <activity> tag.
 /// <https://developer.android.com/guide/topics/manifest/intent-filter-element.html>

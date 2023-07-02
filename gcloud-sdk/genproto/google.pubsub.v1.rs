@@ -1477,7 +1477,8 @@ pub struct CloudStorageConfig {
     #[prost(string, tag = "2")]
     pub filename_prefix: ::prost::alloc::string::String,
     /// User-provided suffix for Cloud Storage filename. See the [object naming
-    /// requirements](<https://cloud.google.com/storage/docs/objects#naming>).
+    /// requirements](<https://cloud.google.com/storage/docs/objects#naming>). Must
+    /// not end in "/".
     #[prost(string, tag = "3")]
     pub filename_suffix: ::prost::alloc::string::String,
     /// The maximum duration that can elapse before a new Cloud Storage file is

@@ -135,6 +135,8 @@ pub struct CompleteQueryRequest {
     /// API calls. Do not use it when there is no traffic for Search API.
     /// * `user-event` - Using suggestions generated from user-imported search
     /// events.
+    /// * `document-completable` - Using suggestions taken directly from
+    /// user-imported document fields marked as completable.
     ///
     /// Default values:
     ///
@@ -357,8 +359,11 @@ pub mod document {
     pub struct Content {
         /// The MIME type of the content. Supported types:
         ///
-        /// * `application/pdf` (PDF)
+        /// * `application/pdf` (PDF, only native PDFs are supported for now)
         /// * `text/html` (HTML)
+        /// * `application/vnd.openxmlformats-officedocument.wordprocessingml.document` (DOCX)
+        /// * `application/vnd.openxmlformats-officedocument.presentationml.presentation` (PPTX)
+        /// * `text/plain` (TXT)
         ///
         /// See <https://www.iana.org/assignments/media-types/media-types.xhtml.>
         #[prost(string, tag = "1")]
@@ -904,6 +909,10 @@ pub struct GcsSource {
     /// * `custom`: One custom data JSON per row in arbitrary format that conforms
     ///    the defined \[Schema][google.cloud.discoveryengine.v1beta.Schema\] of the
     ///    data store. This can only be used by the GENERIC Data Store vertical.
+    /// * `csv`: A CSV file with header conforming the defined
+    /// \[Schema][google.cloud.discoveryengine.v1beta.Schema\] of the
+    ///    data store. Each entry after the header will be imported as a Document.
+    ///    This can only be used by the GENERIC Data Store vertical.
     ///
     /// Supported values for user even imports:
     ///
@@ -1006,7 +1015,7 @@ pub struct ImportUserEventsRequest {
     /// for inline user event imports.
     #[prost(message, optional, tag = "5")]
     pub error_config: ::core::option::Option<ImportErrorConfig>,
-    /// The desired input source of the user event data.
+    /// Required - The desired input source of the user event data.
     #[prost(oneof = "import_user_events_request::Source", tags = "2, 3, 4")]
     pub source: ::core::option::Option<import_user_events_request::Source>,
 }
@@ -1020,17 +1029,17 @@ pub mod import_user_events_request {
         #[prost(message, repeated, tag = "1")]
         pub user_events: ::prost::alloc::vec::Vec<super::UserEvent>,
     }
-    /// The desired input source of the user event data.
+    /// Required - The desired input source of the user event data.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Required. The Inline source for the input content for UserEvents.
+        /// The Inline source for the input content for UserEvents.
         #[prost(message, tag = "2")]
         InlineSource(InlineSource),
-        /// Required. Cloud Storage location for the input content.
+        /// Cloud Storage location for the input content.
         #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
-        /// Required. BigQuery input source.
+        /// BigQuery input source.
         #[prost(message, tag = "4")]
         BigquerySource(super::BigQuerySource),
     }
@@ -1131,7 +1140,7 @@ pub struct ImportDocumentsRequest {
     /// \[GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema\]
     /// or
     /// \[BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema\]
-    /// is `custom`. Otherwise, an INVALID_ARGUMENT error is thrown.
+    /// is `custom` or `csv`. Otherwise, an INVALID_ARGUMENT error is thrown.
     #[prost(bool, tag = "8")]
     pub auto_generate_ids: bool,
     /// The field in the Cloud Storage and BigQuery sources that indicates the
@@ -2962,6 +2971,12 @@ pub mod search_request {
         /// search response.
         #[prost(message, optional, tag = "2")]
         pub summary_spec: ::core::option::Option<content_search_spec::SummarySpec>,
+        /// If there is no extractive_content_spec provided, there will be no
+        /// extractive answer in the search response.
+        #[prost(message, optional, tag = "3")]
+        pub extractive_content_spec: ::core::option::Option<
+            content_search_spec::ExtractiveContentSpec,
+        >,
     }
     /// Nested message and enum types in `ContentSearchSpec`.
     pub mod content_search_spec {
@@ -2970,6 +2985,10 @@ pub mod search_request {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SnippetSpec {
             /// Max number of snippets returned in each search result.
+            ///
+            /// A snippet is an infomartive summary of a content with highlighting for
+            /// UI rendering.
+            ///
             /// If the matching snippets is less than the max_snippet_count, return all
             /// of the snippets; otherwise, return the max_snippet_count.
             ///
@@ -2992,6 +3011,38 @@ pub mod search_request {
             /// At most 5 results can be used for generating summary.
             #[prost(int32, tag = "1")]
             pub summary_result_count: i32,
+        }
+        /// The specification that configs the extractive content in search results.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ExtractiveContentSpec {
+            /// The max number of extractive answers returned in each search result.
+            ///
+            /// An extractive answer is a verbatim answer extracted from the original
+            /// document, which provides precise and contextually relevant answer to
+            /// the search query.
+            ///
+            /// If the number of matching answers is less than the
+            /// extractive_answer_count, return all of the answers; otherwise, return
+            /// the extractive_answer_count.
+            ///
+            /// At most 5 answers will be returned for each SearchResult.
+            #[prost(int32, tag = "1")]
+            pub max_extractive_answer_count: i32,
+            /// The max number of extractive segments returned in each search result.
+            ///
+            /// An extractive segment is a text segment extracted from the original
+            /// document which is relevant to the search query and in general more
+            /// verbose than an extrative answer. The segment could then be used as
+            /// input for LLMs to generate summaries and answers.
+            ///
+            /// If the number of matching segments is less than the
+            /// max_extractive_segment_count, return all of the segments; otherwise,
+            /// return the max_extractive_segment_count.
+            ///
+            /// Currently one segment will be returned for each SearchResult.
+            #[prost(int32, tag = "2")]
+            pub max_extractive_segment_count: i32,
         }
     }
 }
@@ -3026,6 +3077,14 @@ pub struct SearchResponse {
     /// performance.
     #[prost(string, tag = "4")]
     pub attribution_token: ::prost::alloc::string::String,
+    /// The URI of a customer-defined redirect page. If redirect action is
+    /// triggered, no search is performed, and only
+    /// \[redirect_uri][google.cloud.discoveryengine.v1beta.SearchResponse.redirect_uri\]
+    /// and
+    /// \[attribution_token][google.cloud.discoveryengine.v1beta.SearchResponse.attribution_token\]
+    /// are set in the response.
+    #[prost(string, tag = "12")]
+    pub redirect_uri: ::prost::alloc::string::String,
     /// A token that can be sent as
     /// \[SearchRequest.page_token][google.cloud.discoveryengine.v1beta.SearchRequest.page_token\]
     /// to retrieve the next page. If this field is omitted, there are no

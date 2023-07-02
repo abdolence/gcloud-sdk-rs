@@ -292,7 +292,7 @@ pub struct NodeConfig {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Whether the nodes are created as preemptible VM instances. See:
     /// <https://cloud.google.com/compute/docs/instances/preemptible> for more
-    /// inforamtion about preemptible VM instances.
+    /// information about preemptible VM instances.
     #[prost(bool, tag = "10")]
     pub preemptible: bool,
     /// A list of hardware accelerators to be attached to each node.
@@ -1947,6 +1947,9 @@ pub struct Cluster {
     /// creation.
     #[prost(bool, tag = "14")]
     pub enable_kubernetes_alpha: bool,
+    /// Kubernetes open source beta apis enabled on the cluster. Only beta apis.
+    #[prost(message, optional, tag = "143")]
+    pub enable_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
     /// The resource labels for the cluster to use to annotate any related
     /// Google Compute Engine resources.
     #[prost(map = "string, string", tag = "15")]
@@ -2203,6 +2206,9 @@ pub struct Cluster {
     /// Fleet information for the cluster.
     #[prost(message, optional, tag = "140")]
     pub fleet: ::core::option::Option<Fleet>,
+    /// Enable/Disable Security Posture API features for the cluster.
+    #[prost(message, optional, tag = "145")]
+    pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -2270,6 +2276,14 @@ pub mod cluster {
             }
         }
     }
+}
+/// Kubernetes open source beta apis enabled on the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct K8sBetaApiConfig {
+    /// api name, e.g. storage.k8s.io/v1beta1/csistoragecapacities.
+    #[prost(string, repeated, tag = "1")]
+    pub enabled_apis: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// WorkloadConfig defines the flags to enable or disable the
 /// workload configurations for the cluster.
@@ -2397,6 +2411,111 @@ pub mod protect_config {
                 "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DISABLED" => Some(Self::Disabled),
                 "BASIC" => Some(Self::Basic),
+                _ => None,
+            }
+        }
+    }
+}
+/// SecurityPostureConfig defines the flags needed to enable/disable features for
+/// the Security Posture API.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityPostureConfig {
+    /// Sets which mode to use for Security Posture features.
+    #[prost(enumeration = "security_posture_config::Mode", optional, tag = "1")]
+    pub mode: ::core::option::Option<i32>,
+    /// Sets which mode to use for vulnerability scanning.
+    #[prost(
+        enumeration = "security_posture_config::VulnerabilityMode",
+        optional,
+        tag = "2"
+    )]
+    pub vulnerability_mode: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `SecurityPostureConfig`.
+pub mod security_posture_config {
+    /// Mode defines enablement mode for GKE Security posture features.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Disables Security Posture features on the cluster.
+        Disabled = 1,
+        /// Applies Security Posture features on the cluster.
+        Basic = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Mode::Unspecified => "MODE_UNSPECIFIED",
+                Mode::Disabled => "DISABLED",
+                Mode::Basic => "BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "BASIC" => Some(Self::Basic),
+                _ => None,
+            }
+        }
+    }
+    /// VulnerabilityMode defines enablement mode for vulnerability scanning.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VulnerabilityMode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Disables vulnerability scanning on the cluster.
+        VulnerabilityDisabled = 1,
+        /// Applies basic vulnerability scanning on the cluster.
+        VulnerabilityBasic = 2,
+    }
+    impl VulnerabilityMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                VulnerabilityMode::Unspecified => "VULNERABILITY_MODE_UNSPECIFIED",
+                VulnerabilityMode::VulnerabilityDisabled => "VULNERABILITY_DISABLED",
+                VulnerabilityMode::VulnerabilityBasic => "VULNERABILITY_BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VULNERABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VULNERABILITY_DISABLED" => Some(Self::VulnerabilityDisabled),
+                "VULNERABILITY_BASIC" => Some(Self::VulnerabilityBasic),
                 _ => None,
             }
         }
@@ -2669,6 +2788,28 @@ pub struct ClusterUpdate {
     pub removed_additional_pod_ranges_config: ::core::option::Option<
         AdditionalPodRangesConfig,
     >,
+    /// Kubernetes open source beta apis enabled on the cluster. Only beta apis
+    #[prost(message, optional, tag = "122")]
+    pub enable_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
+    /// Enable/Disable Security Posture API features for the cluster.
+    #[prost(message, optional, tag = "124")]
+    pub desired_security_posture_config: ::core::option::Option<SecurityPostureConfig>,
+    /// The desired network performance config.
+    #[prost(message, optional, tag = "125")]
+    pub desired_network_performance_config: ::core::option::Option<
+        network_config::ClusterNetworkPerformanceConfig,
+    >,
+    /// Enable/Disable FQDN Network Policy for the cluster.
+    #[prost(bool, optional, tag = "126")]
+    pub desired_enable_fqdn_network_policy: ::core::option::Option<bool>,
+    /// The desired workload policy configuration for the autopilot cluster.
+    #[prost(message, optional, tag = "128")]
+    pub desired_autopilot_workload_policy_config: ::core::option::Option<
+        WorkloadPolicyConfig,
+    >,
+    /// Beta APIs enabled for cluster.
+    #[prost(message, optional, tag = "131")]
+    pub desired_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -3786,6 +3927,21 @@ pub mod server_config {
         }
     }
 }
+/// Best effort provisioning.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BestEffortProvisioning {
+    /// When this is enabled, cluster/node pool creations will ignore non-fatal
+    /// errors like stockout to best provision as many nodes as possible right now
+    /// and eventually bring up all target number of nodes
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// Minimum number of nodes to be provisioned to be considered as succeeded,
+    /// and the rest of nodes will be provisioned gradually and eventually when
+    /// stockout issue has been resolved.
+    #[prost(int32, tag = "2")]
+    pub min_provision_nodes: i32,
+}
 /// Windows server versions.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4102,6 +4258,9 @@ pub struct NodePool {
     /// up-to-date value before proceeding.
     #[prost(string, tag = "110")]
     pub etag: ::prost::alloc::string::String,
+    /// Enable best effort provisioning for nodes
+    #[prost(message, optional, tag = "113")]
+    pub best_effort_provisioning: ::core::option::Option<BestEffortProvisioning>,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
@@ -5128,6 +5287,11 @@ pub struct AcceleratorConfig {
     /// The configuration for GPU sharing options.
     #[prost(message, optional, tag = "5")]
     pub gpu_sharing_config: ::core::option::Option<GpuSharingConfig>,
+    /// The configuration for auto installation of GPU driver.
+    #[prost(message, optional, tag = "6")]
+    pub gpu_driver_installation_config: ::core::option::Option<
+        GpuDriverInstallationConfig,
+    >,
 }
 /// GPUSharingConfig represents the GPU sharing configuration for Hardware
 /// Accelerators.
@@ -5178,6 +5342,69 @@ pub mod gpu_sharing_config {
             match value {
                 "GPU_SHARING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
                 "TIME_SHARING" => Some(Self::TimeSharing),
+                _ => None,
+            }
+        }
+    }
+}
+/// GPUDriverInstallationConfig specifies the version of GPU driver to be auto
+/// installed.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GpuDriverInstallationConfig {
+    /// Mode for how the GPU driver is installed.
+    #[prost(
+        enumeration = "gpu_driver_installation_config::GpuDriverVersion",
+        optional,
+        tag = "1"
+    )]
+    pub gpu_driver_version: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `GPUDriverInstallationConfig`.
+pub mod gpu_driver_installation_config {
+    /// The GPU driver version to install.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GpuDriverVersion {
+        /// Default value is to not install any GPU driver.
+        Unspecified = 0,
+        /// Disable GPU driver auto installation and needs manual installation
+        InstallationDisabled = 1,
+        /// "Default" GPU driver in COS and Ubuntu.
+        Default = 2,
+        /// "Latest" GPU driver in COS.
+        Latest = 3,
+    }
+    impl GpuDriverVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                GpuDriverVersion::Unspecified => "GPU_DRIVER_VERSION_UNSPECIFIED",
+                GpuDriverVersion::InstallationDisabled => "INSTALLATION_DISABLED",
+                GpuDriverVersion::Default => "DEFAULT",
+                GpuDriverVersion::Latest => "LATEST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GPU_DRIVER_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSTALLATION_DISABLED" => Some(Self::InstallationDisabled),
+                "DEFAULT" => Some(Self::Default),
+                "LATEST" => Some(Self::Latest),
                 _ => None,
             }
         }
@@ -5592,6 +5819,71 @@ pub struct NetworkConfig {
     /// cluster.
     #[prost(message, optional, tag = "16")]
     pub gateway_api_config: ::core::option::Option<GatewayApiConfig>,
+    /// Network bandwidth tier configuration.
+    #[prost(message, optional, tag = "18")]
+    pub network_performance_config: ::core::option::Option<
+        network_config::ClusterNetworkPerformanceConfig,
+    >,
+    /// Whether FQDN Network Policy is enabled on this cluster.
+    #[prost(bool, optional, tag = "19")]
+    pub enable_fqdn_network_policy: ::core::option::Option<bool>,
+}
+/// Nested message and enum types in `NetworkConfig`.
+pub mod network_config {
+    /// Configuration of all network bandwidth tiers
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClusterNetworkPerformanceConfig {
+        /// Specifies the total network bandwidth tier for the NodePool.
+        #[prost(
+            enumeration = "cluster_network_performance_config::Tier",
+            optional,
+            tag = "1"
+        )]
+        pub total_egress_bandwidth_tier: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `ClusterNetworkPerformanceConfig`.
+    pub mod cluster_network_performance_config {
+        /// Node network tier
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Tier {
+            /// Default value
+            Unspecified = 0,
+            /// Higher bandwidth, actual values based on VM size.
+            Tier1 = 1,
+        }
+        impl Tier {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Tier::Unspecified => "TIER_UNSPECIFIED",
+                    Tier::Tier1 => "TIER_1",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TIER_1" => Some(Self::Tier1),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// GatewayAPIConfig contains the desired config of Gateway API on this cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5873,6 +6165,8 @@ pub mod dns_config {
         PlatformDefault = 1,
         /// Use CloudDNS for DNS resolution.
         CloudDns = 2,
+        /// Use KubeDNS for DNS resolution
+        KubeDns = 3,
     }
     impl Provider {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5884,6 +6178,7 @@ pub mod dns_config {
                 Provider::Unspecified => "PROVIDER_UNSPECIFIED",
                 Provider::PlatformDefault => "PLATFORM_DEFAULT",
                 Provider::CloudDns => "CLOUD_DNS",
+                Provider::KubeDns => "KUBE_DNS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5892,6 +6187,7 @@ pub mod dns_config {
                 "PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
                 "PLATFORM_DEFAULT" => Some(Self::PlatformDefault),
                 "CLOUD_DNS" => Some(Self::CloudDns),
+                "KUBE_DNS" => Some(Self::KubeDns),
                 _ => None,
             }
         }
@@ -6228,6 +6524,105 @@ pub struct GetJsonWebKeysResponse {
     #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Jwk>,
 }
+/// CheckAutopilotCompatibilityRequest requests getting the blockers for the
+/// given operation in the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckAutopilotCompatibilityRequest {
+    /// The name (project, location, cluster) of the cluster to retrieve.
+    /// Specified in the format `projects/*/locations/*/clusters/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// AutopilotCompatibilityIssue contains information about a specific
+/// compatibility issue with Autopilot mode.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutopilotCompatibilityIssue {
+    /// The last time when this issue was observed.
+    #[prost(message, optional, tag = "1")]
+    pub last_observation: ::core::option::Option<::prost_types::Timestamp>,
+    /// The constraint type of the issue.
+    #[prost(string, tag = "2")]
+    pub constraint_type: ::prost::alloc::string::String,
+    /// The incompatibility type of this issue.
+    #[prost(enumeration = "autopilot_compatibility_issue::IssueType", tag = "3")]
+    pub incompatibility_type: i32,
+    /// The name of the resources which are subject to this issue.
+    #[prost(string, repeated, tag = "4")]
+    pub subjects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A URL to a public documnetation, which addresses resolving this issue.
+    #[prost(string, tag = "5")]
+    pub documentation_url: ::prost::alloc::string::String,
+    /// The description of the issue.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AutopilotCompatibilityIssue`.
+pub mod autopilot_compatibility_issue {
+    /// The type of the reported issue.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IssueType {
+        /// Default value, should not be used.
+        Unspecified = 0,
+        /// Indicates that the issue is a known incompatibility between the
+        /// cluster and Autopilot mode.
+        Incompatibility = 1,
+        /// Indicates the issue is an incompatibility if customers take no further
+        /// action to resolve.
+        AdditionalConfigRequired = 2,
+        /// Indicates the issue is not an incompatibility, but depending on the
+        /// workloads business logic, there is a potential that they won't work on
+        /// Autopilot.
+        PassedWithOptionalConfig = 3,
+    }
+    impl IssueType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                IssueType::Unspecified => "UNSPECIFIED",
+                IssueType::Incompatibility => "INCOMPATIBILITY",
+                IssueType::AdditionalConfigRequired => "ADDITIONAL_CONFIG_REQUIRED",
+                IssueType::PassedWithOptionalConfig => "PASSED_WITH_OPTIONAL_CONFIG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "INCOMPATIBILITY" => Some(Self::Incompatibility),
+                "ADDITIONAL_CONFIG_REQUIRED" => Some(Self::AdditionalConfigRequired),
+                "PASSED_WITH_OPTIONAL_CONFIG" => Some(Self::PassedWithOptionalConfig),
+                _ => None,
+            }
+        }
+    }
+}
+/// CheckAutopilotCompatibilityResponse has a list of compatibility issues.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckAutopilotCompatibilityResponse {
+    /// The list of issues for the given operation.
+    #[prost(message, repeated, tag = "1")]
+    pub issues: ::prost::alloc::vec::Vec<AutopilotCompatibilityIssue>,
+    /// The summary of the autopilot compatibility response.
+    #[prost(string, tag = "2")]
+    pub summary: ::prost::alloc::string::String,
+}
 /// ReleaseChannel indicates which release channel a cluster is
 /// subscribed to. Release channels are arranged in order of risk.
 ///
@@ -6332,6 +6727,18 @@ pub struct Autopilot {
     /// Enable Autopilot
     #[prost(bool, tag = "1")]
     pub enabled: bool,
+    /// Workload policy configuration for Autopilot.
+    #[prost(message, optional, tag = "2")]
+    pub workload_policy_config: ::core::option::Option<WorkloadPolicyConfig>,
+}
+/// WorkloadPolicyConfig is the configuration of workload policy for autopilot
+/// clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorkloadPolicyConfig {
+    /// If true, workloads can use NET_ADMIN capability.
+    #[prost(bool, optional, tag = "1")]
+    pub allow_net_admin: ::core::option::Option<bool>,
 }
 /// NotificationConfig is the configuration of notifications.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8016,6 +8423,38 @@ pub mod cluster_manager_client {
                     GrpcMethod::new(
                         "google.container.v1beta1.ClusterManager",
                         "ListUsableSubnetworks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Checks the cluster compatibility with Autopilot mode, and returns a list of
+        /// compatibility issues.
+        pub async fn check_autopilot_compatibility(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CheckAutopilotCompatibilityRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CheckAutopilotCompatibilityResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.container.v1beta1.ClusterManager/CheckAutopilotCompatibility",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.container.v1beta1.ClusterManager",
+                        "CheckAutopilotCompatibility",
                     ),
                 );
             self.inner.unary(req, path, codec).await

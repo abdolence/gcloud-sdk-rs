@@ -97,7 +97,7 @@ pub struct Connection {
     #[prost(string, tag = "16")]
     pub etag: ::prost::alloc::string::String,
     /// Configuration for the connection depending on the type of provider.
-    #[prost(oneof = "connection::ConnectionConfig", tags = "5, 6")]
+    #[prost(oneof = "connection::ConnectionConfig", tags = "5, 6, 7")]
     pub connection_config: ::core::option::Option<connection::ConnectionConfig>,
 }
 /// Nested message and enum types in `Connection`.
@@ -112,6 +112,10 @@ pub mod connection {
         /// Configuration for connections to an instance of GitHub Enterprise.
         #[prost(message, tag = "6")]
         GithubEnterpriseConfig(super::GitHubEnterpriseConfig),
+        /// Configuration for connections to gitlab.com or an instance of GitLab
+        /// Enterprise.
+        #[prost(message, tag = "7")]
+        GitlabConfig(super::GitLabConfig),
     }
 }
 /// Describes stage and necessary actions to be taken by the
@@ -267,6 +271,42 @@ pub struct GitHubEnterpriseConfig {
     #[prost(string, tag = "14")]
     pub server_version: ::prost::alloc::string::String,
 }
+/// Configuration for connections to gitlab.com or an instance of GitLab
+/// Enterprise.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GitLabConfig {
+    /// The URI of the GitLab Enterprise host this connection is for.
+    /// If not specified, the default value is <https://gitlab.com.>
+    #[prost(string, tag = "1")]
+    pub host_uri: ::prost::alloc::string::String,
+    /// Required. Immutable. SecretManager resource containing the webhook secret
+    /// of a GitLab Enterprise project, formatted as
+    /// `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "2")]
+    pub webhook_secret_secret_version: ::prost::alloc::string::String,
+    /// Required. A GitLab personal access token with the minimum `read_api` scope
+    /// access.
+    #[prost(message, optional, tag = "3")]
+    pub read_authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Required. A GitLab personal access token with the `api` scope access.
+    #[prost(message, optional, tag = "4")]
+    pub authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Configuration for using Service Directory to privately connect to a GitLab
+    /// Enterprise server. This should only be set if the GitLab Enterprise server
+    /// is hosted on-premises and not reachable by public internet. If this field
+    /// is left empty, calls to the GitLab Enterprise server will be made over the
+    /// public internet.
+    #[prost(message, optional, tag = "5")]
+    pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
+    /// SSL certificate to use for requests to GitLab Enterprise.
+    #[prost(string, tag = "6")]
+    pub ssl_ca: ::prost::alloc::string::String,
+    /// Output only. Version of the GitLab Enterprise server running on the
+    /// `host_uri`.
+    #[prost(string, tag = "7")]
+    pub server_version: ::prost::alloc::string::String,
+}
 /// ServiceDirectoryConfig represents Service Directory configuration for a
 /// connection.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -306,6 +346,9 @@ pub struct Repository {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "7")]
     pub etag: ::prost::alloc::string::String,
+    /// Output only. External ID of the webhook created for the repository.
+    #[prost(string, tag = "8")]
+    pub webhook_id: ::prost::alloc::string::String,
 }
 /// Represents an OAuth token of the account that authorized the Connection,
 /// and associated metadata.
@@ -316,6 +359,20 @@ pub struct OAuthCredential {
     /// the Cloud Build connection. Format: `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub oauth_token_secret_version: ::prost::alloc::string::String,
+    /// Output only. The username associated to this token.
+    #[prost(string, tag = "2")]
+    pub username: ::prost::alloc::string::String,
+}
+/// Represents a personal access token that authorized the Connection,
+/// and associated metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserCredential {
+    /// Required. A SecretManager resource containing the user token that
+    /// authorizes the Cloud Build connection. Format:
+    /// `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "1")]
+    pub user_token_secret_version: ::prost::alloc::string::String,
     /// Output only. The username associated to this token.
     #[prost(string, tag = "2")]
     pub username: ::prost::alloc::string::String,
@@ -552,12 +609,94 @@ pub struct FetchReadWriteTokenResponse {
     #[prost(message, optional, tag = "2")]
     pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// RPC request object accepted by the ProcessWebhook RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessWebhookRequest {
+    /// Required. Project and location where the webhook will be received.
+    /// Format: `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// HTTP request body.
+    #[prost(message, optional, tag = "2")]
+    pub body: ::core::option::Option<super::super::super::api::HttpBody>,
+    /// Arbitrary additional key to find the maching repository for a webhook event
+    /// if needed.
+    #[prost(string, tag = "3")]
+    pub webhook_key: ::prost::alloc::string::String,
+}
+/// Request for fetching git refs
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchGitRefsRequest {
+    /// Required. The resource name of the repository in the format
+    /// `projects/*/locations/*/connections/*/repositories/*`.
+    #[prost(string, tag = "1")]
+    pub repository: ::prost::alloc::string::String,
+    /// Type of refs to fetch
+    #[prost(enumeration = "fetch_git_refs_request::RefType", tag = "2")]
+    pub ref_type: i32,
+}
+/// Nested message and enum types in `FetchGitRefsRequest`.
+pub mod fetch_git_refs_request {
+    /// Type of refs
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RefType {
+        /// No type specified.
+        Unspecified = 0,
+        /// To fetch tags.
+        Tag = 1,
+        /// To fetch branches.
+        Branch = 2,
+    }
+    impl RefType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RefType::Unspecified => "REF_TYPE_UNSPECIFIED",
+                RefType::Tag => "TAG",
+                RefType::Branch => "BRANCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REF_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TAG" => Some(Self::Tag),
+                "BRANCH" => Some(Self::Branch),
+                _ => None,
+            }
+        }
+    }
+}
+/// Response for fetching git refs
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchGitRefsResponse {
+    /// Name of the refs fetched.
+    #[prost(string, repeated, tag = "1")]
+    pub ref_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Generated client implementations.
 pub mod repository_manager_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Manages connections to source code repostiories.
+    /// Manages connections to source code repositories.
     #[derive(Debug, Clone)]
     pub struct RepositoryManagerClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1032,6 +1171,37 @@ pub mod repository_manager_client {
                     GrpcMethod::new(
                         "google.devtools.cloudbuild.v2.RepositoryManager",
                         "FetchLinkableRepositories",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetch the list of branches or tags for a given repository.
+        pub async fn fetch_git_refs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchGitRefsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchGitRefsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.cloudbuild.v2.RepositoryManager/FetchGitRefs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "FetchGitRefs",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -257,8 +257,9 @@ pub struct VehicleLocation {
     /// example, when the app restarts), this value resets to zero.
     #[prost(message, optional, tag = "14")]
     pub time_since_update: ::core::option::Option<i32>,
-    /// Input only. Number of additional attempts to send this location to the
-    /// server. If this value is zero, then it is not stale.
+    /// Input only. Deprecated: Other signals are now used to determine if a
+    /// location is stale.
+    #[deprecated]
     #[prost(message, optional, tag = "15")]
     pub num_stale_updates: ::core::option::Option<i32>,
     /// Raw vehicle location (unprocessed by road-snapper).
@@ -266,27 +267,27 @@ pub struct VehicleLocation {
     pub raw_location: ::core::option::Option<
         super::super::super::google::r#type::LatLng,
     >,
-    /// Input only. Timestamp associated with the raw location.
+    /// Timestamp associated with the raw location.
     #[prost(message, optional, tag = "17")]
     pub raw_location_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Input only. Source of the raw location.
+    /// Source of the raw location.
     #[prost(enumeration = "LocationSensor", tag = "28")]
     pub raw_location_sensor: i32,
-    /// Input only. Accuracy of `raw_location` as a radius, in meters.
+    /// Accuracy of `raw_location` as a radius, in meters.
     #[prost(message, optional, tag = "25")]
     pub raw_location_accuracy: ::core::option::Option<f64>,
-    /// Input only. Supplemental location provided by the integrating app.
+    /// Supplemental location provided by the integrating app.
     #[prost(message, optional, tag = "18")]
     pub supplemental_location: ::core::option::Option<
         super::super::super::google::r#type::LatLng,
     >,
-    /// Input only. Timestamp associated with the supplemental location.
+    /// Timestamp associated with the supplemental location.
     #[prost(message, optional, tag = "19")]
     pub supplemental_location_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Input only. Source of the supplemental location.
+    /// Source of the supplemental location.
     #[prost(enumeration = "LocationSensor", tag = "20")]
     pub supplemental_location_sensor: i32,
-    /// Input only. Accuracy of `supplemental_location` as a radius, in meters.
+    /// Accuracy of `supplemental_location` as a radius, in meters.
     #[prost(message, optional, tag = "21")]
     pub supplemental_location_accuracy: ::core::option::Option<f64>,
     /// Deprecated: Use `is_road_snapped` instead.
@@ -456,9 +457,20 @@ pub enum LocationSensor {
     Network = 2,
     /// Cell tower ID or WiFi access point.
     Passive = 3,
-    /// A location signal snapped to the best road position.
+    /// A location determined by the mobile device to be the most likely
+    /// road position.
     RoadSnappedLocationProvider = 4,
-    /// The fused location provider in Google Play services.
+    /// A customer-supplied location from an independent source.  Typically, this
+    /// value is used for a location provided from sources other than the mobile
+    /// device running Driver SDK.  If the original source is described by one of
+    /// the other enum values, use that value. Locations marked
+    /// CUSTOMER_SUPPLIED_LOCATION are typically provided via a Vehicle's
+    /// `last_location.supplemental_location_sensor`.
+    CustomerSuppliedLocation = 5,
+    /// A location calculated by Fleet Engine based on the signals available to it.
+    /// Output only. This value will be rejected if it is received in a request.
+    FleetEngineLocation = 6,
+    /// Android's Fused Location Provider.
     FusedLocationProvider = 100,
     /// The location provider on Apple operating systems.
     CoreLocation = 200,
@@ -477,6 +489,8 @@ impl LocationSensor {
             LocationSensor::RoadSnappedLocationProvider => {
                 "ROAD_SNAPPED_LOCATION_PROVIDER"
             }
+            LocationSensor::CustomerSuppliedLocation => "CUSTOMER_SUPPLIED_LOCATION",
+            LocationSensor::FleetEngineLocation => "FLEET_ENGINE_LOCATION",
             LocationSensor::FusedLocationProvider => "FUSED_LOCATION_PROVIDER",
             LocationSensor::CoreLocation => "CORE_LOCATION",
         }
@@ -489,6 +503,8 @@ impl LocationSensor {
             "NETWORK" => Some(Self::Network),
             "PASSIVE" => Some(Self::Passive),
             "ROAD_SNAPPED_LOCATION_PROVIDER" => Some(Self::RoadSnappedLocationProvider),
+            "CUSTOMER_SUPPLIED_LOCATION" => Some(Self::CustomerSuppliedLocation),
+            "FLEET_ENGINE_LOCATION" => Some(Self::FleetEngineLocation),
             "FUSED_LOCATION_PROVIDER" => Some(Self::FusedLocationProvider),
             "CORE_LOCATION" => Some(Self::CoreLocation),
             _ => None,
@@ -2561,6 +2577,12 @@ pub struct ListVehiclesRequest {
     /// Only return the vehicles with current trip(s).
     #[prost(bool, tag = "14")]
     pub on_trip_only: bool,
+    /// Optional. A filter that limits the vehicles returned to those whose last
+    /// known location was in the rectangular area defined by the viewport.
+    #[prost(message, optional, tag = "17")]
+    pub viewport: ::core::option::Option<
+        super::super::super::google::geo::r#type::Viewport,
+    >,
 }
 /// `ListVehicles` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]

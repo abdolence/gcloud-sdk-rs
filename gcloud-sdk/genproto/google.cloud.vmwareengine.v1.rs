@@ -94,6 +94,9 @@ pub struct PrivateCloud {
     /// Output only. System-generated unique identifier for the resource.
     #[prost(string, tag = "20")]
     pub uid: ::prost::alloc::string::String,
+    /// Optional. Type of the private cloud. Defaults to STANDARD.
+    #[prost(enumeration = "private_cloud::Type", tag = "22")]
+    pub r#type: i32,
 }
 /// Nested message and enum types in `PrivateCloud`.
 pub mod private_cloud {
@@ -177,6 +180,48 @@ pub mod private_cloud {
                 "FAILED" => Some(Self::Failed),
                 "DELETED" => Some(Self::Deleted),
                 "PURGING" => Some(Self::Purging),
+                _ => None,
+            }
+        }
+    }
+    /// Enum Type defines private cloud type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Standard private is a zonal resource, with 3+ nodes. Default type.
+        Standard = 0,
+        /// Time limited private cloud is a zonal resource, can have only 1 node and
+        /// has limited life span. Will be deleted after defined period of time,
+        /// can be converted into standard private cloud by expanding it up to 3
+        /// or more nodes.
+        TimeLimited = 1,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Standard => "STANDARD",
+                Type::TimeLimited => "TIME_LIMITED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STANDARD" => Some(Self::Standard),
+                "TIME_LIMITED" => Some(Self::TimeLimited),
                 _ => None,
             }
         }
@@ -331,6 +376,11 @@ pub mod subnet {
         Updating = 3,
         /// The subnet is being deleted.
         Deleting = 4,
+        /// Changes requested in the last operation are being propagated.
+        Reconciling = 5,
+        /// Last operation on the subnet did not succeed. Subnet's payload is
+        /// reverted back to its most recent working state.
+        Failed = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -344,6 +394,8 @@ pub mod subnet {
                 State::Creating => "CREATING",
                 State::Updating => "UPDATING",
                 State::Deleting => "DELETING",
+                State::Reconciling => "RECONCILING",
+                State::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -354,6 +406,8 @@ pub mod subnet {
                 "CREATING" => Some(Self::Creating),
                 "UPDATING" => Some(Self::Updating),
                 "DELETING" => Some(Self::Deleting),
+                "RECONCILING" => Some(Self::Reconciling),
+                "FAILED" => Some(Self::Failed),
                 _ => None,
             }
         }
@@ -670,6 +724,133 @@ pub mod vcenter {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "ACTIVE" => Some(Self::Active),
                 "CREATING" => Some(Self::Creating),
+                _ => None,
+            }
+        }
+    }
+}
+/// Exchanged network peering route.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PeeringRoute {
+    /// Output only. Destination range of the peering route in CIDR notation.
+    #[prost(string, tag = "1")]
+    pub dest_range: ::prost::alloc::string::String,
+    /// Output only. Type of the route in the peer VPC network.
+    #[prost(enumeration = "peering_route::Type", tag = "2")]
+    pub r#type: i32,
+    /// Output only. Region containing the next hop of the peering route. This
+    /// field only applies to dynamic routes in the peer VPC network.
+    #[prost(string, tag = "3")]
+    pub next_hop_region: ::prost::alloc::string::String,
+    /// Output only. The priority of the peering route.
+    #[prost(int64, tag = "4")]
+    pub priority: i64,
+    /// Output only. True if the peering route has been imported from a peered
+    /// VPC network; false otherwise. The import happens if the field
+    /// `NetworkPeering.importCustomRoutes` is true for this network,
+    /// `NetworkPeering.exportCustomRoutes` is true for the peer VPC network, and
+    /// the import does not result in a route conflict.
+    #[prost(bool, tag = "5")]
+    pub imported: bool,
+    /// Output only. Direction of the routes exchanged with the peer network, from
+    /// the VMware Engine network perspective:
+    ///
+    /// * Routes of direction `INCOMING` are imported from the peer network.
+    /// * Routes of direction `OUTGOING` are exported from the intranet VPC network
+    /// of the VMware Engine network.
+    #[prost(enumeration = "peering_route::Direction", tag = "6")]
+    pub direction: i32,
+}
+/// Nested message and enum types in `PeeringRoute`.
+pub mod peering_route {
+    /// The type of the peering route.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified peering route type. This is the default value.
+        Unspecified = 0,
+        /// Dynamic routes in the peer network.
+        DynamicPeeringRoute = 1,
+        /// Static routes in the peer network.
+        StaticPeeringRoute = 2,
+        /// Created, updated, and removed automatically by Google Cloud when subnets
+        /// are created, modified, or deleted in the peer network.
+        SubnetPeeringRoute = 3,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::DynamicPeeringRoute => "DYNAMIC_PEERING_ROUTE",
+                Type::StaticPeeringRoute => "STATIC_PEERING_ROUTE",
+                Type::SubnetPeeringRoute => "SUBNET_PEERING_ROUTE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DYNAMIC_PEERING_ROUTE" => Some(Self::DynamicPeeringRoute),
+                "STATIC_PEERING_ROUTE" => Some(Self::StaticPeeringRoute),
+                "SUBNET_PEERING_ROUTE" => Some(Self::SubnetPeeringRoute),
+                _ => None,
+            }
+        }
+    }
+    /// The direction of the exchanged routes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Direction {
+        /// Unspecified exchanged routes direction. This is default.
+        Unspecified = 0,
+        /// Routes imported from the peer network.
+        Incoming = 1,
+        /// Routes exported to the peer network.
+        Outgoing = 2,
+    }
+    impl Direction {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Direction::Unspecified => "DIRECTION_UNSPECIFIED",
+                Direction::Incoming => "INCOMING",
+                Direction::Outgoing => "OUTGOING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCOMING" => Some(Self::Incoming),
+                "OUTGOING" => Some(Self::Outgoing),
                 _ => None,
             }
         }
@@ -1000,6 +1181,281 @@ pub mod vmware_engine_network {
             match value {
                 "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "LEGACY" => Some(Self::Legacy),
+                _ => None,
+            }
+        }
+    }
+}
+/// Private connection resource that provides connectivity for VMware Engine
+/// private clouds.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrivateConnection {
+    /// Output only. The resource name of the private connection.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/privateConnections/my-connection`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Creation time of this resource.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last update time of this resource.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-provided description for this private connection.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. State of the private connection.
+    #[prost(enumeration = "private_connection::State", tag = "5")]
+    pub state: i32,
+    /// Required. The relative resource name of Legacy VMware Engine network.
+    /// Specify the name in the following form:
+    /// `projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
+    /// where `{project}`, `{location}` will be same as specified in private
+    /// connection resource name and `{vmware_engine_network_id}` will be in the
+    /// form of `{location}`-default e.g.
+    /// projects/project/locations/us-central1/vmwareEngineNetworks/us-central1-default.
+    #[prost(string, tag = "8")]
+    pub vmware_engine_network: ::prost::alloc::string::String,
+    /// Output only. The canonical name of the VMware Engine network in the form:
+    /// `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
+    #[prost(string, tag = "9")]
+    pub vmware_engine_network_canonical: ::prost::alloc::string::String,
+    /// Required. Private connection type.
+    #[prost(enumeration = "private_connection::Type", tag = "10")]
+    pub r#type: i32,
+    /// Output only. VPC network peering id between given network VPC and
+    /// VMwareEngineNetwork.
+    #[prost(string, tag = "12")]
+    pub peering_id: ::prost::alloc::string::String,
+    /// Optional. Routing Mode.
+    /// Default value is set to GLOBAL.
+    /// For type = PRIVATE_SERVICE_ACCESS, this field can be set to GLOBAL or
+    /// REGIONAL, for other types only GLOBAL is supported.
+    #[prost(enumeration = "private_connection::RoutingMode", tag = "13")]
+    pub routing_mode: i32,
+    /// Output only. System-generated unique identifier for the resource.
+    #[prost(string, tag = "14")]
+    pub uid: ::prost::alloc::string::String,
+    /// Required. Service network to create private connection.
+    /// Specify the name in the following form:
+    /// `projects/{project}/global/networks/{network_id}`
+    /// For type = PRIVATE_SERVICE_ACCESS, this field represents servicenetworking
+    /// VPC, e.g. projects/project-tp/global/networks/servicenetworking.
+    /// For type = NETAPP_CLOUD_VOLUME, this field represents NetApp service VPC,
+    /// e.g. projects/project-tp/global/networks/netapp-tenant-vpc.
+    /// For type = DELL_POWERSCALE, this field represent Dell service VPC, e.g.
+    /// projects/project-tp/global/networks/dell-tenant-vpc.
+    /// For type= THIRD_PARTY_SERVICE, this field could represent a consumer VPC or
+    /// any other producer VPC to which the VMware Engine Network needs to be
+    /// connected, e.g. projects/project/global/networks/vpc.
+    #[prost(string, tag = "16")]
+    pub service_network: ::prost::alloc::string::String,
+    /// Output only. Peering state between service network and VMware Engine
+    /// network.
+    #[prost(enumeration = "private_connection::PeeringState", tag = "17")]
+    pub peering_state: i32,
+}
+/// Nested message and enum types in `PrivateConnection`.
+pub mod private_connection {
+    /// Enum State defines possible states of private connection.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value. This value is used if the state is omitted.
+        Unspecified = 0,
+        /// The private connection is being created.
+        Creating = 1,
+        /// The private connection is ready.
+        Active = 2,
+        /// The private connection is being updated.
+        Updating = 3,
+        /// The private connection is being deleted.
+        Deleting = 4,
+        /// The private connection is not provisioned, since no private cloud is
+        /// present for which this private connection is needed.
+        Unprovisioned = 5,
+        /// The private connection is in failed state.
+        Failed = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Active => "ACTIVE",
+                State::Updating => "UPDATING",
+                State::Deleting => "DELETING",
+                State::Unprovisioned => "UNPROVISIONED",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "UNPROVISIONED" => Some(Self::Unprovisioned),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// Enum Type defines possible types of private connection.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// The default value. This value should never be used.
+        Unspecified = 0,
+        /// Connection used for establishing [private services
+        /// access](<https://cloud.google.com/vpc/docs/private-services-access>).
+        PrivateServiceAccess = 1,
+        /// Connection used for connecting to NetApp Cloud Volumes.
+        NetappCloudVolumes = 2,
+        /// Connection used for connecting to Dell PowerScale.
+        DellPowerscale = 3,
+        /// Connection used for connecting to third-party services.
+        ThirdPartyService = 4,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::PrivateServiceAccess => "PRIVATE_SERVICE_ACCESS",
+                Type::NetappCloudVolumes => "NETAPP_CLOUD_VOLUMES",
+                Type::DellPowerscale => "DELL_POWERSCALE",
+                Type::ThirdPartyService => "THIRD_PARTY_SERVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIVATE_SERVICE_ACCESS" => Some(Self::PrivateServiceAccess),
+                "NETAPP_CLOUD_VOLUMES" => Some(Self::NetappCloudVolumes),
+                "DELL_POWERSCALE" => Some(Self::DellPowerscale),
+                "THIRD_PARTY_SERVICE" => Some(Self::ThirdPartyService),
+                _ => None,
+            }
+        }
+    }
+    /// Possible types for RoutingMode
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RoutingMode {
+        /// The default value. This value should never be used.
+        Unspecified = 0,
+        /// Global Routing Mode
+        Global = 1,
+        /// Regional Routing Mode
+        Regional = 2,
+    }
+    impl RoutingMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RoutingMode::Unspecified => "ROUTING_MODE_UNSPECIFIED",
+                RoutingMode::Global => "GLOBAL",
+                RoutingMode::Regional => "REGIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROUTING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GLOBAL" => Some(Self::Global),
+                "REGIONAL" => Some(Self::Regional),
+                _ => None,
+            }
+        }
+    }
+    /// Enum PeeringState defines the possible states of peering between service
+    /// network and the vpc network peered to service network
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PeeringState {
+        /// The default value. This value is used if the peering state is omitted or
+        /// unknown.
+        Unspecified = 0,
+        /// The peering is in active state.
+        PeeringActive = 1,
+        /// The peering is in inactive state.
+        PeeringInactive = 2,
+    }
+    impl PeeringState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PeeringState::Unspecified => "PEERING_STATE_UNSPECIFIED",
+                PeeringState::PeeringActive => "PEERING_ACTIVE",
+                PeeringState::PeeringInactive => "PEERING_INACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PEERING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PEERING_ACTIVE" => Some(Self::PeeringActive),
+                "PEERING_INACTIVE" => Some(Self::PeeringInactive),
                 _ => None,
             }
         }
@@ -1400,6 +1856,39 @@ pub struct ListSubnetsResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached when making an aggregated query using
+    /// wildcards.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VmwareEngine.GetSubnet][google.cloud.vmwareengine.v1.VmwareEngine.GetSubnet\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSubnetRequest {
+    /// Required. The resource name of the subnet to retrieve.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1-a/privateClouds/my-cloud/subnets/my-subnet`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.UpdateSubnet][google.cloud.vmwareengine.v1.VmwareEngine.UpdateSubnet\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSubnetRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// `Subnet` resource by the update.
+    /// The fields specified in the `update_mask` are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Subnet description.
+    #[prost(message, optional, tag = "2")]
+    pub subnet: ::core::option::Option<Subnet>,
 }
 /// Represents the metadata of the long-running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2110,6 +2599,237 @@ pub struct ListVmwareEngineNetworksResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Request message for
+/// \[VmwareEngine.CreatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateConnection\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePrivateConnectionRequest {
+    /// Required. The resource name of the location to create the new private
+    /// connection in. Private connection is a regional resource.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.> For example:
+    /// `projects/my-project/locations/us-central1`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user-provided identifier of the new private connection.
+    /// This identifier must be unique among private connection resources
+    /// within the parent and becomes the final token in the name URI. The
+    /// identifier must meet the following requirements:
+    ///
+    /// * Only contains 1-63 alphanumeric characters and hyphens
+    /// * Begins with an alphabetical character
+    /// * Ends with a non-hyphen character
+    /// * Not formatted as a UUID
+    /// * Complies with [RFC 1034](<https://datatracker.ietf.org/doc/html/rfc1034>)
+    /// (section 3.5)
+    #[prost(string, tag = "2")]
+    pub private_connection_id: ::prost::alloc::string::String,
+    /// Required. The initial description of the new private connection.
+    #[prost(message, optional, tag = "3")]
+    pub private_connection: ::core::option::Option<PrivateConnection>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.GetPrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateConnection\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPrivateConnectionRequest {
+    /// Required. The resource name of the private connection to retrieve.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/privateConnections/my-connection`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateConnectionsRequest {
+    /// Required. The resource name of the location to query for
+    /// private connections. Resource names are schemeless URIs that follow the
+    /// conventions in <https://cloud.google.com/apis/design/resource_names.> For
+    /// example: `projects/my-project/locations/us-central1`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of private connections to return in one page.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListPrivateConnections` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListPrivateConnections` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that matches resources returned in the response.
+    /// The expression must specify the field name, a comparison
+    /// operator, and the value that you want to use for filtering. The value
+    /// must be a string, a number, or a boolean. The comparison operator
+    /// must be `=`, `!=`, `>`, or `<`.
+    ///
+    /// For example, if you are filtering a list of private connections, you can
+    /// exclude the ones named `example-connection` by specifying
+    /// `name != "example-connection"`.
+    ///
+    /// To filter on multiple expressions, provide each separate expression within
+    /// parentheses. For example:
+    /// ```
+    /// (name = "example-connection")
+    /// (createTime > "2022-09-22T08:15:10.40Z")
+    /// ```
+    ///
+    /// By default, each expression is an `AND` expression. However, you
+    /// can include `AND` and `OR` expressions explicitly.
+    /// For example:
+    /// ```
+    /// (name = "example-connection-1") AND
+    /// (createTime > "2021-04-12T08:15:10.40Z") OR
+    /// (name = "example-connection-2")
+    /// ```
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sorts list results by a certain order. By default, returned results
+    /// are ordered by `name` in ascending order.
+    /// You can also sort results in descending order based on the `name` value
+    /// using `orderBy="name desc"`.
+    /// Currently, only ordering by `name` is supported.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateConnectionsResponse {
+    /// A list of private connections.
+    #[prost(message, repeated, tag = "1")]
+    pub private_connections: ::prost::alloc::vec::Vec<PrivateConnection>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// \[VmwareEngine.UpdatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateConnection\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePrivateConnectionRequest {
+    /// Required. Private connection description.
+    #[prost(message, optional, tag = "1")]
+    pub private_connection: ::core::option::Option<PrivateConnection>,
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// `PrivateConnection` resource by the update.
+    /// The fields specified in the `update_mask` are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.DeletePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateConnection\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePrivateConnectionRequest {
+    /// Required. The resource name of the private connection to be deleted.
+    /// Resource names are schemeless URIs that follow the conventions in
+    /// <https://cloud.google.com/apis/design/resource_names.>
+    /// For example:
+    /// `projects/my-project/locations/us-central1/privateConnections/my-connection`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server guarantees that a
+    /// request doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateConnectionPeeringRoutesRequest {
+    /// Required. The resource name of the private connection to retrieve peering
+    /// routes from. Resource names are schemeless URIs that follow the conventions
+    /// in <https://cloud.google.com/apis/design/resource_names.> For example:
+    /// `projects/my-project/locations/us-west1/privateConnections/my-connection`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of peering routes to return in one page.
+    /// The service may return fewer than this value.
+    /// The maximum value is coerced to 1000.
+    /// The default value of this field is 500.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListPrivateConnectionPeeringRoutes`
+    /// call. Provide this to retrieve the subsequent page. When paginating, all
+    /// other parameters provided to `ListPrivateConnectionPeeringRoutes` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPrivateConnectionPeeringRoutesResponse {
+    /// A list of peering routes.
+    #[prost(message, repeated, tag = "1")]
+    pub peering_routes: ::prost::alloc::vec::Vec<PeeringRoute>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod vmware_engine_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -2601,6 +3321,70 @@ pub mod vmware_engine_client {
                     GrpcMethod::new(
                         "google.cloud.vmwareengine.v1.VmwareEngine",
                         "ListSubnets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single subnet.
+        pub async fn get_subnet(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSubnetRequest>,
+        ) -> std::result::Result<tonic::Response<super::Subnet>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetSubnet",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "GetSubnet",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single subnet. Only fields specified in
+        /// `update_mask` are applied.
+        ///
+        /// *Note*: This API is synchronous and always returns a successful
+        /// `google.longrunning.Operation` (LRO). The returned LRO will only have
+        /// `done` and `response` fields.
+        pub async fn update_subnet(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSubnetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateSubnet",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "UpdateSubnet",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -3201,6 +3985,201 @@ pub mod vmware_engine_client {
                     GrpcMethod::new(
                         "google.cloud.vmwareengine.v1.VmwareEngine",
                         "ListVmwareEngineNetworks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new private connection that can be used for accessing private
+        /// Clouds.
+        pub async fn create_private_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePrivateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/CreatePrivateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "CreatePrivateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a `PrivateConnection` resource by its resource name. The resource
+        /// contains details of the private connection, such as connected
+        /// network, routing mode and state.
+        pub async fn get_private_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPrivateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PrivateConnection>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetPrivateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "GetPrivateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists `PrivateConnection` resources in a given project and location.
+        pub async fn list_private_connections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPrivateConnectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPrivateConnectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateConnections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "ListPrivateConnections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Modifies a `PrivateConnection` resource. Only `description` and
+        /// `routing_mode` fields can be updated. Only fields specified in `updateMask`
+        /// are applied.
+        pub async fn update_private_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePrivateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdatePrivateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "UpdatePrivateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a `PrivateConnection` resource. When a private connection is
+        /// deleted for a VMware Engine network, the connected network becomes
+        /// inaccessible to that VMware Engine network.
+        pub async fn delete_private_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePrivateConnectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/DeletePrivateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "DeletePrivateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the private connection routes exchanged over a peering connection.
+        pub async fn list_private_connection_peering_routes(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListPrivateConnectionPeeringRoutesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPrivateConnectionPeeringRoutesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateConnectionPeeringRoutes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "ListPrivateConnectionPeeringRoutes",
                     ),
                 );
             self.inner.unary(req, path, codec).await

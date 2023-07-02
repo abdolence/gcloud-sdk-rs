@@ -1492,6 +1492,10 @@ pub struct BuildTrigger {
     /// Format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}`
     #[prost(string, tag = "33")]
     pub service_account: ::prost::alloc::string::String,
+    /// The configuration of a trigger that creates a build whenever an event from
+    /// Repo API is received.
+    #[prost(message, optional, tag = "39")]
+    pub repository_event_config: ::core::option::Option<RepositoryEventConfig>,
     /// Template describing the Build request to make when the trigger is matched.
     #[prost(oneof = "build_trigger::BuildTemplate", tags = "18, 4, 8")]
     pub build_template: ::core::option::Option<build_trigger::BuildTemplate>,
@@ -1520,6 +1524,82 @@ pub mod build_trigger {
         /// (i.e. cloudbuild.yaml).
         #[prost(string, tag = "8")]
         Filename(::prost::alloc::string::String),
+    }
+}
+/// The configuration of a trigger that creates a build whenever an event from
+/// Repo API is received.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RepositoryEventConfig {
+    /// The resource name of the Repo API resource.
+    #[prost(string, tag = "1")]
+    pub repository: ::prost::alloc::string::String,
+    /// Output only. The type of the SCM vendor the repository points to.
+    #[prost(enumeration = "repository_event_config::RepositoryType", tag = "2")]
+    pub repository_type: i32,
+    /// The types of filter to trigger a build.
+    #[prost(oneof = "repository_event_config::Filter", tags = "3, 4")]
+    pub filter: ::core::option::Option<repository_event_config::Filter>,
+}
+/// Nested message and enum types in `RepositoryEventConfig`.
+pub mod repository_event_config {
+    /// All possible SCM repo types from Repo API.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RepositoryType {
+        /// If unspecified, RepositoryType defaults to GITHUB.
+        Unspecified = 0,
+        /// The SCM repo is GITHUB.
+        Github = 1,
+        /// The SCM repo is GITHUB Enterprise.
+        GithubEnterprise = 2,
+        /// The SCM repo is GITLAB Enterprise.
+        GitlabEnterprise = 3,
+    }
+    impl RepositoryType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RepositoryType::Unspecified => "REPOSITORY_TYPE_UNSPECIFIED",
+                RepositoryType::Github => "GITHUB",
+                RepositoryType::GithubEnterprise => "GITHUB_ENTERPRISE",
+                RepositoryType::GitlabEnterprise => "GITLAB_ENTERPRISE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REPOSITORY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GITHUB" => Some(Self::Github),
+                "GITHUB_ENTERPRISE" => Some(Self::GithubEnterprise),
+                "GITLAB_ENTERPRISE" => Some(Self::GitlabEnterprise),
+                _ => None,
+            }
+        }
+    }
+    /// The types of filter to trigger a build.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Filter {
+        /// Filter to match changes in pull requests.
+        #[prost(message, tag = "3")]
+        PullRequest(super::PullRequestFilter),
+        /// Filter to match changes in refs like branches, tags.
+        #[prost(message, tag = "4")]
+        Push(super::PushFilter),
     }
 }
 /// GitHubEventsConfig describes the configuration of a trigger that creates a

@@ -87,9 +87,8 @@ pub struct BoundingPoly {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
-    /// An IANA published MIME type (also referred to as media type). For more
-    /// information, see
-    /// <https://www.iana.org/assignments/media-types/media-types.xhtml.>
+    /// An IANA published [media type (MIME
+    /// type)](<https://www.iana.org/assignments/media-types/media-types.xhtml>).
     #[prost(string, tag = "3")]
     pub mime_type: ::prost::alloc::string::String,
     /// Optional. UTF-8 encoded text in reading order from the document.
@@ -168,17 +167,18 @@ pub mod document {
         pub background_color: ::core::option::Option<
             super::super::super::super::r#type::Color,
         >,
-        /// Font weight. Possible values are normal, bold, bolder, and lighter.
-        /// <https://www.w3schools.com/cssref/pr_font_weight.asp>
+        /// [Font weight](<https://www.w3schools.com/cssref/pr_font_weight.asp>).
+        /// Possible values are `normal`, `bold`, `bolder`, and `lighter`.
         #[prost(string, tag = "4")]
         pub font_weight: ::prost::alloc::string::String,
-        /// Text style. Possible values are normal, italic, and oblique.
-        /// <https://www.w3schools.com/cssref/pr_font_font-style.asp>
+        /// [Text style](<https://www.w3schools.com/cssref/pr_font_font-style.asp>).
+        /// Possible values are `normal`, `italic`, and `oblique`.
         #[prost(string, tag = "5")]
         pub text_style: ::prost::alloc::string::String,
-        /// Text decoration. Follows CSS standard.
-        /// <text-decoration-line> <text-decoration-color> <text-decoration-style>
-        /// <https://www.w3schools.com/cssref/pr_text_text-decoration.asp>
+        /// [Text
+        /// decoration](<https://www.w3schools.com/cssref/pr_text_text-decoration.asp>).
+        /// Follows CSS standard. <text-decoration-line> <text-decoration-color>
+        /// <text-decoration-style>
         #[prost(string, tag = "6")]
         pub text_decoration: ::prost::alloc::string::String,
         /// Font size.
@@ -198,7 +198,8 @@ pub mod document {
             /// Font size for the text.
             #[prost(float, tag = "1")]
             pub size: f32,
-            /// Unit for the font size. Follows CSS naming (in, px, pt, etc.).
+            /// Unit for the font size. Follows CSS naming (such as `in`, `px`, and
+            /// `pt`).
             #[prost(string, tag = "2")]
             pub unit: ::prost::alloc::string::String,
         }
@@ -264,7 +265,7 @@ pub mod document {
         /// A list of detected barcodes.
         #[prost(message, repeated, tag = "15")]
         pub detected_barcodes: ::prost::alloc::vec::Vec<page::DetectedBarcode>,
-        /// Image Quality Scores.
+        /// Image quality scores.
         #[prost(message, optional, tag = "17")]
         pub image_quality_scores: ::core::option::Option<page::ImageQualityScores>,
         /// The history of this page.
@@ -295,7 +296,9 @@ pub mod document {
             /// Raw byte content of the image.
             #[prost(bytes = "vec", tag = "1")]
             pub content: ::prost::alloc::vec::Vec<u8>,
-            /// Encoding mime type for the image.
+            /// Encoding [media type (MIME
+            /// type)](<https://www.iana.org/assignments/media-types/media-types.xhtml>)
+            /// for the image.
             #[prost(string, tag = "2")]
             pub mime_type: ::prost::alloc::string::String,
             /// Width of the image in pixels.
@@ -476,6 +479,9 @@ pub mod document {
             #[deprecated]
             #[prost(message, optional, tag = "4")]
             pub provenance: ::core::option::Option<super::Provenance>,
+            /// Text style attributes.
+            #[prost(message, optional, tag = "5")]
+            pub style_info: ::core::option::Option<token::StyleInfo>,
         }
         /// Nested message and enum types in `Token`.
         pub mod token {
@@ -538,6 +544,65 @@ pub mod document {
                     }
                 }
             }
+            /// Font and other text style attributes.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct StyleInfo {
+                /// Font size in points (`1` point is `¹⁄₇₂` inches).
+                #[prost(int32, tag = "1")]
+                pub font_size: i32,
+                /// Font size in pixels, equal to _unrounded
+                /// \[font_size][google.cloud.documentai.v1.Document.Page.Token.StyleInfo.font_size\]_
+                /// * _resolution_ ÷ `72.0`.
+                #[prost(double, tag = "2")]
+                pub pixel_font_size: f64,
+                /// Letter spacing in points.
+                #[prost(double, tag = "3")]
+                pub letter_spacing: f64,
+                /// Name or style of the font.
+                #[prost(string, tag = "4")]
+                pub font_type: ::prost::alloc::string::String,
+                /// Whether the text is bold (equivalent to
+                /// \[font_weight][google.cloud.documentai.v1.Document.Page.Token.StyleInfo.font_weight\]
+                /// is at least `700`).
+                #[prost(bool, tag = "5")]
+                pub bold: bool,
+                /// Whether the text is italic.
+                #[prost(bool, tag = "6")]
+                pub italic: bool,
+                /// Whether the text is underlined.
+                #[prost(bool, tag = "7")]
+                pub underlined: bool,
+                /// Whether the text is strikethrough.
+                #[prost(bool, tag = "8")]
+                pub strikeout: bool,
+                /// Whether the text is a subscript.
+                #[prost(bool, tag = "9")]
+                pub subscript: bool,
+                /// Whether the text is a superscript.
+                #[prost(bool, tag = "10")]
+                pub superscript: bool,
+                /// Whether the text is in small caps.
+                #[prost(bool, tag = "11")]
+                pub smallcaps: bool,
+                /// TrueType weight on a scale `100` (thin) to `1000` (ultra-heavy).
+                /// Normal is `400`, bold is `700`.
+                #[prost(int32, tag = "12")]
+                pub font_weight: i32,
+                /// Whether the text is handwritten.
+                #[prost(bool, tag = "13")]
+                pub handwritten: bool,
+                /// Color of the text.
+                #[prost(message, optional, tag = "14")]
+                pub text_color: ::core::option::Option<
+                    super::super::super::super::super::super::r#type::Color,
+                >,
+                /// Color of the background.
+                #[prost(message, optional, tag = "15")]
+                pub background_color: ::core::option::Option<
+                    super::super::super::super::super::super::r#type::Color,
+                >,
+            }
         }
         /// A detected symbol.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -586,6 +651,7 @@ pub mod document {
             #[prost(message, repeated, tag = "4")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
             /// The history of this table.
+            #[deprecated]
             #[prost(message, optional, tag = "5")]
             pub provenance: ::core::option::Option<super::Provenance>,
         }
@@ -678,20 +744,20 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DetectedLanguage {
-            /// The BCP-47 language code, such as `en-US` or `sr-Latn`. For more
-            /// information, see
-            /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+            /// The [BCP-47 language
+            /// code](<https://www.unicode.org/reports/tr35/#Unicode_locale_identifier>),
+            /// such as `en-US` or `sr-Latn`.
             #[prost(string, tag = "1")]
             pub language_code: ::prost::alloc::string::String,
             /// Confidence of detected language. Range `[0, 1]`.
             #[prost(float, tag = "2")]
             pub confidence: f32,
         }
-        /// Image Quality Scores for the page image
+        /// Image quality scores for the page image.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ImageQualityScores {
-            /// The overall quality score. Range `[0, 1]` where 1 is perfect quality.
+            /// The overall quality score. Range `[0, 1]` where `1` is perfect quality.
             #[prost(float, tag = "1")]
             pub quality_score: f32,
             /// A list of detected defects.
@@ -718,8 +784,8 @@ pub mod document {
                 /// - `quality/defect_glare`
                 #[prost(string, tag = "1")]
                 pub r#type: ::prost::alloc::string::String,
-                /// Confidence of detected defect. Range `[0, 1]` where 1 indicates
-                /// strong confidence of that the defect exists.
+                /// Confidence of detected defect. Range `[0, 1]` where `1` indicates
+                /// strong confidence that the defect exists.
                 #[prost(float, tag = "2")]
                 pub confidence: f32,
             }
@@ -1085,9 +1151,9 @@ pub mod document {
             /// Remove an element identified by `parent`.
             Remove = 2,
             /// Updates any fields within the given provenance scope of the message. It
-            /// 'overwrites'  the fields rather than replacing them.  This is
-            /// especially relevant when we just want to update a field value of an
-            /// entity without also affecting all the child properties.
+            /// overwrites the fields rather than replacing them.  Use this when you
+            /// want to update a field value of an entity without also updating all the
+            /// child properties.
             Update = 7,
             /// Currently unused. Replace an element identified by `parent`.
             Replace = 3,
@@ -1216,10 +1282,9 @@ pub mod document {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Optional. Currently supports Google Cloud Storage URI of the form
-        ///     `gs://bucket_name/object_name`. Object versioning is not supported.
-        ///     See [Google Cloud Storage Request
-        ///     URIs](<https://cloud.google.com/storage/docs/reference-uris>) for more
-        ///     info.
+        /// `gs://bucket_name/object_name`. Object versioning is not supported.
+        /// For more information, refer to [Google Cloud Storage Request
+        /// URIs](<https://cloud.google.com/storage/docs/reference-uris>).
         #[prost(string, tag = "1")]
         Uri(::prost::alloc::string::String),
         /// Optional. Inline document content, represented as a stream of bytes.
@@ -1369,16 +1434,15 @@ pub mod document_schema {
         #[prost(string, tag = "13")]
         pub display_name: ::prost::alloc::string::String,
         /// Name of the type. It must be unique within the schema file and
-        /// cannot be a 'Common Type'.  Besides that we use the following naming
-        /// conventions:
+        /// cannot be a "Common Type".  The following naming conventions are used:
         ///
-        /// - *use `snake_casing`*
-        /// - name matching is case-sensitive
+        /// - Use `snake_casing`.
+        /// - Name matching is case-sensitive.
         /// - Maximum 64 characters.
         /// - Must start with a letter.
         /// - Allowed characters: ASCII letters `\[a-z0-9_-\]`.  (For backward
         ///    compatibility internal infrastructure and tooling can handle any ascii
-        ///    character)
+        ///    character.)
         /// - The `/` is sometimes used to denote a property of a type.  For example
         ///    `line_item/amount`.  This convention is deprecated, but will still be
         ///    honored for backward compatibility.
@@ -1501,8 +1565,8 @@ pub mod document_schema {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metadata {
-        /// If true, a `document` entity type can be applied to subdocument (
-        /// splitting). Otherwise, it can only be applied to the entire document
+        /// If true, a `document` entity type can be applied to subdocument
+        /// (splitting). Otherwise, it can only be applied to the entire document
         /// (classification).
         #[prost(bool, tag = "1")]
         pub document_splitter: bool,
@@ -1798,10 +1862,9 @@ pub mod common_operation_metadata {
     }
 }
 /// A processor version is an implementation of a processor. Each processor
-/// can have multiple versions, pre-trained by Google internally or up-trained
-/// by the customer. At a time, a processor can only have one default version
-/// version. So the processor's behavior (when processing documents) is defined
-/// by a default version
+/// can have multiple versions, pretrained by Google internally or uptrained
+/// by the customer. A processor can only have one default version at a time.
+/// Its document-processing behavior is defined by that version.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessorVersion {
@@ -1831,7 +1894,7 @@ pub struct ProcessorVersion {
     /// The KMS key version with which data is encrypted.
     #[prost(string, tag = "10")]
     pub kms_key_version_name: ::prost::alloc::string::String,
-    /// Denotes that this ProcessorVersion is managed by google.
+    /// Denotes that this `ProcessorVersion` is managed by Google.
     #[prost(bool, tag = "11")]
     pub google_managed: bool,
     /// If set, information about the eventual deprecation of this version.
@@ -1881,6 +1944,8 @@ pub mod processor_version {
         Deleting = 6,
         /// The processor version failed and is in an indeterminate state.
         Failed = 7,
+        /// The processor version is being imported.
+        Importing = 8,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1897,6 +1962,7 @@ pub mod processor_version {
                 State::Creating => "CREATING",
                 State::Deleting => "DELETING",
                 State::Failed => "FAILED",
+                State::Importing => "IMPORTING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1910,6 +1976,7 @@ pub mod processor_version {
                 "CREATING" => Some(Self::Creating),
                 "DELETING" => Some(Self::Deleting),
                 "FAILED" => Some(Self::Failed),
+                "IMPORTING" => Some(Self::Importing),
                 _ => None,
             }
         }
@@ -1924,8 +1991,8 @@ pub struct Processor {
     /// Format: `projects/{project}/locations/{location}/processors/{processor}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The processor type, e.g., `OCR_PROCESSOR`, `INVOICE_PROCESSOR`, etc.
-    /// To get a list of processors types, see
+    /// The processor type, such as: `OCR_PROCESSOR`, `INVOICE_PROCESSOR`.
+    /// To get a list of processor types, see
     /// \[FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes\].
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
@@ -1945,8 +2012,8 @@ pub struct Processor {
     /// The time the processor was created.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The KMS key used for encryption/decryption in CMEK scenarios.
-    /// See <https://cloud.google.com/security-key-management.>
+    /// The [KMS key](<https://cloud.google.com/security-key-management>) used for
+    /// encryption and decryption in CMEK scenarios.
     #[prost(string, tag = "8")]
     pub kms_key_name: ::prost::alloc::string::String,
 }
@@ -2033,7 +2100,7 @@ pub struct ProcessorType {
     /// Format: `projects/{project}/processorTypes/{processor_type}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The processor type, e.g., `OCR_PROCESSOR`, `INVOICE_PROCESSOR`, etc.
+    /// The processor type, such as: `OCR_PROCESSOR`, `INVOICE_PROCESSOR`.
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
     /// The processor category, used by UI to group processor types.
@@ -2059,12 +2126,15 @@ pub mod processor_type {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocationInfo {
-        /// The location id, currently must be one of [us, eu].
+        /// The location ID. For supported locations, refer to [regional and
+        /// multi-regional support](/document-ai/docs/regions).
         #[prost(string, tag = "1")]
         pub location_id: ::prost::alloc::string::String,
     }
 }
-/// Request message for the process document method.
+/// Request message for the
+/// \[ProcessDocument][google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessRequest {
@@ -2080,13 +2150,14 @@ pub struct ProcessRequest {
     /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Whether Human Review feature should be skipped for this request. Default to
-    /// false.
+    /// Whether human review should be skipped for this request. Default to
+    /// `false`.
     #[prost(bool, tag = "3")]
     pub skip_human_review: bool,
-    /// Specifies which fields to include in ProcessResponse's document.
-    /// Only supports top level document and pages field so it must be in the form
-    /// of `{document_field_name}` or `pages.{page_field_name}`.
+    /// Specifies which fields to include in the
+    /// \[ProcessResponse.document][google.cloud.documentai.v1.ProcessResponse.document\]
+    /// output. Only supports top-level document and pages field, so it must be in
+    /// the form of `{document_field_name}` or `pages.{page_field_name}`.
     #[prost(message, optional, tag = "6")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The document payload.
@@ -2118,9 +2189,11 @@ pub struct HumanReviewStatus {
     #[prost(string, tag = "2")]
     pub state_message: ::prost::alloc::string::String,
     /// The name of the operation triggered by the processed document. This field
-    /// is populated only when the \[state\] is \[HUMAN_REVIEW_IN_PROGRESS\]. It has
-    /// the same response type and metadata as the long running operation returned
-    /// by \[ReviewDocument\] method.
+    /// is populated only when the
+    /// \[state][google.cloud.documentai.v1.HumanReviewStatus.state\] is
+    /// `HUMAN_REVIEW_IN_PROGRESS`. It has the same response type and metadata as
+    /// the long-running operation returned by
+    /// \[ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument\].
     #[prost(string, tag = "3")]
     pub human_review_operation: ::prost::alloc::string::String,
 }
@@ -2143,7 +2216,7 @@ pub mod human_review_status {
         /// Human review state is unspecified. Most likely due to an internal error.
         Unspecified = 0,
         /// Human review is skipped for the document. This can happen because human
-        /// review is not enabled on the processor or the processing request has
+        /// review isn't enabled on the processor or the processing request has
         /// been set to skip this document.
         Skipped = 1,
         /// Human review validation is triggered and passed, so no review is needed.
@@ -2151,7 +2224,8 @@ pub mod human_review_status {
         /// Human review validation is triggered and the document is under review.
         InProgress = 3,
         /// Some error happened during triggering human review, see the
-        /// \[state_message\] for details.
+        /// \[state_message][google.cloud.documentai.v1.HumanReviewStatus.state_message\]
+        /// for details.
         Error = 4,
     }
     impl State {
@@ -2181,7 +2255,9 @@ pub mod human_review_status {
         }
     }
 }
-/// Response message for the process document method.
+/// Response message for the
+/// \[ProcessDocument][google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessResponse {
@@ -2193,7 +2269,8 @@ pub struct ProcessResponse {
     #[prost(message, optional, tag = "3")]
     pub human_review_status: ::core::option::Option<HumanReviewStatus>,
 }
-/// Request message for batch process document method.
+/// Request message for
+/// \[BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchProcessRequest {
@@ -2205,22 +2282,28 @@ pub struct BatchProcessRequest {
     /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The input documents for batch process.
+    /// The input documents for the
+    /// \[BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments\]
+    /// method.
     #[prost(message, optional, tag = "5")]
     pub input_documents: ::core::option::Option<BatchDocumentsInputConfig>,
-    /// The overall output config for batch process.
+    /// The output configuration for the
+    /// \[BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments\]
+    /// method.
     #[prost(message, optional, tag = "6")]
     pub document_output_config: ::core::option::Option<DocumentOutputConfig>,
-    /// Whether Human Review feature should be skipped for this request. Default to
-    /// false.
+    /// Whether human review should be skipped for this request. Default to
+    /// `false`.
     #[prost(bool, tag = "4")]
     pub skip_human_review: bool,
 }
-/// Response message for batch process document method.
+/// Response message for
+/// \[BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchProcessResponse {}
-/// The long running operation metadata for batch process method.
+/// The long-running operation metadata for
+/// \[BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchProcessMetadata {
@@ -2249,16 +2332,16 @@ pub mod batch_process_metadata {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndividualProcessStatus {
-        /// The source of the document, same as the \[input_gcs_source\] field in the
-        /// request when the batch process started. The batch process is started by
-        /// take snapshot of that document, since a user can move or change that
-        /// document during the process.
+        /// The source of the document, same as the
+        /// \[input_gcs_source][google.cloud.documentai.v1.BatchProcessMetadata.IndividualProcessStatus.input_gcs_source\]
+        /// field in the request when the batch process started.
         #[prost(string, tag = "1")]
         pub input_gcs_source: ::prost::alloc::string::String,
         /// The status processing the document.
         #[prost(message, optional, tag = "2")]
         pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
-        /// The output_gcs_destination (in the request as `output_gcs_destination`)
+        /// The Cloud Storage output destination (in the request as
+        /// \[DocumentOutputConfig.GcsOutputConfig.gcs_uri][google.cloud.documentai.v1.DocumentOutputConfig.GcsOutputConfig.gcs_uri\])
         /// of the processed document if it was successful, otherwise empty.
         #[prost(string, tag = "3")]
         pub output_gcs_destination: ::prost::alloc::string::String,
@@ -2326,17 +2409,21 @@ pub mod batch_process_metadata {
         }
     }
 }
-/// Request message for fetch processor types.
+/// Request message for the
+/// \[FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes\]
+/// method. Some processor types may require the project be added to an
+/// allowlist.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchProcessorTypesRequest {
-    /// Required. The project of processor type to list.
-    /// The available processor types may depend on the allow-listing on projects.
-    /// Format: `projects/{project}/locations/{location}`
+    /// Required. The location of processor types to list.
+    /// Format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
-/// Response message for fetch processor types.
+/// Response message for the
+/// \[FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchProcessorTypesResponse {
@@ -2344,25 +2431,29 @@ pub struct FetchProcessorTypesResponse {
     #[prost(message, repeated, tag = "1")]
     pub processor_types: ::prost::alloc::vec::Vec<ProcessorType>,
 }
-/// Request message for list processor types.
+/// Request message for the
+/// \[ListProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorTypes\]
+/// method. Some processor types may require the project be added to an
+/// allowlist.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessorTypesRequest {
-    /// Required. The location of processor type to list.
-    /// The available processor types may depend on the allow-listing on projects.
-    /// Format: `projects/{project}/locations/{location}`
+    /// Required. The location of processor types to list.
+    /// Format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of processor types to return.
-    /// If unspecified, at most 100 processor types will be returned.
-    /// The maximum value is 500; values above 500 will be coerced to 500.
+    /// If unspecified, at most `100` processor types will be returned.
+    /// The maximum value is `500`. Values above `500` will be coerced to `500`.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Used to retrieve the next page of results, empty if at the end of the list.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for list processor types.
+/// Response message for the
+/// \[ListProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorTypes\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessorTypesResponse {
@@ -2382,8 +2473,8 @@ pub struct ListProcessorsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of processors to return.
-    /// If unspecified, at most 50 processors will be returned.
-    /// The maximum value is 100; values above 100 will be coerced to 100.
+    /// If unspecified, at most `50` processors will be returned.
+    /// The maximum value is `100`. Values above `100` will be coerced to `100`.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// We will return the processors sorted by creation time. The page token
@@ -2391,7 +2482,9 @@ pub struct ListProcessorsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for list processors.
+/// Response message for the
+/// \[ListProcessors][google.cloud.documentai.v1.DocumentProcessorService.ListProcessors\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessorsResponse {
@@ -2402,7 +2495,9 @@ pub struct ListProcessorsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for get processor.
+/// Request message for the
+/// \[GetProcessorType][google.cloud.documentai.v1.DocumentProcessorService.GetProcessorType\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProcessorTypeRequest {
@@ -2410,7 +2505,9 @@ pub struct GetProcessorTypeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for get processor.
+/// Request message for the
+/// \[GetProcessor][google.cloud.documentai.v1.DocumentProcessorService.GetProcessor\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProcessorRequest {
@@ -2418,7 +2515,9 @@ pub struct GetProcessorRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for get processor version.
+/// Request message for the
+/// \[GetProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.GetProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProcessorVersionRequest {
@@ -2436,8 +2535,8 @@ pub struct ListProcessorVersionsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of processor versions to return.
-    /// If unspecified, at most 10 processor versions will be returned.
-    /// The maximum value is 20; values above 20 will be coerced to 20.
+    /// If unspecified, at most `10` processor versions will be returned.
+    /// The maximum value is `20`. Values above `20` will be coerced to `20`.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// We will return the processor versions sorted by creation time. The page
@@ -2445,7 +2544,9 @@ pub struct ListProcessorVersionsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for list processors.
+/// Response message for the
+/// \[ListProcessorVersions][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorVersions\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessorVersionsResponse {
@@ -2456,7 +2557,9 @@ pub struct ListProcessorVersionsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for the delete processor version method.
+/// Request message for the
+/// \[DeleteProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProcessorVersionRequest {
@@ -2464,15 +2567,19 @@ pub struct DeleteProcessorVersionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The long running operation metadata for delete processor version method.
+/// The long-running operation metadata for the
+/// \[DeleteProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProcessorVersionMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Request message for the deploy processor version method.
+/// Request message for the
+/// \[DeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeployProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployProcessorVersionRequest {
@@ -2480,19 +2587,25 @@ pub struct DeployProcessorVersionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Response message for the deploy processor version method.
+/// Response message for the
+/// \[DeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeployProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployProcessorVersionResponse {}
-/// The long running operation metadata for deploy processor version method.
+/// The long-running operation metadata for the
+/// \[DeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeployProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployProcessorVersionMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Request message for the undeploy processor version method.
+/// Request message for the
+/// \[UndeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.UndeployProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployProcessorVersionRequest {
@@ -2500,22 +2613,27 @@ pub struct UndeployProcessorVersionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Response message for the undeploy processor version method.
+/// Response message for the
+/// \[UndeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.UndeployProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployProcessorVersionResponse {}
-/// The long running operation metadata for the undeploy processor version
+/// The long-running operation metadata for the
+/// \[UndeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.UndeployProcessorVersion\]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployProcessorVersionMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Request message for create a processor. Notice this request is sent to
-/// a regionalized backend service, and if the processor type is not available
-/// on that region, the creation will fail.
+/// Request message for the
+/// \[CreateProcessor][google.cloud.documentai.v1.DocumentProcessorService.CreateProcessor\]
+/// method. Notice this request is sent to a regionalized backend service. If the
+/// \[ProcessorType][google.cloud.documentai.v1.ProcessorType\] isn't available in
+/// that region, the creation fails.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProcessorRequest {
@@ -2523,13 +2641,17 @@ pub struct CreateProcessorRequest {
     /// processor. Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The processor to be created, requires \[processor_type\] and
-    /// \[display_name\] to be set. Also, the processor is under CMEK if CMEK fields
-    /// are set.
+    /// Required. The processor to be created, requires
+    /// \[Processor.type][google.cloud.documentai.v1.Processor.type\] and
+    /// \[Processor.display_name]][\] to be set. Also, the
+    /// \[Processor.kms_key_name][google.cloud.documentai.v1.Processor.kms_key_name\]
+    /// field must be set if the processor is under CMEK.
     #[prost(message, optional, tag = "2")]
     pub processor: ::core::option::Option<Processor>,
 }
-/// Request message for the delete processor method.
+/// Request message for the
+/// \[DeleteProcessor][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessor\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProcessorRequest {
@@ -2537,15 +2659,19 @@ pub struct DeleteProcessorRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The long running operation metadata for delete processor method.
+/// The long-running operation metadata for the
+/// \[DeleteProcessor][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessor\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProcessorMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "5")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Request message for the enable processor method.
+/// Request message for the
+/// \[EnableProcessor][google.cloud.documentai.v1.DocumentProcessorService.EnableProcessor\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableProcessorRequest {
@@ -2553,20 +2679,25 @@ pub struct EnableProcessorRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Response message for the enable processor method.
-/// Intentionally empty proto for adding fields in future.
+/// Response message for the
+/// \[EnableProcessor][google.cloud.documentai.v1.DocumentProcessorService.EnableProcessor\]
+/// method. Intentionally empty proto for adding fields in future.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableProcessorResponse {}
-/// The long running operation metadata for enable processor method.
+/// The long-running operation metadata for the
+/// \[EnableProcessor][google.cloud.documentai.v1.DocumentProcessorService.EnableProcessor\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableProcessorMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "5")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Request message for the disable processor method.
+/// Request message for the
+/// \[DisableProcessor][google.cloud.documentai.v1.DocumentProcessorService.DisableProcessor\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableProcessorRequest {
@@ -2574,20 +2705,25 @@ pub struct DisableProcessorRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Response message for the disable processor method.
-/// Intentionally empty proto for adding fields in future.
+/// Response message for the
+/// \[DisableProcessor][google.cloud.documentai.v1.DocumentProcessorService.DisableProcessor\]
+/// method. Intentionally empty proto for adding fields in future.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableProcessorResponse {}
-/// The long running operation metadata for disable processor method.
+/// The long-running operation metadata for the
+/// \[DisableProcessor][google.cloud.documentai.v1.DocumentProcessorService.DisableProcessor\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableProcessorMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "5")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Request message for the set default processor version method.
+/// Request message for the
+/// \[SetDefaultProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.SetDefaultProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetDefaultProcessorVersionRequest {
@@ -2603,20 +2739,25 @@ pub struct SetDefaultProcessorVersionRequest {
     #[prost(string, tag = "2")]
     pub default_processor_version: ::prost::alloc::string::String,
 }
-/// Response message for set default processor version method.
+/// Response message for the
+/// \[SetDefaultProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.SetDefaultProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetDefaultProcessorVersionResponse {}
-/// The long running operation metadata for set default processor version
+/// The long-running operation metadata for the
+/// \[SetDefaultProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.SetDefaultProcessorVersion\]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetDefaultProcessorVersionMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Request message for the create processor version method.
+/// Request message for the
+/// \[TrainProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.TrainProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainProcessorVersionRequest {
@@ -2631,7 +2772,8 @@ pub struct TrainProcessorVersionRequest {
     /// Optional. The schema the processor version will be trained with.
     #[prost(message, optional, tag = "10")]
     pub document_schema: ::core::option::Option<DocumentSchema>,
-    /// Optional. The input data used to train the `ProcessorVersion`.
+    /// Optional. The input data used to train the
+    /// \[ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion\].
     #[prost(message, optional, tag = "4")]
     pub input_data: ::core::option::Option<train_processor_version_request::InputData>,
     /// Optional. The processor version to use as a base for training. This
@@ -2642,7 +2784,8 @@ pub struct TrainProcessorVersionRequest {
 }
 /// Nested message and enum types in `TrainProcessorVersionRequest`.
 pub mod train_processor_version_request {
-    /// The input data used to train a new `ProcessorVersion`.
+    /// The input data used to train a new
+    /// \[ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion\].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputData {
@@ -2654,7 +2797,8 @@ pub mod train_processor_version_request {
         pub test_documents: ::core::option::Option<super::BatchDocumentsInputConfig>,
     }
 }
-/// The response for the TrainProcessorVersion method.
+/// The response for
+/// \[TrainProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.TrainProcessorVersion\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainProcessorVersionResponse {
@@ -2666,7 +2810,7 @@ pub struct TrainProcessorVersionResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainProcessorVersionMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
     /// The training dataset validation information.
@@ -2709,12 +2853,15 @@ pub mod train_processor_version_metadata {
         >,
     }
 }
-/// Request message for review document method.
+/// Request message for the
+/// \[ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReviewDocumentRequest {
-    /// Required. The resource name of the HumanReviewConfig that the document will
-    /// be reviewed with.
+    /// Required. The resource name of the
+    /// \[HumanReviewConfig][google.cloud.documentai.v1.HumanReviewConfig\] that the
+    /// document will be reviewed with.
     #[prost(string, tag = "1")]
     pub human_review_config: ::prost::alloc::string::String,
     /// Whether the validation should be performed on the ad-hoc review request.
@@ -2781,7 +2928,9 @@ pub mod review_document_request {
         InlineDocument(super::Document),
     }
 }
-/// Response message for review document method.
+/// Response message for the
+/// \[ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReviewDocumentResponse {
@@ -2842,18 +2991,22 @@ pub mod review_document_response {
         }
     }
 }
-/// The long running operation metadata for review document method.
+/// The long-running operation metadata for the
+/// \[ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReviewDocumentOperationMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "5")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
     /// The Crowd Compute question ID.
     #[prost(string, tag = "6")]
     pub question_id: ::prost::alloc::string::String,
 }
-/// Evaluates the given ProcessorVersion against the supplied documents.
+/// Evaluates the given
+/// \[ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion\] against the
+/// supplied documents.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateProcessorVersionRequest {
@@ -2868,15 +3021,19 @@ pub struct EvaluateProcessorVersionRequest {
     #[prost(message, optional, tag = "3")]
     pub evaluation_documents: ::core::option::Option<BatchDocumentsInputConfig>,
 }
-/// Metadata of the EvaluateProcessorVersion method.
+/// Metadata of the
+/// \[EvaluateProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.EvaluateProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateProcessorVersionMetadata {
-    /// The basic metadata of the long running operation.
+    /// The basic metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// Metadata of the EvaluateProcessorVersion method.
+/// Response of the
+/// \[EvaluateProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.EvaluateProcessorVersion\]
+/// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateProcessorVersionResponse {
@@ -2894,7 +3051,8 @@ pub struct GetEvaluationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Retrieves a list of evaluations for a given ProcessorVersion.
+/// Retrieves a list of evaluations for a given
+/// \[ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEvaluationsRequest {
@@ -2905,8 +3063,8 @@ pub struct ListEvaluationsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The standard list page size.
-    /// If unspecified, at most 5 evaluations will be returned.
-    /// The maximum value is 100; values above 100 will be coerced to 100.
+    /// If unspecified, at most `5` evaluations are returned.
+    /// The maximum value is `100`. Values above `100` are coerced to `100`.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListEvaluations` call.
@@ -2914,7 +3072,7 @@ pub struct ListEvaluationsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response from ListEvaluations.
+/// The response from `ListEvaluations`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEvaluationsResponse {
@@ -2931,7 +3089,7 @@ pub mod document_processor_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service to call Cloud DocumentAI to process documents according to the
+    /// Service to call Document AI to process documents according to the
     /// processor's definition. Processors are built using state-of-the-art Google
     /// AI such as natural language, computer vision, and translation to extract
     /// structured information from unstructured or semi-structured documents.
@@ -3080,8 +3238,9 @@ pub mod document_processor_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Fetches processor types. Note that we do not use ListProcessorTypes here
-        /// because it is not paginated.
+        /// Fetches processor types. Note that we don't use
+        /// [ListProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorTypes]
+        /// here, because it isn't paginated.
         pub async fn fetch_processor_types(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchProcessorTypesRequest>,
@@ -3232,7 +3391,7 @@ pub mod document_processor_service_client {
         }
         /// Trains a new processor version.
         /// Operation metadata is returned as
-        /// cloud_documentai_core.TrainProcessorVersionMetadata.
+        /// [TrainProcessorVersionMetadata][google.cloud.documentai.v1.TrainProcessorVersionMetadata].
         pub async fn train_processor_version(
             &mut self,
             request: impl tonic::IntoRequest<super::TrainProcessorVersionRequest>,
@@ -3419,8 +3578,9 @@ pub mod document_processor_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a processor from the type processor that the user chose.
-        /// The processor will be at "ENABLED" state by default after its creation.
+        /// Creates a processor from the
+        /// [ProcessorType][google.cloud.documentai.v1.ProcessorType] provided. The
+        /// processor will be at `ENABLED` state by default after its creation.
         pub async fn create_processor(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProcessorRequest>,
