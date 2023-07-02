@@ -101,6 +101,28 @@ pub struct Stage {
     /// Optional. The strategy to use for a `Rollout` to this stage.
     #[prost(message, optional, tag = "5")]
     pub strategy: ::core::option::Option<Strategy>,
+    /// Optional. The deploy parameters to use for the target in this stage.
+    #[prost(message, repeated, tag = "6")]
+    pub deploy_parameters: ::prost::alloc::vec::Vec<DeployParameters>,
+}
+/// DeployParameters contains deploy parameters information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployParameters {
+    /// Required. Values are deploy parameters in key-value pairs.
+    #[prost(map = "string, string", tag = "1")]
+    pub values: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Deploy parameters are applied to targets with match labels.
+    /// If unspecified, deploy parameters are applied to all targets (including
+    /// child targets of a multi-target).
+    #[prost(map = "string, string", tag = "2")]
+    pub match_target_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Strategy contains deployment strategy information.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -249,6 +271,12 @@ pub mod kubernetes_config {
         /// the specified Service.
         #[prost(string, tag = "2")]
         pub deployment: ::prost::alloc::string::String,
+        /// Optional. Whether to disable Pod overprovisioning. If Pod
+        /// overprovisioning is disabled then Cloud Deploy will limit the number of
+        /// total Pods used for the deployment strategy to the number of Pods the
+        /// Deployment has on the cluster.
+        #[prost(bool, tag = "3")]
+        pub disable_pod_overprovisioning: bool,
     }
     /// The service definition configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -592,6 +620,12 @@ pub struct Target {
     /// specified in `DefaultPool`.
     #[prost(message, repeated, tag = "16")]
     pub execution_configs: ::prost::alloc::vec::Vec<ExecutionConfig>,
+    /// Optional. The deploy parameters to use for this target.
+    #[prost(map = "string, string", tag = "20")]
+    pub deploy_parameters: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Destination to which the Skaffold configuration is applied during a
     /// rollout.
     #[prost(oneof = "target::DeploymentTarget", tags = "15, 17, 18, 19")]
@@ -954,7 +988,7 @@ pub struct DeleteTargetRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set to true, then deleting an already deleted or non-existing
-    /// DeliveryPipeline will succeed.
+    /// `Target` will succeed.
     #[prost(bool, tag = "3")]
     pub allow_missing: bool,
     /// Optional. If set, validate the request and preview the review, but do not
@@ -1071,6 +1105,12 @@ pub struct Release {
     /// Output only. Information around the state of the Release.
     #[prost(message, optional, tag = "24")]
     pub condition: ::core::option::Option<release::ReleaseCondition>,
+    /// Optional. The deploy parameters to use for all targets in this release.
+    #[prost(map = "string, string", tag = "25")]
+    pub deploy_parameters: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `Release`.
 pub mod release {

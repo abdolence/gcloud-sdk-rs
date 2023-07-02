@@ -6,7 +6,7 @@ pub struct AccountReference {
     /// IFSC of the account's bank branch.
     #[prost(string, tag = "1")]
     pub ifsc: ::prost::alloc::string::String,
-    /// Type of account. Examples include SAVINGS, CURRENT, etc.
+    /// Output only. Type of account. Examples include SAVINGS, CURRENT, etc.
     #[prost(string, tag = "2")]
     pub account_type: ::prost::alloc::string::String,
     /// Unique number for an account in a bank and branch.
@@ -27,6 +27,7 @@ pub struct SettlementParticipant {
     #[prost(message, optional, tag = "2")]
     pub merchant_info: ::core::option::Option<MerchantInfo>,
     /// Output only. The mobile number of the participant.
+    #[deprecated]
     #[prost(string, tag = "3")]
     pub mobile: ::prost::alloc::string::String,
     /// Output only. Additional details about the payment settlement. Values will
@@ -115,6 +116,9 @@ pub struct Participant {
     /// Output only. The device info of the participant.
     #[prost(message, optional, tag = "5")]
     pub device_details: ::core::option::Option<DeviceDetails>,
+    /// Output only. The mobile number of the participant.
+    #[prost(string, tag = "6")]
+    pub mobile_number: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Participant`.
 pub mod participant {
@@ -2625,6 +2629,9 @@ pub mod transaction_info {
         /// are as defined by the UPI API specification.
         #[prost(string, tag = "7")]
         pub purpose_code: ::prost::alloc::string::String,
+        /// Output only. The reference category of this API transaction.
+        #[prost(string, tag = "8")]
+        pub reference_category: ::prost::alloc::string::String,
     }
     /// All details about any error in the processing of an API transaction.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2940,57 +2947,44 @@ pub struct MandateTransaction {
     /// Output only. This maps to Unique Mandate Number (UMN) in UPI specification.
     #[prost(string, tag = "3")]
     pub unique_mandate_number: ::prost::alloc::string::String,
-    /// Output only. The virtual payment address (VPA) of the payer.
-    #[prost(string, tag = "4")]
-    pub payer_vpa: ::prost::alloc::string::String,
-    /// Output only. The virtual payment address (VPA) of the payee.
-    #[prost(string, tag = "5")]
-    pub payee_vpa: ::prost::alloc::string::String,
-    /// Output only. A unique identifier for merchant.
-    #[prost(string, tag = "6")]
-    pub payee_merchant_id: ::prost::alloc::string::String,
-    /// Output only. The mobile number of the payer consisting of total twelve
-    /// digits where first two digits of country code (for eg. 91 for India) and
-    /// then ten digits mobile number. For eg. 911234567890
-    #[prost(string, tag = "7")]
-    pub payer_mobile_number: ::prost::alloc::string::String,
-    /// Output only. The mobile number of the payer consisting of total twelve
-    /// digits where first two digits of country code (for eg. 91 for India) and
-    /// then ten digits mobile number. For eg. 911234567890
-    #[prost(string, tag = "8")]
-    pub payee_mobile_number: ::prost::alloc::string::String,
+    /// Output only. The payer in the transaction.
+    #[prost(message, optional, tag = "4")]
+    pub payer: ::core::option::Option<SettlementParticipant>,
+    /// Output only. The payee in the transaction.
+    #[prost(message, optional, tag = "5")]
+    pub payee: ::core::option::Option<SettlementParticipant>,
     /// Output only. The type of recurrence pattern of the mandate.
-    #[prost(enumeration = "mandate_transaction::RecurrencePatternType", tag = "9")]
+    #[prost(enumeration = "mandate_transaction::RecurrencePatternType", tag = "6")]
     pub recurrence_pattern: i32,
     /// Output only. The type of recurrence rule of the mandate.
-    #[prost(enumeration = "mandate_transaction::RecurrenceRuleType", tag = "10")]
+    #[prost(enumeration = "mandate_transaction::RecurrenceRuleType", tag = "7")]
     pub recurrence_rule_type: i32,
     /// Output only. The recurrence rule value of the mandate. This is a value from
     /// 1 to 31.
-    #[prost(int32, tag = "11")]
+    #[prost(int32, tag = "8")]
     pub recurrence_rule_value: i32,
     /// Output only. The start date of the mandate.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag = "9")]
     pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
     /// Output only. The end date of the mandate.
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "10")]
     pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
     /// Output only. If true, this specifies mandate can be revoked.
-    #[prost(bool, tag = "14")]
+    #[prost(bool, tag = "11")]
     pub revokable: bool,
     /// Output only. The amount of the mandate.
-    #[prost(double, tag = "15")]
+    #[prost(double, tag = "12")]
     pub amount: f64,
     /// Output only. The amount rule type of the mandate.
-    #[prost(enumeration = "mandate_transaction::AmountRuleType", tag = "16")]
+    #[prost(enumeration = "mandate_transaction::AmountRuleType", tag = "13")]
     pub amount_rule: i32,
     /// Output only. The Block funds reference generated by the bank, this will be
     /// available only when Recurrence is ONETIME.
-    #[prost(string, tag = "17")]
+    #[prost(string, tag = "14")]
     pub approval_reference: ::prost::alloc::string::String,
     /// Output only. If true, this specifies the mandate transaction requested
     /// funds to be blocked.
-    #[prost(bool, tag = "18")]
+    #[prost(bool, tag = "15")]
     pub block_funds: bool,
 }
 /// Nested message and enum types in `MandateTransaction`.
@@ -3245,21 +3239,10 @@ pub struct ListMetadataTransactionsRequest {
     ///    values. Allowed comparison operators: `=`.
     ///    * `transactionID` - The UPI transaction ID of the metadata transaction.
     ///    Allowed comparison operators: `=`.
-    ///    * `originVPA` - The VPA of the originator of a metadata transaction.
-    ///    Allowed comparison operators: `=`.
     ///    * `createTime` - The time at which the transaction was created
     ///    (received) by the issuer switch. The value should be in
     ///    the format `YYYY-MM-DDTHH:MM:SSZ`. Allowed comparison operators: `>`,
     ///    `<`.
-    ///    * `state` - The state of the transaction. Must be one of
-    ///    \[TransactionInfo.State][google.cloud.paymentgateway.issuerswitch.v1.TransactionInfo.State\]
-    ///    values. Allowed comparison operators: `=`.
-    ///    * `errorCode` - Use this filter to list financial transactions which
-    ///    have failed a particular error code. Allowed comparison operators:
-    ///    `=`.
-    ///    * `adapterRequestID` - Adapter request ID used when invoking the Bank or
-    ///    Card Adapter API for fulfilling a transaction request. Allowed comparison
-    ///    operators: `=`.
     ///
     /// You can combine multiple expressions by enclosing each expression in
     /// parentheses. Expressions are combined with AND logic. No other logical
@@ -3390,37 +3373,10 @@ pub struct ListMandateTransactionsRequest {
     ///    values. For mandate transactions, only valid transaction types are
     ///    `TRANSACTION_TYPE_CREATE`, `TRANSACTION_TYPE_REVOKE` and
     ///    `TRANSACTION_TYPE_UPDATE`. Allowed comparison operators: `=`.
-    ///    * `payerVPA` - The VPA of the payer in a mandate transaction. Allowed
-    ///    comparison operators: `=`.
-    ///    * `payeeVPA` - The VPA of the payee in a mandate transaction. Allowed
-    ///    comparison operators: `=`.
-    ///    * `payeeMerchantID` - The merchant ID of the payee in a mandate
-    ///    transaction. Allowed comparison operators: `=`.
-    ///    * `payerMobileNumber` - The mobile number of the payer in a mandate
-    ///    transaction. Allowed comparison operators: `=`.
-    ///    * `payeeMobileNumber` - The mobile number of the payee in a mandate
-    ///    transaction. Allowed comparison operators: `=`.
     ///    * `createTime` - The time at which the transaction was created
     ///    (received) by the issuer switch. The value should be in
     ///    the format `YYYY-MM-DDTHH:MM:SSZ`. Allowed comparison
     ///    operators: `>`, `<`.
-    ///    * `state` - The state of the transaction. Must be one of
-    ///    \[TransactionInfo.State][google.cloud.paymentgateway.issuerswitch.v1.TransactionInfo.State\]
-    ///    values. Allowed comparison operators: `=`.
-    ///    * `recurrencePattern` - The recurrence pattern of the mandate. Must be
-    ///    one of
-    ///    \[MandateTransaction.RecurrencePatternType][google.cloud.paymentgateway.issuerswitch.v1.MandateTransaction.RecurrencePatternType\]
-    ///    values. Allowed comparison operators: `=`.
-    ///    * `startDate` - The start date of the mandate. The value should be in
-    ///    the format `YYYY-MM-DD`. Allowed comparison operators: `<` and `>`.
-    ///    * `endDate` - The end date of the mandate. The value should be in
-    ///    the format `YYYY-MM-DD`. Allowed comparison operators: `<` and `>`.
-    ///    * `errorCode` - Use this filter to list mandate transactions which
-    ///    have failed a particular error code. Allowed comparison
-    ///    operators: `=`.
-    ///    * `adapterRequestID` - Adapter request ID used when invoking the Bank or
-    ///    Card Adapter API for fulfilling a transaction request. Allowed comparison
-    ///    operators: `=`.
     /// You can combine multiple expressions by enclosing each expression in
     /// parentheses. Expressions are combined with AND logic. No other logical
     /// operators are supported.
@@ -3749,6 +3705,7 @@ pub mod issuer_switch_transactions_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    /// Fetch the issuer switch participant.
     /// Lists and exports transactions processed by the issuer switch.
     #[derive(Debug, Clone)]
     pub struct IssuerSwitchTransactionsClient<T> {
@@ -4160,6 +4117,19 @@ pub mod issuer_switch_transactions_client {
         ///     * **Max Length** - 9 characters
         ///     * **Description** - Type of the payee's device. This will be one of
         ///     'MOB', 'INET', 'USDC/USDB', 'POS'.
+        /// 1. `ReferenceID`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 35 characters
+        ///     * **Description** - Consumer reference number to identify loan number,
+        ///     order id etc.
+        /// 1. `ReferenceURI`
+        ///     * **Min Length** - 1 characters
+        ///     * **Max Length** - 35 characters
+        ///     * **Description** - URL for the  transaction.
+        /// 1. `ReferenceCategory`
+        ///     * **Min Length** - 2 characters
+        ///     * **Max Length** - 2 characters
+        ///     * **Description** - Reference category.
         pub async fn export_financial_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportFinancialTransactionsRequest>,
@@ -4325,6 +4295,20 @@ pub mod issuer_switch_transactions_client {
         ///     * **Min Length** - 12 characters
         ///     * **Max Length** - 12 characters
         ///     * **Description** - Mobile number of the payer.
+        /// 1. `PayerIFSC`
+        ///     * **Min Length** - 11 characters
+        ///     * **Max Length** - 11 characters
+        ///     * **Description** - IFSC of the payer's bank account.
+        /// 1. `PayerAccountNumber`
+        ///     * **Min Length** - 1 characters
+        ///     * **Max Length** - 30 characters
+        ///     * **Description** - Payer's bank account number.
+        /// 1. `PayerAccountType`
+        ///     * **Min Length** - 3 characters
+        ///     * **Max Length** - 7 characters
+        ///     * **Description** - Payer's bank account type. This will be one of
+        ///     `SAVINGS`, `DEFAULT`, `CURRENT`, `NRE`, `NRO`, `PPIWALLET`,
+        ///     `BANKWALLET`, `CREDIT`, `SOD`, or `UOD`.
         /// 1. `PayeeVPA`
         ///     * **Min Length** - 3 characters
         ///     * **Max Length** - 255 characters
@@ -4333,11 +4317,35 @@ pub mod issuer_switch_transactions_client {
         ///     * **Min Length** - 12 characters
         ///     * **Max Length** - 12 characters
         ///     * **Description** - Mobile number of the payee.
+        /// 1. `PayeeIFSC`
+        ///     * **Min Length** - 11 characters
+        ///     * **Max Length** - 11 characters
+        ///     * **Description** - IFSC of the payee's bank account.
+        /// 1. `PayeeAccountNumber`
+        ///     * **Min Length** - 1 characters
+        ///     * **Max Length** - 30 characters
+        ///     * **Description** - Payee's bank account number.
+        /// 1. `PayeeAccountType`
+        ///     * **Min Length** - 3 characters
+        ///     * **Max Length** - 10 characters
+        ///     * **Description** - Payee's bank account type. This will be one of
+        ///     `SAVINGS`, `DEFAULT`, `CURRENT`, `NRE`, `NRO`, `PPIWALLET`,
+        ///     `BANKWALLET`, `CREDIT`, `SOD`, or `UOD`.
         /// 1. `PayeeMerchantID`
         ///     * **Min Length** - 1 characters
         ///     * **Max Length** - 30 characters
         ///     * **Description** - Payee's merchant ID, only if the payee is a
         ///     merchant
+        /// 1. `PayeeMerchantName`
+        ///     * **Min Length** - 1 characters
+        ///     * **Max Length** - 99 characters
+        ///     * **Description** - Payee's merchant name, only if the payee is a
+        ///     merchant.
+        /// 1. `PayeeMCC`
+        ///     * **Min Length** - 4 characters
+        ///     * **Max Length** - 4 characters
+        ///     * **Description** - Payee's Merchant Category Code (MCC), only if the
+        ///     payee is a merchant.
         /// 1. `Amount`
         ///     * **Description** - Amount specified in the mandate.
         /// 1. `RecurrencePattern`
@@ -4410,6 +4418,95 @@ pub mod issuer_switch_transactions_client {
         ///     * **Description** - Error code as per the UPI specification. The issuer
         ///     switch maps the ErrorCode to an appropriate error code that complies
         ///     with the UPI specification.
+        /// 1. `PayerDeviceInfoTypeAppName`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 20 characters
+        ///     * **Description** - Payment application name on the payer's device.
+        /// 1. `PayerDeviceInfoTypeCapability`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 99 characters
+        ///     * **Description** - Capability of the payer's device.
+        /// 1. `PayerDeviceInfoTypeGeoCode`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 15 characters
+        ///     * **Description** - Geo code of the payer's device. This will include
+        ///     floating point values for latitude and longitude (separated by colon).
+        /// 1. `PayerDeviceInfoTypeID`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 35 characters
+        ///     * **Description** - Device ID of the payer's device.
+        /// 1. `PayerDeviceInfoTypeIP`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 39 characters
+        ///     * **Description** - IP address of the payer's device.
+        /// 1. `PayerDeviceInfoTypeLocation`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 40 characters
+        ///     * **Description** - Coarse location of the payer's device.
+        /// 1. `PayerDeviceInfoTypeOS`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 20 characters
+        ///     * **Description** - Operating system on the payer's device.
+        /// 1. `PayerDeviceInfoTypeTelecomProvider`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 99 characters
+        ///     * **Description** - Telecom provider for the payer's device.
+        /// 1. `PayerDeviceInfoTypeDeviceType`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 9 characters
+        ///     * **Description** - Type of the payer's device. This will be one of
+        ///     'MOB', 'INET', 'USDC/USDB', 'POS'.
+        /// 1. `PayeeDeviceInfoTypeAppName`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 20 characters
+        ///     * **Description** - Payment application name on the payee's device.
+        /// 1. `PayeeDeviceInfoTypeCapability`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 99 characters
+        ///     * **Description** - Capability of the payee's device.
+        /// 1. `PayeeDeviceInfoTypeGeoCode`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 15 characters
+        ///     * **Description** - Geo code of the payee's device. This will include
+        ///     floating point values for latitude and longitude (separated by colon).
+        /// 1. `PayeeDeviceInfoTypeID`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 35 characters
+        ///     * **Description** - Device ID of the payee's device.
+        /// 1. `PayeeDeviceInfoTypeIP`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 39 characters
+        ///     * **Description** - IP address of the payee's device.
+        /// 1. `PayeeDeviceInfoTypeLocation`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 40 characters
+        ///     * **Description** - Coarse location of the payee's device.
+        /// 1. `PayeeDeviceInfoTypeOS`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 20 characters
+        ///     * **Description** - Operating system on the payee's device.
+        /// 1. `PayeeDeviceInfoTypeTelecomProvider`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 99 characters
+        ///     * **Description** - Telecom provider for the payee's device.
+        /// 1. `PayeeDeviceInfoTypeDeviceType`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 9 characters
+        ///     * **Description** - Type of the payee's device. This will be one of
+        ///     `MOB`, `INET`, `USDC/USDB`, `POS`.
+        /// 1. `ReferenceID`
+        ///     * **Min Length** - 0 characters
+        ///     * **Max Length** - 35 characters
+        ///     * **Description** - Consumer reference number to identify loan number,
+        ///     order id etc.
+        /// 1. `ReferenceURI`
+        ///     * **Min Length** - 1 characters
+        ///     * **Max Length** - 35 characters
+        ///     * **Description** - URL for the  transaction.
+        /// 1. `ReferenceCategory`
+        ///     * **Min Length** - 2 characters
+        ///     * **Max Length** - 2 characters
+        ///     * **Description** - Reference category.
         pub async fn export_mandate_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportMandateTransactionsRequest>,
@@ -4677,6 +4774,446 @@ pub mod upi_transaction {
         /// The payload in XML format received by the issuer switch.
         #[prost(string, tag = "16")]
         Received(::prost::alloc::string::String),
+    }
+}
+/// Request for the `FetchParticipant` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchParticipantRequest {
+    /// Required. The parent resource for the participants. The format is
+    /// `projects/{project}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The account details of the issuer participant.
+    #[prost(message, optional, tag = "2")]
+    pub account_reference: ::core::option::Option<AccountReference>,
+}
+/// A customer of the bank who participates in transactions processed by the
+/// issuer switch.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IssuerParticipant {
+    /// Required. The account details of the issuer participant. Only the
+    /// account_number and ifsc fields will be used.
+    #[prost(message, optional, tag = "1")]
+    pub account_reference: ::core::option::Option<AccountReference>,
+    /// Output only. The mobile number of the participant.
+    #[prost(string, tag = "2")]
+    pub mobile_number: ::prost::alloc::string::String,
+    /// Output only. The current state of the participant.
+    #[prost(enumeration = "issuer_participant::State", tag = "3")]
+    pub state: i32,
+    /// Optional. Additional metadata about the participant.
+    #[prost(message, optional, tag = "4")]
+    pub metadata: ::core::option::Option<issuer_participant::Metadata>,
+    /// Output only. The current count of consecutive incorrect MPIN attempts.
+    #[prost(int32, tag = "5")]
+    pub mpin_failure_count: i32,
+    /// Output only. The time when participant's MPIN got locked due to too many
+    /// incorrect attempts.
+    #[prost(message, optional, tag = "6")]
+    pub mpin_locked_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the participant's account was onboarded to PGIS.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the participant was last updated.
+    #[prost(message, optional, tag = "8")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `IssuerParticipant`.
+pub mod issuer_participant {
+    /// The metadata of the participant.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Metadata {
+        /// Optional. Additional metadata about a particular participant as key-value
+        /// pairs. These values are returned by the bank adapter/card adapter in
+        /// response to the SearchAccounts/InitiateRegistration APIs.
+        #[prost(map = "string, string", tag = "1")]
+        pub values: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// The state of the participant.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.
+        Unspecified = 0,
+        /// The participant is inactive for all UPI transactions.
+        /// They need to register again and provide a new MPIN.
+        Inactive = 1,
+        /// The participant is active for all UPI transactions.
+        Active = 2,
+        /// The participants MPIN has been locked and no UPI transactions will be
+        /// permitted until MPIN has been reset.
+        MpinLocked = 3,
+        /// The participants mobile number has been changed in the issuer bank.
+        MobileNumberChanged = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Inactive => "INACTIVE",
+                State::Active => "ACTIVE",
+                State::MpinLocked => "MPIN_LOCKED",
+                State::MobileNumberChanged => "MOBILE_NUMBER_CHANGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INACTIVE" => Some(Self::Inactive),
+                "ACTIVE" => Some(Self::Active),
+                "MPIN_LOCKED" => Some(Self::MpinLocked),
+                "MOBILE_NUMBER_CHANGED" => Some(Self::MobileNumberChanged),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request for the `UpdateIssuerParticipant` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIssuerParticipantRequest {
+    /// Required. The parent resource for the participants. The format is
+    /// `projects/{project}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The participant to update.
+    #[prost(message, optional, tag = "2")]
+    pub issuer_participant: ::core::option::Option<IssuerParticipant>,
+    /// Required. The list of fields to update.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for the `ActivateParticipant`, `DeactivateParticipant` and
+/// `MobileNumberUpdated` methods.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ParticipantStateChangeRequest {
+    /// Required. The parent resource for the participant. The format is
+    /// `projects/{project}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The identifier for the issuer participant. One of the two values must be
+    /// specified.
+    #[prost(oneof = "participant_state_change_request::Id", tags = "2, 3")]
+    pub id: ::core::option::Option<participant_state_change_request::Id>,
+}
+/// Nested message and enum types in `ParticipantStateChangeRequest`.
+pub mod participant_state_change_request {
+    /// The identifier for the issuer participant. One of the two values must be
+    /// specified.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Id {
+        /// Optional. The account details of the issuer participant.
+        #[prost(message, tag = "2")]
+        AccountReference(super::AccountReference),
+        /// Optional. The mobile number of the issuer participant.
+        #[prost(string, tag = "3")]
+        MobileNumber(::prost::alloc::string::String),
+    }
+}
+/// Response for the \[ActivateParticipant][\],
+/// \[DeactivateParticipant][\] and \[MobileNumberUpdated][\] methods.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Participants {
+    /// Output only. The list of updated participants.
+    #[prost(message, repeated, tag = "1")]
+    pub participants: ::prost::alloc::vec::Vec<IssuerParticipant>,
+}
+/// Generated client implementations.
+pub mod issuer_switch_participants_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service that allows for the management of participants in the issuer
+    /// switch.
+    #[derive(Debug, Clone)]
+    pub struct IssuerSwitchParticipantsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl IssuerSwitchParticipantsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> IssuerSwitchParticipantsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> IssuerSwitchParticipantsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            IssuerSwitchParticipantsClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Fetch the issuer switch participant. This method can be used to retrieve
+        /// all details of a participant in the issuer switch.
+        ///
+        /// In UPI, the participant is identified by their account's IFSC and
+        /// account number.
+        pub async fn fetch_participant(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchParticipantRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IssuerParticipant>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants/FetchParticipant",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants",
+                        "FetchParticipant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update the issuer switch participant. Currently, this API only allows for
+        /// the
+        /// [metadata][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.metadata]
+        /// field to be updated.
+        ///
+        /// **Note** that this method replaces any existing `metadata` field value in
+        /// the participant with the new value. Specifically, it does not do a merge.
+        /// If new name-value pairs are to be added to/removed from the metadata, then
+        /// callers must first invoke the
+        /// [FetchParticipant][google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants.FetchParticipant]
+        /// API to get the current value of the `metadata` field, make updates to it
+        /// and then update it back to the issuer switch using this method.
+        pub async fn update_issuer_participant(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIssuerParticipantRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IssuerParticipant>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants/UpdateIssuerParticipant",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants",
+                        "UpdateIssuerParticipant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Activate the issuer switch participant for UPI transactions. If the
+        /// participant is in an `INACTIVE` state, then this API will change the state
+        /// of the participant to `ACTIVE` if MPIN had already been provisioned, return
+        /// an error otherwise. If the participant is already in an `ACTIVE` state,
+        /// then this API will make no change to the participant's state and return a
+        /// successful response. If the current state of the participant is
+        /// `MOBILE_NUMBER_CHANGED` then it cannot be changed to `ACTIVE`.
+        ///
+        /// An `ACTIVE` participant can perform all UPI operations normally.
+        pub async fn activate_participant(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ParticipantStateChangeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Participants>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants/ActivateParticipant",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants",
+                        "ActivateParticipant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deactivate the issuer switch participant for UPI transactions. If the
+        /// participant is already in an `INACTIVE` state, then this API will make no
+        /// change to the participant's state and return a successful response. If the
+        /// current state of the participant is `MOBILE_NUMBER_CHANGED` then it cannot
+        /// be changed to `INACTIVE`.
+        ///
+        /// An `INACTIVE` participant cannot perform any UPI operations which involve
+        /// MPIN verification.
+        pub async fn deactivate_participant(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ParticipantStateChangeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Participants>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants/DeactivateParticipant",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants",
+                        "DeactivateParticipant",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Mark the mobile number of the issuer switch participant as changed to
+        /// prevent UPI transactions. If the participant is already in a
+        /// `MOBILE_NUMBER_CHANGED` state, then this API will make no change to the
+        /// participant's state and return a successful response.
+        ///
+        /// Any UPI operation for a participant in the `MOBILE_NUMBER_CHANGED` state
+        /// will cause the issuer switch to return a `B1` error to the UPI payments
+        /// orchestrator which would force the user to re-register with UPI.
+        pub async fn mobile_number_changed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ParticipantStateChangeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Participants>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants/MobileNumberChanged",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchParticipants",
+                        "MobileNumberChanged",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// A rule that is executed by the issuer switch while processing an

@@ -7344,8 +7344,8 @@ pub struct AnswerFeedback {
     pub correctness_level: i32,
     /// Indicates whether the answer/item was clicked by the human agent
     /// or not. Default to false.
-    /// For knowledge search, the answer record is considered to be clicked if the
-    /// answer was copied or any URI was clicked.
+    /// For knowledge search and knowledge assist, the answer record is considered
+    /// to be clicked if the answer was copied or any URI was clicked.
     #[prost(bool, tag = "3")]
     pub clicked: bool,
     /// Time when the answer/item was clicked.
@@ -7949,6 +7949,12 @@ pub struct AutomatedAgentConfig {
     /// is used.
     #[prost(string, tag = "1")]
     pub agent: ::prost::alloc::string::String,
+    /// Optional. Sets Dialogflow CX session life time.
+    /// By default, a Dialogflow CX session remains active and its data is stored
+    /// for 30 minutes after the last request is sent for the session. This value
+    /// should be no longer than 1 day.
+    #[prost(message, optional, tag = "3")]
+    pub session_ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Defines the Human Agent Assist to connect to a conversation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8069,7 +8075,8 @@ pub mod human_agent_assistant_config {
         /// If this field is not set, it defaults to 0.0, which means that all
         /// suggestions are returned.
         ///
-        /// Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY, SMART_COMPOSE.
+        /// Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY, SMART_COMPOSE,
+        /// KNOWLEDGE_SEARCH, KNOWLEDGE_ASSIST, ENTITY_EXTRACTION.
         #[prost(float, tag = "5")]
         pub confidence_threshold: f32,
         /// Determines how recent conversation context is filtered when generating
@@ -8119,7 +8126,7 @@ pub mod human_agent_assistant_config {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DialogflowQuerySource {
             /// Required. The name of a Dialogflow virtual agent used for end user side
-            /// intent detection and suggestion. Format: `projects/<Project Number/
+            /// intent detection and suggestion. Format: `projects/<Project
             /// ID>/locations/<Location ID>/agent`. When multiple agents are allowed in
             /// the same Dialogflow project.
             #[prost(string, tag = "1")]
@@ -9158,7 +9165,7 @@ pub struct SuggestConversationSummaryRequest {
     /// suggestion. By default 500 and at most 1000.
     #[prost(int32, tag = "4")]
     pub context_size: i32,
-    /// Parameters for a human assist query.
+    /// Parameters for a human assist query. Only used for POC/demo purpose.
     #[prost(message, optional, tag = "5")]
     pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
 }
@@ -11363,7 +11370,7 @@ pub struct Document {
     ///
     /// If a reload fails with internal errors, the system will try to reload the
     /// document on the next day.
-    /// If a reload fails with non-retriable errors (e.g. PERMISION_DENIED), the
+    /// If a reload fails with non-retriable errors (e.g. PERMISSION_DENIED), the
     /// system will not try to reload the document anymore. You need to manually
     /// reload the document successfully by calling `ReloadDocument` and clear the
     /// errors.
@@ -11660,7 +11667,7 @@ pub mod import_documents_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// The Google Cloud Storage location for the documents.
+        /// Optional. The Google Cloud Storage location for the documents.
         /// The path can include a wildcard.
         ///
         /// These URIs may have the forms

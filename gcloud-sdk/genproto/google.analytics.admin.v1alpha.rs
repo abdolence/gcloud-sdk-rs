@@ -1829,15 +1829,16 @@ pub mod data_stream {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebStreamData {
-        /// Output only. Analytics "Measurement ID", without the "G-" prefix.
-        /// Example: "G-1A2BCD345E" would just be "1A2BCD345E"
+        /// Output only. Analytics Measurement ID.
+        ///
+        /// Example: "G-1A2BCD345E"
         #[prost(string, tag = "1")]
         pub measurement_id: ::prost::alloc::string::String,
         /// Output only. ID of the corresponding web app in Firebase, if any.
         /// This ID can change if the web app is deleted and recreated.
         #[prost(string, tag = "2")]
         pub firebase_app_id: ::prost::alloc::string::String,
-        /// Immutable. Domain name of the web app being measured, or empty.
+        /// Domain name of the web app being measured, or empty.
         /// Example: "<http://www.google.com",> "<https://www.google.com">
         #[prost(string, tag = "3")]
         pub default_uri: ::prost::alloc::string::String,
@@ -2885,6 +2886,13 @@ pub struct AttributionSettings {
     /// revenue data. User and session data will be unaffected.
     #[prost(enumeration = "attribution_settings::ReportingAttributionModel", tag = "4")]
     pub reporting_attribution_model: i32,
+    /// Required. The Conversion Export Scope for data exported to linked Ads
+    /// Accounts.
+    #[prost(
+        enumeration = "attribution_settings::AdsWebConversionDataExportScope",
+        tag = "5"
+    )]
+    pub ads_web_conversion_data_export_scope: i32,
 }
 /// Nested message and enum types in `AttributionSettings`.
 pub mod attribution_settings {
@@ -3035,16 +3043,44 @@ pub mod attribution_settings {
         /// last channel that the customer clicked through (or engaged view through
         /// for YouTube) before converting.
         CrossChannelLastClick = 2,
+        /// Starting in June 2023, new properties can no longer use this model.
+        /// See
+        /// [Analytics
+        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// for more details.
+        /// Starting in September 2023, we will sunset this model for all properties.
+        ///
         /// Gives all credit for the conversion to the first channel that a customer
         /// clicked (or engaged view through for YouTube) before converting.
         CrossChannelFirstClick = 3,
+        /// Starting in June 2023, new properties can no longer use this model.
+        /// See
+        /// [Analytics
+        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// for more details.
+        /// Starting in September 2023, we will sunset this model for all properties.
+        ///
         /// Distributes the credit for the conversion equally across all the channels
         /// a customer clicked (or engaged view through for YouTube) before
         /// converting.
         CrossChannelLinear = 4,
+        /// Starting in June 2023, new properties can no longer use this model.
+        /// See
+        /// [Analytics
+        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// for more details.
+        /// Starting in September 2023, we will sunset this model for all properties.
+        ///
         /// Attributes 40% credit to the first and last interaction, and the
         /// remaining 20% credit is distributed evenly to the middle interactions.
         CrossChannelPositionBased = 5,
+        /// Starting in June 2023, new properties can no longer use this model.
+        /// See
+        /// [Analytics
+        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// for more details.
+        /// Starting in September 2023, we will sunset this model for all properties.
+        ///
         /// Gives more credit to the touchpoints that happened closer in time to
         /// the conversion.
         CrossChannelTimeDecay = 6,
@@ -3094,6 +3130,58 @@ pub mod attribution_settings {
                 "CROSS_CHANNEL_POSITION_BASED" => Some(Self::CrossChannelPositionBased),
                 "CROSS_CHANNEL_TIME_DECAY" => Some(Self::CrossChannelTimeDecay),
                 "ADS_PREFERRED_LAST_CLICK" => Some(Self::AdsPreferredLastClick),
+                _ => None,
+            }
+        }
+    }
+    /// The Conversion Export Scope for data exported to linked Ads Accounts.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdsWebConversionDataExportScope {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// No data export scope selected yet.
+        /// Export scope can never be changed back to this value.
+        NotSelectedYet = 1,
+        /// The Ads Web Conversion Data export scope is Cross Channel.
+        CrossChannel = 2,
+        /// The Ads Web Conversion Data export scope is Ads Preferred.
+        AdsPreferred = 3,
+    }
+    impl AdsWebConversionDataExportScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AdsWebConversionDataExportScope::Unspecified => {
+                    "ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED"
+                }
+                AdsWebConversionDataExportScope::NotSelectedYet => "NOT_SELECTED_YET",
+                AdsWebConversionDataExportScope::CrossChannel => "CROSS_CHANNEL",
+                AdsWebConversionDataExportScope::AdsPreferred => "ADS_PREFERRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "NOT_SELECTED_YET" => Some(Self::NotSelectedYet),
+                "CROSS_CHANNEL" => Some(Self::CrossChannel),
+                "ADS_PREFERRED" => Some(Self::AdsPreferred),
                 _ => None,
             }
         }
@@ -3185,7 +3273,7 @@ pub struct BigQueryLink {
     #[prost(string, repeated, tag = "8")]
     pub excluded_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Singleton resource under a WebDataStream, configuring measurement of
+/// Singleton resource under a web DataStream, configuring measurement of
 /// additional site interactions and content.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

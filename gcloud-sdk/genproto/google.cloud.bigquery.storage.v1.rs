@@ -414,6 +414,13 @@ pub struct ReadSession {
     /// metadata from the table which might be incomplete or stale.
     #[prost(int64, tag = "12")]
     pub estimated_total_bytes_scanned: i64,
+    /// Output only. A pre-projected estimate of the total physical size (in bytes)
+    /// of files this session will scan when all streams are completely consumed.
+    /// This estimate does not depend on the selected columns and can be based on
+    /// metadata from the table which might be incomplete or stale. Only set for
+    /// BigLake tables.
+    #[prost(int64, tag = "15")]
+    pub estimated_total_physical_file_size: i64,
     /// Output only. An estimate on the number of rows present in this session's
     /// streams. This estimate is based on metadata from the table which might be
     /// incomplete or stale.
@@ -509,11 +516,11 @@ pub mod read_session {
         #[prost(string, tag = "2")]
         pub row_restriction: ::prost::alloc::string::String,
         /// Optional. Specifies a table sampling percentage. Specifically, the query
-        /// planner will use TABLESAMPLE SYSTEM (sample_percentage PERCENT). This
-        /// samples at the file-level. It will randomly choose for each file whether
-        /// to include that file in the sample returned. Note, that if the table only
-        /// has one file, then TABLESAMPLE SYSTEM will select that file and return
-        /// all returnable rows contained within.
+        /// planner will use TABLESAMPLE SYSTEM (sample_percentage PERCENT). The
+        /// sampling percentage is applied at the data block granularity. It will
+        /// randomly choose for each data block whether to read the rows in that data
+        /// block. For more details, see
+        /// <https://cloud.google.com/bigquery/docs/table-sampling>)
         #[prost(double, optional, tag = "5")]
         pub sample_percentage: ::core::option::Option<f64>,
         #[prost(

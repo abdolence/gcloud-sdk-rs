@@ -3345,6 +3345,112 @@ pub struct DeleteChannelPartnerRepricingConfigRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for ListSkuGroups.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSkuGroupsRequest {
+    /// Required. The resource name of the account from which to list SKU groups.
+    /// Parent uses the format: accounts/{account}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of SKU groups to return. The service may
+    /// return fewer than this value. If unspecified, returns a maximum of 1000 SKU
+    /// groups. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results beyond the first page.
+    /// Obtained through
+    /// \[ListSkuGroups.next_page_token][\] of the previous
+    /// \[CloudChannelService.ListSkuGroups][google.cloud.channel.v1.CloudChannelService.ListSkuGroups\]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Request message for ListSkuGroupBillableSkus.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSkuGroupBillableSkusRequest {
+    /// Required. Resource name of the SKU group.
+    /// Format: accounts/{account}/skuGroups/{sku_group}.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of SKUs to return. The service may return
+    /// fewer than this value. If unspecified, returns a maximum of 100000 SKUs.
+    /// The maximum value is 100000; values above 100000 will be coerced to 100000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results beyond the first page.
+    /// Obtained through
+    /// \[ListSkuGroupBillableSkus.next_page_token][\] of the previous
+    /// \[CloudChannelService.ListSkuGroupBillableSkus][google.cloud.channel.v1.CloudChannelService.ListSkuGroupBillableSkus\]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListSkuGroups.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSkuGroupsResponse {
+    /// The list of SKU groups requested.
+    #[prost(message, repeated, tag = "1")]
+    pub sku_groups: ::prost::alloc::vec::Vec<SkuGroup>,
+    /// A token to retrieve the next page of results.
+    /// Pass to \[ListSkuGroups.page_token][\] to obtain that
+    /// page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListSkuGroupBillableSkus.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSkuGroupBillableSkusResponse {
+    /// The list of billable SKUs in the requested SKU group.
+    #[prost(message, repeated, tag = "1")]
+    pub billable_skus: ::prost::alloc::vec::Vec<BillableSku>,
+    /// A token to retrieve the next page of results.
+    /// Pass to \[ListSkuGroupBillableSkus.page_token][\] to obtain that
+    /// page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Represents the SKU group information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SkuGroup {
+    /// Resource name of SKU group. Format:
+    /// accounts/{account}/skuGroups/{sku_group}.
+    /// Example:
+    /// "accounts/C01234/skuGroups/3d50fd57-3157-4577-a5a9-a219b8490041".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Unique human readable identifier for the SKU group.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Represents the Billable SKU information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BillableSku {
+    /// Resource name of Billable SKU. Format:
+    /// billableSkus/{sku}.
+    /// Example:
+    /// billableSkus/6E1B-6634-470F".
+    #[prost(string, tag = "1")]
+    pub sku: ::prost::alloc::string::String,
+    /// Unique human readable name for the SKU.
+    #[prost(string, tag = "2")]
+    pub sku_display_name: ::prost::alloc::string::String,
+    /// Resource name of Service which contains Repricing SKU. Format:
+    /// services/{service}.
+    /// Example:
+    /// "services/B7D9-FDCB-15D8".
+    #[prost(string, tag = "3")]
+    pub service: ::prost::alloc::string::String,
+    /// Unique human readable name for the Service.
+    #[prost(string, tag = "4")]
+    pub service_display_name: ::prost::alloc::string::String,
+}
 /// Request message for
 /// \[CloudChannelService.CreateEntitlement][google.cloud.channel.v1.CloudChannelService.CreateEntitlement\]
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6054,6 +6160,104 @@ pub mod cloud_channel_service_client {
                     GrpcMethod::new(
                         "google.cloud.channel.v1.CloudChannelService",
                         "DeleteChannelPartnerRepricingConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the Rebilling supported SKU groups the account is authorized to
+        /// sell.
+        /// Reference: https://cloud.google.com/skus/sku-groups
+        ///
+        /// Possible Error Codes:
+        ///
+        /// * PERMISSION_DENIED: If the account making the request and the account
+        /// being queried are different, or the account doesn't exist.
+        /// * INTERNAL: Any non-user error related to technical issues in the
+        /// backend. In this case, contact Cloud Channel support.
+        ///
+        /// Return Value:
+        /// If successful, the [SkuGroup][google.cloud.channel.v1.SkuGroup] resources.
+        /// The data for each resource is displayed in the alphabetical order of SKU
+        /// group display name.
+        /// The data for each resource is displayed in the ascending order of
+        /// [SkuGroup.display_name][google.cloud.channel.v1.SkuGroup.display_name]
+        ///
+        /// If unsuccessful, returns an error.
+        pub async fn list_sku_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSkuGroupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSkuGroupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.channel.v1.CloudChannelService/ListSkuGroups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.channel.v1.CloudChannelService",
+                        "ListSkuGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the Billable SKUs in a given SKU group.
+        ///
+        /// Possible error codes:
+        /// PERMISSION_DENIED: If the account making the request and the account
+        /// being queried for are different, or the account doesn't exist.
+        /// INVALID_ARGUMENT: Missing or invalid required parameters in the
+        /// request.
+        /// INTERNAL: Any non-user error related to technical issue in the
+        /// backend. In this case, contact cloud channel support.
+        ///
+        /// Return Value:
+        /// If successful, the [BillableSku][google.cloud.channel.v1.BillableSku]
+        /// resources. The data for each resource is displayed in the ascending order
+        /// of:
+        ///
+        /// * [BillableSku.service_display_name][google.cloud.channel.v1.BillableSku.service_display_name]
+        /// * [BillableSku.sku_display_name][google.cloud.channel.v1.BillableSku.sku_display_name]
+        ///
+        /// If unsuccessful, returns an error.
+        pub async fn list_sku_group_billable_skus(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSkuGroupBillableSkusRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSkuGroupBillableSkusResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.channel.v1.CloudChannelService/ListSkuGroupBillableSkus",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.channel.v1.CloudChannelService",
+                        "ListSkuGroupBillableSkus",
                     ),
                 );
             self.inner.unary(req, path, codec).await

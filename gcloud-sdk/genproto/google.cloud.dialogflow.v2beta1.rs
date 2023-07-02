@@ -6810,12 +6810,13 @@ pub struct Participant {
     ///     Dialogflow will update
     ///     \[Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2beta1.Participant.obfuscated_external_user_id\].
     ///
-    /// Dialogflow uses this user id for following purposes:
-    /// 1) Billing and measurement. If user with the same
-    /// obfuscated_external_user_id is created in a later conversation, dialogflow
-    /// will know it's the same user. 2) Agent assist suggestion personalization.
-    /// For example, Dialogflow can use it to provide personalized smart reply
-    /// suggestions for this user.
+    /// Dialogflow uses this user id for billing and measurement. If a user with
+    /// the same obfuscated_external_user_id is created in a later conversation,
+    /// Dialogflow will know it's the same user.
+    ///
+    /// Dialogflow also uses this user id for Agent Assist suggestion
+    /// personalization. For example, Dialogflow can use it to provide personalized
+    /// smart reply suggestions for this user.
     ///
     /// Note:
     ///
@@ -7150,6 +7151,69 @@ pub mod automated_agent_reply {
         Event(::prost::alloc::string::String),
     }
 }
+/// Represents the selection of a suggestion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestionInput {
+    /// Required. The ID of a suggestion selected by the human agent.
+    /// The suggestion(s) were generated in a previous call to
+    /// request Dialogflow assist.
+    /// The format is:
+    /// `projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record
+    /// ID>` where <Answer Record ID> is an alphanumeric string.
+    #[prost(string, tag = "1")]
+    pub answer_record: ::prost::alloc::string::String,
+    /// Optional. If the customer edited the suggestion before using it, include
+    /// the revised text here.
+    #[prost(message, optional, tag = "2")]
+    pub text_override: ::core::option::Option<TextInput>,
+    /// In Dialogflow assist for v3, the user can submit a form by sending
+    /// a \[SuggestionInput][google.cloud.dialogflow.v2beta1.SuggestionInput\]. The
+    /// form is uniquely determined by the
+    /// \[answer_record][google.cloud.dialogflow.v2beta1.SuggestionInput.answer_record\]
+    /// field, which identifies a v3
+    /// \[QueryResult][google.cloud.dialogflow.v3alpha1.QueryResult\] containing the
+    /// current \[page][google.cloud.dialogflow.v3alpha1.Page\]. The form parameters
+    /// are specified via the
+    /// \[parameters][google.cloud.dialogflow.v2beta1.SuggestionInput.parameters\]
+    /// field.
+    ///
+    /// Depending on your protocol or client library language, this is a
+    /// map, associative array, symbol table, dictionary, or JSON object
+    /// composed of a collection of (MapKey, MapValue) pairs:
+    ///
+    /// -   MapKey type: string
+    /// -   MapKey value: parameter name
+    /// -   MapValue type:
+    ///      -   If parameter's entity type is a composite entity: map
+    ///      -   Else: depending on parameter value type, could be one of string,
+    ///          number, boolean, null, list or map
+    /// -   MapValue value:
+    ///      -   If parameter's entity type is a composite entity:
+    ///          map from composite entity property names to property values
+    ///      -   Else: parameter value
+    #[prost(message, optional, tag = "4")]
+    pub parameters: ::core::option::Option<::prost_types::Struct>,
+    /// The intent to be triggered on V3 agent.
+    #[prost(message, optional, tag = "6")]
+    pub intent_input: ::core::option::Option<IntentInput>,
+}
+/// Represents the intent to trigger programmatically rather than as a result of
+/// natural language processing. The intent input is only used for V3 agent.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntentInput {
+    /// Required. The unique identifier of the intent in V3 agent.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/intents/<Intent ID>`.
+    #[prost(string, tag = "1")]
+    pub intent: ::prost::alloc::string::String,
+    /// Required. The language of this conversational query. See [Language
+    /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>)
+    /// for a list of the currently supported language codes.
+    #[prost(string, tag = "3")]
+    pub language_code: ::prost::alloc::string::String,
+}
 /// The type of Human Agent Assistant API suggestion to perform, and the maximum
 /// number of results to return for that type. Multiple `Feature` objects can
 /// be specified in the `features` list.
@@ -7184,6 +7248,9 @@ pub mod suggestion_feature {
         Faq = 2,
         /// Run smart reply model for chat.
         SmartReply = 3,
+        /// Run Dialogflow assist model for chat, which will return automated agent
+        /// response as suggestion.
+        DialogflowAssist = 4,
         /// Run conversation summarization model for chat.
         ConversationSummarization = 8,
     }
@@ -7198,6 +7265,7 @@ pub mod suggestion_feature {
                 Type::ArticleSuggestion => "ARTICLE_SUGGESTION",
                 Type::Faq => "FAQ",
                 Type::SmartReply => "SMART_REPLY",
+                Type::DialogflowAssist => "DIALOGFLOW_ASSIST",
                 Type::ConversationSummarization => "CONVERSATION_SUMMARIZATION",
             }
         }
@@ -7208,6 +7276,7 @@ pub mod suggestion_feature {
                 "ARTICLE_SUGGESTION" => Some(Self::ArticleSuggestion),
                 "FAQ" => Some(Self::Faq),
                 "SMART_REPLY" => Some(Self::SmartReply),
+                "DIALOGFLOW_ASSIST" => Some(Self::DialogflowAssist),
                 "CONVERSATION_SUMMARIZATION" => Some(Self::ConversationSummarization),
                 _ => None,
             }
@@ -7310,7 +7379,7 @@ pub struct AnalyzeContentRequest {
     #[prost(string, tag = "11")]
     pub request_id: ::prost::alloc::string::String,
     /// Required. The input content.
-    #[prost(oneof = "analyze_content_request::Input", tags = "6, 7, 8")]
+    #[prost(oneof = "analyze_content_request::Input", tags = "6, 7, 8, 12")]
     pub input: ::core::option::Option<analyze_content_request::Input>,
 }
 /// Nested message and enum types in `AnalyzeContentRequest`.
@@ -7328,6 +7397,9 @@ pub mod analyze_content_request {
         /// An input event to send to Dialogflow.
         #[prost(message, tag = "8")]
         EventInput(super::EventInput),
+        /// An input representing the selection of a suggestion.
+        #[prost(message, tag = "12")]
+        SuggestionInput(super::SuggestionInput),
     }
 }
 /// The message in the response that indicates the parameters of DTMF.
@@ -7746,6 +7818,62 @@ pub struct SmartReplyAnswer {
     #[prost(string, tag = "3")]
     pub answer_record: ::prost::alloc::string::String,
 }
+/// Represents an intent suggestion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntentSuggestion {
+    /// The display name of the intent.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Human readable description for better understanding an intent like its
+    /// scope, content, result etc. Maximum character limit: 140 characters.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// The name of the intent.
+    #[prost(oneof = "intent_suggestion::Intent", tags = "2")]
+    pub intent: ::core::option::Option<intent_suggestion::Intent>,
+}
+/// Nested message and enum types in `IntentSuggestion`.
+pub mod intent_suggestion {
+    /// The name of the intent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Intent {
+        /// The unique identifier of this
+        /// \[intent][google.cloud.dialogflow.v2beta1.Intent\]. Format:
+        /// `projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent
+        /// ID>`.
+        #[prost(string, tag = "2")]
+        IntentV2(::prost::alloc::string::String),
+    }
+}
+/// Represents a Dialogflow assist answer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DialogflowAssistAnswer {
+    /// The name of answer record, in the format of
+    /// "projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record
+    /// ID>"
+    #[prost(string, tag = "2")]
+    pub answer_record: ::prost::alloc::string::String,
+    /// Result from DetectIntent for one matched intent.
+    #[prost(oneof = "dialogflow_assist_answer::Result", tags = "1, 5")]
+    pub result: ::core::option::Option<dialogflow_assist_answer::Result>,
+}
+/// Nested message and enum types in `DialogflowAssistAnswer`.
+pub mod dialogflow_assist_answer {
+    /// Result from DetectIntent for one matched intent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Result from v2 agent.
+        #[prost(message, tag = "1")]
+        QueryResult(super::QueryResult),
+        /// An intent suggestion generated from conversation.
+        #[prost(message, tag = "5")]
+        IntentSuggestion(super::IntentSuggestion),
+    }
+}
 /// One response of different type of suggestion response which is used in
 /// the response of
 /// \[Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent\]
@@ -7757,7 +7885,7 @@ pub struct SmartReplyAnswer {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestionResult {
     /// Different type of suggestion response.
-    #[prost(oneof = "suggestion_result::SuggestionResponse", tags = "1, 2, 3, 4")]
+    #[prost(oneof = "suggestion_result::SuggestionResponse", tags = "1, 2, 3, 4, 5, 7")]
     pub suggestion_response: ::core::option::Option<
         suggestion_result::SuggestionResponse,
     >,
@@ -7780,6 +7908,12 @@ pub mod suggestion_result {
         /// SuggestSmartRepliesResponse if request is for SMART_REPLY.
         #[prost(message, tag = "4")]
         SuggestSmartRepliesResponse(super::SuggestSmartRepliesResponse),
+        /// SuggestDialogflowAssistsResponse if request is for DIALOGFLOW_ASSIST.
+        #[prost(message, tag = "5")]
+        SuggestDialogflowAssistsResponse(super::SuggestDialogflowAssistsResponse),
+        /// SuggestDialogflowAssistsResponse if request is for ENTITY_EXTRACTION.
+        #[prost(message, tag = "7")]
+        SuggestEntityExtractionResponse(super::SuggestDialogflowAssistsResponse),
     }
 }
 /// The request message for
@@ -7932,6 +8066,30 @@ pub struct SuggestSmartRepliesResponse {
     /// \[latest_message][google.cloud.dialogflow.v2beta1.SuggestSmartRepliesResponse.latest_message\]
     /// to compile the suggestion. It may be smaller than the
     /// \[SuggestSmartRepliesRequest.context_size][google.cloud.dialogflow.v2beta1.SuggestSmartRepliesRequest.context_size\]
+    /// field in the request if there aren't that many messages in the
+    /// conversation.
+    #[prost(int32, tag = "3")]
+    pub context_size: i32,
+}
+/// The response message for
+/// \[Participants.SuggestDialogflowAssists][google.cloud.dialogflow.v2beta1.Participants.SuggestDialogflowAssists\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestDialogflowAssistsResponse {
+    /// Output only. Multiple reply options provided by Dialogflow assist
+    /// service. The order is based on the rank of the model prediction.
+    #[prost(message, repeated, tag = "1")]
+    pub dialogflow_assist_answers: ::prost::alloc::vec::Vec<DialogflowAssistAnswer>,
+    /// The name of the latest conversation message used to suggest answer.
+    ///
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "2")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Number of messages prior to and including
+    /// \[latest_message][google.cloud.dialogflow.v2beta1.SuggestDialogflowAssistsResponse.latest_message\]
+    /// to compile the suggestion. It may be smaller than the
+    /// \[SuggestDialogflowAssistsRequest.context_size][google.cloud.dialogflow.v2beta1.SuggestDialogflowAssistsRequest.context_size\]
     /// field in the request if there aren't that many messages in the
     /// conversation.
     #[prost(int32, tag = "3")]
@@ -8141,6 +8299,7 @@ pub mod response_message {
     /// is up to you and your handoff procedures.
     ///
     /// You may set this, for example:
+    ///
     /// * In the entry fulfillment of a CX Page if entering the page indicates
     ///    something went extremely wrong in the conversation.
     /// * In a webhook response when you determine that the customer issue can only
@@ -8801,7 +8960,7 @@ pub mod answer_record {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentAssistantRecord {
     /// Output only. The agent assistant answer.
-    #[prost(oneof = "agent_assistant_record::Answer", tags = "5, 6")]
+    #[prost(oneof = "agent_assistant_record::Answer", tags = "5, 6, 7")]
     pub answer: ::core::option::Option<agent_assistant_record::Answer>,
 }
 /// Nested message and enum types in `AgentAssistantRecord`.
@@ -8816,6 +8975,9 @@ pub mod agent_assistant_record {
         /// Output only. The FAQ answer.
         #[prost(message, tag = "6")]
         FaqAnswer(super::FaqAnswer),
+        /// Output only. The Dialogflow assist answer.
+        #[prost(message, tag = "7")]
+        DialogflowAssistAnswer(super::DialogflowAssistAnswer),
     }
 }
 /// Represents feedback the customer has about the quality & correctness of a
@@ -9429,6 +9591,12 @@ pub struct AutomatedAgentConfig {
     /// is used.
     #[prost(string, tag = "1")]
     pub agent: ::prost::alloc::string::String,
+    /// Optional. Sets Dialogflow CX session life time.
+    /// By default, a Dialogflow CX session remains active and its data is stored
+    /// for 30 minutes after the last request is sent for the session. This value
+    /// should be no longer than 1 day.
+    #[prost(message, optional, tag = "3")]
+    pub session_ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Defines the Human Agent Assistant to connect to a conversation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9550,7 +9718,8 @@ pub mod human_agent_assistant_config {
         /// If this field is not set, it is default to 0.0, which means that all
         /// suggestions are returned.
         ///
-        /// Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY, SMART_COMPOSE.
+        /// Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY, SMART_COMPOSE,
+        /// KNOWLEDGE_SEARCH, KNOWLEDGE_ASSIST, ENTITY_EXTRACTION.
         #[prost(float, tag = "5")]
         pub confidence_threshold: f32,
         /// Determines how recent conversation context is filtered when generating
@@ -9600,11 +9769,30 @@ pub mod human_agent_assistant_config {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DialogflowQuerySource {
             /// Required. The name of a dialogflow virtual agent used for end user side
-            /// intent detection and suggestion. Format: `projects/<Project Number /
+            /// intent detection and suggestion. Format: `projects/<Project
             /// ID>/locations/<Location ID>/agent`. When multiple agents are allowed in
             /// the same Dialogflow project.
             #[prost(string, tag = "1")]
             pub agent: ::prost::alloc::string::String,
+            /// The Dialogflow assist configuration for human agent.
+            #[prost(message, optional, tag = "3")]
+            pub human_agent_side_config: ::core::option::Option<
+                dialogflow_query_source::HumanAgentSideConfig,
+            >,
+        }
+        /// Nested message and enum types in `DialogflowQuerySource`.
+        pub mod dialogflow_query_source {
+            /// The configuration used for human agent side Dialogflow assist
+            /// suggestion.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct HumanAgentSideConfig {
+                /// Optional. The name of a dialogflow virtual agent used for intent
+                /// detection and suggestion triggered by human agent.
+                /// Format: `projects/<Project ID>/locations/<Location ID>/agent`.
+                #[prost(string, tag = "1")]
+                pub agent: ::prost::alloc::string::String,
+            }
         }
         /// Settings that determine how to filter recent conversation context when
         /// generating suggestions.
@@ -10621,7 +10809,7 @@ pub struct BatchCreateMessagesRequest {
     /// ID>/conversations/<Conversation ID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. A maximum of 1000 Messages can be created in a batch.
+    /// Required. A maximum of 300 messages can be created in a batch.
     /// \[CreateMessageRequest.message.send_time][\] is required. All created
     /// messages will have identical
     /// \[Message.create_time][google.cloud.dialogflow.v2beta1.Message.create_time\].
@@ -10702,7 +10890,7 @@ pub struct SuggestConversationSummaryRequest {
     /// suggestion. By default 500 and at most 1000.
     #[prost(int32, tag = "4")]
     pub context_size: i32,
-    /// Parameters for a human assist query.
+    /// Parameters for a human assist query. Only used for POC/demo purpose.
     #[prost(message, optional, tag = "5")]
     pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
 }
@@ -11681,7 +11869,7 @@ pub mod import_documents_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// The Google Cloud Storage location for the documents.
+        /// Optional. The Google Cloud Storage location for the documents.
         /// The path can include a wildcard.
         ///
         /// These URIs may have the forms
@@ -12575,9 +12763,9 @@ pub mod fulfillments_client {
 pub struct Environment {
     /// Output only. The unique identifier of this agent environment.
     /// Supported formats:
-    /// - `projects/<Project Number / ID>/agent/environments/<Environment ID>`
-    /// - `projects/<Project Number / ID>/locations/<Location
-    ///    ID>/agent/environments/<Environment ID>`
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>`
+    /// - `projects/<Project ID>/locations/<Location
+    /// ID>/agent/environments/<Environment ID>`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The developer-provided description for this environment.
@@ -12588,7 +12776,7 @@ pub struct Environment {
     /// Supported formats:
     /// - `projects/<Project ID>/agent/versions/<Version ID>`
     /// - `projects/<Project ID>/locations/<Location ID>/agent/versions/<Version
-    ///    ID>`
+    /// ID>`
     #[prost(string, tag = "3")]
     pub agent_version: ::prost::alloc::string::String,
     /// Output only. The state of this environment. This field is read-only, i.e.,
@@ -12694,8 +12882,8 @@ pub struct TextToSpeechSettings {
 pub struct ListEnvironmentsRequest {
     /// Required. The agent to list all environments from.
     /// Format:
-    /// - `projects/<Project Number / ID>/agent`
-    /// - `projects/<Project Number / ID>/locations/<Location ID>/agent`
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By
@@ -12727,8 +12915,8 @@ pub struct ListEnvironmentsResponse {
 pub struct GetEnvironmentRequest {
     /// Required. The name of the environment.
     /// Supported formats:
-    /// - `projects/<Project Number / ID>/agent/environments/<Environment ID>`
-    /// - `projects/<Project Number / ID>/locations/<Location
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>`
+    /// - `projects/<Project ID>/locations/<Location
     ///    ID>/agent/environments/<Environment ID>`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -12740,8 +12928,8 @@ pub struct GetEnvironmentRequest {
 pub struct CreateEnvironmentRequest {
     /// Required. The agent to create an environment for.
     /// Supported formats:
-    /// - `projects/<Project Number / ID>/agent`
-    /// - `projects/<Project Number / ID>/locations/<Location ID>/agent`
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The environment to create.
@@ -12776,8 +12964,8 @@ pub struct UpdateEnvironmentRequest {
 pub struct DeleteEnvironmentRequest {
     /// Required. The name of the environment to delete.
     /// / Format:
-    /// - `projects/<Project Number / ID>/agent/environments/<Environment ID>`
-    /// - `projects/<Project Number / ID>/locations/<Location
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>`
+    /// - `projects/<Project ID>/locations/<Location
     /// ID>/agent/environments/<Environment ID>`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -12789,8 +12977,8 @@ pub struct DeleteEnvironmentRequest {
 pub struct GetEnvironmentHistoryRequest {
     /// Required. The name of the environment to retrieve history for.
     /// Supported formats:
-    /// - `projects/<Project Number / ID>/agent/environments/<Environment ID>`
-    /// - `projects/<Project Number / ID>/locations/<Location
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>`
+    /// - `projects/<Project ID>/locations/<Location
     ///    ID>/agent/environments/<Environment ID>`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -12809,8 +12997,8 @@ pub struct GetEnvironmentHistoryRequest {
 pub struct EnvironmentHistory {
     /// Output only. The name of the environment this history is for.
     /// Supported formats:
-    /// - `projects/<Project Number / ID>/agent/environments/<Environment ID>`
-    /// - `projects/<Project Number / ID>/locations/<Location
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>`
+    /// - `projects/<Project ID>/locations/<Location
     ///     ID>/agent/environments/<Environment ID>`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,

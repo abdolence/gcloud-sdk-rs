@@ -2383,10 +2383,6 @@ pub mod search_request {
         /// search result.
         #[prost(message, optional, tag = "1")]
         pub snippet_spec: ::core::option::Option<content_search_spec::SnippetSpec>,
-        /// If there is no summary spec provided, there will be no summary in the
-        /// search response.
-        #[prost(message, optional, tag = "2")]
-        pub summary_spec: ::core::option::Option<content_search_spec::SummarySpec>,
     }
     /// Nested message and enum types in `ContentSearchSpec`.
     pub mod content_search_spec {
@@ -2404,19 +2400,6 @@ pub mod search_request {
             /// if true, only snippet reference is returned.
             #[prost(bool, tag = "2")]
             pub reference_only: bool,
-        }
-        /// The specification that configs the summary in the search response.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct SummarySpec {
-            /// The number of top results the summary should be generated from.
-            /// If the number of returned results is less than summary_result_count,
-            /// then the summary would be derived from all the results; otherwise, the
-            /// summary would be derived from the top results.
-            ///
-            /// At most 5 results can be used for generating summary.
-            #[prost(int32, tag = "1")]
-            pub summary_result_count: i32,
         }
     }
 }
@@ -2453,12 +2436,6 @@ pub struct SearchResponse {
     /// Otherwise the original query is used for search.
     #[prost(string, tag = "7")]
     pub corrected_query: ::prost::alloc::string::String,
-    /// A summary as part of the search results.
-    /// This field is only returned if
-    /// \[SearchRequest.ContentSearchSpec.summary_spec][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.summary_spec\]
-    /// is set.
-    #[prost(message, optional, tag = "9")]
-    pub summary: ::core::option::Option<search_response::Summary>,
 }
 /// Nested message and enum types in `SearchResponse`.
 pub mod search_response {
@@ -2474,14 +2451,6 @@ pub mod search_response {
         /// marked as retrievable are populated.
         #[prost(message, optional, tag = "2")]
         pub document: ::core::option::Option<super::Document>,
-    }
-    /// Summary of the top N search result specified by the summary spec.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Summary {
-        /// The summary content.
-        #[prost(string, tag = "1")]
-        pub summary_text: ::prost::alloc::string::String,
     }
 }
 /// Generated client implementations.

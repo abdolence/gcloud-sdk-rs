@@ -775,6 +775,16 @@ pub struct ReadRowsRequest {
     /// The view into RequestStats, as described above.
     #[prost(enumeration = "read_rows_request::RequestStatsView", tag = "6")]
     pub request_stats_view: i32,
+    /// Experimental API - Please note that this API is currently experimental
+    /// and can change in the future.
+    ///
+    /// Return rows in lexiographical descending order of the row keys. The row
+    /// contents will not be affected by this flag.
+    /// Example result set: [
+    /// {key: "k2", "f:col1": "v1", "f:col2": "v1"}, {key: "k1", "f:col1": "v2",
+    /// "f:col2": "v2"} ].
+    #[prost(bool, tag = "7")]
+    pub reversed: bool,
 }
 /// Nested message and enum types in `ReadRowsRequest`.
 pub mod read_rows_request {
@@ -1866,6 +1876,10 @@ pub mod bigtable_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureFlags {
+    /// Notify the server that the client supports reverse scans. The server will
+    /// reject ReadRowsRequests with the reverse bit set when this is absent.
+    #[prost(bool, tag = "1")]
+    pub reverse_scans: bool,
     /// Notify the server that the client enables batch write flow control by
     /// requesting RateLimitInfo from MutateRowsResponse.
     #[prost(bool, tag = "3")]

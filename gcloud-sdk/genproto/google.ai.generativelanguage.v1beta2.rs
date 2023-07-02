@@ -218,8 +218,6 @@ pub mod safety_setting {
         BlockMediumAndAbove = 2,
         /// Content with NEGLIGIBLE, LOW, and MEDIUM will be allowed.
         BlockOnlyHigh = 3,
-        /// All content will be allowed.
-        BlockNone = 4,
     }
     impl HarmBlockThreshold {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -232,7 +230,6 @@ pub mod safety_setting {
                 HarmBlockThreshold::BlockLowAndAbove => "BLOCK_LOW_AND_ABOVE",
                 HarmBlockThreshold::BlockMediumAndAbove => "BLOCK_MEDIUM_AND_ABOVE",
                 HarmBlockThreshold::BlockOnlyHigh => "BLOCK_ONLY_HIGH",
-                HarmBlockThreshold::BlockNone => "BLOCK_NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -242,7 +239,6 @@ pub mod safety_setting {
                 "BLOCK_LOW_AND_ABOVE" => Some(Self::BlockLowAndAbove),
                 "BLOCK_MEDIUM_AND_ABOVE" => Some(Self::BlockMediumAndAbove),
                 "BLOCK_ONLY_HIGH" => Some(Self::BlockOnlyHigh),
-                "BLOCK_NONE" => Some(Self::BlockNone),
                 _ => None,
             }
         }
@@ -367,11 +363,6 @@ pub struct GenerateMessageResponse {
     /// This indicates which `SafetyCategory`(s) blocked a
     /// candidate from this response, the lowest `HarmProbability`
     /// that triggered a block, and the HarmThreshold setting for that category.
-    /// This indicates the smallest change to the `SafetySettings` that would be
-    /// necessary to unblock at least 1 response.
-    ///
-    /// The blocking is configured by the `SafetySettings` in the request (or the
-    /// default `SafetySettings` of the API).
     #[prost(message, repeated, tag = "3")]
     pub filters: ::prost::alloc::vec::Vec<ContentFilter>,
 }
@@ -459,10 +450,10 @@ pub struct MessagePrompt {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Example {
-    /// An example of an input `Message` from the user.
+    /// Required. An example of an input `Message` from the user.
     #[prost(message, optional, tag = "1")]
     pub input: ::core::option::Option<Message>,
-    /// An example of what the model should output given the input.
+    /// Required. An example of what the model should output given the input.
     #[prost(message, optional, tag = "2")]
     pub output: ::core::option::Option<Message>,
 }

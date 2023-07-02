@@ -2213,7 +2213,7 @@ pub struct Backup {
     #[prost(string, tag = "2")]
     pub source_table: ::prost::alloc::string::String,
     /// Required. The expiration time of the backup, with microseconds
-    /// granularity that must be at least 6 hours and at most 30 days
+    /// granularity that must be at least 6 hours and at most 90 days
     /// from the time the request is received. Once the `expire_time`
     /// has passed, Cloud Bigtable will delete the backup and free the
     /// resources used by the backup.

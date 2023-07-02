@@ -1223,6 +1223,9 @@ pub struct ExistenceFilter {
     ///
     /// If different from the count of documents in the client that match, the
     /// client must manually determine which documents no longer match the target.
+    ///
+    /// The client can use the `unchanged_names` bloom filter to assist with
+    /// this determination.
     #[prost(int32, tag = "2")]
     pub count: i32,
     /// A bloom filter that contains the UTF-8 byte encodings of the resource names

@@ -22,6 +22,9 @@ pub struct Access {
     /// system shell or an embedded or standalone application.
     #[prost(string, tag = "4")]
     pub user_agent_family: ::prost::alloc::string::String,
+    /// The caller's user agent string associated with the finding.
+    #[prost(string, tag = "12")]
+    pub user_agent: ::prost::alloc::string::String,
     /// This is the API service that the service account made a call to, e.g.
     /// "iam.googleapis.com"
     #[prost(string, tag = "5")]
@@ -325,6 +328,55 @@ pub struct CloudDlpDataProfile {
     /// `projects/123/locations/europe/tableProfiles/8383929`.
     #[prost(string, tag = "1")]
     pub data_profile: ::prost::alloc::string::String,
+    /// The resource hierarchy level at which the data profile was generated.
+    #[prost(enumeration = "cloud_dlp_data_profile::ParentType", tag = "2")]
+    pub parent_type: i32,
+}
+/// Nested message and enum types in `CloudDlpDataProfile`.
+pub mod cloud_dlp_data_profile {
+    /// Parents for configurations that produce data profile findings.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ParentType {
+        /// Unspecified parent type.
+        Unspecified = 0,
+        /// Organization-level configurations.
+        Organization = 1,
+        /// Project-level configurations.
+        Project = 2,
+    }
+    impl ParentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ParentType::Unspecified => "PARENT_TYPE_UNSPECIFIED",
+                ParentType::Organization => "ORGANIZATION",
+                ParentType::Project => "PROJECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PARENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ORGANIZATION" => Some(Self::Organization),
+                "PROJECT" => Some(Self::Project),
+                _ => None,
+            }
+        }
+    }
 }
 /// Details about the Cloud Data Loss Prevention (Cloud DLP) [inspection
 /// job](<https://cloud.google.com/dlp/docs/concepts-job-triggers>) that produced
@@ -336,8 +388,8 @@ pub struct CloudDlpInspection {
     /// `projects/123/locations/europe/dlpJobs/i-8383929`.
     #[prost(string, tag = "1")]
     pub inspect_job: ::prost::alloc::string::String,
-    /// The [type of
-    /// information](<https://cloud.google.com/dlp/docs/infotypes-reference>) found,
+    /// The type of information (or
+    /// *\[infoType\](<https://cloud.google.com/dlp/docs/infotypes-reference>)*) found,
     /// for example, `EMAIL_ADDRESS` or `STREET_ADDRESS`.
     #[prost(string, tag = "2")]
     pub info_type: ::prost::alloc::string::String,
@@ -354,14 +406,14 @@ pub struct CloudDlpInspection {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Compliance {
-    /// Refers to industry wide standards or benchmarks e.g. "cis", "pci", "owasp",
-    /// etc.
+    /// Industry-wide compliance standards or benchmarks, such as CIS, PCI, and
+    /// OWASP.
     #[prost(string, tag = "1")]
     pub standard: ::prost::alloc::string::String,
-    /// Version of the standard/benchmark e.g. 1.1
+    /// Version of the standard or benchmark, for example, 1.1
     #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
-    /// Policies within the standard/benchmark e.g. A.12.4.1
+    /// Policies within the standard or benchmark, for example, A.12.4.1
     #[prost(string, repeated, tag = "3")]
     pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -445,7 +497,7 @@ pub mod connection {
         }
     }
 }
-/// The details pertaining to specific contacts
+/// Details about specific contacts
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContactDetails {
@@ -461,15 +513,17 @@ pub struct Contact {
     #[prost(string, tag = "1")]
     pub email: ::prost::alloc::string::String,
 }
-/// Label represents a generic name=value label. Label has separate name and
-/// value fields to support filtering with contains().
+/// Represents a generic name-value label. A label has separate name and value
+/// fields to support filtering with the `contains()` function. For more
+/// information, see [Filtering on array-type
+/// fields](<https://cloud.google.com/security-command-center/docs/how-to-api-list-findings#array-contains-filtering>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Label {
-    /// Label name.
+    /// Name of the label.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Label value.
+    /// Value that corresponds to the label's name.
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
 }
@@ -477,48 +531,53 @@ pub struct Label {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Container {
-    /// Container name.
+    /// Name of the container.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Container image URI provided when configuring a pod/container.
-    /// May identify a container image version using mutable tags.
+    /// Container image URI provided when configuring a pod or container. This
+    /// string can identify a container image version using mutable tags.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// Optional container image id, when provided by the container runtime.
-    /// Uniquely identifies the container image launched using a container image
-    /// digest.
+    /// Optional container image ID, if provided by the container runtime. Uniquely
+    /// identifies the container image launched using a container image digest.
     #[prost(string, tag = "3")]
     pub image_id: ::prost::alloc::string::String,
     /// Container labels, as provided by the container runtime.
     #[prost(message, repeated, tag = "4")]
     pub labels: ::prost::alloc::vec::Vec<Label>,
 }
-/// Represents database access information, such as queries.
-/// A database may be a sub-resource of an instance (as in the case of CloudSQL
-/// instances or Cloud Spanner instances), or the database instance itself.
-/// Some database resources may not have the full resource name populated
-/// because these resource types are not yet supported by Cloud Asset Inventory
-/// (e.g. CloudSQL databases). In these cases only the display name will be
+/// Represents database access information, such as queries. A database may be a
+/// sub-resource of an instance (as in the case of Cloud SQL instances or Cloud
+/// Spanner instances), or the database instance itself. Some database resources
+/// might not have the [full resource
+/// name](<https://google.aip.dev/122#full-resource-names>) populated because these
+/// resource types, such as Cloud SQL databases, are not yet supported by Cloud
+/// Asset Inventory. In these cases only the display name is provided.
+/// Some database resources may not have the [full resource
+/// name](<https://google.aip.dev/122#full-resource-names>) populated because
+/// these resource types are not yet supported by Cloud Asset Inventory (e.g.
+/// Cloud SQL databases). In these cases only the display name will be
 /// provided.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
-    /// The full resource name of the database the user connected to, if it is
-    /// supported by CAI. (<https://google.aip.dev/122#full-resource-names>)
+    /// The [full resource name](<https://google.aip.dev/122#full-resource-names>) of
+    /// the database that the user connected to, if it is supported by Cloud Asset
+    /// Inventory.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The human readable name of the database the user connected to.
+    /// The human-readable name of the database that the user connected to.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// The username used to connect to the DB. This may not necessarily be an IAM
-    /// principal, and has no required format.
+    /// The username used to connect to the database. The username might not be an
+    /// IAM principal and does not have a set format.
     #[prost(string, tag = "3")]
     pub user_name: ::prost::alloc::string::String,
-    /// The SQL statement associated with the relevant access.
+    /// The SQL statement that is associated with the database access.
     #[prost(string, tag = "4")]
     pub query: ::prost::alloc::string::String,
-    /// The target usernames/roles/groups of a SQL privilege grant (not an IAM
-    /// policy change).
+    /// The target usernames, roles, or groups of an SQL privilege grant, which is
+    /// not an IAM policy change.
     #[prost(string, repeated, tag = "5")]
     pub grantees: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -728,10 +787,10 @@ pub mod effective_security_health_analytics_custom_module {
         }
     }
 }
-/// Exfiltration represents a data exfiltration attempt of one or more
-/// sources to one or more targets. Sources represent the source
-/// of data that is exfiltrated, and Targets represents the destination the
-/// data was copied to.
+/// Exfiltration represents a data exfiltration attempt from one or more sources
+/// to one or more targets. The `sources` attribute lists the sources of the
+/// exfiltrated data. The `targets` attribute lists the destinations the data was
+/// copied to.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Exfiltration {
@@ -745,17 +804,19 @@ pub struct Exfiltration {
     #[prost(message, repeated, tag = "2")]
     pub targets: ::prost::alloc::vec::Vec<ExfilResource>,
 }
-/// Resource that has been exfiltrated or exfiltrated_to.
+/// Resource where data was exfiltrated from or exfiltrated to.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExfilResource {
-    /// Resource's URI (<https://google.aip.dev/122#full-resource-names>)
+    /// The resource's [full resource
+    /// name](<https://cloud.google.com/apis/design/resource_names#full_resource_name>).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Subcomponents of the asset that is exfiltrated - these could be
-    /// URIs used during exfiltration, table names, databases, filenames, etc.
-    /// For example, multiple tables may be exfiltrated from the same CloudSQL
-    /// instance, or multiple files from the same Cloud Storage bucket.
+    /// Subcomponents of the asset that was exfiltrated, like URIs used during
+    /// exfiltration, table names, databases, and filenames. For example, multiple
+    /// tables might have been exfiltrated from the same Cloud SQL instance, or
+    /// multiple files might have been exfiltrated from the same Cloud Storage
+    /// bucket.
     #[prost(string, repeated, tag = "2")]
     pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -808,8 +869,7 @@ pub struct File {
     /// True when the hash covers only a prefix of the file.
     #[prost(bool, tag = "5")]
     pub partially_hashed: bool,
-    /// Prefix of the file contents as a JSON encoded string.
-    /// (Currently only populated for Malicious Script Executed findings.)
+    /// Prefix of the file contents as a JSON-encoded string.
     #[prost(string, tag = "6")]
     pub contents: ::prost::alloc::string::String,
 }
@@ -825,8 +885,8 @@ pub struct IamBinding {
     /// For example, "roles/viewer", "roles/editor", or "roles/owner".
     #[prost(string, tag = "2")]
     pub role: ::prost::alloc::string::String,
-    /// A single identity requesting access for a Cloud Platform resource,
-    /// e.g. "foo@google.com".
+    /// A single identity requesting access for a Cloud Platform resource, for
+    /// example, "foo@google.com".
     #[prost(string, tag = "3")]
     pub member: ::prost::alloc::string::String,
 }
@@ -961,37 +1021,37 @@ pub mod indicator {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KernelRootkit {
-    /// Rootkit name when available.
+    /// Rootkit name, when available.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// True when unexpected modifications of kernel code memory are present.
+    /// True if unexpected modifications of kernel code memory are present.
     #[prost(bool, tag = "2")]
     pub unexpected_code_modification: bool,
-    /// True when unexpected modifications of kernel read-only data memory are
+    /// True if unexpected modifications of kernel read-only data memory are
     /// present.
     #[prost(bool, tag = "3")]
     pub unexpected_read_only_data_modification: bool,
-    /// True when `ftrace` points are present with callbacks pointing to regions
+    /// True if `ftrace` points are present with callbacks pointing to regions
     /// that are not in the expected kernel or module code range.
     #[prost(bool, tag = "4")]
     pub unexpected_ftrace_handler: bool,
-    /// True when `kprobe` points are present with callbacks pointing to regions
+    /// True if `kprobe` points are present with callbacks pointing to regions
     /// that are not in the expected kernel or module code range.
     #[prost(bool, tag = "5")]
     pub unexpected_kprobe_handler: bool,
-    /// True when kernel code pages that are not in the expected kernel or module
+    /// True if kernel code pages that are not in the expected kernel or module
     /// code regions are present.
     #[prost(bool, tag = "6")]
     pub unexpected_kernel_code_pages: bool,
-    /// True when system call handlers that are are not in the expected kernel or
+    /// True if system call handlers that are are not in the expected kernel or
     /// module code regions are present.
     #[prost(bool, tag = "7")]
     pub unexpected_system_call_handler: bool,
-    /// True when interrupt handlers that are are not in the expected kernel or
+    /// True if interrupt handlers that are are not in the expected kernel or
     /// module code regions are present.
     #[prost(bool, tag = "8")]
     pub unexpected_interrupt_handler: bool,
-    /// True when unexpected processes in the scheduler run queue are present. Such
+    /// True if unexpected processes in the scheduler run queue are present. Such
     /// processes are in the run queue, but not in the process task list.
     #[prost(bool, tag = "9")]
     pub unexpected_processes_in_runqueue: bool,
@@ -1000,33 +1060,40 @@ pub struct KernelRootkit {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Kubernetes {
-    /// Kubernetes Pods associated with the finding. This field will contain Pod
-    /// records for each container that is owned by a Pod.
+    /// Kubernetes
+    /// \[Pods\](<https://cloud.google.com/kubernetes-engine/docs/concepts/pod>)
+    /// associated with the finding. This field contains Pod records for each
+    /// container that is owned by a Pod.
     #[prost(message, repeated, tag = "1")]
     pub pods: ::prost::alloc::vec::Vec<kubernetes::Pod>,
-    /// Provides Kubernetes Node information.
+    /// Provides Kubernetes
+    /// \[node\](<https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#nodes>)
+    /// information.
     #[prost(message, repeated, tag = "2")]
     pub nodes: ::prost::alloc::vec::Vec<kubernetes::Node>,
-    /// GKE Node Pools associated with the finding. This field will
-    /// contain NodePool information for each Node, when it is available.
+    /// GKE [node
+    /// pools](<https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools>)
+    /// associated with the finding. This field contains node pool information for
+    /// each node, when it is available.
     #[prost(message, repeated, tag = "3")]
     pub node_pools: ::prost::alloc::vec::Vec<kubernetes::NodePool>,
-    /// Provides Kubernetes role information for findings that involve
-    /// Roles or ClusterRoles.
+    /// Provides Kubernetes role information for findings that involve [Roles or
+    /// ClusterRoles](<https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>).
     #[prost(message, repeated, tag = "4")]
     pub roles: ::prost::alloc::vec::Vec<kubernetes::Role>,
     /// Provides Kubernetes role binding information for findings that involve
-    /// RoleBindings or ClusterRoleBindings.
+    /// [RoleBindings or
+    /// ClusterRoleBindings](<https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>).
     #[prost(message, repeated, tag = "5")]
     pub bindings: ::prost::alloc::vec::Vec<kubernetes::Binding>,
-    /// Provides information on any Kubernetes access reviews (i.e. privilege
-    /// checks) relevant to the finding.
+    /// Provides information on any Kubernetes access reviews (privilege checks)
+    /// relevant to the finding.
     #[prost(message, repeated, tag = "6")]
     pub access_reviews: ::prost::alloc::vec::Vec<kubernetes::AccessReview>,
 }
 /// Nested message and enum types in `Kubernetes`.
 pub mod kubernetes {
-    /// Kubernetes Pod.
+    /// A Kubernetes Pod.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Pod {
@@ -1044,20 +1111,20 @@ pub mod kubernetes {
         #[prost(message, repeated, tag = "4")]
         pub containers: ::prost::alloc::vec::Vec<super::Container>,
     }
-    /// Kubernetes Nodes associated with the finding.
+    /// Kubernetes nodes associated with the finding.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Node {
-        /// Full Resource name of the Compute Engine VM running the
-        /// cluster node.
+        /// [Full resource name](<https://google.aip.dev/122#full-resource-names>) of
+        /// the Compute Engine VM running the cluster node.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
     }
-    /// Provides GKE Node Pool information.
+    /// Provides GKE node pool information.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NodePool {
-        /// Kubernetes Node pool name.
+        /// Kubernetes node pool name.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// Nodes associated with the finding.
@@ -1128,10 +1195,10 @@ pub mod kubernetes {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Binding {
-        /// Namespace for binding.
+        /// Namespace for the binding.
         #[prost(string, tag = "1")]
         pub ns: ::prost::alloc::string::String,
-        /// Name for binding.
+        /// Name for the binding.
         #[prost(string, tag = "2")]
         pub name: ::prost::alloc::string::String,
         /// The Role or ClusterRole referenced by the binding.
@@ -1142,23 +1209,23 @@ pub mod kubernetes {
         #[prost(message, repeated, tag = "4")]
         pub subjects: ::prost::alloc::vec::Vec<Subject>,
     }
-    /// Represents a Kubernetes Subject.
+    /// Represents a Kubernetes subject.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Subject {
-        /// Authentication type for subject.
+        /// Authentication type for the subject.
         #[prost(enumeration = "subject::AuthType", tag = "1")]
         pub kind: i32,
-        /// Namespace for subject.
+        /// Namespace for the subject.
         #[prost(string, tag = "2")]
         pub ns: ::prost::alloc::string::String,
-        /// Name for subject.
+        /// Name for the subject.
         #[prost(string, tag = "3")]
         pub name: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Subject`.
     pub mod subject {
-        /// Auth types that can be used for Subject's kind field.
+        /// Auth types that can be used for the subject's kind field.
         #[derive(
             Clone,
             Copy,
@@ -1176,7 +1243,7 @@ pub mod kubernetes {
             Unspecified = 0,
             /// User with valid certificate.
             User = 1,
-            /// Users managed by Kubernetes API with credentials stored as Secrets.
+            /// Users managed by Kubernetes API with credentials stored as secrets.
             Serviceaccount = 2,
             /// Collection of users.
             Group = 3,
@@ -1206,12 +1273,14 @@ pub mod kubernetes {
             }
         }
     }
-    /// Conveys information about a Kubernetes access review (e.g. kubectl auth
-    /// can-i ...) that was involved in a finding.
+    /// Conveys information about a Kubernetes access review (such as one returned
+    /// by a [`kubectl auth
+    /// can-i`](<https://kubernetes.io/docs/reference/access-authn-authz/authorization/#checking-api-access>)
+    /// command) that was involved in a finding.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessReview {
-        /// Group is the API Group of the Resource. "*" means all.
+        /// The API group of the resource. "*" means all.
         #[prost(string, tag = "1")]
         pub group: ::prost::alloc::string::String,
         /// Namespace of the action being requested. Currently, there is no
@@ -1219,20 +1288,20 @@ pub mod kubernetes {
         /// are represented by "" (empty).
         #[prost(string, tag = "2")]
         pub ns: ::prost::alloc::string::String,
-        /// Name is the name of the resource being requested. Empty means all.
+        /// The name of the resource being requested. Empty means all.
         #[prost(string, tag = "3")]
         pub name: ::prost::alloc::string::String,
-        /// Resource is the optional resource type requested. "*" means all.
+        /// The optional resource type requested. "*" means all.
         #[prost(string, tag = "4")]
         pub resource: ::prost::alloc::string::String,
-        /// Subresource is the optional subresource type.
+        /// The optional subresource type.
         #[prost(string, tag = "5")]
         pub subresource: ::prost::alloc::string::String,
-        /// Verb is a Kubernetes resource API verb, like: get, list, watch, create,
-        /// update, delete, proxy. "*" means all.
+        /// A Kubernetes resource API verb, like get, list, watch, create, update,
+        /// delete, proxy. "*" means all.
         #[prost(string, tag = "6")]
         pub verb: ::prost::alloc::string::String,
-        /// Version is the API Version of the Resource. "*" means all.
+        /// The API version of the resource. "*" means all.
         #[prost(string, tag = "7")]
         pub version: ::prost::alloc::string::String,
     }
@@ -1561,8 +1630,9 @@ pub mod mitre_attack {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Process {
-    /// The process name visible in utilities like `top` and `ps`; it can
-    /// be accessed via `/proc/\[pid\]/comm` and changed with `prctl(PR_SET_NAME)`.
+    /// The process name, as displayed in utilities like `top` and `ps`. This name
+    /// can be accessed through `/proc/\[pid\]/comm` and changed with
+    /// `prctl(PR_SET_NAME)`.
     #[prost(string, tag = "12")]
     pub name: ::prost::alloc::string::String,
     /// File information for the process executable.
@@ -1571,10 +1641,9 @@ pub struct Process {
     /// File information for libraries loaded by the process.
     #[prost(message, repeated, tag = "4")]
     pub libraries: ::prost::alloc::vec::Vec<File>,
-    /// When the process represents the invocation of a script,
-    /// `binary` provides information about the interpreter while `script`
-    /// provides information about the script file provided to the
-    /// interpreter.
+    /// When the process represents the invocation of a script, `binary` provides
+    /// information about the interpreter, while `script` provides information
+    /// about the script file provided to the interpreter.
     #[prost(message, optional, tag = "5")]
     pub script: ::core::option::Option<File>,
     /// Process arguments as JSON encoded strings.
@@ -1589,15 +1658,15 @@ pub struct Process {
     /// True if `env_variables` is incomplete.
     #[prost(bool, tag = "9")]
     pub env_variables_truncated: bool,
-    /// The process id.
+    /// The process ID.
     #[prost(int64, tag = "10")]
     pub pid: i64,
-    /// The parent process id.
+    /// The parent process ID.
     #[prost(int64, tag = "11")]
     pub parent_pid: i64,
 }
-/// EnvironmentVariable is a name-value pair to store environment variables for
-/// Process.
+/// A name-value pair representing an environment variable used in an operating
+/// system process.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentVariable {
@@ -2644,9 +2713,9 @@ pub struct OrganizationSettings {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A flag that indicates if Asset Discovery should be enabled. If the flag is
-    /// set to `true`, then discovery of assets will occur. If it is set to `false,
-    /// all historical assets will remain, but discovery of future assets will not
-    /// occur.
+    /// set to `true`, then discovery of assets will occur. If it is set to
+    /// `false`, all historical assets will remain, but discovery of future assets
+    /// will not occur.
     #[prost(bool, tag = "2")]
     pub enable_asset_discovery: bool,
     /// The configuration used for Asset Discovery runs.
@@ -3007,9 +3076,9 @@ pub struct CreateMuteConfigRequest {
     #[prost(message, optional, tag = "2")]
     pub mute_config: ::core::option::Option<MuteConfig>,
     /// Required. Unique identifier provided by the client within the parent scope.
-    /// It must consist of lower case letters, numbers, and hyphen, with the first
-    /// character a letter, the last a letter or a number, and a 63 character
-    /// maximum.
+    /// It must consist of only lowercase letters, numbers, and hyphens, must start
+    /// with a letter, must end with either a letter or a number, and must be 63
+    /// characters or less.
     #[prost(string, tag = "3")]
     pub mute_config_id: ::prost::alloc::string::String,
 }
@@ -4399,9 +4468,9 @@ pub struct CreateBigQueryExportRequest {
     #[prost(message, optional, tag = "2")]
     pub big_query_export: ::core::option::Option<BigQueryExport>,
     /// Required. Unique identifier provided by the client within the parent scope.
-    /// It must consist of lower case letters, numbers, and hyphen, with the first
-    /// character a letter, the last a letter or a number, and a 63 character
-    /// maximum.
+    /// It must consist of only lowercase letters, numbers, and hyphens, must start
+    /// with a letter, must end with either a letter or a number, and must be 63
+    /// characters or less.
     #[prost(string, tag = "3")]
     pub big_query_export_id: ::prost::alloc::string::String,
 }

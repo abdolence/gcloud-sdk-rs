@@ -213,6 +213,9 @@ pub struct OutputAudioConfig {
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
     /// Optional. Configuration of how speech should be synthesized.
+    /// If not specified,
+    /// \[Agent.text_to_speech_settings][google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings\]
+    /// is applied.
     #[prost(message, optional, tag = "3")]
     pub synthesize_speech_config: ::core::option::Option<SynthesizeSpeechConfig>,
 }
@@ -226,13 +229,17 @@ pub struct TextToSpeechSettings {
     ///
     /// These settings affect:
     ///
-    ///   - The synthesize configuration used in [phone
-    ///     gateway](<https://cloud.google.com/dialogflow/cx/docs/concept/integration/phone-gateway>).
+    ///   - The [phone
+    ///   gateway](<https://cloud.google.com/dialogflow/cx/docs/concept/integration/phone-gateway>)
+    ///     synthesize configuration set via
+    ///     \[Agent.text_to_speech_settings][google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings\].
     ///
-    ///   - You no longer need to specify
+    ///   - How speech is synthesized when invoking
+    ///   \[session][google.cloud.dialogflow.cx.v3.Sessions\] APIs.
+    ///     \[Agent.text_to_speech_settings][google.cloud.dialogflow.cx.v3.Agent.text_to_speech_settings\]
+    ///     only applies if
     ///     \[OutputAudioConfig.synthesize_speech_config][google.cloud.dialogflow.cx.v3.OutputAudioConfig.synthesize_speech_config\]
-    ///     when invoking API calls. Your agent will use the pre-configured options
-    ///     for speech synthesizing.
+    ///     is not specified.
     #[prost(map = "string, message", tag = "1")]
     pub synthesize_speech_configs: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2920,6 +2927,9 @@ pub struct ExportAgentRequest {
     /// ID>/environments/<Environment ID>`.
     #[prost(string, tag = "5")]
     pub environment: ::prost::alloc::string::String,
+    /// Optional. Whether to include BigQuery Export setting.
+    #[prost(bool, tag = "7")]
+    pub include_bigquery_export_settings: bool,
 }
 /// Nested message and enum types in `ExportAgentRequest`.
 pub mod export_agent_request {
@@ -6180,6 +6190,12 @@ pub struct QueryParameters {
     /// unspecified channel will be returned.
     #[prost(string, tag = "15")]
     pub channel: ::prost::alloc::string::String,
+    /// Optional. Sets Dialogflow session life time.
+    /// By default, a Dialogflow session remains active and its data is stored for
+    /// 30 minutes after the last request is sent for the session.
+    /// This value should be no longer than 1 day.
+    #[prost(message, optional, tag = "16")]
+    pub session_ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Represents the query input. It can contain one of:
 ///
@@ -7502,7 +7518,8 @@ pub struct TestRunDifference {
     /// The type of diff.
     #[prost(enumeration = "test_run_difference::DiffType", tag = "1")]
     pub r#type: i32,
-    /// A description of the diff, showing the actual output vs expected output.
+    /// A human readable description of the diff, showing the actual output vs
+    /// expected output.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
 }
@@ -8874,6 +8891,135 @@ pub mod webhook {
         /// ```
         #[prost(bytes = "vec", repeated, tag = "5")]
         pub allowed_ca_certs: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+        /// Optional. Type of the webhook.
+        #[prost(enumeration = "generic_web_service::WebhookType", tag = "6")]
+        pub webhook_type: i32,
+        /// Optional. HTTP method for the flexible webhook calls. Standard webhook
+        /// always uses POST.
+        #[prost(enumeration = "generic_web_service::HttpMethod", tag = "7")]
+        pub http_method: i32,
+        /// Optional. Defines a custom JSON object as request body to send to
+        /// flexible webhook.
+        #[prost(string, tag = "8")]
+        pub request_body: ::prost::alloc::string::String,
+        /// Optional. Maps the values extracted from specific fields of the flexible
+        /// webhook response into session parameters.
+        ///   - Key: session parameter name
+        ///   - Value: field path in the webhook response
+        #[prost(map = "string, string", tag = "9")]
+        pub parameter_mapping: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// Nested message and enum types in `GenericWebService`.
+    pub mod generic_web_service {
+        /// Represents the type of webhook configuration.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum WebhookType {
+            /// Default value. This value is unused.
+            Unspecified = 0,
+            /// Represents a standard webhook.
+            Standard = 1,
+            /// Represents a flexible webhook.
+            Flexible = 2,
+        }
+        impl WebhookType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    WebhookType::Unspecified => "WEBHOOK_TYPE_UNSPECIFIED",
+                    WebhookType::Standard => "STANDARD",
+                    WebhookType::Flexible => "FLEXIBLE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "WEBHOOK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "STANDARD" => Some(Self::Standard),
+                    "FLEXIBLE" => Some(Self::Flexible),
+                    _ => None,
+                }
+            }
+        }
+        /// HTTP method to use when calling webhooks.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum HttpMethod {
+            /// HTTP method not specified.
+            Unspecified = 0,
+            /// HTTP POST Method.
+            Post = 1,
+            /// HTTP GET Method.
+            Get = 2,
+            /// HTTP HEAD Method.
+            Head = 3,
+            /// HTTP PUT Method.
+            Put = 4,
+            /// HTTP DELETE Method.
+            Delete = 5,
+            /// HTTP PATCH Method.
+            Patch = 6,
+            /// HTTP OPTIONS Method.
+            Options = 7,
+        }
+        impl HttpMethod {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    HttpMethod::Unspecified => "HTTP_METHOD_UNSPECIFIED",
+                    HttpMethod::Post => "POST",
+                    HttpMethod::Get => "GET",
+                    HttpMethod::Head => "HEAD",
+                    HttpMethod::Put => "PUT",
+                    HttpMethod::Delete => "DELETE",
+                    HttpMethod::Patch => "PATCH",
+                    HttpMethod::Options => "OPTIONS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "HTTP_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                    "POST" => Some(Self::Post),
+                    "GET" => Some(Self::Get),
+                    "HEAD" => Some(Self::Head),
+                    "PUT" => Some(Self::Put),
+                    "DELETE" => Some(Self::Delete),
+                    "PATCH" => Some(Self::Patch),
+                    "OPTIONS" => Some(Self::Options),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Represents configuration for a [Service
     /// Directory](<https://cloud.google.com/service-directory>) service.

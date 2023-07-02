@@ -18886,75 +18886,6 @@ pub mod migration_service_client {
         }
     }
 }
-/// A collection of metrics calculated by comparing Model's predictions on all of
-/// the test data against annotations from the test data.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ModelEvaluation {
-    /// Output only. The resource name of the ModelEvaluation.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The display name of the ModelEvaluation.
-    #[prost(string, tag = "10")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Points to a YAML file stored on Google Cloud Storage describing the
-    /// \[metrics][google.cloud.aiplatform.v1beta1.ModelEvaluation.metrics\] of this
-    /// ModelEvaluation. The schema is defined as an OpenAPI 3.0.2 [Schema
-    /// Object](<https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject>).
-    #[prost(string, tag = "2")]
-    pub metrics_schema_uri: ::prost::alloc::string::String,
-    /// Evaluation metrics of the Model. The schema of the metrics is stored in
-    /// \[metrics_schema_uri][google.cloud.aiplatform.v1beta1.ModelEvaluation.metrics_schema_uri\]
-    #[prost(message, optional, tag = "3")]
-    pub metrics: ::core::option::Option<::prost_types::Value>,
-    /// Output only. Timestamp when this ModelEvaluation was created.
-    #[prost(message, optional, tag = "4")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// All possible
-    /// \[dimensions][google.cloud.aiplatform.v1beta1.ModelEvaluationSlice.Slice.dimension\]
-    /// of ModelEvaluationSlices. The dimensions can be used as the filter of the
-    /// \[ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluationSlices\]
-    /// request, in the form of `slice.dimension = <dimension>`.
-    #[prost(string, repeated, tag = "5")]
-    pub slice_dimensions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Aggregated explanation metrics for the Model's prediction output over the
-    /// data this ModelEvaluation uses. This field is populated only if the Model
-    /// is evaluated with explanations, and only for AutoML tabular Models.
-    ///
-    #[prost(message, optional, tag = "8")]
-    pub model_explanation: ::core::option::Option<ModelExplanation>,
-    /// Describes the values of
-    /// \[ExplanationSpec][google.cloud.aiplatform.v1beta1.ExplanationSpec\] that are
-    /// used for explaining the predicted values on the evaluated data.
-    #[prost(message, repeated, tag = "9")]
-    pub explanation_specs: ::prost::alloc::vec::Vec<
-        model_evaluation::ModelEvaluationExplanationSpec,
-    >,
-    /// The metadata of the ModelEvaluation.
-    /// For the ModelEvaluation uploaded from Managed Pipeline, metadata contains a
-    /// structured value with keys of "pipeline_job_id", "evaluation_dataset_type",
-    /// "evaluation_dataset_path".
-    #[prost(message, optional, tag = "11")]
-    pub metadata: ::core::option::Option<::prost_types::Value>,
-}
-/// Nested message and enum types in `ModelEvaluation`.
-pub mod model_evaluation {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ModelEvaluationExplanationSpec {
-        /// Explanation type.
-        ///
-        /// For AutoML Image Classification models, possible values are:
-        ///
-        ///    * `image-integrated-gradients`
-        ///    * `image-xrai`
-        #[prost(string, tag = "1")]
-        pub explanation_type: ::prost::alloc::string::String,
-        /// Explanation spec details.
-        #[prost(message, optional, tag = "2")]
-        pub explanation_spec: ::core::option::Option<super::ExplanationSpec>,
-    }
-}
 /// A collection of metrics calculated by comparing Model's predictions on a
 /// slice of the test data against ground truth annotations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -19146,6 +19077,114 @@ pub mod model_evaluation_slice {
                 }
             }
         }
+    }
+}
+/// A collection of metrics calculated by comparing Model's predictions on all of
+/// the test data against annotations from the test data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelEvaluation {
+    /// Output only. The resource name of the ModelEvaluation.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The display name of the ModelEvaluation.
+    #[prost(string, tag = "10")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Points to a YAML file stored on Google Cloud Storage describing the
+    /// \[metrics][google.cloud.aiplatform.v1beta1.ModelEvaluation.metrics\] of this
+    /// ModelEvaluation. The schema is defined as an OpenAPI 3.0.2 [Schema
+    /// Object](<https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject>).
+    #[prost(string, tag = "2")]
+    pub metrics_schema_uri: ::prost::alloc::string::String,
+    /// Evaluation metrics of the Model. The schema of the metrics is stored in
+    /// \[metrics_schema_uri][google.cloud.aiplatform.v1beta1.ModelEvaluation.metrics_schema_uri\]
+    #[prost(message, optional, tag = "3")]
+    pub metrics: ::core::option::Option<::prost_types::Value>,
+    /// Output only. Timestamp when this ModelEvaluation was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// All possible
+    /// \[dimensions][google.cloud.aiplatform.v1beta1.ModelEvaluationSlice.Slice.dimension\]
+    /// of ModelEvaluationSlices. The dimensions can be used as the filter of the
+    /// \[ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluationSlices\]
+    /// request, in the form of `slice.dimension = <dimension>`.
+    #[prost(string, repeated, tag = "5")]
+    pub slice_dimensions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Aggregated explanation metrics for the Model's prediction output over the
+    /// data this ModelEvaluation uses. This field is populated only if the Model
+    /// is evaluated with explanations, and only for AutoML tabular Models.
+    ///
+    #[prost(message, optional, tag = "8")]
+    pub model_explanation: ::core::option::Option<ModelExplanation>,
+    /// Describes the values of
+    /// \[ExplanationSpec][google.cloud.aiplatform.v1beta1.ExplanationSpec\] that are
+    /// used for explaining the predicted values on the evaluated data.
+    #[prost(message, repeated, tag = "9")]
+    pub explanation_specs: ::prost::alloc::vec::Vec<
+        model_evaluation::ModelEvaluationExplanationSpec,
+    >,
+    /// The metadata of the ModelEvaluation.
+    /// For the ModelEvaluation uploaded from Managed Pipeline, metadata contains a
+    /// structured value with keys of "pipeline_job_id", "evaluation_dataset_type",
+    /// "evaluation_dataset_path".
+    #[prost(message, optional, tag = "11")]
+    pub metadata: ::core::option::Option<::prost_types::Value>,
+    /// Specify the configuration for bias detection.
+    #[prost(message, optional, tag = "12")]
+    pub bias_configs: ::core::option::Option<model_evaluation::BiasConfig>,
+}
+/// Nested message and enum types in `ModelEvaluation`.
+pub mod model_evaluation {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ModelEvaluationExplanationSpec {
+        /// Explanation type.
+        ///
+        /// For AutoML Image Classification models, possible values are:
+        ///
+        ///    * `image-integrated-gradients`
+        ///    * `image-xrai`
+        #[prost(string, tag = "1")]
+        pub explanation_type: ::prost::alloc::string::String,
+        /// Explanation spec details.
+        #[prost(message, optional, tag = "2")]
+        pub explanation_spec: ::core::option::Option<super::ExplanationSpec>,
+    }
+    /// Configuration for bias detection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BiasConfig {
+        /// Specification for how the data should be sliced for bias. It contains a
+        /// list of slices, with limitation of two slices. The first slice of data
+        /// will be the slice_a. The second slice in the list (slice_b) will be
+        /// compared against the first slice. If only a single slice is provided,
+        /// then slice_a will be compared against “not slice_a”.
+        /// Below are examples with feature "education" with value "low", "medium",
+        /// "high" in the dataset:
+        ///
+        /// Example 1:
+        ///
+        ///      bias_slices = [{'education': 'low'}]
+        ///
+        /// A single slice provided. In this case, slice_a is the collection of data
+        /// with 'education' equals 'low', and slice_b is the collection of data with
+        /// 'education' equals 'medium' or 'high'.
+        ///
+        /// Example 2:
+        ///
+        ///      bias_slices = [{'education': 'low'},
+        ///                     {'education': 'high'}]
+        ///
+        /// Two slices provided. In this case, slice_a is the collection of data
+        /// with 'education' equals 'low', and slice_b is the collection of data with
+        /// 'education' equals 'high'.
+        #[prost(message, optional, tag = "1")]
+        pub bias_slices: ::core::option::Option<
+            super::model_evaluation_slice::slice::SliceSpec,
+        >,
+        /// Positive labels selection on the target field.
+        #[prost(string, repeated, tag = "2")]
+        pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// A Model Garden Publisher Model.
