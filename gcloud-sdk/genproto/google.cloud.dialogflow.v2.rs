@@ -8,16 +8,16 @@ pub struct ValidationError {
     /// The names of the entries that the error is associated with.
     /// Format:
     ///
-    /// - "projects/<Project ID>/agent", if the error is associated with the entire
+    /// - `projects/<Project ID>/agent`, if the error is associated with the entire
     /// agent.
-    /// - "projects/<Project ID>/agent/intents/<Intent ID>", if the error is
+    /// - `projects/<Project ID>/agent/intents/<Intent ID>`, if the error is
     /// associated with certain intents.
-    /// - "projects/<Project
-    /// ID>/agent/intents/<Intent Id>/trainingPhrases/<Training Phrase ID>", if the
-    /// error is associated with certain intent training phrases.
-    /// - "projects/<Project ID>/agent/intents/<Intent Id>/parameters/<Parameter
-    /// ID>", if the error is associated with certain intent parameters.
-    /// - "projects/<Project ID>/agent/entities/<Entity ID>", if the error is
+    /// - `projects/<Project ID>/agent/intents/<Intent
+    /// Id>/trainingPhrases/<Training Phrase ID>`, if the error is associated with
+    /// certain intent training phrases.
+    /// - `projects/<Project ID>/agent/intents/<Intent Id>/parameters/<Parameter
+    /// ID>`, if the error is associated with certain intent parameters.
+    /// - `projects/<Project ID>/agent/entities/<Entity ID>`, if the error is
     /// associated with certain entities.
     #[prost(string, repeated, tag = "3")]
     pub entries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -993,8 +993,7 @@ pub struct InputAudioConfig {
     #[prost(enumeration = "AudioEncoding", tag = "1")]
     pub audio_encoding: i32,
     /// Required. Sample rate (in Hertz) of the audio content sent in the query.
-    /// Refer to
-    /// [Cloud Speech API
+    /// Refer to [Cloud Speech API
     /// documentation](<https://cloud.google.com/speech-to-text/docs/basics>) for
     /// more details.
     #[prost(int32, tag = "2")]
@@ -1021,9 +1020,9 @@ pub struct InputAudioConfig {
     /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>)
     /// for more details.
     ///
-    /// This field is deprecated. Please use \[speech_contexts\]() instead. If you
-    /// specify both \[phrase_hints\]() and \[speech_contexts\](), Dialogflow will
-    /// treat the \[phrase_hints\]() as a single additional \[SpeechContext\]().
+    /// This field is deprecated. Please use \[`speech_contexts`\]() instead. If you
+    /// specify both \[`phrase_hints`\]() and \[`speech_contexts`\](), Dialogflow will
+    /// treat the \[`phrase_hints`\]() as a single additional \[`SpeechContext`\]().
     #[deprecated]
     #[prost(string, repeated, tag = "4")]
     pub phrase_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -1104,9 +1103,9 @@ pub struct VoiceSelectionParams {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeSpeechConfig {
     /// Optional. Speaking rate/speed, in the range [0.25, 4.0]. 1.0 is the normal
-    /// native speed supported by the specific voice. 2.0 is twice as fast, and
-    /// 0.5 is half as fast. If unset(0.0), defaults to the native 1.0 speed. Any
-    /// other values < 0.25 or > 4.0 will return an error.
+    /// native speed supported by the specific voice. 2.0 is twice as fast, and 0.5
+    /// is half as fast. If unset(0.0), defaults to the native 1.0 speed. Any other
+    /// values < 0.25 or > 4.0 will return an error.
     #[prost(double, tag = "1")]
     pub speaking_rate: f64,
     /// Optional. Speaking pitch, in the range [-20.0, 20.0]. 20 means increase 20
@@ -1186,6 +1185,96 @@ pub struct SpeechToTextConfig {
     /// for more details.
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
+}
+/// \[DTMF\](<https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>)
+/// digit in Telephony Gateway.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TelephonyDtmf {
+    /// Not specified. This value may be used to indicate an absent digit.
+    Unspecified = 0,
+    /// Number: '1'.
+    DtmfOne = 1,
+    /// Number: '2'.
+    DtmfTwo = 2,
+    /// Number: '3'.
+    DtmfThree = 3,
+    /// Number: '4'.
+    DtmfFour = 4,
+    /// Number: '5'.
+    DtmfFive = 5,
+    /// Number: '6'.
+    DtmfSix = 6,
+    /// Number: '7'.
+    DtmfSeven = 7,
+    /// Number: '8'.
+    DtmfEight = 8,
+    /// Number: '9'.
+    DtmfNine = 9,
+    /// Number: '0'.
+    DtmfZero = 10,
+    /// Letter: 'A'.
+    DtmfA = 11,
+    /// Letter: 'B'.
+    DtmfB = 12,
+    /// Letter: 'C'.
+    DtmfC = 13,
+    /// Letter: 'D'.
+    DtmfD = 14,
+    /// Asterisk/star: '*'.
+    DtmfStar = 15,
+    /// Pound/diamond/hash/square/gate/octothorpe: '#'.
+    DtmfPound = 16,
+}
+impl TelephonyDtmf {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            TelephonyDtmf::Unspecified => "TELEPHONY_DTMF_UNSPECIFIED",
+            TelephonyDtmf::DtmfOne => "DTMF_ONE",
+            TelephonyDtmf::DtmfTwo => "DTMF_TWO",
+            TelephonyDtmf::DtmfThree => "DTMF_THREE",
+            TelephonyDtmf::DtmfFour => "DTMF_FOUR",
+            TelephonyDtmf::DtmfFive => "DTMF_FIVE",
+            TelephonyDtmf::DtmfSix => "DTMF_SIX",
+            TelephonyDtmf::DtmfSeven => "DTMF_SEVEN",
+            TelephonyDtmf::DtmfEight => "DTMF_EIGHT",
+            TelephonyDtmf::DtmfNine => "DTMF_NINE",
+            TelephonyDtmf::DtmfZero => "DTMF_ZERO",
+            TelephonyDtmf::DtmfA => "DTMF_A",
+            TelephonyDtmf::DtmfB => "DTMF_B",
+            TelephonyDtmf::DtmfC => "DTMF_C",
+            TelephonyDtmf::DtmfD => "DTMF_D",
+            TelephonyDtmf::DtmfStar => "DTMF_STAR",
+            TelephonyDtmf::DtmfPound => "DTMF_POUND",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TELEPHONY_DTMF_UNSPECIFIED" => Some(Self::Unspecified),
+            "DTMF_ONE" => Some(Self::DtmfOne),
+            "DTMF_TWO" => Some(Self::DtmfTwo),
+            "DTMF_THREE" => Some(Self::DtmfThree),
+            "DTMF_FOUR" => Some(Self::DtmfFour),
+            "DTMF_FIVE" => Some(Self::DtmfFive),
+            "DTMF_SIX" => Some(Self::DtmfSix),
+            "DTMF_SEVEN" => Some(Self::DtmfSeven),
+            "DTMF_EIGHT" => Some(Self::DtmfEight),
+            "DTMF_NINE" => Some(Self::DtmfNine),
+            "DTMF_ZERO" => Some(Self::DtmfZero),
+            "DTMF_A" => Some(Self::DtmfA),
+            "DTMF_B" => Some(Self::DtmfB),
+            "DTMF_C" => Some(Self::DtmfC),
+            "DTMF_D" => Some(Self::DtmfD),
+            "DTMF_STAR" => Some(Self::DtmfStar),
+            "DTMF_POUND" => Some(Self::DtmfPound),
+            _ => None,
+        }
+    }
 }
 /// Audio encoding of the audio content sent in the conversational query request.
 /// Refer to the
@@ -1416,96 +1505,6 @@ impl OutputAudioEncoding {
         }
     }
 }
-/// \[DTMF\](<https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>)
-/// digit in Telephony Gateway.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum TelephonyDtmf {
-    /// Not specified. This value may be used to indicate an absent digit.
-    Unspecified = 0,
-    /// Number: '1'.
-    DtmfOne = 1,
-    /// Number: '2'.
-    DtmfTwo = 2,
-    /// Number: '3'.
-    DtmfThree = 3,
-    /// Number: '4'.
-    DtmfFour = 4,
-    /// Number: '5'.
-    DtmfFive = 5,
-    /// Number: '6'.
-    DtmfSix = 6,
-    /// Number: '7'.
-    DtmfSeven = 7,
-    /// Number: '8'.
-    DtmfEight = 8,
-    /// Number: '9'.
-    DtmfNine = 9,
-    /// Number: '0'.
-    DtmfZero = 10,
-    /// Letter: 'A'.
-    DtmfA = 11,
-    /// Letter: 'B'.
-    DtmfB = 12,
-    /// Letter: 'C'.
-    DtmfC = 13,
-    /// Letter: 'D'.
-    DtmfD = 14,
-    /// Asterisk/star: '*'.
-    DtmfStar = 15,
-    /// Pound/diamond/hash/square/gate/octothorpe: '#'.
-    DtmfPound = 16,
-}
-impl TelephonyDtmf {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            TelephonyDtmf::Unspecified => "TELEPHONY_DTMF_UNSPECIFIED",
-            TelephonyDtmf::DtmfOne => "DTMF_ONE",
-            TelephonyDtmf::DtmfTwo => "DTMF_TWO",
-            TelephonyDtmf::DtmfThree => "DTMF_THREE",
-            TelephonyDtmf::DtmfFour => "DTMF_FOUR",
-            TelephonyDtmf::DtmfFive => "DTMF_FIVE",
-            TelephonyDtmf::DtmfSix => "DTMF_SIX",
-            TelephonyDtmf::DtmfSeven => "DTMF_SEVEN",
-            TelephonyDtmf::DtmfEight => "DTMF_EIGHT",
-            TelephonyDtmf::DtmfNine => "DTMF_NINE",
-            TelephonyDtmf::DtmfZero => "DTMF_ZERO",
-            TelephonyDtmf::DtmfA => "DTMF_A",
-            TelephonyDtmf::DtmfB => "DTMF_B",
-            TelephonyDtmf::DtmfC => "DTMF_C",
-            TelephonyDtmf::DtmfD => "DTMF_D",
-            TelephonyDtmf::DtmfStar => "DTMF_STAR",
-            TelephonyDtmf::DtmfPound => "DTMF_POUND",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "TELEPHONY_DTMF_UNSPECIFIED" => Some(Self::Unspecified),
-            "DTMF_ONE" => Some(Self::DtmfOne),
-            "DTMF_TWO" => Some(Self::DtmfTwo),
-            "DTMF_THREE" => Some(Self::DtmfThree),
-            "DTMF_FOUR" => Some(Self::DtmfFour),
-            "DTMF_FIVE" => Some(Self::DtmfFive),
-            "DTMF_SIX" => Some(Self::DtmfSix),
-            "DTMF_SEVEN" => Some(Self::DtmfSeven),
-            "DTMF_EIGHT" => Some(Self::DtmfEight),
-            "DTMF_NINE" => Some(Self::DtmfNine),
-            "DTMF_ZERO" => Some(Self::DtmfZero),
-            "DTMF_A" => Some(Self::DtmfA),
-            "DTMF_B" => Some(Self::DtmfB),
-            "DTMF_C" => Some(Self::DtmfC),
-            "DTMF_D" => Some(Self::DtmfD),
-            "DTMF_STAR" => Some(Self::DtmfStar),
-            "DTMF_POUND" => Some(Self::DtmfPound),
-            _ => None,
-        }
-    }
-}
 /// Dialogflow contexts are similar to natural language context. If a person says
 /// to you "they are orange", you need context in order to understand what "they"
 /// is referring to. Similarly, for Dialogflow to handle an end-user expression
@@ -1530,7 +1529,7 @@ pub struct Context {
     /// ID>/sessions/<Session ID>/contexts/<Context ID>`.
     ///
     /// The `Context ID` is always converted to lowercase, may only contain
-    /// characters in a-zA-Z0-9_-% and may be at most 250 bytes long.
+    /// characters in `a-zA-Z0-9_-%` and may be at most 250 bytes long.
     ///
     /// If `Environment ID` is not specified, we assume default 'draft'
     /// environment. If `User ID` is not specified, we assume default '-' user.
@@ -1555,16 +1554,14 @@ pub struct Context {
     /// map, associative array, symbol table, dictionary, or JSON object
     /// composed of a collection of (MapKey, MapValue) pairs:
     ///
-    /// -   MapKey type: string
-    /// -   MapKey value: parameter name
-    /// -   MapValue type:
-    ///      -   If parameter's entity type is a composite entity: map
-    ///      -   Else: depending on parameter value type, could be one of string,
-    ///          number, boolean, null, list or map
-    /// -   MapValue value:
-    ///      -   If parameter's entity type is a composite entity:
-    ///          map from composite entity property names to property values
-    ///      -   Else: parameter value
+    /// * MapKey type: string
+    /// * MapKey value: parameter name
+    /// * MapValue type: If parameter's entity type is a composite entity then use
+    /// map, otherwise, depending on the parameter value type, it could be one of
+    /// string, number, boolean, null, list or map.
+    /// * MapValue value: If parameter's entity type is a composite entity then use
+    /// map from composite entity property names to property values, otherwise,
+    /// use parameter value.
     #[prost(message, optional, tag = "3")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
 }
@@ -4933,12 +4930,12 @@ pub struct DetectIntentRequest {
     pub query_params: ::core::option::Option<QueryParameters>,
     /// Required. The input specification. It can be set to:
     ///
-    /// 1.  an audio config
-    ///      which instructs the speech recognizer how to process the speech audio,
+    /// 1. an audio config which instructs the speech recognizer how to process
+    /// the speech audio,
     ///
-    /// 2.  a conversational query in the form of text, or
+    /// 2. a conversational query in the form of text, or
     ///
-    /// 3.  an event that specifies which intent to trigger.
+    /// 3. an event that specifies which intent to trigger.
     #[prost(message, optional, tag = "3")]
     pub query_input: ::core::option::Option<QueryInput>,
     /// Instructs the speech synthesizer how to generate the output
@@ -5121,16 +5118,14 @@ pub struct QueryResult {
     /// map, associative array, symbol table, dictionary, or JSON object
     /// composed of a collection of (MapKey, MapValue) pairs:
     ///
-    /// -   MapKey type: string
-    /// -   MapKey value: parameter name
-    /// -   MapValue type:
-    ///      -   If parameter's entity type is a composite entity: map
-    ///      -   Else: depending on parameter value type, could be one of string,
-    ///          number, boolean, null, list or map
-    /// -   MapValue value:
-    ///      -   If parameter's entity type is a composite entity:
-    ///          map from composite entity property names to property values
-    ///      -   Else: parameter value
+    /// * MapKey type: string
+    /// * MapKey value: parameter name
+    /// * MapValue type: If parameter's entity type is a composite entity then use
+    /// map, otherwise, depending on the parameter value type, it could be one of
+    /// string, number, boolean, null, list or map.
+    /// * MapValue value: If parameter's entity type is a composite entity then use
+    /// map from composite entity property names to property values, otherwise,
+    /// use parameter value.
     #[prost(message, optional, tag = "4")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
     /// This field is set to:
@@ -5257,12 +5252,12 @@ pub struct StreamingDetectIntentRequest {
     pub query_params: ::core::option::Option<QueryParameters>,
     /// Required. The input specification. It can be set to:
     ///
-    /// 1.  an audio config which instructs the speech recognizer how to process
-    ///      the speech audio,
+    /// 1. an audio config which instructs the speech recognizer how to process
+    /// the speech audio,
     ///
-    /// 2.  a conversational query in the form of text, or
+    /// 2. a conversational query in the form of text, or
     ///
-    /// 3.  an event that specifies which intent to trigger.
+    /// 3. an event that specifies which intent to trigger.
     #[prost(message, optional, tag = "3")]
     pub query_input: ::core::option::Option<QueryInput>,
     /// Please use
@@ -5555,7 +5550,6 @@ pub mod streaming_recognition_result {
         }
     }
 }
-/// ============================================================================
 /// Auxiliary proto messages.
 ///
 /// Represents the natural language text to be processed.
@@ -5590,16 +5584,14 @@ pub struct EventInput {
     /// map, associative array, symbol table, dictionary, or JSON object
     /// composed of a collection of (MapKey, MapValue) pairs:
     ///
-    /// -   MapKey type: string
-    /// -   MapKey value: parameter name
-    /// -   MapValue type:
-    ///      -   If parameter's entity type is a composite entity: map
-    ///      -   Else: depending on parameter value type, could be one of string,
-    ///          number, boolean, null, list or map
-    /// -   MapValue value:
-    ///      -   If parameter's entity type is a composite entity:
-    ///          map from composite entity property names to property values
-    ///      -   Else: parameter value
+    /// * MapKey type: string
+    /// * MapKey value: parameter name
+    /// * MapValue type: If parameter's entity type is a composite entity then use
+    /// map, otherwise, depending on the parameter value type, it could be one of
+    /// string, number, boolean, null, list or map.
+    /// * MapValue value: If parameter's entity type is a composite entity then use
+    /// map from composite entity property names to property values, otherwise,
+    /// use parameter value.
     #[prost(message, optional, tag = "2")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
     /// Required. The language of this query. See [Language
@@ -9010,7 +9002,7 @@ pub struct CreateConversationRequest {
     /// auto-generated one to you.
     ///
     /// The conversation ID must be compliant with the regression fomula
-    /// "\[a-zA-Z][a-zA-Z0-9_-\]*" with the characters length in range of \[3,64\].
+    /// `\[a-zA-Z][a-zA-Z0-9_-\]*` with the characters length in range of \[3,64\].
     /// If the field is provided, the caller is resposible for
     /// 1. the uniqueness of the ID, otherwise the request will be rejected.
     /// 2. the consistency for whether to use custom ID or not under a project to
@@ -9631,7 +9623,7 @@ pub mod conversations_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSources {
     /// Required. Google Cloud Storage URIs for the inputs. A URI is of the form:
-    ///    gs://bucket/object-prefix-or-name
+    /// `gs://bucket/object-prefix-or-name`
     /// Whether a prefix or name is used depends on the use case.
     #[prost(string, repeated, tag = "2")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -9642,7 +9634,7 @@ pub struct GcsSources {
 pub struct GcsDestination {
     /// The Google Cloud Storage URIs for the output. A URI is of the
     /// form:
-    ///    gs://bucket/object-prefix-or-name
+    /// `gs://bucket/object-prefix-or-name`
     /// Whether a prefix or name is used depends on the use case. The requesting
     /// user must have "write-permission" to the bucket.
     #[prost(string, tag = "1")]

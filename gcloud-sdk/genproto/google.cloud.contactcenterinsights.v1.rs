@@ -811,6 +811,12 @@ pub struct IssueModel {
     /// data.
     #[prost(message, optional, tag = "7")]
     pub training_stats: ::core::option::Option<IssueModelLabelStats>,
+    /// Type of the model.
+    #[prost(enumeration = "issue_model::ModelType", tag = "9")]
+    pub model_type: i32,
+    /// Language of the model.
+    #[prost(string, tag = "10")]
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `IssueModel`.
 pub mod issue_model {
@@ -884,6 +890,49 @@ pub mod issue_model {
                 "DEPLOYED" => Some(Self::Deployed),
                 "UNDEPLOYING" => Some(Self::Undeploying),
                 "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
+    }
+    /// Type of the model.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ModelType {
+        /// Unspecified model type.
+        Unspecified = 0,
+        /// Type V1.
+        TypeV1 = 1,
+        /// Type V2.
+        TypeV2 = 2,
+    }
+    impl ModelType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+                ModelType::TypeV1 => "TYPE_V1",
+                ModelType::TypeV2 => "TYPE_V2",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TYPE_V1" => Some(Self::TypeV1),
+                "TYPE_V2" => Some(Self::TypeV2),
                 _ => None,
             }
         }
@@ -1235,7 +1284,7 @@ pub struct RedactionConfig {
     pub deidentify_template: ::prost::alloc::string::String,
     /// The fully-qualified DLP inspect template resource name.
     /// Format:
-    /// `projects/{project}/inspectTemplates/{template}`
+    /// `projects/{project}/locations/{location}/inspectTemplates/{template}`
     #[prost(string, tag = "2")]
     pub inspect_template: ::prost::alloc::string::String,
 }

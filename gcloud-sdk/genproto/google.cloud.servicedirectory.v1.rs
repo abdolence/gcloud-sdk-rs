@@ -8,37 +8,39 @@ pub struct Endpoint {
     /// `projects/*/locations/*/namespaces/*/services/*/endpoints/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An IPv4 or IPv6 address. Service Directory will reject bad
-    /// addresses like:
-    ///    "8.8.8"
-    ///    "8.8.8.8:53"
-    ///    "test:bad:address"
-    ///    "\[::1\]"
-    ///    "\[::1\]:8080"
+    /// Optional. An IPv4 or IPv6 address. Service Directory rejects bad addresses
+    /// like:
+    ///
+    /// *   `8.8.8`
+    /// *   `8.8.8.8:53`
+    /// *   `test:bad:address`
+    /// *   `\[::1\]`
+    /// *   `\[::1\]:8080`
+    ///
     /// Limited to 45 characters.
     #[prost(string, tag = "2")]
     pub address: ::prost::alloc::string::String,
-    /// Optional. Service Directory will reject values outside of [0, 65535].
+    /// Optional. Service Directory rejects values outside of `[0, 65535]`.
     #[prost(int32, tag = "3")]
     pub port: i32,
     /// Optional. Annotations for the endpoint. This data can be consumed by
-    /// service clients. Restrictions:
-    ///   - The entire annotations dictionary may contain up to 512 characters,
-    ///     spread accoss all key-value pairs. Annotations that goes beyond any
-    ///     these limits will be rejected.
-    ///   - Valid annotation keys have two segments: an optional prefix and name,
-    ///     separated by a slash (/). The name segment is required and must be 63
-    ///     characters or less, beginning and ending with an alphanumeric character
-    ///     (\[a-z0-9A-Z\]) with dashes (-), underscores (_), dots (.), and
-    ///     alphanumerics between. The prefix is optional. If specified, the prefix
-    ///     must be a DNS subdomain: a series of DNS labels separated by dots (.),
-    ///     not longer than 253 characters in total, followed by a slash (/).
-    ///     Annotations that fails to meet these requirements will be rejected.
-    ///   - The '(*.)google.com/' and '(*.)googleapis.com/' prefixes are reserved
-    ///     for system annotations managed by Service Directory. If the user tries
-    ///     to write to these keyspaces, those entries will be silently ignored by
-    ///     the system.
-    /// Note: This field is equivalent to the 'metadata' field in the v1beta1 API.
+    /// service clients.
+    ///
+    /// Restrictions:
+    ///
+    /// *   The entire annotations dictionary may contain up to 512 characters,
+    ///      spread accoss all key-value pairs. Annotations that go beyond this
+    ///      limit are rejected
+    /// *   Valid annotation keys have two segments: an optional prefix and name,
+    ///      separated by a slash (/). The name segment is required and must be 63
+    ///      characters or less, beginning and ending with an alphanumeric character
+    ///      (\[a-z0-9A-Z\]) with dashes (-), underscores (_), dots (.), and
+    ///      alphanumerics between. The prefix is optional. If specified, the prefix
+    ///      must be a DNS subdomain: a series of DNS labels separated by dots (.),
+    ///      not longer than 253 characters in total, followed by a slash (/)
+    ///      Annotations that fails to meet these requirements are rejected.
+    ///
+    /// Note: This field is equivalent to the `metadata` field in the v1beta1 API.
     /// They have the same syntax and read/write to the same location in Service
     /// Directory.
     #[prost(map = "string, string", tag = "5")]
@@ -46,6 +48,19 @@ pub struct Endpoint {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Immutable. The Google Compute Engine network (VPC) of the endpoint in the
+    /// format `projects/<project number>/locations/global/networks/*`.
+    ///
+    /// The project must be specified by project number (project id is rejected).
+    /// Incorrectly formatted networks are rejected, we also check to make sure
+    /// that you have the servicedirectory.networks.attach permission on the
+    /// project specified.
+    #[prost(string, tag = "8")]
+    pub network: ::prost::alloc::string::String,
+    /// Output only. The globally unique identifier of the endpoint in the UUID4
+    /// format.
+    #[prost(string, tag = "9")]
+    pub uid: ::prost::alloc::string::String,
 }
 /// An individual service. A service contains a name and optional metadata.
 /// A service must exist before
@@ -60,23 +75,22 @@ pub struct Service {
     pub name: ::prost::alloc::string::String,
     /// Optional. Annotations for the service. This data can be consumed by service
     /// clients.
+    ///
     /// Restrictions:
-    ///   - The entire annotations dictionary may contain up to 2000 characters,
-    ///     spread accoss all key-value pairs. Annotations that goes beyond any
-    ///     these limits will be rejected.
-    ///   - Valid annotation keys have two segments: an optional prefix and name,
-    ///     separated by a slash (/). The name segment is required and must be 63
-    ///     characters or less, beginning and ending with an alphanumeric character
-    ///     (\[a-z0-9A-Z\]) with dashes (-), underscores (_), dots (.), and
-    ///     alphanumerics between. The prefix is optional. If specified, the prefix
-    ///     must be a DNS subdomain: a series of DNS labels separated by dots (.),
-    ///     not longer than 253 characters in total, followed by a slash (/).
-    ///     Annotations that fails to meet these requirements will be rejected.
-    ///   - The '(*.)google.com/' and '(*.)googleapis.com/' prefixes are reserved
-    ///     for system annotations managed by Service Directory. If the user tries
-    ///     to write to these keyspaces, those entries will be silently ignored by
-    ///     the system.
-    /// Note: This field is equivalent to the 'metadata' field in the v1beta1 API.
+    ///
+    /// *   The entire annotations dictionary may contain up to 2000 characters,
+    ///      spread accoss all key-value pairs. Annotations that go beyond this
+    ///      limit are rejected
+    /// *   Valid annotation keys have two segments: an optional prefix and name,
+    ///      separated by a slash (/). The name segment is required and must be 63
+    ///      characters or less, beginning and ending with an alphanumeric character
+    ///      (\[a-z0-9A-Z\]) with dashes (-), underscores (_), dots (.), and
+    ///      alphanumerics between. The prefix is optional. If specified, the prefix
+    ///      must be a DNS subdomain: a series of DNS labels separated by dots (.),
+    ///      not longer than 253 characters in total, followed by a slash (/).
+    ///      Annotations that fails to meet these requirements are rejected
+    ///
+    /// Note: This field is equivalent to the `metadata` field in the v1beta1 API.
     /// They have the same syntax and read/write to the same location in Service
     /// Directory.
     #[prost(map = "string, string", tag = "4")]
@@ -85,10 +99,15 @@ pub struct Service {
         ::prost::alloc::string::String,
     >,
     /// Output only. Endpoints associated with this service. Returned on
-    /// LookupService.Resolve. Control plane clients should use
-    /// RegistrationService.ListEndpoints.
+    /// \[LookupService.ResolveService][google.cloud.servicedirectory.v1.LookupService.ResolveService\].
+    /// Control plane clients should use
+    /// \[RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1.RegistrationService.ListEndpoints\].
     #[prost(message, repeated, tag = "3")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
+    /// Output only. The globally unique identifier of the service in the UUID4
+    /// format.
+    #[prost(string, tag = "7")]
+    pub uid: ::prost::alloc::string::String,
 }
 /// The request message for
 /// \[LookupService.ResolveService][google.cloud.servicedirectory.v1.LookupService.ResolveService\].
@@ -106,22 +125,40 @@ pub struct ResolveServiceRequest {
     pub max_endpoints: i32,
     /// Optional. The filter applied to the endpoints of the resolved service.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name" or "metadata.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS and is
-    /// roughly the same as "=".
-    /// <value> must be the same data type as the field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name`, `address`, `port`, or `annotations.<key>` for
+    ///      map field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///      means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "metadata.owner" returns Endpoints that have a label with the
-    ///    key "owner", this is the same as "metadata:owner"
-    /// * "metadata.protocol=gRPC" returns Endpoints that have key/value
-    ///    "protocol=gRPC"
-    /// * "metadata.owner!=sd AND metadata.foo=bar" returns
-    ///    Endpoints that have "owner" field in metadata with a value that is not
-    ///    "sd" AND have the key/value foo=bar.
+    ///
+    /// *   `annotations.owner` returns endpoints that have a annotation with the
+    ///      key `owner`, this is the same as `annotations:owner`
+    /// *   `annotations.protocol=gRPC` returns endpoints that have key/value
+    ///      `protocol=gRPC`
+    /// *   `address=192.108.1.105` returns endpoints that have this address
+    /// *   `port>8080` returns endpoints that have port number larger than 8080
+    /// *
+    /// `name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/my-service/endpoints/endpoint-c`
+    ///      returns endpoints that have name that is alphabetically later than the
+    ///      string, so "endpoint-e" is returned but "endpoint-a" is not
+    /// *
+    /// `name=projects/my-project/locations/us-central1/namespaces/my-namespace/services/my-service/endpoints/ep-1`
+    ///       returns the endpoint that has an endpoint_id equal to `ep-1`
+    /// *   `annotations.owner!=sd AND annotations.foo=bar` returns endpoints that
+    ///      have `owner` in annotation key but value is not `sd` AND have
+    ///      key/value `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that endpoint
+    ///      doesn't have a field called "doesnotexist". Since the filter does not
+    ///      match any endpoint, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "3")]
     pub endpoint_filter: ::prost::alloc::string::String,
 }
@@ -264,14 +301,18 @@ pub struct Namespace {
     /// `projects/*/locations/*/namespaces/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Resource labels associated with this Namespace.
-    /// No more than 64 user labels can be associated with a given resource.  Label
+    /// Optional. Resource labels associated with this namespace.
+    /// No more than 64 user labels can be associated with a given resource. Label
     /// keys and values can be no longer than 63 characters.
     #[prost(map = "string, string", tag = "2")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Output only. The globally unique identifier of the namespace in the UUID4
+    /// format.
+    #[prost(string, tag = "5")]
+    pub uid: ::prost::alloc::string::String,
 }
 /// The request message for
 /// \[RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1.RegistrationService.CreateNamespace\].
@@ -301,7 +342,7 @@ pub struct CreateNamespaceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesRequest {
     /// Required. The resource name of the project and location whose namespaces
-    /// we'd like to list.
+    /// you'd like to list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
@@ -311,40 +352,46 @@ pub struct ListNamespacesRequest {
     /// if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to list result by.
+    /// Optional. The filter to list results by.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name", or "labels.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and
-    /// is roughly the same as "=".
-    /// <value> must be the same data type as field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name` or `labels.<key>` for map field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///      means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "labels.owner" returns Namespaces that have a label with the key "owner"
-    ///    this is the same as "labels:owner".
-    /// * "labels.protocol=gRPC" returns Namespaces that have key/value
-    ///    "protocol=gRPC".
-    /// * "name>projects/my-project/locations/us-east/namespaces/namespace-c"
-    ///    returns Namespaces that have name that is alphabetically later than the
-    ///    string, so "namespace-e" will be returned but "namespace-a" will not be.
-    /// * "labels.owner!=sd AND labels.foo=bar" returns Namespaces that have
-    ///    "owner" in label key but value is not "sd" AND have key/value foo=bar.
-    /// * "doesnotexist.foo=bar" returns an empty list. Note that Namespace doesn't
-    ///    have a field called "doesnotexist". Since the filter does not match any
-    ///    Namespaces, it returns no results.
+    ///
+    /// *   `labels.owner` returns namespaces that have a label with the key
+    ///      `owner`, this is the same as `labels:owner`
+    /// *   `labels.owner=sd` returns namespaces that have key/value
+    ///      `owner=sd`
+    /// *   `name>projects/my-project/locations/us-east1/namespaces/namespace-c`
+    ///      returns namespaces that have name that is alphabetically later than the
+    ///      string, so "namespace-e" is returned but "namespace-a" is not
+    /// *   `labels.owner!=sd AND labels.foo=bar` returns namespaces that have
+    ///      `owner` in label key but value is not `sd` AND have key/value `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that namespace
+    ///      doesn't have a field called "doesnotexist". Since the filter does not
+    ///      match any namespaces, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. The order to list result by.
+    /// Optional. The order to list results by.
     ///
-    /// General order by string syntax:
-    /// <field> (<asc|desc>) (,)
-    /// <field> allows values {"name"}
-    /// <asc/desc> ascending or descending order by <field>. If this is left
-    /// blank, "asc" is used.
-    /// Note that an empty order_by string result in default order, which is order
-    /// by name in ascending order.
+    /// General `order_by` string syntax: `<field> (<asc|desc>) (,)`
+    ///
+    /// *   `<field>` allows value: `name`
+    /// *   `<asc|desc>` ascending or descending order by `<field>`. If this is
+    ///      left blank, `asc` is used
+    ///
+    /// Note that an empty `order_by` string results in default order, which is
+    /// order by `name` in ascending order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -417,7 +464,7 @@ pub struct CreateServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
-    /// Required. The resource name of the namespace whose services we'd
+    /// Required. The resource name of the namespace whose services you'd
     /// like to list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -428,32 +475,48 @@ pub struct ListServicesRequest {
     /// if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to list result by.
+    /// Optional. The filter to list results by.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name", or "metadata.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and
-    /// is roughly the same as "=".
-    /// <value> must be the same data type as field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name` or `annotations.<key>` for map field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///      means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "metadata.owner" returns Services that have a label with the key "owner"
-    ///    this is the same as "metadata:owner".
-    /// * "metadata.protocol=gRPC" returns Services that have key/value
-    ///    "protocol=gRPC".
-    /// * "name>projects/my-project/locations/us-east/namespaces/my-namespace/services/service-c"
-    ///    returns Services that have name that is alphabetically later than the
-    ///    string, so "service-e" will be returned but "service-a" will not be.
-    /// * "metadata.owner!=sd AND metadata.foo=bar" returns Services that have
-    ///    "owner" in label key but value is not "sd" AND have key/value foo=bar.
-    /// * "doesnotexist.foo=bar" returns an empty list. Note that Service doesn't
-    ///    have a field called "doesnotexist". Since the filter does not match any
-    ///    Services, it returns no results.
+    ///
+    /// *   `annotations.owner` returns services that have a annotation with the
+    ///      key `owner`, this is the same as `annotations:owner`
+    /// *   `annotations.protocol=gRPC` returns services that have key/value
+    ///      `protocol=gRPC`
+    /// *
+    /// `name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/service-c`
+    ///      returns services that have name that is alphabetically later than the
+    ///      string, so "service-e" is returned but "service-a" is not
+    /// *   `annotations.owner!=sd AND annotations.foo=bar` returns services that
+    ///      have `owner` in annotation key but value is not `sd` AND have
+    ///      key/value `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that service
+    ///      doesn't have a field called "doesnotexist". Since the filter does not
+    ///      match any services, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. The order to list result by.
+    /// Optional. The order to list results by.
+    ///
+    /// General `order_by` string syntax: `<field> (<asc|desc>) (,)`
+    ///
+    /// *   `<field>` allows value: `name`
+    /// *   `<asc|desc>` ascending or descending order by `<field>`. If this is
+    ///      left blank, `asc` is used
+    ///
+    /// Note that an empty `order_by` string results in default order, which is
+    /// order by `name` in ascending order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -472,8 +535,8 @@ pub struct ListServicesResponse {
 }
 /// The request message for
 /// \[RegistrationService.GetService][google.cloud.servicedirectory.v1.RegistrationService.GetService\].
-/// This should not be used for looking up a service. Insead, use the `resolve`
-/// method as it will contain all endpoints and associated metadata.
+/// This should not be used for looking up a service. Instead, use the `resolve`
+/// method as it contains all endpoints and associated annotations.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
@@ -528,7 +591,7 @@ pub struct CreateEndpointRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsRequest {
-    /// Required. The resource name of the service whose endpoints we'd like to
+    /// Required. The resource name of the service whose endpoints you'd like to
     /// list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -539,34 +602,51 @@ pub struct ListEndpointsRequest {
     /// if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to list result by.
+    /// Optional. The filter to list results by.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name", "address", "port" or "metadata.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and
-    /// is roughly the same as "=".
-    /// <value> must be the same data type as field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name`, `address`, `port`, or `annotations.<key>` for
+    ///       map field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///      means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "metadata.owner" returns Endpoints that have a label with the key "owner"
-    ///    this is the same as "metadata:owner".
-    /// * "metadata.protocol=gRPC" returns Endpoints that have key/value
-    ///    "protocol=gRPC".
-    /// * "address=192.108.1.105" returns Endpoints that have this address.
-    /// * "port>8080" returns Endpoints that have port number larger than 8080.
-    /// * "name>projects/my-project/locations/us-east/namespaces/my-namespace/services/my-service/endpoints/endpoint-c"
-    ///    returns Endpoints that have name that is alphabetically later than the
-    ///    string, so "endpoint-e" will be returned but "endpoint-a" will not be.
-    /// * "metadata.owner!=sd AND metadata.foo=bar" returns Endpoints that have
-    ///    "owner" in label key but value is not "sd" AND have key/value foo=bar.
-    /// * "doesnotexist.foo=bar" returns an empty list. Note that Endpoint doesn't
-    ///    have a field called "doesnotexist". Since the filter does not match any
-    ///    Endpoints, it returns no results.
+    ///
+    /// *   `annotations.owner` returns endpoints that have a annotation with the
+    ///      key `owner`, this is the same as `annotations:owner`
+    /// *   `annotations.protocol=gRPC` returns endpoints that have key/value
+    ///      `protocol=gRPC`
+    /// *   `address=192.108.1.105` returns endpoints that have this address
+    /// *   `port>8080` returns endpoints that have port number larger than 8080
+    /// *
+    /// `name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/my-service/endpoints/endpoint-c`
+    ///      returns endpoints that have name that is alphabetically later than the
+    ///      string, so "endpoint-e" is returned but "endpoint-a" is not
+    /// *   `annotations.owner!=sd AND annotations.foo=bar` returns endpoints that
+    ///      have `owner` in annotation key but value is not `sd` AND have
+    ///      key/value `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that endpoint
+    ///      doesn't have a field called "doesnotexist". Since the filter does not
+    ///      match any endpoints, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. The order to list result by.
+    /// Optional. The order to list results by.
+    ///
+    /// General `order_by` string syntax: `<field> (<asc|desc>) (,)`
+    ///
+    /// *   `<field>` allows values: `name`, `address`, `port`
+    /// *   `<asc|desc>` ascending or descending order by `<field>`. If this is
+    ///      left blank, `asc` is used
+    ///
+    /// Note that an empty `order_by` string results in default order, which is
+    /// order by `name` in ascending order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -715,7 +795,7 @@ pub mod registration_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Creates a namespace, and returns the new Namespace.
+        /// Creates a namespace, and returns the new namespace.
         pub async fn create_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateNamespaceRequest>,
@@ -859,7 +939,7 @@ pub mod registration_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a service, and returns the new Service.
+        /// Creates a service, and returns the new service.
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
@@ -1003,7 +1083,7 @@ pub mod registration_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a endpoint, and returns the new Endpoint.
+        /// Creates an endpoint, and returns the new endpoint.
         pub async fn create_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEndpointRequest>,
@@ -1062,7 +1142,7 @@ pub mod registration_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a endpoint.
+        /// Gets an endpoint.
         pub async fn get_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEndpointRequest>,
@@ -1090,7 +1170,7 @@ pub mod registration_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates a endpoint.
+        /// Updates an endpoint.
         pub async fn update_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEndpointRequest>,
@@ -1118,7 +1198,7 @@ pub mod registration_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a endpoint.
+        /// Deletes an endpoint.
         pub async fn delete_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEndpointRequest>,

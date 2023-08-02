@@ -677,6 +677,7 @@ pub mod job_status {
     )]
     #[repr(i32)]
     pub enum State {
+        /// Job state unspecified.
         Unspecified = 0,
         /// Job is admitted (validated and persisted) and waiting for resources.
         Queued = 1,
@@ -900,20 +901,24 @@ pub mod allocation_policy {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DataSource {
-            /// Name of a public or custom image used as the data source.
+            /// Name of an image used as the data source.
             /// For example, the following are all valid URLs:
             ///
             /// * Specify the image by its family name:
-            /// projects/{project}/global/images/family/{image_family}
+            /// <pre><code>projects/<var
+            /// class="apiparam">project</var>/global/images/family/<var
+            /// class="apiparam">image_family</var></code></pre>
             /// * Specify the image version:
-            /// projects/{project}/global/images/{image_version}
-            ///
+            /// <pre>projects/<var
+            /// class="apiparam">project</var>/global/images/<var
+            /// class="apiparam">image_version</var></code></pre>
             /// You can also use Batch customized image in short names.
             /// The following image values are supported for a boot disk:
             ///
-            /// * "batch-debian": use Batch Debian images.
-            /// * "batch-centos": use Batch CentOS images.
-            /// * "batch-cos": use Batch Container-Optimized images.
+            /// * `batch-debian`: use Batch Debian images.
+            /// * `batch-centos`: use Batch CentOS images.
+            /// * `batch-cos`: use Batch Container-Optimized images.
+            /// * `batch-hpc-centos`: use Batch HPC CentOS images.
             #[prost(string, tag = "4")]
             Image(::prost::alloc::string::String),
             /// Name of a snapshot used as the data source.
@@ -963,6 +968,15 @@ pub mod allocation_policy {
         #[deprecated]
         #[prost(bool, tag = "3")]
         pub install_gpu_drivers: bool,
+        /// Optional. The NVIDIA GPU driver version that should be installed for this
+        /// type.
+        ///
+        /// You can define the specific driver version such as "470.103.01",
+        /// following the driver version requirements in
+        /// <https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#minimum-driver.>
+        /// Batch will install the specific accelerator driver if qualified.
+        #[prost(string, tag = "4")]
+        pub driver_version: ::prost::alloc::string::String,
     }
     /// InstancePolicy describes an instance type and resources attached to each VM
     /// created by this InstancePolicy.
@@ -1001,6 +1015,12 @@ pub mod allocation_policy {
         /// third party location and install them for GPUs specified in
         /// policy.accelerators or instance_template on their behalf. Default is
         /// false.
+        ///
+        /// For Container-Optimized Image cases, Batch will install the
+        /// accelerator driver following milestones of
+        /// <https://cloud.google.com/container-optimized-os/docs/release-notes.> For
+        /// non Container-Optimized Image cases, following
+        /// <https://github.com/GoogleCloudPlatform/compute-gpu-installation/blob/main/linux/install_gpu_driver.py.>
         #[prost(bool, tag = "3")]
         pub install_gpu_drivers: bool,
         #[prost(oneof = "instance_policy_or_template::PolicyTemplate", tags = "1, 2")]
@@ -1031,20 +1051,30 @@ pub mod allocation_policy {
         /// You can specify the network as a full or partial URL.
         ///
         /// For example, the following are all valid URLs:
-        ///
-        /// * <https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}>
-        /// * projects/{project}/global/networks/{network}
-        /// * global/networks/{network}
+        /// <pre><code><https://www.googleapis.com/compute/v1/projects/<var>
+        /// class="apiparam">project</var>/global/networks/<var
+        /// class="apiparam">network</var></code></pre>
+        /// <pre><code>projects/<var
+        /// class="apiparam">project</var>/global/networks/<var
+        /// class="apiparam">network</var></code></pre>
+        /// <pre><code>global/networks/<var
+        /// class="apiparam">network</var></code></pre>
         #[prost(string, tag = "1")]
         pub network: ::prost::alloc::string::String,
         /// The URL of an existing subnetwork resource in the network.
         /// You can specify the subnetwork as a full or partial URL.
         ///
         /// For example, the following are all valid URLs:
-        ///
-        /// * <https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}>
-        /// * projects/{project}/regions/{region}/subnetworks/{subnetwork}
-        /// * regions/{region}/subnetworks/{subnetwork}
+        /// <pre><code><https://www.googleapis.com/compute/v1/projects/<var>
+        /// class="apiparam">project</var>/regions/<var
+        /// class="apiparam">region</var>/subnetworks/<var
+        /// class="apiparam">subnetwork</var></code></pre>
+        /// <pre><code>projects/<var class="apiparam">project</var>/regions/<var
+        /// class="apiparam">region</var>/subnetworks/<var
+        /// class="apiparam">subnetwork</var></code></pre>
+        /// <pre><code>regions/<var
+        /// class="apiparam">region</var>/subnetworks/<var
+        /// class="apiparam">subnetwork</var></code></pre>
         #[prost(string, tag = "2")]
         pub subnetwork: ::prost::alloc::string::String,
         /// Default is false (with an external IP address). Required if
@@ -1335,6 +1365,10 @@ pub struct ListJobsRequest {
     /// List filter.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. Sort results. Supported are "name", "name desc", "create_time",
+    /// and "create_time desc".
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
     /// Page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,

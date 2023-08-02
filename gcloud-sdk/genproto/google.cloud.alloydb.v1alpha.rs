@@ -408,9 +408,9 @@ pub struct ContinuousBackupConfig {
     /// Whether ContinuousBackup is enabled.
     #[prost(bool, optional, tag = "1")]
     pub enabled: ::core::option::Option<bool>,
-    /// The number of days backups and logs will be retained, which determines the
-    /// window of time that data is recoverable for. If not set, it defaults to 14
-    /// days.
+    /// The number of days that are eligible to restore from using PITR. To support
+    /// the entire recovery window, backups and logs are retained for one day more
+    /// than the recovery window. If not set, defaults to 14 days.
     #[prost(int32, tag = "4")]
     pub recovery_window_days: i32,
     /// The encryption config can be specified to encrypt the
@@ -519,9 +519,10 @@ pub struct Cluster {
     /// the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`
     #[prost(enumeration = "cluster::ClusterType", tag = "24")]
     pub cluster_type: i32,
-    /// Output only. The database engine major version. This is an output-only
-    /// field and it's populated at the Cluster creation time. This field cannot be
-    /// changed after cluster creation.
+    /// Optional. The database engine major version. This is an optional field and
+    /// it is populated at the Cluster creation time. If a database version is not
+    /// supplied at cluster creation time, then a default database version will
+    /// be used.
     #[prost(enumeration = "DatabaseVersion", tag = "9")]
     pub database_version: i32,
     #[prost(message, optional, tag = "29")]
@@ -590,6 +591,9 @@ pub struct Cluster {
     /// Output only. Cross Region replication config specific to PRIMARY cluster.
     #[prost(message, optional, tag = "23")]
     pub primary_config: ::core::option::Option<cluster::PrimaryConfig>,
+    /// Reserved for future use.
+    #[prost(bool, tag = "30")]
+    pub satisfies_pzs: bool,
     /// In case of an imported cluster, this field contains information about the
     /// source this cluster was imported from.
     #[prost(oneof = "cluster::Source", tags = "15, 16")]
@@ -906,6 +910,9 @@ pub struct Instance {
     /// specify explicitly specify the value in each update request.
     #[prost(message, optional, tag = "22")]
     pub update_policy: ::core::option::Option<instance::UpdatePolicy>,
+    /// Reserved for future use.
+    #[prost(bool, tag = "24")]
+    pub satisfies_pzs: bool,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -1309,9 +1316,42 @@ pub struct Backup {
     /// added to the backup's create_time.
     #[prost(message, optional, tag = "19")]
     pub expiry_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The QuantityBasedExpiry of the backup, specified by the
+    /// backup's retention policy. Once the expiry quantity is over retention, the
+    /// backup is eligible to be garbage collected.
+    #[prost(message, optional, tag = "20")]
+    pub expiry_quantity: ::core::option::Option<backup::QuantityBasedExpiry>,
+    /// Reserved for future use.
+    #[prost(bool, tag = "21")]
+    pub satisfies_pzs: bool,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
+    /// A backup's position in a quantity-based retention queue, of backups with
+    /// the same source cluster and type, with length, retention, specified by the
+    /// backup's retention policy.
+    /// Once the position is greater than the retention, the backup is eligible to
+    /// be garbage collected.
+    ///
+    /// Example: 5 backups from the same source cluster and type with a
+    /// quantity-based retention of 3 and denoted by backup_id (position,
+    /// retention).
+    ///
+    /// Safe: backup_5 (1, 3), backup_4, (2, 3), backup_3 (3, 3).
+    /// Awaiting garbage collection: backup_2 (4, 3), backup_1 (5, 3)
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QuantityBasedExpiry {
+        /// Output only. The backup's position among its backups with the same source
+        /// cluster and type, by descending chronological order create time(i.e.
+        /// newest first).
+        #[prost(int32, tag = "1")]
+        pub retention_count: i32,
+        /// Output only. The length of the quantity-based queue, specified by the
+        /// backup's retention policy.
+        #[prost(int32, tag = "2")]
+        pub total_retention_count: i32,
+    }
     /// Backup State
     #[derive(
         Clone,
@@ -2708,6 +2748,11 @@ pub struct GenerateClientCertificateRequest {
     /// Optional. The public key from the client.
     #[prost(string, tag = "5")]
     pub public_key: ::prost::alloc::string::String,
+    /// Optional. An optional hint to the endpoint to generate a client
+    /// ceritificate that can be used by AlloyDB connectors to exchange additional
+    /// metadata with the server after TLS handshake.
+    #[prost(bool, tag = "6")]
+    pub use_metadata_exchange: bool,
 }
 /// Message returned by a GenerateClientCertificate operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3775,10 +3820,10 @@ pub mod alloy_db_admin_client {
             self.inner.unary(req, path, codec).await
         }
         /// Generate a client certificate signed by a Cluster CA.
-        /// The sole purpose of this endpoint is to support the Auth Proxy client and
-        /// the endpoint's behavior is subject to change without notice, so do not rely
-        /// on its behavior remaining constant. Future changes will not break the Auth
-        /// Proxy client.
+        /// The sole purpose of this endpoint is to support AlloyDB connectors and the
+        /// Auth Proxy client. The endpoint's behavior is subject to change without
+        /// notice, so do not rely on its behavior remaining constant. Future changes
+        /// will not break AlloyDB connectors or the Auth Proxy client.
         pub async fn generate_client_certificate(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateClientCertificateRequest>,

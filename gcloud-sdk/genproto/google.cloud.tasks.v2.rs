@@ -157,9 +157,10 @@ pub mod http_request {
 /// or task-level:
 ///
 /// * If [app_engine_routing_override is set on the
-///     queue]\[Queue.app_engine_routing_override\], this value is used for all
-///     tasks in the queue, no matter what the setting is for the [task-level
-///     app_engine_routing]\[AppEngineHttpRequest.app_engine_routing\].
+///    queue]\[google.cloud.tasks.v2.Queue.app_engine_routing_override\], this value
+///    is used for all tasks in the queue, no matter what the setting is for the
+///    [task-level
+///    app_engine_routing]\[google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing\].
 ///
 ///
 /// The `url` that the task will be sent to is:
@@ -195,22 +196,20 @@ pub struct AppEngineHttpRequest {
     /// The HTTP method to use for the request. The default is POST.
     ///
     /// The app's request handler for the task's target URL must be able to handle
-    /// HTTP requests with this http_method, otherwise the task attempt will fail
-    /// with error code 405 (Method Not Allowed). See
-    /// [Writing a push task request
+    /// HTTP requests with this http_method, otherwise the task attempt fails with
+    /// error code 405 (Method Not Allowed). See [Writing a push task request
     /// handler](<https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler>)
-    /// and the documentation for the request handlers in the language your app is
-    /// written in e.g.
-    /// [Python Request
-    /// Handler](<https://cloud.google.com/appengine/docs/python/tools/webapp/requesthandlerclass>).
+    /// and the App Engine documentation for your runtime on [How Requests are
+    /// Handled](<https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled>).
     #[prost(enumeration = "HttpMethod", tag = "1")]
     pub http_method: i32,
     /// Task-level setting for App Engine routing.
     ///
     /// * If [app_engine_routing_override is set on the
-    ///     queue]\[Queue.app_engine_routing_override\], this value is used for all
-    ///     tasks in the queue, no matter what the setting is for the [task-level
-    ///     app_engine_routing]\[AppEngineHttpRequest.app_engine_routing\].
+    ///    queue]\[google.cloud.tasks.v2.Queue.app_engine_routing_override\], this
+    ///    value is used for all tasks in the queue, no matter what the setting is
+    ///    for the [task-level
+    ///    app_engine_routing]\[google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing\].
     #[prost(message, optional, tag = "2")]
     pub app_engine_routing: ::core::option::Option<AppEngineRouting>,
     /// The relative URI.
@@ -548,7 +547,7 @@ pub struct Queue {
     pub retry_config: ::core::option::Option<RetryConfig>,
     /// Output only. The state of the queue.
     ///
-    /// `state` can only be changed by called
+    /// `state` can only be changed by calling
     /// \[PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue\],
     /// \[ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue\], or uploading
     /// \[queue.yaml/xml\](<https://cloud.google.com/appengine/docs/python/config/queueref>).
@@ -808,7 +807,7 @@ pub struct RetryConfig {
     /// A task's retry interval starts at
     /// \[min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff\], then doubles
     /// `max_doublings` times, then increases linearly, and finally
-    /// retries retries at intervals of
+    /// retries at intervals of
     /// \[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff\] up to
     /// \[max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts\] times.
     ///
@@ -887,8 +886,8 @@ pub struct Task {
     /// is marked as a `DEADLINE_EXCEEDED` failure. Cloud Tasks will retry the
     /// task according to the \[RetryConfig][google.cloud.tasks.v2.RetryConfig\].
     ///
-    /// Note that when the request is cancelled, Cloud Tasks will stop listing for
-    /// the response, but whether the worker stops processing depends on the
+    /// Note that when the request is cancelled, Cloud Tasks will stop listening
+    /// for the response, but whether the worker stops processing depends on the
     /// worker. For example, if the worker is stuck, it may not react to cancelled
     /// requests.
     ///
@@ -1051,7 +1050,8 @@ pub struct Attempt {
     #[prost(message, optional, tag = "4")]
     pub response_status: ::core::option::Option<super::super::super::rpc::Status>,
 }
-/// Request message for \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\].
+/// Request message for
+/// \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueuesRequest {
@@ -1059,11 +1059,10 @@ pub struct ListQueuesRequest {
     /// For example: `projects/PROJECT_ID/locations/LOCATION_ID`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// `filter` can be used to specify a subset of queues. Any \[Queue][google.cloud.tasks.v2.Queue\]
-    /// field can be used as a filter and several operators as supported.
-    /// For example: `<=, <, >=, >, !=, =, :`. The filter syntax is the same as
-    /// described in
-    /// [Stackdriver's Advanced Logs
+    /// `filter` can be used to specify a subset of queues. Any
+    /// \[Queue][google.cloud.tasks.v2.Queue\] field can be used as a filter and
+    /// several operators as supported. For example: `<=, <, >=, >, !=, =, :`. The
+    /// filter syntax is the same as described in [Stackdriver's Advanced Logs
     /// Filters](<https://cloud.google.com/logging/docs/view/advanced_filters>).
     ///
     /// Sample filter "state: PAUSED".
@@ -1077,22 +1076,25 @@ pub struct ListQueuesRequest {
     /// The maximum page size is 9800. If unspecified, the page size will
     /// be the maximum. Fewer queues than requested might be returned,
     /// even if more queues exist; use the
-    /// \[next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token\] in the
-    /// response to determine if more queues exist.
+    /// \[next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token\]
+    /// in the response to determine if more queues exist.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A token identifying the page of results to return.
     ///
     /// To request the first page results, page_token must be empty. To
     /// request the next page of results, page_token must be the value of
-    /// \[next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token\] returned
-    /// from the previous call to \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\]
-    /// method. It is an error to switch the value of the
-    /// \[filter][google.cloud.tasks.v2.ListQueuesRequest.filter\] while iterating through pages.
+    /// \[next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token\]
+    /// returned from the previous call to
+    /// \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\] method. It is an
+    /// error to switch the value of the
+    /// \[filter][google.cloud.tasks.v2.ListQueuesRequest.filter\] while iterating
+    /// through pages.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\].
+/// Response message for
+/// \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueuesResponse {
@@ -1102,8 +1104,8 @@ pub struct ListQueuesResponse {
     /// A token to retrieve next page of results.
     ///
     /// To return the next page of results, call
-    /// \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\] with this value as the
-    /// \[page_token][google.cloud.tasks.v2.ListQueuesRequest.page_token\].
+    /// \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\] with this value
+    /// as the \[page_token][google.cloud.tasks.v2.ListQueuesRequest.page_token\].
     ///
     /// If the next_page_token is empty, there are no more results.
     ///
@@ -1120,7 +1122,8 @@ pub struct GetQueueRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[CreateQueue][google.cloud.tasks.v2.CloudTasks.CreateQueue\].
+/// Request message for
+/// \[CreateQueue][google.cloud.tasks.v2.CloudTasks.CreateQueue\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateQueueRequest {
@@ -1134,11 +1137,13 @@ pub struct CreateQueueRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. The queue to create.
     ///
-    /// [Queue's name]\[google.cloud.tasks.v2.Queue.name\] cannot be the same as an existing queue.
+    /// [Queue's name]\[google.cloud.tasks.v2.Queue.name\] cannot be the same as an
+    /// existing queue.
     #[prost(message, optional, tag = "2")]
     pub queue: ::core::option::Option<Queue>,
 }
-/// Request message for \[UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue\].
+/// Request message for
+/// \[UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateQueueRequest {
@@ -1157,7 +1162,8 @@ pub struct UpdateQueueRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for \[DeleteQueue][google.cloud.tasks.v2.CloudTasks.DeleteQueue\].
+/// Request message for
+/// \[DeleteQueue][google.cloud.tasks.v2.CloudTasks.DeleteQueue\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteQueueRequest {
@@ -1166,7 +1172,8 @@ pub struct DeleteQueueRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[PurgeQueue][google.cloud.tasks.v2.CloudTasks.PurgeQueue\].
+/// Request message for
+/// \[PurgeQueue][google.cloud.tasks.v2.CloudTasks.PurgeQueue\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeQueueRequest {
@@ -1175,7 +1182,8 @@ pub struct PurgeQueueRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue\].
+/// Request message for
+/// \[PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseQueueRequest {
@@ -1184,7 +1192,8 @@ pub struct PauseQueueRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue\].
+/// Request message for
+/// \[ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeQueueRequest {
@@ -1193,7 +1202,8 @@ pub struct ResumeQueueRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for listing tasks using \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\].
+/// Request message for listing tasks using
+/// \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksRequest {
@@ -1201,11 +1211,11 @@ pub struct ListTasksRequest {
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be
-    /// returned.
+    /// The response_view specifies which subset of the
+    /// \[Task][google.cloud.tasks.v2.Task\] will be returned.
     ///
-    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all
-    /// information is retrieved by default because some data, such as
+    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\];
+    /// not all information is retrieved by default because some data, such as
     /// payloads, might be desirable to return only when needed because
     /// of its large size or because of the sensitivity of data that it
     /// contains.
@@ -1218,8 +1228,8 @@ pub struct ListTasksRequest {
     /// Maximum page size.
     ///
     /// Fewer tasks than requested might be returned, even if more tasks exist; use
-    /// \[next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token\] in the response to
-    /// determine if more tasks exist.
+    /// \[next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token\]
+    /// in the response to determine if more tasks exist.
     ///
     /// The maximum page size is 1000. If unspecified, the page size will be the
     /// maximum.
@@ -1229,15 +1239,16 @@ pub struct ListTasksRequest {
     ///
     /// To request the first page results, page_token must be empty. To
     /// request the next page of results, page_token must be the value of
-    /// \[next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token\] returned
-    /// from the previous call to \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\]
-    /// method.
+    /// \[next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token\]
+    /// returned from the previous call to
+    /// \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\] method.
     ///
     /// The page token is valid for only 2 hours.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for listing tasks using \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\].
+/// Response message for listing tasks using
+/// \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
@@ -1247,14 +1258,15 @@ pub struct ListTasksResponse {
     /// A token to retrieve next page of results.
     ///
     /// To return the next page of results, call
-    /// \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\] with this value as the
-    /// \[page_token][google.cloud.tasks.v2.ListTasksRequest.page_token\].
+    /// \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\] with this value as
+    /// the \[page_token][google.cloud.tasks.v2.ListTasksRequest.page_token\].
     ///
     /// If the next_page_token is empty, there are no more results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for getting a task using \[GetTask][google.cloud.tasks.v2.CloudTasks.GetTask\].
+/// Request message for getting a task using
+/// \[GetTask][google.cloud.tasks.v2.CloudTasks.GetTask\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaskRequest {
@@ -1262,11 +1274,11 @@ pub struct GetTaskRequest {
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be
-    /// returned.
+    /// The response_view specifies which subset of the
+    /// \[Task][google.cloud.tasks.v2.Task\] will be returned.
     ///
-    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all
-    /// information is retrieved by default because some data, such as
+    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\];
+    /// not all information is retrieved by default because some data, such as
     /// payloads, might be desirable to return only when needed because
     /// of its large size or because of the sensitivity of data that it
     /// contains.
@@ -1277,7 +1289,8 @@ pub struct GetTaskRequest {
     #[prost(enumeration = "task::View", tag = "2")]
     pub response_view: i32,
 }
-/// Request message for \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\].
+/// Request message for
+/// \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaskRequest {
@@ -1291,13 +1304,13 @@ pub struct CreateTaskRequest {
     ///
     /// Task names have the following format:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`.
-    /// The user can optionally specify a task \[name][google.cloud.tasks.v2.Task.name\]. If a
-    /// name is not specified then the system will generate a random
-    /// unique task id, which will be set in the task returned in the
-    /// \[response][google.cloud.tasks.v2.Task.name\].
+    /// The user can optionally specify a task
+    /// \[name][google.cloud.tasks.v2.Task.name\]. If a name is not specified then
+    /// the system will generate a random unique task id, which will be set in the
+    /// task returned in the \[response][google.cloud.tasks.v2.Task.name\].
     ///
-    /// If \[schedule_time][google.cloud.tasks.v2.Task.schedule_time\] is not set or is in the
-    /// past then Cloud Tasks will set it to the current time.
+    /// If \[schedule_time][google.cloud.tasks.v2.Task.schedule_time\] is not set or
+    /// is in the past then Cloud Tasks will set it to the current time.
     ///
     /// Task De-duplication:
     ///
@@ -1312,21 +1325,21 @@ pub struct CreateTaskRequest {
     /// for ~9days after the original task was deleted or executed.
     ///
     /// Because there is an extra lookup cost to identify duplicate task
-    /// names, these \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\] calls have significantly
-    /// increased latency. Using hashed strings for the task id or for
-    /// the prefix of the task id is recommended. Choosing task ids that
-    /// are sequential or have sequential prefixes, for example using a
+    /// names, these \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\]
+    /// calls have significantly increased latency. Using hashed strings for the
+    /// task id or for the prefix of the task id is recommended. Choosing task ids
+    /// that are sequential or have sequential prefixes, for example using a
     /// timestamp, causes an increase in latency and error rates in all
     /// task commands. The infrastructure relies on an approximately
     /// uniform distribution of task ids to store and serve tasks
     /// efficiently.
     #[prost(message, optional, tag = "2")]
     pub task: ::core::option::Option<Task>,
-    /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be
-    /// returned.
+    /// The response_view specifies which subset of the
+    /// \[Task][google.cloud.tasks.v2.Task\] will be returned.
     ///
-    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all
-    /// information is retrieved by default because some data, such as
+    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\];
+    /// not all information is retrieved by default because some data, such as
     /// payloads, might be desirable to return only when needed because
     /// of its large size or because of the sensitivity of data that it
     /// contains.
@@ -1356,11 +1369,11 @@ pub struct RunTaskRequest {
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be
-    /// returned.
+    /// The response_view specifies which subset of the
+    /// \[Task][google.cloud.tasks.v2.Task\] will be returned.
     ///
-    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all
-    /// information is retrieved by default because some data, such as
+    /// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\];
+    /// not all information is retrieved by default because some data, such as
     /// payloads, might be desirable to return only when needed because
     /// of its large size or because of the sensitivity of data that it
     /// contains.
@@ -1514,8 +1527,8 @@ pub mod cloud_tasks_client {
         /// Creates a queue.
         ///
         /// Queues created with this method allow tasks to live for a maximum of 31
-        /// days. After a task is 31 days old, the task will be deleted regardless of whether
-        /// it was dispatched or not.
+        /// days. After a task is 31 days old, the task will be deleted regardless of
+        /// whether it was dispatched or not.
         ///
         /// WARNING: Using this method may have unintended side effects if you are
         /// using an App Engine `queue.yaml` or `queue.xml` file to manage your queues.
@@ -1553,8 +1566,8 @@ pub mod cloud_tasks_client {
         /// the queue if it does exist.
         ///
         /// Queues created with this method allow tasks to live for a maximum of 31
-        /// days. After a task is 31 days old, the task will be deleted regardless of whether
-        /// it was dispatched or not.
+        /// days. After a task is 31 days old, the task will be deleted regardless of
+        /// whether it was dispatched or not.
         ///
         /// WARNING: Using this method may have unintended side effects if you are
         /// using an App Engine `queue.yaml` or `queue.xml` file to manage your queues.
@@ -1657,9 +1670,10 @@ pub mod cloud_tasks_client {
         ///
         /// If a queue is paused then the system will stop dispatching tasks
         /// until the queue is resumed via
-        /// [ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue]. Tasks can still be added
-        /// when the queue is paused. A queue is paused if its
-        /// [state][google.cloud.tasks.v2.Queue.state] is [PAUSED][google.cloud.tasks.v2.Queue.State.PAUSED].
+        /// [ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue]. Tasks can
+        /// still be added when the queue is paused. A queue is paused if its
+        /// [state][google.cloud.tasks.v2.Queue.state] is
+        /// [PAUSED][google.cloud.tasks.v2.Queue.State.PAUSED].
         pub async fn pause_queue(
             &mut self,
             request: impl tonic::IntoRequest<super::PauseQueueRequest>,
@@ -1688,9 +1702,10 @@ pub mod cloud_tasks_client {
         ///
         /// This method resumes a queue after it has been
         /// [PAUSED][google.cloud.tasks.v2.Queue.State.PAUSED] or
-        /// [DISABLED][google.cloud.tasks.v2.Queue.State.DISABLED]. The state of a queue is stored
-        /// in the queue's [state][google.cloud.tasks.v2.Queue.state]; after calling this method it
-        /// will be set to [RUNNING][google.cloud.tasks.v2.Queue.State.RUNNING].
+        /// [DISABLED][google.cloud.tasks.v2.Queue.State.DISABLED]. The state of a
+        /// queue is stored in the queue's [state][google.cloud.tasks.v2.Queue.state];
+        /// after calling this method it will be set to
+        /// [RUNNING][google.cloud.tasks.v2.Queue.State.RUNNING].
         ///
         /// WARNING: Resuming many high-QPS queues at the same time can
         /// lead to target overloading. If you are resuming high-QPS
@@ -1759,8 +1774,8 @@ pub mod cloud_tasks_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Sets the access control policy for a [Queue][google.cloud.tasks.v2.Queue]. Replaces any existing
-        /// policy.
+        /// Sets the access control policy for a [Queue][google.cloud.tasks.v2.Queue].
+        /// Replaces any existing policy.
         ///
         /// Note: The Cloud Console does not check queue-level IAM permissions yet.
         /// Project-level permissions are required to use the Cloud Console.
@@ -1799,9 +1814,10 @@ pub mod cloud_tasks_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns permissions that a caller has on a [Queue][google.cloud.tasks.v2.Queue].
-        /// If the resource does not exist, this will return an empty set of
-        /// permissions, not a [NOT_FOUND][google.rpc.Code.NOT_FOUND] error.
+        /// Returns permissions that a caller has on a
+        /// [Queue][google.cloud.tasks.v2.Queue]. If the resource does not exist, this
+        /// will return an empty set of permissions, not a
+        /// [NOT_FOUND][google.rpc.Code.NOT_FOUND] error.
         ///
         /// Note: This operation is designed to be used for building permission-aware
         /// UIs and command-line tools, not for authorization checking. This operation
@@ -1842,10 +1858,10 @@ pub mod cloud_tasks_client {
         }
         /// Lists the tasks in a queue.
         ///
-        /// By default, only the [BASIC][google.cloud.tasks.v2.Task.View.BASIC] view is retrieved
-        /// due to performance considerations;
-        /// [response_view][google.cloud.tasks.v2.ListTasksRequest.response_view] controls the
-        /// subset of information which is returned.
+        /// By default, only the [BASIC][google.cloud.tasks.v2.Task.View.BASIC] view is
+        /// retrieved due to performance considerations;
+        /// [response_view][google.cloud.tasks.v2.ListTasksRequest.response_view]
+        /// controls the subset of information which is returned.
         ///
         /// The tasks may be returned in any order. The ordering may change at any
         /// time.
@@ -1960,13 +1976,14 @@ pub mod cloud_tasks_client {
         /// Forces a task to run now.
         ///
         /// When this method is called, Cloud Tasks will dispatch the task, even if
-        /// the task is already running, the queue has reached its [RateLimits][google.cloud.tasks.v2.RateLimits] or
-        /// is [PAUSED][google.cloud.tasks.v2.Queue.State.PAUSED].
+        /// the task is already running, the queue has reached its
+        /// [RateLimits][google.cloud.tasks.v2.RateLimits] or is
+        /// [PAUSED][google.cloud.tasks.v2.Queue.State.PAUSED].
         ///
         /// This command is meant to be used for manual debugging. For
-        /// example, [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask] can be used to retry a failed
-        /// task after a fix has been made or to manually force a task to be
-        /// dispatched now.
+        /// example, [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask] can be used to
+        /// retry a failed task after a fix has been made or to manually force a task
+        /// to be dispatched now.
         ///
         /// The dispatched task is returned. That is, the task that is returned
         /// contains the [status][Task.status] after the task is dispatched but
@@ -1974,9 +1991,10 @@ pub mod cloud_tasks_client {
         ///
         /// If Cloud Tasks receives a successful response from the task's
         /// target, then the task will be deleted; otherwise the task's
-        /// [schedule_time][google.cloud.tasks.v2.Task.schedule_time] will be reset to the time that
-        /// [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask] was called plus the retry delay specified
-        /// in the queue's [RetryConfig][google.cloud.tasks.v2.RetryConfig].
+        /// [schedule_time][google.cloud.tasks.v2.Task.schedule_time] will be reset to
+        /// the time that [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask] was
+        /// called plus the retry delay specified in the queue's
+        /// [RetryConfig][google.cloud.tasks.v2.RetryConfig].
         ///
         /// [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask] returns
         /// [NOT_FOUND][google.rpc.Code.NOT_FOUND] when it is called on a

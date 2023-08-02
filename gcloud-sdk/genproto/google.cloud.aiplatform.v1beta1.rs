@@ -1840,6 +1840,8 @@ pub enum JobState {
     /// The job is being updated. Only jobs in the `RUNNING` state can be updated.
     /// After updating, the job goes back to the `RUNNING` state.
     Updating = 10,
+    /// The job is partially succeeded, some results may be missing due to errors.
+    PartiallySucceeded = 11,
 }
 impl JobState {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1859,6 +1861,7 @@ impl JobState {
             JobState::Paused => "JOB_STATE_PAUSED",
             JobState::Expired => "JOB_STATE_EXPIRED",
             JobState::Updating => "JOB_STATE_UPDATING",
+            JobState::PartiallySucceeded => "JOB_STATE_PARTIALLY_SUCCEEDED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1875,6 +1878,7 @@ impl JobState {
             "JOB_STATE_PAUSED" => Some(Self::Paused),
             "JOB_STATE_EXPIRED" => Some(Self::Expired),
             "JOB_STATE_UPDATING" => Some(Self::Updating),
+            "JOB_STATE_PARTIALLY_SUCCEEDED" => Some(Self::PartiallySucceeded),
             _ => None,
         }
     }
@@ -3802,6 +3806,11 @@ pub struct BatchPredictionJob {
     ///               or
     ///             `projects/{project}/locations/{location}/models/{model}@golden`
     /// if no version is specified, the default version will be deployed.
+    ///
+    /// The model resource could also be a publisher model.
+    ///   Example: `publishers/{publisher}/models/{model}`
+    ///               or
+    ///            `projects/{project}/locations/{location}/publishers/{publisher}/models/{model}`
     #[prost(string, tag = "3")]
     pub model: ::prost::alloc::string::String,
     /// Output only. The version ID of the Model that produces the predictions via
@@ -4371,6 +4380,15 @@ pub struct CustomJob {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomJobSpec {
+    /// Optional. The ID of the PersistentResource in the same Project and Location
+    /// which to run
+    ///
+    /// If this is specified, the job will be run on existing machines held by the
+    /// PersistentResource instead of on-demand short-live machines.
+    /// The network and CMEK configs on the job should be consistent with those on
+    /// the PersistentResource, otherwise, the job will be rejected.
+    #[prost(string, tag = "14")]
+    pub persistent_resource_id: ::prost::alloc::string::String,
     /// Required. The spec of the worker pools including machine type and Docker
     /// image. All worker pools except the first one are optional and can be
     /// skipped by providing an empty value.
@@ -4926,6 +4944,10 @@ pub struct Dataset {
     /// Required. Additional information about the Dataset.
     #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<::prost_types::Value>,
+    /// Output only. The number of DataItems in this Dataset. Only apply for
+    /// non-structured Dataset.
+    #[prost(int64, tag = "10")]
+    pub data_item_count: i64,
     /// Output only. Timestamp when this Dataset was created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -5537,6 +5559,17 @@ pub struct ListSavedQueriesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
+/// \[DatasetService.DeleteSavedQuery][google.cloud.aiplatform.v1beta1.DatasetService.DeleteSavedQuery\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSavedQueryRequest {
+    /// Required. The resource name of the SavedQuery to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}/savedQueries/{saved_query}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
 /// \[DatasetService.GetAnnotationSpec][google.cloud.aiplatform.v1beta1.DatasetService.GetAnnotationSpec\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5594,8 +5627,7 @@ pub mod dataset_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// The service that handles the CRUD of Vertex AI Dataset and its child
-    /// resources.
+    /// The service that manages Vertex AI Dataset and its child resources.
     #[derive(Debug, Clone)]
     pub struct DatasetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -5976,6 +6008,37 @@ pub mod dataset_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.DatasetService",
                         "ListSavedQueries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a SavedQuery.
+        pub async fn delete_saved_query(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSavedQueryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.DatasetService/DeleteSavedQuery",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.DatasetService",
+                        "DeleteSavedQuery",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -8490,6 +8553,139 @@ pub struct StringArray {
     #[prost(string, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// A tensor value type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Tensor {
+    /// The data type of tensor.
+    #[prost(enumeration = "tensor::DataType", tag = "1")]
+    pub dtype: i32,
+    /// Shape of the tensor.
+    #[prost(int64, repeated, tag = "2")]
+    pub shape: ::prost::alloc::vec::Vec<i64>,
+    /// Type specific representations that make it easy to create tensor protos in
+    /// all languages.  Only the representation corresponding to "dtype" can
+    /// be set.  The values hold the flattened representation of the tensor in
+    /// row major order.
+    ///
+    /// \[BOOL][google.aiplatform.master.Tensor.DataType.BOOL\]
+    #[prost(bool, repeated, tag = "3")]
+    pub bool_val: ::prost::alloc::vec::Vec<bool>,
+    /// \[STRING][google.aiplatform.master.Tensor.DataType.STRING\]
+    #[prost(string, repeated, tag = "14")]
+    pub string_val: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// \[STRING][google.aiplatform.master.Tensor.DataType.STRING\]
+    #[prost(bytes = "vec", repeated, tag = "15")]
+    pub bytes_val: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    /// \[FLOAT][google.aiplatform.master.Tensor.DataType.FLOAT\]
+    #[prost(float, repeated, tag = "5")]
+    pub float_val: ::prost::alloc::vec::Vec<f32>,
+    /// \[DOUBLE][google.aiplatform.master.Tensor.DataType.DOUBLE\]
+    #[prost(double, repeated, tag = "6")]
+    pub double_val: ::prost::alloc::vec::Vec<f64>,
+    /// \[INT_8][google.aiplatform.master.Tensor.DataType.INT8\]
+    /// \[INT_16][google.aiplatform.master.Tensor.DataType.INT16\]
+    /// \[INT_32][google.aiplatform.master.Tensor.DataType.INT32\]
+    #[prost(int32, repeated, tag = "7")]
+    pub int_val: ::prost::alloc::vec::Vec<i32>,
+    /// \[INT64][google.aiplatform.master.Tensor.DataType.INT64\]
+    #[prost(int64, repeated, tag = "8")]
+    pub int64_val: ::prost::alloc::vec::Vec<i64>,
+    /// \[UINT8][google.aiplatform.master.Tensor.DataType.UINT8\]
+    /// \[UINT16][google.aiplatform.master.Tensor.DataType.UINT16\]
+    /// \[UINT32][google.aiplatform.master.Tensor.DataType.UINT32\]
+    #[prost(uint32, repeated, tag = "9")]
+    pub uint_val: ::prost::alloc::vec::Vec<u32>,
+    /// \[UINT64][google.aiplatform.master.Tensor.DataType.UINT64\]
+    #[prost(uint64, repeated, tag = "10")]
+    pub uint64_val: ::prost::alloc::vec::Vec<u64>,
+    /// A list of tensor values.
+    #[prost(message, repeated, tag = "11")]
+    pub list_val: ::prost::alloc::vec::Vec<Tensor>,
+    /// A map of string to tensor.
+    #[prost(map = "string, message", tag = "12")]
+    pub struct_val: ::std::collections::HashMap<::prost::alloc::string::String, Tensor>,
+    /// Serialized raw tensor content.
+    #[prost(bytes = "vec", tag = "13")]
+    pub tensor_val: ::prost::alloc::vec::Vec<u8>,
+}
+/// Nested message and enum types in `Tensor`.
+pub mod tensor {
+    /// Data type of the tensor.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataType {
+        /// Not a legal value for DataType. Used to indicate a DataType field has not
+        /// been set.
+        Unspecified = 0,
+        /// Data types that all computation devices are expected to be
+        /// capable to support.
+        Bool = 1,
+        String = 2,
+        Float = 3,
+        Double = 4,
+        Int8 = 5,
+        Int16 = 6,
+        Int32 = 7,
+        Int64 = 8,
+        Uint8 = 9,
+        Uint16 = 10,
+        Uint32 = 11,
+        Uint64 = 12,
+    }
+    impl DataType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                DataType::Bool => "BOOL",
+                DataType::String => "STRING",
+                DataType::Float => "FLOAT",
+                DataType::Double => "DOUBLE",
+                DataType::Int8 => "INT8",
+                DataType::Int16 => "INT16",
+                DataType::Int32 => "INT32",
+                DataType::Int64 => "INT64",
+                DataType::Uint8 => "UINT8",
+                DataType::Uint16 => "UINT16",
+                DataType::Uint32 => "UINT32",
+                DataType::Uint64 => "UINT64",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOL" => Some(Self::Bool),
+                "STRING" => Some(Self::String),
+                "FLOAT" => Some(Self::Float),
+                "DOUBLE" => Some(Self::Double),
+                "INT8" => Some(Self::Int8),
+                "INT16" => Some(Self::Int16),
+                "INT32" => Some(Self::Int32),
+                "INT64" => Some(Self::Int64),
+                "UINT8" => Some(Self::Uint8),
+                "UINT16" => Some(Self::Uint16),
+                "UINT32" => Some(Self::Uint32),
+                "UINT64" => Some(Self::Uint64),
+                _ => None,
+            }
+        }
+    }
+}
 /// Request message for
 /// \[FeaturestoreOnlineServingService.WriteFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreOnlineServingService.WriteFeatureValues\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8925,7 +9121,7 @@ pub mod featurestore_online_serving_service_client {
 pub struct CreateFeaturestoreRequest {
     /// Required. The resource name of the Location to create Featurestores.
     /// Format:
-    /// `projects/{project}/locations/{location}'`
+    /// `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Featurestore to create.
@@ -9777,6 +9973,7 @@ pub struct SearchFeaturesRequest {
     /// * `featurestore_id`: Supports = comparisons.
     ///
     /// Examples:
+    ///
     /// * `description = "foo bar"` --> Any Feature with description exactly equal
     /// to `foo bar`
     /// * `value_type = DOUBLE` --> Features whose type is DOUBLE.
@@ -13524,7 +13721,7 @@ pub struct NasJob {
     #[prost(bool, tag = "14")]
     pub enable_restricted_image_training: bool,
 }
-/// Represents a NasTrial details along with it's parameters. If there is a
+/// Represents a NasTrial details along with its parameters. If there is a
 /// corresponding train NasTrial, the train NasTrial is also returned.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19158,7 +19355,7 @@ pub mod model_evaluation {
         /// list of slices, with limitation of two slices. The first slice of data
         /// will be the slice_a. The second slice in the list (slice_b) will be
         /// compared against the first slice. If only a single slice is provided,
-        /// then slice_a will be compared against “not slice_a”.
+        /// then slice_a will be compared against "not slice_a".
         /// Below are examples with feature "education" with value "low", "medium",
         /// "high" in the dataset:
         ///
@@ -20969,6 +21166,567 @@ pub mod model_service_client {
         }
     }
 }
+/// Represents long-lasting resources that are dedicated to users to runs custom
+/// workloads.
+/// A PersistentResource can have multiple node pools and each node
+/// pool can have its own machine spec.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersistentResource {
+    /// Immutable. Resource name of a PersistentResource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The display name of the PersistentResource.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. The spec of the pools of different resources.
+    #[prost(message, repeated, tag = "4")]
+    pub resource_pools: ::prost::alloc::vec::Vec<ResourcePool>,
+    /// Output only. The detailed state of a Study.
+    #[prost(enumeration = "persistent_resource::State", tag = "5")]
+    pub state: i32,
+    /// Output only. Only populated when persistent resource's state is `STOPPING`
+    /// or `ERROR`.
+    #[prost(message, optional, tag = "6")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. Time when the PersistentResource was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the PersistentResource for the first time entered
+    /// the `RUNNING` state.
+    #[prost(message, optional, tag = "8")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the PersistentResource was most recently updated.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The labels with user-defined metadata to organize
+    /// PersistentResource.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map = "string, string", tag = "10")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The full name of the Compute Engine
+    /// \[network\](/compute/docs/networks-and-firewalls#networks) to peered with
+    /// Vertex AI to host the persistent resources.
+    /// For example, `projects/12345/global/networks/myVPC`.
+    /// \[Format\](/compute/docs/reference/rest/v1/networks/insert)
+    /// is of the form `projects/{project}/global/networks/{network}`.
+    /// Where {project} is a project number, as in `12345`, and {network} is a
+    /// network name.
+    ///
+    /// To specify this field, you must have already [configured VPC Network
+    /// Peering for Vertex
+    /// AI](<https://cloud.google.com/vertex-ai/docs/general/vpc-peering>).
+    ///
+    /// If this field is left unspecified, the resources is not peered with any
+    /// network.
+    #[prost(string, tag = "11")]
+    pub network: ::prost::alloc::string::String,
+    /// Optional. Customer-managed encryption key spec for a PersistentResource.
+    /// If set, this PersistentResource and all sub-resources of this
+    /// PersistentResource will be secured by this key.
+    #[prost(message, optional, tag = "12")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Optional. Persistent Resource runtime spec.
+    /// Used for e.g. Ray cluster configuration.
+    #[prost(message, optional, tag = "13")]
+    pub resource_runtime_spec: ::core::option::Option<ResourceRuntimeSpec>,
+    /// Output only. Runtime information of the Persistent Resource.
+    #[prost(message, optional, tag = "14")]
+    pub resource_runtime: ::core::option::Option<ResourceRuntime>,
+    /// Optional. A list of names for the reserved ip ranges under the VPC network
+    /// that can be used for this persistent resource.
+    ///
+    /// If set, we will deploy the persistent resource within the provided ip
+    /// ranges. Otherwise, the persistent resource will be deployed to any ip
+    /// ranges under the provided VPC network.
+    ///
+    /// Example: \['vertex-ai-ip-range'\].
+    #[prost(string, repeated, tag = "15")]
+    pub reserved_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `PersistentResource`.
+pub mod persistent_resource {
+    /// Describes the PersistentResource state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Not set.
+        Unspecified = 0,
+        /// The PROVISIONING state indicates the persistent resources is being
+        /// created.
+        Provisioning = 1,
+        /// The RUNNING state indicates the persistent resources is healthy and fully
+        /// usable.
+        Running = 3,
+        /// The STOPPING state indicates the persistent resources is being deleted.
+        Stopping = 4,
+        /// The ERROR state indicates the persistent resources may be unusable.
+        /// Details can be found in the `error` field.
+        Error = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Provisioning => "PROVISIONING",
+                State::Running => "RUNNING",
+                State::Stopping => "STOPPING",
+                State::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "STOPPING" => Some(Self::Stopping),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents the spec a group of resources of same type, e.g. machine, disk
+/// and accelerators, in a PersistentResource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourcePool {
+    /// Optional. The unique ID in a PersistentResource to refer the this resource
+    /// pool. User can specify it if need to use it, otherwise we will generate it
+    /// automatically.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Required. Immutable. The specification of a single machine.
+    #[prost(message, optional, tag = "2")]
+    pub machine_spec: ::core::option::Option<MachineSpec>,
+    /// Optional. The total number of machines to use for this resource pool.
+    #[prost(int64, optional, tag = "3")]
+    pub replica_count: ::core::option::Option<i64>,
+    /// Optional. Disk spec for the machine in this node pool.
+    #[prost(message, optional, tag = "4")]
+    pub disk_spec: ::core::option::Option<DiskSpec>,
+    /// Output only. The number of machines currently not in use by training jobs
+    /// for this resource pool. Deprecated. Use `used_replica_count` instead.
+    #[deprecated]
+    #[prost(int64, tag = "5")]
+    pub idle_replica_count: i64,
+    /// Output only. The number of machines currently in use by training jobs for
+    /// this resource pool. Will replace idle_replica_count.
+    #[prost(int64, tag = "6")]
+    pub used_replica_count: i64,
+    /// Optional. Optional spec to configure GKE autoscaling
+    #[prost(message, optional, tag = "7")]
+    pub autoscaling_spec: ::core::option::Option<resource_pool::AutoscalingSpec>,
+}
+/// Nested message and enum types in `ResourcePool`.
+pub mod resource_pool {
+    /// The min/max number of replicas allowed if enabling autoscaling
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutoscalingSpec {
+        /// Optional. min replicas in the node pool,
+        /// must be ≤ replica_count and < max_replica_count or will throw error
+        #[prost(int64, optional, tag = "1")]
+        pub min_replica_count: ::core::option::Option<i64>,
+        /// Optional. max replicas in the node pool,
+        /// must be ≥ replica_count and > min_replica_count or will throw error
+        #[prost(int64, optional, tag = "2")]
+        pub max_replica_count: ::core::option::Option<i64>,
+    }
+}
+/// Configure runtime on a PersistentResource instance, including but may not
+/// limited to:
+/// * Service accounts used to run the workloads;
+/// * Whether make it a dedicated Ray Cluster;
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceRuntimeSpec {
+    /// Optional. Configure the use of workload identity on the PersistentResource
+    #[prost(message, optional, tag = "2")]
+    pub service_account_spec: ::core::option::Option<ServiceAccountSpec>,
+    /// Ray cluster configuration.
+    /// Required when creating a dedicated RayCluster on the PersistentResource.
+    #[prost(message, optional, tag = "1")]
+    pub ray_spec: ::core::option::Option<RaySpec>,
+}
+/// Configuration information for the Ray cluster.
+/// For experimental launch, Ray cluster creation and Persistent
+/// cluster creation are 1:1 mapping: We will provision all the nodes within the
+/// Persistent cluster as Ray nodes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RaySpec {
+    /// Optional. Default image for user to choose a preferred ML framework(e.g.
+    /// tensorflow or Pytorch) by choosing from Vertex prebuild
+    /// images(<https://cloud.google.com/vertex-ai/docs/training/pre-built-containers>).
+    /// Either this or the resource_pool_images is required. Use this field if
+    /// you need all the resource pools to have the same Ray image, Otherwise, use
+    /// the {@code resource_pool_images} field.
+    #[prost(string, tag = "1")]
+    pub image_uri: ::prost::alloc::string::String,
+}
+/// Persistent Cluster runtime information as output
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceRuntime {
+    /// Output only. URIs for user to connect to the Cluster.
+    /// Example:
+    /// {
+    ///    "RAY_HEAD_NODE_INTERNAL_IP": "head-node-IP:10001"
+    ///    "RAY_DASHBOARD_URI": "ray-dashboard-address:8888"
+    /// }
+    #[prost(map = "string, string", tag = "1")]
+    pub access_uris: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Configuration for the use of custom service account to run the workloads.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceAccountSpec {
+    /// Required. If true, custom user-managed service account is enforced to run
+    /// any workloads (e.g. Vertex Jobs) on the resource; Otherwise, will always
+    /// use [Vertex AI Custom Code Service
+    /// Agent](<https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents>)
+    #[prost(bool, tag = "1")]
+    pub enable_custom_service_account: bool,
+    /// Optional. Default service account that this PersistentResource's workloads
+    /// run as. The workloads include:
+    ///   * Any runtime specified via `ResourceRuntimeSpec` on creation time,
+    ///   e.g. Ray;
+    ///   * Jobs submitted to PersistentResource, if no other service account
+    ///   specified in the job specs.
+    ///
+    ///
+    /// Only works when custom service account is enabled and users have the
+    /// `iam.serviceAccounts.actAs` permission on this service account.
+    ///
+    /// Required if any containers specified in `ResourceRuntimeSpec`.
+    #[prost(string, tag = "2")]
+    pub service_account: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[PersistentResourceService.CreatePersistentResource][google.cloud.aiplatform.v1beta1.PersistentResourceService.CreatePersistentResource\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePersistentResourceRequest {
+    /// Required. The resource name of the Location to create the
+    /// PersistentResource in. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The PersistentResource to create.
+    #[prost(message, optional, tag = "2")]
+    pub persistent_resource: ::core::option::Option<PersistentResource>,
+    /// Required. The ID to use for the PersistentResource, which become the final
+    /// component of the PersistentResource's resource name.
+    ///
+    /// The maximum length is 63 characters, and valid characters
+    /// are /^\[a-z]([a-z0-9-]{0,61}[a-z0-9\])?$/.
+    #[prost(string, tag = "3")]
+    pub persistent_resource_id: ::prost::alloc::string::String,
+}
+/// Details of operations that perform create PersistentResource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePersistentResourceOperationMetadata {
+    /// Operation metadata for PersistentResource.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// \[PersistentResourceService.GetPersistentResource][google.cloud.aiplatform.v1beta1.PersistentResourceService.GetPersistentResource\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPersistentResourceRequest {
+    /// Required. The name of the PersistentResource resource.
+    /// Format:
+    /// `projects/{project_id_or_number}/locations/{location_id}/persistentResources/{persistent_resource_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for \[PersistentResourceService.ListPersistentResource][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPersistentResourcesRequest {
+    /// Required. The resource name of the Location to list the PersistentResources
+    /// from. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// \[ListPersistentResourceResponse.next_page_token][\] of the previous
+    /// \[PersistentResourceService.ListPersistentResource][\] call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[PersistentResourceService.ListPersistentResources][google.cloud.aiplatform.v1beta1.PersistentResourceService.ListPersistentResources\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPersistentResourcesResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub persistent_resources: ::prost::alloc::vec::Vec<PersistentResource>,
+    /// A token to retrieve next page of results.
+    /// Pass to
+    /// \[ListPersistentResourcesRequest.page_token][google.cloud.aiplatform.v1beta1.ListPersistentResourcesRequest.page_token\]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[PersistentResourceService.DeletePersistentResource][google.cloud.aiplatform.v1beta1.PersistentResourceService.DeletePersistentResource\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePersistentResourceRequest {
+    /// Required. The name of the PersistentResource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/persistentResources/{persistent_resource}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod persistent_resource_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for managing Vertex AI's machine learning PersistentResource.
+    #[derive(Debug, Clone)]
+    pub struct PersistentResourceServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl PersistentResourceServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> PersistentResourceServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PersistentResourceServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            PersistentResourceServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Uploads a Model artifact into Vertex AI.
+        pub async fn create_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PersistentResourceService/CreatePersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PersistentResourceService",
+                        "CreatePersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a PersistentResource.
+        pub async fn get_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PersistentResource>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PersistentResourceService/GetPersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PersistentResourceService",
+                        "GetPersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists PersistentResources in a Location.
+        pub async fn list_persistent_resources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPersistentResourcesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPersistentResourcesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PersistentResourceService/ListPersistentResources",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PersistentResourceService",
+                        "ListPersistentResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a PersistentResource.
+        pub async fn delete_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PersistentResourceService/DeletePersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PersistentResourceService",
+                        "DeletePersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Represents the failure policy of a pipeline. Currently, the default of a
 /// pipeline is that the pipeline will continue to run until no more tasks can be
 /// executed, also known as PIPELINE_FAILURE_POLICY_FAIL_SLOW. However, if a
@@ -21136,6 +21894,9 @@ pub struct PipelineJob {
     /// characters, underscores and dashes. International characters are allowed.
     ///
     /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    ///
+    /// Note there is some reserved label key for Vertex AI Pipelines.
+    /// - `vertex-ai-pipelines-run-billing-id`, user set value will get overrided.
     #[prost(map = "string, string", tag = "11")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -21174,6 +21935,16 @@ pub struct PipelineJob {
     /// with any network.
     #[prost(string, tag = "18")]
     pub network: ::prost::alloc::string::String,
+    /// A list of names for the reserved ip ranges under the VPC network
+    /// that can be used for this Pipeline Job's workload.
+    ///
+    /// If set, we will deploy the Pipeline Job's workload within the provided ip
+    /// ranges. Otherwise, the job will be deployed to any ip ranges under the
+    /// provided VPC network.
+    ///
+    /// Example: \['vertex-ai-ip-range'\].
+    #[prost(string, repeated, tag = "25")]
+    pub reserved_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A template uri from where the
     /// \[PipelineJob.pipeline_spec][google.cloud.aiplatform.v1beta1.PipelineJob.pipeline_spec\],
     /// if empty, will be downloaded.
@@ -22700,6 +23471,10 @@ pub struct PredictResponse {
     /// which is deployed as the DeployedModel that this prediction hits.
     #[prost(string, tag = "4")]
     pub model_display_name: ::prost::alloc::string::String,
+    /// Output only. Request-level metadata returned by the model. The metadata
+    /// type will be dependent upon the model implementation.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Value>,
 }
 /// Request message for
 /// \[PredictionService.RawPredict][google.cloud.aiplatform.v1beta1.PredictionService.RawPredict\].
@@ -22728,6 +23503,40 @@ pub struct RawPredictRequest {
     /// `RawPredict` method.
     #[prost(message, optional, tag = "2")]
     pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
+}
+/// Request message for
+/// \[PredictionService.StreamingPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingPredict\].
+///
+/// The first message must contain
+/// \[endpoint][google.cloud.aiplatform.v1beta1.StreamingPredictRequest.endpoint\]
+/// field and optionally \[input][\]. The subsequent messages must contain
+/// \[input][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(message, repeated, tag = "2")]
+    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Response message for
+/// \[PredictionService.StreamingPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingPredict\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictResponse {
+    /// The prediction output.
+    #[prost(message, repeated, tag = "1")]
+    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<Tensor>,
 }
 /// Request message for
 /// \[PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain\].
@@ -22953,6 +23762,38 @@ pub mod prediction_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Perform a server-side streaming online prediction request for Vertex
+        /// LLM streaming.
+        pub async fn server_streaming_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StreamingPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/ServerStreamingPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "ServerStreamingPredict",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Perform an online explanation.
         ///
@@ -24436,50 +25277,6 @@ pub struct GetTensorboardRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[TensorboardService.GetTensorboardUsage][\].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReadTensorboardUsageRequest {
-    /// Required. The name of the Tensorboard resource.
-    /// Format:
-    /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-    #[prost(string, tag = "1")]
-    pub tensorboard: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1beta1.TensorboardService.ReadTensorboardUsage\].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReadTensorboardUsageResponse {
-    /// Maps year-month (YYYYMM) string to per month usage data.
-    #[prost(map = "string, message", tag = "1")]
-    pub monthly_usage_data: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        read_tensorboard_usage_response::PerMonthUsageData,
-    >,
-}
-/// Nested message and enum types in `ReadTensorboardUsageResponse`.
-pub mod read_tensorboard_usage_response {
-    /// Per user usage data.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PerUserUsageData {
-        /// User's username
-        #[prost(string, tag = "1")]
-        pub username: ::prost::alloc::string::String,
-        /// Number of times the user has read data within the Tensorboard.
-        #[prost(int64, tag = "2")]
-        pub view_count: i64,
-    }
-    /// Per month usage data
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PerMonthUsageData {
-        /// Usage data for each user in the given month.
-        #[prost(message, repeated, tag = "1")]
-        pub user_usage_data: ::prost::alloc::vec::Vec<PerUserUsageData>,
-    }
-}
 /// Request message for
 /// \[TensorboardService.ListTensorboards][google.cloud.aiplatform.v1beta1.TensorboardService.ListTensorboards\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -24559,6 +25356,71 @@ pub struct DeleteTensorboardRequest {
     /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1beta1.TensorboardService.ReadTensorboardUsage\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardUsageRequest {
+    /// Required. The name of the Tensorboard resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+    #[prost(string, tag = "1")]
+    pub tensorboard: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1beta1.TensorboardService.ReadTensorboardUsage\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardUsageResponse {
+    /// Maps year-month (YYYYMM) string to per month usage data.
+    #[prost(map = "string, message", tag = "1")]
+    pub monthly_usage_data: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        read_tensorboard_usage_response::PerMonthUsageData,
+    >,
+}
+/// Nested message and enum types in `ReadTensorboardUsageResponse`.
+pub mod read_tensorboard_usage_response {
+    /// Per user usage data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PerUserUsageData {
+        /// User's username
+        #[prost(string, tag = "1")]
+        pub username: ::prost::alloc::string::String,
+        /// Number of times the user has read data within the Tensorboard.
+        #[prost(int64, tag = "2")]
+        pub view_count: i64,
+    }
+    /// Per month usage data
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PerMonthUsageData {
+        /// Usage data for each user in the given month.
+        #[prost(message, repeated, tag = "1")]
+        pub user_usage_data: ::prost::alloc::vec::Vec<PerUserUsageData>,
+    }
+}
+/// Request message for
+/// \[TensorboardService.ReadTensorboardSize][google.cloud.aiplatform.v1beta1.TensorboardService.ReadTensorboardSize\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardSizeRequest {
+    /// Required. The name of the Tensorboard resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+    #[prost(string, tag = "1")]
+    pub tensorboard: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[TensorboardService.ReadTensorboardSize][google.cloud.aiplatform.v1beta1.TensorboardService.ReadTensorboardSize\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardSizeResponse {
+    /// Payload storage size for the TensorBoard
+    #[prost(int64, tag = "1")]
+    pub storage_size_byte: i64,
 }
 /// Request message for
 /// \[TensorboardService.CreateTensorboardExperiment][google.cloud.aiplatform.v1beta1.TensorboardService.CreateTensorboardExperiment\].
@@ -25284,37 +26146,6 @@ pub mod tensorboard_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns a list of monthly active users for a given TensorBoard instance.
-        pub async fn read_tensorboard_usage(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ReadTensorboardUsageRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ReadTensorboardUsageResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.TensorboardService/ReadTensorboardUsage",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.TensorboardService",
-                        "ReadTensorboardUsage",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Updates a Tensorboard.
         pub async fn update_tensorboard(
             &mut self,
@@ -25404,6 +26235,68 @@ pub mod tensorboard_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.TensorboardService",
                         "DeleteTensorboard",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of monthly active users for a given TensorBoard instance.
+        pub async fn read_tensorboard_usage(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReadTensorboardUsageRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReadTensorboardUsageResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.TensorboardService/ReadTensorboardUsage",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.TensorboardService",
+                        "ReadTensorboardUsage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the storage size for a given TensorBoard instance.
+        pub async fn read_tensorboard_size(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReadTensorboardSizeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReadTensorboardSizeResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.TensorboardService/ReadTensorboardSize",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.TensorboardService",
+                        "ReadTensorboardSize",
                     ),
                 );
             self.inner.unary(req, path, codec).await

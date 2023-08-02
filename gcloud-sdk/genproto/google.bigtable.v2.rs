@@ -780,9 +780,13 @@ pub struct ReadRowsRequest {
     ///
     /// Return rows in lexiographical descending order of the row keys. The row
     /// contents will not be affected by this flag.
-    /// Example result set: [
-    /// {key: "k2", "f:col1": "v1", "f:col2": "v1"}, {key: "k1", "f:col1": "v2",
-    /// "f:col2": "v2"} ].
+    ///
+    /// Example result set:
+    ///
+    ///      [
+    ///        {key: "k2", "f:col1": "v1", "f:col2": "v1"},
+    ///        {key: "k1", "f:col1": "v2", "f:col2": "v2"}
+    ///      ]
     #[prost(bool, tag = "7")]
     pub reversed: bool,
 }
@@ -1884,6 +1888,10 @@ pub struct FeatureFlags {
     /// requesting RateLimitInfo from MutateRowsResponse.
     #[prost(bool, tag = "3")]
     pub mutate_rows_rate_limit: bool,
+    /// Notify the server that the client supports the last_scanned_row field
+    /// in ReadRowsResponse for long-running sparse scans.
+    #[prost(bool, tag = "4")]
+    pub last_scanned_row_responses: bool,
 }
 /// Response metadata proto
 /// This is an experimental feature that will be used to get zone_id and

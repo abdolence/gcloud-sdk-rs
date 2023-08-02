@@ -697,7 +697,7 @@ pub mod structured_aggregation_query {
         #[prost(string, tag = "7")]
         pub alias: ::prost::alloc::string::String,
         /// The type of aggregation to perform, required.
-        #[prost(oneof = "aggregation::Operator", tags = "1")]
+        #[prost(oneof = "aggregation::Operator", tags = "1, 2, 3")]
         pub operator: ::core::option::Option<aggregation::Operator>,
     }
     /// Nested message and enum types in `Aggregation`.
@@ -729,6 +729,56 @@ pub mod structured_aggregation_query {
             #[prost(message, optional, tag = "1")]
             pub up_to: ::core::option::Option<i64>,
         }
+        /// Sum of the values of the requested field.
+        ///
+        /// * Only numeric values will be aggregated. All non-numeric values
+        /// including `NULL` are skipped.
+        ///
+        /// * If the aggregated values contain `NaN`, returns `NaN`. Infinity math
+        /// follows IEEE-754 standards.
+        ///
+        /// * If the aggregated value set is empty, returns 0.
+        ///
+        /// * Returns a 64-bit integer if all aggregated numbers are integers and the
+        /// sum result does not overflow. Otherwise, the result is returned as a
+        /// double. Note that even if all the aggregated values are integers, the
+        /// result is returned as a double if it cannot fit within a 64-bit signed
+        /// integer. When this occurs, the returned value will lose precision.
+        ///
+        /// * When underflow occurs, floating-point aggregation is non-deterministic.
+        /// This means that running the same query repeatedly without any changes to
+        /// the underlying values could produce slightly different results each
+        /// time. In those cases, values should be stored as integers over
+        /// floating-point numbers.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Sum {
+            /// The field to aggregate on.
+            #[prost(message, optional, tag = "1")]
+            pub field: ::core::option::Option<
+                super::super::structured_query::FieldReference,
+            >,
+        }
+        /// Average of the values of the requested field.
+        ///
+        /// * Only numeric values will be aggregated. All non-numeric values
+        /// including `NULL` are skipped.
+        ///
+        /// * If the aggregated values contain `NaN`, returns `NaN`. Infinity math
+        /// follows IEEE-754 standards.
+        ///
+        /// * If the aggregated value set is empty, returns `NULL`.
+        ///
+        /// * Always returns the result as a double.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Avg {
+            /// The field to aggregate on.
+            #[prost(message, optional, tag = "1")]
+            pub field: ::core::option::Option<
+                super::super::structured_query::FieldReference,
+            >,
+        }
         /// The type of aggregation to perform, required.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -736,6 +786,12 @@ pub mod structured_aggregation_query {
             /// Count aggregator.
             #[prost(message, tag = "1")]
             Count(Count),
+            /// Sum aggregator.
+            #[prost(message, tag = "2")]
+            Sum(Sum),
+            /// Average aggregator.
+            #[prost(message, tag = "3")]
+            Avg(Avg),
         }
     }
     /// The base query to aggregate over.
@@ -883,6 +939,9 @@ pub struct TransactionOptions {
 /// Nested message and enum types in `TransactionOptions`.
 pub mod transaction_options {
     /// Options for a transaction that can be used to read and write documents.
+    ///
+    /// Firestore does not allow 3rd party auth requests to create read-write.
+    /// transactions.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadWrite {
@@ -907,7 +966,10 @@ pub mod transaction_options {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ConsistencySelector {
             /// Reads documents at the given time.
-            /// This may not be older than 60 seconds.
+            ///
+            /// This must be a microsecond precision timestamp within the past one
+            /// hour, or if Point-in-Time Recovery is enabled, can additionally be a
+            /// whole minute timestamp within the past 7 days.
             #[prost(message, tag = "2")]
             ReadTime(::prost_types::Timestamp),
         }
@@ -1225,15 +1287,15 @@ pub struct ExistenceFilter {
     /// client must manually determine which documents no longer match the target.
     ///
     /// The client can use the `unchanged_names` bloom filter to assist with
-    /// this determination.
+    /// this determination by testing ALL the document names against the filter;
+    /// if the document name is NOT in the filter, it means the document no
+    /// longer matches the target.
     #[prost(int32, tag = "2")]
     pub count: i32,
-    /// A bloom filter that contains the UTF-8 byte encodings of the resource names
-    /// of the documents that match
+    /// A bloom filter that, despite its name, contains the UTF-8 byte encodings of
+    /// the resource names of ALL the documents that match
     /// \[target_id][google.firestore.v1.ExistenceFilter.target_id\], in the form
-    /// `projects/{project_id}/databases/{database_id}/documents/{document_path}`
-    /// that have NOT changed since the query results indicated by the resume token
-    /// or timestamp given in `Target.resume_type`.
+    /// `projects/{project_id}/databases/{database_id}/documents/{document_path}`.
     ///
     /// This bloom filter may be omitted at the server's discretion, such as if it
     /// is deemed that the client will not make use of it or if it is too
@@ -1277,7 +1339,10 @@ pub mod get_document_request {
         #[prost(bytes, tag = "3")]
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Reads the version of the document at the given time.
-        /// This may not be older than 270 seconds.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "5")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1361,7 +1426,9 @@ pub mod list_documents_request {
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Perform the read at the provided time.
         ///
-        /// This may not be older than 270 seconds.
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "10")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1500,7 +1567,10 @@ pub mod batch_get_documents_request {
         #[prost(message, tag = "5")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 270 seconds.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1659,7 +1729,10 @@ pub mod run_query_request {
         #[prost(message, tag = "6")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 270 seconds.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1766,9 +1839,9 @@ pub mod run_aggregation_query_request {
         NewTransaction(super::TransactionOptions),
         /// Executes the query at the given timestamp.
         ///
-        /// Requires:
-        ///
-        /// * Cannot be more than 270 seconds in the past.
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "6")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1874,7 +1947,10 @@ pub mod partition_query_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
         /// Reads documents as they were at the given time.
-        /// This may not be older than 270 seconds.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "6")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -2080,8 +2156,9 @@ pub struct Target {
     pub target_type: ::core::option::Option<target::TargetType>,
     /// When to start listening.
     ///
-    /// If not specified, all matching Documents are returned before any
-    /// subsequent changes.
+    /// If specified, only the matching Documents that have been updated AFTER the
+    /// `resume_token` or `read_time` will be returned. Otherwise, all matching
+    /// Documents are returned before any subsequent changes.
     #[prost(oneof = "target::ResumeType", tags = "4, 11")]
     pub resume_type: ::core::option::Option<target::ResumeType>,
 }
@@ -2138,8 +2215,9 @@ pub mod target {
     }
     /// When to start listening.
     ///
-    /// If not specified, all matching Documents are returned before any
-    /// subsequent changes.
+    /// If specified, only the matching Documents that have been updated AFTER the
+    /// `resume_token` or `read_time` will be returned. Otherwise, all matching
+    /// Documents are returned before any subsequent changes.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResumeType {
@@ -2290,7 +2368,10 @@ pub mod list_collection_ids_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
         /// Reads documents as they were at the given time.
-        /// This may not be older than 270 seconds.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "4")]
         ReadTime(::prost_types::Timestamp),
     }

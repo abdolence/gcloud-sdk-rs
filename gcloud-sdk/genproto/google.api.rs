@@ -1944,6 +1944,57 @@ pub struct ContextRule {
         ::prost::alloc::string::String,
     >,
 }
+/// Google API Policy Annotation
+///
+/// This message defines a simple API policy annotation that can be used to
+/// annotate API request and response message fields with applicable policies.
+/// One field may have multiple applicable policies that must all be satisfied
+/// before a request can be processed. This policy annotation is used to
+/// generate the overall policy that will be used for automatic runtime
+/// policy enforcement and documentation generation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FieldPolicy {
+    /// Selects one or more request or response message fields to apply this
+    /// `FieldPolicy`.
+    ///
+    /// When a `FieldPolicy` is used in proto annotation, the selector must
+    /// be left as empty. The service config generator will automatically fill
+    /// the correct value.
+    ///
+    /// When a `FieldPolicy` is used in service config, the selector must be a
+    /// comma-separated string with valid request or response field paths,
+    /// such as "foo.bar" or "foo.bar,foo.baz".
+    #[prost(string, tag = "1")]
+    pub selector: ::prost::alloc::string::String,
+    /// Specifies the required permission(s) for the resource referred to by the
+    /// field. It requires the field contains a valid resource reference, and
+    /// the request must pass the permission checks to proceed. For example,
+    /// "resourcemanager.projects.get".
+    #[prost(string, tag = "2")]
+    pub resource_permission: ::prost::alloc::string::String,
+    /// Specifies the resource type for the resource referred to by the field.
+    #[prost(string, tag = "3")]
+    pub resource_type: ::prost::alloc::string::String,
+}
+/// Defines policies applying to an RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MethodPolicy {
+    /// Selects a method to which these policies should be enforced, for example,
+    /// "google.pubsub.v1.Subscriber.CreateSubscription".
+    ///
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax
+    /// details.
+    ///
+    /// NOTE: This field must not be set in the proto annotation. It will be
+    /// automatically filled by the service config compiler .
+    #[prost(string, tag = "9")]
+    pub selector: ::prost::alloc::string::String,
+    /// Policies that are applicable to the request message.
+    #[prost(message, repeated, tag = "2")]
+    pub request_policies: ::prost::alloc::vec::Vec<FieldPolicy>,
+}
 /// Selects and configures the service controller used by the service.
 ///
 /// Example:
@@ -1958,6 +2009,9 @@ pub struct Control {
     /// most services is servicecontrol.googleapis.com
     #[prost(string, tag = "1")]
     pub environment: ::prost::alloc::string::String,
+    /// Defines policies applying to the API methods of the service.
+    #[prost(message, repeated, tag = "4")]
+    pub method_policies: ::prost::alloc::vec::Vec<MethodPolicy>,
 }
 /// `Distribution` contains summary statistics for a population of values. It
 /// optionally contains a histogram representing the distribution of those values

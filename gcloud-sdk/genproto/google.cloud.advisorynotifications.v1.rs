@@ -268,6 +268,10 @@ pub enum NotificationType {
     SecurityPrivacyAdvisory = 1,
     /// Sensitive action notifications
     SensitiveActions = 2,
+    /// General security MSA
+    SecurityMsa = 3,
+    /// Threat horizons MSA
+    ThreatHorizons = 4,
 }
 impl NotificationType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -281,6 +285,8 @@ impl NotificationType {
                 "NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY"
             }
             NotificationType::SensitiveActions => "NOTIFICATION_TYPE_SENSITIVE_ACTIONS",
+            NotificationType::SecurityMsa => "NOTIFICATION_TYPE_SECURITY_MSA",
+            NotificationType::ThreatHorizons => "NOTIFICATION_TYPE_THREAT_HORIZONS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -291,6 +297,8 @@ impl NotificationType {
                 Some(Self::SecurityPrivacyAdvisory)
             }
             "NOTIFICATION_TYPE_SENSITIVE_ACTIONS" => Some(Self::SensitiveActions),
+            "NOTIFICATION_TYPE_SECURITY_MSA" => Some(Self::SecurityMsa),
+            "NOTIFICATION_TYPE_THREAT_HORIZONS" => Some(Self::ThreatHorizons),
             _ => None,
         }
     }

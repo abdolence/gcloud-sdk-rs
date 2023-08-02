@@ -217,6 +217,22 @@ pub struct SearchProtectedResourcesRequest {
     /// must match the call that provided the page token.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. A list of resource types that this request searches for. If
+    /// empty, it will search all the [trackable resource
+    /// types](<https://cloud.google.com/kms/docs/view-key-usage#tracked-resource-types>).
+    ///
+    /// Regular expressions are also supported. For example:
+    ///
+    /// * `compute.googleapis.com.*` snapshots resources whose type starts
+    /// with `compute.googleapis.com`.
+    /// * `.*Image` snapshots resources whose type ends with `Image`.
+    /// * `.*Image.*` snapshots resources whose type contains `Image`.
+    ///
+    /// See \[RE2\](<https://github.com/google/re2/wiki/Syntax>) for all supported
+    /// regular expression syntax. If the regular expression does not match any
+    /// supported resource type, an INVALID_ARGUMENT error will be returned.
+    #[prost(string, repeated, tag = "5")]
+    pub resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for
 /// \[KeyTrackingService.SearchProtectedResources][google.cloud.kms.inventory.v1.KeyTrackingService.SearchProtectedResources\].

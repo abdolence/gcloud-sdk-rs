@@ -1395,7 +1395,7 @@ pub struct SearchCatalogRequest {
     /// * `description:z`
     #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
-    /// Number of results to return in a single search page.
+    /// Upper bound on the number of results you can get in a single response.
     ///
     /// Can't be negative or 0, defaults to 10 in this case.
     /// The maximum number is 1000. If exceeded, throws an "invalid argument"
@@ -1419,6 +1419,13 @@ pub struct SearchCatalogRequest {
     /// * `relevance` that can only be descending
     /// * `last_modified_timestamp \[asc|desc\]` with descending (`desc`) as default
     /// * `default` that can only be descending
+    ///
+    /// Search queries don't guarantee full recall. Results that match your query
+    /// might not be returned, even in subsequent result pages. Additionally,
+    /// returned (and not returned) results can vary if you repeat search queries.
+    /// If you are experiencing recall issues and you don't have to fetch the
+    /// results in any specific order, consider setting this parameter to
+    /// `default`.
     ///
     /// If this parameter is omitted, it defaults to the descending `relevance`.
     #[prost(string, tag = "5")]
@@ -1879,10 +1886,8 @@ pub mod entry {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EntryType {
         /// The type of the entry.
-        /// Only used for entries with types listed in the `EntryType` enum.
         ///
-        /// Currently, only `FILESET` enum value is allowed. All other entries
-        /// created in Data Catalog must use the `user_specified_type`.
+        /// For details, see \[`EntryType`\](#entrytype).
         #[prost(enumeration = "super::EntryType", tag = "2")]
         Type(i32),
         /// Custom entry type that doesn't match any of the values allowed for input
@@ -3036,8 +3041,18 @@ pub struct ModifyEntryContactsRequest {
     #[prost(message, optional, tag = "2")]
     pub contacts: ::core::option::Option<Contacts>,
 }
-/// The enum field that lists all the types of entry resources in Data
-/// Catalog. For example, a BigQuery table entry has the `TABLE` type.
+/// Metadata automatically ingested from Google Cloud resources like BigQuery
+/// tables or Pub/Sub topics always uses enum values from `EntryType` as the type
+/// of entry.
+///
+/// Other sources of metadata like Hive or Oracle databases can identify the type
+/// by either using one of the enum values from `EntryType` (for example,
+/// `FILESET` for a Cloud Storage fileset) or specifying a custom value using
+/// the \[`Entry`\](#resource:-entry) field `user_specified_type`. For more
+/// information, see
+/// [Surface files from Cloud Storage with fileset
+/// entries](/data-catalog/docs/how-to/filesets) or [Create custom entries for
+/// your data sources](/data-catalog/docs/how-to/custom-entries).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EntryType {
@@ -3046,10 +3061,10 @@ pub enum EntryType {
     /// The entry type that has a GoogleSQL schema, including
     /// logical views.
     Table = 2,
-    /// Output only. The type of models.
+    /// The type of models.
     ///
-    /// For more information, see [Supported models in BigQuery ML]
-    /// (<https://cloud.google.com/bigquery-ml/docs/introduction#supported_models_in>).
+    /// For more information, see [Supported models in BigQuery
+    /// ML](/bigquery/docs/bqml-introduction#supported_models).
     Model = 5,
     /// An entry type for streaming entries. For example, a Pub/Sub topic.
     DataStream = 3,
@@ -3060,10 +3075,10 @@ pub enum EntryType {
     Cluster = 6,
     /// A database.
     Database = 7,
-    /// Output only. Connection to a data source. For example, a BigQuery
+    /// Connection to a data source. For example, a BigQuery
     /// connection.
     DataSourceConnection = 8,
-    /// Output only. Routine, for example, a BigQuery routine.
+    /// Routine, for example, a BigQuery routine.
     Routine = 9,
     /// A Dataplex lake.
     Lake = 10,

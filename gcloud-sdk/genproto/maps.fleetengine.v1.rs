@@ -1045,8 +1045,13 @@ pub struct CreateTripRequest {
     /// * `vehicle_id`
     /// * `dropoff_point`
     /// * `intermediate_destinations`
+    /// * `vehicle_waypoints`
     ///
-    /// Only `EXCLUSIVE` trips support multiple destinations.
+    /// All other Trip fields are ignored. For example, all trips start with a
+    /// `trip_status` of `NEW` even if you pass in a `trip_status` of `CANCELED` in
+    /// the creation request.
+    ///
+    /// Only `EXCLUSIVE` trips support `intermediate_destinations`.
     ///
     /// When `vehicle_id` is set for a shared trip, you must supply
     /// the list of `Trip.vehicle_waypoints` to specify the order of the remaining
@@ -1062,8 +1067,6 @@ pub struct CreateTripRequest {
     ///
     /// The `trip_id`, `waypoint_type` and `location` fields are used, and all
     /// other TripWaypoint fields in `vehicle_waypoints` are ignored.
-    ///
-    /// All other Trip fields are ignored.
     #[prost(message, optional, tag = "4")]
     pub trip: ::core::option::Option<Trip>,
 }
@@ -2239,16 +2242,18 @@ pub struct SearchVehiclesRequest {
     ///
     /// `EXCLUSIVE` and `SHARED` may not be included together.
     /// `SHARED` is not supported when `current_trips_present` is
-    /// `CURRENT_TRIPS_PRESENT_UNSPECIFIED`.
+    /// `CURRENT_TRIPS_PRESENT_UNSPECIFIED`. `UNKNOWN_TRIP_TYPE` is not allowed.
     #[prost(enumeration = "TripType", repeated, packed = "false", tag = "9")]
     pub trip_types: ::prost::alloc::vec::Vec<i32>,
-    /// Restricts the search to only those vehicles that have updated their
-    /// locations within the specified duration. If this field is not
+    /// Restricts the search to only those vehicles that have sent location updates
+    /// to Fleet Engine within the specified duration. Stationary vehicles still
+    /// transmitting their locations are not considered stale. If this field is not
     /// set, the server uses five minutes as the default value.
     #[prost(message, optional, tag = "10")]
     pub maximum_staleness: ::core::option::Option<::prost_types::Duration>,
     /// Required. Restricts the search to vehicles with one of the specified types.
-    /// At least one vehicle type must be specified.
+    /// At least one vehicle type must be specified. VehicleTypes with a category
+    /// of `UNKNOWN` are not allowed.
     #[prost(message, repeated, tag = "14")]
     pub vehicle_types: ::prost::alloc::vec::Vec<vehicle::VehicleType>,
     /// Callers can form complex logical operations using any combination of the
@@ -2333,6 +2338,30 @@ pub struct SearchVehiclesRequest {
     /// `EXCLUSIVE` or `SHARED`, but not both.
     #[prost(enumeration = "search_vehicles_request::CurrentTripsPresent", tag = "21")]
     pub current_trips_present: i32,
+    /// Optional. A filter query to apply when searching vehicles. See
+    /// <http://aip.dev/160> for examples of the filter syntax.
+    ///
+    /// This field is designed to replace the `required_attributes`,
+    /// `required_one_of_attributes`, and `required_one_of_attributes_sets` fields.
+    /// If a non-empty value is specified here, the following fields must be empty:
+    /// `required_attributes`, `required_one_of_attributes`, and
+    /// `required_one_of_attributes_sets`.
+    ///
+    /// This filter functions as an AND clause with other constraints,
+    /// such as `minimum_capacity` or `vehicle_types`.
+    ///
+    /// Note that the only queries supported are on vehicle attributes (for
+    /// example, `attributes.<key> = <value>` or `attributes.<key1> = <value1> AND
+    /// attributes.<key2> = <value2>`). The maximum number of restrictions allowed
+    /// in a filter query is 50.
+    ///
+    /// Also, all attributes are stored as strings, so the only supported
+    /// comparisons against attributes are string comparisons. In order to compare
+    /// against number or boolean values, the values must be explicitly quoted to
+    /// be treated as strings (for example, `attributes.<key> = "10"` or
+    /// `attributes.<key> = "true"`).
+    #[prost(string, tag = "22")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SearchVehiclesRequest`.
 pub mod search_vehicles_request {
@@ -2492,13 +2521,14 @@ pub struct ListVehiclesRequest {
     /// specified trip types.
     #[prost(enumeration = "TripType", repeated, tag = "7")]
     pub trip_types: ::prost::alloc::vec::Vec<i32>,
-    /// Restricts the response to vehicles that have updated their locations within
-    /// the specified duration at the time of the call. If present, must be a valid
-    /// positive duration.
+    /// Restricts the response to vehicles that have sent location updates to Fleet
+    /// Engine within the specified duration. Stationary vehicles still
+    /// transmitting their locations are not considered stale. If present, must be
+    /// a valid positive duration.
     #[prost(message, optional, tag = "8")]
     pub maximum_staleness: ::core::option::Option<::prost_types::Duration>,
     /// Required. Restricts the response to vehicles with one of the specified type
-    /// categories.
+    /// categories. `UNKNOWN` is not allowed.
     #[prost(
         enumeration = "vehicle::vehicle_type::Category",
         repeated,
@@ -2577,6 +2607,30 @@ pub struct ListVehiclesRequest {
     /// Only return the vehicles with current trip(s).
     #[prost(bool, tag = "14")]
     pub on_trip_only: bool,
+    /// Optional. A filter query to apply when listing vehicles. See
+    /// <http://aip.dev/160> for examples of the filter syntax.
+    ///
+    /// This field is designed to replace the `required_attributes`,
+    /// `required_one_of_attributes`, and `required_one_of_attributes_sets` fields.
+    /// If a non-empty value is specified here, the following fields must be empty:
+    /// `required_attributes`, `required_one_of_attributes`, and
+    /// `required_one_of_attributes_sets`.
+    ///
+    /// This filter functions as an AND clause with other constraints,
+    /// such as `vehicle_state` or `on_trip_only`.
+    ///
+    /// Note that the only queries supported are on vehicle attributes (for
+    /// example, `attributes.<key> = <value>` or `attributes.<key1> = <value1> AND
+    /// attributes.<key2> = <value2>`). The maximum number of restrictions allowed
+    /// in a filter query is 50.
+    ///
+    /// Also, all attributes are stored as strings, so the only supported
+    /// comparisons against attributes are string comparisons. In order to compare
+    /// against number or boolean values, the values must be explicitly quoted to
+    /// be treated as strings (for example, `attributes.<key> = "10"` or
+    /// `attributes.<key> = "true"`).
+    #[prost(string, tag = "16")]
+    pub filter: ::prost::alloc::string::String,
     /// Optional. A filter that limits the vehicles returned to those whose last
     /// known location was in the rectangular area defined by the viewport.
     #[prost(message, optional, tag = "17")]

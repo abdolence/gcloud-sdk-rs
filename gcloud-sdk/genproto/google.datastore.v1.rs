@@ -417,7 +417,7 @@ pub mod aggregation_query {
         #[prost(string, tag = "7")]
         pub alias: ::prost::alloc::string::String,
         /// The type of aggregation to perform, required.
-        #[prost(oneof = "aggregation::Operator", tags = "1")]
+        #[prost(oneof = "aggregation::Operator", tags = "1, 2, 3")]
         pub operator: ::core::option::Option<aggregation::Operator>,
     }
     /// Nested message and enum types in `Aggregation`.
@@ -452,6 +452,52 @@ pub mod aggregation_query {
             #[prost(message, optional, tag = "1")]
             pub up_to: ::core::option::Option<i64>,
         }
+        /// Sum of the values of the requested property.
+        ///
+        /// * Only numeric values will be aggregated. All non-numeric values
+        /// including `NULL` are skipped.
+        ///
+        /// * If the aggregated values contain `NaN`, returns `NaN`. Infinity math
+        /// follows IEEE-754 standards.
+        ///
+        /// * If the aggregated value set is empty, returns 0.
+        ///
+        /// * Returns a 64-bit integer if all aggregated numbers are integers and the
+        /// sum result does not overflow. Otherwise, the result is returned as a
+        /// double. Note that even if all the aggregated values are integers, the
+        /// result is returned as a double if it cannot fit within a 64-bit signed
+        /// integer. When this occurs, the returned value will lose precision.
+        ///
+        /// * When underflow occurs, floating-point aggregation is non-deterministic.
+        /// This means that running the same query repeatedly without any changes to
+        /// the underlying values could produce slightly different results each
+        /// time. In those cases, values should be stored as integers over
+        /// floating-point numbers.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Sum {
+            /// The property to aggregate on.
+            #[prost(message, optional, tag = "1")]
+            pub property: ::core::option::Option<super::super::PropertyReference>,
+        }
+        /// Average of the values of the requested property.
+        ///
+        /// * Only numeric values will be aggregated. All non-numeric values
+        /// including `NULL` are skipped.
+        ///
+        /// * If the aggregated values contain `NaN`, returns `NaN`. Infinity math
+        /// follows IEEE-754 standards.
+        ///
+        /// * If the aggregated value set is empty, returns `NULL`.
+        ///
+        /// * Always returns the result as a double.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Avg {
+            /// The property to aggregate on.
+            #[prost(message, optional, tag = "1")]
+            pub property: ::core::option::Option<super::super::PropertyReference>,
+        }
         /// The type of aggregation to perform, required.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -459,6 +505,12 @@ pub mod aggregation_query {
             /// Count aggregator.
             #[prost(message, tag = "1")]
             Count(Count),
+            /// Sum aggregator.
+            #[prost(message, tag = "2")]
+            Sum(Sum),
+            /// Average aggregator.
+            #[prost(message, tag = "3")]
+            Avg(Avg),
         }
     }
     /// The base query to aggregate over.
@@ -697,8 +749,9 @@ pub mod property_filter {
         ///
         /// Requires:
         ///
-        /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-        /// * No other `IN` or `NOT_IN` is in the same query.
+        /// * That `value` is a non-empty `ArrayValue`, subject to disjunction
+        ///    limits.
+        /// * No `NOT_IN` is in the same query.
         In = 6,
         /// The given `property` is not equal to the given `value`.
         ///
@@ -712,14 +765,14 @@ pub mod property_filter {
         /// Requires:
         ///
         /// * That `value` is an entity key.
-        /// * No other `HAS_ANCESTOR` is in the same query.
+        /// * All evaluated disjunctions must have the same `HAS_ANCESTOR` filter.
         HasAncestor = 11,
         /// The value of the `property` is not in the given array.
         ///
         /// Requires:
         ///
         /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-        /// * No other `IN`, `NOT_IN`, `NOT_EQUAL` is in the same query.
+        /// * No other `OR`, `IN`, `NOT_IN`, `NOT_EQUAL` is in the same query.
         /// * That `field` comes first in the `order_by`.
         NotIn = 13,
     }
@@ -1545,9 +1598,12 @@ pub mod read_options {
         /// \[RunQueryResponse.transaction][google.datastore.v1.RunQueryResponse.transaction\].
         #[prost(message, tag = "3")]
         NewTransaction(super::TransactionOptions),
-        /// Reads entities as they were at the given time. This may not be older
-        /// than 270 seconds.  This value is only supported for Cloud Firestore in
-        /// Datastore mode.
+        /// Reads entities as they were at the given time. This value is only
+        /// supported for Cloud Firestore in Datastore mode.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, tag = "4")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1582,7 +1638,10 @@ pub mod transaction_options {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadOnly {
         /// Reads entities at the given time.
-        /// This may not be older than 60 seconds.
+        ///
+        /// This must be a microsecond precision timestamp within the past one hour,
+        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
+        /// minute timestamp within the past 7 days.
         #[prost(message, optional, tag = "1")]
         pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     }

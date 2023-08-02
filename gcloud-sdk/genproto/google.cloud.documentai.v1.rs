@@ -1405,6 +1405,54 @@ pub mod document_output_config {
         GcsOutputConfig(GcsOutputConfig),
     }
 }
+/// Config for Document OCR.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OcrConfig {
+    /// Hints for the OCR model.
+    #[prost(message, optional, tag = "2")]
+    pub hints: ::core::option::Option<ocr_config::Hints>,
+    /// Enables special handling for PDFs with existing text information. Results
+    /// in better text extraction quality in such PDF inputs.
+    #[prost(bool, tag = "3")]
+    pub enable_native_pdf_parsing: bool,
+    /// Enables intelligent document quality scores after OCR. Can help with
+    /// diagnosing why OCR responses are of poor quality for a given input.
+    /// Adds additional latency comparable to regular OCR to the process call.
+    #[prost(bool, tag = "4")]
+    pub enable_image_quality_scores: bool,
+    /// A list of advanced OCR options to further fine-tune OCR behavior. Current
+    /// valid values are:
+    ///
+    /// - `legacy_layout`: a heuristics layout detection algorithm, which serves as
+    /// an alternative to the current ML-based layout detection algorithm.
+    /// Customers can choose the best suitable layout algorithm based on their
+    /// situation.
+    #[prost(string, repeated, tag = "5")]
+    pub advanced_ocr_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Includes symbol level OCR information if set to true.
+    #[prost(bool, tag = "6")]
+    pub enable_symbol: bool,
+    /// Turn on font id model and returns font style information.
+    #[prost(bool, tag = "8")]
+    pub compute_style_info: bool,
+}
+/// Nested message and enum types in `OcrConfig`.
+pub mod ocr_config {
+    /// Hints for OCR Engine
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Hints {
+        /// List of BCP-47 language codes to use for OCR. In most cases, not
+        /// specifying it yields the best results since it enables automatic language
+        /// detection. For languages based on the Latin alphabet, setting hints is
+        /// not needed. In rare cases, when the language of the text in the
+        /// image is known, setting a hint will help get better results (although it
+        /// will be a significant hindrance if the hint is wrong).
+        #[prost(string, repeated, tag = "1")]
+        pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+}
 /// The schema defines the output of the processed document by a processor.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1894,7 +1942,7 @@ pub struct ProcessorVersion {
     /// The KMS key version with which data is encrypted.
     #[prost(string, tag = "10")]
     pub kms_key_version_name: ::prost::alloc::string::String,
-    /// Denotes that this `ProcessorVersion` is managed by Google.
+    /// Output only. Denotes that this `ProcessorVersion` is managed by Google.
     #[prost(bool, tag = "11")]
     pub google_managed: bool,
     /// If set, information about the eventual deprecation of this version.
@@ -2132,6 +2180,15 @@ pub mod processor_type {
         pub location_id: ::prost::alloc::string::String,
     }
 }
+/// Options for Process API
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessOptions {
+    /// Only applicable to `OCR_PROCESSOR`. Returns error if set on other
+    /// processor types.
+    #[prost(message, optional, tag = "1")]
+    pub ocr_config: ::core::option::Option<OcrConfig>,
+}
 /// Request message for the
 /// \[ProcessDocument][google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument\]
 /// method.
@@ -2160,8 +2217,11 @@ pub struct ProcessRequest {
     /// the form of `{document_field_name}` or `pages.{page_field_name}`.
     #[prost(message, optional, tag = "6")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Inference-time options for the process API
+    #[prost(message, optional, tag = "7")]
+    pub process_options: ::core::option::Option<ProcessOptions>,
     /// The document payload.
-    #[prost(oneof = "process_request::Source", tags = "4, 5")]
+    #[prost(oneof = "process_request::Source", tags = "4, 5, 8")]
     pub source: ::core::option::Option<process_request::Source>,
 }
 /// Nested message and enum types in `ProcessRequest`.
@@ -2176,6 +2236,9 @@ pub mod process_request {
         /// A raw document content (bytes).
         #[prost(message, tag = "5")]
         RawDocument(super::RawDocument),
+        /// A raw document on Google Cloud Storage.
+        #[prost(message, tag = "8")]
+        GcsDocument(super::GcsDocument),
     }
 }
 /// The status of human review on a processed document.
@@ -2296,6 +2359,9 @@ pub struct BatchProcessRequest {
     /// `false`.
     #[prost(bool, tag = "4")]
     pub skip_human_review: bool,
+    /// Inference-time options for the process API
+    #[prost(message, optional, tag = "7")]
+    pub process_options: ::core::option::Option<ProcessOptions>,
 }
 /// Response message for
 /// \[BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments\].
@@ -2781,6 +2847,10 @@ pub struct TrainProcessorVersionRequest {
     /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`.
     #[prost(string, tag = "8")]
     pub base_processor_version: ::prost::alloc::string::String,
+    #[prost(oneof = "train_processor_version_request::ProcessorFlags", tags = "5")]
+    pub processor_flags: ::core::option::Option<
+        train_processor_version_request::ProcessorFlags,
+    >,
 }
 /// Nested message and enum types in `TrainProcessorVersionRequest`.
 pub mod train_processor_version_request {
@@ -2795,6 +2865,69 @@ pub mod train_processor_version_request {
         /// The documents used for testing the trained version.
         #[prost(message, optional, tag = "4")]
         pub test_documents: ::core::option::Option<super::BatchDocumentsInputConfig>,
+    }
+    /// Options to control the training of the Custom Document Extraction (CDE)
+    /// Processor.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomDocumentExtractionOptions {
+        /// Training method to use for CDE training.
+        #[prost(
+            enumeration = "custom_document_extraction_options::TrainingMethod",
+            tag = "3"
+        )]
+        pub training_method: i32,
+    }
+    /// Nested message and enum types in `CustomDocumentExtractionOptions`.
+    pub mod custom_document_extraction_options {
+        /// Training Method for CDE. TRAINING_METHOD_UNSPECIFIED will fallback to
+        /// MODEL_BASED.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum TrainingMethod {
+            Unspecified = 0,
+            ModelBased = 1,
+            TemplateBased = 2,
+        }
+        impl TrainingMethod {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    TrainingMethod::Unspecified => "TRAINING_METHOD_UNSPECIFIED",
+                    TrainingMethod::ModelBased => "MODEL_BASED",
+                    TrainingMethod::TemplateBased => "TEMPLATE_BASED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TRAINING_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MODEL_BASED" => Some(Self::ModelBased),
+                    "TEMPLATE_BASED" => Some(Self::TemplateBased),
+                    _ => None,
+                }
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ProcessorFlags {
+        /// Options to control Custom Document Extraction (CDE) Processor.
+        #[prost(message, tag = "5")]
+        CustomDocumentExtractionOptions(CustomDocumentExtractionOptions),
     }
 }
 /// The response for

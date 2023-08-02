@@ -132,6 +132,13 @@ pub struct TransferConfig {
     /// the user information is not available, this field will not be populated.
     #[prost(message, optional, tag = "27")]
     pub owner_info: ::core::option::Option<UserInfo>,
+    /// The encryption configuration part. Currently, it is only used for the
+    /// optional KMS key name. The BigQuery service account of your project must be
+    /// granted permissions to use the key. Read methods will return the key name
+    /// applied in effect. Write methods will apply the key if it is present, or
+    /// otherwise try to apply project default keys if it is absent.
+    #[prost(message, optional, tag = "28")]
+    pub encryption_configuration: ::core::option::Option<EncryptionConfiguration>,
     /// The desination of the transfer config.
     #[prost(oneof = "transfer_config::Destination", tags = "2")]
     pub destination: ::core::option::Option<transfer_config::Destination>,
@@ -146,6 +153,14 @@ pub mod transfer_config {
         #[prost(string, tag = "2")]
         DestinationDatasetId(::prost::alloc::string::String),
     }
+}
+/// Represents the encryption configuration for a transfer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionConfiguration {
+    /// The name of the KMS key used for encrypting BigQuery data.
+    #[prost(message, optional, tag = "1")]
+    pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a data transfer run.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -458,6 +473,8 @@ pub mod data_source_parameter {
         Record = 5,
         /// Page ID for a Google+ Page.
         PlusPage = 6,
+        /// List of strings parameter.
+        List = 7,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -473,6 +490,7 @@ pub mod data_source_parameter {
                 Type::Boolean => "BOOLEAN",
                 Type::Record => "RECORD",
                 Type::PlusPage => "PLUS_PAGE",
+                Type::List => "LIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -485,6 +503,7 @@ pub mod data_source_parameter {
                 "BOOLEAN" => Some(Self::Boolean),
                 "RECORD" => Some(Self::Record),
                 "PLUS_PAGE" => Some(Self::PlusPage),
+                "LIST" => Some(Self::List),
                 _ => None,
             }
         }
@@ -1119,11 +1138,16 @@ pub mod start_manual_transfer_runs_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Time {
-        /// Time range for the transfer runs that should be started.
+        /// A time_range start and end timestamp for historical data files or reports
+        /// that are scheduled to be transferred by the scheduled transfer run.
+        /// requested_time_range must be a past time and cannot include future time
+        /// values.
         #[prost(message, tag = "3")]
         RequestedTimeRange(TimeRange),
-        /// Specific run_time for a transfer run to be started. The
-        /// requested_run_time must not be in the future.
+        /// A run_time timestamp for historical data files or reports
+        /// that are scheduled to be transferred by the scheduled transfer run.
+        /// requested_run_time must be a past time and cannot include future time
+        /// values.
         #[prost(message, tag = "4")]
         RequestedRunTime(::prost_types::Timestamp),
     }

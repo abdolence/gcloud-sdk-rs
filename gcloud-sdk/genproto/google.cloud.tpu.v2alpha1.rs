@@ -481,7 +481,7 @@ pub struct QueuedResource {
     #[prost(oneof = "queued_resource::Resource", tags = "2")]
     pub resource: ::core::option::Option<queued_resource::Resource>,
     /// Tier specifies the required tier.
-    #[prost(oneof = "queued_resource::Tier", tags = "3, 4")]
+    #[prost(oneof = "queued_resource::Tier", tags = "3, 4, 9")]
     pub tier: ::core::option::Option<queued_resource::Tier>,
 }
 /// Nested message and enum types in `QueuedResource`.
@@ -520,6 +520,10 @@ pub mod queued_resource {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BestEffort {}
+    /// Spot tier definition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Spot {}
     /// Guaranteed tier definition.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -588,9 +592,12 @@ pub mod queued_resource {
         /// The BestEffort tier.
         #[prost(message, tag = "3")]
         BestEffort(BestEffort),
-        /// The Guaranteed tier
+        /// The Guaranteed tier.
         #[prost(message, tag = "4")]
         Guaranteed(Guaranteed),
+        /// Optional. The Spot tier.
+        #[prost(message, tag = "9")]
+        Spot(Spot),
     }
 }
 /// QueuedResourceState defines the details of the QueuedResource request.
