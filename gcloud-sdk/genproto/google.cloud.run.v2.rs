@@ -2848,6 +2848,13 @@ pub struct Service {
     /// Output only. The main URI in which this Service is serving traffic.
     #[prost(string, tag = "36")]
     pub uri: ::prost::alloc::string::String,
+    /// One or more custom audiences that you want this service to support. Specify
+    /// each custom audience as the full URL in a string. The custom audiences are
+    /// encoded in the token and used to authenticate requests. For more
+    /// information, see
+    /// <https://cloud.google.com/run/docs/configuring/custom-audiences.>
+    #[prost(string, repeated, tag = "37")]
+    pub custom_audiences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Reserved for future use.
     #[prost(bool, tag = "38")]
     pub satisfies_pzs: bool,

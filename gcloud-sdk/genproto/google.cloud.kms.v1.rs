@@ -495,6 +495,14 @@ pub mod crypto_key_version {
         Aes128Gcm = 41,
         /// AES-GCM (Galois Counter Mode) using 256-bit keys.
         Aes256Gcm = 19,
+        /// AES-CBC (Cipher Block Chaining Mode) using 128-bit keys.
+        Aes128Cbc = 42,
+        /// AES-CBC (Cipher Block Chaining Mode) using 256-bit keys.
+        Aes256Cbc = 43,
+        /// AES-CTR (Counter Mode) using 128-bit keys.
+        Aes128Ctr = 44,
+        /// AES-CTR (Counter Mode) using 256-bit keys.
+        Aes256Ctr = 45,
         /// RSASSA-PSS 2048 bit key with a SHA256 digest.
         RsaSignPss2048Sha256 = 2,
         /// RSASSA-PSS 3072 bit key with a SHA256 digest.
@@ -572,6 +580,10 @@ pub mod crypto_key_version {
                 }
                 CryptoKeyVersionAlgorithm::Aes128Gcm => "AES_128_GCM",
                 CryptoKeyVersionAlgorithm::Aes256Gcm => "AES_256_GCM",
+                CryptoKeyVersionAlgorithm::Aes128Cbc => "AES_128_CBC",
+                CryptoKeyVersionAlgorithm::Aes256Cbc => "AES_256_CBC",
+                CryptoKeyVersionAlgorithm::Aes128Ctr => "AES_128_CTR",
+                CryptoKeyVersionAlgorithm::Aes256Ctr => "AES_256_CTR",
                 CryptoKeyVersionAlgorithm::RsaSignPss2048Sha256 => {
                     "RSA_SIGN_PSS_2048_SHA256"
                 }
@@ -648,6 +660,10 @@ pub mod crypto_key_version {
                 "GOOGLE_SYMMETRIC_ENCRYPTION" => Some(Self::GoogleSymmetricEncryption),
                 "AES_128_GCM" => Some(Self::Aes128Gcm),
                 "AES_256_GCM" => Some(Self::Aes256Gcm),
+                "AES_128_CBC" => Some(Self::Aes128Cbc),
+                "AES_256_CBC" => Some(Self::Aes256Cbc),
+                "AES_128_CTR" => Some(Self::Aes128Ctr),
+                "AES_256_CTR" => Some(Self::Aes256Ctr),
                 "RSA_SIGN_PSS_2048_SHA256" => Some(Self::RsaSignPss2048Sha256),
                 "RSA_SIGN_PSS_3072_SHA256" => Some(Self::RsaSignPss3072Sha256),
                 "RSA_SIGN_PSS_4096_SHA256" => Some(Self::RsaSignPss4096Sha256),

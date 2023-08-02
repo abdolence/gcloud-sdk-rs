@@ -175,6 +175,9 @@ pub struct NodeKubeletConfig {
     /// must be greater than or equal to 1024 and less than 4194304.
     #[prost(int64, tag = "4")]
     pub pod_pids_limit: i64,
+    /// Enable or disable Kubelet read only port.
+    #[prost(bool, optional, tag = "7")]
+    pub insecure_kubelet_readonly_port_enabled: ::core::option::Option<bool>,
 }
 /// Parameters that describe the nodes in a cluster.
 ///
@@ -483,6 +486,23 @@ pub struct NodeNetworkConfig {
     pub pod_cidr_overprovision_config: ::core::option::Option<
         PodCidrOverprovisionConfig,
     >,
+    /// We specify the additional node networks for this node pool using this list.
+    /// Each node network corresponds to an additional interface
+    #[prost(message, repeated, tag = "14")]
+    pub additional_node_network_configs: ::prost::alloc::vec::Vec<
+        AdditionalNodeNetworkConfig,
+    >,
+    /// We specify the additional pod networks for this node pool using this list.
+    /// Each pod network corresponds to an additional alias IP range for the node
+    #[prost(message, repeated, tag = "15")]
+    pub additional_pod_network_configs: ::prost::alloc::vec::Vec<
+        AdditionalPodNetworkConfig,
+    >,
+    /// Output only. [Output only] The utilization of the IPv4 range for the pod.
+    /// The ratio is Usage/[Total number of IPs in the secondary range],
+    /// Usage=numNodes*numZones*podIPsPerNode.
+    #[prost(double, tag = "16")]
+    pub pod_ipv4_range_utilization: f64,
 }
 /// Nested message and enum types in `NodeNetworkConfig`.
 pub mod node_network_config {
@@ -536,6 +556,34 @@ pub mod node_network_config {
             }
         }
     }
+}
+/// AdditionalNodeNetworkConfig is the configuration for additional node networks
+/// within the NodeNetworkConfig message
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdditionalNodeNetworkConfig {
+    /// Name of the VPC where the additional interface belongs
+    #[prost(string, tag = "1")]
+    pub network: ::prost::alloc::string::String,
+    /// Name of the subnetwork where the additional interface belongs
+    #[prost(string, tag = "2")]
+    pub subnetwork: ::prost::alloc::string::String,
+}
+/// AdditionalPodNetworkConfig is the configuration for additional pod networks
+/// within the NodeNetworkConfig message
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdditionalPodNetworkConfig {
+    /// Name of the subnetwork where the additional pod network belongs
+    #[prost(string, tag = "1")]
+    pub subnetwork: ::prost::alloc::string::String,
+    /// The name of the secondary range on the subnet which provides IP address for
+    /// this pod range
+    #[prost(string, tag = "2")]
+    pub secondary_pod_range: ::prost::alloc::string::String,
+    /// The maximum number of pods per node which use this pod network
+    #[prost(message, optional, tag = "3")]
+    pub max_pods_per_node: ::core::option::Option<MaxPodsConstraint>,
 }
 /// A set of Shielded Instance options.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -978,6 +1026,9 @@ pub struct AddonsConfig {
     /// Configuration for the Backup for GKE agent addon.
     #[prost(message, optional, tag = "16")]
     pub gke_backup_agent_config: ::core::option::Option<GkeBackupAgentConfig>,
+    /// Configuration for the Cloud Storage Fuse CSI driver.
+    #[prost(message, optional, tag = "17")]
+    pub gcs_fuse_csi_driver_config: ::core::option::Option<GcsFuseCsiDriverConfig>,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
@@ -1164,6 +1215,14 @@ pub struct GcePersistentDiskCsiDriverConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcpFilestoreCsiDriverConfig {
     /// Whether the GCP Filestore CSI driver is enabled for this cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// Configuration for the Cloud Storage Fuse CSI driver.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsFuseCsiDriverConfig {
+    /// Whether the Cloud Storage Fuse CSI driver is enabled for this cluster.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
@@ -1510,6 +1569,11 @@ pub struct IpAllocationPolicy {
     /// IPAllocationPolicy.
     #[prost(message, optional, tag = "24")]
     pub additional_pod_ranges_config: ::core::option::Option<AdditionalPodRangesConfig>,
+    /// Output only. [Output only] The utilization of the cluster default IPv4
+    /// range for the pod. The ratio is Usage/[Total number of IPs in the secondary
+    /// range], Usage=numNodes*numZones*podIPsPerNode.
+    #[prost(double, tag = "25")]
+    pub default_pod_ipv4_range_utilization: f64,
 }
 /// A Google Kubernetes Engine cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2309,6 +2373,20 @@ pub struct AdditionalPodRangesConfig {
     /// Name for pod secondary ipv4 range which has the actual range defined ahead.
     #[prost(string, repeated, tag = "1")]
     pub pod_range_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. [Output only] Information for additional pod range.
+    #[prost(message, repeated, tag = "2")]
+    pub pod_range_info: ::prost::alloc::vec::Vec<RangeInfo>,
+}
+/// RangeInfo contains the range name and the range utilization by this cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RangeInfo {
+    /// Output only. [Output only] Name of a range.
+    #[prost(string, tag = "1")]
+    pub range_name: ::prost::alloc::string::String,
+    /// Output only. [Output only] The utilization of the range.
+    #[prost(double, tag = "2")]
+    pub utilization: f64,
 }
 /// This operation resource represents operations that may have happened or are
 /// happening on the cluster. All fields are output only.
@@ -3841,6 +3919,11 @@ pub mod node_pool {
         /// The type of placement.
         #[prost(enumeration = "placement_policy::Type", tag = "1")]
         pub r#type: i32,
+        /// If set, refers to the name of a custom resource policy supplied by the
+        /// user. The resource policy must be in the same project and region as the
+        /// node pool. If not found, InvalidArgument error is returned.
+        #[prost(string, tag = "3")]
+        pub policy_name: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `PlacementPolicy`.
     pub mod placement_policy {
@@ -4457,6 +4540,9 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// available image types.
     #[prost(string, tag = "10")]
     pub image_type: ::prost::alloc::string::String,
+    /// Enable or disable Kubelet read only port.
+    #[prost(bool, optional, tag = "13")]
+    pub insecure_kubelet_readonly_port_enabled: ::core::option::Option<bool>,
 }
 /// Contains information about amount of some resource in the cluster.
 /// For memory, value should be in GB.
@@ -5078,6 +5164,9 @@ pub struct NetworkConfig {
     /// cluster.
     #[prost(message, optional, tag = "16")]
     pub gateway_api_config: ::core::option::Option<GatewayApiConfig>,
+    /// Whether multi-networking is enabled for this cluster.
+    #[prost(bool, tag = "17")]
+    pub enable_multi_networking: bool,
     /// Network bandwidth tier configuration.
     #[prost(message, optional, tag = "18")]
     pub network_performance_config: ::core::option::Option<
@@ -5539,7 +5628,7 @@ pub mod dns_config {
         PlatformDefault = 1,
         /// Use CloudDNS for DNS resolution.
         CloudDns = 2,
-        /// Use KubeDNS for DNS resolution
+        /// Use KubeDNS for DNS resolution.
         KubeDns = 3,
     }
     impl Provider {
@@ -6227,6 +6316,76 @@ pub struct MonitoringConfig {
     /// in the cluster.
     #[prost(message, optional, tag = "2")]
     pub managed_prometheus_config: ::core::option::Option<ManagedPrometheusConfig>,
+    /// Configuration of Advanced Datapath Observability features.
+    #[prost(message, optional, tag = "3")]
+    pub advanced_datapath_observability_config: ::core::option::Option<
+        AdvancedDatapathObservabilityConfig,
+    >,
+}
+/// AdvancedDatapathObservabilityConfig specifies configuration of observability
+/// features of advanced datapath.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdvancedDatapathObservabilityConfig {
+    /// Expose flow metrics on nodes
+    #[prost(bool, tag = "1")]
+    pub enable_metrics: bool,
+    /// Method used to make Relay available
+    #[prost(
+        enumeration = "advanced_datapath_observability_config::RelayMode",
+        tag = "2"
+    )]
+    pub relay_mode: i32,
+}
+/// Nested message and enum types in `AdvancedDatapathObservabilityConfig`.
+pub mod advanced_datapath_observability_config {
+    /// Supported Relay modes
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RelayMode {
+        /// Default value. This shouldn't be used.
+        Unspecified = 0,
+        /// disabled
+        Disabled = 1,
+        /// exposed via internal load balancer
+        InternalVpcLb = 3,
+        /// exposed via external load balancer
+        ExternalLb = 4,
+    }
+    impl RelayMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RelayMode::Unspecified => "RELAY_MODE_UNSPECIFIED",
+                RelayMode::Disabled => "DISABLED",
+                RelayMode::InternalVpcLb => "INTERNAL_VPC_LB",
+                RelayMode::ExternalLb => "EXTERNAL_LB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RELAY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "INTERNAL_VPC_LB" => Some(Self::InternalVpcLb),
+                "EXTERNAL_LB" => Some(Self::ExternalLb),
+                _ => None,
+            }
+        }
+    }
 }
 /// NodePoolLoggingConfig specifies logging configuration for nodepools.
 #[allow(clippy::derive_partial_eq_without_eq)]

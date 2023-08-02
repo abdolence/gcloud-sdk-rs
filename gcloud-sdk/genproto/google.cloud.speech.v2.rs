@@ -252,7 +252,7 @@ pub struct Recognizer {
     /// characters or less.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
-    /// Required. Which model to use for recognition requests. Select the model
+    /// Optional. Which model to use for recognition requests. Select the model
     /// best suited to your domain to get best results.
     ///
     /// Guidance for choosing which model to use can be found in the [Transcription
@@ -261,9 +261,10 @@ pub struct Recognizer {
     /// and the models supported in each region can be found in the [Table Of
     /// Supported
     /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
+    #[deprecated]
     #[prost(string, tag = "4")]
     pub model: ::prost::alloc::string::String,
-    /// Required. The language of the supplied audio as a
+    /// Optional. The language of the supplied audio as a
     /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     ///
     /// Supported languages for each model are listed in the [Table of Supported
@@ -275,6 +276,7 @@ pub struct Recognizer {
     /// When you create or update a Recognizer, these values are
     /// stored in normalized BCP-47 form. For example, "en-us" is stored as
     /// "en-US".
+    #[deprecated]
     #[prost(string, repeated, tag = "17")]
     pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Default configuration to use for requests with this Recognizer.
@@ -651,6 +653,30 @@ pub mod speech_adaptation {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionConfig {
+    /// Optional. Which model to use for recognition requests. Select the model
+    /// best suited to your domain to get best results.
+    ///
+    /// Guidance for choosing which model to use can be found in the [Transcription
+    /// Models
+    /// Documentation](<https://cloud.google.com/speech-to-text/v2/docs/transcription-model>)
+    /// and the models supported in each region can be found in the [Table Of
+    /// Supported
+    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
+    #[prost(string, tag = "9")]
+    pub model: ::prost::alloc::string::String,
+    /// Optional. The language of the supplied audio as a
+    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
+    /// Language tags are normalized to BCP-47 before they are used eg "en-us"
+    /// becomes "en-US".
+    ///
+    /// Supported languages for each model are listed in the [Table of Supported
+    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
+    ///
+    /// If additional languages are provided, recognition result will contain
+    /// recognition in the most likely language detected. The recognition result
+    /// will include the language tag of the language detected in the audio.
+    #[prost(string, repeated, tag = "10")]
+    pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Speech recognition features to enable.
     #[prost(message, optional, tag = "2")]
     pub features: ::core::option::Option<RecognitionFeatures>,
@@ -688,7 +714,8 @@ pub mod recognition_config {
 pub struct RecognizeRequest {
     /// Required. The name of the Recognizer to use during recognition. The
     /// expected format is
-    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`.
+    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`. The
+    /// {recognizer} segment may be set to `_` to use an empty implicit Recognizer.
     #[prost(string, tag = "3")]
     pub recognizer: ::prost::alloc::string::String,
     /// Features and audio metadata to use for the Automatic Speech Recognition.
@@ -930,26 +957,29 @@ pub struct StreamingRecognitionConfig {
 /// \[StreamingRecognize][google.cloud.speech.v2.Speech.StreamingRecognize\]
 /// method. Multiple
 /// \[StreamingRecognizeRequest][google.cloud.speech.v2.StreamingRecognizeRequest\]
-/// messages are sent. The first message must contain a
+/// messages are sent in one call.
+///
+/// If the \[Recognizer][google.cloud.speech.v2.Recognizer\] referenced by
+/// \[recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer\]
+/// contains a fully specified request configuration then the stream may only
+/// contain messages with only
+/// \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\] set.
+///
+/// Otherwise the first message must contain a
 /// \[recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer\] and
-/// optionally a
+/// a
 /// \[streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config\]
-/// message and must not contain
-/// \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\]. All
-/// subsequent messages must contain
-/// \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\] and must not
-/// contain a
-/// \[streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config\]
-/// message.
+/// message that together fully specify the request configuration and must not
+/// contain \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\]. All
+/// subsequent messages must only have
+/// \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\] set.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognizeRequest {
-    /// Required. Streaming recognition should start with an initial request having
-    /// a `recognizer`. Subsequent requests carry the audio data to be recognized.
-    ///
-    /// The initial request with configuration can be omitted if the Recognizer
-    /// being used has a
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\].
+    /// Required. The name of the Recognizer to use during recognition. The
+    /// expected format is
+    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`. The
+    /// {recognizer} segment may be set to `_` to use an empty implicit Recognizer.
     #[prost(string, tag = "3")]
     pub recognizer: ::prost::alloc::string::String,
     #[prost(oneof = "streaming_recognize_request::StreamingRequest", tags = "6, 5")]
@@ -979,7 +1009,10 @@ pub mod streaming_recognize_request {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeRequest {
-    /// Required. Resource name of the recognizer to be used for ASR.
+    /// Required. The name of the Recognizer to use during recognition. The
+    /// expected format is
+    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`. The
+    /// {recognizer} segment may be set to `_` to use an empty implicit Recognizer.
     #[prost(string, tag = "1")]
     pub recognizer: ::prost::alloc::string::String,
     /// Features and audio metadata to use for the Automatic Speech Recognition.

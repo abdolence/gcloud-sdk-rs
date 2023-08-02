@@ -53,6 +53,16 @@ pub struct Job {
     /// The default is `PROCESSING_MODE_INTERACTIVE`.
     #[prost(enumeration = "job::ProcessingMode", tag = "20")]
     pub mode: i32,
+    /// The processing priority of a batch job.
+    /// This field can only be set for batch mode jobs. The default value is 0.
+    /// This value cannot be negative. Higher values correspond to higher
+    /// priorities for the job.
+    #[prost(int32, tag = "21")]
+    pub batch_mode_priority: i32,
+    /// Optional. The optimization strategy of the job. The default is
+    /// `AUTODETECT`.
+    #[prost(enumeration = "job::OptimizationStrategy", tag = "22")]
+    pub optimization: i32,
     /// Specify the `job_config` for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
@@ -160,6 +170,49 @@ pub mod job {
             }
         }
     }
+    /// The optimization strategy of the job. The default is `AUTODETECT`.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OptimizationStrategy {
+        /// The optimization strategy is not specified.
+        Unspecified = 0,
+        /// Prioritize job processing speed.
+        Autodetect = 1,
+        /// Disable all optimizations.
+        Disabled = 2,
+    }
+    impl OptimizationStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OptimizationStrategy::Unspecified => "OPTIMIZATION_STRATEGY_UNSPECIFIED",
+                OptimizationStrategy::Autodetect => "AUTODETECT",
+                OptimizationStrategy::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPTIMIZATION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTODETECT" => Some(Self::Autodetect),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
     /// Specify the `job_config` for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
@@ -235,6 +288,12 @@ pub struct JobConfig {
     /// List of overlays on the output video, in descending Z-order.
     #[prost(message, repeated, tag = "10")]
     pub overlays: ::prost::alloc::vec::Vec<Overlay>,
+    /// List of encryption configurations for the content.
+    /// Each configuration has an ID. Specify this ID in the
+    /// \[MuxStream.encryption_id][google.cloud.video.transcoder.v1.MuxStream.encryption_id\]
+    /// field to indicate the configuration to use for that `MuxStream` output.
+    #[prost(message, repeated, tag = "11")]
+    pub encryptions: ::prost::alloc::vec::Vec<Encryption>,
 }
 /// Input asset.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -362,6 +421,10 @@ pub struct MuxStream {
     /// Segment settings for `ts`, `fmp4` and `vtt`.
     #[prost(message, optional, tag = "5")]
     pub segment_settings: ::core::option::Option<SegmentSettings>,
+    /// Identifier of the encryption configuration to use. If omitted, output will
+    /// be unencrypted.
+    #[prost(string, tag = "7")]
+    pub encryption_id: ::prost::alloc::string::String,
 }
 /// Manifest configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -371,7 +434,7 @@ pub struct Manifest {
     /// extension suffix corresponding to the `Manifest.type`.
     #[prost(string, tag = "1")]
     pub file_name: ::prost::alloc::string::String,
-    /// Required. Type of the manifest, can be `HLS` or `DASH`.
+    /// Required. Type of the manifest.
     #[prost(enumeration = "manifest::ManifestType", tag = "2")]
     pub r#type: i32,
     /// Required. List of user given `MuxStream.key`s that should appear in this
@@ -382,10 +445,72 @@ pub struct Manifest {
     /// `Manifest.mux_streams`.
     #[prost(string, repeated, tag = "3")]
     pub mux_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Specifies the manifest configuration.
+    #[prost(oneof = "manifest::ManifestConfig", tags = "4")]
+    pub manifest_config: ::core::option::Option<manifest::ManifestConfig>,
 }
 /// Nested message and enum types in `Manifest`.
 pub mod manifest {
-    /// The manifest type can be either `HLS` or `DASH`.
+    /// `DASH` manifest configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DashConfig {
+        /// The segment reference scheme for a `DASH` manifest. The default is
+        /// `SEGMENT_LIST`.
+        #[prost(enumeration = "dash_config::SegmentReferenceScheme", tag = "1")]
+        pub segment_reference_scheme: i32,
+    }
+    /// Nested message and enum types in `DashConfig`.
+    pub mod dash_config {
+        /// The segment reference scheme for a `DASH` manifest.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SegmentReferenceScheme {
+            /// The segment reference scheme is not specified.
+            Unspecified = 0,
+            /// Lists the URLs of media files for each segment.
+            SegmentList = 1,
+            /// Lists each segment from a template with $Number$ variable.
+            SegmentTemplateNumber = 2,
+        }
+        impl SegmentReferenceScheme {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    SegmentReferenceScheme::Unspecified => {
+                        "SEGMENT_REFERENCE_SCHEME_UNSPECIFIED"
+                    }
+                    SegmentReferenceScheme::SegmentList => "SEGMENT_LIST",
+                    SegmentReferenceScheme::SegmentTemplateNumber => {
+                        "SEGMENT_TEMPLATE_NUMBER"
+                    }
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SEGMENT_REFERENCE_SCHEME_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SEGMENT_LIST" => Some(Self::SegmentList),
+                    "SEGMENT_TEMPLATE_NUMBER" => Some(Self::SegmentTemplateNumber),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The manifest type, which corresponds to the adaptive streaming format used.
     #[derive(
         Clone,
         Copy,
@@ -401,9 +526,9 @@ pub mod manifest {
     pub enum ManifestType {
         /// The manifest type is not specified.
         Unspecified = 0,
-        /// Create `HLS` manifest. The corresponding file extension is `.m3u8`.
+        /// Create an HLS manifest. The corresponding file extension is `.m3u8`.
         Hls = 1,
-        /// Create `DASH` manifest. The corresponding file extension is `.mpd`.
+        /// Create an MPEG-DASH manifest. The corresponding file extension is `.mpd`.
         Dash = 2,
     }
     impl ManifestType {
@@ -427,6 +552,14 @@ pub mod manifest {
                 _ => None,
             }
         }
+    }
+    /// Specifies the manifest configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ManifestConfig {
+        /// `DASH` manifest configuration.
+        #[prost(message, tag = "4")]
+        Dash(DashConfig),
     }
 }
 /// A Pub/Sub destination.
@@ -1504,6 +1637,116 @@ pub struct SegmentSettings {
     /// Required. Create an individual segment file. The default is `false`.
     #[prost(bool, tag = "3")]
     pub individual_segments: bool,
+}
+/// Encryption settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Encryption {
+    /// Required. Identifier for this set of encryption options.
+    #[prost(string, tag = "6")]
+    pub id: ::prost::alloc::string::String,
+    /// Required. DRM system(s) to use; at least one must be specified. If a
+    /// DRM system is omitted, it is considered disabled.
+    #[prost(message, optional, tag = "8")]
+    pub drm_systems: ::core::option::Option<encryption::DrmSystems>,
+    /// Encryption mode can be either `aes` or `cenc`.
+    #[prost(oneof = "encryption::EncryptionMode", tags = "3, 4, 5")]
+    pub encryption_mode: ::core::option::Option<encryption::EncryptionMode>,
+    /// Defines where content keys are stored.
+    #[prost(oneof = "encryption::SecretSource", tags = "7")]
+    pub secret_source: ::core::option::Option<encryption::SecretSource>,
+}
+/// Nested message and enum types in `Encryption`.
+pub mod encryption {
+    /// Configuration for AES-128 encryption.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Aes128Encryption {}
+    /// Configuration for SAMPLE-AES encryption.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SampleAesEncryption {}
+    /// Configuration for MPEG Common Encryption (MPEG-CENC).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MpegCommonEncryption {
+        /// Required. Specify the encryption scheme.
+        ///
+        /// Supported encryption schemes:
+        ///
+        /// - `cenc`
+        /// - `cbcs`
+        #[prost(string, tag = "2")]
+        pub scheme: ::prost::alloc::string::String,
+    }
+    /// Configuration for secrets stored in Google Secret Manager.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SecretManagerSource {
+        /// Required. The name of the Secret Version containing the encryption key in
+        /// the following format:
+        /// `projects/{project}/secrets/{secret_id}/versions/{version_number}`
+        ///
+        /// Note that only numbered versions are supported. Aliases like "latest" are
+        /// not supported.
+        #[prost(string, tag = "1")]
+        pub secret_version: ::prost::alloc::string::String,
+    }
+    /// Widevine configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Widevine {}
+    /// Fairplay configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Fairplay {}
+    /// Playready configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Playready {}
+    /// Clearkey configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Clearkey {}
+    /// Defines configuration for DRM systems in use.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DrmSystems {
+        /// Widevine configuration.
+        #[prost(message, optional, tag = "1")]
+        pub widevine: ::core::option::Option<Widevine>,
+        /// Fairplay configuration.
+        #[prost(message, optional, tag = "2")]
+        pub fairplay: ::core::option::Option<Fairplay>,
+        /// Playready configuration.
+        #[prost(message, optional, tag = "3")]
+        pub playready: ::core::option::Option<Playready>,
+        /// Clearkey configuration.
+        #[prost(message, optional, tag = "4")]
+        pub clearkey: ::core::option::Option<Clearkey>,
+    }
+    /// Encryption mode can be either `aes` or `cenc`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EncryptionMode {
+        /// Configuration for AES-128 encryption.
+        #[prost(message, tag = "3")]
+        Aes128(Aes128Encryption),
+        /// Configuration for SAMPLE-AES encryption.
+        #[prost(message, tag = "4")]
+        SampleAes(SampleAesEncryption),
+        /// Configuration for MPEG Common Encryption (MPEG-CENC).
+        #[prost(message, tag = "5")]
+        MpegCenc(MpegCommonEncryption),
+    }
+    /// Defines where content keys are stored.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SecretSource {
+        /// Keys are stored in Google Secret Manager.
+        #[prost(message, tag = "7")]
+        SecretManagerKeySource(SecretManagerSource),
+    }
 }
 /// Request message for `TranscoderService.CreateJob`.
 #[allow(clippy::derive_partial_eq_without_eq)]

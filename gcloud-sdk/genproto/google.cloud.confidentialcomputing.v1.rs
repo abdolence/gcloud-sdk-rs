@@ -51,6 +51,13 @@ pub struct VerifyAttestationRequest {
     /// populate any of the claims regarding platform state.
     #[prost(message, optional, tag = "3")]
     pub tpm_attestation: ::core::option::Option<TpmAttestation>,
+    /// Optional. Optional information related to the Confidential Space TEE.
+    #[prost(message, optional, tag = "4")]
+    pub confidential_space_info: ::core::option::Option<ConfidentialSpaceInfo>,
+    /// Optional. A collection of optional, workload-specified claims that modify
+    /// the token output.
+    #[prost(message, optional, tag = "5")]
+    pub token_options: ::core::option::Option<TokenOptions>,
 }
 /// A response once an attestation has been successfully verified, containing a
 /// signed OIDC token.
@@ -71,6 +78,20 @@ pub struct GcpCredentials {
     pub service_account_id_tokens: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+}
+/// Options to modify claims in the token to generate custom-purpose tokens.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TokenOptions {
+    /// Optional. Optional string to issue the token with a custom audience claim.
+    /// Required if one or more nonces are specified.
+    #[prost(string, tag = "1")]
+    pub audience: ::prost::alloc::string::String,
+    /// Optional. Optional parameter to place one or more nonces in the eat_nonce
+    /// claim in the output token. The minimum size for JSON-encoded EATs is 10
+    /// bytes and the maximum size is 74 bytes.
+    #[prost(string, repeated, tag = "2")]
+    pub nonce: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// TPM2 data containing everything necessary to validate any platform state
 /// measured into the TPM.
@@ -118,6 +139,89 @@ pub mod tpm_attestation {
         /// TPM2 signature, encoded as a TPMT_SIGNATURE
         #[prost(bytes = "vec", tag = "4")]
         pub raw_signature: ::prost::alloc::vec::Vec<u8>,
+    }
+}
+/// ConfidentialSpaceInfo contains information related to the Confidential Space
+/// TEE.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfidentialSpaceInfo {
+    /// Optional. A list of signed entities containing container image signatures
+    /// that can be used for server-side signature verification.
+    #[prost(message, repeated, tag = "1")]
+    pub signed_entities: ::prost::alloc::vec::Vec<SignedEntity>,
+}
+/// SignedEntity represents an OCI image object containing everything necessary
+/// to verify container image signatures.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignedEntity {
+    /// Optional. A list of container image signatures attached to an OCI image
+    /// object.
+    #[prost(message, repeated, tag = "1")]
+    pub container_image_signatures: ::prost::alloc::vec::Vec<ContainerImageSignature>,
+}
+/// ContainerImageSignature holds necessary metadata to verify a container image
+/// signature.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContainerImageSignature {
+    /// Required. The binary signature payload following the SimpleSigning format
+    /// <https://github.com/sigstore/cosign/blob/main/specs/SIGNATURE_SPEC.md#simple-signing.>
+    /// This payload includes the container image digest.
+    #[prost(bytes = "vec", tag = "1")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
+    /// Required. A signature over the payload.
+    /// The container image digest is incorporated into the signature as follows:
+    /// 1. Generate a SimpleSigning format payload that includes the container
+    /// image digest.
+    /// 2. Generate a signature over SHA256 digest of the payload.
+    /// The signature generation process can be represented as follows:
+    /// `Sign(sha256(SimpleSigningPayload(sha256(Image Manifest))))`
+    #[prost(bytes = "vec", tag = "2")]
+    pub signature: ::prost::alloc::vec::Vec<u8>,
+    /// Required. An associated public key used to verify the signature.
+    #[prost(bytes = "vec", tag = "3")]
+    pub public_key: ::prost::alloc::vec::Vec<u8>,
+    /// Required. The algorithm used to produce the container image signature.
+    #[prost(enumeration = "SigningAlgorithm", tag = "4")]
+    pub sig_alg: i32,
+}
+/// SigningAlgorithm enumerates all the supported signing algorithms.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SigningAlgorithm {
+    /// Unspecified signing algorithm.
+    Unspecified = 0,
+    /// RSASSA-PSS with a SHA256 digest.
+    RsassaPssSha256 = 1,
+    /// RSASSA-PKCS1 v1.5 with a SHA256 digest.
+    RsassaPkcs1v15Sha256 = 2,
+    /// ECDSA on the P-256 Curve with a SHA256 digest.
+    EcdsaP256Sha256 = 3,
+}
+impl SigningAlgorithm {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            SigningAlgorithm::Unspecified => "SIGNING_ALGORITHM_UNSPECIFIED",
+            SigningAlgorithm::RsassaPssSha256 => "RSASSA_PSS_SHA256",
+            SigningAlgorithm::RsassaPkcs1v15Sha256 => "RSASSA_PKCS1V15_SHA256",
+            SigningAlgorithm::EcdsaP256Sha256 => "ECDSA_P256_SHA256",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SIGNING_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+            "RSASSA_PSS_SHA256" => Some(Self::RsassaPssSha256),
+            "RSASSA_PKCS1V15_SHA256" => Some(Self::RsassaPkcs1v15Sha256),
+            "ECDSA_P256_SHA256" => Some(Self::EcdsaP256Sha256),
+            _ => None,
+        }
     }
 }
 /// Generated client implementations.

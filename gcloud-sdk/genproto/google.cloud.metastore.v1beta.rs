@@ -1830,6 +1830,21 @@ pub struct QueryMetadataResponse {
     #[prost(string, tag = "1")]
     pub result_manifest_uri: ::prost::alloc::string::String,
 }
+/// Error details in public error message for
+/// \[DataprocMetastore.QueryMetadata][google.cloud.metastore.v1beta.DataprocMetastore.QueryMetadata\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ErrorDetails {
+    /// Additional structured details about this error.
+    ///
+    /// Keys define the failure items.
+    /// Value describes the exception or details of the item.
+    #[prost(map = "string, string", tag = "1")]
+    pub details: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
 /// Request message for
 /// \[DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1beta.DataprocMetastore.MoveTableToDatabase\].
 #[allow(clippy::derive_partial_eq_without_eq)]

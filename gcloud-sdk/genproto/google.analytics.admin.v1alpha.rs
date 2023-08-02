@@ -3038,55 +3038,62 @@ pub mod attribution_settings {
         /// Data-driven attribution distributes credit for the conversion based on
         /// data for each conversion event. Each Data-driven model is specific to
         /// each advertiser and each conversion event.
-        CrossChannelDataDriven = 1,
+        /// Previously CROSS_CHANNEL_DATA_DRIVEN
+        PaidAndOrganicChannelsDataDriven = 1,
         /// Ignores direct traffic and attributes 100% of the conversion value to the
         /// last channel that the customer clicked through (or engaged view through
         /// for YouTube) before converting.
-        CrossChannelLastClick = 2,
+        /// Previously CROSS_CHANNEL_LAST_CLICK
+        PaidAndOrganicChannelsLastClick = 2,
         /// Starting in June 2023, new properties can no longer use this model.
         /// See
         /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
         /// for more details.
         /// Starting in September 2023, we will sunset this model for all properties.
         ///
         /// Gives all credit for the conversion to the first channel that a customer
         /// clicked (or engaged view through for YouTube) before converting.
-        CrossChannelFirstClick = 3,
+        /// Previously CROSS_CHANNEL_FIRST_CLICK
+        PaidAndOrganicChannelsFirstClick = 3,
         /// Starting in June 2023, new properties can no longer use this model.
         /// See
         /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
         /// for more details.
         /// Starting in September 2023, we will sunset this model for all properties.
         ///
         /// Distributes the credit for the conversion equally across all the channels
         /// a customer clicked (or engaged view through for YouTube) before
         /// converting.
-        CrossChannelLinear = 4,
+        /// Previously CROSS_CHANNEL_LINEAR
+        PaidAndOrganicChannelsLinear = 4,
         /// Starting in June 2023, new properties can no longer use this model.
         /// See
         /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
         /// for more details.
         /// Starting in September 2023, we will sunset this model for all properties.
         ///
         /// Attributes 40% credit to the first and last interaction, and the
         /// remaining 20% credit is distributed evenly to the middle interactions.
-        CrossChannelPositionBased = 5,
+        /// Previously CROSS_CHANNEL_POSITION_BASED
+        PaidAndOrganicChannelsPositionBased = 5,
         /// Starting in June 2023, new properties can no longer use this model.
         /// See
         /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320?hl=en#040623>)
+        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
         /// for more details.
         /// Starting in September 2023, we will sunset this model for all properties.
         ///
         /// Gives more credit to the touchpoints that happened closer in time to
         /// the conversion.
-        CrossChannelTimeDecay = 6,
-        /// Attributes 100% of the conversion value to the last Google Ads channel
+        /// Previously CROSS_CHANNEL_TIME_DECAY
+        PaidAndOrganicChannelsTimeDecay = 6,
+        /// Attributes 100% of the conversion value to the last Google Paid channel
         /// that the customer clicked through before converting.
-        AdsPreferredLastClick = 7,
+        /// Previously ADS_PREFERRED_LAST_CLICK
+        GooglePaidChannelsLastClick = 7,
     }
     impl ReportingAttributionModel {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3098,24 +3105,26 @@ pub mod attribution_settings {
                 ReportingAttributionModel::Unspecified => {
                     "REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED"
                 }
-                ReportingAttributionModel::CrossChannelDataDriven => {
-                    "CROSS_CHANNEL_DATA_DRIVEN"
+                ReportingAttributionModel::PaidAndOrganicChannelsDataDriven => {
+                    "PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN"
                 }
-                ReportingAttributionModel::CrossChannelLastClick => {
-                    "CROSS_CHANNEL_LAST_CLICK"
+                ReportingAttributionModel::PaidAndOrganicChannelsLastClick => {
+                    "PAID_AND_ORGANIC_CHANNELS_LAST_CLICK"
                 }
-                ReportingAttributionModel::CrossChannelFirstClick => {
-                    "CROSS_CHANNEL_FIRST_CLICK"
+                ReportingAttributionModel::PaidAndOrganicChannelsFirstClick => {
+                    "PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK"
                 }
-                ReportingAttributionModel::CrossChannelLinear => "CROSS_CHANNEL_LINEAR",
-                ReportingAttributionModel::CrossChannelPositionBased => {
-                    "CROSS_CHANNEL_POSITION_BASED"
+                ReportingAttributionModel::PaidAndOrganicChannelsLinear => {
+                    "PAID_AND_ORGANIC_CHANNELS_LINEAR"
                 }
-                ReportingAttributionModel::CrossChannelTimeDecay => {
-                    "CROSS_CHANNEL_TIME_DECAY"
+                ReportingAttributionModel::PaidAndOrganicChannelsPositionBased => {
+                    "PAID_AND_ORGANIC_CHANNELS_POSITION_BASED"
                 }
-                ReportingAttributionModel::AdsPreferredLastClick => {
-                    "ADS_PREFERRED_LAST_CLICK"
+                ReportingAttributionModel::PaidAndOrganicChannelsTimeDecay => {
+                    "PAID_AND_ORGANIC_CHANNELS_TIME_DECAY"
+                }
+                ReportingAttributionModel::GooglePaidChannelsLastClick => {
+                    "GOOGLE_PAID_CHANNELS_LAST_CLICK"
                 }
             }
         }
@@ -3123,13 +3132,27 @@ pub mod attribution_settings {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
-                "CROSS_CHANNEL_DATA_DRIVEN" => Some(Self::CrossChannelDataDriven),
-                "CROSS_CHANNEL_LAST_CLICK" => Some(Self::CrossChannelLastClick),
-                "CROSS_CHANNEL_FIRST_CLICK" => Some(Self::CrossChannelFirstClick),
-                "CROSS_CHANNEL_LINEAR" => Some(Self::CrossChannelLinear),
-                "CROSS_CHANNEL_POSITION_BASED" => Some(Self::CrossChannelPositionBased),
-                "CROSS_CHANNEL_TIME_DECAY" => Some(Self::CrossChannelTimeDecay),
-                "ADS_PREFERRED_LAST_CLICK" => Some(Self::AdsPreferredLastClick),
+                "PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN" => {
+                    Some(Self::PaidAndOrganicChannelsDataDriven)
+                }
+                "PAID_AND_ORGANIC_CHANNELS_LAST_CLICK" => {
+                    Some(Self::PaidAndOrganicChannelsLastClick)
+                }
+                "PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK" => {
+                    Some(Self::PaidAndOrganicChannelsFirstClick)
+                }
+                "PAID_AND_ORGANIC_CHANNELS_LINEAR" => {
+                    Some(Self::PaidAndOrganicChannelsLinear)
+                }
+                "PAID_AND_ORGANIC_CHANNELS_POSITION_BASED" => {
+                    Some(Self::PaidAndOrganicChannelsPositionBased)
+                }
+                "PAID_AND_ORGANIC_CHANNELS_TIME_DECAY" => {
+                    Some(Self::PaidAndOrganicChannelsTimeDecay)
+                }
+                "GOOGLE_PAID_CHANNELS_LAST_CLICK" => {
+                    Some(Self::GooglePaidChannelsLastClick)
+                }
                 _ => None,
             }
         }
@@ -3153,10 +3176,15 @@ pub mod attribution_settings {
         /// No data export scope selected yet.
         /// Export scope can never be changed back to this value.
         NotSelectedYet = 1,
-        /// The Ads Web Conversion Data export scope is Cross Channel.
-        CrossChannel = 2,
-        /// The Ads Web Conversion Data export scope is Ads Preferred.
-        AdsPreferred = 3,
+        /// Paid and organic channels are eligible to receive conversion credit, but
+        /// only credit assigned to Google Ads channels will appear in your Ads
+        /// accounts. To learn more, see [Paid and Organic
+        /// channels](<https://support.google.com/analytics/answer/10632359>).
+        PaidAndOrganicChannels = 2,
+        /// Only Google Ads paid channels are eligible to receive conversion credit.
+        /// To learn more, see [Google Paid
+        /// channels](<https://support.google.com/analytics/answer/10632359>).
+        GooglePaidChannels = 3,
     }
     impl AdsWebConversionDataExportScope {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3169,8 +3197,12 @@ pub mod attribution_settings {
                     "ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED"
                 }
                 AdsWebConversionDataExportScope::NotSelectedYet => "NOT_SELECTED_YET",
-                AdsWebConversionDataExportScope::CrossChannel => "CROSS_CHANNEL",
-                AdsWebConversionDataExportScope::AdsPreferred => "ADS_PREFERRED",
+                AdsWebConversionDataExportScope::PaidAndOrganicChannels => {
+                    "PAID_AND_ORGANIC_CHANNELS"
+                }
+                AdsWebConversionDataExportScope::GooglePaidChannels => {
+                    "GOOGLE_PAID_CHANNELS"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3180,8 +3212,8 @@ pub mod attribution_settings {
                     Some(Self::Unspecified)
                 }
                 "NOT_SELECTED_YET" => Some(Self::NotSelectedYet),
-                "CROSS_CHANNEL" => Some(Self::CrossChannel),
-                "ADS_PREFERRED" => Some(Self::AdsPreferred),
+                "PAID_AND_ORGANIC_CHANNELS" => Some(Self::PaidAndOrganicChannels),
+                "GOOGLE_PAID_CHANNELS" => Some(Self::GooglePaidChannels),
                 _ => None,
             }
         }
@@ -4719,7 +4751,8 @@ pub struct UpdateMeasurementProtocolSecretRequest {
     /// Required. The measurement protocol secret to update.
     #[prost(message, optional, tag = "1")]
     pub measurement_protocol_secret: ::core::option::Option<MeasurementProtocolSecret>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    /// Required. The list of fields to be updated. Omitted fields will not be
+    /// updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }

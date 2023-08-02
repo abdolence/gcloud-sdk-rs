@@ -176,7 +176,7 @@ pub struct Node {
     /// The user-supplied description of the TPU. Maximum of 512 characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Required. The type of hardware accelerators associated with this node.
+    /// Optional. The type of hardware accelerators associated with this node.
     #[prost(string, tag = "5")]
     pub accelerator_type: ::prost::alloc::string::String,
     /// Output only. The current state for the TPU Node.
@@ -255,6 +255,13 @@ pub struct Node {
     /// The AccleratorConfig for the TPU Node.
     #[prost(message, optional, tag = "46")]
     pub accelerator_config: ::core::option::Option<AcceleratorConfig>,
+    /// Output only. The qualified name of the QueuedResource that requested this
+    /// Node.
+    #[prost(string, tag = "47")]
+    pub queued_resource: ::prost::alloc::string::String,
+    /// Output only. Whether the Node belongs to a Multislice group.
+    #[prost(bool, tag = "48")]
+    pub multislice_node: bool,
 }
 /// Nested message and enum types in `Node`.
 pub mod node {
@@ -285,7 +292,7 @@ pub mod node {
         /// TPU node is being deleted.
         Deleting = 5,
         /// TPU node is being repaired and may be unusable. Details can be
-        /// found in the `help_description` field.
+        /// found in the 'help_description' field.
         Repairing = 6,
         /// TPU node is stopped.
         Stopped = 8,
@@ -576,7 +583,7 @@ pub struct AcceleratorType {
     /// The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// the accelerator type.
+    /// The accelerator type.
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
     /// The accelerator config.

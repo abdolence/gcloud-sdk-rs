@@ -1513,7 +1513,11 @@ pub mod cloud_storage_config {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AvroConfig {
         /// When true, write the subscription name, message_id, publish_time,
-        /// attributes, and ordering_key as additional fields in the output.
+        /// attributes, and ordering_key as additional fields in the output. The
+        /// subscription name, message_id, and publish_time fields are put in their
+        /// own fields while all other message properties other than data (for
+        /// example, an ordering_key, if present) are added as entries in the
+        /// attributes map.
         #[prost(bool, tag = "1")]
         pub write_metadata: bool,
     }

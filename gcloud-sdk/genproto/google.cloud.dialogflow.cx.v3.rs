@@ -2815,10 +2815,56 @@ pub struct Agent {
     /// lower level overrides the settings exposed at the higher level.
     #[prost(message, optional, tag = "22")]
     pub advanced_settings: ::core::option::Option<AdvancedSettings>,
+    /// Git integration settings for this agent.
+    #[prost(message, optional, tag = "30")]
+    pub git_integration_settings: ::core::option::Option<agent::GitIntegrationSettings>,
     /// Settings on instructing the speech synthesizer on how to generate the
     /// output audio content.
     #[prost(message, optional, tag = "31")]
     pub text_to_speech_settings: ::core::option::Option<TextToSpeechSettings>,
+}
+/// Nested message and enum types in `Agent`.
+pub mod agent {
+    /// Settings for connecting to Git repository for an agent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GitIntegrationSettings {
+        /// The git settings to specific systems.
+        #[prost(oneof = "git_integration_settings::GitSettings", tags = "1")]
+        pub git_settings: ::core::option::Option<git_integration_settings::GitSettings>,
+    }
+    /// Nested message and enum types in `GitIntegrationSettings`.
+    pub mod git_integration_settings {
+        /// Settings of integration with GitHub.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct GithubSettings {
+            /// The unique repository display name for the GitHub repository.
+            #[prost(string, tag = "1")]
+            pub display_name: ::prost::alloc::string::String,
+            /// The GitHub repository URI related to the agent.
+            #[prost(string, tag = "2")]
+            pub repository_uri: ::prost::alloc::string::String,
+            /// The branch of GitHub repository tracked for this agent.
+            #[prost(string, tag = "3")]
+            pub tracking_branch: ::prost::alloc::string::String,
+            /// The access token used to authenticate the access to the GitHub
+            /// repository.
+            #[prost(string, tag = "4")]
+            pub access_token: ::prost::alloc::string::String,
+            /// A list of branches configured to be used from Dialogflow.
+            #[prost(string, repeated, tag = "5")]
+            pub branches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// The git settings to specific systems.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum GitSettings {
+            /// GitHub settings.
+            #[prost(message, tag = "1")]
+            GithubSettings(GithubSettings),
+        }
+    }
 }
 /// The request message for
 /// \[Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents\].
@@ -2927,12 +2973,26 @@ pub struct ExportAgentRequest {
     /// ID>/environments/<Environment ID>`.
     #[prost(string, tag = "5")]
     pub environment: ::prost::alloc::string::String,
+    /// Optional. The Git branch to export the agent to.
+    #[prost(message, optional, tag = "6")]
+    pub git_destination: ::core::option::Option<export_agent_request::GitDestination>,
     /// Optional. Whether to include BigQuery Export setting.
     #[prost(bool, tag = "7")]
     pub include_bigquery_export_settings: bool,
 }
 /// Nested message and enum types in `ExportAgentRequest`.
 pub mod export_agent_request {
+    /// Settings for exporting to a git branch.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GitDestination {
+        /// Tracking branch for the git push.
+        #[prost(string, tag = "1")]
+        pub tracking_branch: ::prost::alloc::string::String,
+        /// Commit message for the git push.
+        #[prost(string, tag = "2")]
+        pub commit_message: ::prost::alloc::string::String,
+    }
     /// Data format of the exported agent.
     #[derive(
         Clone,
@@ -2983,7 +3043,7 @@ pub mod export_agent_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAgentResponse {
     /// The exported agent.
-    #[prost(oneof = "export_agent_response::Agent", tags = "1, 2")]
+    #[prost(oneof = "export_agent_response::Agent", tags = "1, 2, 3")]
     pub agent: ::core::option::Option<export_agent_response::Agent>,
 }
 /// Nested message and enum types in `ExportAgentResponse`.
@@ -2997,9 +3057,16 @@ pub mod export_agent_response {
         /// \[ExportAgentRequest][google.cloud.dialogflow.cx.v3.ExportAgentRequest\].
         #[prost(string, tag = "1")]
         AgentUri(::prost::alloc::string::String),
-        /// Uncompressed raw byte content for agent.
+        /// Uncompressed raw byte content for agent. This field is populated
+        /// if none of `agent_uri` and `git_destination` are specified in
+        /// \[ExportAgentRequest][google.cloud.dialogflow.cx.v3.ExportAgentRequest\].
         #[prost(bytes, tag = "2")]
         AgentContent(::prost::alloc::vec::Vec<u8>),
+        /// Commit SHA of the git push. This field is populated if
+        /// `git_destination` are specified in
+        /// \[ExportAgentRequest][google.cloud.dialogflow.cx.v3.ExportAgentRequest\].
+        #[prost(string, tag = "3")]
+        CommitSha(::prost::alloc::string::String),
     }
 }
 /// The request message for
@@ -3015,11 +3082,19 @@ pub struct RestoreAgentRequest {
     #[prost(enumeration = "restore_agent_request::RestoreOption", tag = "5")]
     pub restore_option: i32,
     /// Required. The agent to restore.
-    #[prost(oneof = "restore_agent_request::Agent", tags = "2, 3")]
+    #[prost(oneof = "restore_agent_request::Agent", tags = "2, 3, 6")]
     pub agent: ::core::option::Option<restore_agent_request::Agent>,
 }
 /// Nested message and enum types in `RestoreAgentRequest`.
 pub mod restore_agent_request {
+    /// Settings for restoring from a git branch
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GitSource {
+        /// tracking branch for the git pull
+        #[prost(string, tag = "1")]
+        pub tracking_branch: ::prost::alloc::string::String,
+    }
     /// Restore option.
     #[derive(
         Clone,
@@ -3084,6 +3159,9 @@ pub mod restore_agent_request {
         /// Uncompressed raw byte content for agent.
         #[prost(bytes, tag = "3")]
         AgentContent(::prost::alloc::vec::Vec<u8>),
+        /// Setting for restoring from a git branch
+        #[prost(message, tag = "6")]
+        GitSource(GitSource),
     }
 }
 /// The request message for
@@ -8760,7 +8838,8 @@ pub mod test_cases_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Fetches a list of results for a given test case.
+        /// Fetches the list of run results for the given test case. A maximum of 100
+        /// results are kept for each test case.
         pub async fn list_test_case_results(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTestCaseResultsRequest>,
@@ -8904,8 +8983,8 @@ pub mod webhook {
         pub request_body: ::prost::alloc::string::String,
         /// Optional. Maps the values extracted from specific fields of the flexible
         /// webhook response into session parameters.
-        ///   - Key: session parameter name
-        ///   - Value: field path in the webhook response
+        /// - Key: session parameter name
+        /// - Value: field path in the webhook response
         #[prost(map = "string, string", tag = "9")]
         pub parameter_mapping: ::std::collections::HashMap<
             ::prost::alloc::string::String,

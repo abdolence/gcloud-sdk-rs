@@ -3688,7 +3688,9 @@ pub struct LoggingConfig {
     /// The per-package log levels for the driver. This may include
     /// "root" package name to configure rootLogger.
     /// Examples:
-    ///    'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'
+    /// - 'com.google = FATAL'
+    /// - 'root = INFO'
+    /// - 'org.apache = DEBUG'
     #[prost(map = "string, enumeration(logging_config::Level)", tag = "2")]
     pub driver_log_levels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3797,7 +3799,7 @@ pub struct HadoopJob {
     pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure Hadoop.
     /// Properties that conflict with values set by the Dataproc API may be
-    /// overwritten. Can include properties set in /etc/hadoop/conf/*-site and
+    /// overwritten. Can include properties set in `/etc/hadoop/conf/*-site` and
     /// classes in user code.
     #[prost(map = "string, string", tag = "7")]
     pub properties: ::std::collections::HashMap<
@@ -3984,7 +3986,7 @@ pub struct HiveJob {
     >,
     /// Optional. A mapping of property names and values, used to configure Hive.
     /// Properties that conflict with values set by the Dataproc API may be
-    /// overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml,
+    /// overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`,
     /// /etc/hive/conf/hive-site.xml, and classes in user code.
     #[prost(map = "string, string", tag = "5")]
     pub properties: ::std::collections::HashMap<
@@ -4081,7 +4083,7 @@ pub struct PigJob {
     >,
     /// Optional. A mapping of property names to values, used to configure Pig.
     /// Properties that conflict with values set by the Dataproc API may be
-    /// overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml,
+    /// overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`,
     /// /etc/pig/conf/pig.properties, and classes in user code.
     #[prost(map = "string, string", tag = "5")]
     pub properties: ::std::collections::HashMap<

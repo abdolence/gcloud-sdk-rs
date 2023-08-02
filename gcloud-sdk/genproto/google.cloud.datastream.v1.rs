@@ -579,6 +579,12 @@ pub struct MysqlColumn {
     /// The ordinal position of the column in the table.
     #[prost(int32, tag = "7")]
     pub ordinal_position: i32,
+    /// Column precision.
+    #[prost(int32, tag = "8")]
+    pub precision: i32,
+    /// Column scale.
+    #[prost(int32, tag = "9")]
+    pub scale: i32,
 }
 /// MySQL table.
 #[allow(clippy::derive_partial_eq_without_eq)]

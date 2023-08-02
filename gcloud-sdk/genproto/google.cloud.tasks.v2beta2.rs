@@ -366,6 +366,430 @@ pub struct AppEngineRouting {
     #[prost(string, tag = "4")]
     pub host: ::prost::alloc::string::String,
 }
+/// HTTP request.
+///
+/// The task will be pushed to the worker as an HTTP request. An HTTP request
+/// embodies a url, an http method, headers, body and authorization for the http
+/// task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpRequest {
+    /// Required. The full url path that the request will be sent to.
+    ///
+    /// This string must begin with either "<http://"> or "<https://".> Some examples
+    /// are: `<http://acme.com`> and `<https://acme.com/sales:8080`.> Cloud Tasks will
+    /// encode some characters for safety and compatibility. The maximum allowed
+    /// URL length is 2083 characters after encoding.
+    ///
+    /// The `Location` header response from a redirect response [`300` - `399`]
+    /// may be followed. The redirect is not counted as a separate attempt.
+    #[prost(string, tag = "1")]
+    pub url: ::prost::alloc::string::String,
+    /// The HTTP method to use for the request. The default is POST.
+    #[prost(enumeration = "HttpMethod", tag = "2")]
+    pub http_method: i32,
+    /// HTTP request headers.
+    ///
+    /// This map contains the header field names and values.
+    /// Headers can be set when running the
+    /// [task is created]\[google.cloud.tasks.v2beta2.CloudTasks.CreateTask\] or
+    /// [task is created]\[google.cloud.tasks.v2beta2.CloudTasks.BufferTask\].
+    ///
+    /// These headers represent a subset of the headers that will accompany the
+    /// task's HTTP request. Some HTTP request headers will be ignored or replaced.
+    ///
+    /// A partial list of headers that will be ignored or replaced is:
+    ///
+    /// * Any header that is prefixed with "X-CloudTasks-" will be treated
+    /// as service header. Service headers define properties of the task and are
+    /// predefined in CloudTask.
+    /// * Host: This will be computed by Cloud Tasks and derived from
+    ///    \[HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url\].
+    /// * Content-Length: This will be computed by Cloud Tasks.
+    /// * User-Agent: This will be set to `"Google-Cloud-Tasks"`.
+    /// * `X-Google-*`: Google use only.
+    /// * `X-AppEngine-*`: Google use only.
+    ///
+    /// `Content-Type` won't be set by Cloud Tasks. You can explicitly set
+    /// `Content-Type` to a media type when the
+    ///   [task is created]\[google.cloud.tasks.v2beta3.CloudTasks.CreateTask\].
+    ///   For example, `Content-Type` can be set to `"application/octet-stream"` or
+    ///   `"application/json"`.
+    ///
+    /// Headers which can have multiple values (according to RFC2616) can be
+    /// specified using comma-separated values.
+    ///
+    /// The size of the headers must be less than 80KB.
+    #[prost(map = "string, string", tag = "3")]
+    pub headers: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// HTTP request body.
+    ///
+    /// A request body is allowed only if the
+    /// [HTTP method]\[google.cloud.tasks.v2beta2.HttpRequest.http_method\] is POST,
+    /// PUT, or PATCH. It is an error to set body on a task with an incompatible
+    /// \[HttpMethod][google.cloud.tasks.v2beta2.HttpMethod\].
+    #[prost(bytes = "vec", tag = "4")]
+    pub body: ::prost::alloc::vec::Vec<u8>,
+    /// The mode for generating an `Authorization` header for HTTP requests.
+    ///
+    /// If specified, all `Authorization` headers in the
+    /// \[HttpRequest.headers][google.cloud.tasks.v2beta2.HttpRequest.headers\] field
+    /// will be overridden.
+    #[prost(oneof = "http_request::AuthorizationHeader", tags = "5, 6")]
+    pub authorization_header: ::core::option::Option<http_request::AuthorizationHeader>,
+}
+/// Nested message and enum types in `HttpRequest`.
+pub mod http_request {
+    /// The mode for generating an `Authorization` header for HTTP requests.
+    ///
+    /// If specified, all `Authorization` headers in the
+    /// \[HttpRequest.headers][google.cloud.tasks.v2beta2.HttpRequest.headers\] field
+    /// will be overridden.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AuthorizationHeader {
+        /// If specified, an
+        /// [OAuth token](<https://developers.google.com/identity/protocols/OAuth2>)
+        /// will be generated and attached as an `Authorization` header in the HTTP
+        /// request.
+        ///
+        /// This type of authorization should generally only be used when calling
+        /// Google APIs hosted on *.googleapis.com.
+        #[prost(message, tag = "5")]
+        OauthToken(super::OAuthToken),
+        /// If specified, an
+        /// \[OIDC\](<https://developers.google.com/identity/protocols/OpenIDConnect>)
+        /// token will be generated and attached as an `Authorization` header in the
+        /// HTTP request.
+        ///
+        /// This type of authorization can be used for many scenarios, including
+        /// calling Cloud Run, or endpoints where you intend to validate the token
+        /// yourself.
+        #[prost(message, tag = "6")]
+        OidcToken(super::OidcToken),
+    }
+}
+/// PathOverride.
+///
+/// Path message defines path override for HTTP targets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PathOverride {
+    /// The URI path (e.g., /users/1234). Default is an empty string.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+}
+/// QueryOverride.
+///
+/// Query message defines query override for HTTP targets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryOverride {
+    /// The query parameters (e.g., qparam1=123&qparam2=456). Default is an empty
+    /// string.
+    #[prost(string, tag = "1")]
+    pub query_params: ::prost::alloc::string::String,
+}
+/// Uri Override.
+///
+/// When specified, all the HTTP tasks inside the queue will be partially or
+/// fully overridden depending on the configured values.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UriOverride {
+    /// Scheme override.
+    ///
+    /// When specified, the task URI scheme is replaced by the provided value (HTTP
+    /// or HTTPS).
+    #[prost(enumeration = "uri_override::Scheme", optional, tag = "1")]
+    pub scheme: ::core::option::Option<i32>,
+    /// Host override.
+    ///
+    /// When specified, replaces the host part of the task URL. For example,
+    /// if the task URL is "<https://www.google.com,"> and host value is set to
+    /// "example.net", the overridden URI will be changed to "<https://example.net.">
+    /// Host value cannot be an empty string (INVALID_ARGUMENT).
+    #[prost(string, optional, tag = "2")]
+    pub host: ::core::option::Option<::prost::alloc::string::String>,
+    /// Port override.
+    ///
+    /// When specified, replaces the port part of the task URI. For instance,
+    /// for a URI <http://www.google.com/foo> and port=123, the overridden URI
+    /// becomes <http://www.google.com:123/foo.> Note that the port value must be a
+    /// positive integer. Setting the port to 0 (Zero) clears the URI port.
+    #[prost(int64, optional, tag = "3")]
+    pub port: ::core::option::Option<i64>,
+    /// URI path.
+    ///
+    /// When specified, replaces the existing path of the task URL. Setting the
+    /// path value to an empty string clears the URI path segment.
+    #[prost(message, optional, tag = "4")]
+    pub path_override: ::core::option::Option<PathOverride>,
+    /// URI Query.
+    ///
+    /// When specified, replaces the query part of the task URI. Setting the
+    /// query value to an empty string clears the URI query segment.
+    #[prost(message, optional, tag = "5")]
+    pub query_override: ::core::option::Option<QueryOverride>,
+    /// URI Override Enforce Mode
+    ///
+    /// When specified, determines the Target UriOverride mode. If not specified,
+    /// it defaults to ALWAYS.
+    #[prost(enumeration = "uri_override::UriOverrideEnforceMode", tag = "6")]
+    pub uri_override_enforce_mode: i32,
+}
+/// Nested message and enum types in `UriOverride`.
+pub mod uri_override {
+    /// The Scheme for an HTTP request. By default, it is HTTPS.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scheme {
+        /// Scheme unspecified. Defaults to HTTPS.
+        Unspecified = 0,
+        /// Convert the scheme to HTTP, e.g., <https://www.google.ca> will change to
+        /// <http://www.google.ca.>
+        Http = 1,
+        /// Convert the scheme to HTTPS, e.g., <http://www.google.ca> will change to
+        /// <https://www.google.ca.>
+        Https = 2,
+    }
+    impl Scheme {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Scheme::Unspecified => "SCHEME_UNSPECIFIED",
+                Scheme::Http => "HTTP",
+                Scheme::Https => "HTTPS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCHEME_UNSPECIFIED" => Some(Self::Unspecified),
+                "HTTP" => Some(Self::Http),
+                "HTTPS" => Some(Self::Https),
+                _ => None,
+            }
+        }
+    }
+    /// UriOverrideEnforceMode mode is to define enforcing mode for the override
+    /// modes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum UriOverrideEnforceMode {
+        /// OverrideMode Unspecified. Defaults to ALWAYS.
+        Unspecified = 0,
+        /// In the IF_NOT_EXISTS mode, queue-level configuration is only
+        /// applied where task-level configuration does not exist.
+        IfNotExists = 1,
+        /// In the ALWAYS mode, queue-level configuration overrides all
+        /// task-level configuration
+        Always = 2,
+    }
+    impl UriOverrideEnforceMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                UriOverrideEnforceMode::Unspecified => {
+                    "URI_OVERRIDE_ENFORCE_MODE_UNSPECIFIED"
+                }
+                UriOverrideEnforceMode::IfNotExists => "IF_NOT_EXISTS",
+                UriOverrideEnforceMode::Always => "ALWAYS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "URI_OVERRIDE_ENFORCE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IF_NOT_EXISTS" => Some(Self::IfNotExists),
+                "ALWAYS" => Some(Self::Always),
+                _ => None,
+            }
+        }
+    }
+}
+/// HTTP target.
+///
+/// When specified as a \[Queue][target_type\], all the tasks with \[HttpRequest\]
+/// will be overridden according to the target.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpTarget {
+    /// Uri override.
+    ///
+    /// When specified, overrides the execution Uri for all the tasks in the queue.
+    #[prost(message, optional, tag = "1")]
+    pub uri_override: ::core::option::Option<UriOverride>,
+    /// The HTTP method to use for the request.
+    ///
+    /// When specified, it overrides
+    /// \[HttpRequest][google.cloud.tasks.v2beta2.HttpTarget.http_method\] for the
+    /// task. Note that if the value is set to \[HttpMethod][GET\] the
+    /// \[HttpRequest][body\] of the task will be ignored at execution time.
+    #[prost(enumeration = "HttpMethod", tag = "2")]
+    pub http_method: i32,
+    /// HTTP target headers.
+    ///
+    /// This map contains the header field names and values.
+    /// Headers will be set when running the
+    /// [task is created]\[google.cloud.tasks.v2beta2.CloudTasks.CreateTask\] and/or
+    /// [task is created]\[google.cloud.tasks.v2beta2.CloudTasks.BufferTask\].
+    ///
+    /// These headers represent a subset of the headers that will accompany the
+    /// task's HTTP request. Some HTTP request headers will be ignored or replaced.
+    ///
+    /// A partial list of headers that will be ignored or replaced is:
+    /// * Any header that is prefixed with "X-CloudTasks-" will be treated
+    /// as service header. Service headers define properties of the task and are
+    /// predefined in CloudTask.
+    /// * Host: This will be computed by Cloud Tasks and derived from
+    ///    \[HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url\].
+    /// * Content-Length: This will be computed by Cloud Tasks.
+    /// * User-Agent: This will be set to `"Google-CloudTasks"`.
+    /// * `X-Google-*`: Google use only.
+    /// * `X-AppEngine-*`: Google use only.
+    ///
+    /// `Content-Type` won't be set by Cloud Tasks. You can explicitly set
+    /// `Content-Type` to a media type when the
+    ///   [task is created]\[google.cloud.tasks.v2beta3.CloudTasks.CreateTask\].
+    ///   For example, `Content-Type` can be set to `"application/octet-stream"` or
+    ///   `"application/json"`.
+    ///
+    /// Headers which can have multiple values (according to RFC2616) can be
+    /// specified using comma-separated values.
+    ///
+    /// The size of the headers must be less than 80KB.
+    /// Queue-level headers to override headers of all the tasks in the queue.
+    #[prost(message, repeated, tag = "3")]
+    pub header_overrides: ::prost::alloc::vec::Vec<http_target::HeaderOverride>,
+    /// The mode for generating an `Authorization` header for HTTP requests.
+    ///
+    /// If specified, all `Authorization` headers in the
+    /// \[HttpRequest.headers][google.cloud.tasks.v2beta2.HttpRequest.headers\] field
+    /// will be overridden.
+    #[prost(oneof = "http_target::AuthorizationHeader", tags = "5, 6")]
+    pub authorization_header: ::core::option::Option<http_target::AuthorizationHeader>,
+}
+/// Nested message and enum types in `HttpTarget`.
+pub mod http_target {
+    /// Defines a header message. A header can have a key and a value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Header {
+        /// The key of the header.
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// The value of the header.
+        #[prost(string, tag = "2")]
+        pub value: ::prost::alloc::string::String,
+    }
+    /// Wraps the Header object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HeaderOverride {
+        /// header embodying a key and a value.
+        #[prost(message, optional, tag = "1")]
+        pub header: ::core::option::Option<Header>,
+    }
+    /// The mode for generating an `Authorization` header for HTTP requests.
+    ///
+    /// If specified, all `Authorization` headers in the
+    /// \[HttpRequest.headers][google.cloud.tasks.v2beta2.HttpRequest.headers\] field
+    /// will be overridden.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AuthorizationHeader {
+        /// If specified, an
+        /// [OAuth token](<https://developers.google.com/identity/protocols/OAuth2>)
+        /// will be generated and attached as an `Authorization` header in the HTTP
+        /// request.
+        ///
+        /// This type of authorization should generally only be used when calling
+        /// Google APIs hosted on *.googleapis.com.
+        #[prost(message, tag = "5")]
+        OauthToken(super::OAuthToken),
+        /// If specified, an
+        /// \[OIDC\](<https://developers.google.com/identity/protocols/OpenIDConnect>)
+        /// token will be generated and attached as an `Authorization` header in the
+        /// HTTP request.
+        ///
+        /// This type of authorization can be used for many scenarios, including
+        /// calling Cloud Run, or endpoints where you intend to validate the token
+        /// yourself.
+        #[prost(message, tag = "6")]
+        OidcToken(super::OidcToken),
+    }
+}
+/// Contains information needed for generating an
+/// [OAuth token](<https://developers.google.com/identity/protocols/OAuth2>).
+/// This type of authorization should generally only be used when calling Google
+/// APIs hosted on *.googleapis.com.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OAuthToken {
+    /// [Service account email](<https://cloud.google.com/iam/docs/service-accounts>)
+    /// to be used for generating OAuth token.
+    /// The service account must be within the same project as the queue. The
+    /// caller must have iam.serviceAccounts.actAs permission for the service
+    /// account.
+    #[prost(string, tag = "1")]
+    pub service_account_email: ::prost::alloc::string::String,
+    /// OAuth scope to be used for generating OAuth access token.
+    /// If not specified, "<https://www.googleapis.com/auth/cloud-platform">
+    /// will be used.
+    #[prost(string, tag = "2")]
+    pub scope: ::prost::alloc::string::String,
+}
+/// Contains information needed for generating an
+/// [OpenID Connect
+/// token](<https://developers.google.com/identity/protocols/OpenIDConnect>).
+/// This type of authorization can be used for many scenarios, including
+/// calling Cloud Run, or endpoints where you intend to validate the token
+/// yourself.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OidcToken {
+    /// [Service account email](<https://cloud.google.com/iam/docs/service-accounts>)
+    /// to be used for generating OIDC token.
+    /// The service account must be within the same project as the queue. The
+    /// caller must have iam.serviceAccounts.actAs permission for the service
+    /// account.
+    #[prost(string, tag = "1")]
+    pub service_account_email: ::prost::alloc::string::String,
+    /// Audience to be used when generating OIDC token. If not specified, the URI
+    /// specified in target will be used.
+    #[prost(string, tag = "2")]
+    pub audience: ::prost::alloc::string::String,
+}
 /// The HTTP method used to execute the task.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -382,6 +806,10 @@ pub enum HttpMethod {
     Put = 4,
     /// HTTP DELETE
     Delete = 5,
+    /// HTTP PATCH
+    Patch = 6,
+    /// HTTP OPTIONS
+    Options = 7,
 }
 impl HttpMethod {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -396,6 +824,8 @@ impl HttpMethod {
             HttpMethod::Head => "HEAD",
             HttpMethod::Put => "PUT",
             HttpMethod::Delete => "DELETE",
+            HttpMethod::Patch => "PATCH",
+            HttpMethod::Options => "OPTIONS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -407,6 +837,8 @@ impl HttpMethod {
             "HEAD" => Some(Self::Head),
             "PUT" => Some(Self::Put),
             "DELETE" => Some(Self::Delete),
+            "PATCH" => Some(Self::Patch),
+            "OPTIONS" => Some(Self::Options),
             _ => None,
         }
     }
@@ -472,7 +904,7 @@ pub struct Queue {
     pub retry_config: ::core::option::Option<RetryConfig>,
     /// Output only. The state of the queue.
     ///
-    /// `state` can only be changed by calling
+    /// `state` can only be changed by called
     /// \[PauseQueue][google.cloud.tasks.v2beta2.CloudTasks.PauseQueue\],
     /// \[ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue\], or
     /// uploading
@@ -534,7 +966,7 @@ pub struct Queue {
     /// The queue's target.
     ///
     /// The target applies to all tasks in the queue.
-    #[prost(oneof = "queue::TargetType", tags = "3, 4")]
+    #[prost(oneof = "queue::TargetType", tags = "3, 4, 17")]
     pub target_type: ::core::option::Option<queue::TargetType>,
 }
 /// Nested message and enum types in `Queue`.
@@ -635,6 +1067,9 @@ pub mod queue {
         /// \[PullTarget][google.cloud.tasks.v2beta2.PullTarget\].
         #[prost(message, tag = "4")]
         PullTarget(super::PullTarget),
+        /// An http_target is used to override the target values for HTTP tasks.
+        #[prost(message, tag = "17")]
+        HttpTarget(super::HttpTarget),
     }
 }
 /// Rate limits.
@@ -959,7 +1394,7 @@ pub struct Task {
     ///
     /// The task's payload is used by the task's target to process the task.
     /// A payload is valid only if it is compatible with the queue's target.
-    #[prost(oneof = "task::PayloadType", tags = "3, 4")]
+    #[prost(oneof = "task::PayloadType", tags = "3, 4, 13")]
     pub payload_type: ::core::option::Option<task::PayloadType>,
 }
 /// Nested message and enum types in `Task`.
@@ -1055,6 +1490,12 @@ pub mod task {
         /// \[PullMessage][google.cloud.tasks.v2beta2.PullMessage\] set.
         #[prost(message, tag = "4")]
         PullMessage(super::PullMessage),
+        /// HTTP request that is sent to the task's target.
+        ///
+        /// An HTTP task is a task that has
+        /// \[HttpRequest][google.cloud.tasks.v2beta2.HttpRequest\] set.
+        #[prost(message, tag = "13")]
+        HttpRequest(super::HttpRequest),
     }
 }
 /// Status of the task.
@@ -1286,6 +1727,20 @@ pub struct ResumeQueueRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for
+/// \[UploadQueueYaml][google.cloud.tasks.v2beta2.CloudTasks.UploadQueueYaml\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UploadQueueYamlRequest {
+    /// Required. The App ID is supplied as an HTTP parameter. Unlike internal
+    /// usage of App ID, it does not include a region prefix. Rather, the App ID
+    /// represents the Project ID against which to make the request.
+    #[prost(string, tag = "1")]
+    pub app_id: ::prost::alloc::string::String,
+    /// The http body contains the queue.yaml file which used to update queue lists
+    #[prost(message, optional, tag = "2")]
+    pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
+}
 /// Request message for listing tasks using
 /// \[ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1406,10 +1861,10 @@ pub struct CreateTaskRequest {
     /// that was deleted or completed recently then the call will fail
     /// with \[ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS\].
     /// If the task's queue was created using Cloud Tasks, then another task with
-    /// the same name can't be created for ~1hour after the original task was
+    /// the same name can't be created for ~1 hour after the original task was
     /// deleted or completed. If the task's queue was created using queue.yaml or
     /// queue.xml, then another task with the same name can't be created
-    /// for ~9days after the original task was deleted or completed.
+    /// for ~9 days after the original task was deleted or completed.
     ///
     /// Because there is an extra lookup cost to identify duplicate task
     /// names, these \[CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask\]
@@ -1664,6 +2119,38 @@ pub struct RunTaskRequest {
     /// \[Task][google.cloud.tasks.v2beta2.Task\] resource.
     #[prost(enumeration = "task::View", tag = "2")]
     pub response_view: i32,
+}
+/// LINT.IfChange
+/// Request message for
+/// \[BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BufferTaskRequest {
+    /// Required. The parent queue name. For example:
+    /// projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
+    ///
+    /// The queue must already exist.
+    #[prost(string, tag = "1")]
+    pub queue: ::prost::alloc::string::String,
+    /// Optional. Task ID for the task being created. If not provided, a random
+    /// task ID is assigned to the task.
+    #[prost(string, tag = "2")]
+    pub task_id: ::prost::alloc::string::String,
+    /// Optional. Body of the HTTP request.
+    ///
+    /// The body can take any generic value. The value is written to the
+    /// \[HttpRequest][payload\] of the \[Task\].
+    #[prost(message, optional, tag = "3")]
+    pub body: ::core::option::Option<super::super::super::api::HttpBody>,
+}
+/// Response message for
+/// \[BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BufferTaskResponse {
+    /// The created task.
+    #[prost(message, optional, tag = "1")]
+    pub task: ::core::option::Option<Task>,
 }
 /// Generated client implementations.
 pub mod cloud_tasks_client {
@@ -2037,6 +2524,38 @@ pub mod cloud_tasks_client {
                     GrpcMethod::new(
                         "google.cloud.tasks.v2beta2.CloudTasks",
                         "ResumeQueue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update queue list by uploading a queue.yaml file.
+        ///
+        /// The queue.yaml file is supplied in the request body as a YAML encoded
+        /// string. This method was added to support gcloud clients versions before
+        /// 322.0.0. New clients should use CreateQueue instead of this method.
+        pub async fn upload_queue_yaml(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UploadQueueYamlRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tasks.v2beta2.CloudTasks/UploadQueueYaml",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta2.CloudTasks",
+                        "UploadQueueYaml",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2507,6 +3026,47 @@ pub mod cloud_tasks_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.tasks.v2beta2.CloudTasks", "RunTask"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates and buffers a new task without the need to explicitly define a Task
+        /// message. The queue must have [HTTP
+        /// target][google.cloud.tasks.v2beta2.HttpTarget]. To create the task with a
+        /// custom ID, use the following format and set TASK_ID to your desired ID:
+        /// projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID:buffer
+        /// To create the task with an automatically generated ID, use the following
+        /// format:
+        /// projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks:buffer.
+        /// Note: This feature is in its experimental stage. You must request access to
+        /// the API through the [Cloud Tasks BufferTask Experiment Signup
+        /// form](https://forms.gle/X8Zr5hiXH5tTGFqh8).
+        pub async fn buffer_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BufferTaskRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::BufferTaskResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tasks.v2beta2.CloudTasks/BufferTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tasks.v2beta2.CloudTasks",
+                        "BufferTask",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

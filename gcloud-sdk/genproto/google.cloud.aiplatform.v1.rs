@@ -1832,6 +1832,8 @@ pub enum JobState {
     /// The job is being updated. Only jobs in the `RUNNING` state can be updated.
     /// After updating, the job goes back to the `RUNNING` state.
     Updating = 10,
+    /// The job is partially succeeded, some results may be missing due to errors.
+    PartiallySucceeded = 11,
 }
 impl JobState {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1851,6 +1853,7 @@ impl JobState {
             JobState::Paused => "JOB_STATE_PAUSED",
             JobState::Expired => "JOB_STATE_EXPIRED",
             JobState::Updating => "JOB_STATE_UPDATING",
+            JobState::PartiallySucceeded => "JOB_STATE_PARTIALLY_SUCCEEDED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1867,6 +1870,7 @@ impl JobState {
             "JOB_STATE_PAUSED" => Some(Self::Paused),
             "JOB_STATE_EXPIRED" => Some(Self::Expired),
             "JOB_STATE_UPDATING" => Some(Self::Updating),
+            "JOB_STATE_PARTIALLY_SUCCEEDED" => Some(Self::PartiallySucceeded),
             _ => None,
         }
     }
@@ -2180,7 +2184,8 @@ pub struct Model {
     /// Model, if any.
     #[prost(string, tag = "7")]
     pub training_pipeline: ::prost::alloc::string::String,
-    /// This field is populated if the model is produced by a pipeline job.
+    /// Optional. This field is populated if the model is produced by a pipeline
+    /// job.
     #[prost(string, tag = "47")]
     pub pipeline_job: ::prost::alloc::string::String,
     /// Input only. The specification of the container that is to be used when
@@ -2949,6 +2954,11 @@ pub struct BatchPredictionJob {
     ///               or
     ///             `projects/{project}/locations/{location}/models/{model}@golden`
     /// if no version is specified, the default version will be deployed.
+    ///
+    /// The model resource could also be a publisher model.
+    ///   Example: `publishers/{publisher}/models/{model}`
+    ///               or
+    ///            `projects/{project}/locations/{location}/publishers/{publisher}/models/{model}`
     #[prost(string, tag = "3")]
     pub model: ::prost::alloc::string::String,
     /// Output only. The version ID of the Model that produces the predictions via
@@ -4054,6 +4064,10 @@ pub struct Dataset {
     /// Required. Additional information about the Dataset.
     #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<::prost_types::Value>,
+    /// Output only. The number of DataItems in this Dataset. Only apply for
+    /// non-structured Dataset.
+    #[prost(int64, tag = "10")]
+    pub data_item_count: i64,
     /// Output only. Timestamp when this Dataset was created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -4664,6 +4678,17 @@ pub struct ListSavedQueriesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
+/// \[DatasetService.DeleteSavedQuery][google.cloud.aiplatform.v1.DatasetService.DeleteSavedQuery\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSavedQueryRequest {
+    /// Required. The resource name of the SavedQuery to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}/savedQueries/{saved_query}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
 /// \[DatasetService.GetAnnotationSpec][google.cloud.aiplatform.v1.DatasetService.GetAnnotationSpec\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4721,8 +4746,7 @@ pub mod dataset_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// The service that handles the CRUD of Vertex AI Dataset and its child
-    /// resources.
+    /// The service that manages Vertex AI Dataset and its child resources.
     #[derive(Debug, Clone)]
     pub struct DatasetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -5103,6 +5127,37 @@ pub mod dataset_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.DatasetService",
                         "ListSavedQueries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a SavedQuery.
+        pub async fn delete_saved_query(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSavedQueryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DatasetService/DeleteSavedQuery",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DatasetService",
+                        "DeleteSavedQuery",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -7249,6 +7304,139 @@ pub struct StringArray {
     #[prost(string, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// A tensor value type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Tensor {
+    /// The data type of tensor.
+    #[prost(enumeration = "tensor::DataType", tag = "1")]
+    pub dtype: i32,
+    /// Shape of the tensor.
+    #[prost(int64, repeated, tag = "2")]
+    pub shape: ::prost::alloc::vec::Vec<i64>,
+    /// Type specific representations that make it easy to create tensor protos in
+    /// all languages.  Only the representation corresponding to "dtype" can
+    /// be set.  The values hold the flattened representation of the tensor in
+    /// row major order.
+    ///
+    /// \[BOOL][google.aiplatform.master.Tensor.DataType.BOOL\]
+    #[prost(bool, repeated, tag = "3")]
+    pub bool_val: ::prost::alloc::vec::Vec<bool>,
+    /// \[STRING][google.aiplatform.master.Tensor.DataType.STRING\]
+    #[prost(string, repeated, tag = "14")]
+    pub string_val: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// \[STRING][google.aiplatform.master.Tensor.DataType.STRING\]
+    #[prost(bytes = "vec", repeated, tag = "15")]
+    pub bytes_val: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    /// \[FLOAT][google.aiplatform.master.Tensor.DataType.FLOAT\]
+    #[prost(float, repeated, tag = "5")]
+    pub float_val: ::prost::alloc::vec::Vec<f32>,
+    /// \[DOUBLE][google.aiplatform.master.Tensor.DataType.DOUBLE\]
+    #[prost(double, repeated, tag = "6")]
+    pub double_val: ::prost::alloc::vec::Vec<f64>,
+    /// \[INT_8][google.aiplatform.master.Tensor.DataType.INT8\]
+    /// \[INT_16][google.aiplatform.master.Tensor.DataType.INT16\]
+    /// \[INT_32][google.aiplatform.master.Tensor.DataType.INT32\]
+    #[prost(int32, repeated, tag = "7")]
+    pub int_val: ::prost::alloc::vec::Vec<i32>,
+    /// \[INT64][google.aiplatform.master.Tensor.DataType.INT64\]
+    #[prost(int64, repeated, tag = "8")]
+    pub int64_val: ::prost::alloc::vec::Vec<i64>,
+    /// \[UINT8][google.aiplatform.master.Tensor.DataType.UINT8\]
+    /// \[UINT16][google.aiplatform.master.Tensor.DataType.UINT16\]
+    /// \[UINT32][google.aiplatform.master.Tensor.DataType.UINT32\]
+    #[prost(uint32, repeated, tag = "9")]
+    pub uint_val: ::prost::alloc::vec::Vec<u32>,
+    /// \[UINT64][google.aiplatform.master.Tensor.DataType.UINT64\]
+    #[prost(uint64, repeated, tag = "10")]
+    pub uint64_val: ::prost::alloc::vec::Vec<u64>,
+    /// A list of tensor values.
+    #[prost(message, repeated, tag = "11")]
+    pub list_val: ::prost::alloc::vec::Vec<Tensor>,
+    /// A map of string to tensor.
+    #[prost(map = "string, message", tag = "12")]
+    pub struct_val: ::std::collections::HashMap<::prost::alloc::string::String, Tensor>,
+    /// Serialized raw tensor content.
+    #[prost(bytes = "vec", tag = "13")]
+    pub tensor_val: ::prost::alloc::vec::Vec<u8>,
+}
+/// Nested message and enum types in `Tensor`.
+pub mod tensor {
+    /// Data type of the tensor.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataType {
+        /// Not a legal value for DataType. Used to indicate a DataType field has not
+        /// been set.
+        Unspecified = 0,
+        /// Data types that all computation devices are expected to be
+        /// capable to support.
+        Bool = 1,
+        String = 2,
+        Float = 3,
+        Double = 4,
+        Int8 = 5,
+        Int16 = 6,
+        Int32 = 7,
+        Int64 = 8,
+        Uint8 = 9,
+        Uint16 = 10,
+        Uint32 = 11,
+        Uint64 = 12,
+    }
+    impl DataType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                DataType::Bool => "BOOL",
+                DataType::String => "STRING",
+                DataType::Float => "FLOAT",
+                DataType::Double => "DOUBLE",
+                DataType::Int8 => "INT8",
+                DataType::Int16 => "INT16",
+                DataType::Int32 => "INT32",
+                DataType::Int64 => "INT64",
+                DataType::Uint8 => "UINT8",
+                DataType::Uint16 => "UINT16",
+                DataType::Uint32 => "UINT32",
+                DataType::Uint64 => "UINT64",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOL" => Some(Self::Bool),
+                "STRING" => Some(Self::String),
+                "FLOAT" => Some(Self::Float),
+                "DOUBLE" => Some(Self::Double),
+                "INT8" => Some(Self::Int8),
+                "INT16" => Some(Self::Int16),
+                "INT32" => Some(Self::Int32),
+                "INT64" => Some(Self::Int64),
+                "UINT8" => Some(Self::Uint8),
+                "UINT16" => Some(Self::Uint16),
+                "UINT32" => Some(Self::Uint32),
+                "UINT64" => Some(Self::Uint64),
+                _ => None,
+            }
+        }
+    }
+}
 /// Request message for
 /// \[FeaturestoreOnlineServingService.WriteFeatureValues][google.cloud.aiplatform.v1.FeaturestoreOnlineServingService.WriteFeatureValues\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7684,7 +7872,7 @@ pub mod featurestore_online_serving_service_client {
 pub struct CreateFeaturestoreRequest {
     /// Required. The resource name of the Location to create Featurestores.
     /// Format:
-    /// `projects/{project}/locations/{location}'`
+    /// `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Featurestore to create.
@@ -8536,6 +8724,7 @@ pub struct SearchFeaturesRequest {
     /// * `featurestore_id`: Supports = comparisons.
     ///
     /// Examples:
+    ///
     /// * `description = "foo bar"` --> Any Feature with description exactly equal
     /// to `foo bar`
     /// * `value_type = DOUBLE` --> Features whose type is DOUBLE.
@@ -12961,7 +13150,7 @@ pub struct NasJob {
     #[prost(bool, tag = "14")]
     pub enable_restricted_image_training: bool,
 }
-/// Represents a NasTrial details along with it's parameters. If there is a
+/// Represents a NasTrial details along with its parameters. If there is a
 /// corresponding train NasTrial, the train NasTrial is also returned.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19450,12 +19639,6 @@ pub mod export_model_request {
         >,
     }
 }
-/// Response message of
-/// \[ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset\]
-/// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateExplanationDatasetResponse {}
 /// Details of
 /// \[ModelService.ExportModel][google.cloud.aiplatform.v1.ModelService.ExportModel\]
 /// operation.
@@ -19488,6 +19671,12 @@ pub mod export_model_operation_metadata {
         pub image_output_uri: ::prost::alloc::string::String,
     }
 }
+/// Response message of
+/// \[ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset\]
+/// operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExplanationDatasetResponse {}
 /// Response message of
 /// \[ModelService.ExportModel][google.cloud.aiplatform.v1.ModelService.ExportModel\]
 /// operation.
@@ -20560,6 +20749,9 @@ pub struct PipelineJob {
     /// characters, underscores and dashes. International characters are allowed.
     ///
     /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    ///
+    /// Note there is some reserved label key for Vertex AI Pipelines.
+    /// - `vertex-ai-pipelines-run-billing-id`, user set value will get overrided.
     #[prost(map = "string, string", tag = "11")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -20598,6 +20790,16 @@ pub struct PipelineJob {
     /// with any network.
     #[prost(string, tag = "18")]
     pub network: ::prost::alloc::string::String,
+    /// A list of names for the reserved ip ranges under the VPC network
+    /// that can be used for this Pipeline Job's workload.
+    ///
+    /// If set, we will deploy the Pipeline Job's workload within the provided ip
+    /// ranges. Otherwise, the job will be deployed to any ip ranges under the
+    /// provided VPC network.
+    ///
+    /// Example: \['vertex-ai-ip-range'\].
+    #[prost(string, repeated, tag = "25")]
+    pub reserved_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A template uri from where the
     /// \[PipelineJob.pipeline_spec][google.cloud.aiplatform.v1.PipelineJob.pipeline_spec\],
     /// if empty, will be downloaded.
@@ -22120,6 +22322,10 @@ pub struct PredictResponse {
     /// deployed as the DeployedModel that this prediction hits.
     #[prost(string, tag = "4")]
     pub model_display_name: ::prost::alloc::string::String,
+    /// Output only. Request-level metadata returned by the model. The metadata
+    /// type will be dependent upon the model implementation.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Value>,
 }
 /// Request message for
 /// \[PredictionService.RawPredict][google.cloud.aiplatform.v1.PredictionService.RawPredict\].
@@ -22148,6 +22354,39 @@ pub struct RawPredictRequest {
     /// method.
     #[prost(message, optional, tag = "2")]
     pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
+}
+/// Request message for
+/// \[PredictionService.StreamingPredict][google.cloud.aiplatform.v1.PredictionService.StreamingPredict\].
+///
+/// The first message must contain
+/// \[endpoint][google.cloud.aiplatform.v1.StreamingPredictRequest.endpoint\] field
+/// and optionally \[input][\]. The subsequent messages must contain \[input][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(message, repeated, tag = "2")]
+    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Response message for
+/// \[PredictionService.StreamingPredict][google.cloud.aiplatform.v1.PredictionService.StreamingPredict\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictResponse {
+    /// The prediction output.
+    #[prost(message, repeated, tag = "1")]
+    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<Tensor>,
 }
 /// Request message for
 /// \[PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain\].
@@ -22373,6 +22612,38 @@ pub mod prediction_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Perform a server-side streaming online prediction request for Vertex
+        /// LLM streaming.
+        pub async fn server_streaming_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StreamingPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/ServerStreamingPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "ServerStreamingPredict",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
         /// Perform an online explanation.
         ///
         /// If
@@ -22410,6 +22681,661 @@ pub mod prediction_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.PredictionService",
                         "Explain",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// An instance of a Schedule periodically schedules runs to make API calls based
+/// on user specified time specification and API request type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Schedule {
+    /// Output only. The resource name of the Schedule.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. User provided name of the Schedule.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Timestamp after which the first run can be scheduled.
+    /// Default to Schedule create time if not specified.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Timestamp after which no new runs can be scheduled.
+    /// If specified, The schedule will be completed when either
+    /// end_time is reached or when scheduled_run_count >= max_run_count.
+    /// If not specified, new runs will keep getting scheduled until this Schedule
+    /// is paused or deleted. Already scheduled runs will be allowed to complete.
+    /// Unset if not specified.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Maximum run count of the schedule.
+    /// If specified, The schedule will be completed when either
+    /// started_run_count >= max_run_count or when end_time is reached.
+    /// If not specified, new runs will keep getting scheduled until this Schedule
+    /// is paused or deleted. Already scheduled runs will be allowed to complete.
+    /// Unset if not specified.
+    #[prost(int64, tag = "16")]
+    pub max_run_count: i64,
+    /// Output only. The number of runs started by this schedule.
+    #[prost(int64, tag = "17")]
+    pub started_run_count: i64,
+    /// Output only. The state of this Schedule.
+    #[prost(enumeration = "schedule::State", tag = "5")]
+    pub state: i32,
+    /// Output only. Timestamp when this Schedule was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Schedule was updated.
+    #[prost(message, optional, tag = "19")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Schedule should schedule the next run.
+    /// Having a next_run_time in the past means the runs are being started
+    /// behind schedule.
+    #[prost(message, optional, tag = "7")]
+    pub next_run_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Schedule was last paused.
+    /// Unset if never paused.
+    #[prost(message, optional, tag = "8")]
+    pub last_pause_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Schedule was last resumed.
+    /// Unset if never resumed from pause.
+    #[prost(message, optional, tag = "9")]
+    pub last_resume_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Maximum number of runs that can be started concurrently for this
+    /// Schedule. This is the limit for starting the scheduled requests and not the
+    /// execution of the operations/jobs created by the requests (if applicable).
+    #[prost(int64, tag = "11")]
+    pub max_concurrent_run_count: i64,
+    /// Optional. Whether new scheduled runs can be queued when max_concurrent_runs
+    /// limit is reached. If set to true, new runs will be queued instead of
+    /// skipped. Default to false.
+    #[prost(bool, tag = "12")]
+    pub allow_queueing: bool,
+    /// Output only. Whether to backfill missed runs when the schedule is resumed
+    /// from PAUSED state. If set to true, all missed runs will be scheduled. New
+    /// runs will be scheduled after the backfill is complete. Default to false.
+    #[prost(bool, tag = "13")]
+    pub catch_up: bool,
+    /// Output only. Response of the last scheduled run.
+    /// This is the response for starting the scheduled requests and not the
+    /// execution of the operations/jobs created by the requests (if applicable).
+    /// Unset if no run has been scheduled yet.
+    #[prost(message, optional, tag = "18")]
+    pub last_scheduled_run_response: ::core::option::Option<schedule::RunResponse>,
+    /// Required.
+    /// The time specification to launch scheduled runs.
+    #[prost(oneof = "schedule::TimeSpecification", tags = "10")]
+    pub time_specification: ::core::option::Option<schedule::TimeSpecification>,
+    /// Required.
+    /// The API request template to launch the scheduled runs.
+    /// User-specified ID is not supported in the request template.
+    #[prost(oneof = "schedule::Request", tags = "14")]
+    pub request: ::core::option::Option<schedule::Request>,
+}
+/// Nested message and enum types in `Schedule`.
+pub mod schedule {
+    /// Status of a scheduled run.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RunResponse {
+        /// The scheduled run time based on the user-specified schedule.
+        #[prost(message, optional, tag = "1")]
+        pub scheduled_run_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The response of the scheduled run.
+        #[prost(string, tag = "2")]
+        pub run_response: ::prost::alloc::string::String,
+    }
+    /// Possible state of the schedule.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified.
+        Unspecified = 0,
+        /// The Schedule is active. Runs are being scheduled on the user-specified
+        /// timespec.
+        Active = 1,
+        /// The schedule is paused. No new runs will be created until the schedule
+        /// is resumed. Already started runs will be allowed to complete.
+        Paused = 2,
+        /// The Schedule is completed. No new runs will be scheduled. Already started
+        /// runs will be allowed to complete. Schedules in completed state cannot be
+        /// paused or resumed.
+        Completed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Active => "ACTIVE",
+                State::Paused => "PAUSED",
+                State::Completed => "COMPLETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "PAUSED" => Some(Self::Paused),
+                "COMPLETED" => Some(Self::Completed),
+                _ => None,
+            }
+        }
+    }
+    /// Required.
+    /// The time specification to launch scheduled runs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TimeSpecification {
+        /// Cron schedule (<https://en.wikipedia.org/wiki/Cron>) to launch scheduled
+        /// runs. To explicitly set a timezone to the cron tab, apply a prefix in the
+        /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
+        /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+        /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+        /// "TZ=America/New_York 1 * * * *".
+        #[prost(string, tag = "10")]
+        Cron(::prost::alloc::string::String),
+    }
+    /// Required.
+    /// The API request template to launch the scheduled runs.
+    /// User-specified ID is not supported in the request template.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Request {
+        /// Request for
+        /// \[PipelineService.CreatePipelineJob][google.cloud.aiplatform.v1.PipelineService.CreatePipelineJob\].
+        /// CreatePipelineJobRequest.parent field is required (format:
+        /// projects/{project}/locations/{location}).
+        #[prost(message, tag = "14")]
+        CreatePipelineJobRequest(super::CreatePipelineJobRequest),
+    }
+}
+/// Request message for
+/// \[ScheduleService.CreateSchedule][google.cloud.aiplatform.v1.ScheduleService.CreateSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateScheduleRequest {
+    /// Required. The resource name of the Location to create the Schedule in.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Schedule to create.
+    #[prost(message, optional, tag = "2")]
+    pub schedule: ::core::option::Option<Schedule>,
+}
+/// Request message for
+/// \[ScheduleService.GetSchedule][google.cloud.aiplatform.v1.ScheduleService.GetSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetScheduleRequest {
+    /// Required. The name of the Schedule resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.ListSchedules][google.cloud.aiplatform.v1.ScheduleService.ListSchedules\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchedulesRequest {
+    /// Required. The resource name of the Location to list the Schedules from.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Lists the Schedules that match the filter expression. The following
+    /// fields are supported:
+    ///
+    /// * `display_name`: Supports `=`, `!=` comparisons, and `:` wildcard.
+    /// * `state`: Supports `=` and `!=` comparisons.
+    /// * `request`: Supports existence of the <request_type> check.
+    ///        (e.g. `create_pipeline_job_request:*` --> Schedule has
+    ///        create_pipeline_job_request).
+    /// * `create_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    ///        Values must be in RFC 3339 format.
+    /// * `start_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    ///        Values must be in RFC 3339 format.
+    /// * `end_time`: Supports `=`, `!=`, `<`, `>`, `<=`, `>=` comparisons and `:*`
+    ///        existence check. Values must be in RFC 3339 format.
+    /// * `next_run_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=`
+    ///        comparisons. Values must be in RFC 3339 format.
+    ///
+    ///
+    /// Filter expressions can be combined together using logical operators
+    /// (`NOT`, `AND` & `OR`).
+    /// The syntax to define filter expression is based on
+    /// <https://google.aip.dev/160.>
+    ///
+    /// Examples:
+    ///
+    /// * `state="ACTIVE" AND display_name:"my_schedule_*"`
+    /// * `NOT display_name="my_schedule"`
+    /// * `create_time>"2021-05-18T00:00:00Z"`
+    /// * `end_time>"2021-05-18T00:00:00Z" OR NOT end_time:*`
+    /// * `create_pipeline_job_request:*`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The standard list page size.
+    /// Default to 100 if not specified.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// The standard list page token.
+    /// Typically obtained via
+    /// \[ListSchedulesResponse.next_page_token][google.cloud.aiplatform.v1.ListSchedulesResponse.next_page_token\]
+    /// of the previous
+    /// \[ScheduleService.ListSchedules][google.cloud.aiplatform.v1.ScheduleService.ListSchedules\]
+    /// call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A comma-separated list of fields to order by. The default sort order is in
+    /// ascending order. Use "desc" after a field name for descending. You can have
+    /// multiple order_by fields provided.
+    ///
+    /// For example, using "create_time desc, end_time" will order results by
+    /// create time in descending order, and if there are multiple schedules having
+    /// the same create time, order them by the end time in ascending order.
+    ///
+    /// If order_by is not specified, it will order by default with create_time in
+    /// descending order.
+    ///
+    /// Supported fields:
+    ///    * `create_time`
+    ///    * `start_time`
+    ///    * `end_time`
+    ///    * `next_run_time`
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[ScheduleService.ListSchedules][google.cloud.aiplatform.v1.ScheduleService.ListSchedules\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchedulesResponse {
+    /// List of Schedules in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub schedules: ::prost::alloc::vec::Vec<Schedule>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// \[ListSchedulesRequest.page_token][google.cloud.aiplatform.v1.ListSchedulesRequest.page_token\]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.DeleteSchedule][google.cloud.aiplatform.v1.ScheduleService.DeleteSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteScheduleRequest {
+    /// Required. The name of the Schedule resource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.PauseSchedule][google.cloud.aiplatform.v1.ScheduleService.PauseSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PauseScheduleRequest {
+    /// Required. The name of the Schedule resource to be paused.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[ScheduleService.ResumeSchedule][google.cloud.aiplatform.v1.ScheduleService.ResumeSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumeScheduleRequest {
+    /// Required. The name of the Schedule resource to be resumed.
+    /// Format:
+    /// `projects/{project}/locations/{location}/schedules/{schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Whether to backfill missed runs when the schedule is resumed from
+    /// PAUSED state. If set to true, all missed runs will be scheduled. New runs
+    /// will be scheduled after the backfill is complete. This will also update
+    /// \[Schedule.catch_up][google.cloud.aiplatform.v1.Schedule.catch_up\] field.
+    /// Default to false.
+    #[prost(bool, tag = "2")]
+    pub catch_up: bool,
+}
+/// Request message for
+/// \[ScheduleService.UpdateSchedule][google.cloud.aiplatform.v1.ScheduleService.UpdateSchedule\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateScheduleRequest {
+    /// Required. The Schedule which replaces the resource on the server.
+    /// The following restrictions will be applied:
+    ///    * The scheduled request type cannot be changed.
+    ///    * The output_only fields will be ignored if specified.
+    #[prost(message, optional, tag = "1")]
+    pub schedule: ::core::option::Option<Schedule>,
+    /// Required. The update mask applies to the resource. See
+    /// \[google.protobuf.FieldMask][google.protobuf.FieldMask\].
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Generated client implementations.
+pub mod schedule_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for creating and managing Vertex AI's Schedule resources to
+    /// periodically launch shceudled runs to make API calls.
+    #[derive(Debug, Clone)]
+    pub struct ScheduleServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ScheduleServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ScheduleServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ScheduleServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            ScheduleServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a Schedule.
+        pub async fn create_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::Schedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ScheduleService/CreateSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ScheduleService",
+                        "CreateSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Schedule.
+        pub async fn delete_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteScheduleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ScheduleService/DeleteSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ScheduleService",
+                        "DeleteSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a Schedule.
+        pub async fn get_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::Schedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ScheduleService/GetSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ScheduleService",
+                        "GetSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Schedules in a Location.
+        pub async fn list_schedules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSchedulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSchedulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ScheduleService/ListSchedules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ScheduleService",
+                        "ListSchedules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Pauses a Schedule. Will mark
+        /// [Schedule.state][google.cloud.aiplatform.v1.Schedule.state] to 'PAUSED'. If
+        /// the schedule is paused, no new runs will be created. Already created runs
+        /// will NOT be paused or canceled.
+        pub async fn pause_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PauseScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ScheduleService/PauseSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ScheduleService",
+                        "PauseSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resumes a paused Schedule to start scheduling new runs. Will mark
+        /// [Schedule.state][google.cloud.aiplatform.v1.Schedule.state] to 'ACTIVE'.
+        /// Only paused Schedule can be resumed.
+        ///
+        /// When the Schedule is resumed, new runs will be scheduled starting from the
+        /// next execution time after the current time based on the time_specification
+        /// in the Schedule. If [Schedule.catchUp][] is set up true, all
+        /// missed runs will be scheduled for backfill first.
+        pub async fn resume_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumeScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ScheduleService/ResumeSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ScheduleService",
+                        "ResumeSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an active or paused Schedule.
+        ///
+        /// When the Schedule is updated, new runs will be scheduled starting from the
+        /// updated next execution time after the update time based on the
+        /// time_specification in the updated Schedule. All unstarted runs before the
+        /// update time will be skipped while already created runs will NOT be paused
+        /// or canceled.
+        pub async fn update_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::Schedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.ScheduleService",
+                        "UpdateSchedule",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -23200,50 +24126,6 @@ pub struct GetTensorboardRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[TensorboardService.GetTensorboardUsage][\].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReadTensorboardUsageRequest {
-    /// Required. The name of the Tensorboard resource.
-    /// Format:
-    /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-    #[prost(string, tag = "1")]
-    pub tensorboard: ::prost::alloc::string::String,
-}
-/// Response message for
-/// \[TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardUsage\].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReadTensorboardUsageResponse {
-    /// Maps year-month (YYYYMM) string to per month usage data.
-    #[prost(map = "string, message", tag = "1")]
-    pub monthly_usage_data: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        read_tensorboard_usage_response::PerMonthUsageData,
-    >,
-}
-/// Nested message and enum types in `ReadTensorboardUsageResponse`.
-pub mod read_tensorboard_usage_response {
-    /// Per user usage data.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PerUserUsageData {
-        /// User's username
-        #[prost(string, tag = "1")]
-        pub username: ::prost::alloc::string::String,
-        /// Number of times the user has read data within the Tensorboard.
-        #[prost(int64, tag = "2")]
-        pub view_count: i64,
-    }
-    /// Per month usage data
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PerMonthUsageData {
-        /// Usage data for each user in the given month.
-        #[prost(message, repeated, tag = "1")]
-        pub user_usage_data: ::prost::alloc::vec::Vec<PerUserUsageData>,
-    }
-}
 /// Request message for
 /// \[TensorboardService.ListTensorboards][google.cloud.aiplatform.v1.TensorboardService.ListTensorboards\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -23323,6 +24205,51 @@ pub struct DeleteTensorboardRequest {
     /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// \[TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardUsage\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardUsageRequest {
+    /// Required. The name of the Tensorboard resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+    #[prost(string, tag = "1")]
+    pub tensorboard: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardUsage\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardUsageResponse {
+    /// Maps year-month (YYYYMM) string to per month usage data.
+    #[prost(map = "string, message", tag = "1")]
+    pub monthly_usage_data: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        read_tensorboard_usage_response::PerMonthUsageData,
+    >,
+}
+/// Nested message and enum types in `ReadTensorboardUsageResponse`.
+pub mod read_tensorboard_usage_response {
+    /// Per user usage data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PerUserUsageData {
+        /// User's username
+        #[prost(string, tag = "1")]
+        pub username: ::prost::alloc::string::String,
+        /// Number of times the user has read data within the Tensorboard.
+        #[prost(int64, tag = "2")]
+        pub view_count: i64,
+    }
+    /// Per month usage data
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PerMonthUsageData {
+        /// Usage data for each user in the given month.
+        #[prost(message, repeated, tag = "1")]
+        pub user_usage_data: ::prost::alloc::vec::Vec<PerUserUsageData>,
+    }
 }
 /// Request message for
 /// \[TensorboardService.CreateTensorboardExperiment][google.cloud.aiplatform.v1.TensorboardService.CreateTensorboardExperiment\].
@@ -24048,37 +24975,6 @@ pub mod tensorboard_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns a list of monthly active users for a given TensorBoard instance.
-        pub async fn read_tensorboard_usage(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ReadTensorboardUsageRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ReadTensorboardUsageResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1.TensorboardService/ReadTensorboardUsage",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1.TensorboardService",
-                        "ReadTensorboardUsage",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Updates a Tensorboard.
         pub async fn update_tensorboard(
             &mut self,
@@ -24168,6 +25064,37 @@ pub mod tensorboard_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.TensorboardService",
                         "DeleteTensorboard",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of monthly active users for a given TensorBoard instance.
+        pub async fn read_tensorboard_usage(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReadTensorboardUsageRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReadTensorboardUsageResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.TensorboardService/ReadTensorboardUsage",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.TensorboardService",
+                        "ReadTensorboardUsage",
                     ),
                 );
             self.inner.unary(req, path, codec).await

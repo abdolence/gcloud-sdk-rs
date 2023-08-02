@@ -1,4 +1,4 @@
-/// A `DeliveryPipeline` resource in the Google Cloud Deploy API.
+/// A `DeliveryPipeline` resource in the Cloud Deploy API.
 ///
 /// A `DeliveryPipeline` defines a pipeline through which a Skaffold
 /// configuration can progress.
@@ -16,15 +16,14 @@ pub struct DeliveryPipeline {
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Google Cloud Deploy.
+    /// user, and not by Cloud Deploy.
     #[prost(map = "string, string", tag = "4")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
     /// Labels are attributes that can be set and used by both the
-    /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints:
+    /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
     /// underscores, and dashes.
@@ -148,6 +147,24 @@ pub mod strategy {
         Canary(super::Canary),
     }
 }
+/// Predeploy contains the predeploy job configuration information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Predeploy {
+    /// Optional. A sequence of skaffold custom actions to invoke during execution
+    /// of the predeploy job.
+    #[prost(string, repeated, tag = "1")]
+    pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Postdeploy contains the postdeploy job configuration information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Postdeploy {
+    /// Optional. A sequence of skaffold custom actions to invoke during execution
+    /// of the postdeploy job.
+    #[prost(string, repeated, tag = "1")]
+    pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Standard represents the standard deployment strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -155,6 +172,14 @@ pub struct Standard {
     /// Whether to verify a deployment.
     #[prost(bool, tag = "1")]
     pub verify: bool,
+    /// Optional. Configuration for the predeploy job. If this is not configured,
+    /// predeploy job will not be present.
+    #[prost(message, optional, tag = "2")]
+    pub predeploy: ::core::option::Option<Predeploy>,
+    /// Optional. Configuration for the postdeploy job. If this is not configured,
+    /// postdeploy job will not be present.
+    #[prost(message, optional, tag = "3")]
+    pub postdeploy: ::core::option::Option<Postdeploy>,
 }
 /// Canary represents the canary deployment strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -197,6 +222,14 @@ pub struct CanaryDeployment {
     /// Whether to run verify tests after each percentage deployment.
     #[prost(bool, tag = "2")]
     pub verify: bool,
+    /// Optional. Configuration for the predeploy job of the first phase. If this
+    /// is not configured, predeploy job will not be present.
+    #[prost(message, optional, tag = "3")]
+    pub predeploy: ::core::option::Option<Predeploy>,
+    /// Optional. Configuration for the postdeploy job of the last phase. If this
+    /// is not configured, postdeploy job will not be present.
+    #[prost(message, optional, tag = "4")]
+    pub postdeploy: ::core::option::Option<Postdeploy>,
 }
 /// CustomCanaryDeployment represents the custom canary deployment
 /// configuration.
@@ -233,6 +266,14 @@ pub mod custom_canary_deployment {
         /// Whether to run verify tests after the deployment.
         #[prost(bool, tag = "4")]
         pub verify: bool,
+        /// Optional. Configuration for the predeploy job of this phase. If this is
+        /// not configured, predeploy job will not be present for this phase.
+        #[prost(message, optional, tag = "5")]
+        pub predeploy: ::core::option::Option<super::Predeploy>,
+        /// Optional. Configuration for the postdeploy job of this phase. If this is
+        /// not configured, postdeploy job will not be present for this phase.
+        #[prost(message, optional, tag = "6")]
+        pub postdeploy: ::core::option::Option<super::Postdeploy>,
     }
 }
 /// KubernetesConfig contains the Kubernetes runtime configuration.
@@ -259,6 +300,11 @@ pub mod kubernetes_config {
         /// the specified HTTPRoute and Service.
         #[prost(string, tag = "3")]
         pub deployment: ::prost::alloc::string::String,
+        /// Optional. The time to wait for route updates to propagate. The maximum
+        /// configurable time is 3 hours, in seconds format. If unspecified, there is
+        /// no wait time.
+        #[prost(message, optional, tag = "4")]
+        pub route_update_wait_time: ::core::option::Option<::prost_types::Duration>,
     }
     /// Information about the Kubernetes Service networking configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -551,7 +597,7 @@ pub struct DeleteDeliveryPipelineRequest {
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
-/// A `Target` resource in the Google Cloud Deploy API.
+/// A `Target` resource in the Cloud Deploy API.
 ///
 /// A `Target` defines a location to which a Skaffold configuration
 /// can be deployed.
@@ -572,7 +618,7 @@ pub struct Target {
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
     /// Optional. User annotations. These attributes can only be set and used by
-    /// the user, and not by Google Cloud Deploy. See
+    /// the user, and not by Cloud Deploy. See
     /// <https://google.aip.dev/128#annotations> for more details such as format and
     /// size limitations.
     #[prost(map = "string, string", tag = "5")]
@@ -581,8 +627,7 @@ pub struct Target {
         ::prost::alloc::string::String,
     >,
     /// Optional. Labels are attributes that can be set and used by both the
-    /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints:
+    /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
     /// underscores, and dashes.
@@ -638,16 +683,16 @@ pub mod target {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeploymentTarget {
-        /// Information specifying a GKE Cluster.
+        /// Optional. Information specifying a GKE Cluster.
         #[prost(message, tag = "15")]
         Gke(super::GkeCluster),
-        /// Information specifying an Anthos Cluster.
+        /// Optional. Information specifying an Anthos Cluster.
         #[prost(message, tag = "17")]
         AnthosCluster(super::AnthosCluster),
-        /// Information specifying a Cloud Run deployment target.
+        /// Optional. Information specifying a Cloud Run deployment target.
         #[prost(message, tag = "18")]
         Run(super::CloudRunLocation),
-        /// Information specifying a multiTarget.
+        /// Optional. Information specifying a multiTarget.
         #[prost(message, tag = "19")]
         MultiTarget(super::MultiTarget),
     }
@@ -716,6 +761,10 @@ pub mod execution_config {
         Deploy = 2,
         /// Use for deployment verification.
         Verify = 3,
+        /// Use for predeploy job execution.
+        Predeploy = 4,
+        /// Use for postdeploy job execution.
+        Postdeploy = 5,
     }
     impl ExecutionEnvironmentUsage {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -730,6 +779,8 @@ pub mod execution_config {
                 ExecutionEnvironmentUsage::Render => "RENDER",
                 ExecutionEnvironmentUsage::Deploy => "DEPLOY",
                 ExecutionEnvironmentUsage::Verify => "VERIFY",
+                ExecutionEnvironmentUsage::Predeploy => "PREDEPLOY",
+                ExecutionEnvironmentUsage::Postdeploy => "POSTDEPLOY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -739,6 +790,8 @@ pub mod execution_config {
                 "RENDER" => Some(Self::Render),
                 "DEPLOY" => Some(Self::Deploy),
                 "VERIFY" => Some(Self::Verify),
+                "PREDEPLOY" => Some(Self::Predeploy),
+                "POSTDEPLOY" => Some(Self::Postdeploy),
                 _ => None,
             }
         }
@@ -1001,7 +1054,7 @@ pub struct DeleteTargetRequest {
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
-/// A `Release` resource in the Google Cloud Deploy API.
+/// A `Release` resource in the Cloud Deploy API.
 ///
 /// A `Release` defines a specific Skaffold configuration instance
 /// that can be deployed.
@@ -1020,17 +1073,15 @@ pub struct Release {
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Google Cloud Deploy. See
-    /// <https://google.aip.dev/128#annotations> for more details such as format and
-    /// size limitations.
+    /// user, and not by Cloud Deploy. See <https://google.aip.dev/128#annotations>
+    /// for more details such as format and size limitations.
     #[prost(map = "string, string", tag = "4")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
     /// Labels are attributes that can be set and used by both the
-    /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints:
+    /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
     /// underscores, and dashes.
@@ -1082,8 +1133,8 @@ pub struct Release {
     #[prost(string, tag = "16")]
     pub etag: ::prost::alloc::string::String,
     /// The Skaffold version to use when operating on this release, such as
-    /// "1.20.0". Not all versions are valid; Google Cloud Deploy supports a
-    /// specific set of versions.
+    /// "1.20.0". Not all versions are valid; Cloud Deploy supports a specific set
+    /// of versions.
     ///
     /// If unset, the most recent supported Skaffold version will be used.
     #[prost(string, tag = "19")]
@@ -1204,15 +1255,19 @@ pub mod release {
             /// No reason for failure is specified.
             Unspecified = 0,
             /// Cloud Build is not available, either because it is not enabled or
-            /// because Google Cloud Deploy has insufficient permissions. See [required
-            /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+            /// because Cloud Deploy has insufficient permissions. See [required
+            /// permission](<https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>).
             CloudBuildUnavailable = 1,
             /// The render operation did not complete successfully; check Cloud Build
             /// logs.
             ExecutionFailed = 2,
-            /// Cloud Build failed to fulfill Google Cloud Deploy's request. See
+            /// Cloud Build failed to fulfill Cloud Deploy's request. See
             /// failure_message for additional details.
             CloudBuildRequestFailed = 3,
+            /// The render operation did not complete successfully because the custom
+            /// action required for predeploy or postdeploy was not found in the
+            /// skaffold configuration. See failure_message for additional details.
+            CustomActionNotFound = 5,
         }
         impl FailureCause {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1225,6 +1280,7 @@ pub mod release {
                     FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
                     FailureCause::ExecutionFailed => "EXECUTION_FAILED",
                     FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                    FailureCause::CustomActionNotFound => "CUSTOM_ACTION_NOT_FOUND",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1234,6 +1290,7 @@ pub mod release {
                     "CLOUD_BUILD_UNAVAILABLE" => Some(Self::CloudBuildUnavailable),
                     "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
                     "CLOUD_BUILD_REQUEST_FAILED" => Some(Self::CloudBuildRequestFailed),
+                    "CUSTOM_ACTION_NOT_FOUND" => Some(Self::CustomActionNotFound),
                     _ => None,
                 }
             }
@@ -1515,7 +1572,7 @@ pub struct CreateReleaseRequest {
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
 }
-/// A `Rollout` resource in the Google Cloud Deploy API.
+/// A `Rollout` resource in the Cloud Deploy API.
 ///
 /// A `Rollout` contains information around a specific deployment to a `Target`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1534,17 +1591,15 @@ pub struct Rollout {
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Google Cloud Deploy. See
-    /// <https://google.aip.dev/128#annotations> for more details such as format and
-    /// size limitations.
+    /// user, and not by Cloud Deploy. See <https://google.aip.dev/128#annotations>
+    /// for more details such as format and size limitations.
     #[prost(map = "string, string", tag = "4")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
     /// Labels are attributes that can be set and used by both the
-    /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints:
+    /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
     /// underscores, and dashes.
@@ -1760,7 +1815,7 @@ pub mod rollout {
         Unspecified = 0,
         /// Cloud Build is not available, either because it is not enabled or because
         /// Cloud Deploy has insufficient permissions. See [required
-        /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+        /// permission](<https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>).
         CloudBuildUnavailable = 1,
         /// The deploy operation did not complete successfully; check Cloud Build
         /// logs.
@@ -1773,8 +1828,8 @@ pub mod rollout {
         ReleaseAbandoned = 5,
         /// No skaffold verify configuration was found.
         VerificationConfigNotFound = 6,
-        /// Cloud Build failed to fulfill Google Cloud Deploy's request. See
-        /// failure_message for additional details.
+        /// Cloud Build failed to fulfill Cloud Deploy's request. See failure_message
+        /// for additional details.
         CloudBuildRequestFailed = 7,
     }
     impl FailureCause {
@@ -1950,6 +2005,14 @@ pub struct DeploymentJobs {
     /// Output only. The verify Job. Runs after a deploy if the deploy succeeds.
     #[prost(message, optional, tag = "2")]
     pub verify_job: ::core::option::Option<Job>,
+    /// Output only. The predeploy Job. This is the predeploy job in the phase.
+    /// This is the first job of the phase.
+    #[prost(message, optional, tag = "3")]
+    pub predeploy_job: ::core::option::Option<Job>,
+    /// Output only. The postdeploy Job. This is the postdeploy job in the phase.
+    /// This is the last job of the phase.
+    #[prost(message, optional, tag = "4")]
+    pub postdeploy_job: ::core::option::Option<Job>,
 }
 /// ChildRollouts job composition
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1981,7 +2044,7 @@ pub struct Job {
     #[prost(string, tag = "3")]
     pub job_run: ::prost::alloc::string::String,
     /// The type of Job.
-    #[prost(oneof = "job::JobType", tags = "4, 5, 6, 7")]
+    #[prost(oneof = "job::JobType", tags = "4, 5, 9, 10, 6, 7")]
     pub job_type: ::core::option::Option<job::JobType>,
 }
 /// Nested message and enum types in `Job`.
@@ -2063,6 +2126,12 @@ pub mod job {
         /// Output only. A verify Job.
         #[prost(message, tag = "5")]
         VerifyJob(super::VerifyJob),
+        /// Output only. A predeploy Job.
+        #[prost(message, tag = "9")]
+        PredeployJob(super::PredeployJob),
+        /// Output only. A postdeploy Job.
+        #[prost(message, tag = "10")]
+        PostdeployJob(super::PostdeployJob),
         /// Output only. A createChildRollout Job.
         #[prost(message, tag = "6")]
         CreateChildRolloutJob(super::CreateChildRolloutJob),
@@ -2079,6 +2148,22 @@ pub struct DeployJob {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyJob {}
+/// A predeploy Job.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredeployJob {
+    /// Output only. The custom actions that the predeploy Job executes.
+    #[prost(string, repeated, tag = "1")]
+    pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A postdeploy Job.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PostdeployJob {
+    /// Output only. The custom actions that the postdeploy Job executes.
+    #[prost(string, repeated, tag = "1")]
+    pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// A createChildRollout Job.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2311,7 +2396,7 @@ pub struct AbandonReleaseRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AbandonReleaseResponse {}
-/// A `JobRun` resource in the Google Cloud Deploy API.
+/// A `JobRun` resource in the Cloud Deploy API.
 ///
 /// A `JobRun` contains information of a single `Rollout` job evaluation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2350,7 +2435,7 @@ pub struct JobRun {
     #[prost(string, tag = "11")]
     pub etag: ::prost::alloc::string::String,
     /// The `JobRun` type and the information for that type.
-    #[prost(oneof = "job_run::JobRun", tags = "9, 10, 12, 13")]
+    #[prost(oneof = "job_run::JobRun", tags = "9, 10, 14, 15, 12, 13")]
     pub job_run: ::core::option::Option<job_run::JobRun>,
 }
 /// Nested message and enum types in `JobRun`.
@@ -2420,6 +2505,12 @@ pub mod job_run {
         /// Output only. Information specific to a verify `JobRun`.
         #[prost(message, tag = "10")]
         VerifyJobRun(super::VerifyJobRun),
+        /// Output only. Information specific to a predeploy `JobRun`.
+        #[prost(message, tag = "14")]
+        PredeployJobRun(super::PredeployJobRun),
+        /// Output only. Information specific to a postdeploy `JobRun`.
+        #[prost(message, tag = "15")]
+        PostdeployJobRun(super::PostdeployJobRun),
         /// Output only. Information specific to a createChildRollout `JobRun`.
         #[prost(message, tag = "12")]
         CreateChildRolloutJobRun(super::CreateChildRolloutJobRun),
@@ -2470,8 +2561,8 @@ pub mod deploy_job_run {
         /// No reason for failure is specified.
         Unspecified = 0,
         /// Cloud Build is not available, either because it is not enabled or because
-        /// Google Cloud Deploy has insufficient permissions. See [Required
-        /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+        /// Cloud Deploy has insufficient permissions. See [Required
+        /// permission](<https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>).
         CloudBuildUnavailable = 1,
         /// The deploy operation did not complete successfully; check Cloud Build
         /// logs.
@@ -2481,8 +2572,8 @@ pub mod deploy_job_run {
         /// There were missing resources in the runtime environment required for a
         /// canary deployment. Check the Cloud Build logs for more information.
         MissingResourcesForCanary = 4,
-        /// Cloud Build failed to fulfill Google Cloud Deploy's request. See
-        /// failure_message for additional details.
+        /// Cloud Build failed to fulfill Cloud Deploy's request. See failure_message
+        /// for additional details.
         CloudBuildRequestFailed = 5,
     }
     impl FailureCause {
@@ -2558,8 +2649,8 @@ pub mod verify_job_run {
         /// No reason for failure is specified.
         Unspecified = 0,
         /// Cloud Build is not available, either because it is not enabled or because
-        /// Google Cloud Deploy has insufficient permissions. See [required
-        /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+        /// Cloud Deploy has insufficient permissions. See [required
+        /// permission](<https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>).
         CloudBuildUnavailable = 1,
         /// The verify operation did not complete successfully; check Cloud Build
         /// logs.
@@ -2568,8 +2659,8 @@ pub mod verify_job_run {
         DeadlineExceeded = 3,
         /// No Skaffold verify configuration was found.
         VerificationConfigNotFound = 4,
-        /// Cloud Build failed to fulfill Google Cloud Deploy's request. See
-        /// failure_message for additional details.
+        /// Cloud Build failed to fulfill Cloud Deploy's request. See failure_message
+        /// for additional details.
         CloudBuildRequestFailed = 5,
     }
     impl FailureCause {
@@ -2597,6 +2688,158 @@ pub mod verify_job_run {
                 "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
                 "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
                 "VERIFICATION_CONFIG_NOT_FOUND" => Some(Self::VerificationConfigNotFound),
+                "CLOUD_BUILD_REQUEST_FAILED" => Some(Self::CloudBuildRequestFailed),
+                _ => None,
+            }
+        }
+    }
+}
+/// PredeployJobRun contains information specific to a predeploy `JobRun`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredeployJobRun {
+    /// Output only. The resource name of the Cloud Build `Build` object that is
+    /// used to execute the custom actions associated with the predeploy Job.
+    /// Format is projects/{project}/locations/{location}/builds/{build}.
+    #[prost(string, tag = "1")]
+    pub build: ::prost::alloc::string::String,
+    /// Output only. The reason the predeploy failed. This will always be
+    /// unspecified while the predeploy is in progress or if it succeeded.
+    #[prost(enumeration = "predeploy_job_run::FailureCause", tag = "2")]
+    pub failure_cause: i32,
+    /// Output only. Additional information about the predeploy failure, if
+    /// available.
+    #[prost(string, tag = "3")]
+    pub failure_message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `PredeployJobRun`.
+pub mod predeploy_job_run {
+    /// Well-known predeploy failures.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FailureCause {
+        /// No reason for failure is specified.
+        Unspecified = 0,
+        /// Cloud Build is not available, either because it is not enabled or because
+        /// Cloud Deploy has insufficient permissions. See [required
+        /// permission](<https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>).
+        CloudBuildUnavailable = 1,
+        /// The predeploy operation did not complete successfully; check Cloud Build
+        /// logs.
+        ExecutionFailed = 2,
+        /// The predeploy build did not complete within the alloted time.
+        DeadlineExceeded = 3,
+        /// Cloud Build failed to fulfill Cloud Deploy's request. See failure_message
+        /// for additional details.
+        CloudBuildRequestFailed = 4,
+    }
+    impl FailureCause {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
+                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FAILURE_CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_BUILD_UNAVAILABLE" => Some(Self::CloudBuildUnavailable),
+                "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
+                "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
+                "CLOUD_BUILD_REQUEST_FAILED" => Some(Self::CloudBuildRequestFailed),
+                _ => None,
+            }
+        }
+    }
+}
+/// PostdeployJobRun contains information specific to a postdeploy `JobRun`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PostdeployJobRun {
+    /// Output only. The resource name of the Cloud Build `Build` object that is
+    /// used to execute the custom actions associated with the postdeploy Job.
+    /// Format is projects/{project}/locations/{location}/builds/{build}.
+    #[prost(string, tag = "1")]
+    pub build: ::prost::alloc::string::String,
+    /// Output only. The reason the postdeploy failed. This will always be
+    /// unspecified while the postdeploy is in progress or if it succeeded.
+    #[prost(enumeration = "postdeploy_job_run::FailureCause", tag = "2")]
+    pub failure_cause: i32,
+    /// Output only. Additional information about the postdeploy failure, if
+    /// available.
+    #[prost(string, tag = "3")]
+    pub failure_message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `PostdeployJobRun`.
+pub mod postdeploy_job_run {
+    /// Well-known postdeploy failures.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FailureCause {
+        /// No reason for failure is specified.
+        Unspecified = 0,
+        /// Cloud Build is not available, either because it is not enabled or because
+        /// Cloud Deploy has insufficient permissions. See [required
+        /// permission](<https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>).
+        CloudBuildUnavailable = 1,
+        /// The postdeploy operation did not complete successfully; check Cloud Build
+        /// logs.
+        ExecutionFailed = 2,
+        /// The postdeploy build did not complete within the alloted time.
+        DeadlineExceeded = 3,
+        /// Cloud Build failed to fulfill Cloud Deploy's request. See failure_message
+        /// for additional details.
+        CloudBuildRequestFailed = 4,
+    }
+    impl FailureCause {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
+                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FAILURE_CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOUD_BUILD_UNAVAILABLE" => Some(Self::CloudBuildUnavailable),
+                "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
+                "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
                 "CLOUD_BUILD_REQUEST_FAILED" => Some(Self::CloudBuildRequestFailed),
                 _ => None,
             }
@@ -3623,6 +3866,14 @@ pub enum Type {
     Unspecified = 0,
     /// A Pub/Sub notification failed to be sent.
     PubsubNotificationFailure = 1,
+    /// Resource state changed.
+    ResourceStateChange = 3,
+    /// A process aborted.
+    ProcessAborted = 4,
+    /// Restriction check failed.
+    RestrictionViolated = 5,
+    /// Resource deleted.
+    ResourceDeleted = 6,
     /// Deprecated: This field is never used. Use release_render log type instead.
     RenderStatuesChange = 2,
 }
@@ -3635,6 +3886,10 @@ impl Type {
         match self {
             Type::Unspecified => "TYPE_UNSPECIFIED",
             Type::PubsubNotificationFailure => "TYPE_PUBSUB_NOTIFICATION_FAILURE",
+            Type::ResourceStateChange => "TYPE_RESOURCE_STATE_CHANGE",
+            Type::ProcessAborted => "TYPE_PROCESS_ABORTED",
+            Type::RestrictionViolated => "TYPE_RESTRICTION_VIOLATED",
+            Type::ResourceDeleted => "TYPE_RESOURCE_DELETED",
             Type::RenderStatuesChange => "TYPE_RENDER_STATUES_CHANGE",
         }
     }
@@ -3643,6 +3898,10 @@ impl Type {
         match value {
             "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "TYPE_PUBSUB_NOTIFICATION_FAILURE" => Some(Self::PubsubNotificationFailure),
+            "TYPE_RESOURCE_STATE_CHANGE" => Some(Self::ResourceStateChange),
+            "TYPE_PROCESS_ABORTED" => Some(Self::ProcessAborted),
+            "TYPE_RESTRICTION_VIOLATED" => Some(Self::RestrictionViolated),
+            "TYPE_RESOURCE_DELETED" => Some(Self::ResourceDeleted),
             "TYPE_RENDER_STATUES_CHANGE" => Some(Self::RenderStatuesChange),
             _ => None,
         }
