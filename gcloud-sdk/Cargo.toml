@@ -18,6 +18,7 @@ doctest = false
 [features]
 default = ["tls-roots"]
 tls-roots = ["tonic/tls-roots"]
+tls-webpki-roots = ["tonic/tls-webpki-roots"]
 rest = ["bytes"]
 ccc-hosted-marketplace-v2 = []
 google-actions-sdk-v2 = []
@@ -458,4 +459,4 @@ tag-prefix=""
 
 [package.metadata.docs.rs]
 all-features = false
-features = ["rest", "tls-roots"]
+features = ["rest", "tls-roots", "tls-webpki-roots"]

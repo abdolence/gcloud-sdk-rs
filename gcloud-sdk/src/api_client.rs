@@ -48,12 +48,12 @@ where
             token_scopes
         );
 
-        #[cfg(feature = "tls-roots")]
+        #[cfg(any(feature = "tls-roots", feature = "tls-webpki-roots"))]
         let channel =
             GoogleEnvironment::init_google_services_channel_with_native_roots(google_api_url)
                 .await?;
 
-        #[cfg(not(feature = "tls-roots"))]
+        #[cfg(not(any(feature = "tls-roots", feature = "tls-webpki-roots")))]
         let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
 
         let token_generator =
@@ -231,7 +231,7 @@ impl GoogleEnvironment {
             .domain_name(domain_name)
     }
 
-    #[cfg(feature = "tls-roots")]
+    #[cfg(any(feature = "tls-roots", feature = "tls-webpki-roots"))]
     pub async fn init_google_services_channel_with_native_roots<S: AsRef<str>>(
         api_url: S,
     ) -> Result<Channel, crate::error::Error> {
