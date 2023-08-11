@@ -1,6 +1,6 @@
-use gcloud_sdk::*;
 use gcloud_sdk::google::cloud::texttospeech::v1::text_to_speech_client::TextToSpeechClient;
 use gcloud_sdk::google::cloud::texttospeech::v1::ListVoicesRequest;
+use gcloud_sdk::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -10,14 +10,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .finish();
     tracing::subscriber::set_global_default(subscriber)?;
 
-    let client: GoogleApi<TextToSpeechClient<GoogleAuthMiddleware>> =
-        GoogleApi::from_function(
-            TextToSpeechClient::new,
-            "https://texttospeech.googleapis.com",
-            // cloud resource prefix: used only for some of the APIs (such as Firestore)
-            None,
-        )
-        .await?;
+    let client: GoogleApi<TextToSpeechClient<GoogleAuthMiddleware>> = GoogleApi::from_function(
+        TextToSpeechClient::new,
+        "https://texttospeech.googleapis.com",
+        // cloud resource prefix: used only for some of the APIs (such as Firestore)
+        None,
+    )
+    .await?;
 
     let response = client
         .get()
