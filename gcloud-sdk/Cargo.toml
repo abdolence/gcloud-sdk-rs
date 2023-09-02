@@ -429,7 +429,7 @@ google-rest-storage-v1 = ["rest"]
 google-rest-sqladmin-v1 = ["rest"]
 
 [dependencies]
-tonic = { version = "0.9", features = ["tls"] }
+tonic = { version = "0.10", features = ["tls"] }
 tower = "0.4"
 tower-layer = "0.3"
 tower-util = "0.3"
