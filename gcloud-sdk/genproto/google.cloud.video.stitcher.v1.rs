@@ -10,7 +10,9 @@ pub struct LiveAdTagDetail {
     #[prost(message, repeated, tag = "2")]
     pub ad_requests: ::prost::alloc::vec::Vec<AdRequest>,
 }
-/// Information related to the details for one ad tag.
+/// Information related to the details for one ad tag. This resource is only
+/// available for VOD sessions that do not implement Google Ad Manager ad
+/// insertion.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodAdTagDetail {
@@ -684,9 +686,7 @@ pub struct VodSession {
     /// Output only. The generated ID of the VodSession's source media.
     #[prost(string, tag = "10")]
     pub asset_id: ::prost::alloc::string::String,
-    /// Required. Determines how the ad should be tracked. If
-    /// \[gam_vod_config][google.cloud.video.stitcher.v1.VodSession.gam_vod_config\]
-    /// is set, the value must be `CLIENT` because the IMA SDK handles ad tracking.
+    /// Required. Determines how the ad should be tracked.
     #[prost(enumeration = "AdTracking", tag = "11")]
     pub ad_tracking: i32,
     /// This field should be set with appropriate values if GAM is being used for
@@ -809,8 +809,7 @@ pub struct LiveSession {
 /// Nested message and enum types in `LiveSession`.
 pub mod live_session {
     /// Defines fields related to Google Ad Manager (GAM). This should be set if
-    /// GAM
-    /// is being used for ads.
+    /// GAM is being used for ads.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GamSettings {
@@ -922,7 +921,9 @@ pub mod slate {
         pub gam_slate_id: i64,
     }
 }
-/// Detailed information related to the interstitial of a VOD session.
+/// Detailed information related to the interstitial of a VOD session. This
+/// resource is only available for VOD sessions that do not implement Google Ad
+/// Manager ad insertion.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodStitchDetail {

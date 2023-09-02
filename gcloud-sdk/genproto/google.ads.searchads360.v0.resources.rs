@@ -212,6 +212,53 @@ pub struct AdGroupAdLabel {
     #[prost(string, optional, tag = "5")]
     pub label: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// A link between an ad group and an asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupAsset {
+    /// Immutable. The resource name of the ad group asset.
+    /// AdGroupAsset resource names have the form:
+    ///
+    /// `customers/{customer_id}/adGroupAssets/{ad_group_id}~{asset_id}~{field_type}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Required. Immutable. The ad group to which the asset is linked.
+    #[prost(string, tag = "2")]
+    pub ad_group: ::prost::alloc::string::String,
+    /// Required. Immutable. The asset which is linked to the ad group.
+    #[prost(string, tag = "3")]
+    pub asset: ::prost::alloc::string::String,
+    /// Status of the ad group asset.
+    #[prost(
+        enumeration = "super::enums::asset_link_status_enum::AssetLinkStatus",
+        tag = "5"
+    )]
+    pub status: i32,
+}
+/// AdGroupAssetSet is the linkage between an ad group and an asset set.
+/// Creating an AdGroupAssetSet links an asset set with an ad group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupAssetSet {
+    /// Immutable. The resource name of the ad group asset set.
+    /// Ad group asset set resource names have the form:
+    ///
+    /// `customers/{customer_id}/adGroupAssetSets/{ad_group_id}~{asset_set_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The ad group to which this asset set is linked.
+    #[prost(string, tag = "2")]
+    pub ad_group: ::prost::alloc::string::String,
+    /// Immutable. The asset set which is linked to the ad group.
+    #[prost(string, tag = "3")]
+    pub asset_set: ::prost::alloc::string::String,
+    /// Output only. The status of the ad group asset set. Read-only.
+    #[prost(
+        enumeration = "super::enums::asset_set_link_status_enum::AssetSetLinkStatus",
+        tag = "4"
+    )]
+    pub status: i32,
+}
 /// An ad group audience view.
 /// Includes performance data from interests and remarketing lists for Display
 /// Network and YouTube Network ads, and remarketing lists for search ads (RLSA),
@@ -325,6 +372,11 @@ pub struct AdGroupCriterion {
     /// Output only. The effective CPC (cost-per-click) bid.
     #[prost(int64, optional, tag = "66")]
     pub effective_cpc_bid_micros: ::core::option::Option<i64>,
+    /// Output only. Estimates for criterion bids at various positions.
+    #[prost(message, optional, tag = "10")]
+    pub position_estimates: ::core::option::Option<
+        ad_group_criterion::PositionEstimates,
+    >,
     /// The list of possible final URLs after all cross-domain redirects for the
     /// ad.
     #[prost(string, repeated, tag = "70")]
@@ -375,6 +427,15 @@ pub mod ad_group_criterion {
         #[prost(int32, optional, tag = "5")]
         pub quality_score: ::core::option::Option<i32>,
     }
+    /// Estimates for criterion bids at various positions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PositionEstimates {
+        /// Output only. The estimate of the CPC bid required for ad to be displayed
+        /// at the top of the first page of search results.
+        #[prost(int64, optional, tag = "8")]
+        pub top_of_page_cpc_micros: ::core::option::Option<i64>,
+    }
     /// The ad group criterion.
     ///
     /// Exactly one must be set.
@@ -402,7 +463,7 @@ pub mod ad_group_criterion {
         /// Immutable. Webpage
         #[prost(message, tag = "46")]
         Webpage(super::super::common::WebpageInfo),
-        /// Output only. Location.
+        /// Immutable. Location.
         #[prost(message, tag = "82")]
         Location(super::super::common::LocationInfo),
     }
@@ -449,6 +510,118 @@ pub struct AgeRangeView {
     /// `customers/{customer_id}/ageRangeViews/{ad_group_id}~{criterion_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
+}
+/// Asset is a part of an ad which can be shared across multiple ads.
+/// It can be an image (ImageAsset), a video (YoutubeVideoAsset), etc.
+/// Assets are immutable and cannot be removed. To stop an asset from serving,
+/// remove the asset from the entity that is using it.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Asset {
+    /// Immutable. The resource name of the asset.
+    /// Asset resource names have the form:
+    ///
+    /// `customers/{customer_id}/assets/{asset_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ID of the asset.
+    #[prost(int64, optional, tag = "11")]
+    pub id: ::core::option::Option<i64>,
+    /// Output only. Type of the asset.
+    #[prost(enumeration = "super::enums::asset_type_enum::AssetType", tag = "4")]
+    pub r#type: i32,
+    /// A list of possible final URLs after all cross domain redirects.
+    #[prost(string, repeated, tag = "14")]
+    pub final_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// URL template for constructing a tracking URL.
+    #[prost(string, optional, tag = "17")]
+    pub tracking_url_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The status of the asset.
+    #[prost(enumeration = "super::enums::asset_status_enum::AssetStatus", tag = "42")]
+    pub status: i32,
+    /// Output only. The timestamp when this asset was created. The timestamp is in
+    /// the customer's time zone and in "yyyy-MM-dd HH:mm:ss" format.
+    #[prost(string, tag = "43")]
+    pub creation_time: ::prost::alloc::string::String,
+    /// Output only. The datetime when this asset was last modified. The datetime
+    /// is in the customer's time zone and in "yyyy-MM-dd HH:mm:ss.ssssss" format.
+    #[prost(string, tag = "44")]
+    pub last_modified_time: ::prost::alloc::string::String,
+    /// Output only. The Engine Status for an asset.
+    #[prost(
+        enumeration = "super::enums::asset_engine_status_enum::AssetEngineStatus",
+        optional,
+        tag = "61"
+    )]
+    pub engine_status: ::core::option::Option<i32>,
+    /// The specific type of the asset.
+    #[prost(oneof = "asset::AssetData", tags = "48, 45, 46, 25, 47, 49")]
+    pub asset_data: ::core::option::Option<asset::AssetData>,
+}
+/// Nested message and enum types in `Asset`.
+pub mod asset {
+    /// The specific type of the asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AssetData {
+        /// Output only. A unified callout asset.
+        #[prost(message, tag = "48")]
+        CalloutAsset(super::super::common::UnifiedCalloutAsset),
+        /// Output only. A unified sitelink asset.
+        #[prost(message, tag = "45")]
+        SitelinkAsset(super::super::common::UnifiedSitelinkAsset),
+        /// Output only. A unified page feed asset.
+        #[prost(message, tag = "46")]
+        PageFeedAsset(super::super::common::UnifiedPageFeedAsset),
+        /// A mobile app asset.
+        #[prost(message, tag = "25")]
+        MobileAppAsset(super::super::common::MobileAppAsset),
+        /// Output only. A unified call asset.
+        #[prost(message, tag = "47")]
+        CallAsset(super::super::common::UnifiedCallAsset),
+        /// Output only. A unified location asset.
+        #[prost(message, tag = "49")]
+        LocationAsset(super::super::common::UnifiedLocationAsset),
+    }
+}
+/// An asset set representing a collection of assets.
+/// Use AssetSetAsset to link an asset to the asset set.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSet {
+    /// Output only. The ID of the asset set.
+    #[prost(int64, tag = "6")]
+    pub id: i64,
+    /// Immutable. The resource name of the asset set.
+    /// Asset set resource names have the form:
+    ///
+    /// `customers/{customer_id}/assetSets/{asset_set_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+}
+/// AssetSetAsset is the link between an asset and an asset set.
+/// Adding an AssetSetAsset links an asset with an asset set.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSetAsset {
+    /// Immutable. The resource name of the asset set asset.
+    /// Asset set asset resource names have the form:
+    ///
+    /// `customers/{customer_id}/assetSetAssets/{asset_set_id}~{asset_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The asset set which this asset set asset is linking to.
+    #[prost(string, tag = "2")]
+    pub asset_set: ::prost::alloc::string::String,
+    /// Immutable. The asset which this asset set asset is linking to.
+    #[prost(string, tag = "3")]
+    pub asset: ::prost::alloc::string::String,
+    /// Output only. The status of the asset set asset. Read-only.
+    #[prost(
+        enumeration = "super::enums::asset_set_asset_status_enum::AssetSetAssetStatus",
+        tag = "4"
+    )]
+    pub status: i32,
 }
 /// A bidding strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -708,6 +881,9 @@ pub struct Campaign {
     pub frequency_caps: ::prost::alloc::vec::Vec<super::common::FrequencyCapEntry>,
     /// Selective optimization setting for this campaign, which includes a set of
     /// conversion actions to optimize this campaign towards.
+    /// This feature only applies to app campaigns that use MULTI_CHANNEL as
+    /// AdvertisingChannelType and APP_CAMPAIGN or APP_CAMPAIGN_FOR_ENGAGEMENT as
+    /// AdvertisingChannelSubType.
     #[prost(message, optional, tag = "45")]
     pub selective_optimization: ::core::option::Option<campaign::SelectiveOptimization>,
     /// Optimization goal setting for this campaign, which includes a set of
@@ -870,6 +1046,9 @@ pub mod campaign {
     }
     /// Selective optimization setting for this campaign, which includes a set of
     /// conversion actions to optimize this campaign towards.
+    /// This feature only applies to app campaigns that use MULTI_CHANNEL as
+    /// AdvertisingChannelType and APP_CAMPAIGN or APP_CAMPAIGN_FOR_ENGAGEMENT as
+    /// AdvertisingChannelSubType.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelectiveOptimization {
@@ -948,6 +1127,53 @@ pub mod campaign {
         #[prost(message, tag = "41")]
         TargetCpm(super::super::common::TargetCpm),
     }
+}
+/// A link between a Campaign and an Asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CampaignAsset {
+    /// Immutable. The resource name of the campaign asset.
+    /// CampaignAsset resource names have the form:
+    ///
+    /// `customers/{customer_id}/campaignAssets/{campaign_id}~{asset_id}~{field_type}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The campaign to which the asset is linked.
+    #[prost(string, optional, tag = "6")]
+    pub campaign: ::core::option::Option<::prost::alloc::string::String>,
+    /// Immutable. The asset which is linked to the campaign.
+    #[prost(string, optional, tag = "7")]
+    pub asset: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Status of the campaign asset.
+    #[prost(
+        enumeration = "super::enums::asset_link_status_enum::AssetLinkStatus",
+        tag = "5"
+    )]
+    pub status: i32,
+}
+/// CampaignAssetSet is the linkage between a campaign and an asset set.
+/// Adding a CampaignAssetSet links an asset set with a campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CampaignAssetSet {
+    /// Immutable. The resource name of the campaign asset set.
+    /// Asset set asset resource names have the form:
+    ///
+    /// `customers/{customer_id}/campaignAssetSets/{campaign_id}~{asset_set_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The campaign to which this asset set is linked.
+    #[prost(string, tag = "2")]
+    pub campaign: ::prost::alloc::string::String,
+    /// Immutable. The asset set which is linked to the campaign.
+    #[prost(string, tag = "3")]
+    pub asset_set: ::prost::alloc::string::String,
+    /// Output only. The status of the campaign asset set asset. Read-only.
+    #[prost(
+        enumeration = "super::enums::asset_set_link_status_enum::AssetSetLinkStatus",
+        tag = "4"
+    )]
+    pub status: i32,
 }
 /// A campaign audience view.
 /// Includes performance data from interests and remarketing lists for Display
@@ -1433,6 +1659,50 @@ pub struct DoubleClickCampaignManagerSetting {
     #[prost(string, tag = "3")]
     pub time_zone: ::prost::alloc::string::String,
 }
+/// A link between a customer and an asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerAsset {
+    /// Immutable. The resource name of the customer asset.
+    /// CustomerAsset resource names have the form:
+    ///
+    /// `customers/{customer_id}/customerAssets/{asset_id}~{field_type}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Required. Immutable. The asset which is linked to the customer.
+    #[prost(string, tag = "2")]
+    pub asset: ::prost::alloc::string::String,
+    /// Status of the customer asset.
+    #[prost(
+        enumeration = "super::enums::asset_link_status_enum::AssetLinkStatus",
+        tag = "4"
+    )]
+    pub status: i32,
+}
+/// CustomerAssetSet is the linkage between a customer and an asset set.
+/// Adding a CustomerAssetSet links an asset set with a customer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerAssetSet {
+    /// Immutable. The resource name of the customer asset set.
+    /// Asset set asset resource names have the form:
+    ///
+    /// `customers/{customer_id}/customerAssetSets/{asset_set_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The asset set which is linked to the customer.
+    #[prost(string, tag = "2")]
+    pub asset_set: ::prost::alloc::string::String,
+    /// Immutable. The customer to which this asset set is linked.
+    #[prost(string, tag = "3")]
+    pub customer: ::prost::alloc::string::String,
+    /// Output only. The status of the customer asset set asset. Read-only.
+    #[prost(
+        enumeration = "super::enums::asset_set_link_status_enum::AssetSetLinkStatus",
+        tag = "4"
+    )]
+    pub status: i32,
+}
 /// A link between the given customer and a client customer. CustomerClients only
 /// exist for manager customers. All direct and indirect client customers are
 /// included, as well as the manager itself.
@@ -1539,6 +1809,46 @@ pub struct GenderView {
     /// `customers/{customer_id}/genderViews/{ad_group_id}~{criterion_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
+}
+/// A geo target constant.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeoTargetConstant {
+    /// Output only. The resource name of the geo target constant.
+    /// Geo target constant resource names have the form:
+    ///
+    /// `geoTargetConstants/{geo_target_constant_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ID of the geo target constant.
+    #[prost(int64, optional, tag = "10")]
+    pub id: ::core::option::Option<i64>,
+    /// Output only. Geo target constant English name.
+    #[prost(string, optional, tag = "11")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ISO-3166-1 alpha-2 country code that is associated with
+    /// the target.
+    #[prost(string, optional, tag = "12")]
+    pub country_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Geo target constant target type.
+    #[prost(string, optional, tag = "13")]
+    pub target_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Geo target constant status.
+    #[prost(
+        enumeration = "super::enums::geo_target_constant_status_enum::GeoTargetConstantStatus",
+        tag = "7"
+    )]
+    pub status: i32,
+    /// Output only. The fully qualified English name, consisting of the target's
+    /// name and that of its parent and country.
+    #[prost(string, optional, tag = "14")]
+    pub canonical_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The resource name of the parent geo target constant.
+    /// Geo target constant resource names have the form:
+    ///
+    /// `geoTargetConstants/{parent_geo_target_constant_id}`
+    #[prost(string, optional, tag = "9")]
+    pub parent_geo_target: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A keyword view.
 #[allow(clippy::derive_partial_eq_without_eq)]

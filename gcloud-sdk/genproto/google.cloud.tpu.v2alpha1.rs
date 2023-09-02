@@ -262,6 +262,9 @@ pub struct Node {
     /// Output only. Whether the Node belongs to a Multislice group.
     #[prost(bool, tag = "47")]
     pub multislice_node: bool,
+    /// Optional. Boot disk configuration.
+    #[prost(message, optional, tag = "49")]
+    pub boot_disk_config: ::core::option::Option<BootDiskConfig>,
 }
 /// Nested message and enum types in `Node`.
 pub mod node {
@@ -511,9 +514,34 @@ pub mod queued_resource {
             /// instead. It's an error to specify both node_id and multi_node_params.
             #[prost(string, tag = "2")]
             pub node_id: ::prost::alloc::string::String,
+            /// Optional. Fields to specify in case of multi-node request.
+            #[prost(message, optional, tag = "6")]
+            pub multi_node_params: ::core::option::Option<node_spec::MultiNodeParams>,
             /// Required. The node.
             #[prost(message, optional, tag = "3")]
             pub node: ::core::option::Option<super::super::Node>,
+        }
+        /// Nested message and enum types in `NodeSpec`.
+        pub mod node_spec {
+            /// Parameters to specify for multi-node QueuedResource requests. This
+            /// field must be populated in case of multi-node requests instead of
+            /// node_id. It's an error to specify both node_id and multi_node_params.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct MultiNodeParams {
+                /// Required. Number of nodes with this spec. The system will attempt
+                /// to provison "node_count" nodes as part of the request.
+                /// This needs to be > 1.
+                #[prost(int32, tag = "1")]
+                pub node_count: i32,
+                /// Prefix of node_ids in case of multi-node request
+                /// Should follow the `^\[A-Za-z0-9_.~+%-\]+$` regex format.
+                /// If node_count = 3 and node_id_prefix = "np", node ids of nodes
+                /// created will be "np-0", "np-1", "np-2". If this field is not
+                /// provided we use queued_resource_id as the node_id_prefix.
+                #[prost(string, tag = "2")]
+                pub node_id_prefix: ::prost::alloc::string::String,
+            }
         }
     }
     /// BestEffort tier definition.
@@ -607,6 +635,9 @@ pub struct QueuedResourceState {
     /// State of the QueuedResource request.
     #[prost(enumeration = "queued_resource_state::State", tag = "1")]
     pub state: i32,
+    /// Output only. The initiator of the QueuedResources's current state.
+    #[prost(enumeration = "queued_resource_state::StateInitiator", tag = "10")]
+    pub state_initiator: i32,
     /// Further data for the state.
     #[prost(oneof = "queued_resource_state::StateData", tags = "2, 3, 4, 5, 6, 7, 8, 9")]
     pub state_data: ::core::option::Option<queued_resource_state::StateData>,
@@ -723,6 +754,49 @@ pub mod queued_resource_state {
                 "ACTIVE" => Some(Self::Active),
                 "SUSPENDING" => Some(Self::Suspending),
                 "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
+            }
+        }
+    }
+    /// The initiator of the QueuedResource's SUSPENDING/SUSPENDED state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StateInitiator {
+        /// The state initiator is unspecified.
+        Unspecified = 0,
+        /// The current QueuedResource state was initiated by the user.
+        User = 1,
+        /// The current QueuedResource state was initiated by the service.
+        Service = 2,
+    }
+    impl StateInitiator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                StateInitiator::Unspecified => "STATE_INITIATOR_UNSPECIFIED",
+                StateInitiator::User => "USER",
+                StateInitiator::Service => "SERVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_INITIATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "USER" => Some(Self::User),
+                "SERVICE" => Some(Self::Service),
                 _ => None,
             }
         }
@@ -926,6 +1000,15 @@ pub struct DeleteQueuedResourceRequest {
     /// ACCEPTED, FAILED, or SUSPENDED state.
     #[prost(bool, tag = "3")]
     pub force: bool,
+}
+/// Request for
+/// \[ResetQueuedResource][google.cloud.tpu.v2alpha1.Tpu.ResetQueuedResource\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResetQueuedResourceRequest {
+    /// Required. The name of the queued resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// The per-product per-project service identity for Cloud TPU service.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1284,6 +1367,48 @@ pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has Secure Boot enabled.
     #[prost(bool, tag = "1")]
     pub enable_secure_boot: bool,
+}
+/// Boot disk configurations.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BootDiskConfig {
+    /// Optional. Customer encryption key for boot disk.
+    #[prost(message, optional, tag = "1")]
+    pub customer_encryption_key: ::core::option::Option<CustomerEncryptionKey>,
+    /// Optional. Whether the boot disk will be created with confidential compute
+    /// mode.
+    #[prost(bool, tag = "2")]
+    pub enable_confidential_compute: bool,
+}
+/// Customer's encryption key.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerEncryptionKey {
+    #[prost(oneof = "customer_encryption_key::Key", tags = "7")]
+    pub key: ::core::option::Option<customer_encryption_key::Key>,
+}
+/// Nested message and enum types in `CustomerEncryptionKey`.
+pub mod customer_encryption_key {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Key {
+        /// The name of the encryption key that is stored in Google Cloud KMS.
+        /// For example:
+        /// <pre class="lang-html">"kmsKeyName": "projects/
+        /// <var class="apiparam">kms_project_id</var>/locations/
+        /// <var class="apiparam">region</var>/keyRings/<var class="apiparam">
+        /// key_region</var>/cryptoKeys/<var class="apiparam">key</var>
+        /// </pre>
+        /// The fully-qualifed key name may be returned for resource GET requests.
+        /// For example:
+        /// <pre class="lang-html">"kmsKeyName": "projects/
+        /// <var class="apiparam">kms_project_id</var>/locations/
+        /// <var class="apiparam">region</var>/keyRings/<var class="apiparam">
+        /// key_region</var>/cryptoKeys/<var class="apiparam">key</var>
+        /// /cryptoKeyVersions/1</pre>
+        #[prost(string, tag = "7")]
+        KmsKeyName(::prost::alloc::string::String),
+    }
 }
 /// Generated client implementations.
 pub mod tpu_client {
@@ -1666,6 +1791,37 @@ pub mod tpu_client {
                     GrpcMethod::new(
                         "google.cloud.tpu.v2alpha1.Tpu",
                         "DeleteQueuedResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resets a QueuedResource TPU instance
+        pub async fn reset_queued_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResetQueuedResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2alpha1.Tpu/ResetQueuedResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tpu.v2alpha1.Tpu",
+                        "ResetQueuedResource",
                     ),
                 );
             self.inner.unary(req, path, codec).await

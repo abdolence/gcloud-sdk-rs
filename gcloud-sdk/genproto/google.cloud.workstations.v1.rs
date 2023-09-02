@@ -1,79 +1,87 @@
-/// A grouping of workstation configurations and the associated workstations
-///   in that region.
+/// A workstation cluster resource in the Cloud Workstations API.
+///
+/// Defines a group of workstations in a particular region and the
+/// VPC network they're attached to.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkstationCluster {
-    /// Full name of this resource.
+    /// Full name of this workstation cluster.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Human-readable name for this resource.
+    /// Optional. Human-readable name for this workstation cluster.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. A system-assigned unique identified for this resource.
+    /// Output only. A system-assigned unique identifier for this workstation
+    /// cluster.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
-    /// Output only. Indicates whether this resource is currently being updated to
-    /// match its intended state.
+    /// Output only. Indicates whether this workstation cluster is currently being
+    /// updated to match its intended state.
     #[prost(bool, tag = "4")]
     pub reconciling: bool,
-    /// Client-specified annotations.
+    /// Optional. Client-specified annotations.
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Client-specified labels that are applied to the resource and that are also
-    /// propagated to the underlying Compute Engine resources.
+    /// Optional.
+    /// \[Labels\](<https://cloud.google.com/workstations/docs/label-resources>) that
+    /// are applied to the workstation cluster and that are also propagated to the
+    /// underlying Compute Engine resources.
     #[prost(map = "string, string", tag = "15")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. Time when this resource was created.
+    /// Output only. Time when this workstation cluster was created.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when this resource was most recently updated.
+    /// Output only. Time when this workstation cluster was most recently updated.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when this resource was soft-deleted.
+    /// Output only. Time when this workstation cluster was soft-deleted.
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Checksum computed by the server. May be sent on update and delete requests
-    /// to make sure that the client has an up-to-date value before proceeding.
+    /// Optional. Checksum computed by the server. May be sent on update and delete
+    /// requests to make sure that the client has an up-to-date value before
+    /// proceeding.
     #[prost(string, tag = "9")]
     pub etag: ::prost::alloc::string::String,
     /// Immutable. Name of the Compute Engine network in which instances associated
-    /// with this cluster will be created.
+    /// with this workstation cluster will be created.
     #[prost(string, tag = "10")]
     pub network: ::prost::alloc::string::String,
     /// Immutable. Name of the Compute Engine subnetwork in which instances
-    /// associated with this cluster will be created. Must be part of the
-    /// subnetwork specified for this cluster.
+    /// associated with this workstation cluster will be created. Must be part of
+    /// the subnetwork specified for this workstation cluster.
     #[prost(string, tag = "11")]
     pub subnetwork: ::prost::alloc::string::String,
-    /// Output only. The private IP address of the control plane for this cluster.
-    /// Workstation VMs need access to this IP address to work with the service, so
-    /// make sure that your firewall rules allow egress from the workstation VMs to
-    /// this address.
+    /// Output only. The private IP address of the control plane for this
+    /// workstation cluster. Workstation VMs need access to this IP address to work
+    /// with the service, so make sure that your firewall rules allow egress from
+    /// the workstation VMs to this address.
     #[prost(string, tag = "16")]
     pub control_plane_ip: ::prost::alloc::string::String,
-    /// Configuration for private cluster.
+    /// Optional. Configuration for private workstation cluster.
     #[prost(message, optional, tag = "12")]
     pub private_cluster_config: ::core::option::Option<
         workstation_cluster::PrivateClusterConfig,
     >,
-    /// Output only. Whether this resource is in degraded mode, in which case it
-    /// may require user action to restore full functionality. Details can be found
-    /// in the `conditions` field.
+    /// Output only. Whether this workstation cluster is in degraded mode, in which
+    /// case it may require user action to restore full functionality. Details can
+    /// be found in
+    /// \[conditions][google.cloud.workstations.v1.WorkstationCluster.conditions\].
     #[prost(bool, tag = "13")]
     pub degraded: bool,
-    /// Output only. Status conditions describing the current resource state.
+    /// Output only. Status conditions describing the workstation cluster's current
+    /// state.
     #[prost(message, repeated, tag = "14")]
     pub conditions: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// Nested message and enum types in `WorkstationCluster`.
 pub mod workstation_cluster {
-    /// Configuration options for private clusters.
+    /// Configuration options for private workstation clusters.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PrivateClusterConfig {
@@ -82,95 +90,130 @@ pub mod workstation_cluster {
         pub enable_private_endpoint: bool,
         /// Output only. Hostname for the workstation cluster. This field will be
         /// populated only when private endpoint is enabled. To access workstations
-        /// in the cluster, create a new DNS zone mapping this domain name to an
-        /// internal IP address and a forwarding rule mapping that address to the
-        /// service attachment.
+        /// in the workstation cluster, create a new DNS zone mapping this domain
+        /// name to an internal IP address and a forwarding rule mapping that address
+        /// to the service attachment.
         #[prost(string, tag = "2")]
         pub cluster_hostname: ::prost::alloc::string::String,
         /// Output only. Service attachment URI for the workstation cluster. The
         /// service attachemnt is created when private endpoint is enabled. To access
-        /// workstations in the cluster, configure access to the managed service
-        /// using [Private Service
+        /// workstations in the workstation cluster, configure access to the managed
+        /// service using [Private Service
         /// Connect](<https://cloud.google.com/vpc/docs/configure-private-service-connect-services>).
         #[prost(string, tag = "3")]
         pub service_attachment_uri: ::prost::alloc::string::String,
-        /// Additional projects that are allowed to attach to the workstation
-        /// cluster's service attachment. By default, the workstation cluster's
-        /// project and the VPC host project (if different) are allowed.
+        /// Optional. Additional projects that are allowed to attach to the
+        /// workstation cluster's service attachment. By default, the workstation
+        /// cluster's project and the VPC host project (if different) are allowed.
         #[prost(string, repeated, tag = "4")]
         pub allowed_projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
-/// A set of configuration options describing how a workstation will be run.
-/// Workstation configurations are intended to be shared across multiple
-/// workstations.
+/// A workstation configuration resource in the Cloud Workstations API.
+///
+/// Workstation configurations act as templates for workstations. The workstation
+/// configuration defines details such as the workstation virtual machine (VM)
+/// instance type, persistent storage, container image defining environment,
+/// which IDE or Code Editor to use, and more. Administrators and platform teams
+/// can also use [Identity and Access Management
+/// (IAM)](<https://cloud.google.com/iam/docs/overview>) rules to grant access to
+/// teams or to individual developers.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkstationConfig {
-    /// Full name of this resource.
+    /// Full name of this workstation configuration.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Human-readable name for this resource.
+    /// Optional. Human-readable name for this workstation configuration.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. A system-assigned unique identified for this resource.
+    /// Output only. A system-assigned unique identifier for this workstation
+    /// configuration.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
-    /// Output only. Indicates whether this resource is currently being updated to
-    /// match its intended state.
+    /// Output only. Indicates whether this workstation configuration is currently
+    /// being updated to match its intended state.
     #[prost(bool, tag = "4")]
     pub reconciling: bool,
-    /// Client-specified annotations.
+    /// Optional. Client-specified annotations.
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Client-specified labels that are applied to the resource and that are also
-    /// propagated to the underlying Compute Engine resources.
+    /// Optional.
+    /// \[Labels\](<https://cloud.google.com/workstations/docs/label-resources>) that
+    /// are applied to the workstation configuration and that are also propagated
+    /// to the underlying Compute Engine resources.
     #[prost(map = "string, string", tag = "18")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. Time when this resource was created.
+    /// Output only. Time when this workstation configuration was created.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when this resource was most recently updated.
+    /// Output only. Time when this workstation configuration was most recently
+    /// updated.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when this resource was soft-deleted.
+    /// Output only. Time when this workstation configuration was soft-deleted.
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Checksum computed by the server. May be sent on update and delete requests
-    /// to make sure that the client has an up-to-date value before proceeding.
+    /// Optional. Checksum computed by the server. May be sent on update and delete
+    /// requests to make sure that the client has an up-to-date value before
+    /// proceeding.
     #[prost(string, tag = "9")]
     pub etag: ::prost::alloc::string::String,
-    /// How long to wait before automatically stopping an instance that hasn't
-    /// received any user traffic. A value of 0 indicates that this instance
-    /// should never time out due to idleness. Defaults to 20 minutes.
+    /// Optional. Number of seconds to wait before automatically stopping a
+    /// workstation after it last received user traffic.
+    ///
+    /// A value of `"0s"` indicates that Cloud Workstations VMs created with this
+    /// configuration should never time out due to idleness.
+    /// Provide
+    /// \[duration\](<https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#duration>)
+    /// terminated by `s` for seconds—for example, `"7200s"` (2 hours).
+    /// The default is `"1200s"` (20 minutes).
     #[prost(message, optional, tag = "10")]
     pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
-    /// How long to wait before automatically stopping a workstation after it
-    /// started. A value of 0 indicates that workstations using this configuration
-    /// should never time out. Must be greater than 0 and less than 24 hours if
-    /// encryption_key is set. Defaults to 12 hours.
+    /// Optional. Number of seconds that a workstation can run until it is
+    /// automatically shut down. We recommend that workstations be shut down daily
+    /// to reduce costs and so that security updates can be applied upon restart.
+    /// The
+    /// \[idle_timeout][google.cloud.workstations.v1.WorkstationConfig.idle_timeout\]
+    /// and
+    /// \[running_timeout][google.cloud.workstations.v1.WorkstationConfig.running_timeout\]
+    /// fields are independent of each other. Note that the
+    /// \[running_timeout][google.cloud.workstations.v1.WorkstationConfig.running_timeout\]
+    /// field shuts down VMs after the specified time, regardless of whether or not
+    /// the VMs are idle.
+    ///
+    /// Provide duration terminated by `s` for seconds—for example, `"54000s"`
+    /// (15 hours). Defaults to `"43200s"` (12 hours). A value of `"0s"` indicates
+    /// that workstations using this configuration should never time out. If
+    /// \[encryption_key][google.cloud.workstations.v1.WorkstationConfig.encryption_key\]
+    /// is set, it must be greater than `"0s"` and less than
+    /// `"86400s"` (24 hours).
+    ///
+    /// Warning: A value of `"0s"` indicates that Cloud Workstations VMs created
+    /// with this configuration have no maximum running time. This is strongly
+    /// discouraged because you incur costs and will not pick up security updates.
     #[prost(message, optional, tag = "11")]
     pub running_timeout: ::core::option::Option<::prost_types::Duration>,
-    /// Runtime host for the workstation.
+    /// Optional. Runtime host for the workstation.
     #[prost(message, optional, tag = "12")]
     pub host: ::core::option::Option<workstation_config::Host>,
-    /// Directories to persist across workstation sessions.
+    /// Optional. Directories to persist across workstation sessions.
     #[prost(message, repeated, tag = "13")]
     pub persistent_directories: ::prost::alloc::vec::Vec<
         workstation_config::PersistentDirectory,
     >,
-    /// Container that will be run for each workstation using this configuration
-    /// when that workstation is started.
+    /// Optional. Container that runs upon startup for each workstation using this
+    /// workstation configuration.
     #[prost(message, optional, tag = "14")]
     pub container: ::core::option::Option<workstation_config::Container>,
     /// Immutable. Encrypts resources of this workstation configuration using a
-    /// customer-managed encryption key.
+    /// customer-managed encryption key (CMEK).
     ///
     /// If specified, the boot disk of the Compute Engine instance and the
     /// persistent disk are encrypted using this encryption key. If
@@ -181,19 +224,34 @@ pub struct WorkstationConfig {
     /// instance is stopped, the system attempts to recreate the
     /// persistent disk with the new version of the key. Be sure to keep
     /// older versions of the key until the persistent disk is recreated.
-    /// Otherwise, data on the persistent disk will be lost.
+    /// Otherwise, data on the persistent disk might be lost.
     ///
-    /// If the encryption key is revoked, the workstation session will
-    /// automatically be stopped within 7 hours.
+    /// If the encryption key is revoked, the workstation session automatically
+    /// stops within 7 hours.
     ///
     /// Immutable after the workstation configuration is created.
     #[prost(message, optional, tag = "17")]
     pub encryption_key: ::core::option::Option<
         workstation_config::CustomerEncryptionKey,
     >,
+    /// Optional. Readiness checks to perform when starting a workstation using
+    /// this workstation configuration. Mark a workstation as running only after
+    /// all specified readiness checks return 200 status codes.
+    #[prost(message, repeated, tag = "19")]
+    pub readiness_checks: ::prost::alloc::vec::Vec<workstation_config::ReadinessCheck>,
+    /// Optional. Immutable. Specifies the zones used to replicate the VM and disk
+    /// resources within the region. If set, exactly two zones within the
+    /// workstation cluster's region must be specified—for example,
+    /// `['us-central1-a', 'us-central1-f']`. If this field is empty, two default
+    /// zones within the region are used.
+    ///
+    /// Immutable after the workstation configuration is created.
+    #[prost(string, repeated, tag = "23")]
+    pub replica_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Whether this resource is degraded, in which case it may
     /// require user action to restore full functionality. See also the
-    /// `conditions` field.
+    /// \[conditions][google.cloud.workstations.v1.WorkstationConfig.conditions\]
+    /// field.
     #[prost(bool, tag = "15")]
     pub degraded: bool,
     /// Output only. Status conditions describing the current resource state.
@@ -216,44 +274,116 @@ pub mod workstation_config {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct GceInstance {
-            /// The name of a Compute Engine machine type.
+            /// Optional. The type of machine to use for VM instances—for example,
+            /// `"e2-standard-4"`. For more information about machine types that
+            /// Cloud Workstations supports, see the list of
+            /// [available machine
+            /// types](<https://cloud.google.com/workstations/docs/available-machine-types>).
             #[prost(string, tag = "1")]
             pub machine_type: ::prost::alloc::string::String,
-            /// Email address of the service account used on VM instances
-            /// used to support this configuration. If not set, VMs run with a
-            /// Google-managed service account. This service account must have
-            /// permission to pull the specified container image; otherwise, the image
-            /// must be publicly accessible.
+            /// Optional. The email address of the service account for Cloud
+            /// Workstations VMs created with this configuration. When specified, be
+            /// sure that the service account has `logginglogEntries.create` permission
+            /// on the project so it can write logs out to Cloud Logging. If using a
+            /// custom container image, the service account must have permissions to
+            /// pull the specified image.
+            ///
+            /// If you as the administrator want to be able to `ssh` into the
+            /// underlying VM, you need to set this value to a service account
+            /// for which you have the `iam.serviceAccounts.actAs` permission.
+            /// Conversely, if you don't want anyone to be able to `ssh` into the
+            /// underlying VM, use a service account where no one has that
+            /// permission.
+            ///
+            /// If not set, VMs run with a service account provided by the
+            /// Cloud Workstations service, and the image must be publicly
+            /// accessible.
             #[prost(string, tag = "2")]
             pub service_account: ::prost::alloc::string::String,
-            /// Network tags to add to the Compute Engine machines backing the
-            /// Workstations.
+            /// Optional. Scopes to grant to the
+            /// \[service_account][google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.service_account\].
+            /// Various scopes are automatically added based on feature usage. When
+            /// specified, users of workstations under this configuration must have
+            /// `iam.serviceAccounts.actAs` on the service account.
+            #[prost(string, repeated, tag = "3")]
+            pub service_account_scopes: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. Network tags to add to the Compute Engine VMs backing the
+            /// workstations. This option applies
+            /// [network
+            /// tags](<https://cloud.google.com/vpc/docs/add-remove-network-tags>) to VMs
+            /// created with this configuration. These network tags enable the creation
+            /// of [firewall
+            /// rules](<https://cloud.google.com/workstations/docs/configure-firewall-rules>).
             #[prost(string, repeated, tag = "4")]
             pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Number of instances to pool for faster workstation startup.
+            /// Optional. The number of VMs that the system should keep idle so that
+            /// new workstations can be started quickly for new users. Defaults to `0`
+            /// in the API.
             #[prost(int32, tag = "5")]
             pub pool_size: i32,
             /// Output only. Number of instances currently available in the pool for
             /// faster workstation startup.
             #[prost(int32, tag = "12")]
             pub pooled_instances: i32,
-            /// Whether instances have no public IP address.
+            /// Optional. When set to true, disables public IP addresses for VMs. If
+            /// you disable public IP addresses, you must set up Private Google Access
+            /// or Cloud NAT on your network. If you use Private Google Access and you
+            /// use `private.googleapis.com` or `restricted.googleapis.com` for
+            /// Container Registry and Artifact Registry, make sure that you set
+            /// up DNS records for domains `*.gcr.io` and `*.pkg.dev`.
+            /// Defaults to false (VMs have public IP addresses).
             #[prost(bool, tag = "6")]
             pub disable_public_ip_addresses: bool,
-            /// Whether to enable nested virtualization on instances.
+            /// Optional. Whether to enable nested virtualization on Cloud Workstations
+            /// VMs created under this workstation configuration.
+            ///
+            /// Nested virtualization lets you run virtual machine (VM) instances
+            /// inside your workstation. Before enabling nested virtualization,
+            /// consider the following important considerations. Cloud Workstations
+            /// instances are subject to the [same restrictions as Compute Engine
+            /// instances](<https://cloud.google.com/compute/docs/instances/nested-virtualization/overview#restrictions>):
+            ///
+            /// * **Organization policy**: projects, folders, or
+            /// organizations may be restricted from creating nested VMs if the
+            /// **Disable VM nested virtualization** constraint is enforced in
+            /// the organization policy. For more information, see the
+            /// Compute Engine section,
+            /// [Checking whether nested virtualization is
+            /// allowed](<https://cloud.google.com/compute/docs/instances/nested-virtualization/managing-constraint#checking_whether_nested_virtualization_is_allowed>).
+            /// * **Performance**: nested VMs might experience a 10% or greater
+            /// decrease in performance for workloads that are CPU-bound and
+            /// possibly greater than a 10% decrease for workloads that are
+            /// input/output bound.
+            /// * **Machine Type**: nested virtualization can only be enabled on
+            /// workstation configurations that specify a
+            /// \[machine_type][google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.machine_type\]
+            /// in the N1 or N2 machine series.
+            /// * **GPUs**: nested virtualization may not be enabled on workstation
+            /// configurations with accelerators.
+            /// * **Operating System**: Because
+            /// [Container-Optimized
+            /// OS](<https://cloud.google.com/compute/docs/images/os-details#container-optimized_os_cos>)
+            /// does not support nested virtualization, when nested virtualization is
+            /// enabled, the underlying Compute Engine VM instances boot from an
+            /// [Ubuntu
+            /// LTS](<https://cloud.google.com/compute/docs/images/os-details#ubuntu_lts>)
+            /// image.
             #[prost(bool, tag = "7")]
             pub enable_nested_virtualization: bool,
-            /// A set of Compute Engine Shielded instance options.
+            /// Optional. A set of Compute Engine Shielded instance options.
             #[prost(message, optional, tag = "8")]
             pub shielded_instance_config: ::core::option::Option<
                 gce_instance::GceShieldedInstanceConfig,
             >,
-            /// A set of Compute Engine Confidential VM instance options.
+            /// Optional. A set of Compute Engine Confidential VM instance options.
             #[prost(message, optional, tag = "10")]
             pub confidential_instance_config: ::core::option::Option<
                 gce_instance::GceConfidentialInstanceConfig,
             >,
-            /// Size of the boot disk in GB. Defaults to 50.
+            /// Optional. The size of the boot disk for the VM in gigabytes (GB).
+            /// The minimum boot disk size is `30` GB. Defaults to `50` GB.
             #[prost(int32, tag = "9")]
             pub boot_disk_size_gb: i32,
         }
@@ -263,13 +393,13 @@ pub mod workstation_config {
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct GceShieldedInstanceConfig {
-                /// Whether the instance has Secure Boot enabled.
+                /// Optional. Whether the instance has Secure Boot enabled.
                 #[prost(bool, tag = "1")]
                 pub enable_secure_boot: bool,
-                /// Whether the instance has the vTPM enabled.
+                /// Optional. Whether the instance has the vTPM enabled.
                 #[prost(bool, tag = "2")]
                 pub enable_vtpm: bool,
-                /// Whether the instance has integrity monitoring enabled.
+                /// Optional. Whether the instance has integrity monitoring enabled.
                 #[prost(bool, tag = "3")]
                 pub enable_integrity_monitoring: bool,
             }
@@ -277,7 +407,7 @@ pub mod workstation_config {
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct GceConfidentialInstanceConfig {
-                /// Whether the instance has confidential compute enabled.
+                /// Optional. Whether the instance has confidential compute enabled.
                 #[prost(bool, tag = "1")]
                 pub enable_confidential_compute: bool,
             }
@@ -295,7 +425,7 @@ pub mod workstation_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PersistentDirectory {
-        /// Location of this directory in the running workstation.
+        /// Optional. Location of this directory in the running workstation.
         #[prost(string, tag = "1")]
         pub mount_path: ::prost::alloc::string::String,
         /// How a persistent directory should be implemented.
@@ -305,28 +435,53 @@ pub mod workstation_config {
     /// Nested message and enum types in `PersistentDirectory`.
     pub mod persistent_directory {
         /// A PersistentDirectory backed by a Compute Engine regional persistent
-        /// disk.
+        /// disk. The
+        /// \[persistent_directories][google.cloud.workstations.v1.WorkstationConfig.persistent_directories\]
+        /// field is repeated, but it may contain only one entry. It creates a
+        /// [persistent
+        /// disk](<https://cloud.google.com/compute/docs/disks/persistent-disks>) that
+        /// mounts to the workstation VM at `/home` when the session starts and
+        /// detaches when the session ends. If this field is empty, workstations
+        /// created with this configuration do not have a persistent home
+        /// directory.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct GceRegionalPersistentDisk {
-            /// Size of the disk in GB. Must be empty if source_snapshot is set.
-            /// Defaults to 200.
+            /// Optional. The GB capacity of a persistent home directory for each
+            /// workstation created with this configuration. Must be empty if
+            /// \[source_snapshot][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot\]
+            /// is set.
+            ///
+            /// Valid values are `10`, `50`, `100`, `200`, `500`, or `1000`.
+            /// Defaults to `200`. If less than `200` GB, the
+            /// \[disk_type][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.disk_type\]
+            /// must be
+            /// `"pd-balanced"` or `"pd-ssd"`.
             #[prost(int32, tag = "1")]
             pub size_gb: i32,
-            /// Type of file system that the disk should be formatted with. The
-            /// workstation image must support this file system type. Must be empty
-            /// if source_snapshot is set. Defaults to ext4.
+            /// Optional. Type of file system that the disk should be formatted with.
+            /// The workstation image must support this file system type. Must be empty
+            /// if
+            /// \[source_snapshot][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot\]
+            /// is set. Defaults to `"ext4"`.
             #[prost(string, tag = "2")]
             pub fs_type: ::prost::alloc::string::String,
-            /// Type of the disk to use. Defaults to pd-standard.
+            /// Optional. The [type of the persistent
+            /// disk](<https://cloud.google.com/compute/docs/disks#disk-types>) for the
+            /// home directory. Defaults to `"pd-standard"`.
             #[prost(string, tag = "3")]
             pub disk_type: ::prost::alloc::string::String,
-            /// Name of the snapshot to use as the source for the disk. If set,
-            /// size_gb and fs_type must be empty.
+            /// Optional. Name of the snapshot to use as the source for the disk. If
+            /// set,
+            /// \[size_gb][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.size_gb\]
+            /// and
+            /// \[fs_type][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.fs_type\]
+            /// must be empty.
             #[prost(string, tag = "5")]
             pub source_snapshot: ::prost::alloc::string::String,
-            /// What should happen to the disk after the workstation is deleted.
-            /// Defaults to DELETE.
+            /// Optional. Whether the persistent disk should be deleted when the
+            /// workstation is deleted. Valid values are `DELETE` and `RETAIN`.
+            /// Defaults to `DELETE`.
             #[prost(
                 enumeration = "gce_regional_persistent_disk::ReclaimPolicy",
                 tag = "4"
@@ -352,10 +507,10 @@ pub mod workstation_config {
             pub enum ReclaimPolicy {
                 /// Do not use.
                 Unspecified = 0,
-                /// The persistent disk will be deleted with the workstation.
+                /// Delete the persistent disk when deleting the workstation.
                 Delete = 1,
-                /// The persistent disk will be remain after the workstation is deleted,
-                /// and the administrator must manually delete the disk.
+                /// Keep the persistent disk when deleting the workstation.
+                /// An administrator must manually delete the disk.
                 Retain = 2,
             }
             impl ReclaimPolicy {
@@ -394,36 +549,53 @@ pub mod workstation_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Container {
-        /// Docker image defining the container. This image must be accessible by the
-        /// service account specified in the workstation configuration.
+        /// Optional. A Docker container image that defines a custom environment.
+        ///
+        /// Cloud Workstations provides a number of
+        /// [preconfigured
+        /// images](<https://cloud.google.com/workstations/docs/preconfigured-base-images>),
+        /// but you can create your own
+        /// [custom container
+        /// images](<https://cloud.google.com/workstations/docs/custom-container-images>).
+        /// If using a private image, the `host.gceInstance.serviceAccount` field
+        /// must be specified in the workstation configuration and must have
+        /// permission to pull the specified image. Otherwise, the image must be
+        /// publicly accessible.
         #[prost(string, tag = "1")]
         pub image: ::prost::alloc::string::String,
-        /// If set, overrides the default ENTRYPOINT specified by the image.
+        /// Optional. If set, overrides the default ENTRYPOINT specified by the
+        /// image.
         #[prost(string, repeated, tag = "2")]
         pub command: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Arguments passed to the entrypoint.
+        /// Optional. Arguments passed to the entrypoint.
         #[prost(string, repeated, tag = "3")]
         pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Environment variables passed to the container's entrypoint.
+        /// Optional. Environment variables passed to the container's entrypoint.
         #[prost(map = "string, string", tag = "4")]
         pub env: ::std::collections::HashMap<
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
-        /// If set, overrides the default DIR specified by the image.
+        /// Optional. If set, overrides the default DIR specified by the image.
         #[prost(string, tag = "5")]
         pub working_dir: ::prost::alloc::string::String,
-        /// If set, overrides the USER specified in the image with the given uid.
+        /// Optional. If set, overrides the USER specified in the image with the
+        /// given uid.
         #[prost(int32, tag = "6")]
         pub run_as_user: i32,
     }
-    /// A customer-managed encryption key for the Compute Engine resources
-    /// of this workstation configuration.
+    /// A customer-managed encryption key (CMEK) for the Compute Engine
+    /// resources of the associated workstation configuration. Specify the name of
+    /// your Cloud KMS encryption key and the default service account.
+    /// We recommend that you use a separate service account and follow
+    /// [Cloud KMS best
+    /// practices](<https://cloud.google.com/kms/docs/separation-of-duties>).
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomerEncryptionKey {
         /// Immutable. The name of the Google Cloud KMS encryption key. For example,
-        /// `projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME`.
+        /// `"projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME"`.
+        /// The key must be in the same region as the workstation configuration.
         #[prost(string, tag = "1")]
         pub kms_key: ::prost::alloc::string::String,
         /// Immutable. The service account to use with the specified
@@ -436,48 +608,66 @@ pub mod workstation_config {
         #[prost(string, tag = "2")]
         pub kms_key_service_account: ::prost::alloc::string::String,
     }
+    /// A readiness check to be performed on a workstation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReadinessCheck {
+        /// Optional. Path to which the request should be sent.
+        #[prost(string, tag = "1")]
+        pub path: ::prost::alloc::string::String,
+        /// Optional. Port to which the request should be sent.
+        #[prost(int32, tag = "2")]
+        pub port: i32,
+    }
 }
 /// A single instance of a developer workstation with its own persistent storage.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workstation {
-    /// Full name of this resource.
+    /// Full name of this workstation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Human-readable name for this resource.
+    /// Optional. Human-readable name for this workstation.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. A system-assigned unique identified for this resource.
+    /// Output only. A system-assigned unique identifier for this workstation.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
-    /// Output only. Indicates whether this resource is currently being updated to
-    /// match its intended state.
+    /// Output only. Indicates whether this workstation is currently being updated
+    /// to match its intended state.
     #[prost(bool, tag = "4")]
     pub reconciling: bool,
-    /// Client-specified annotations.
+    /// Optional. Client-specified annotations.
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Client-specified labels that are applied to the resource and that are also
-    /// propagated to the underlying Compute Engine resources.
+    /// Optional.
+    /// \[Labels\](<https://cloud.google.com/workstations/docs/label-resources>) that
+    /// are applied to the workstation and that are also propagated to the
+    /// underlying Compute Engine resources.
     #[prost(map = "string, string", tag = "13")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. Time when this resource was created.
+    /// Output only. Time when this workstation was created.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when this resource was most recently updated.
+    /// Output only. Time when this workstation was most recently updated.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when this resource was soft-deleted.
+    /// Output only. Time when this workstation was most recently successfully
+    /// started, regardless of the workstation's initial state.
+    #[prost(message, optional, tag = "14")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when this workstation was soft-deleted.
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Checksum computed by the server. May be sent on update and delete requests
-    /// to make sure that the client has an up-to-date value before proceeding.
+    /// Optional. Checksum computed by the server. May be sent on update and delete
+    /// requests to make sure that the client has an up-to-date value before
+    /// proceeding.
     #[prost(string, tag = "9")]
     pub etag: ::prost::alloc::string::String,
     /// Output only. Current state of the workstation.
@@ -562,10 +752,11 @@ pub struct ListWorkstationClustersRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Maximum number of items to return.
+    /// Optional. Maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// next_page_token value returned from a previous List request, if any.
+    /// Optional. next_page_token value returned from a previous List request, if
+    /// any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -597,8 +788,8 @@ pub struct CreateWorkstationClusterRequest {
     /// Required. Workstation cluster to create.
     #[prost(message, optional, tag = "3")]
     pub workstation_cluster: ::core::option::Option<WorkstationCluster>,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
@@ -613,12 +804,13 @@ pub struct UpdateWorkstationClusterRequest {
     /// should be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set, and the workstation cluster is not found, a new workstation
-    /// cluster will be created. In this situation, update_mask is ignored.
+    /// Optional. If set, and the workstation cluster is not found, a new
+    /// workstation cluster will be created. In this situation, update_mask is
+    /// ignored.
     #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
@@ -629,14 +821,15 @@ pub struct DeleteWorkstationClusterRequest {
     /// Required. Name of the workstation cluster to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set, validate the request and preview the review, but do not apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// apply it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// If set, the request will be rejected if the latest version of the
+    /// Optional. If set, the request will be rejected if the latest version of the
     /// workstation cluster on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
-    /// If set, any workstation configurations and workstations in the
+    /// Optional. If set, any workstation configurations and workstations in the
     /// workstation cluster are also deleted. Otherwise, the request only
     /// works if the workstation cluster has no configurations or workstations.
     #[prost(bool, tag = "4")]
@@ -657,10 +850,11 @@ pub struct ListWorkstationConfigsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Maximum number of items to return.
+    /// Optional. Maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// next_page_token value returned from a previous List request, if any.
+    /// Optional. next_page_token value returned from a previous List request, if
+    /// any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -686,10 +880,11 @@ pub struct ListUsableWorkstationConfigsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Maximum number of items to return.
+    /// Optional. Maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// next_page_token value returned from a previous List request, if any.
+    /// Optional. next_page_token value returned from a previous List request, if
+    /// any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -721,8 +916,8 @@ pub struct CreateWorkstationConfigRequest {
     /// Required. Config to create.
     #[prost(message, optional, tag = "3")]
     pub workstation_config: ::core::option::Option<WorkstationConfig>,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
@@ -737,11 +932,11 @@ pub struct UpdateWorkstationConfigRequest {
     /// should be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set and the workstation configuration is not found, a new
+    /// Optional. If set and the workstation configuration is not found, a new
     /// workstation configuration will be created. In this situation,
     /// update_mask is ignored.
     #[prost(bool, tag = "4")]
@@ -754,17 +949,17 @@ pub struct DeleteWorkstationConfigRequest {
     /// Required. Name of the workstation configuration to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// If set, the request is rejected if the latest version of the
+    /// Optional. If set, the request is rejected if the latest version of the
     /// workstation configuration on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
-    /// If set, any workstations in the workstation configuration are also deleted.
-    /// Otherwise, the request works only if the workstation configuration has
-    /// no workstations.
+    /// Optional. If set, any workstations in the workstation configuration are
+    /// also deleted. Otherwise, the request works only if the workstation
+    /// configuration has no workstations.
     #[prost(bool, tag = "4")]
     pub force: bool,
 }
@@ -783,10 +978,11 @@ pub struct ListWorkstationsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Maximum number of items to return.
+    /// Optional. Maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// next_page_token value returned from a previous List request, if any.
+    /// Optional. next_page_token value returned from a previous List request, if
+    /// any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -797,11 +993,11 @@ pub struct ListWorkstationsResponse {
     /// The requested workstations.
     #[prost(message, repeated, tag = "1")]
     pub workstations: ::prost::alloc::vec::Vec<Workstation>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
+    /// Optional. Token to retrieve the next page of results, or empty if there are
+    /// no more results in the list.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Unreachable resources.
+    /// Optional. Unreachable resources.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -812,10 +1008,11 @@ pub struct ListUsableWorkstationsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Maximum number of items to return.
+    /// Optional. Maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// next_page_token value returned from a previous List request, if any.
+    /// Optional. next_page_token value returned from a previous List request, if
+    /// any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -847,8 +1044,8 @@ pub struct CreateWorkstationRequest {
     /// Required. Workstation to create.
     #[prost(message, optional, tag = "3")]
     pub workstation: ::core::option::Option<Workstation>,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
@@ -863,11 +1060,11 @@ pub struct UpdateWorkstationRequest {
     /// should be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set and the workstation configuration is not found, a new
+    /// Optional. If set and the workstation configuration is not found, a new
     /// workstation configuration is created. In this situation, update_mask
     /// is ignored.
     #[prost(bool, tag = "4")]
@@ -880,11 +1077,11 @@ pub struct DeleteWorkstationRequest {
     /// Required. Name of the workstation to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// If set, the request will be rejected if the latest version of the
+    /// Optional. If set, the request will be rejected if the latest version of the
     /// workstation on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
@@ -896,11 +1093,11 @@ pub struct StartWorkstationRequest {
     /// Required. Name of the workstation to start.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// If set, the request will be rejected if the latest version of the
+    /// Optional. If set, the request will be rejected if the latest version of the
     /// workstation on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
@@ -912,11 +1109,11 @@ pub struct StopWorkstationRequest {
     /// Required. Name of the workstation to stop.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If set, validate the request and preview the review, but do not actually
-    /// apply it.
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually apply it.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// If set, the request will be rejected if the latest version of the
+    /// Optional. If set, the request will be rejected if the latest version of the
     /// workstation on the server does not have this ETag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,

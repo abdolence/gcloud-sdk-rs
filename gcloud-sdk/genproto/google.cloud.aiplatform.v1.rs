@@ -3376,7 +3376,7 @@ pub mod batch_prediction_job {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Context {
-    /// Output only. The resource name of the Context.
+    /// Immutable. The resource name of the Context.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// User provided display name of the Context.
@@ -3709,6 +3709,11 @@ pub struct Scheduling {
     /// resilient to workers leaving and joining a job.
     #[prost(bool, tag = "3")]
     pub restart_job_on_worker_restart: bool,
+    /// Optional. Indicates if the job should retry for internal errors after the
+    /// job starts running. If true, overrides
+    /// `Scheduling.restart_job_on_worker_restart` to false.
+    #[prost(bool, tag = "5")]
+    pub disable_retries: bool,
 }
 /// A piece of data in a Dataset. Could be an image, a video, a document or plain
 /// text.
@@ -4454,6 +4459,24 @@ pub struct ExportDataOperationMetadata {
     /// data is stored in the directory.
     #[prost(string, tag = "2")]
     pub gcs_output_directory: ::prost::alloc::string::String,
+}
+/// Runtime operation information for
+/// \[DatasetService.CreateDatasetVersion][google.cloud.aiplatform.v1.DatasetService.CreateDatasetVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDatasetVersionOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Runtime operation information for
+/// \[DatasetService.RestoreDatasetVersion][google.cloud.aiplatform.v1.DatasetService.RestoreDatasetVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreDatasetVersionOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for
 /// \[DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems\].
@@ -18904,6 +18927,11 @@ pub mod publisher_model {
         pub request_access: ::core::option::Option<
             call_to_action::RegionalResourceReferences,
         >,
+        /// Optional. Open evaluation pipeline of the PublisherModel.
+        #[prost(message, optional, tag = "11")]
+        pub open_evaluation_pipeline: ::core::option::Option<
+            call_to_action::RegionalResourceReferences,
+        >,
     }
     /// Nested message and enum types in `CallToAction`.
     pub mod call_to_action {
@@ -20810,6 +20838,10 @@ pub struct PipelineJob {
     /// is from supported template registry.
     #[prost(message, optional, tag = "20")]
     pub template_metadata: ::core::option::Option<PipelineTemplateMetadata>,
+    /// Output only. The schedule resource name.
+    /// Only returned if the Pipeline is created by Schedule API.
+    #[prost(string, tag = "22")]
+    pub schedule_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `PipelineJob`.
 pub mod pipeline_job {
@@ -22692,7 +22724,7 @@ pub mod prediction_service_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
-    /// Output only. The resource name of the Schedule.
+    /// Immutable. The resource name of the Schedule.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. User provided name of the Schedule.
@@ -22957,6 +22989,7 @@ pub struct ListSchedulesRequest {
     /// descending order.
     ///
     /// Supported fields:
+    ///
     ///    * `create_time`
     ///    * `start_time`
     ///    * `end_time`
@@ -23026,7 +23059,9 @@ pub struct ResumeScheduleRequest {
 pub struct UpdateScheduleRequest {
     /// Required. The Schedule which replaces the resource on the server.
     /// The following restrictions will be applied:
+    ///
     ///    * The scheduled request type cannot be changed.
+    ///    * The non-empty fields cannot be unset.
     ///    * The output_only fields will be ignored if specified.
     #[prost(message, optional, tag = "1")]
     pub schedule: ::core::option::Option<Schedule>,
@@ -24252,6 +24287,26 @@ pub mod read_tensorboard_usage_response {
     }
 }
 /// Request message for
+/// \[TensorboardService.ReadTensorboardSize][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardSize\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardSizeRequest {
+    /// Required. The name of the Tensorboard resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+    #[prost(string, tag = "1")]
+    pub tensorboard: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[TensorboardService.ReadTensorboardSize][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardSize\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadTensorboardSizeResponse {
+    /// Payload storage size for the TensorBoard
+    #[prost(int64, tag = "1")]
+    pub storage_size_byte: i64,
+}
+/// Request message for
 /// \[TensorboardService.CreateTensorboardExperiment][google.cloud.aiplatform.v1.TensorboardService.CreateTensorboardExperiment\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -25095,6 +25150,37 @@ pub mod tensorboard_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.TensorboardService",
                         "ReadTensorboardUsage",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the storage size for a given TensorBoard instance.
+        pub async fn read_tensorboard_size(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReadTensorboardSizeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReadTensorboardSizeResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.TensorboardService/ReadTensorboardSize",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.TensorboardService",
+                        "ReadTensorboardSize",
                     ),
                 );
             self.inner.unary(req, path, codec).await

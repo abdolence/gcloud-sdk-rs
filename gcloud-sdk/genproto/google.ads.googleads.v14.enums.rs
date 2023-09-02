@@ -2965,6 +2965,22 @@ pub mod call_to_action_type_enum {
         BookNow = 9,
         /// The call to action type is shop now.
         ShopNow = 10,
+        /// The call to action type is buy now.
+        BuyNow = 11,
+        /// The call to action type is donate now.
+        DonateNow = 12,
+        /// The call to action type is order now.
+        OrderNow = 13,
+        /// The call to action type is play now.
+        PlayNow = 14,
+        /// The call to action type is see more.
+        SeeMore = 15,
+        /// The call to action type is start now.
+        StartNow = 16,
+        /// The call to action type is visit site.
+        VisitSite = 17,
+        /// The call to action type is watch now.
+        WatchNow = 18,
     }
     impl CallToActionType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2984,6 +3000,14 @@ pub mod call_to_action_type_enum {
                 CallToActionType::Download => "DOWNLOAD",
                 CallToActionType::BookNow => "BOOK_NOW",
                 CallToActionType::ShopNow => "SHOP_NOW",
+                CallToActionType::BuyNow => "BUY_NOW",
+                CallToActionType::DonateNow => "DONATE_NOW",
+                CallToActionType::OrderNow => "ORDER_NOW",
+                CallToActionType::PlayNow => "PLAY_NOW",
+                CallToActionType::SeeMore => "SEE_MORE",
+                CallToActionType::StartNow => "START_NOW",
+                CallToActionType::VisitSite => "VISIT_SITE",
+                CallToActionType::WatchNow => "WATCH_NOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3000,6 +3024,14 @@ pub mod call_to_action_type_enum {
                 "DOWNLOAD" => Some(Self::Download),
                 "BOOK_NOW" => Some(Self::BookNow),
                 "SHOP_NOW" => Some(Self::ShopNow),
+                "BUY_NOW" => Some(Self::BuyNow),
+                "DONATE_NOW" => Some(Self::DonateNow),
+                "ORDER_NOW" => Some(Self::OrderNow),
+                "PLAY_NOW" => Some(Self::PlayNow),
+                "SEE_MORE" => Some(Self::SeeMore),
+                "START_NOW" => Some(Self::StartNow),
+                "VISIT_SITE" => Some(Self::VisitSite),
+                "WATCH_NOW" => Some(Self::WatchNow),
                 _ => None,
             }
         }
@@ -7520,6 +7552,71 @@ pub mod conversion_value_rule_primary_dimension_enum {
         }
     }
 }
+/// Container for enumeration of converting user prior engagement types and
+/// lifetime-value bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConvertingUserPriorEngagementTypeAndLtvBucketEnum {}
+/// Nested message and enum types in `ConvertingUserPriorEngagementTypeAndLtvBucketEnum`.
+pub mod converting_user_prior_engagement_type_and_ltv_bucket_enum {
+    /// Enumerates converting user prior engagement types and lifetime-value bucket
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConvertingUserPriorEngagementTypeAndLtvBucket {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// Converting user is new to the advertiser.
+        New = 2,
+        /// Converting user is returning to the advertiser. Definition of returning
+        /// differs among conversion types, such as a second store visit versus a
+        /// second online purchase.
+        Returning = 3,
+        /// Converting user is new to the advertiser and has high lifetime value.
+        NewAndHighLtv = 4,
+    }
+    impl ConvertingUserPriorEngagementTypeAndLtvBucket {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConvertingUserPriorEngagementTypeAndLtvBucket::Unspecified => {
+                    "UNSPECIFIED"
+                }
+                ConvertingUserPriorEngagementTypeAndLtvBucket::Unknown => "UNKNOWN",
+                ConvertingUserPriorEngagementTypeAndLtvBucket::New => "NEW",
+                ConvertingUserPriorEngagementTypeAndLtvBucket::Returning => "RETURNING",
+                ConvertingUserPriorEngagementTypeAndLtvBucket::NewAndHighLtv => {
+                    "NEW_AND_HIGH_LTV"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW" => Some(Self::New),
+                "RETURNING" => Some(Self::Returning),
+                "NEW_AND_HIGH_LTV" => Some(Self::NewAndHighLtv),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing the external conversion source that is
 /// associated with a ConversionAction.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8141,6 +8238,14 @@ pub mod recommendation_type_enum {
         RaiseTargetCpa = 44,
         /// Recommendation to lower Target ROAS.
         LowerTargetRoas = 45,
+        /// Recommendation to opt into Performance Max campaigns.
+        PerformanceMaxOptIn = 46,
+        /// Recommendation to improve the asset group strength of a Performance Max
+        /// campaign to an "Excellent" rating.
+        ImprovePerformanceMaxAdStrength = 47,
+        /// Recommendation to migrate Dynamic Search Ads to Performance Max
+        /// campaigns.
+        MigrateDynamicSearchAdsCampaignToPerformanceMax = 48,
     }
     impl RecommendationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8226,6 +8331,13 @@ pub mod recommendation_type_enum {
                 }
                 RecommendationType::RaiseTargetCpa => "RAISE_TARGET_CPA",
                 RecommendationType::LowerTargetRoas => "LOWER_TARGET_ROAS",
+                RecommendationType::PerformanceMaxOptIn => "PERFORMANCE_MAX_OPT_IN",
+                RecommendationType::ImprovePerformanceMaxAdStrength => {
+                    "IMPROVE_PERFORMANCE_MAX_AD_STRENGTH"
+                }
+                RecommendationType::MigrateDynamicSearchAdsCampaignToPerformanceMax => {
+                    "MIGRATE_DYNAMIC_SEARCH_ADS_CAMPAIGN_TO_PERFORMANCE_MAX"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8294,6 +8406,13 @@ pub mod recommendation_type_enum {
                 }
                 "RAISE_TARGET_CPA" => Some(Self::RaiseTargetCpa),
                 "LOWER_TARGET_ROAS" => Some(Self::LowerTargetRoas),
+                "PERFORMANCE_MAX_OPT_IN" => Some(Self::PerformanceMaxOptIn),
+                "IMPROVE_PERFORMANCE_MAX_AD_STRENGTH" => {
+                    Some(Self::ImprovePerformanceMaxAdStrength)
+                }
+                "MIGRATE_DYNAMIC_SEARCH_ADS_CAMPAIGN_TO_PERFORMANCE_MAX" => {
+                    Some(Self::MigrateDynamicSearchAdsCampaignToPerformanceMax)
+                }
                 _ => None,
             }
         }
@@ -10606,6 +10725,8 @@ pub mod ad_type_enum {
         DiscoveryCarouselAd = 36,
         /// Travel ad.
         TravelAd = 37,
+        /// Discovery video responsive ad.
+        DiscoveryVideoResponsiveAd = 38,
     }
     impl AdType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -10646,6 +10767,7 @@ pub mod ad_type_enum {
                 AdType::DiscoveryMultiAssetAd => "DISCOVERY_MULTI_ASSET_AD",
                 AdType::DiscoveryCarouselAd => "DISCOVERY_CAROUSEL_AD",
                 AdType::TravelAd => "TRAVEL_AD",
+                AdType::DiscoveryVideoResponsiveAd => "DISCOVERY_VIDEO_RESPONSIVE_AD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10687,6 +10809,7 @@ pub mod ad_type_enum {
                 "DISCOVERY_MULTI_ASSET_AD" => Some(Self::DiscoveryMultiAssetAd),
                 "DISCOVERY_CAROUSEL_AD" => Some(Self::DiscoveryCarouselAd),
                 "TRAVEL_AD" => Some(Self::TravelAd),
+                "DISCOVERY_VIDEO_RESPONSIVE_AD" => Some(Self::DiscoveryVideoResponsiveAd),
                 _ => None,
             }
         }
@@ -11341,6 +11464,166 @@ pub mod asset_field_type_enum {
                 "AD_IMAGE" => Some(Self::AdImage),
                 "BUSINESS_LOGO" => Some(Self::BusinessLogo),
                 "HOTEL_PROPERTY" => Some(Self::HotelProperty),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible asset group primary status.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupPrimaryStatusEnum {}
+/// Nested message and enum types in `AssetGroupPrimaryStatusEnum`.
+pub mod asset_group_primary_status_enum {
+    /// Enum describing the possible asset group primary status. Provides insights
+    /// into why an asset group is not serving or not serving optimally.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AssetGroupPrimaryStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The asset group is eligible to serve.
+        Eligible = 2,
+        /// The asset group is paused.
+        Paused = 3,
+        /// The asset group is removed.
+        Removed = 4,
+        /// The asset group is not eligible to serve.
+        NotEligible = 5,
+        /// The asset group has limited servability.
+        Limited = 6,
+        /// The asset group is pending approval and may serve in the future.
+        Pending = 7,
+    }
+    impl AssetGroupPrimaryStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AssetGroupPrimaryStatus::Unspecified => "UNSPECIFIED",
+                AssetGroupPrimaryStatus::Unknown => "UNKNOWN",
+                AssetGroupPrimaryStatus::Eligible => "ELIGIBLE",
+                AssetGroupPrimaryStatus::Paused => "PAUSED",
+                AssetGroupPrimaryStatus::Removed => "REMOVED",
+                AssetGroupPrimaryStatus::NotEligible => "NOT_ELIGIBLE",
+                AssetGroupPrimaryStatus::Limited => "LIMITED",
+                AssetGroupPrimaryStatus::Pending => "PENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ELIGIBLE" => Some(Self::Eligible),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                "NOT_ELIGIBLE" => Some(Self::NotEligible),
+                "LIMITED" => Some(Self::Limited),
+                "PENDING" => Some(Self::Pending),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible asset group primary status reasons.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupPrimaryStatusReasonEnum {}
+/// Nested message and enum types in `AssetGroupPrimaryStatusReasonEnum`.
+pub mod asset_group_primary_status_reason_enum {
+    /// Enum describing the possible asset group primary status reasons. Provides
+    /// reasons into why an asset group is not serving or not serving optimally.
+    /// It will be empty when the asset group is serving without issues.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AssetGroupPrimaryStatusReason {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The user-specified asset group status is paused.
+        AssetGroupPaused = 2,
+        /// The user-specified asset group status is removed.
+        AssetGroupRemoved = 3,
+        /// The user-specified campaign status is removed.
+        CampaignRemoved = 4,
+        /// The user-specified campaign status is paused.
+        CampaignPaused = 5,
+        /// The user-specified time for this campaign to start is in the future.
+        CampaignPending = 6,
+        /// The user-specified time for this campaign to end has passed.
+        CampaignEnded = 7,
+        /// The asset group is approved but only serves in limited capacity due to
+        /// policies.
+        AssetGroupLimited = 8,
+        /// The asset group has been marked as disapproved.
+        AssetGroupDisapproved = 9,
+        /// The asset group has not completed policy review.
+        AssetGroupUnderReview = 10,
+    }
+    impl AssetGroupPrimaryStatusReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AssetGroupPrimaryStatusReason::Unspecified => "UNSPECIFIED",
+                AssetGroupPrimaryStatusReason::Unknown => "UNKNOWN",
+                AssetGroupPrimaryStatusReason::AssetGroupPaused => "ASSET_GROUP_PAUSED",
+                AssetGroupPrimaryStatusReason::AssetGroupRemoved => "ASSET_GROUP_REMOVED",
+                AssetGroupPrimaryStatusReason::CampaignRemoved => "CAMPAIGN_REMOVED",
+                AssetGroupPrimaryStatusReason::CampaignPaused => "CAMPAIGN_PAUSED",
+                AssetGroupPrimaryStatusReason::CampaignPending => "CAMPAIGN_PENDING",
+                AssetGroupPrimaryStatusReason::CampaignEnded => "CAMPAIGN_ENDED",
+                AssetGroupPrimaryStatusReason::AssetGroupLimited => "ASSET_GROUP_LIMITED",
+                AssetGroupPrimaryStatusReason::AssetGroupDisapproved => {
+                    "ASSET_GROUP_DISAPPROVED"
+                }
+                AssetGroupPrimaryStatusReason::AssetGroupUnderReview => {
+                    "ASSET_GROUP_UNDER_REVIEW"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ASSET_GROUP_PAUSED" => Some(Self::AssetGroupPaused),
+                "ASSET_GROUP_REMOVED" => Some(Self::AssetGroupRemoved),
+                "CAMPAIGN_REMOVED" => Some(Self::CampaignRemoved),
+                "CAMPAIGN_PAUSED" => Some(Self::CampaignPaused),
+                "CAMPAIGN_PENDING" => Some(Self::CampaignPending),
+                "CAMPAIGN_ENDED" => Some(Self::CampaignEnded),
+                "ASSET_GROUP_LIMITED" => Some(Self::AssetGroupLimited),
+                "ASSET_GROUP_DISAPPROVED" => Some(Self::AssetGroupDisapproved),
+                "ASSET_GROUP_UNDER_REVIEW" => Some(Self::AssetGroupUnderReview),
                 _ => None,
             }
         }
@@ -13913,6 +14196,12 @@ pub mod campaign_primary_status_reason_enum {
         /// The app associated with this ACi campaign is partially released in the
         /// target countries of the campaign.
         AppPartiallyReleased = 33,
+        /// At least one asset group in this campaign is disapproved.
+        HasAssetGroupsDisapproved = 34,
+        /// At least one asset group in this campaign is limited by policy.
+        HasAssetGroupsLimitedByPolicy = 35,
+        /// Most asset groups in this campaign are pending review.
+        MostAssetGroupsUnderReview = 36,
     }
     impl CampaignPrimaryStatusReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -13991,6 +14280,15 @@ pub mod campaign_primary_status_reason_enum {
                 CampaignPrimaryStatusReason::AppPartiallyReleased => {
                     "APP_PARTIALLY_RELEASED"
                 }
+                CampaignPrimaryStatusReason::HasAssetGroupsDisapproved => {
+                    "HAS_ASSET_GROUPS_DISAPPROVED"
+                }
+                CampaignPrimaryStatusReason::HasAssetGroupsLimitedByPolicy => {
+                    "HAS_ASSET_GROUPS_LIMITED_BY_POLICY"
+                }
+                CampaignPrimaryStatusReason::MostAssetGroupsUnderReview => {
+                    "MOST_ASSET_GROUPS_UNDER_REVIEW"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14040,6 +14338,13 @@ pub mod campaign_primary_status_reason_enum {
                 }
                 "APP_NOT_RELEASED" => Some(Self::AppNotReleased),
                 "APP_PARTIALLY_RELEASED" => Some(Self::AppPartiallyReleased),
+                "HAS_ASSET_GROUPS_DISAPPROVED" => Some(Self::HasAssetGroupsDisapproved),
+                "HAS_ASSET_GROUPS_LIMITED_BY_POLICY" => {
+                    Some(Self::HasAssetGroupsLimitedByPolicy)
+                }
+                "MOST_ASSET_GROUPS_UNDER_REVIEW" => {
+                    Some(Self::MostAssetGroupsUnderReview)
+                }
                 _ => None,
             }
         }
@@ -14918,7 +15223,7 @@ pub mod conversion_action_type_enum {
         /// Read only.
         StoreVisits = 36,
         /// Conversions created from website events (such as form submissions or page
-        /// loads), that don't use individually coded event snippets.
+        /// loads), that don't use individually coded event snippets. Read only.
         WebpageCodeless = 37,
         /// Conversions that come from linked Universal Analytics goals.
         UniversalAnalyticsGoal = 38,
@@ -20937,7 +21242,7 @@ pub mod negative_geo_target_type_enum {
 pub struct OfflineConversionDiagnosticStatusEnum {}
 /// Nested message and enum types in `OfflineConversionDiagnosticStatusEnum`.
 pub mod offline_conversion_diagnostic_status_enum {
-    /// Next id: 8
+    /// Possible statuses of the offline ingestion setup.
     #[derive(
         Clone,
         Copy,
@@ -21003,7 +21308,7 @@ pub mod offline_conversion_diagnostic_status_enum {
 pub struct OfflineEventUploadClientEnum {}
 /// Nested message and enum types in `OfflineEventUploadClientEnum`.
 pub mod offline_event_upload_client_enum {
-    /// Next id: 5
+    /// Type of client.
     #[derive(
         Clone,
         Copy,
@@ -24068,7 +24373,6 @@ pub mod shared_set_type_enum {
 }
 /// Indicates the key issue that results in a shopping campaign targeting zero
 /// products.
-/// Next Id: 5
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShoppingAddProductsToCampaignRecommendationEnum {}

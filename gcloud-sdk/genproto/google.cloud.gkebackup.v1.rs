@@ -1828,11 +1828,11 @@ pub struct CreateBackupRequest {
     /// The client-provided short name for the Backup resource.
     /// This name must:
     ///
-    ///   - be between 1 and 63 characters long (inclusive)
-    ///   - consist of only lower-case ASCII letters, numbers, and dashes
-    ///   - start with a lower-case letter
-    ///   - end with a lower-case letter or number
-    ///   - be unique within the set of Backups in this BackupPlan
+    /// - be between 1 and 63 characters long (inclusive)
+    /// - consist of only lower-case ASCII letters, numbers, and dashes
+    /// - start with a lower-case letter
+    /// - end with a lower-case letter or number
+    /// - be unique within the set of Backups in this BackupPlan
     #[prost(string, tag = "3")]
     pub backup_id: ::prost::alloc::string::String,
 }
@@ -1997,11 +1997,11 @@ pub struct CreateRestorePlanRequest {
     /// Required. The client-provided short name for the RestorePlan resource.
     /// This name must:
     ///
-    ///   - be between 1 and 63 characters long (inclusive)
-    ///   - consist of only lower-case ASCII letters, numbers, and dashes
-    ///   - start with a lower-case letter
-    ///   - end with a lower-case letter or number
-    ///   - be unique within the set of RestorePlans in this location
+    /// - be between 1 and 63 characters long (inclusive)
+    /// - consist of only lower-case ASCII letters, numbers, and dashes
+    /// - start with a lower-case letter
+    /// - end with a lower-case letter or number
+    /// - be unique within the set of RestorePlans in this location
     #[prost(string, tag = "3")]
     pub restore_plan_id: ::prost::alloc::string::String,
 }
@@ -2115,11 +2115,11 @@ pub struct CreateRestoreRequest {
     /// Required. The client-provided short name for the Restore resource.
     /// This name must:
     ///
-    ///   - be between 1 and 63 characters long (inclusive)
-    ///   - consist of only lower-case ASCII letters, numbers, and dashes
-    ///   - start with a lower-case letter
-    ///   - end with a lower-case letter or number
-    ///   - be unique within the set of Restores in this RestorePlan.
+    /// - be between 1 and 63 characters long (inclusive)
+    /// - consist of only lower-case ASCII letters, numbers, and dashes
+    /// - start with a lower-case letter
+    /// - end with a lower-case letter or number
+    /// - be unique within the set of Restores in this RestorePlan.
     #[prost(string, tag = "3")]
     pub restore_id: ::prost::alloc::string::String,
 }

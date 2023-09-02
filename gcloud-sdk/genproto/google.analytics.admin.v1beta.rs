@@ -634,15 +634,16 @@ pub mod data_stream {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebStreamData {
-        /// Output only. Analytics "Measurement ID", without the "G-" prefix.
-        /// Example: "G-1A2BCD345E" would just be "1A2BCD345E"
+        /// Output only. Analytics Measurement ID.
+        ///
+        /// Example: "G-1A2BCD345E"
         #[prost(string, tag = "1")]
         pub measurement_id: ::prost::alloc::string::String,
         /// Output only. ID of the corresponding web app in Firebase, if any.
         /// This ID can change if the web app is deleted and recreated.
         #[prost(string, tag = "2")]
         pub firebase_app_id: ::prost::alloc::string::String,
-        /// Immutable. Domain name of the web app being measured, or empty.
+        /// Domain name of the web app being measured, or empty.
         /// Example: "<http://www.google.com",> "<https://www.google.com">
         #[prost(string, tag = "3")]
         pub default_uri: ::prost::alloc::string::String,
@@ -1010,6 +1011,61 @@ pub struct ConversionEvent {
     /// custom conversion events that may be created per property.
     #[prost(bool, tag = "5")]
     pub custom: bool,
+    /// Optional. The method by which conversions will be counted across multiple
+    /// events within a session. If this value is not provided, it will be set to
+    /// `ONCE_PER_EVENT`.
+    #[prost(enumeration = "conversion_event::ConversionCountingMethod", tag = "6")]
+    pub counting_method: i32,
+}
+/// Nested message and enum types in `ConversionEvent`.
+pub mod conversion_event {
+    /// The method by which conversions will be counted across multiple events
+    /// within a session.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConversionCountingMethod {
+        /// Counting method not specified.
+        Unspecified = 0,
+        /// Each Event instance is considered a Conversion.
+        OncePerEvent = 1,
+        /// An Event instance is considered a Conversion at most once per session per
+        /// user.
+        OncePerSession = 2,
+    }
+    impl ConversionCountingMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConversionCountingMethod::Unspecified => {
+                    "CONVERSION_COUNTING_METHOD_UNSPECIFIED"
+                }
+                ConversionCountingMethod::OncePerEvent => "ONCE_PER_EVENT",
+                ConversionCountingMethod::OncePerSession => "ONCE_PER_SESSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONVERSION_COUNTING_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "ONCE_PER_EVENT" => Some(Self::OncePerEvent),
+                "ONCE_PER_SESSION" => Some(Self::OncePerSession),
+                _ => None,
+            }
+        }
+    }
 }
 /// A definition for a CustomDimension.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1024,6 +1080,9 @@ pub struct CustomDimension {
     /// If this is a user-scoped dimension, then this is the user property name.
     /// If this is an event-scoped dimension, then this is the event parameter
     /// name.
+    ///
+    /// If this is an item-scoped dimension, then this is the parameter
+    /// name found in the eCommerce items array.
     ///
     /// May only contain alphanumeric and underscore characters, starting with a
     /// letter. Max length of 24 characters for user-scoped dimensions, 40
@@ -1073,6 +1132,8 @@ pub mod custom_dimension {
         Event = 1,
         /// Dimension scoped to a user.
         User = 2,
+        /// Dimension scoped to eCommerce items
+        Item = 3,
     }
     impl DimensionScope {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1084,6 +1145,7 @@ pub mod custom_dimension {
                 DimensionScope::Unspecified => "DIMENSION_SCOPE_UNSPECIFIED",
                 DimensionScope::Event => "EVENT",
                 DimensionScope::User => "USER",
+                DimensionScope::Item => "ITEM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1092,6 +1154,7 @@ pub mod custom_dimension {
                 "DIMENSION_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "EVENT" => Some(Self::Event),
                 "USER" => Some(Self::User),
+                "ITEM" => Some(Self::Item),
                 _ => None,
             }
         }
@@ -2326,7 +2389,8 @@ pub struct UpdateMeasurementProtocolSecretRequest {
     /// Required. The measurement protocol secret to update.
     #[prost(message, optional, tag = "1")]
     pub measurement_protocol_secret: ::core::option::Option<MeasurementProtocolSecret>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    /// Required. The list of fields to be updated. Omitted fields will not be
+    /// updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2376,6 +2440,21 @@ pub struct CreateConversionEventRequest {
     /// event will be created. Format: properties/123
     #[prost(string, tag = "2")]
     pub parent: ::prost::alloc::string::String,
+}
+/// Request message for UpdateConversionEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConversionEventRequest {
+    /// Required. The conversion event to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub conversion_event: ::core::option::Option<ConversionEvent>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetConversionEvent RPC
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3604,6 +3683,37 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1beta.AnalyticsAdminService",
                         "CreateConversionEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a conversion event with the specified attributes.
+        pub async fn update_conversion_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConversionEventRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ConversionEvent>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateConversionEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1beta.AnalyticsAdminService",
+                        "UpdateConversionEvent",
                     ),
                 );
             self.inner.unary(req, path, codec).await

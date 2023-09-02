@@ -2801,10 +2801,10 @@ pub struct AggregatedMetrics {
     #[prost(message, optional, tag = "6")]
     pub visit_duration: ::core::option::Option<::prost_types::Duration>,
     /// The total duration should be equal to the sum of all durations above.
-    /// For routes, it also corresponds to
+    /// For routes, it also corresponds to:
     /// \[ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time\]
-    /// -
-    /// \[ShipmentRoute.vehicle_start_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_start_time\].
+    /// `-`
+    /// \[ShipmentRoute.vehicle_start_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_start_time\]
     #[prost(message, optional, tag = "7")]
     pub total_duration: ::core::option::Option<::prost_types::Duration>,
     /// Total travel distance for a route or a solution.

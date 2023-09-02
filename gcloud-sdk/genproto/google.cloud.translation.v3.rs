@@ -1,5 +1,5 @@
-/// Configures which glossary should be used for a specific target language,
-/// and defines options for applying that glossary.
+/// Configures which glossary is used for a specific target language and defines
+/// options for applying that glossary.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextGlossaryConfig {
@@ -71,7 +71,7 @@ pub struct TranslateTextRequest {
     /// For example,
     /// `projects/{project-number-or-id}/locations/global/models/general/nmt`.
     ///
-    /// If not provided, the default Google model (NMT) will be used.
+    /// If not provided, the default Google model (NMT) will be used
     #[prost(string, tag = "6")]
     pub model: ::prost::alloc::string::String,
     /// Optional. Glossary to be applied. The glossary must be
@@ -652,16 +652,20 @@ pub struct TranslateDocumentRequest {
     /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
     #[prost(string, tag = "10")]
     pub customized_attribution: ::prost::alloc::string::String,
-    /// Optional. If true, the page limit of online native pdf translation is 300
-    /// and only native pdf pages will be translated.
+    /// Optional. is_translate_native_pdf_only field for external customers.
+    /// If true, the page limit of online native pdf translation is 300 and only
+    /// native pdf pages will be translated.
     #[prost(bool, tag = "11")]
     pub is_translate_native_pdf_only: bool,
-    /// Optional. If true, use the text removal to remove the shadow text on
+    /// Optional. If true, use the text removal server to remove the shadow text on
     /// background image for native pdf translation.
     /// Shadow removal feature can only be enabled when
-    /// is_translate_native_pdf_only is false
+    /// is_translate_native_pdf_only: false && pdf_native_only: false
     #[prost(bool, tag = "12")]
     pub enable_shadow_removal_native_pdf: bool,
+    /// Optional. If true, enable auto rotation correction in DVS.
+    #[prost(bool, tag = "13")]
+    pub enable_rotation_correction: bool,
 }
 /// A translated document message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1323,6 +1327,15 @@ pub struct BatchTranslateDocumentRequest {
     /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
     #[prost(string, tag = "10")]
     pub customized_attribution: ::prost::alloc::string::String,
+    /// Optional. If true, use the text removal server to remove the shadow text on
+    /// background image for native pdf translation.
+    /// Shadow removal feature can only be enabled when
+    /// is_translate_native_pdf_only: false && pdf_native_only: false
+    #[prost(bool, tag = "11")]
+    pub enable_shadow_removal_native_pdf: bool,
+    /// Optional. If true, enable auto rotation correction in DVS.
+    #[prost(bool, tag = "12")]
+    pub enable_rotation_correction: bool,
 }
 /// Input configuration for BatchTranslateDocument request.
 #[allow(clippy::derive_partial_eq_without_eq)]

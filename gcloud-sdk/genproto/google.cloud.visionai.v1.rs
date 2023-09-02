@@ -936,6 +936,158 @@ pub struct GcsSource {
     #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// HealthCheckRequest is the request message for Check.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HealthCheckRequest {
+    /// The parent of the resource.
+    #[prost(string, tag = "1")]
+    pub cluster: ::prost::alloc::string::String,
+}
+/// HealthCheckResponse is the response message for Check.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HealthCheckResponse {
+    /// Indicates whether the cluster is in healthy state or not.
+    #[prost(bool, tag = "1")]
+    pub healthy: bool,
+    /// Reason of why the cluster is in unhealthy state.
+    #[prost(string, tag = "2")]
+    pub reason: ::prost::alloc::string::String,
+    /// Other information of the cluster client may be interested.
+    #[prost(message, optional, tag = "3")]
+    pub cluster_info: ::core::option::Option<ClusterInfo>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClusterInfo {
+    /// The number of active streams in the cluster.
+    #[prost(int32, tag = "1")]
+    pub streams_count: i32,
+    /// The number of active processes in the cluster.
+    #[prost(int32, tag = "2")]
+    pub processes_count: i32,
+}
+/// Generated client implementations.
+pub mod health_check_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// HealthCheckService provides an interface for Vertex AI Vision Cluster Health
+    /// Check.
+    #[derive(Debug, Clone)]
+    pub struct HealthCheckServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl HealthCheckServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> HealthCheckServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> HealthCheckServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            HealthCheckServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// HealthCheck method checks the health status of the cluster.
+        pub async fn health_check(
+            &mut self,
+            request: impl tonic::IntoRequest<super::HealthCheckRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::HealthCheckResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.HealthCheckService/HealthCheck",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.HealthCheckService",
+                        "HealthCheck",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Defines the interface of an Operator.
 ///
 /// Arguments to an operator are input/output streams that are getting

@@ -475,6 +475,110 @@ impl OutputAudioEncoding {
         }
     }
 }
+/// Import strategies for the conflict resolution of resources (i.e. intents,
+/// entities, and webhooks) with identical display names during import
+/// operations.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ImportStrategy {
+    /// Unspecified. Treated as 'CREATE_NEW'.
+    Unspecified = 0,
+    /// Create a new resource with a numeric suffix appended to the end of the
+    /// existing display name.
+    CreateNew = 1,
+    /// Replace existing resource with incoming resource in the content to be
+    /// imported.
+    Replace = 2,
+    /// Keep existing resource and discard incoming resource in the content to be
+    /// imported.
+    Keep = 3,
+    /// Combine existing and incoming resources when a conflict is encountered.
+    Merge = 4,
+    /// Throw error if a conflict is encountered.
+    ThrowError = 5,
+}
+impl ImportStrategy {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ImportStrategy::Unspecified => "IMPORT_STRATEGY_UNSPECIFIED",
+            ImportStrategy::CreateNew => "IMPORT_STRATEGY_CREATE_NEW",
+            ImportStrategy::Replace => "IMPORT_STRATEGY_REPLACE",
+            ImportStrategy::Keep => "IMPORT_STRATEGY_KEEP",
+            ImportStrategy::Merge => "IMPORT_STRATEGY_MERGE",
+            ImportStrategy::ThrowError => "IMPORT_STRATEGY_THROW_ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "IMPORT_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+            "IMPORT_STRATEGY_CREATE_NEW" => Some(Self::CreateNew),
+            "IMPORT_STRATEGY_REPLACE" => Some(Self::Replace),
+            "IMPORT_STRATEGY_KEEP" => Some(Self::Keep),
+            "IMPORT_STRATEGY_MERGE" => Some(Self::Merge),
+            "IMPORT_STRATEGY_THROW_ERROR" => Some(Self::ThrowError),
+            _ => None,
+        }
+    }
+}
+/// A data store connection. It represents a data store in Discovery Engine and
+/// the type of the contents it contains.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataStoreConnection {
+    /// The type of the connected data store.
+    #[prost(enumeration = "DataStoreType", tag = "1")]
+    pub data_store_type: i32,
+    /// The full name of the referenced data store.
+    /// Formats:
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+    /// `projects/{project}/locations/{location}/dataStores/{data_store}`
+    #[prost(string, tag = "2")]
+    pub data_store: ::prost::alloc::string::String,
+}
+/// Type of a data store.
+/// Determines how search is performed in the data store.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DataStoreType {
+    /// Not specified. This value indicates that the data store type is not
+    /// specified, so it will not be used during search.
+    Unspecified = 0,
+    /// A data store that contains public web content.
+    PublicWeb = 1,
+    /// A data store that contains unstructured private data.
+    Unstructured = 2,
+    /// A data store that contains structured data (for example FAQ).
+    Structured = 3,
+}
+impl DataStoreType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DataStoreType::Unspecified => "DATA_STORE_TYPE_UNSPECIFIED",
+            DataStoreType::PublicWeb => "PUBLIC_WEB",
+            DataStoreType::Unstructured => "UNSTRUCTURED",
+            DataStoreType::Structured => "STRUCTURED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_STORE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PUBLIC_WEB" => Some(Self::PublicWeb),
+            "UNSTRUCTURED" => Some(Self::Unstructured),
+            "STRUCTURED" => Some(Self::Structured),
+            _ => None,
+        }
+    }
+}
 /// Represents a response message that can be returned by a conversational agent.
 ///
 /// Response messages are also used for output audio synthesis. The approach is
@@ -504,7 +608,7 @@ pub struct ResponseMessage {
     /// Required. The rich response message.
     #[prost(
         oneof = "response_message::Message",
-        tags = "1, 2, 9, 8, 10, 11, 12, 13, 18"
+        tags = "1, 2, 9, 8, 10, 11, 12, 13, 18, 20"
     )]
     pub message: ::core::option::Option<response_message::Message>,
 }
@@ -684,6 +788,14 @@ pub mod response_message {
             PhoneNumber(::prost::alloc::string::String),
         }
     }
+    /// Represents info card response. If the response contains generative
+    /// knowledge prediction, Dialogflow will return a payload with Infobot
+    /// Messenger compatible info card.
+    ///
+    /// Otherwise, the info card response is skipped.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KnowledgeInfoCard {}
     /// Required. The rich response message.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -730,6 +842,10 @@ pub mod response_message {
         /// this agent to a third-party endpoint.
         #[prost(message, tag = "18")]
         TelephonyTransferCall(TelephonyTransferCall),
+        /// Represents info card for knowledge answers, to be better rendered in
+        /// Dialogflow Messenger.
+        #[prost(message, tag = "20")]
+        KnowledgeInfoCard(KnowledgeInfoCard),
     }
 }
 /// A fulfillment can do one or more of the following actions at the same time:
@@ -899,8 +1015,10 @@ pub struct Page {
     pub form: ::core::option::Option<Form>,
     /// Ordered list of
     /// \[`TransitionRouteGroups`][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup\]
-    /// associated with the page. Transition route groups must be unique within a
-    /// page.
+    /// added to the page. Transition route groups must be unique within a page. If
+    /// the page links both flow-level transition route groups and agent-level
+    /// transition route groups, the flow-level ones will have higher priority and
+    /// will be put before the agent-level ones.
     ///
     /// *   If multiple transition routes within a page scope refer to the same
     ///      intent, then the precedence order is: page's transition route -> page's
@@ -910,7 +1028,10 @@ pub struct Page {
     ///      intent, then the first group in the ordered list takes precedence.
     ///
     /// Format:`projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>`.
+    /// ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>`
+    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/transitionRouteGroups/<TransitionRouteGroup ID>` for agent-level
+    /// groups.
     #[prost(string, repeated, tag = "11")]
     pub transition_route_groups: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -943,6 +1064,9 @@ pub struct Page {
     /// no match or no input.
     #[prost(message, repeated, tag = "10")]
     pub event_handlers: ::prost::alloc::vec::Vec<EventHandler>,
+    /// Optional. Knowledge connector configuration.
+    #[prost(message, optional, tag = "18")]
+    pub knowledge_connector_settings: ::core::option::Option<KnowledgeConnectorSettings>,
 }
 /// A form is a data model that groups related parameters that can be collected
 /// from the user. The process in which the agent prompts the user and collects
@@ -1132,6 +1256,10 @@ pub struct TransitionRoute {
     /// Output only. The unique identifier of this transition route.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The description of the transition route. The maximum length is
+    /// 500 characters.
+    #[prost(string, tag = "8")]
+    pub description: ::prost::alloc::string::String,
     /// The unique identifier of an
     /// \[Intent][google.cloud.dialogflow.cx.v3beta1.Intent\]. Format:
     /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
@@ -1369,6 +1497,55 @@ pub struct DeletePageRequest {
     ///     this page will be cleared).
     #[prost(bool, tag = "2")]
     pub force: bool,
+}
+/// The Knowledge Connector settings for this page or flow.
+/// This includes information such as the attached Knowledge Bases, and the way
+/// to execute fulfillment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KnowledgeConnectorSettings {
+    /// Whether Knowledge Connector is enabled or not.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// The fulfillment to be triggered.
+    ///
+    /// When the answers from the Knowledge Connector are selected by Dialogflow,
+    /// you can utitlize the request scoped parameter `$request.knowledge.answers`
+    /// (contains up to the 5 highest confidence answers) and
+    /// `$request.knowledge.questions` (contains the corresponding questions) to
+    /// construct the fulfillment.
+    #[prost(message, optional, tag = "3")]
+    pub trigger_fulfillment: ::core::option::Option<Fulfillment>,
+    /// Optional. List of related data store connections.
+    #[prost(message, repeated, tag = "6")]
+    pub data_store_connections: ::prost::alloc::vec::Vec<DataStoreConnection>,
+    /// The target to transition to, either a page in the same host flow (the flow
+    /// that owns this
+    /// \[KnowledgeConnectorSettings][google.cloud.dialogflow.cx.v3beta1.KnowledgeConnectorSettings\]),
+    /// or another flow in the same agent.
+    #[prost(oneof = "knowledge_connector_settings::Target", tags = "4, 5")]
+    pub target: ::core::option::Option<knowledge_connector_settings::Target>,
+}
+/// Nested message and enum types in `KnowledgeConnectorSettings`.
+pub mod knowledge_connector_settings {
+    /// The target to transition to, either a page in the same host flow (the flow
+    /// that owns this
+    /// \[KnowledgeConnectorSettings][google.cloud.dialogflow.cx.v3beta1.KnowledgeConnectorSettings\]),
+    /// or another flow in the same agent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Target {
+        /// The target page to transition to.
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+        #[prost(string, tag = "4")]
+        TargetPage(::prost::alloc::string::String),
+        /// The target flow to transition to.
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>/flows/<Flow ID>`.
+        #[prost(string, tag = "5")]
+        TargetFlow(::prost::alloc::string::String),
+    }
 }
 /// Generated client implementations.
 pub mod pages_client {
@@ -1666,6 +1843,8 @@ pub mod validation_message {
         Pages = 13,
         /// Transition route group.
         TransitionRouteGroup = 7,
+        /// Agent transition route group.
+        AgentTransitionRouteGroup = 14,
     }
     impl ResourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1688,6 +1867,7 @@ pub mod validation_message {
                 ResourceType::Page => "PAGE",
                 ResourceType::Pages => "PAGES",
                 ResourceType::TransitionRouteGroup => "TRANSITION_ROUTE_GROUP",
+                ResourceType::AgentTransitionRouteGroup => "AGENT_TRANSITION_ROUTE_GROUP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1707,6 +1887,7 @@ pub mod validation_message {
                 "PAGE" => Some(Self::Page),
                 "PAGES" => Some(Self::Pages),
                 "TRANSITION_ROUTE_GROUP" => Some(Self::TransitionRouteGroup),
+                "AGENT_TRANSITION_ROUTE_GROUP" => Some(Self::AgentTransitionRouteGroup),
                 _ => None,
             }
         }
@@ -1951,7 +2132,10 @@ pub struct Flow {
     /// defined in the page have higher priority than those defined in the flow.
     ///
     /// Format:`projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>`.
+    /// ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>`
+    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/transitionRouteGroups/<TransitionRouteGroup ID>` for agent-level
+    /// groups.
     #[prost(string, repeated, tag = "15")]
     pub transition_route_groups: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -1959,6 +2143,9 @@ pub struct Flow {
     /// NLU related settings of the flow.
     #[prost(message, optional, tag = "11")]
     pub nlu_settings: ::core::option::Option<NluSettings>,
+    /// Optional. Knowledge connector configuration.
+    #[prost(message, optional, tag = "18")]
+    pub knowledge_connector_settings: ::core::option::Option<KnowledgeConnectorSettings>,
 }
 /// The request message for
 /// \[Flows.CreateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.CreateFlow\].
@@ -2177,6 +2364,10 @@ pub struct ImportFlowRequest {
     /// Flow import mode. If not specified, `KEEP` is assumed.
     #[prost(enumeration = "import_flow_request::ImportOption", tag = "4")]
     pub import_option: i32,
+    /// Optional. Specifies the import strategy used when resolving resource
+    /// conflicts.
+    #[prost(message, optional, tag = "5")]
+    pub flow_import_strategy: ::core::option::Option<FlowImportStrategy>,
     /// Required. The flow to import.
     #[prost(oneof = "import_flow_request::Flow", tags = "2, 3")]
     pub flow: ::core::option::Option<import_flow_request::Flow>,
@@ -2249,6 +2440,20 @@ pub mod import_flow_request {
         #[prost(bytes, tag = "3")]
         FlowContent(::prost::alloc::vec::Vec<u8>),
     }
+}
+/// The flow import strategy used for resource conflict resolution associated
+/// with an
+/// \[ImportFlowRequest][google.cloud.dialogflow.cx.v3beta1.ImportFlowRequest\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FlowImportStrategy {
+    /// Optional. Global flow import strategy for resource conflict resolution. The
+    /// import Import strategy for resource conflict resolution, applied globally
+    /// throughout the flow. It will be applied for all
+    /// display name conflicts in the imported content. If not specified,
+    /// 'CREATE_NEW' is assumed.
+    #[prost(enumeration = "ImportStrategy", tag = "1")]
+    pub global_import_strategy: i32,
 }
 /// The response message for
 /// \[Flows.ImportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ImportFlow\].
@@ -2748,6 +2953,115 @@ pub mod flows_client {
         }
     }
 }
+/// Settings for Generative Safety.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetySettings {
+    /// Banned phrases for generated text.
+    #[prost(message, repeated, tag = "1")]
+    pub banned_phrases: ::prost::alloc::vec::Vec<safety_settings::Phrase>,
+}
+/// Nested message and enum types in `SafetySettings`.
+pub mod safety_settings {
+    /// Text input which can be used for prompt or banned phrases.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Phrase {
+        /// Required. Text input which can be used for prompt or banned phrases.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+        /// Required. Language code of the phrase.
+        #[prost(string, tag = "2")]
+        pub language_code: ::prost::alloc::string::String,
+    }
+}
+/// Settings for Generative AI.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerativeSettings {
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/generativeSettings`.
+    #[prost(string, tag = "5")]
+    pub name: ::prost::alloc::string::String,
+    /// Settings for Generative Fallback.
+    #[prost(message, optional, tag = "1")]
+    pub fallback_settings: ::core::option::Option<generative_settings::FallbackSettings>,
+    /// Settings for Generative Safety.
+    #[prost(message, optional, tag = "3")]
+    pub generative_safety_settings: ::core::option::Option<SafetySettings>,
+    /// Settings for knowledge connector.
+    #[prost(message, optional, tag = "7")]
+    pub knowledge_connector_settings: ::core::option::Option<
+        generative_settings::KnowledgeConnectorSettings,
+    >,
+    /// Language for this settings.
+    #[prost(string, tag = "4")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `GenerativeSettings`.
+pub mod generative_settings {
+    /// Settings for Generative Fallback.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FallbackSettings {
+        /// Display name of the selected prompt.
+        #[prost(string, tag = "3")]
+        pub selected_prompt: ::prost::alloc::string::String,
+        /// Stored prompts that can be selected, for example default templates like
+        /// "conservative" or "chatty", or user defined ones.
+        #[prost(message, repeated, tag = "4")]
+        pub prompt_templates: ::prost::alloc::vec::Vec<
+            fallback_settings::PromptTemplate,
+        >,
+    }
+    /// Nested message and enum types in `FallbackSettings`.
+    pub mod fallback_settings {
+        /// Prompt template.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct PromptTemplate {
+            /// Prompt name.
+            #[prost(string, tag = "1")]
+            pub display_name: ::prost::alloc::string::String,
+            /// Prompt text that is sent to a LLM on no-match default, placeholders are
+            /// filled downstream. For example: "Here is a conversation $conversation,
+            /// a response is: "
+            #[prost(string, tag = "2")]
+            pub prompt_text: ::prost::alloc::string::String,
+            /// If the flag is true, the prompt is frozen and cannot be modified by
+            /// users.
+            #[prost(bool, tag = "3")]
+            pub frozen: bool,
+        }
+    }
+    /// Settings for knowledge connector. These parameters are used for LLM prompt
+    /// like "You are <agent>. You are a helpful and verbose <agent_identity> at
+    /// <business>, <business_description>. Your task is to help humans on
+    /// <agent_scope>".
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KnowledgeConnectorSettings {
+        /// Name of the company, organization or other entity that the agent
+        /// represents. Used for knowledge connector LLM prompt and for knowledge
+        /// search.
+        #[prost(string, tag = "1")]
+        pub business: ::prost::alloc::string::String,
+        /// Name of the virtual agent. Used for LLM prompt. Can be left empty.
+        #[prost(string, tag = "2")]
+        pub agent: ::prost::alloc::string::String,
+        /// Identity of the agent, e.g. "virtual agent", "AI assistant".
+        #[prost(string, tag = "3")]
+        pub agent_identity: ::prost::alloc::string::String,
+        /// Company description, used for LLM prompt, e.g. "a family company selling
+        /// freshly roasted coffee beans".
+        #[prost(string, tag = "4")]
+        pub business_description: ::prost::alloc::string::String,
+        /// Agent scope, e.g. "Example company website", "internal Example
+        /// company website for employees", "manual of car owner".
+        #[prost(string, tag = "5")]
+        pub agent_scope: ::prost::alloc::string::String,
+    }
+}
 /// Settings related to speech recognition.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2766,8 +3080,9 @@ pub struct SpeechToTextSettings {
 /// Types]\[google.cloud.dialogflow.cx.v3beta1.EntityType\],
 /// \[Flows][google.cloud.dialogflow.cx.v3beta1.Flow\],
 /// \[Fulfillments][google.cloud.dialogflow.cx.v3beta1.Fulfillment\],
-/// \[Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook\], and so on to manage
-/// the conversation flows..
+/// \[Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook\],
+/// \[TransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup\]
+/// and so on to manage the conversation flows.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Agent {
@@ -2854,6 +3169,9 @@ pub struct Agent {
     /// output audio content.
     #[prost(message, optional, tag = "31")]
     pub text_to_speech_settings: ::core::option::Option<TextToSpeechSettings>,
+    /// Gen App Builder-related agent-level settings.
+    #[prost(message, optional, tag = "33")]
+    pub gen_app_builder_settings: ::core::option::Option<agent::GenAppBuilderSettings>,
 }
 /// Nested message and enum types in `Agent`.
 pub mod agent {
@@ -2896,6 +3214,16 @@ pub mod agent {
             #[prost(message, tag = "1")]
             GithubSettings(GithubSettings),
         }
+    }
+    /// Settings for Gen App Builder.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GenAppBuilderSettings {
+        /// Required. The full name of the Gen App Builder engine related to this
+        /// agent if there is one. Format: `projects/{Project ID}/locations/{Location
+        /// ID}/collections/{Collection ID}/engines/{Engine ID}`
+        #[prost(string, tag = "1")]
+        pub engine: ::prost::alloc::string::String,
     }
 }
 /// The request message for
@@ -3236,6 +3564,34 @@ pub struct AgentValidationResult {
     /// Contains all flow validation results.
     #[prost(message, repeated, tag = "2")]
     pub flow_validation_results: ::prost::alloc::vec::Vec<FlowValidationResult>,
+}
+/// Request for
+/// \[GetGenerativeSettings][google.cloud.dialogflow.cx.v3beta1.Agents.GetGenerativeSettings\]
+/// RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetGenerativeSettingsRequest {
+    /// Required. Format: `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/generativeSettings`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Language code of the generative settings.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// Request for
+/// \[UpdateGenerativeSettings][google.cloud.dialogflow.cx.v3beta1.Agents.UpdateGenerativeSettings\]
+/// RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGenerativeSettingsRequest {
+    /// Required. Generative settings to update.
+    #[prost(message, optional, tag = "1")]
+    pub generative_settings: ::core::option::Option<GenerativeSettings>,
+    /// Optional. The mask to control which fields get updated. If the mask is not
+    /// present, all fields will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Generated client implementations.
 pub mod agents_client {
@@ -3622,6 +3978,68 @@ pub mod agents_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.cx.v3beta1.Agents",
                         "GetAgentValidationResult",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the generative settings for the agent.
+        pub async fn get_generative_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGenerativeSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerativeSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Agents/GetGenerativeSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "GetGenerativeSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the generative settings for the agent.
+        pub async fn update_generative_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGenerativeSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerativeSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Agents/UpdateGenerativeSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Agents",
+                        "UpdateGenerativeSettings",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -5988,9 +6406,12 @@ pub struct CloudConversationDebuggingInfo {
     pub single_utterance_end_time_offset: ::core::option::Option<
         ::prost_types::Duration,
     >,
-    /// No speech timeout settings observed at runtime.
+    /// No speech timeout settings for the stream.
     #[prost(message, optional, tag = "15")]
     pub no_speech_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Speech endpointing timeout settings for the stream.
+    #[prost(message, optional, tag = "19")]
+    pub endpointing_timeout: ::core::option::Option<::prost_types::Duration>,
     /// Whether the streaming terminates with an injected text query.
     #[prost(bool, tag = "16")]
     pub is_input_text: bool,
@@ -6321,15 +6742,15 @@ pub struct QueryParameters {
 }
 /// Represents the query input. It can contain one of:
 ///
-/// 1.  A conversational query in the form of text.
+/// 1. A conversational query in the form of text.
 ///
-/// 2.  An intent query that specifies which intent to trigger.
+/// 2. An intent query that specifies which intent to trigger.
 ///
-/// 3.  Natural language speech audio to be processed.
+/// 3. Natural language speech audio to be processed.
 ///
-/// 4.  An event to be triggered.
+/// 4. An event to be triggered.
 ///
-/// 5.  DTMF digits to invoke an intent and fill in parameter value.
+/// 5. DTMF digits to invoke an intent and fill in parameter value.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryInput {
@@ -7039,7 +7460,7 @@ pub mod sessions_client {
         }
     }
 }
-/// An TransitionRouteGroup represents a group of
+/// A TransitionRouteGroup represents a group of
 /// \[`TransitionRoutes`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute\] to
 /// be used by a \[Page][google.cloud.dialogflow.cx.v3beta1.Page\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7049,7 +7470,10 @@ pub struct TransitionRouteGroup {
     /// \[TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.CreateTransitionRouteGroup\]
     /// populates the name automatically. Format: `projects/<Project
     /// ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow
-    /// ID>/transitionRouteGroups/<Transition Route Group ID>`.
+    /// ID>/transitionRouteGroups/<Transition Route Group ID>` or
+    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/transitionRouteGroups/<TransitionRouteGroup ID>` for agent-level
+    /// groups.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the transition route group, unique
@@ -7068,7 +7492,8 @@ pub struct TransitionRouteGroup {
 pub struct ListTransitionRouteGroupsRequest {
     /// Required. The flow to list all transition route groups for.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// ID>/flows/<Flow ID>`
+    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -7117,7 +7542,9 @@ pub struct GetTransitionRouteGroupRequest {
     /// Required. The name of the
     /// \[TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup\].
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>`.
+    /// ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>`
+    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/transitionRouteGroups/<Transition Route Group ID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The language to retrieve the transition route group for. The following
@@ -7143,7 +7570,9 @@ pub struct CreateTransitionRouteGroupRequest {
     /// Required. The flow to create an
     /// \[TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup\]
     /// for. Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// ID>/flows/<Flow ID>`
+    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`
+    /// for agent-level groups.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The transition route group to create.
@@ -7197,7 +7626,8 @@ pub struct DeleteTransitionRouteGroupRequest {
     /// \[TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup\]
     /// to delete. Format: `projects/<Project ID>/locations/<Location
     /// ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition
-    /// Route Group ID>`.
+    /// Route Group ID>` or `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for transition route group that no page is using.
@@ -9033,8 +9463,8 @@ pub mod webhook {
         pub request_body: ::prost::alloc::string::String,
         /// Optional. Maps the values extracted from specific fields of the flexible
         /// webhook response into session parameters.
-        ///   - Key: session parameter name
-        ///   - Value: field path in the webhook response
+        /// - Key: session parameter name
+        /// - Value: field path in the webhook response
         #[prost(map = "string, string", tag = "9")]
         pub parameter_mapping: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -11740,7 +12170,7 @@ pub struct SecuritySettings {
     /// Specifies how data is retained. Note that even if the data is
     /// purged due to retention policy, we may still hold it in backup storage for
     /// a few days without allowing direct readings.
-    #[prost(oneof = "security_settings::DataRetention", tags = "6")]
+    #[prost(oneof = "security_settings::DataRetention", tags = "6, 7")]
     pub data_retention: ::core::option::Option<security_settings::DataRetention>,
 }
 /// Nested message and enum types in `SecuritySettings`.
@@ -11908,6 +12338,47 @@ pub mod security_settings {
             }
         }
     }
+    /// Defines how long we retain persisted data that contains sensitive info.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RetentionStrategy {
+        /// Retains the persisted data with Dialogflow's internal default 365d TTLs.
+        Unspecified = 0,
+        /// Removes data when the conversation ends. If there is no \[Conversation][\]
+        /// explicitly established, a default conversation ends when the
+        /// corresponding Dialogflow session ends.
+        RemoveAfterConversation = 1,
+    }
+    impl RetentionStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RetentionStrategy::Unspecified => "RETENTION_STRATEGY_UNSPECIFIED",
+                RetentionStrategy::RemoveAfterConversation => "REMOVE_AFTER_CONVERSATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETENTION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "REMOVE_AFTER_CONVERSATION" => Some(Self::RemoveAfterConversation),
+                _ => None,
+            }
+        }
+    }
     /// Type of data we purge after retention settings triggers purge.
     #[derive(
         Clone,
@@ -11963,6 +12434,10 @@ pub mod security_settings {
         /// setting to 0 also means we use default TTL.
         #[prost(int32, tag = "6")]
         RetentionWindowDays(i32),
+        /// Specifies the retention behavior defined by
+        /// \[SecuritySettings.RetentionStrategy][google.cloud.dialogflow.cx.v3beta1.SecuritySettings.RetentionStrategy\].
+        #[prost(enumeration = "RetentionStrategy", tag = "7")]
+        RetentionStrategy(i32),
     }
 }
 /// Generated client implementations.
