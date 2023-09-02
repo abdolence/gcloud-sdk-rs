@@ -114,7 +114,7 @@ pub struct TestSpecification {
     #[prost(oneof = "test_specification::Setup", tags = "6, 14")]
     pub setup: ::core::option::Option<test_specification::Setup>,
     /// Required. The type of test to run.
-    #[prost(oneof = "test_specification::Test", tags = "2, 3, 9, 13, 15")]
+    #[prost(oneof = "test_specification::Test", tags = "2, 3, 9, 13, 15, 17")]
     pub test: ::core::option::Option<test_specification::Test>,
 }
 /// Nested message and enum types in `TestSpecification`.
@@ -150,6 +150,9 @@ pub mod test_specification {
         /// An iOS application with a test loop.
         #[prost(message, tag = "15")]
         IosTestLoop(super::IosTestLoop),
+        /// An iOS Robo test.
+        #[prost(message, tag = "17")]
+        IosRoboTest(super::IosRoboTest),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -482,6 +485,23 @@ pub struct IosTestLoop {
     /// Output only. The bundle id for the application under test.
     #[prost(string, tag = "3")]
     pub app_bundle_id: ::prost::alloc::string::String,
+}
+/// A test that explores an iOS application on an iOS device.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IosRoboTest {
+    /// Required. The ipa stored at this file should be used to run the test.
+    #[prost(message, optional, tag = "1")]
+    pub app_ipa: ::core::option::Option<FileReference>,
+    /// The bundle ID for the app-under-test.
+    /// This is determined by examining the application's "Info.plist" file.
+    #[prost(string, tag = "4")]
+    pub app_bundle_id: ::prost::alloc::string::String,
+    /// An optional Roboscript to customize the crawl. See
+    /// <https://firebase.google.com/docs/test-lab/android/robo-scripts-reference>
+    /// for more information about Roboscripts.
+    #[prost(message, optional, tag = "5")]
+    pub robo_script: ::core::option::Option<FileReference>,
 }
 /// A test of an Android application that can control an Android component
 /// independently of its normal lifecycle.

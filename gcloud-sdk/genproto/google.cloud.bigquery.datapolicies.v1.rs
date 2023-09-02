@@ -81,9 +81,10 @@ pub struct ListDataPoliciesRequest {
     /// are associated with. Currently filter only supports
     /// "policy<span></span>_tag" based filtering and OR based predicates. Sample
     /// filter can be "policy<span></span>_tag:
-    /// `'projects/1/locations/us/taxonomies/2/policyTags/3'`". You may use
-    /// wildcard such as "policy<span></span>_tag:
-    /// `'projects/1/locations/us/taxonomies/2/*'`".
+    /// projects/1/locations/us/taxonomies/2/policyTags/3".
+    /// You may also use wildcard such as "policy<span></span>_tag:
+    /// projects/1/locations/us/taxonomies/2*". Please note that OR predicates
+    /// cannot be used with wildcard filters.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -193,7 +194,7 @@ pub mod data_policy {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataMaskingPolicy {
     /// A masking expression to bind to the data masking rule.
-    #[prost(oneof = "data_masking_policy::MaskingExpression", tags = "1")]
+    #[prost(oneof = "data_masking_policy::MaskingExpression", tags = "1, 3")]
     pub masking_expression: ::core::option::Option<
         data_masking_policy::MaskingExpression,
     >,
@@ -231,16 +232,54 @@ pub mod data_masking_policy {
         /// * FLOAT: 0.0
         /// * NUMERIC: 0
         /// * BOOLEAN: FALSE
-        /// * TIMESTAMP: 0001-01-01 00:00:00 UTC
-        /// * DATE: 0001-01-01
+        /// * TIMESTAMP: 1970-01-01 00:00:00 UTC
+        /// * DATE: 1970-01-01
         /// * TIME: 00:00:00
-        /// * DATETIME: 0001-01-01T00:00:00
+        /// * DATETIME: 1970-01-01T00:00:00
         /// * GEOGRAPHY: POINT(0 0)
         /// * BIGNUMERIC: 0
         /// * ARRAY: []
         /// * STRUCT: NOT_APPLICABLE
         /// * JSON: NULL
         DefaultMaskingValue = 7,
+        /// Masking expression shows the last four characters of text.
+        /// The masking behavior is as follows:
+        ///
+        /// * If text length > 4 characters: Replace text with XXXXX, append last
+        /// four characters of original text.
+        /// * If text length <= 4 characters: Apply SHA-256 hash.
+        LastFourCharacters = 9,
+        /// Masking expression shows the first four characters of text.
+        /// The masking behavior is as follows:
+        ///
+        /// * If text length > 4 characters: Replace text with XXXXX, prepend first
+        /// four characters of original text.
+        /// * If text length <= 4 characters: Apply SHA-256 hash.
+        FirstFourCharacters = 10,
+        /// Masking expression for email addresses.
+        /// The masking behavior is as follows:
+        ///
+        /// * Syntax-valid email address: Replace username with XXXXX. For example,
+        /// cloudysanfrancisco@gmail.com becomes XXXXX@gmail.com.
+        /// * Syntax-invalid email address: Apply SHA-256 hash.
+        ///
+        /// For more information, see [Email
+        /// mask](<https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options>).
+        EmailMask = 12,
+        /// Masking expression to only show the year of `Date`,
+        /// `DateTime` and `TimeStamp`. For example, with the
+        /// year 2076:
+        ///
+        /// * DATE         :  2076-01-01
+        /// * DATETIME     :  2076-01-01T00:00:00
+        /// * TIMESTAMP    :  2076-01-01 00:00:00 UTC
+        ///
+        /// Truncation occurs according to the UTC time zone. To change this, adjust
+        /// the default time zone using the `time_zone` system variable.
+        /// For more information, see the <a
+        /// href="<https://cloud.google.com/bigquery/docs/reference/system-variables">System>
+        /// variables reference</a>.
+        DateYearMask = 13,
     }
     impl PredefinedExpression {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -253,6 +292,10 @@ pub mod data_masking_policy {
                 PredefinedExpression::Sha256 => "SHA256",
                 PredefinedExpression::AlwaysNull => "ALWAYS_NULL",
                 PredefinedExpression::DefaultMaskingValue => "DEFAULT_MASKING_VALUE",
+                PredefinedExpression::LastFourCharacters => "LAST_FOUR_CHARACTERS",
+                PredefinedExpression::FirstFourCharacters => "FIRST_FOUR_CHARACTERS",
+                PredefinedExpression::EmailMask => "EMAIL_MASK",
+                PredefinedExpression::DateYearMask => "DATE_YEAR_MASK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -262,6 +305,10 @@ pub mod data_masking_policy {
                 "SHA256" => Some(Self::Sha256),
                 "ALWAYS_NULL" => Some(Self::AlwaysNull),
                 "DEFAULT_MASKING_VALUE" => Some(Self::DefaultMaskingValue),
+                "LAST_FOUR_CHARACTERS" => Some(Self::LastFourCharacters),
+                "FIRST_FOUR_CHARACTERS" => Some(Self::FirstFourCharacters),
+                "EMAIL_MASK" => Some(Self::EmailMask),
+                "DATE_YEAR_MASK" => Some(Self::DateYearMask),
                 _ => None,
             }
         }
@@ -273,6 +320,11 @@ pub mod data_masking_policy {
         /// A predefined masking expression.
         #[prost(enumeration = "PredefinedExpression", tag = "1")]
         PredefinedExpression(i32),
+        /// The name of the BigQuery routine that contains the custom masking
+        /// routine, in the format of
+        /// `projects/{project_number}/datasets/{dataset_id}/routines/{routine_id}`.
+        #[prost(string, tag = "3")]
+        Routine(::prost::alloc::string::String),
     }
 }
 /// Generated client implementations.

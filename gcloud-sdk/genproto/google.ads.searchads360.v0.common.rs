@@ -82,6 +82,390 @@ pub struct SearchAds360ResponsiveSearchAdInfo {
     #[prost(int64, optional, tag = "3")]
     pub ad_tracking_id: ::core::option::Option<i64>,
 }
+/// A keyword criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KeywordInfo {
+    /// The text of the keyword (at most 80 characters and 10 words).
+    #[prost(string, optional, tag = "3")]
+    pub text: ::core::option::Option<::prost::alloc::string::String>,
+    /// The match type of the keyword.
+    #[prost(
+        enumeration = "super::enums::keyword_match_type_enum::KeywordMatchType",
+        tag = "2"
+    )]
+    pub match_type: i32,
+}
+/// A location criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationInfo {
+    /// The geo target constant resource name.
+    #[prost(string, optional, tag = "2")]
+    pub geo_target_constant: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A device criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeviceInfo {
+    /// Type of the device.
+    #[prost(enumeration = "super::enums::device_enum::Device", tag = "1")]
+    pub r#type: i32,
+}
+/// A listing group criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupInfo {
+    /// Type of the listing group.
+    #[prost(
+        enumeration = "super::enums::listing_group_type_enum::ListingGroupType",
+        tag = "1"
+    )]
+    pub r#type: i32,
+}
+/// Represents an AdSchedule criterion.
+///
+/// AdSchedule is specified as the day of the week and a time interval
+/// within which ads will be shown.
+///
+/// No more than six AdSchedules can be added for the same day.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdScheduleInfo {
+    /// Minutes after the start hour at which this schedule starts.
+    ///
+    /// This field is required for CREATE operations and is prohibited on UPDATE
+    /// operations.
+    #[prost(enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour", tag = "1")]
+    pub start_minute: i32,
+    /// Minutes after the end hour at which this schedule ends. The schedule is
+    /// exclusive of the end minute.
+    ///
+    /// This field is required for CREATE operations and is prohibited on UPDATE
+    /// operations.
+    #[prost(enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour", tag = "2")]
+    pub end_minute: i32,
+    /// Starting hour in 24 hour time.
+    /// This field must be between 0 and 23, inclusive.
+    ///
+    /// This field is required for CREATE operations and is prohibited on UPDATE
+    /// operations.
+    #[prost(int32, optional, tag = "6")]
+    pub start_hour: ::core::option::Option<i32>,
+    /// Ending hour in 24 hour time; 24 signifies end of the day.
+    /// This field must be between 0 and 24, inclusive.
+    ///
+    /// This field is required for CREATE operations and is prohibited on UPDATE
+    /// operations.
+    #[prost(int32, optional, tag = "7")]
+    pub end_hour: ::core::option::Option<i32>,
+    /// Day of the week the schedule applies to.
+    ///
+    /// This field is required for CREATE operations and is prohibited on UPDATE
+    /// operations.
+    #[prost(enumeration = "super::enums::day_of_week_enum::DayOfWeek", tag = "5")]
+    pub day_of_week: i32,
+}
+/// An age range criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AgeRangeInfo {
+    /// Type of the age range.
+    #[prost(enumeration = "super::enums::age_range_type_enum::AgeRangeType", tag = "1")]
+    pub r#type: i32,
+}
+/// A gender criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenderInfo {
+    /// Type of the gender.
+    #[prost(enumeration = "super::enums::gender_type_enum::GenderType", tag = "1")]
+    pub r#type: i32,
+}
+/// A User List criterion. Represents a user list that is defined by the
+/// advertiser to be targeted.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListInfo {
+    /// The User List resource name.
+    #[prost(string, optional, tag = "2")]
+    pub user_list: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A language criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LanguageInfo {
+    /// The language constant resource name.
+    #[prost(string, optional, tag = "2")]
+    pub language_constant: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Represents a criterion for targeting webpages of an advertiser's website.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WebpageInfo {
+    /// The name of the criterion that is defined by this parameter. The name value
+    /// will be used for identifying, sorting and filtering criteria with this type
+    /// of parameters.
+    ///
+    /// This field is required for CREATE operations and is prohibited on UPDATE
+    /// operations.
+    #[prost(string, optional, tag = "3")]
+    pub criterion_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Conditions, or logical expressions, for webpage targeting. The list of
+    /// webpage targeting conditions are and-ed together when evaluated
+    /// for targeting. An empty list of conditions indicates all pages of the
+    /// campaign's website are targeted.
+    ///
+    /// This field is required for CREATE operations and is prohibited on UPDATE
+    /// operations.
+    #[prost(message, repeated, tag = "2")]
+    pub conditions: ::prost::alloc::vec::Vec<WebpageConditionInfo>,
+    /// Website criteria coverage percentage. This is the computed percentage
+    /// of website coverage based on the website target, negative website target
+    /// and negative keywords in the ad group and campaign. For instance, when
+    /// coverage returns as 1, it indicates it has 100% coverage. This field is
+    /// read-only.
+    #[prost(double, tag = "4")]
+    pub coverage_percentage: f64,
+}
+/// Logical expression for targeting webpages of an advertiser's website.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WebpageConditionInfo {
+    /// Operand of webpage targeting condition.
+    #[prost(
+        enumeration = "super::enums::webpage_condition_operand_enum::WebpageConditionOperand",
+        tag = "1"
+    )]
+    pub operand: i32,
+    /// Operator of webpage targeting condition.
+    #[prost(
+        enumeration = "super::enums::webpage_condition_operator_enum::WebpageConditionOperator",
+        tag = "2"
+    )]
+    pub operator: i32,
+    /// Argument of webpage targeting condition.
+    #[prost(string, optional, tag = "4")]
+    pub argument: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A radius around a list of locations specified through a feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationGroupInfo {
+    /// Geo target constant(s) restricting the scope of the geographic area within
+    /// the feed. Currently only one geo target constant is allowed.
+    #[prost(string, repeated, tag = "6")]
+    pub geo_target_constants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Distance in units specifying the radius around targeted locations.
+    /// This is required and must be set in CREATE operations.
+    #[prost(int64, optional, tag = "7")]
+    pub radius: ::core::option::Option<i64>,
+    /// Unit of the radius. Miles and meters are supported for geo target
+    /// constants. Milli miles and meters are supported for feed item sets.
+    /// This is required and must be set in CREATE operations.
+    #[prost(
+        enumeration = "super::enums::location_group_radius_units_enum::LocationGroupRadiusUnits",
+        tag = "4"
+    )]
+    pub radius_units: i32,
+    /// FeedItemSets whose FeedItems are targeted. If multiple IDs are specified,
+    /// then all items that appear in at least one set are targeted. This field
+    /// cannot be used with geo_target_constants. This is optional and can only be
+    /// set in CREATE operations.
+    #[prost(string, repeated, tag = "8")]
+    pub feed_item_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A unified callout asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnifiedCalloutAsset {
+    /// The callout text.
+    /// The length of this string should be between 1 and 25, inclusive.
+    #[prost(string, tag = "1")]
+    pub callout_text: ::prost::alloc::string::String,
+    /// Start date of when this asset is effective and can begin serving, in
+    /// yyyy-MM-dd format.
+    #[prost(string, tag = "2")]
+    pub start_date: ::prost::alloc::string::String,
+    /// Last date of when this asset is effective and still serving, in yyyy-MM-dd
+    /// format.
+    #[prost(string, tag = "3")]
+    pub end_date: ::prost::alloc::string::String,
+    /// List of non-overlapping schedules specifying all time intervals for which
+    /// the asset may serve. There can be a maximum of 6 schedules per day, 42 in
+    /// total.
+    #[prost(message, repeated, tag = "4")]
+    pub ad_schedule_targets: ::prost::alloc::vec::Vec<AdScheduleInfo>,
+    /// Whether to show the asset in search user's time zone. Applies to Microsoft
+    /// Ads.
+    #[prost(bool, tag = "5")]
+    pub use_searcher_time_zone: bool,
+}
+/// A unified sitelink asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnifiedSitelinkAsset {
+    /// URL display text for the sitelink.
+    /// The length of this string should be between 1 and 25, inclusive.
+    #[prost(string, tag = "1")]
+    pub link_text: ::prost::alloc::string::String,
+    /// First line of the description for the sitelink.
+    /// If set, the length should be between 1 and 35, inclusive, and description2
+    /// must also be set.
+    #[prost(string, tag = "2")]
+    pub description1: ::prost::alloc::string::String,
+    /// Second line of the description for the sitelink.
+    /// If set, the length should be between 1 and 35, inclusive, and description1
+    /// must also be set.
+    #[prost(string, tag = "3")]
+    pub description2: ::prost::alloc::string::String,
+    /// Start date of when this asset is effective and can begin serving, in
+    /// yyyy-MM-dd format.
+    #[prost(string, tag = "4")]
+    pub start_date: ::prost::alloc::string::String,
+    /// Last date of when this asset is effective and still serving, in yyyy-MM-dd
+    /// format.
+    #[prost(string, tag = "5")]
+    pub end_date: ::prost::alloc::string::String,
+    /// List of non-overlapping schedules specifying all time intervals for which
+    /// the asset may serve. There can be a maximum of 6 schedules per day, 42 in
+    /// total.
+    #[prost(message, repeated, tag = "6")]
+    pub ad_schedule_targets: ::prost::alloc::vec::Vec<AdScheduleInfo>,
+    /// ID used for tracking clicks for the sitelink asset. This is a Yahoo! Japan
+    /// only field.
+    #[prost(int64, tag = "7")]
+    pub tracking_id: i64,
+    /// Whether to show the sitelink asset in search user's time zone.
+    /// Applies to Microsoft Ads.
+    #[prost(bool, tag = "8")]
+    pub use_searcher_time_zone: bool,
+    /// Whether the preference is for the sitelink asset to be displayed on mobile
+    /// devices. Applies to Microsoft Ads.
+    #[prost(bool, tag = "9")]
+    pub mobile_preferred: bool,
+}
+/// A Unified Page Feed asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnifiedPageFeedAsset {
+    /// The webpage that advertisers want to target.
+    #[prost(string, tag = "1")]
+    pub page_url: ::prost::alloc::string::String,
+    /// Labels used to group the page urls.
+    #[prost(string, repeated, tag = "2")]
+    pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// An asset representing a mobile app.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MobileAppAsset {
+    /// Required. A string that uniquely identifies a mobile application. It should
+    /// just contain the platform native id, like "com.android.ebay" for Android or
+    /// "12345689" for iOS.
+    #[prost(string, tag = "1")]
+    pub app_id: ::prost::alloc::string::String,
+    /// Required. The application store that distributes this specific app.
+    #[prost(
+        enumeration = "super::enums::mobile_app_vendor_enum::MobileAppVendor",
+        tag = "2"
+    )]
+    pub app_store: i32,
+}
+/// A unified call asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnifiedCallAsset {
+    /// Two-letter country code of the phone number. Examples: 'US', 'us'.
+    #[prost(string, tag = "1")]
+    pub country_code: ::prost::alloc::string::String,
+    /// The advertiser's raw phone number. Examples: '1234567890', '(123)456-7890'
+    #[prost(string, tag = "2")]
+    pub phone_number: ::prost::alloc::string::String,
+    /// Output only. Indicates whether this CallAsset should use its own call
+    /// conversion setting, follow the account level setting, or disable call
+    /// conversion.
+    #[prost(
+        enumeration = "super::enums::call_conversion_reporting_state_enum::CallConversionReportingState",
+        tag = "3"
+    )]
+    pub call_conversion_reporting_state: i32,
+    /// The conversion action to attribute a call conversion to. If not set, the
+    /// default conversion action is used. This field only has effect if
+    /// call_conversion_reporting_state is set to
+    /// USE_RESOURCE_LEVEL_CALL_CONVERSION_ACTION.
+    #[prost(string, tag = "4")]
+    pub call_conversion_action: ::prost::alloc::string::String,
+    /// List of non-overlapping schedules specifying all time intervals for which
+    /// the asset may serve. There can be a maximum of 6 schedules per day, 42 in
+    /// total.
+    #[prost(message, repeated, tag = "5")]
+    pub ad_schedule_targets: ::prost::alloc::vec::Vec<AdScheduleInfo>,
+    /// Whether the call only shows the phone number without a link to the website.
+    /// Applies to Microsoft Ads.
+    #[prost(bool, tag = "7")]
+    pub call_only: bool,
+    /// Whether the call should be enabled on call tracking.
+    /// Applies to Microsoft Ads.
+    #[prost(bool, tag = "8")]
+    pub call_tracking_enabled: bool,
+    /// Whether to show the call extension in search user's time zone.
+    /// Applies to Microsoft Ads.
+    #[prost(bool, tag = "9")]
+    pub use_searcher_time_zone: bool,
+    /// Start date of when this asset is effective and can begin serving, in
+    /// yyyy-MM-dd format.
+    #[prost(string, tag = "10")]
+    pub start_date: ::prost::alloc::string::String,
+    /// Last date of when this asset is effective and still serving, in yyyy-MM-dd
+    /// format.
+    #[prost(string, tag = "11")]
+    pub end_date: ::prost::alloc::string::String,
+}
+/// A unified location asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnifiedLocationAsset {
+    /// Place IDs uniquely identify a place in the Google Places database and on
+    /// Google Maps.
+    /// This field is unique for a given customer ID and asset type. See
+    /// <https://developers.google.com/places/web-service/place-id> to learn more
+    /// about Place ID.
+    #[prost(string, tag = "1")]
+    pub place_id: ::prost::alloc::string::String,
+    /// The list of business locations for the customer.
+    /// This will only be returned if the Location Asset is syncing from the
+    /// Business Profile account. It is possible to have multiple Business Profile
+    /// listings under the same account that point to the same Place ID.
+    #[prost(message, repeated, tag = "2")]
+    pub business_profile_locations: ::prost::alloc::vec::Vec<BusinessProfileLocation>,
+    /// The type of location ownership.
+    /// If the type is BUSINESS_OWNER, it will be served as a location extension.
+    /// If the type is AFFILIATE, it will be served as an affiliate location.
+    #[prost(
+        enumeration = "super::enums::location_ownership_type_enum::LocationOwnershipType",
+        tag = "3"
+    )]
+    pub location_ownership_type: i32,
+}
+/// Business Profile location data synced from the linked Business Profile
+/// account.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BusinessProfileLocation {
+    /// Advertiser specified label for the location on the Business Profile
+    /// account. This is synced from the Business Profile account.
+    #[prost(string, repeated, tag = "1")]
+    pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Business Profile store code of this location. This is synced from the
+    /// Business Profile account.
+    #[prost(string, tag = "2")]
+    pub store_code: ::prost::alloc::string::String,
+    /// Listing ID of this Business Profile location. This is synced from the
+    /// linked Business Profile account.
+    #[prost(int64, tag = "3")]
+    pub listing_id: i64,
+}
 /// An automated bidding strategy that raises bids for clicks
 /// that seem more likely to lead to a conversion and lowers
 /// them for clicks where they seem less likely.
@@ -272,156 +656,6 @@ pub struct PercentCpc {
     #[prost(bool, optional, tag = "4")]
     pub enhanced_cpc_enabled: ::core::option::Option<bool>,
 }
-/// A keyword criterion.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordInfo {
-    /// The text of the keyword (at most 80 characters and 10 words).
-    #[prost(string, optional, tag = "3")]
-    pub text: ::core::option::Option<::prost::alloc::string::String>,
-    /// The match type of the keyword.
-    #[prost(
-        enumeration = "super::enums::keyword_match_type_enum::KeywordMatchType",
-        tag = "2"
-    )]
-    pub match_type: i32,
-}
-/// A location criterion.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationInfo {
-    /// The geo target constant resource name.
-    #[prost(string, optional, tag = "2")]
-    pub geo_target_constant: ::core::option::Option<::prost::alloc::string::String>,
-}
-/// A device criterion.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeviceInfo {
-    /// Type of the device.
-    #[prost(enumeration = "super::enums::device_enum::Device", tag = "1")]
-    pub r#type: i32,
-}
-/// A listing group criterion.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupInfo {
-    /// Type of the listing group.
-    #[prost(
-        enumeration = "super::enums::listing_group_type_enum::ListingGroupType",
-        tag = "1"
-    )]
-    pub r#type: i32,
-}
-/// An age range criterion.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AgeRangeInfo {
-    /// Type of the age range.
-    #[prost(enumeration = "super::enums::age_range_type_enum::AgeRangeType", tag = "1")]
-    pub r#type: i32,
-}
-/// A gender criterion.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenderInfo {
-    /// Type of the gender.
-    #[prost(enumeration = "super::enums::gender_type_enum::GenderType", tag = "1")]
-    pub r#type: i32,
-}
-/// A User List criterion. Represents a user list that is defined by the
-/// advertiser to be targeted.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListInfo {
-    /// The User List resource name.
-    #[prost(string, optional, tag = "2")]
-    pub user_list: ::core::option::Option<::prost::alloc::string::String>,
-}
-/// A language criterion.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LanguageInfo {
-    /// The language constant resource name.
-    #[prost(string, optional, tag = "2")]
-    pub language_constant: ::core::option::Option<::prost::alloc::string::String>,
-}
-/// Represents a criterion for targeting webpages of an advertiser's website.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebpageInfo {
-    /// The name of the criterion that is defined by this parameter. The name value
-    /// will be used for identifying, sorting and filtering criteria with this type
-    /// of parameters.
-    ///
-    /// This field is required for CREATE operations and is prohibited on UPDATE
-    /// operations.
-    #[prost(string, optional, tag = "3")]
-    pub criterion_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Conditions, or logical expressions, for webpage targeting. The list of
-    /// webpage targeting conditions are and-ed together when evaluated
-    /// for targeting. An empty list of conditions indicates all pages of the
-    /// campaign's website are targeted.
-    ///
-    /// This field is required for CREATE operations and is prohibited on UPDATE
-    /// operations.
-    #[prost(message, repeated, tag = "2")]
-    pub conditions: ::prost::alloc::vec::Vec<WebpageConditionInfo>,
-    /// Website criteria coverage percentage. This is the computed percentage
-    /// of website coverage based on the website target, negative website target
-    /// and negative keywords in the ad group and campaign. For instance, when
-    /// coverage returns as 1, it indicates it has 100% coverage. This field is
-    /// read-only.
-    #[prost(double, tag = "4")]
-    pub coverage_percentage: f64,
-}
-/// Logical expression for targeting webpages of an advertiser's website.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebpageConditionInfo {
-    /// Operand of webpage targeting condition.
-    #[prost(
-        enumeration = "super::enums::webpage_condition_operand_enum::WebpageConditionOperand",
-        tag = "1"
-    )]
-    pub operand: i32,
-    /// Operator of webpage targeting condition.
-    #[prost(
-        enumeration = "super::enums::webpage_condition_operator_enum::WebpageConditionOperator",
-        tag = "2"
-    )]
-    pub operator: i32,
-    /// Argument of webpage targeting condition.
-    #[prost(string, optional, tag = "4")]
-    pub argument: ::core::option::Option<::prost::alloc::string::String>,
-}
-/// A radius around a list of locations specified through a feed.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationGroupInfo {
-    /// Geo target constant(s) restricting the scope of the geographic area within
-    /// the feed. Currently only one geo target constant is allowed.
-    #[prost(string, repeated, tag = "6")]
-    pub geo_target_constants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Distance in units specifying the radius around targeted locations.
-    /// This is required and must be set in CREATE operations.
-    #[prost(int64, optional, tag = "7")]
-    pub radius: ::core::option::Option<i64>,
-    /// Unit of the radius. Miles and meters are supported for geo target
-    /// constants. Milli miles and meters are supported for feed item sets.
-    /// This is required and must be set in CREATE operations.
-    #[prost(
-        enumeration = "super::enums::location_group_radius_units_enum::LocationGroupRadiusUnits",
-        tag = "4"
-    )]
-    pub radius_units: i32,
-    /// FeedItemSets whose FeedItems are targeted. If multiple IDs are specified,
-    /// then all items that appear in at least one set are targeted. This field
-    /// cannot be used with geo_target_constants. This is optional and can only be
-    /// set in CREATE operations.
-    #[prost(string, repeated, tag = "8")]
-    pub feed_item_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
 /// A mapping that can be used by custom parameter tags in a
 /// `tracking_url_template`, `final_urls`, or `mobile_final_urls`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -532,10 +766,16 @@ pub struct Metrics {
     pub average_cost: ::core::option::Option<f64>,
     /// The total cost of all clicks divided by the total number of clicks
     /// received.
-    #[prost(double, optional, tag = "204")]
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(double, optional, tag = "317")]
     pub average_cpc: ::core::option::Option<f64>,
     /// Average cost-per-thousand impressions (CPM).
-    #[prost(double, optional, tag = "206")]
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(double, optional, tag = "318")]
     pub average_cpm: ::core::option::Option<f64>,
     /// The number of clicks.
     #[prost(int64, optional, tag = "131")]
@@ -600,7 +840,10 @@ pub struct Metrics {
     pub conversions_by_conversion_date: f64,
     /// The sum of your cost-per-click (CPC) and cost-per-thousand impressions
     /// (CPM) costs during this period.
-    #[prost(int64, optional, tag = "169")]
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "316")]
     pub cost_micros: ::core::option::Option<i64>,
     /// The cost of ad interactions divided by all conversions.
     #[prost(double, optional, tag = "170")]
@@ -803,6 +1046,12 @@ pub struct RealTimeBiddingSetting {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Segments {
+    /// Ad network type.
+    #[prost(
+        enumeration = "super::enums::ad_network_type_enum::AdNetworkType",
+        tag = "3"
+    )]
+    pub ad_network_type: i32,
     /// Resource name of the conversion action.
     #[prost(string, optional, tag = "146")]
     pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
@@ -844,6 +1093,18 @@ pub struct Segments {
     /// Year, formatted as yyyy.
     #[prost(int32, optional, tag = "131")]
     pub year: ::core::option::Option<i32>,
+    /// Only used with CustomerAsset, CampaignAsset and AdGroupAsset metrics.
+    /// Indicates whether the interaction metrics occurred on the asset itself
+    /// or a different asset or ad unit.
+    /// Interactions (for example, clicks) are counted across all the parts of the
+    /// served ad (for example, Ad itself and other components like Sitelinks) when
+    /// they are served together. When interaction_on_this_asset is true, it means
+    /// the interactions are on this specific asset and when
+    /// interaction_on_this_asset is false, it means the interactions is not on
+    /// this specific asset but on other parts of the served ad this asset is
+    /// served with.
+    #[prost(message, optional, tag = "139")]
+    pub asset_interaction_target: ::core::option::Option<AssetInteractionTarget>,
 }
 /// A Keyword criterion segment.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -855,6 +1116,19 @@ pub struct Keyword {
     /// Keyword info.
     #[prost(message, optional, tag = "2")]
     pub info: ::core::option::Option<KeywordInfo>,
+}
+/// An AssetInteractionTarget segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetInteractionTarget {
+    /// The asset resource name.
+    #[prost(string, tag = "1")]
+    pub asset: ::prost::alloc::string::String,
+    /// Only used with CustomerAsset, CampaignAsset and AdGroupAsset metrics.
+    /// Indicates whether the interaction metrics occurred on the asset itself or a
+    /// different asset or ad unit.
+    #[prost(bool, tag = "2")]
+    pub interaction_on_this_asset: bool,
 }
 /// Settings for the targeting-related features, at the campaign and ad group
 /// levels. For more details about the targeting setting, visit

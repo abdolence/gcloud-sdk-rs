@@ -20,12 +20,16 @@ pub enum AcceleratorType {
     NvidiaA10080gb = 9,
     /// Nvidia L4 GPU.
     NvidiaL4 = 11,
+    /// Nvidia H100 80Gb GPU.
+    NvidiaH10080gb = 13,
     /// TPU v2.
     TpuV2 = 6,
     /// TPU v3.
     TpuV3 = 7,
     /// TPU v4.
     TpuV4Pod = 10,
+    /// TPU v5.
+    TpuV5Litepod = 12,
 }
 impl AcceleratorType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -43,9 +47,11 @@ impl AcceleratorType {
             AcceleratorType::NvidiaTeslaA100 => "NVIDIA_TESLA_A100",
             AcceleratorType::NvidiaA10080gb => "NVIDIA_A100_80GB",
             AcceleratorType::NvidiaL4 => "NVIDIA_L4",
+            AcceleratorType::NvidiaH10080gb => "NVIDIA_H100_80GB",
             AcceleratorType::TpuV2 => "TPU_V2",
             AcceleratorType::TpuV3 => "TPU_V3",
             AcceleratorType::TpuV4Pod => "TPU_V4_POD",
+            AcceleratorType::TpuV5Litepod => "TPU_V5_LITEPOD",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -60,9 +66,11 @@ impl AcceleratorType {
             "NVIDIA_TESLA_A100" => Some(Self::NvidiaTeslaA100),
             "NVIDIA_A100_80GB" => Some(Self::NvidiaA10080gb),
             "NVIDIA_L4" => Some(Self::NvidiaL4),
+            "NVIDIA_H100_80GB" => Some(Self::NvidiaH10080gb),
             "TPU_V2" => Some(Self::TpuV2),
             "TPU_V3" => Some(Self::TpuV3),
             "TPU_V4_POD" => Some(Self::TpuV4Pod),
+            "TPU_V5_LITEPOD" => Some(Self::TpuV5Litepod),
             _ => None,
         }
     }
@@ -2037,6 +2045,22 @@ pub struct DiskSpec {
     /// Size in GB of the boot disk (default is 100GB).
     #[prost(int32, tag = "2")]
     pub boot_disk_size_gb: i32,
+}
+/// Represents the spec of [persistent
+/// disk]\[<https://cloud.google.com/compute/docs/disks/persistent-disks\]> options.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersistentDiskSpec {
+    /// Type of the disk (default is "pd-standard").
+    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
+    /// "pd-standard" (Persistent Disk Hard Disk Drive)
+    /// "pd-balanced" (Balanced Persistent Disk)
+    /// "pd-extreme" (Extreme Persistent Disk)
+    #[prost(string, tag = "1")]
+    pub disk_type: ::prost::alloc::string::String,
+    /// Size in GB of the disk (default is 100GB).
+    #[prost(int64, tag = "2")]
+    pub disk_size_gb: i64,
 }
 /// Represents a mount configuration for Network File System (NFS) to mount.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4246,7 +4270,7 @@ pub mod batch_prediction_job {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Context {
-    /// Output only. The resource name of the Context.
+    /// Immutable. The resource name of the Context.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// User provided display name of the Context.
@@ -4588,6 +4612,11 @@ pub struct Scheduling {
     /// resilient to workers leaving and joining a job.
     #[prost(bool, tag = "3")]
     pub restart_job_on_worker_restart: bool,
+    /// Optional. Indicates if the job should retry for internal errors after the
+    /// job starts running. If true, overrides
+    /// `Scheduling.restart_job_on_worker_restart` to false.
+    #[prost(bool, tag = "5")]
+    pub disable_retries: bool,
 }
 /// A piece of data in a Dataset. Could be an image, a video, a document or plain
 /// text.
@@ -5335,6 +5364,24 @@ pub struct ExportDataOperationMetadata {
     /// data is stored in the directory.
     #[prost(string, tag = "2")]
     pub gcs_output_directory: ::prost::alloc::string::String,
+}
+/// Runtime operation information for
+/// \[DatasetService.CreateDatasetVersion][google.cloud.aiplatform.v1beta1.DatasetService.CreateDatasetVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDatasetVersionOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Runtime operation information for
+/// \[DatasetService.RestoreDatasetVersion][google.cloud.aiplatform.v1beta1.DatasetService.RestoreDatasetVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreDatasetVersionOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for
 /// \[DatasetService.ListDataItems][google.cloud.aiplatform.v1beta1.DatasetService.ListDataItems\].
@@ -6120,7 +6167,7 @@ pub struct DeployedIndexRef {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentResourcePool {
-    /// Output only. The resource name of the DeploymentResourcePool.
+    /// Immutable. The resource name of the DeploymentResourcePool.
     /// Format:
     /// `projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}`
     #[prost(string, tag = "1")]
@@ -19400,6 +19447,10 @@ pub struct PublisherModel {
     /// Required. Indicates the open source category of the publisher model.
     #[prost(enumeration = "publisher_model::OpenSourceCategory", tag = "7")]
     pub open_source_category: i32,
+    /// Optional. The parent that this model was customized from. E.g., Vision API,
+    /// Natural Language API, LaMDA, T5, etc. Foundation models don't have parents.
+    #[prost(message, optional, tag = "14")]
+    pub parent: ::core::option::Option<publisher_model::Parent>,
     /// Optional. Supported call-to-action options.
     #[prost(message, optional, tag = "19")]
     pub supported_actions: ::core::option::Option<publisher_model::CallToAction>,
@@ -19441,6 +19492,18 @@ pub mod publisher_model {
             #[prost(string, tag = "2")]
             ResourceName(::prost::alloc::string::String),
         }
+    }
+    /// The information about the parent of a model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Parent {
+        /// Required. The display name of the parent. E.g., LaMDA, T5, Vision API,
+        /// Natural Language API.
+        #[prost(string, tag = "1")]
+        pub display_name: ::prost::alloc::string::String,
+        /// Optional. The Google Cloud resource name or the URI reference.
+        #[prost(message, optional, tag = "2")]
+        pub reference: ::core::option::Option<ResourceReference>,
     }
     /// A named piece of documentation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -19497,6 +19560,11 @@ pub mod publisher_model {
         /// Optional. Request for access.
         #[prost(message, optional, tag = "9")]
         pub request_access: ::core::option::Option<
+            call_to_action::RegionalResourceReferences,
+        >,
+        /// Optional. Open evaluation pipeline of the PublisherModel.
+        #[prost(message, optional, tag = "11")]
+        pub open_evaluation_pipeline: ::core::option::Option<
             call_to_action::RegionalResourceReferences,
         >,
     }
@@ -21316,7 +21384,7 @@ pub mod persistent_resource {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePool {
-    /// Optional. The unique ID in a PersistentResource to refer the this resource
+    /// Immutable. The unique ID in a PersistentResource to refer the this resource
     /// pool. User can specify it if need to use it, otherwise we will generate it
     /// automatically.
     #[prost(string, tag = "1")]
@@ -21330,11 +21398,6 @@ pub struct ResourcePool {
     /// Optional. Disk spec for the machine in this node pool.
     #[prost(message, optional, tag = "4")]
     pub disk_spec: ::core::option::Option<DiskSpec>,
-    /// Output only. The number of machines currently not in use by training jobs
-    /// for this resource pool. Deprecated. Use `used_replica_count` instead.
-    #[deprecated]
-    #[prost(int64, tag = "5")]
-    pub idle_replica_count: i64,
     /// Output only. The number of machines currently in use by training jobs for
     /// this resource pool. Will replace idle_replica_count.
     #[prost(int64, tag = "6")]
@@ -21369,7 +21432,7 @@ pub struct ResourceRuntimeSpec {
     /// Optional. Configure the use of workload identity on the PersistentResource
     #[prost(message, optional, tag = "2")]
     pub service_account_spec: ::core::option::Option<ServiceAccountSpec>,
-    /// Ray cluster configuration.
+    /// Optional. Ray cluster configuration.
     /// Required when creating a dedicated RayCluster on the PersistentResource.
     #[prost(message, optional, tag = "1")]
     pub ray_spec: ::core::option::Option<RaySpec>,
@@ -21389,6 +21452,26 @@ pub struct RaySpec {
     /// the {@code resource_pool_images} field.
     #[prost(string, tag = "1")]
     pub image_uri: ::prost::alloc::string::String,
+    /// Optional. Required if image_uri is not set. A map of resource_pool_id to
+    /// prebuild Ray image if user need to use different images for different
+    /// head/worker pools. This map needs to cover all the resource pool ids.
+    /// Example:
+    /// {
+    ///    "ray_head_node_pool": "head image"
+    ///    "ray_worker_node_pool1": "worker image"
+    ///    "ray_worker_node_pool2": "another worker image"
+    /// }
+    #[prost(map = "string, string", tag = "6")]
+    pub resource_pool_images: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. This will be used to indicate which resource pool will serve as
+    /// the Ray head node(the first node within that pool). Will use the machine
+    /// from the first workerpool as the head node by default if this field is not
+    /// set.
+    #[prost(string, tag = "7")]
+    pub head_node_resource_pool_id: ::prost::alloc::string::String,
 }
 /// Persistent Cluster runtime information as output
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -21459,6 +21542,14 @@ pub struct CreatePersistentResourceOperationMetadata {
     #[prost(message, optional, tag = "1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
+/// Details of operations that perform update PersistentResource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePersistentResourceOperationMetadata {
+    /// Operation metadata for PersistentResource.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
 /// Request message for
 /// \[PersistentResourceService.GetPersistentResource][google.cloud.aiplatform.v1beta1.PersistentResourceService.GetPersistentResource\].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -21512,6 +21603,22 @@ pub struct DeletePersistentResourceRequest {
     /// `projects/{project}/locations/{location}/persistentResources/{persistent_resource}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdatePersistentResource method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePersistentResourceRequest {
+    /// Required. The PersistentResource to update.
+    ///
+    /// The PersistentResource's `name` field is used to identify the
+    /// PersistentResource to update. Format:
+    /// `projects/{project}/locations/{location}/persistentResources/{persistent_resource}`
+    #[prost(message, optional, tag = "1")]
+    pub persistent_resource: ::core::option::Option<PersistentResource>,
+    /// Required. Specify the fields to be overwritten in the PersistentResource by
+    /// the update method.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Generated client implementations.
 pub mod persistent_resource_service_client {
@@ -21601,7 +21708,7 @@ pub mod persistent_resource_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Uploads a Model artifact into Vertex AI.
+        /// Creates a PersistentResource.
         pub async fn create_persistent_resource(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePersistentResourceRequest>,
@@ -21721,6 +21828,37 @@ pub mod persistent_resource_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.PersistentResourceService",
                         "DeletePersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a PersistentResource.
+        pub async fn update_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PersistentResourceService/UpdatePersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PersistentResourceService",
+                        "UpdatePersistentResource",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -21955,6 +22093,10 @@ pub struct PipelineJob {
     /// is from supported template registry.
     #[prost(message, optional, tag = "20")]
     pub template_metadata: ::core::option::Option<PipelineTemplateMetadata>,
+    /// Output only. The schedule resource name.
+    /// Only returned if the Pipeline is created by Schedule API.
+    #[prost(string, tag = "22")]
+    pub schedule_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `PipelineJob`.
 pub mod pipeline_job {
@@ -23605,6 +23747,34 @@ pub struct ExplainResponse {
     #[prost(message, repeated, tag = "3")]
     pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
 }
+/// Request message for
+/// \[PredictionService.CountTokens][google.cloud.aiplatform.v1beta1.PredictionService.CountTokens\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CountTokensRequest {
+    /// Required. The name of the Endpoint requested to perform token counting.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to token counting call.
+    /// Schema is identical to the prediction schema of the underlying model.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+}
+/// Response message for
+/// \[PredictionService.CountTokens][google.cloud.aiplatform.v1beta1.PredictionService.CountTokens\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CountTokensResponse {
+    /// The total number of tokens counted across all instances from the request.
+    #[prost(int32, tag = "1")]
+    pub total_tokens: i32,
+    /// The total number of billable characters counted across all instances from
+    /// the request.
+    #[prost(int32, tag = "2")]
+    pub total_billable_characters: i32,
+}
 /// Generated client implementations.
 pub mod prediction_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -23836,6 +24006,37 @@ pub mod prediction_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Perform a token counting.
+        pub async fn count_tokens(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CountTokensRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CountTokensResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/CountTokens",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "CountTokens",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// An instance of a Schedule periodically schedules runs to make API calls based
@@ -23843,7 +24044,7 @@ pub mod prediction_service_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
-    /// Output only. The resource name of the Schedule.
+    /// Immutable. The resource name of the Schedule.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. User provided name of the Schedule.
@@ -24108,6 +24309,7 @@ pub struct ListSchedulesRequest {
     /// descending order.
     ///
     /// Supported fields:
+    ///
     ///    * `create_time`
     ///    * `start_time`
     ///    * `end_time`
@@ -24177,7 +24379,9 @@ pub struct ResumeScheduleRequest {
 pub struct UpdateScheduleRequest {
     /// Required. The Schedule which replaces the resource on the server.
     /// The following restrictions will be applied:
+    ///
     ///    * The scheduled request type cannot be changed.
+    ///    * The non-empty fields cannot be unset.
     ///    * The output_only fields will be ignored if specified.
     #[prost(message, optional, tag = "1")]
     pub schedule: ::core::option::Option<Schedule>,

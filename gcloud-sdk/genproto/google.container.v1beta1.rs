@@ -1814,9 +1814,22 @@ pub struct BinaryAuthorization {
     /// to DISABLED.
     #[prost(enumeration = "binary_authorization::EvaluationMode", tag = "2")]
     pub evaluation_mode: i32,
+    /// Optional. Binauthz policies that apply to this cluster.
+    #[prost(message, repeated, tag = "5")]
+    pub policy_bindings: ::prost::alloc::vec::Vec<binary_authorization::PolicyBinding>,
 }
 /// Nested message and enum types in `BinaryAuthorization`.
 pub mod binary_authorization {
+    /// Binauthz policy that applies to this cluster.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PolicyBinding {
+        /// The relative resource name of the binauthz platform policy to audit. GKE
+        /// platform policies have the following format:
+        /// `projects/{project_number}/platforms/gke/policies/{policy_id}`.
+        #[prost(string, optional, tag = "1")]
+        pub name: ::core::option::Option<::prost::alloc::string::String>,
+    }
     /// Binary Authorization mode of operation.
     #[derive(
         Clone,
@@ -1839,6 +1852,11 @@ pub mod binary_authorization {
         /// project's singleton policy. This is equivalent to setting the
         /// enabled boolean to true.
         ProjectSingletonPolicyEnforce = 2,
+        /// Use Binary Authorization with the policies specified in policy_bindings.
+        PolicyBindings = 5,
+        /// Use Binary Authorization with the policies specified in policy_bindings,
+        /// and also with the project's singleton policy in enforcement mode.
+        PolicyBindingsAndProjectSingletonPolicyEnforce = 6,
     }
     impl EvaluationMode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1852,6 +1870,10 @@ pub mod binary_authorization {
                 EvaluationMode::ProjectSingletonPolicyEnforce => {
                     "PROJECT_SINGLETON_POLICY_ENFORCE"
                 }
+                EvaluationMode::PolicyBindings => "POLICY_BINDINGS",
+                EvaluationMode::PolicyBindingsAndProjectSingletonPolicyEnforce => {
+                    "POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1861,6 +1883,10 @@ pub mod binary_authorization {
                 "DISABLED" => Some(Self::Disabled),
                 "PROJECT_SINGLETON_POLICY_ENFORCE" => {
                     Some(Self::ProjectSingletonPolicyEnforce)
+                }
+                "POLICY_BINDINGS" => Some(Self::PolicyBindings),
+                "POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE" => {
+                    Some(Self::PolicyBindingsAndProjectSingletonPolicyEnforce)
                 }
                 _ => None,
             }
@@ -3522,6 +3548,21 @@ pub struct UpdateNodePoolRequest {
     /// Parameters that can be configured on Windows nodes.
     #[prost(message, optional, tag = "34")]
     pub windows_node_config: ::core::option::Option<WindowsNodeConfig>,
+    /// Optional. The desired machine type for nodes in the node pool.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified machine type.
+    #[prost(string, tag = "36")]
+    pub machine_type: ::prost::alloc::string::String,
+    /// Optional. The desired disk type for nodes in the node pool.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified disk type.
+    #[prost(string, tag = "37")]
+    pub disk_type: ::prost::alloc::string::String,
+    /// Optional. The desired disk size for nodes in the node pool.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified disk size.
+    #[prost(int64, tag = "38")]
+    pub disk_size_gb: i64,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7355,6 +7396,18 @@ pub mod monitoring_component_config {
         Scheduler = 4,
         /// kube-controller-manager
         ControllerManager = 5,
+        /// Storage
+        Storage = 7,
+        /// Horizontal Pod Autoscaling
+        Hpa = 8,
+        /// Pod
+        Pod = 9,
+        /// DaemonSet
+        Daemonset = 10,
+        /// Deployment
+        Deployment = 11,
+        /// Statefulset
+        Statefulset = 12,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7369,6 +7422,12 @@ pub mod monitoring_component_config {
                 Component::Apiserver => "APISERVER",
                 Component::Scheduler => "SCHEDULER",
                 Component::ControllerManager => "CONTROLLER_MANAGER",
+                Component::Storage => "STORAGE",
+                Component::Hpa => "HPA",
+                Component::Pod => "POD",
+                Component::Daemonset => "DAEMONSET",
+                Component::Deployment => "DEPLOYMENT",
+                Component::Statefulset => "STATEFULSET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7380,6 +7439,12 @@ pub mod monitoring_component_config {
                 "APISERVER" => Some(Self::Apiserver),
                 "SCHEDULER" => Some(Self::Scheduler),
                 "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
+                "STORAGE" => Some(Self::Storage),
+                "HPA" => Some(Self::Hpa),
+                "POD" => Some(Self::Pod),
+                "DAEMONSET" => Some(Self::Daemonset),
+                "DEPLOYMENT" => Some(Self::Deployment),
+                "STATEFULSET" => Some(Self::Statefulset),
                 _ => None,
             }
         }

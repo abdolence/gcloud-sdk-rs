@@ -2017,7 +2017,7 @@ pub struct GceClusterConfig {
     /// instances](<https://cloud.google.com/compute/docs/label-or-tag-resources#tags>)).
     #[prost(string, repeated, tag = "4")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The Compute Engine metadata entries to add to all instances (see
+    /// Optional. The Compute Engine metadata entries to add to all instances (see
     /// [Project and instance
     /// metadata](<https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>)).
     #[prost(map = "string, string", tag = "5")]
@@ -2166,6 +2166,9 @@ pub struct InstanceGroupConfig {
     /// from `cluster_name`, `num_instances`, and the instance group.
     #[prost(string, repeated, tag = "2")]
     pub instance_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. List of references to Compute Engine instances.
+    #[prost(message, repeated, tag = "11")]
+    pub instance_references: ::prost::alloc::vec::Vec<InstanceReference>,
     /// Optional. The Compute Engine image resource used for cluster instances.
     ///
     /// The URI can represent an image or image family.
@@ -2231,6 +2234,28 @@ pub struct InstanceGroupConfig {
     /// Platform](<https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu>).
     #[prost(string, tag = "9")]
     pub min_cpu_platform: ::prost::alloc::string::String,
+    /// Optional. The minimum number of instances to create.
+    /// If min_num_instances is set, min_num_instances is used for a criteria to
+    /// decide the cluster. Cluster creation will be failed by being an error state
+    /// if the total number of instances created is less than the
+    /// min_num_instances.
+    /// For example, given that num_instances = 5 and min_num_instances = 3,
+    /// * if 4 instances are created and then registered successfully but one
+    /// instance is failed, the failed VM will be deleted and the cluster will be
+    /// resized to 4 instances in running state.
+    /// * if 2 instances are created successfully and 3 instances are failed,
+    /// the cluster will be in an error state and does not delete failed VMs for
+    /// debugging.
+    /// * if 2 instance are created and then registered successfully but 3
+    /// instances are failed to initialize, the cluster will be in an error state
+    /// and does not delete failed VMs for debugging.
+    /// NB: This can only be set for primary workers now.
+    #[prost(int32, tag = "12")]
+    pub min_num_instances: i32,
+    /// Optional. Instance flexibility Policy allowing a mixture of VM shapes and
+    /// provisioning models.
+    #[prost(message, optional, tag = "13")]
+    pub instance_flexibility_policy: ::core::option::Option<InstanceFlexibilityPolicy>,
 }
 /// Nested message and enum types in `InstanceGroupConfig`.
 pub mod instance_group_config {
@@ -2298,6 +2323,23 @@ pub mod instance_group_config {
         }
     }
 }
+/// A reference to a Compute Engine instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstanceReference {
+    /// The user-friendly name of the Compute Engine instance.
+    #[prost(string, tag = "1")]
+    pub instance_name: ::prost::alloc::string::String,
+    /// The unique identifier of the Compute Engine instance.
+    #[prost(string, tag = "2")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// The public RSA key used for sharing data with this instance.
+    #[prost(string, tag = "3")]
+    pub public_key: ::prost::alloc::string::String,
+    /// The public ECIES key used for sharing data with this instance.
+    #[prost(string, tag = "4")]
+    pub public_ecies_key: ::prost::alloc::string::String,
+}
 /// Specifies the resources used to actively manage an instance group.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2309,6 +2351,57 @@ pub struct ManagedGroupConfig {
     /// Output only. The name of the Instance Group Manager for this group.
     #[prost(string, tag = "2")]
     pub instance_group_manager_name: ::prost::alloc::string::String,
+    /// Output only. The partial URI to the instance group manager for this group.
+    /// E.g. projects/my-project/regions/us-central1/instanceGroupManagers/my-igm.
+    #[prost(string, tag = "3")]
+    pub instance_group_manager_uri: ::prost::alloc::string::String,
+}
+/// Instance flexibility Policy allowing a mixture of VM shapes and provisioning
+/// models.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstanceFlexibilityPolicy {
+    /// Optional. List of instance selection options that the group will use when
+    /// creating new VMs.
+    #[prost(message, repeated, tag = "2")]
+    pub instance_selection_list: ::prost::alloc::vec::Vec<
+        instance_flexibility_policy::InstanceSelection,
+    >,
+    /// Output only. A list of instance selection results in the group.
+    #[prost(message, repeated, tag = "3")]
+    pub instance_selection_results: ::prost::alloc::vec::Vec<
+        instance_flexibility_policy::InstanceSelectionResult,
+    >,
+}
+/// Nested message and enum types in `InstanceFlexibilityPolicy`.
+pub mod instance_flexibility_policy {
+    /// Defines machines types and a rank to which the machines types belong.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InstanceSelection {
+        /// Optional. Full machine-type names, e.g. "n1-standard-16".
+        #[prost(string, repeated, tag = "1")]
+        pub machine_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Preference of this instance selection. Lower number means
+        /// higher preference. Dataproc will first try to create a VM based on the
+        /// machine-type with priority rank and fallback to next rank based on
+        /// availability. Machine types and instance selections with the same
+        /// priority have the same preference.
+        #[prost(int32, tag = "2")]
+        pub rank: i32,
+    }
+    /// Defines a mapping from machine types to the number of VMs that are created
+    /// with each machine type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InstanceSelectionResult {
+        /// Output only. Full machine-type names, e.g. "n1-standard-16".
+        #[prost(string, optional, tag = "1")]
+        pub machine_type: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. Number of VM provisioned with the machine_type.
+        #[prost(int32, optional, tag = "2")]
+        pub vm_count: ::core::option::Option<i32>,
+    }
 }
 /// Specifies the type and number of accelerator cards attached to the instances
 /// of an instance. See [GPUs on Compute
@@ -2536,6 +2629,8 @@ pub mod cluster_status {
         Stopped = 7,
         /// The cluster is being started. It is not ready for use.
         Starting = 8,
+        /// The cluster is being repaired. It is not ready for use.
+        Repairing = 10,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2554,6 +2649,7 @@ pub mod cluster_status {
                 State::Stopping => "STOPPING",
                 State::Stopped => "STOPPED",
                 State::Starting => "STARTING",
+                State::Repairing => "REPAIRING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2569,6 +2665,7 @@ pub mod cluster_status {
                 "STOPPING" => Some(Self::Stopping),
                 "STOPPED" => Some(Self::Stopped),
                 "STARTING" => Some(Self::Starting),
+                "REPAIRING" => Some(Self::Repairing),
                 _ => None,
             }
         }
@@ -2838,19 +2935,19 @@ pub struct DataprocMetricConfig {
 }
 /// Nested message and enum types in `DataprocMetricConfig`.
 pub mod dataproc_metric_config {
-    /// A Dataproc OSS metric.
+    /// A Dataproc custom metric.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metric {
-        /// Required. Default metrics are collected unless `metricOverrides` are
-        /// specified for the metric source (see [Available OSS metrics]
-        /// (<https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics>)
+        /// Required. A standard set of metrics is collected unless `metricOverrides`
+        /// are specified for the metric source (see [Custom metrics]
+        /// (<https://cloud.google.com/dataproc/docs/guides/dataproc-metrics#custom_metrics>)
         /// for more information).
         #[prost(enumeration = "MetricSource", tag = "1")]
         pub metric_source: i32,
-        /// Optional. Specify one or more [available OSS metrics]
-        /// (<https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics>)
-        /// to collect for the metric course (for the `SPARK` metric source, any
+        /// Optional. Specify one or more [Custom metrics]
+        /// (<https://cloud.google.com/dataproc/docs/guides/dataproc-metrics#custom_metrics>)
+        /// to collect for the metric course (for the `SPARK` metric source (any
         /// [Spark metric]
         /// (<https://spark.apache.org/docs/latest/monitoring.html#metrics>) can be
         /// specified).
@@ -2870,19 +2967,19 @@ pub mod dataproc_metric_config {
         ///
         /// Notes:
         ///
-        /// * Only the specified overridden metrics will be collected for the
+        /// * Only the specified overridden metrics are collected for the
         ///    metric source. For example, if one or more `spark:executive` metrics
-        ///    are listed as metric overrides, other `SPARK` metrics will not be
-        ///    collected. The collection of the default metrics for other OSS metric
-        ///    sources is unaffected. For example, if both `SPARK` andd `YARN` metric
-        ///    sources are enabled, and overrides are provided for Spark metrics only,
-        ///    all default YARN metrics will be collected.
+        ///    are listed as metric overrides, other `SPARK` metrics are not
+        ///    collected. The collection of the metrics for other enabled custom
+        ///    metric sources is unaffected. For example, if both `SPARK` andd `YARN`
+        ///    metric sources are enabled, and overrides are provided for Spark
+        ///    metrics only, all YARN metrics are collected.
         #[prost(string, repeated, tag = "2")]
         pub metric_overrides: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    /// A source for the collection of Dataproc OSS metrics (see [available OSS
+    /// A source for the collection of Dataproc custom metrics (see [Custom
     /// metrics]
-    /// (<https://cloud.google.com//dataproc/docs/guides/monitoring#available_oss_metrics>)).
+    /// (<https://cloud.google.com//dataproc/docs/guides/dataproc-metrics#custom_metrics>)).
     #[derive(
         Clone,
         Copy,
@@ -2898,9 +2995,9 @@ pub mod dataproc_metric_config {
     pub enum MetricSource {
         /// Required unspecified metric source.
         Unspecified = 0,
-        /// Default monitoring agent metrics. If this source is enabled,
+        /// Monitoring agent metrics. If this source is enabled,
         /// Dataproc enables the monitoring agent in Compute Engine,
-        /// and collects default monitoring agent metrics, which are published
+        /// and collects monitoring agent metrics, which are published
         /// with an `agent.googleapis.com` prefix.
         MonitoringAgentDefaults = 1,
         /// HDFS metric source.
@@ -5261,7 +5358,7 @@ pub struct ResizeNodeGroupRequest {
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. Timeout for graceful YARN decomissioning. [Graceful
+    /// Optional. Timeout for graceful YARN decommissioning. [Graceful
     /// decommissioning]
     /// (<https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/scaling-clusters#graceful_decommissioning>)
     /// allows the removal of nodes from the Compute Engine node group

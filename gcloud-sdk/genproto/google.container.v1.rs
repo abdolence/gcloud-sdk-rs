@@ -2943,6 +2943,24 @@ pub struct UpdateNodePoolRequest {
     /// Parameters that can be configured on Windows nodes.
     #[prost(message, optional, tag = "34")]
     pub windows_node_config: ::core::option::Option<WindowsNodeConfig>,
+    /// Optional. The desired [Google Compute Engine machine
+    /// type](<https://cloud.google.com/compute/docs/machine-types>) for nodes in the
+    /// node pool. Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified machine type.
+    #[prost(string, tag = "36")]
+    pub machine_type: ::prost::alloc::string::String,
+    /// Optional. The desired disk type (e.g. 'pd-standard', 'pd-ssd' or
+    /// 'pd-balanced') for nodes in the node pool.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified disk type.
+    #[prost(string, tag = "37")]
+    pub disk_type: ::prost::alloc::string::String,
+    /// Optional. The desired disk size for nodes in the node pool specified in GB.
+    /// The smallest allowed disk size is 10GB.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified disk size.
+    #[prost(int64, tag = "38")]
+    pub disk_size_gb: i64,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3919,6 +3937,10 @@ pub mod node_pool {
         /// The type of placement.
         #[prost(enumeration = "placement_policy::Type", tag = "1")]
         pub r#type: i32,
+        /// Optional. TPU placement topology for pod slice node pool.
+        /// <https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies>
+        #[prost(string, tag = "2")]
+        pub tpu_topology: ::prost::alloc::string::String,
         /// If set, refers to the name of a custom resource policy supplied by the
         /// user. The resource policy must be in the same project and region as the
         /// node pool. If not found, InvalidArgument error is returned.
@@ -6484,6 +6506,18 @@ pub mod monitoring_component_config {
         Scheduler = 4,
         /// kube-controller-manager
         ControllerManager = 5,
+        /// Storage
+        Storage = 7,
+        /// Horizontal Pod Autoscaling
+        Hpa = 8,
+        /// Pod
+        Pod = 9,
+        /// DaemonSet
+        Daemonset = 10,
+        /// Deployment
+        Deployment = 11,
+        /// Statefulset
+        Statefulset = 12,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6497,6 +6531,12 @@ pub mod monitoring_component_config {
                 Component::Apiserver => "APISERVER",
                 Component::Scheduler => "SCHEDULER",
                 Component::ControllerManager => "CONTROLLER_MANAGER",
+                Component::Storage => "STORAGE",
+                Component::Hpa => "HPA",
+                Component::Pod => "POD",
+                Component::Daemonset => "DAEMONSET",
+                Component::Deployment => "DEPLOYMENT",
+                Component::Statefulset => "STATEFULSET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6507,6 +6547,12 @@ pub mod monitoring_component_config {
                 "APISERVER" => Some(Self::Apiserver),
                 "SCHEDULER" => Some(Self::Scheduler),
                 "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
+                "STORAGE" => Some(Self::Storage),
+                "HPA" => Some(Self::Hpa),
+                "POD" => Some(Self::Pod),
+                "DAEMONSET" => Some(Self::Daemonset),
+                "DEPLOYMENT" => Some(Self::Deployment),
+                "STATEFULSET" => Some(Self::Statefulset),
                 _ => None,
             }
         }

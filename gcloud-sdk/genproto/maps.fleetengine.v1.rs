@@ -184,6 +184,34 @@ pub struct VehicleAttribute {
     /// The attribute's value.
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
+    /// The attribute's value, can be in string, bool, or double type.
+    #[prost(oneof = "vehicle_attribute::VehicleAttributeValue", tags = "3, 4, 5")]
+    pub vehicle_attribute_value: ::core::option::Option<
+        vehicle_attribute::VehicleAttributeValue,
+    >,
+}
+/// Nested message and enum types in `VehicleAttribute`.
+pub mod vehicle_attribute {
+    /// The attribute's value, can be in string, bool, or double type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum VehicleAttributeValue {
+        /// String typed attribute value.
+        ///
+        /// Note: This is identical to the `value` field which will eventually be
+        /// deprecated. For create or update methods, either field can be used, but
+        /// it's strongly recommended to use `string_value`. If both `string_value`
+        /// and `value` are set, they must be identical or an error will be thrown.
+        /// Both fields are populated in responses.
+        #[prost(string, tag = "3")]
+        StringValue(::prost::alloc::string::String),
+        /// Boolean typed attribute value.
+        #[prost(bool, tag = "4")]
+        BoolValue(bool),
+        /// Double typed attribute value.
+        #[prost(double, tag = "5")]
+        NumberValue(f64),
+    }
 }
 /// The location, speed, and heading of a vehicle at a point in time.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1559,7 +1587,7 @@ pub struct Vehicle {
     /// attributes, and each attribute must have a unique key.
     #[prost(message, repeated, tag = "8")]
     pub attributes: ::prost::alloc::vec::Vec<VehicleAttribute>,
-    /// The type of this vehicle.  Can be used to filter vehicles in
+    /// Required. The type of this vehicle.  Can be used to filter vehicles in
     /// `SearchVehicles` results.  Also influences ETA and route calculations.
     #[prost(message, optional, tag = "9")]
     pub vehicle_type: ::core::option::Option<vehicle::VehicleType>,
@@ -1676,6 +1704,11 @@ pub mod vehicle {
             Truck = 3,
             /// A motorcycle, moped, or other two-wheeled vehicle
             TwoWheeler = 4,
+            /// Human-powered transport.
+            Bicycle = 5,
+            /// A human transporter, typically walking or running, traveling along
+            /// pedestrian pathways.
+            Pedestrian = 6,
         }
         impl Category {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1689,6 +1722,8 @@ pub mod vehicle {
                     Category::Taxi => "TAXI",
                     Category::Truck => "TRUCK",
                     Category::TwoWheeler => "TWO_WHEELER",
+                    Category::Bicycle => "BICYCLE",
+                    Category::Pedestrian => "PEDESTRIAN",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1699,6 +1734,8 @@ pub mod vehicle {
                     "TAXI" => Some(Self::Taxi),
                     "TRUCK" => Some(Self::Truck),
                     "TWO_WHEELER" => Some(Self::TwoWheeler),
+                    "BICYCLE" => Some(Self::Bicycle),
+                    "PEDESTRIAN" => Some(Self::Pedestrian),
                     _ => None,
                 }
             }
@@ -3140,11 +3177,7 @@ pub mod vehicle_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns a list of vehicles that match the request
-        /// options, but the vehicle locations will be somewhat altered for privacy.
-        /// This method does not support the `SearchVehicleRequest.order_by` field.
-        /// Vehicle matches in the response will be in order of distance from the
-        /// pickup point.  Only the `vehicle` and `trip_type` fields will be populated.
+        /// Deprecated: Use `SearchVehicles` instead.
         pub async fn search_fuzzed_vehicles(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchVehiclesRequest>,

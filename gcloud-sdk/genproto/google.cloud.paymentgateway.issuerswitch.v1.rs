@@ -2986,6 +2986,9 @@ pub struct MandateTransaction {
     /// funds to be blocked.
     #[prost(bool, tag = "15")]
     pub block_funds: bool,
+    /// Output only. The mandate's name.
+    #[prost(string, tag = "16")]
+    pub mandate_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `MandateTransaction`.
 pub mod mandate_transaction {
@@ -4507,6 +4510,10 @@ pub mod issuer_switch_transactions_client {
         ///     * **Min Length** - 2 characters
         ///     * **Max Length** - 2 characters
         ///     * **Description** - Reference category.
+        /// 1. `MandateName`
+        ///     * **Min Length** - 1 characters
+        ///     * **Max Length** - 255 characters
+        ///     * **Description** - The mandate's name.
         pub async fn export_mandate_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportMandateTransactionsRequest>,
@@ -4870,6 +4877,11 @@ pub mod issuer_participant {
         /// `B1` error to the UPI payments orchestrator. The user will be forced to
         /// re-register with their changed mobile number.
         MobileNumberChanged = 4,
+        /// The participant is registering for UPI transactions for the first time.
+        NewRegistrationInitiated = 5,
+        /// The participant had already registered for UPI transactions but is now
+        /// registering again or resetting their MPIN.
+        ReRegistrationInitiated = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4883,6 +4895,8 @@ pub mod issuer_participant {
                 State::Active => "ACTIVE",
                 State::MpinLocked => "MPIN_LOCKED",
                 State::MobileNumberChanged => "MOBILE_NUMBER_CHANGED",
+                State::NewRegistrationInitiated => "NEW_REGISTRATION_INITIATED",
+                State::ReRegistrationInitiated => "RE_REGISTRATION_INITIATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4893,6 +4907,8 @@ pub mod issuer_participant {
                 "ACTIVE" => Some(Self::Active),
                 "MPIN_LOCKED" => Some(Self::MpinLocked),
                 "MOBILE_NUMBER_CHANGED" => Some(Self::MobileNumberChanged),
+                "NEW_REGISTRATION_INITIATED" => Some(Self::NewRegistrationInitiated),
+                "RE_REGISTRATION_INITIATED" => Some(Self::ReRegistrationInitiated),
                 _ => None,
             }
         }
@@ -5162,6 +5178,14 @@ pub mod issuer_switch_participants_client {
         ///     [MOBILE_NUMBER_CHANGED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.MOBILE_NUMBER_CHANGED]
         ///     : The state cannot be changed to `ACTIVE`. This API will return an
         ///     error.
+        /// *   Current state is
+        ///     [NEW_REGISTRATION_INITIATED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.NEW_REGISTRATION_INITIATED]
+        ///     : The state cannot be changed to `ACTIVE`. This API will return an
+        ///     error.
+        /// *   Current state is
+        ///     [RE_REGISTRATION_INITIATED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.RE_REGISTRATION_INITIATED]
+        ///     : The state cannot be changed to `ACTIVE`. This API will return an
+        ///     error.
         pub async fn activate_participant(
             &mut self,
             request: impl tonic::IntoRequest<super::ParticipantStateChangeRequest>,
@@ -5212,6 +5236,14 @@ pub mod issuer_switch_participants_client {
         ///     successful response.
         /// *   Current state is
         ///     [MOBILE_NUMBER_CHANGED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.MOBILE_NUMBER_CHANGED]
+        ///     : The state cannot be changed to `INACTIVE`. This API will return an
+        ///     error.
+        /// *   Current state is
+        ///     [NEW_REGISTRATION_INITIATED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.NEW_REGISTRATION_INITIATED]
+        ///     : The state cannot be changed to `INACTIVE`. This API will return an
+        ///     error.
+        /// *   Current state is
+        ///     [RE_REGISTRATION_INITIATED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.RE_REGISTRATION_INITIATED]
         ///     : The state cannot be changed to `INACTIVE`. This API will return an
         ///     error.
         pub async fn deactivate_participant(
@@ -5272,6 +5304,16 @@ pub mod issuer_switch_participants_client {
         ///     [MOBILE_NUMBER_CHANGED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.MOBILE_NUMBER_CHANGED]
         ///     : This API will make no change to the participant's state and returns a
         ///     successful response.
+        /// *   Current state is
+        ///     [NEW_REGISTRATION_INITIATED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.NEW_REGISTRATION_INITIATED]
+        ///     : The state cannot be changed to `MOBILE_NUMBER_CHANGED`. This API will
+        ///     return an error.
+        /// *   Current state is
+        ///     [RE_REGISTRATION_INITIATED][google.cloud.paymentgateway.issuerswitch.v1.IssuerParticipant.State.RE_REGISTRATION_INITIATED]
+        ///     : The state will change to `MOBILE_NUMBER_CHANGED`. Any operation
+        ///     involving MPIN verification of the participant will return a `B1` error
+        ///     to the UPI payments orchestrator. The user will be forced to
+        ///     re-register with their changed mobile number.
         pub async fn mobile_number_changed(
             &mut self,
             request: impl tonic::IntoRequest<super::ParticipantStateChangeRequest>,

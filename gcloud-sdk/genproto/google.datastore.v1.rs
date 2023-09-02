@@ -534,8 +534,13 @@ pub struct KindExpression {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyReference {
-    /// The name of the property.
-    /// If name includes "."s, it may be interpreted as a property name path.
+    /// A reference to a property.
+    ///
+    /// Requires:
+    ///
+    /// * MUST be a dot-delimited (`.`) string of segments, where each segment
+    /// conforms to [entity property name]\[google.datastore.v1.Entity.properties\]
+    /// limitations.
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }

@@ -176,6 +176,149 @@ pub mod custom_column_service_client {
     }
 }
 /// Request message for
+/// \[CustomerService.ListAccessibleCustomers][google.ads.searchads360.v0.services.CustomerService.ListAccessibleCustomers\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccessibleCustomersRequest {}
+/// Response message for
+/// \[CustomerService.ListAccessibleCustomers][google.ads.searchads360.v0.services.CustomerService.ListAccessibleCustomers\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccessibleCustomersResponse {
+    /// Resource name of customers directly accessible by the
+    /// user authenticating the call.
+    #[prost(string, repeated, tag = "1")]
+    pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Generated client implementations.
+pub mod customer_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service to manage customers.
+    #[derive(Debug, Clone)]
+    pub struct CustomerServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CustomerServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CustomerServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CustomerServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            CustomerServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Returns resource names of customers directly accessible by the
+        /// user authenticating the call.
+        ///
+        /// List of thrown errors:
+        ///   [AuthenticationError]()
+        ///   [AuthorizationError]()
+        ///   [HeaderError]()
+        ///   [InternalError]()
+        ///   [QuotaError]()
+        ///   [RequestError]()
+        pub async fn list_accessible_customers(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAccessibleCustomersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAccessibleCustomersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.searchads360.v0.services.CustomerService/ListAccessibleCustomers",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.searchads360.v0.services.CustomerService",
+                        "ListAccessibleCustomers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request message for
 /// \[SearchAds360FieldService.GetSearchAds360Field][google.ads.searchads360.v0.services.SearchAds360FieldService.GetSearchAds360Field\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -519,6 +662,12 @@ pub struct SearchAds360Row {
     /// The ad group ad label referenced in the query.
     #[prost(message, optional, tag = "120")]
     pub ad_group_ad_label: ::core::option::Option<super::resources::AdGroupAdLabel>,
+    /// The ad group asset referenced in the query.
+    #[prost(message, optional, tag = "154")]
+    pub ad_group_asset: ::core::option::Option<super::resources::AdGroupAsset>,
+    /// The ad group asset set referenced in the query.
+    #[prost(message, optional, tag = "196")]
+    pub ad_group_asset_set: ::core::option::Option<super::resources::AdGroupAssetSet>,
     /// The ad group audience view referenced in the query.
     #[prost(message, optional, tag = "57")]
     pub ad_group_audience_view: ::core::option::Option<
@@ -543,6 +692,15 @@ pub struct SearchAds360Row {
     /// The age range view referenced in the query.
     #[prost(message, optional, tag = "48")]
     pub age_range_view: ::core::option::Option<super::resources::AgeRangeView>,
+    /// The asset referenced in the query.
+    #[prost(message, optional, tag = "105")]
+    pub asset: ::core::option::Option<super::resources::Asset>,
+    /// The asset set asset referenced in the query.
+    #[prost(message, optional, tag = "180")]
+    pub asset_set_asset: ::core::option::Option<super::resources::AssetSetAsset>,
+    /// The asset set referenced in the query.
+    #[prost(message, optional, tag = "179")]
+    pub asset_set: ::core::option::Option<super::resources::AssetSet>,
     /// The bidding strategy referenced in the query.
     #[prost(message, optional, tag = "18")]
     pub bidding_strategy: ::core::option::Option<super::resources::BiddingStrategy>,
@@ -552,6 +710,12 @@ pub struct SearchAds360Row {
     /// The campaign referenced in the query.
     #[prost(message, optional, tag = "2")]
     pub campaign: ::core::option::Option<super::resources::Campaign>,
+    /// The campaign asset referenced in the query.
+    #[prost(message, optional, tag = "142")]
+    pub campaign_asset: ::core::option::Option<super::resources::CampaignAsset>,
+    /// The campaign asset set referenced in the query.
+    #[prost(message, optional, tag = "181")]
+    pub campaign_asset_set: ::core::option::Option<super::resources::CampaignAssetSet>,
     /// The campaign audience view referenced in the query.
     #[prost(message, optional, tag = "69")]
     pub campaign_audience_view: ::core::option::Option<
@@ -569,6 +733,12 @@ pub struct SearchAds360Row {
     /// The customer referenced in the query.
     #[prost(message, optional, tag = "1")]
     pub customer: ::core::option::Option<super::resources::Customer>,
+    /// The customer asset referenced in the query.
+    #[prost(message, optional, tag = "155")]
+    pub customer_asset: ::core::option::Option<super::resources::CustomerAsset>,
+    /// The customer asset set referenced in the query.
+    #[prost(message, optional, tag = "195")]
+    pub customer_asset_set: ::core::option::Option<super::resources::CustomerAssetSet>,
     /// The CustomerManagerLink referenced in the query.
     #[prost(message, optional, tag = "61")]
     pub customer_manager_link: ::core::option::Option<
@@ -585,6 +755,9 @@ pub struct SearchAds360Row {
     /// The gender view referenced in the query.
     #[prost(message, optional, tag = "40")]
     pub gender_view: ::core::option::Option<super::resources::GenderView>,
+    /// The geo target constant referenced in the query.
+    #[prost(message, optional, tag = "23")]
+    pub geo_target_constant: ::core::option::Option<super::resources::GeoTargetConstant>,
     /// The keyword view referenced in the query.
     #[prost(message, optional, tag = "21")]
     pub keyword_view: ::core::option::Option<super::resources::KeywordView>,

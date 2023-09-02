@@ -1430,6 +1430,13 @@ pub struct SearchCatalogRequest {
     /// If this parameter is omitted, it defaults to the descending `relevance`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
+    /// Optional. If set, use searchAll permission granted on organizations from
+    /// `include_org_ids` and projects from `include_project_ids` instead of the
+    /// fine grained per resource permissions when filtering the search results.
+    /// The only allowed `order_by` criteria for admin_search mode is `default`.
+    /// Using this flags guarantees a full recall of the search results.
+    #[prost(bool, tag = "17")]
+    pub admin_search: bool,
 }
 /// Nested message and enum types in `SearchCatalogRequest`.
 pub mod search_catalog_request {

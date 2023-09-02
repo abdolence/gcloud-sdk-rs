@@ -276,7 +276,6 @@ pub struct AdAssetPolicySummary {
 /// annotated with it.  For instance, when the reason is ASSET_DISAPPROVED, the
 /// details field will contain additional information about the offline
 /// evaluation errors which led to the asset being disapproved.
-/// Next Id: 4
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetLinkPrimaryStatusDetails {
@@ -310,7 +309,6 @@ pub mod asset_link_primary_status_details {
     }
 }
 /// Details related to AssetLinkPrimaryStatusReasonPB.ASSET_DISAPPROVED
-/// Next Id: 2
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetDisapproved {
@@ -377,6 +375,14 @@ pub struct AdMediaBundleAsset {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdDiscoveryCarouselCardAsset {
     /// The Asset resource name of this discovery carousel card.
+    #[prost(string, optional, tag = "1")]
+    pub asset: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A call to action asset used inside an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdCallToActionAsset {
+    /// The Asset resource name of this call to action asset.
     #[prost(string, optional, tag = "1")]
     pub asset: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -1159,6 +1165,40 @@ pub struct DiscoveryCarouselAdInfo {
     #[prost(message, repeated, tag = "6")]
     pub carousel_cards: ::prost::alloc::vec::Vec<AdDiscoveryCarouselCardAsset>,
 }
+/// A discovery video responsive ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryVideoResponsiveAdInfo {
+    /// List of text assets used for the short headline, for example, the "Call To
+    /// Action" banner.
+    #[prost(message, repeated, tag = "1")]
+    pub headlines: ::prost::alloc::vec::Vec<AdTextAsset>,
+    /// List of text assets used for the long headline.
+    #[prost(message, repeated, tag = "2")]
+    pub long_headlines: ::prost::alloc::vec::Vec<AdTextAsset>,
+    /// List of text assets used for the description.
+    #[prost(message, repeated, tag = "3")]
+    pub descriptions: ::prost::alloc::vec::Vec<AdTextAsset>,
+    /// List of YouTube video assets used for the ad.
+    #[prost(message, repeated, tag = "4")]
+    pub videos: ::prost::alloc::vec::Vec<AdVideoAsset>,
+    /// Logo image to be used in the ad. Valid image types are GIF, JPEG, and PNG.
+    /// The minimum size is 128x128 and the aspect ratio must be 1:1(+-1%).
+    #[prost(message, repeated, tag = "5")]
+    pub logo_images: ::prost::alloc::vec::Vec<AdImageAsset>,
+    /// First part of text that appears in the ad with the displayed URL.
+    #[prost(string, tag = "6")]
+    pub breadcrumb1: ::prost::alloc::string::String,
+    /// Second part of text that appears in the ad with the displayed URL.
+    #[prost(string, tag = "7")]
+    pub breadcrumb2: ::prost::alloc::string::String,
+    /// Required. The advertiser/brand name.
+    #[prost(message, optional, tag = "8")]
+    pub business_name: ::core::option::Option<AdTextAsset>,
+    /// Assets of type CallToActionAsset used for the "Call To Action" button.
+    #[prost(message, repeated, tag = "9")]
+    pub call_to_actions: ::prost::alloc::vec::Vec<AdCallToActionAsset>,
+}
 /// Data related to location set. One of the Google Business Profile (previously
 /// known as Google My Business) data, Chain data, and map location data need to
 /// be specified.
@@ -1442,6 +1482,18 @@ pub struct ListingGroupInfo {
     pub parent_ad_group_criterion: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
+    /// The path of dimensions defining this listing group.
+    #[prost(message, optional, tag = "5")]
+    pub path: ::core::option::Option<ListingDimensionPath>,
+}
+/// The path of dimensions defining a listing group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingDimensionPath {
+    /// The complete path of dimensions through the listing group hierarchy, from
+    /// the root (excluding the root itself) to this listing group.
+    #[prost(message, repeated, tag = "1")]
+    pub dimensions: ::prost::alloc::vec::Vec<ListingDimensionInfo>,
 }
 /// A listing scope criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4840,6 +4892,15 @@ pub struct Metrics {
     /// <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, tag = "240")]
     pub all_conversions_value_by_conversion_date: f64,
+    /// All of new customers' lifetime conversion value. If you have set up
+    /// customer acquisition goal at either account level or campaign level, this
+    /// will include the additional conversion value from new customers for both
+    /// biddable and non-biddable conversions. If your campaign has adopted the
+    /// customer acquisition goal and selected "bid higher for new customers",
+    /// these values will be included in "all_conversions_value". See
+    /// <https://support.google.com/google-ads/answer/12080169> for more details.
+    #[prost(double, optional, tag = "294")]
+    pub all_new_customer_lifetime_value: ::core::option::Option<f64>,
     /// The total number of conversions. This includes all conversions regardless
     /// of the value of include_in_conversions_metric.
     #[prost(double, optional, tag = "193")]
@@ -5071,6 +5132,15 @@ pub struct Metrics {
     /// <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, tag = "242")]
     pub conversions_value_by_conversion_date: f64,
+    /// New customers' lifetime conversion value. If you have set up
+    /// customer acquisition goal at either account level or campaign level, this
+    /// will include the additional conversion value from new customers for
+    /// biddable conversions. If your campaign has adopted the customer
+    /// acquisition goal and selected "bid higher for new customers", these values
+    /// will be included in "conversions_value" for optimization. See
+    /// <https://support.google.com/google-ads/answer/12080169> for more details.
+    #[prost(double, optional, tag = "293")]
+    pub new_customer_lifetime_value: ::core::option::Option<f64>,
     /// The value of conversions divided by the cost of ad interactions. This only
     /// includes conversion actions which include_in_conversions_metric attribute
     /// is set to true. If you use conversion-based bidding, your bid strategies
@@ -5403,6 +5473,9 @@ pub struct Metrics {
     /// value below 0.1 is reported as 0.0999.
     #[prost(double, optional, tag = "146")]
     pub search_top_impression_share: ::core::option::Option<f64>,
+    /// Search volume range for a search term insight category.
+    #[prost(message, optional, tag = "295")]
+    pub search_volume: ::core::option::Option<SearchVolumeRange>,
     /// A measure of how quickly your page loads after clicks on your mobile ads.
     /// The score is a range from 1 to 10, 10 being the fastest.
     #[prost(int64, optional, tag = "147")]
@@ -5577,6 +5650,18 @@ pub struct Metrics {
     pub view_through_conversions_from_location_asset_website: ::core::option::Option<
         f64,
     >,
+}
+/// Search volume range.
+/// Actual search volume falls within this range.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchVolumeRange {
+    /// Lower bound of search volume.
+    #[prost(int64, optional, tag = "1")]
+    pub min: ::core::option::Option<i64>,
+    /// Upper bound of search volume.
+    #[prost(int64, optional, tag = "2")]
+    pub max: ::core::option::Option<i64>,
 }
 /// Address identifier of offline data.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5980,6 +6065,12 @@ pub struct Segments {
         tag = "3"
     )]
     pub ad_network_type: i32,
+    /// Resource name of the ad group.
+    #[prost(string, optional, tag = "158")]
+    pub ad_group: ::core::option::Option<::prost::alloc::string::String>,
+    /// Resource name of the asset group.
+    #[prost(string, optional, tag = "159")]
+    pub asset_group: ::core::option::Option<::prost::alloc::string::String>,
     /// Domain (visible URL) of a participant in the Auction Insights report.
     #[prost(string, optional, tag = "145")]
     pub auction_insight_domain: ::core::option::Option<::prost::alloc::string::String>,
@@ -5988,6 +6079,9 @@ pub struct Segments {
     pub budget_campaign_association_status: ::core::option::Option<
         BudgetCampaignAssociationStatus,
     >,
+    /// Resource name of the campaign.
+    #[prost(string, optional, tag = "157")]
+    pub campaign: ::core::option::Option<::prost::alloc::string::String>,
     /// Click type.
     #[prost(enumeration = "super::enums::click_type_enum::ClickType", tag = "26")]
     pub click_type: i32,
@@ -6288,6 +6382,13 @@ pub struct Segments {
         tag = "70"
     )]
     pub search_engine_results_page_type: i32,
+    /// A search term subcategory. An empty string denotes the catch-all
+    /// subcategory for search terms that didn't fit into another subcategory.
+    #[prost(string, optional, tag = "155")]
+    pub search_subcategory: ::core::option::Option<::prost::alloc::string::String>,
+    /// A search term.
+    #[prost(string, optional, tag = "156")]
+    pub search_term: ::core::option::Option<::prost::alloc::string::String>,
     /// Match type of the keyword that triggered the ad, including variants.
     #[prost(
         enumeration = "super::enums::search_term_match_type_enum::SearchTermMatchType",
@@ -6359,6 +6460,14 @@ pub struct Segments {
     /// served with.
     #[prost(message, optional, tag = "139")]
     pub asset_interaction_target: ::core::option::Option<AssetInteractionTarget>,
+    /// This is for segmenting conversions by whether the user is a new customer
+    /// or a returning customer. This segmentation is typically used to measure
+    /// the impact of customer acquisition goal.
+    #[prost(
+        enumeration = "super::enums::converting_user_prior_engagement_type_and_ltv_bucket_enum::ConvertingUserPriorEngagementTypeAndLtvBucket",
+        tag = "160"
+    )]
+    pub new_versus_returning_customers: i32,
 }
 /// A Keyword criterion segment.
 #[allow(clippy::derive_partial_eq_without_eq)]

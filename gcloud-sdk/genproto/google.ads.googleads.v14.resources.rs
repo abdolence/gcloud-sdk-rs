@@ -837,7 +837,7 @@ pub struct Ad {
     /// Details pertinent to the ad type. Exactly one value must be set.
     #[prost(
         oneof = "ad::AdData",
-        tags = "6, 7, 49, 14, 15, 17, 18, 22, 24, 39, 25, 28, 29, 30, 31, 32, 33, 34, 36, 48, 50, 51, 52, 54"
+        tags = "6, 7, 49, 14, 15, 17, 18, 22, 24, 39, 25, 28, 29, 30, 31, 32, 33, 34, 36, 48, 50, 51, 52, 60, 54"
     )]
     pub ad_data: ::core::option::Option<ad::AdData>,
 }
@@ -922,6 +922,9 @@ pub mod ad {
         /// Details pertaining to a discovery carousel ad.
         #[prost(message, tag = "52")]
         DiscoveryCarouselAd(super::super::common::DiscoveryCarouselAdInfo),
+        /// Details pertaining to a discovery video responsive ad.
+        #[prost(message, tag = "60")]
+        DiscoveryVideoResponsiveAd(super::super::common::DiscoveryVideoResponsiveAdInfo),
         /// Details pertaining to a travel ad.
         #[prost(message, tag = "54")]
         TravelAd(super::super::common::TravelAdInfo),
@@ -1604,7 +1607,7 @@ pub struct AdGroupCriterion {
     /// Exactly one must be set.
     #[prost(
         oneof = "ad_group_criterion::Criterion",
-        tags = "27, 28, 29, 30, 32, 36, 37, 38, 39, 42, 40, 41, 43, 45, 46, 47, 48, 49, 74, 75, 79"
+        tags = "27, 28, 29, 30, 32, 36, 37, 38, 39, 42, 40, 41, 43, 45, 46, 47, 48, 49, 74, 75, 79, 82, 83"
     )]
     pub criterion: ::core::option::Option<ad_group_criterion::Criterion>,
 }
@@ -1737,6 +1740,12 @@ pub mod ad_group_criterion {
         /// Immutable. Audience.
         #[prost(message, tag = "79")]
         Audience(super::super::common::AudienceInfo),
+        /// Immutable. Location.
+        #[prost(message, tag = "82")]
+        Location(super::super::common::LocationInfo),
+        /// Immutable. Language.
+        #[prost(message, tag = "83")]
+        Language(super::super::common::LanguageInfo),
     }
 }
 /// A customizer value for the associated CustomizerAttribute at the
@@ -2335,6 +2344,23 @@ pub struct AssetGroup {
         tag = "6"
     )]
     pub status: i32,
+    /// Output only. The primary status of the asset group. Provides insights into
+    /// why an asset group is not serving or not serving optimally.
+    #[prost(
+        enumeration = "super::enums::asset_group_primary_status_enum::AssetGroupPrimaryStatus",
+        tag = "11"
+    )]
+    pub primary_status: i32,
+    /// Output only. Provides reasons into why an asset group is not serving or not
+    /// serving optimally. It will be empty when the asset group is serving without
+    /// issues.
+    #[prost(
+        enumeration = "super::enums::asset_group_primary_status_reason_enum::AssetGroupPrimaryStatusReason",
+        repeated,
+        packed = "false",
+        tag = "12"
+    )]
+    pub primary_status_reasons: ::prost::alloc::vec::Vec<i32>,
     /// First part of text that may appear appended to the url displayed in
     /// the ad.
     #[prost(string, tag = "7")]
@@ -2377,6 +2403,32 @@ pub struct AssetGroupAsset {
         tag = "5"
     )]
     pub status: i32,
+    /// Output only. Provides the PrimaryStatus of this asset link.
+    /// Primary status is meant essentially to differentiate between the plain
+    /// "status" field, which has advertiser set values of enabled, paused, or
+    /// removed.  The primary status takes into account other signals (for assets
+    /// its mainly policy and quality approvals) to come up with a more
+    /// comprehensive status to indicate its serving state.
+    #[prost(
+        enumeration = "super::enums::asset_link_primary_status_enum::AssetLinkPrimaryStatus",
+        tag = "8"
+    )]
+    pub primary_status: i32,
+    /// Output only. Provides a list of reasons for why an asset is not serving or
+    /// not serving at full capacity.
+    #[prost(
+        enumeration = "super::enums::asset_link_primary_status_reason_enum::AssetLinkPrimaryStatusReason",
+        repeated,
+        packed = "false",
+        tag = "9"
+    )]
+    pub primary_status_reasons: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. Provides the details of the primary status and its associated
+    /// reasons.
+    #[prost(message, repeated, tag = "10")]
+    pub primary_status_details: ::prost::alloc::vec::Vec<
+        super::common::AssetLinkPrimaryStatusDetails,
+    >,
     /// Output only. The performance of this asset group asset.
     #[prost(
         enumeration = "super::enums::asset_performance_label_enum::AssetPerformanceLabel",
@@ -2426,6 +2478,18 @@ pub struct AssetGroupListingGroupFilter {
     /// the root listing group filter node.
     #[prost(string, tag = "7")]
     pub parent_listing_group_filter: ::prost::alloc::string::String,
+    /// Output only. The path of dimensions defining this listing group filter.
+    #[prost(message, optional, tag = "8")]
+    pub path: ::core::option::Option<ListingGroupFilterDimensionPath>,
+}
+/// The path defining of dimensions defining a listing group filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterDimensionPath {
+    /// Output only. The complete path of dimensions through the listing group
+    /// filter hierarchy (excluding the root node) to this listing group filter.
+    #[prost(message, repeated, tag = "1")]
+    pub dimensions: ::prost::alloc::vec::Vec<ListingGroupFilterDimension>,
 }
 /// Listing dimensions for the asset group listing group filter.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3453,6 +3517,11 @@ pub struct Campaign {
     pub travel_campaign_settings: ::core::option::Option<
         campaign::TravelCampaignSettings,
     >,
+    /// Settings for Discovery campaign.
+    #[prost(message, optional, tag = "87")]
+    pub discovery_campaign_settings: ::core::option::Option<
+        campaign::DiscoveryCampaignSettings,
+    >,
     /// Settings for Real-Time Bidding, a feature only available for campaigns
     /// targeting the Ad Exchange network.
     #[prost(message, optional, tag = "39")]
@@ -3559,6 +3628,9 @@ pub struct Campaign {
     pub vanity_pharma: ::core::option::Option<campaign::VanityPharma>,
     /// Selective optimization setting for this campaign, which includes a set of
     /// conversion actions to optimize this campaign towards.
+    /// This feature only applies to app campaigns that use MULTI_CHANNEL as
+    /// AdvertisingChannelType and APP_CAMPAIGN or APP_CAMPAIGN_FOR_ENGAGEMENT as
+    /// AdvertisingChannelSubType.
     #[prost(message, optional, tag = "45")]
     pub selective_optimization: ::core::option::Option<campaign::SelectiveOptimization>,
     /// Optimization goal setting for this campaign, which includes a set of
@@ -3756,6 +3828,10 @@ pub mod campaign {
         /// inventory in Performance Max campaigns, use `listing_type` instead.
         #[prost(bool, tag = "9")]
         pub use_vehicle_inventory: bool,
+        /// Immutable. The ads account IDs of advertising partners cooperating within
+        /// the campaign.
+        #[prost(int64, repeated, packed = "false", tag = "11")]
+        pub advertising_partner_ids: ::prost::alloc::vec::Vec<i64>,
     }
     /// Campaign-level settings for tracking information.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3834,6 +3910,9 @@ pub mod campaign {
     }
     /// Selective optimization setting for this campaign, which includes a set of
     /// conversion actions to optimize this campaign towards.
+    /// This feature only applies to app campaigns that use MULTI_CHANNEL as
+    /// AdvertisingChannelType and APP_CAMPAIGN or APP_CAMPAIGN_FOR_ENGAGEMENT as
+    /// AdvertisingChannelSubType.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelectiveOptimization {
@@ -3894,6 +3973,18 @@ pub mod campaign {
         #[prost(int64, optional, tag = "1")]
         pub travel_account_id: ::core::option::Option<i64>,
     }
+    /// Settings for Discovery campaign.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DiscoveryCampaignSettings {
+        /// Immutable. Specifies whether this campaign uses upgraded targeting
+        /// options. When this field is set to `true`, you can use location and
+        /// language targeting at the ad group level as opposed to the standard
+        /// campaign-level targeting. This field defaults to `false`, and can only be
+        /// set when creating a campaign.
+        #[prost(bool, optional, tag = "1")]
+        pub upgraded_targeting: ::core::option::Option<bool>,
+    }
     /// The bidding strategy for the campaign.
     ///
     /// Must be either portfolio (created through BiddingStrategy service) or
@@ -3922,8 +4013,7 @@ pub mod campaign {
         /// impressions.
         #[prost(message, tag = "25")]
         ManualCpm(super::super::common::ManualCpm),
-        /// Output only. A bidding strategy that pays a configurable amount per video
-        /// view.
+        /// A bidding strategy that pays a configurable amount per video view.
         #[prost(message, tag = "37")]
         ManualCpv(super::super::common::ManualCpv),
         /// Standard Maximize Conversions bidding strategy that automatically
@@ -4612,6 +4702,28 @@ pub struct CampaignLabel {
     /// Immutable. The label assigned to the campaign.
     #[prost(string, optional, tag = "5")]
     pub label: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A Campaign search term view.
+/// Historical data is available starting March 2023.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CampaignSearchTermInsight {
+    /// Output only. The resource name of the campaign level search term insight.
+    /// Campaign level search term insight resource names have the form:
+    ///
+    /// `customers/{customer_id}/campaignSearchTermInsights/{campaign_id}~{category_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The label for the search category. An empty string denotes the
+    /// catch-all category for search terms that didn't fit into another category.
+    #[prost(string, optional, tag = "2")]
+    pub category_label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the insight.
+    #[prost(int64, optional, tag = "3")]
+    pub id: ::core::option::Option<i64>,
+    /// Output only. The ID of the campaign.
+    #[prost(int64, optional, tag = "4")]
+    pub campaign_id: ::core::option::Option<i64>,
 }
 /// CampaignSharedSets are used for managing the shared sets associated with a
 /// campaign.
@@ -6261,6 +6373,9 @@ pub struct Customer {
     pub offline_conversion_client_summaries: ::prost::alloc::vec::Vec<
         OfflineConversionClientSummary,
     >,
+    /// Output only. Customer Agreement Setting for a customer.
+    #[prost(message, optional, tag = "44")]
+    pub customer_agreement_setting: ::core::option::Option<CustomerAgreementSetting>,
 }
 /// Call reporting setting for a customer. Only mutable in an `update` operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6332,7 +6447,6 @@ pub struct RemarketingSetting {
 /// Offline conversion upload diagnostic summarized by client. This proto
 /// contains general information, breakdown by date/job and alerts for offline
 /// conversion upload results.
-/// Next tag: 10
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineConversionClientSummary {
@@ -6373,7 +6487,6 @@ pub struct OfflineConversionClientSummary {
     pub alerts: ::prost::alloc::vec::Vec<OfflineConversionUploadAlert>,
 }
 /// Historical upload summary, grouped by upload date or job.
-/// Next tag: 5
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineConversionUploadSummary {
@@ -6404,7 +6517,6 @@ pub mod offline_conversion_upload_summary {
     }
 }
 /// Alert for offline conversion client summary.
-/// Next tag: 3
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineConversionUploadAlert {
@@ -6416,7 +6528,6 @@ pub struct OfflineConversionUploadAlert {
     pub error_percentage: f64,
 }
 /// Possible errors for offline conversion client summary.
-///   Next tag: 11
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineConversionUploadError {
@@ -6494,6 +6605,14 @@ pub mod offline_conversion_upload_error {
         )]
         StringLengthError(i32),
     }
+}
+/// Customer Agreement Setting for a customer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerAgreementSetting {
+    /// Output only. Whether the customer has accepted lead form term of service.
+    #[prost(bool, tag = "1")]
+    pub accepted_lead_form_terms: bool,
 }
 /// CustomerAssetSet is the linkage between a customer and an asset set.
 /// Adding a CustomerAssetSet links an asset set with a customer.
@@ -6819,6 +6938,25 @@ pub mod customer_negative_criterion {
         #[prost(message, tag = "11")]
         NegativeKeywordList(super::super::common::NegativeKeywordListInfo),
     }
+}
+/// A Customer search term view.
+/// Historical data is available starting March 2023.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerSearchTermInsight {
+    /// Output only. The resource name of the customer level search term insight.
+    /// Customer level search term insight resource names have the form:
+    ///
+    /// `customers/{customer_id}/customerSearchTermInsights/{category_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The label for the search category. An empty string denotes the
+    /// catch-all category for search terms that didn't fit into another category.
+    #[prost(string, optional, tag = "2")]
+    pub category_label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the insight.
+    #[prost(int64, optional, tag = "3")]
+    pub id: ::core::option::Option<i64>,
 }
 /// A CustomerSkAdNetworkConversionValueSchema.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8221,12 +8359,20 @@ pub struct Invoice {
     /// Output only. The total amount of invoice level regulatory costs, in micros.
     #[prost(int64, tag = "24")]
     pub regulatory_costs_total_amount_micros: i64,
-    /// Output only. The pretax subtotal amount, in micros. This equals the
-    /// sum of the AccountBudgetSummary subtotal amounts,
-    /// Invoice.adjustments_subtotal_amount_micros, and
-    /// Invoice.regulatory_costs_subtotal_amount_micros.
-    /// Starting with v6, the Invoice.regulatory_costs_subtotal_amount_micros is no
-    /// longer included.
+    /// Output only. The pretax subtotal amount of invoice level export charges, in
+    /// micros.
+    #[prost(int64, optional, tag = "40")]
+    pub export_charge_subtotal_amount_micros: ::core::option::Option<i64>,
+    /// Output only. The sum of taxes on the invoice level export charges, in
+    /// micros.
+    #[prost(int64, optional, tag = "41")]
+    pub export_charge_tax_amount_micros: ::core::option::Option<i64>,
+    /// Output only. The total amount of invoice level export charges, in micros.
+    #[prost(int64, optional, tag = "42")]
+    pub export_charge_total_amount_micros: ::core::option::Option<i64>,
+    /// Output only. The pretax subtotal amount, in micros. This is equal to the
+    /// sum of the AccountBudgetSummary subtotal amounts and
+    /// Invoice.adjustments_subtotal_amount_micros.
     #[prost(int64, optional, tag = "33")]
     pub subtotal_amount_micros: ::core::option::Option<i64>,
     /// Output only. The sum of all taxes on the invoice, in micros. This equals
@@ -8235,10 +8381,10 @@ pub struct Invoice {
     #[prost(int64, optional, tag = "34")]
     pub tax_amount_micros: ::core::option::Option<i64>,
     /// Output only. The total amount, in micros. This equals the sum of
-    /// Invoice.subtotal_amount_micros and Invoice.tax_amount_micros.
-    /// Starting with v6, Invoice.regulatory_costs_subtotal_amount_micros is
-    /// also added as it is no longer already included in
-    /// Invoice.tax_amount_micros.
+    /// Invoice.subtotal_amount_micros, Invoice.tax_amount_micros,
+    /// Invoice.regulatory_costs_subtotal_amount_micros, and
+    /// Invoice.export_charge_subtotal_amount_micros (which is separated into a
+    /// separate line item starting with V14.1).
     #[prost(int64, optional, tag = "35")]
     pub total_amount_micros: ::core::option::Option<i64>,
     /// Output only. The resource name of the original invoice corrected, wrote
@@ -8318,6 +8464,15 @@ pub mod invoice {
         /// Output only. Total regulatory costs amount, in micros.
         #[prost(int64, optional, tag = "13")]
         pub regulatory_costs_total_amount_micros: ::core::option::Option<i64>,
+        /// Output only. Pretax export charge subtotal amount, in micros.
+        #[prost(int64, optional, tag = "17")]
+        pub export_charge_subtotal_amount_micros: ::core::option::Option<i64>,
+        /// Output only. Tax on export charge, in micros.
+        #[prost(int64, optional, tag = "18")]
+        pub export_charge_tax_amount_micros: ::core::option::Option<i64>,
+        /// Output only. Total export charge amount, in micros.
+        #[prost(int64, optional, tag = "19")]
+        pub export_charge_total_amount_micros: ::core::option::Option<i64>,
         /// Output only. Total pretax subtotal amount attributable to the account
         /// during the service period, in micros.
         #[prost(int64, optional, tag = "14")]
@@ -9419,17 +9574,15 @@ pub struct Recommendation {
     /// MAXIMIZE_CONVERSIONS_OPT_IN, OPTIMIZE_AD_ROTATION,
     /// RESPONSIVE_SEARCH_AD,
     /// RESPONSIVE_SEARCH_AD_ASSET,
-    /// SEARCH_PARTNERS_OPT_IN,
-    /// DISPLAY_EXPANSION_OPT_IN, SITELINK_EXTENSION, TARGET_CPA_OPT_IN,
-    /// TARGET_ROAS_OPT_IN, TEXT_AD,
-    /// UPGRADE_SMART_SHOPPING_CAMPAIGN_TO_PERFORMANCE_MAX ,
-    /// RAISE_TARGET_CPA_BID_TOO_LOW, FORECASTING_SET_TARGET_ROAS
+    /// SEARCH_PARTNERS_OPT_IN, DISPLAY_EXPANSION_OPT_IN, SITELINK_EXTENSION,
+    /// TARGET_CPA_OPT_IN, TARGET_ROAS_OPT_IN, TEXT_AD,
+    /// UPGRADE_SMART_SHOPPING_CAMPAIGN_TO_PERFORMANCE_MAX,
+    /// RAISE_TARGET_CPA_BID_TOO_LOW, FORECASTING_SET_TARGET_ROAS,
     /// SHOPPING_ADD_AGE_GROUP, SHOPPING_ADD_COLOR, SHOPPING_ADD_GENDER,
     /// SHOPPING_ADD_SIZE, SHOPPING_ADD_GTIN, SHOPPING_ADD_MORE_IDENTIFIERS,
     /// SHOPPING_ADD_PRODUCTS_TO_CAMPAIGN, SHOPPING_FIX_DISAPPROVED_PRODUCTS,
-    /// SHOPPING_MIGRATE_REGULAR_SHOPPING_CAMPAIGN_OFFERS_TO_PERFORMANCE_MAX
-    ///   DYNAMIC_IMAGE_EXTENSION_OPT_IN, RAISE_TARGET_CPA,
-    /// LOWER_TARGET_ROAS
+    /// SHOPPING_MIGRATE_REGULAR_SHOPPING_CAMPAIGN_OFFERS_TO_PERFORMANCE_MAX,
+    /// DYNAMIC_IMAGE_EXTENSION_OPT_IN, RAISE_TARGET_CPA, LOWER_TARGET_ROAS,
     #[prost(string, optional, tag = "25")]
     pub campaign: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The ad group targeted by this recommendation. This will be set
@@ -9453,7 +9606,7 @@ pub struct Recommendation {
     /// The details of recommendation.
     #[prost(
         oneof = "recommendation::Recommendation",
-        tags = "4, 22, 8, 9, 10, 11, 12, 14, 15, 16, 20, 21, 23, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56"
+        tags = "4, 22, 8, 9, 10, 11, 12, 14, 15, 16, 20, 21, 23, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59"
     )]
     pub recommendation: ::core::option::Option<recommendation::Recommendation>,
 }
@@ -9547,9 +9700,28 @@ pub mod recommendation {
         /// Output only. The recommended keyword.
         #[prost(message, optional, tag = "1")]
         pub keyword: ::core::option::Option<super::super::common::KeywordInfo>,
+        /// Output only. A list of search terms this keyword matches. The same search
+        /// term may be repeated for multiple keywords.
+        #[prost(message, repeated, tag = "4")]
+        pub search_terms: ::prost::alloc::vec::Vec<keyword_recommendation::SearchTerm>,
         /// Output only. The recommended CPC (cost-per-click) bid.
         #[prost(int64, optional, tag = "3")]
         pub recommended_cpc_bid_micros: ::core::option::Option<i64>,
+    }
+    /// Nested message and enum types in `KeywordRecommendation`.
+    pub mod keyword_recommendation {
+        /// Information about a search term as related to a keyword recommendation.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SearchTerm {
+            /// Output only. The text of the search term.
+            #[prost(string, tag = "1")]
+            pub text: ::prost::alloc::string::String,
+            /// Output only. Estimated number of historical weekly searches for this
+            /// search term.
+            #[prost(int64, tag = "2")]
+            pub estimated_weekly_search_count: i64,
+        }
     }
     /// The text ad recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9964,9 +10136,32 @@ pub mod recommendation {
         pub recommended_new_amount_micros: i64,
         /// Output only. The date when the new budget would start being used.
         /// This field will be set for the following recommendation types:
-        /// FORECASTING_SET_TARGET_ROAS. YYYY-MM-DD format, for example, 2018-04-17.
+        /// FORECASTING_SET_TARGET_ROAS
+        /// YYYY-MM-DD format, for example, 2018-04-17.
         #[prost(string, tag = "3")]
         pub new_start_date: ::prost::alloc::string::String,
+    }
+    /// The Performance Max Opt In recommendation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PerformanceMaxOptInRecommendation {}
+    /// Recommendation to improve the asset group strength of a Performance Max
+    /// campaign to an "Excellent" rating.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ImprovePerformanceMaxAdStrengthRecommendation {
+        /// Output only. The asset group resource name.
+        #[prost(string, tag = "1")]
+        pub asset_group: ::prost::alloc::string::String,
+    }
+    /// The Dynamic Search Ads to Performance Max migration recommendation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MigrateDynamicSearchAdsCampaignToPerformanceMaxRecommendation {
+        /// Output only. A link to the Google Ads UI where the customer can manually
+        /// apply the recommendation.
+        #[prost(string, tag = "1")]
+        pub apply_link: ::prost::alloc::string::String,
     }
     /// The details of recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -10120,6 +10315,20 @@ pub mod recommendation {
         /// Output only. Recommendation to lower Target ROAS.
         #[prost(message, tag = "56")]
         LowerTargetRoasRecommendation(LowerTargetRoasRecommendation),
+        /// Output only. The Performance Max Opt In recommendation.
+        #[prost(message, tag = "57")]
+        PerformanceMaxOptInRecommendation(PerformanceMaxOptInRecommendation),
+        /// Output only. The improve Performance Max ad strength recommendation.
+        #[prost(message, tag = "58")]
+        ImprovePerformanceMaxAdStrengthRecommendation(
+            ImprovePerformanceMaxAdStrengthRecommendation,
+        ),
+        /// Output only. The Dynamic Search Ads to Performance Max migration
+        /// recommendation.
+        #[prost(message, tag = "59")]
+        MigrateDynamicSearchAdsCampaignToPerformanceMaxRecommendation(
+            MigrateDynamicSearchAdsCampaignToPerformanceMaxRecommendation,
+        ),
     }
 }
 /// A remarketing action. A snippet of JavaScript code that will collect the

@@ -9,6 +9,37 @@ pub struct DeliveryVehicleAttribute {
     /// The attribute's value.
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
+    /// The attribute's value, can be in string, bool, or double type.
+    #[prost(
+        oneof = "delivery_vehicle_attribute::DeliveryVehicleAttributeValue",
+        tags = "3, 4, 5"
+    )]
+    pub delivery_vehicle_attribute_value: ::core::option::Option<
+        delivery_vehicle_attribute::DeliveryVehicleAttributeValue,
+    >,
+}
+/// Nested message and enum types in `DeliveryVehicleAttribute`.
+pub mod delivery_vehicle_attribute {
+    /// The attribute's value, can be in string, bool, or double type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DeliveryVehicleAttributeValue {
+        /// String typed attribute value.
+        ///
+        /// Note: This is identical to the `value` field which will eventually be
+        /// deprecated. For create or update methods, either field can be used, but
+        /// it's strongly recommended to use `string_value`. If both `string_value`
+        /// and `value` are set, they must be identical or an error will be thrown.
+        /// Both fields are populated in responses.
+        #[prost(string, tag = "3")]
+        StringValue(::prost::alloc::string::String),
+        /// Boolean typed attribute value.
+        #[prost(bool, tag = "4")]
+        BoolValue(bool),
+        /// Double typed attribute value.
+        #[prost(double, tag = "5")]
+        NumberValue(f64),
+    }
 }
 /// The location, speed, and heading of a vehicle at a point in time.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -384,6 +415,64 @@ pub struct DeliveryVehicle {
     /// at most 50 attributes, and each attribute must have a unique key.
     #[prost(message, repeated, tag = "9")]
     pub attributes: ::prost::alloc::vec::Vec<DeliveryVehicleAttribute>,
+    /// The type of this delivery vehicle. If unset, this will default to `AUTO`.
+    #[prost(enumeration = "delivery_vehicle::DeliveryVehicleType", tag = "10")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `DeliveryVehicle`.
+pub mod delivery_vehicle {
+    /// The type of delivery vehicle.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeliveryVehicleType {
+        /// The value is unused.
+        Unspecified = 0,
+        /// An automobile.
+        Auto = 1,
+        /// A motorcycle, moped, or other two-wheeled vehicle
+        TwoWheeler = 2,
+        /// Human-powered transport.
+        Bicycle = 3,
+        /// A human transporter, typically walking or running, traveling along
+        /// pedestrian pathways.
+        Pedestrian = 4,
+    }
+    impl DeliveryVehicleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DeliveryVehicleType::Unspecified => "DELIVERY_VEHICLE_TYPE_UNSPECIFIED",
+                DeliveryVehicleType::Auto => "AUTO",
+                DeliveryVehicleType::TwoWheeler => "TWO_WHEELER",
+                DeliveryVehicleType::Bicycle => "BICYCLE",
+                DeliveryVehicleType::Pedestrian => "PEDESTRIAN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DELIVERY_VEHICLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTO" => Some(Self::Auto),
+                "TWO_WHEELER" => Some(Self::TwoWheeler),
+                "BICYCLE" => Some(Self::Bicycle),
+                "PEDESTRIAN" => Some(Self::Pedestrian),
+                _ => None,
+            }
+        }
+    }
 }
 /// A location with any additional identifiers.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1062,6 +1151,7 @@ pub mod task_tracking_view_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VisibilityOption {
+        /// The specific visibility option chosen.
         #[prost(oneof = "visibility_option::VisibilityOption", tags = "1, 2, 3, 4, 5")]
         pub visibility_option: ::core::option::Option<
             visibility_option::VisibilityOption,
@@ -1069,6 +1159,7 @@ pub mod task_tracking_view_config {
     }
     /// Nested message and enum types in `VisibilityOption`.
     pub mod visibility_option {
+        /// The specific visibility option chosen.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum VisibilityOption {
@@ -1379,7 +1470,8 @@ pub struct GetTaskRequest {
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
 }
-/// The `SearchTasks` request message that contains the `tracking_id`.
+/// Deprecated: Issue `GetTaskTrackingInfoRequest`s to `GetTaskTrackingInfo`
+/// instead.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTasksRequest {
@@ -1804,7 +1896,7 @@ pub mod delivery_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets all `Task`s with a particular `tracking_id`.
+        /// Deprecated: Use `GetTaskTrackingInfo` instead.
         pub async fn search_tasks(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchTasksRequest>,

@@ -166,6 +166,26 @@ pub struct WebAuthn {
     #[prost(string, tag = "1")]
     pub rp_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignSshPublicKeyRequest {
+    /// The SSH public key to sign.
+    #[prost(string, tag = "1")]
+    pub ssh_public_key: ::prost::alloc::string::String,
+    /// The parent project and zone for the signing request. This is needed to
+    /// properly ensure per-organization ISS processing and potentially to provide
+    /// for the possibility of zone-specific certificates used in the signing
+    /// process.
+    #[prost(string, tag = "2")]
+    pub parent: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignSshPublicKeyResponse {
+    /// The signed SSH public key to use in the SSH handshake.
+    #[prost(string, tag = "1")]
+    pub signed_ssh_public_key: ::prost::alloc::string::String,
+}
 /// The login profile view limits the user content retrieved.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -496,6 +516,37 @@ pub mod os_login_service_client {
                     GrpcMethod::new(
                         "google.cloud.oslogin.v1beta.OsLoginService",
                         "UpdateSshPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Signs an SSH public key for a user to authenticate to an instance.
+        pub async fn sign_ssh_public_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SignSshPublicKeyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SignSshPublicKeyResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oslogin.v1beta.OsLoginService/SignSshPublicKey",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1beta.OsLoginService",
+                        "SignSshPublicKey",
                     ),
                 );
             self.inner.unary(req, path, codec).await

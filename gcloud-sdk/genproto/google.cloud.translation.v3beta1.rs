@@ -396,7 +396,7 @@ pub mod output_config {
         /// Since index.csv will be keeping updated during the process, please make
         /// sure there is no custom retention policy applied on the output bucket
         /// that may avoid file updating.
-        /// (<https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy>)
+        /// (<https://cloud.google.com/storage/docs/bucket-lock#retention-policy>)
         ///
         /// The format of translations_file (for target language code 'trg') is:
         /// `gs://translation_test/a_b_c_'trg'_translations.\[extension\]`
@@ -638,6 +638,26 @@ pub struct TranslateDocumentRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. This flag is to support user customized attribution.
+    /// If not provided, the default is `Machine Translated by Google`.
+    /// Customized attribution should follow rules in
+    /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
+    #[prost(string, tag = "10")]
+    pub customized_attribution: ::prost::alloc::string::String,
+    /// Optional. is_translate_native_pdf_only field for external customers.
+    /// If true, the page limit of online native pdf translation is 300 and only
+    /// native pdf pages will be translated.
+    #[prost(bool, tag = "11")]
+    pub is_translate_native_pdf_only: bool,
+    /// Optional. If true, use the text removal server to remove the shadow text on
+    /// background image for native pdf translation.
+    /// Shadow removal feature can only be enabled when
+    /// is_translate_native_pdf_only: false && pdf_native_only: false
+    #[prost(bool, tag = "12")]
+    pub enable_shadow_removal_native_pdf: bool,
+    /// Optional. If true, enable auto rotation correction in DVS.
+    #[prost(bool, tag = "13")]
+    pub enable_rotation_correction: bool,
 }
 /// A translated document message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -901,9 +921,8 @@ pub mod glossary_input_config {
         /// For equivalent term sets glossaries:
         ///
         /// - CSV (`.csv`): Multi-column CSV file defining equivalent glossary terms
-        ///    in multiple languages. The format is defined for Google Translation
-        ///    Toolkit and documented in [Use a
-        ///    glossary](<https://support.google.com/translatortoolkit/answer/6306379?hl=en>).
+        ///    in multiple languages. See documentation for more information -
+        ///    \[glossaries\](<https://cloud.google.com/translate/docs/advanced/glossary>).
         #[prost(message, tag = "1")]
         GcsSource(super::GcsSource),
     }
@@ -1290,6 +1309,21 @@ pub struct BatchTranslateDocumentRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. This flag is to support user customized attribution.
+    /// If not provided, the default is `Machine Translated by Google`.
+    /// Customized attribution should follow rules in
+    /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
+    #[prost(string, tag = "10")]
+    pub customized_attribution: ::prost::alloc::string::String,
+    /// Optional. If true, use the text removal server to remove the shadow text on
+    /// background image for native pdf translation.
+    /// Shadow removal feature can only be enabled when
+    /// is_translate_native_pdf_only: false && pdf_native_only: false
+    #[prost(bool, tag = "11")]
+    pub enable_shadow_removal_native_pdf: bool,
+    /// Optional. If true, enable auto rotation correction in DVS.
+    #[prost(bool, tag = "12")]
+    pub enable_rotation_correction: bool,
 }
 /// Input configuration for BatchTranslateDocument request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1790,7 +1824,7 @@ pub mod translation_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Translates a large volume of documents in asynchronous batch mode.
+        /// Translates a large volume of document in asynchronous batch mode.
         /// This function provides real-time output as the inputs are being processed.
         /// If caller cancels a request, the partial results (for an input file, it's
         /// all or nothing) may still be available on the specified output location.

@@ -110,6 +110,14 @@ pub struct UserInfo {
     #[prost(string, tag = "2")]
     pub user_agent: ::prost::alloc::string::String,
 }
+/// Double list.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DoubleList {
+    /// Double values.
+    #[prost(double, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<f64>,
+}
 /// Request message for
 /// \[CompletionService.CompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery\]
 /// method.
@@ -314,154 +322,6 @@ pub mod completion_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-    }
-}
-/// External conversation proto definition.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Conversation {
-    /// Immutable. Fully qualified name
-    /// `project/*/locations/global/collections/{collection}/dataStore/*/conversations/*`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The state of the Conversation.
-    #[prost(enumeration = "conversation::State", tag = "2")]
-    pub state: i32,
-    /// A unique identifier for tracking users.
-    #[prost(string, tag = "3")]
-    pub user_pseudo_id: ::prost::alloc::string::String,
-    /// Conversation messages.
-    #[prost(message, repeated, tag = "4")]
-    pub messages: ::prost::alloc::vec::Vec<ConversationMessage>,
-    /// Output only. The time the conversation started.
-    #[prost(message, optional, tag = "5")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time the conversation finished.
-    #[prost(message, optional, tag = "6")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `Conversation`.
-pub mod conversation {
-    /// Enumeration of the state of the conversation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// Unknown.
-        Unspecified = 0,
-        /// Conversation is currently open.
-        InProgress = 1,
-        /// Conversation has been completed.
-        Completed = 2,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::InProgress => "IN_PROGRESS",
-                State::Completed => "COMPLETED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "IN_PROGRESS" => Some(Self::InProgress),
-                "COMPLETED" => Some(Self::Completed),
-                _ => None,
-            }
-        }
-    }
-}
-/// Defines a reply message to user.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Reply {
-    /// Text reply.
-    #[prost(string, tag = "1")]
-    pub reply: ::prost::alloc::string::String,
-    /// References in the reply.
-    #[prost(message, repeated, tag = "2")]
-    pub references: ::prost::alloc::vec::Vec<reply::Reference>,
-}
-/// Nested message and enum types in `Reply`.
-pub mod reply {
-    /// Defines reference in reply.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Reference {
-        /// URI link reference.
-        #[prost(string, tag = "1")]
-        pub uri: ::prost::alloc::string::String,
-        /// Anchor text.
-        #[prost(string, tag = "2")]
-        pub anchor_text: ::prost::alloc::string::String,
-        /// Anchor text start index.
-        #[prost(int32, tag = "3")]
-        pub start: i32,
-        /// Anchor text end index.
-        #[prost(int32, tag = "4")]
-        pub end: i32,
-    }
-}
-/// Defines context of the conversation
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversationContext {
-    /// The current list of documents the user is seeing.
-    /// It contains the document resource references.
-    #[prost(string, repeated, tag = "1")]
-    pub context_documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The current active document the user opened.
-    /// It contains the document resource reference.
-    #[prost(string, tag = "2")]
-    pub active_document: ::prost::alloc::string::String,
-}
-/// Defines text input.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextInput {
-    /// Text input.
-    #[prost(string, tag = "1")]
-    pub input: ::prost::alloc::string::String,
-    /// Conversation context of the input.
-    #[prost(message, optional, tag = "2")]
-    pub context: ::core::option::Option<ConversationContext>,
-}
-/// Defines a conversation message.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversationMessage {
-    /// Output only. Message creation timestamp.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(oneof = "conversation_message::Message", tags = "1, 2")]
-    pub message: ::core::option::Option<conversation_message::Message>,
-}
-/// Nested message and enum types in `ConversationMessage`.
-pub mod conversation_message {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Message {
-        /// User text input.
-        #[prost(message, tag = "1")]
-        UserInput(super::TextInput),
-        /// Search reply.
-        #[prost(message, tag = "2")]
-        Reply(super::Reply),
     }
 }
 /// Document captures all raw metadata information of items to be recommended or
@@ -695,6 +555,37 @@ pub struct SearchRequest {
     /// A specification for configuring the behavior of content search.
     #[prost(message, optional, tag = "24")]
     pub content_search_spec: ::core::option::Option<search_request::ContentSearchSpec>,
+    /// Uses the provided embedding to do additional semantic document retrieval.
+    /// The retrieval is based on the dot product of
+    /// \[SearchRequest.embedding_spec.embedding_vectors.vector][\] and the document
+    /// embedding that is provided in
+    /// \[SearchRequest.embedding_spec.embedding_vectors.field_path][\].
+    ///
+    /// If \[SearchRequest.embedding_spec.embedding_vectors.field_path][\] is not
+    /// provided, it will use \[ServingConfig.embedding_config.field_paths][\].
+    #[prost(message, optional, tag = "23")]
+    pub embedding_spec: ::core::option::Option<search_request::EmbeddingSpec>,
+    /// The ranking expression controls the customized ranking on retrieval
+    /// documents. This overrides \[ServingConfig.ranking_expression][\].
+    /// The ranking expression is a single function or multiple functions that are
+    /// joint by "+".
+    ///    * ranking_expression = function, { " + ", function };
+    /// Supported functions:
+    ///    * double * relevance_score
+    ///    * double * dotProduct(embedding_field_path)
+    /// Function variables:
+    ///    `relevance_score`: pre-defined keywords, used for measure relevance
+    ///    between query and document.
+    ///    `embedding_field_path`: the document embedding field
+    ///    used with query embedding vector.
+    ///    `dotProduct`: embedding function between embedding_field_path and query
+    ///    embedding vector.
+    ///
+    ///   Example ranking expression:
+    ///     If document has an embedding field doc_embedding, the ranking expression
+    ///     could be `0.5 * relevance_score + 0.3 * dotProduct(doc_embedding)`.
+    #[prost(string, tag = "26")]
+    pub ranking_expression: ::prost::alloc::string::String,
     /// Whether to turn on safe search. This is only supported for
     /// website search.
     #[prost(bool, tag = "20")]
@@ -946,6 +837,11 @@ pub mod search_request {
         /// \[Condition.DISABLED][google.cloud.discoveryengine.v1beta.SearchRequest.QueryExpansionSpec.Condition.DISABLED\].
         #[prost(enumeration = "query_expansion_spec::Condition", tag = "1")]
         pub condition: i32,
+        /// Whether to pin unexpanded results. If this field is set to true,
+        /// unexpanded products are always at the top of the search results, followed
+        /// by the expanded results.
+        #[prost(bool, tag = "2")]
+        pub pin_unexpanded_results: bool,
     }
     /// Nested message and enum types in `QueryExpansionSpec`.
     pub mod query_expansion_spec {
@@ -1157,6 +1053,10 @@ pub mod search_request {
             /// fallback messages instead.
             #[prost(bool, tag = "4")]
             pub ignore_non_summary_seeking_query: bool,
+            /// Language code for Summary. Use language tags defined by
+            /// \[BCP47][<https://www.rfc-editor.org/rfc/bcp/bcp47.txt\].>
+            #[prost(string, tag = "6")]
+            pub language_code: ::prost::alloc::string::String,
         }
         /// A specification for configuring the extractive content in a search
         /// response.
@@ -1195,11 +1095,45 @@ pub mod search_request {
             /// If the number of matching segments is less than
             /// `max_extractive_segment_count`, return all of the segments. Otherwise,
             /// return the `max_extractive_segment_count`.
-            ///
-            /// Currently one segment is returned for each
-            /// \[SearchResult][google.cloud.discoveryengine.v1beta.SearchResponse.SearchResult\].
             #[prost(int32, tag = "2")]
             pub max_extractive_segment_count: i32,
+            /// Specifies whether to return the confidence score from the extractive
+            /// segments in each search result. The default value is `false`.
+            #[prost(bool, tag = "3")]
+            pub return_extractive_segment_score: bool,
+            /// Specifies whether to also include the adjacent from each selected
+            /// segments.
+            /// Return at most `num_previous_segments` segments before each selected
+            /// segments.
+            #[prost(int32, tag = "4")]
+            pub num_previous_segments: i32,
+            /// Return at most `num_next_segments` segments after each selected
+            /// segments.
+            #[prost(int32, tag = "5")]
+            pub num_next_segments: i32,
+        }
+    }
+    /// The specification that uses customized query embedding vector to do
+    /// semantic document retrieval.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EmbeddingSpec {
+        /// The embedding vector used for retrieval. Limit to 1.
+        #[prost(message, repeated, tag = "1")]
+        pub embedding_vectors: ::prost::alloc::vec::Vec<embedding_spec::EmbeddingVector>,
+    }
+    /// Nested message and enum types in `EmbeddingSpec`.
+    pub mod embedding_spec {
+        /// Embedding vector.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct EmbeddingVector {
+            /// Embedding field path in schema.
+            #[prost(string, tag = "1")]
+            pub field_path: ::prost::alloc::string::String,
+            /// Query embedding vector.
+            #[prost(float, repeated, tag = "2")]
+            pub vector: ::prost::alloc::vec::Vec<f32>,
         }
     }
 }
@@ -1262,6 +1196,11 @@ pub struct SearchResponse {
     /// Controls applied as part of the Control service.
     #[prost(string, repeated, tag = "10")]
     pub applied_controls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Query expansion information for the returned results.
+    #[prost(message, optional, tag = "14")]
+    pub query_expansion_info: ::core::option::Option<
+        search_response::QueryExpansionInfo,
+    >,
 }
 /// Nested message and enum types in `SearchResponse`.
 pub mod search_response {
@@ -1277,6 +1216,12 @@ pub mod search_response {
         /// marked as retrievable are populated.
         #[prost(message, optional, tag = "2")]
         pub document: ::core::option::Option<super::Document>,
+        /// Google provided available scores.
+        #[prost(map = "string, message", tag = "4")]
+        pub model_scores: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            super::DoubleList,
+        >,
     }
     /// A facet result.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1364,9 +1309,26 @@ pub mod search_response {
         /// cases. If nothing is skipped, this field is not set.
         #[prost(enumeration = "summary::SummarySkippedReason", repeated, tag = "2")]
         pub summary_skipped_reasons: ::prost::alloc::vec::Vec<i32>,
+        /// A collection of Safety Attribute categories and their associated
+        /// confidence scores.
+        #[prost(message, optional, tag = "3")]
+        pub safety_attributes: ::core::option::Option<summary::SafetyAttributes>,
     }
     /// Nested message and enum types in `Summary`.
     pub mod summary {
+        /// Safety Attribute categories and their associated confidence scores.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SafetyAttributes {
+            /// The display names of Safety Attribute categories associated with the
+            /// generated content. Order matches the Scores.
+            #[prost(string, repeated, tag = "1")]
+            pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// The confidence scores of the each category, higher
+            /// value means higher confidence. Order matches the Categories.
+            #[prost(float, repeated, tag = "2")]
+            pub scores: ::prost::alloc::vec::Vec<f32>,
+        }
         /// An Enum for summary-skipped reasons.
         #[derive(
             Clone,
@@ -1401,6 +1363,15 @@ pub mod search_response {
             /// For example, the data store contains facts about company A but the
             /// user query is asking questions about company B.
             OutOfDomainQueryIgnored = 3,
+            /// The potential policy violation case.
+            ///
+            /// Google skips the summary if there is a potential policy violation
+            /// detected. This includes content that may be violent or toxic.
+            PotentialPolicyViolation = 4,
+            /// The LLM addon not enabled case.
+            ///
+            /// Google skips the summary if the LLM addon is not enabled.
+            LlmAddonNotEnabled = 5,
         }
         impl SummarySkippedReason {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1421,6 +1392,10 @@ pub mod search_response {
                     SummarySkippedReason::OutOfDomainQueryIgnored => {
                         "OUT_OF_DOMAIN_QUERY_IGNORED"
                     }
+                    SummarySkippedReason::PotentialPolicyViolation => {
+                        "POTENTIAL_POLICY_VIOLATION"
+                    }
+                    SummarySkippedReason::LlmAddonNotEnabled => "LLM_ADDON_NOT_ENABLED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1432,10 +1407,27 @@ pub mod search_response {
                         Some(Self::NonSummarySeekingQueryIgnored)
                     }
                     "OUT_OF_DOMAIN_QUERY_IGNORED" => Some(Self::OutOfDomainQueryIgnored),
+                    "POTENTIAL_POLICY_VIOLATION" => Some(Self::PotentialPolicyViolation),
+                    "LLM_ADDON_NOT_ENABLED" => Some(Self::LlmAddonNotEnabled),
                     _ => None,
                 }
             }
         }
+    }
+    /// Information describing query expansion including whether expansion has
+    /// occurred.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QueryExpansionInfo {
+        /// Bool describing whether query expansion has occurred.
+        #[prost(bool, tag = "1")]
+        pub expanded_query: bool,
+        /// Number of pinned results. This field will only be set when expansion
+        /// happens and
+        /// \[SearchRequest.QueryExpansionSpec.pin_unexpanded_results][google.cloud.discoveryengine.v1beta.SearchRequest.QueryExpansionSpec.pin_unexpanded_results\]
+        /// is set to true.
+        #[prost(int64, tag = "2")]
+        pub pinned_result_count: i64,
     }
 }
 /// Generated client implementations.
@@ -1554,6 +1546,160 @@ pub mod search_service_client {
         }
     }
 }
+/// External conversation proto definition.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Conversation {
+    /// Immutable. Fully qualified name
+    /// `project/*/locations/global/collections/{collection}/dataStore/*/conversations/*`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The state of the Conversation.
+    #[prost(enumeration = "conversation::State", tag = "2")]
+    pub state: i32,
+    /// A unique identifier for tracking users.
+    #[prost(string, tag = "3")]
+    pub user_pseudo_id: ::prost::alloc::string::String,
+    /// Conversation messages.
+    #[prost(message, repeated, tag = "4")]
+    pub messages: ::prost::alloc::vec::Vec<ConversationMessage>,
+    /// Output only. The time the conversation started.
+    #[prost(message, optional, tag = "5")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the conversation finished.
+    #[prost(message, optional, tag = "6")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `Conversation`.
+pub mod conversation {
+    /// Enumeration of the state of the conversation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unknown.
+        Unspecified = 0,
+        /// Conversation is currently open.
+        InProgress = 1,
+        /// Conversation has been completed.
+        Completed = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::InProgress => "IN_PROGRESS",
+                State::Completed => "COMPLETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "COMPLETED" => Some(Self::Completed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Defines a reply message to user.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Reply {
+    /// DEPRECATED: use `summary` instead.
+    /// Text reply.
+    #[deprecated]
+    #[prost(string, tag = "1")]
+    pub reply: ::prost::alloc::string::String,
+    /// References in the reply.
+    #[deprecated]
+    #[prost(message, repeated, tag = "2")]
+    pub references: ::prost::alloc::vec::Vec<reply::Reference>,
+    /// Summary based on search results.
+    #[prost(message, optional, tag = "3")]
+    pub summary: ::core::option::Option<search_response::Summary>,
+}
+/// Nested message and enum types in `Reply`.
+pub mod reply {
+    /// Defines reference in reply.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Reference {
+        /// URI link reference.
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// Anchor text.
+        #[prost(string, tag = "2")]
+        pub anchor_text: ::prost::alloc::string::String,
+        /// Anchor text start index.
+        #[prost(int32, tag = "3")]
+        pub start: i32,
+        /// Anchor text end index.
+        #[prost(int32, tag = "4")]
+        pub end: i32,
+    }
+}
+/// Defines context of the conversation
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversationContext {
+    /// The current list of documents the user is seeing.
+    /// It contains the document resource references.
+    #[prost(string, repeated, tag = "1")]
+    pub context_documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The current active document the user opened.
+    /// It contains the document resource reference.
+    #[prost(string, tag = "2")]
+    pub active_document: ::prost::alloc::string::String,
+}
+/// Defines text input.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextInput {
+    /// Text input.
+    #[prost(string, tag = "1")]
+    pub input: ::prost::alloc::string::String,
+    /// Conversation context of the input.
+    #[prost(message, optional, tag = "2")]
+    pub context: ::core::option::Option<ConversationContext>,
+}
+/// Defines a conversation message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversationMessage {
+    /// Output only. Message creation timestamp.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(oneof = "conversation_message::Message", tags = "1, 2")]
+    pub message: ::core::option::Option<conversation_message::Message>,
+}
+/// Nested message and enum types in `ConversationMessage`.
+pub mod conversation_message {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Message {
+        /// User text input.
+        #[prost(message, tag = "1")]
+        UserInput(super::TextInput),
+        /// Search reply.
+        #[prost(message, tag = "2")]
+        Reply(super::Reply),
+    }
+}
 /// Request message for
 /// \[ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1beta.ConversationalSearchService.ConverseConversation\]
 /// method.
@@ -1584,6 +1730,33 @@ pub struct ConverseConversationRequest {
     /// Whether to turn on safe search.
     #[prost(bool, tag = "6")]
     pub safe_search: bool,
+    /// The user labels applied to a resource must meet the following requirements:
+    ///
+    /// * Each resource can have multiple labels, up to a maximum of 64.
+    /// * Each label must be a key-value pair.
+    /// * Keys have a minimum length of 1 character and a maximum length of 63
+    ///    characters and cannot be empty. Values can be empty and have a maximum
+    ///    length of 63 characters.
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    ///    underscores, and dashes. All characters must use UTF-8 encoding, and
+    ///    international characters are allowed.
+    /// * The key portion of a label must be unique. However, you can use the same
+    ///    key with multiple resources.
+    /// * Keys must start with a lowercase letter or international character.
+    ///
+    /// See [Google Cloud
+    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
+    /// for more details.
+    #[prost(map = "string, string", tag = "7")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// A specification for configuring the summary returned in the response.
+    #[prost(message, optional, tag = "8")]
+    pub summary_spec: ::core::option::Option<
+        search_request::content_search_spec::SummarySpec,
+    >,
 }
 /// Response message for
 /// \[ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1beta.ConversationalSearchService.ConverseConversation\]
@@ -1597,6 +1770,9 @@ pub struct ConverseConversationResponse {
     /// Updated conversation including the answer.
     #[prost(message, optional, tag = "2")]
     pub conversation: ::core::option::Option<Conversation>,
+    /// Suggested related questions.
+    #[prost(string, repeated, tag = "6")]
+    pub related_questions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Search Results.
     #[prost(message, repeated, tag = "3")]
     pub search_results: ::prost::alloc::vec::Vec<search_response::SearchResult>,
@@ -2370,7 +2546,7 @@ pub struct DocumentInfo {
     /// specified, then the provided values (default values allowed) for
     /// `{location}`, `{collection_id}`, `{data_store_id}`, and
     /// `{branch_id}` are used when annotating with the stored Document.
-    #[prost(oneof = "document_info::DocumentDescriptor", tags = "1, 2")]
+    #[prost(oneof = "document_info::DocumentDescriptor", tags = "1, 2, 6")]
     pub document_descriptor: ::core::option::Option<document_info::DocumentDescriptor>,
 }
 /// Nested message and enum types in `DocumentInfo`.
@@ -2398,6 +2574,10 @@ pub mod document_info {
         /// `projects/{project_id}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/branches/{branch_id}/documents/{document_id}`
         #[prost(string, tag = "2")]
         Name(::prost::alloc::string::String),
+        /// The \[Document][google.cloud.discoveryengine.v1beta.Document\] URI - only
+        /// allowed for website data stores.
+        #[prost(string, tag = "6")]
+        Uri(::prost::alloc::string::String),
     }
 }
 /// Detailed panel information associated with a user event.

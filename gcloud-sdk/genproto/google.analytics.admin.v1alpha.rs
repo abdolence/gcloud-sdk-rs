@@ -2150,6 +2150,131 @@ pub struct MeasurementProtocolSecret {
     #[prost(string, tag = "3")]
     pub secret_value: ::prost::alloc::string::String,
 }
+/// SKAdNetwork conversion value schema of an iOS stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SkAdNetworkConversionValueSchema {
+    /// Output only. Resource name of the schema. This will be child of ONLY an iOS
+    /// stream, and there can be at most one such child under an iOS stream.
+    /// Format:
+    /// properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The conversion value settings for the first postback window.
+    /// These differ from values for postback window two and three in that they
+    /// contain a "Fine" grained conversion value (a numeric value).
+    ///
+    /// Conversion values for this postback window must be set.  The other windows
+    /// are optional and may inherit this window's settings if unset or disabled.
+    #[prost(message, optional, tag = "2")]
+    pub postback_window_one: ::core::option::Option<PostbackWindow>,
+    /// The conversion value settings for the second postback window.
+    ///
+    /// This field should only be configured if there is a need to define different
+    /// conversion values for this postback window.
+    ///
+    /// If enable_postback_window_settings is set to false for this postback
+    /// window, the values from postback_window_one will be used.
+    #[prost(message, optional, tag = "3")]
+    pub postback_window_two: ::core::option::Option<PostbackWindow>,
+    /// The conversion value settings for the third postback window.
+    ///
+    /// This field should only be set if the user chose to define different
+    /// conversion values for this postback window. It is allowed to configure
+    /// window 3 without setting window 2. In case window 1 & 2 settings are set
+    /// and enable_postback_window_settings for this postback window is set to
+    /// false, the schema will inherit settings from postback_window_two.
+    #[prost(message, optional, tag = "4")]
+    pub postback_window_three: ::core::option::Option<PostbackWindow>,
+    /// If enabled, the GA SDK will set conversion values using this schema
+    /// definition, and schema will be exported to any Google Ads accounts linked
+    /// to this property. If disabled, the GA SDK will not automatically set
+    /// conversion values, and also the schema will not be exported to Ads.
+    #[prost(bool, tag = "5")]
+    pub apply_conversion_values: bool,
+}
+/// Settings for a SKAdNetwork conversion postback window.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PostbackWindow {
+    /// Ordering of the repeated field will be used to prioritize the conversion
+    /// value settings. Lower indexed entries are prioritized higher. The first
+    /// conversion value setting that evaluates to true will be selected. It must
+    /// have at least one entry if enable_postback_window_settings is set to
+    /// true. It can have maximum of 128 entries.
+    #[prost(message, repeated, tag = "1")]
+    pub conversion_values: ::prost::alloc::vec::Vec<ConversionValues>,
+    /// If enable_postback_window_settings is true, conversion_values
+    /// must be populated and will be used for determining when and how to set the
+    /// Conversion Value on a client device and exporting schema to linked Ads
+    /// accounts. If false, the settings are not used, but are retained in case
+    /// they may be used in the future. This must always be true for
+    /// postback_window_one.
+    #[prost(bool, tag = "2")]
+    pub postback_window_settings_enabled: bool,
+}
+/// Conversion value settings for a postback window for SKAdNetwork conversion
+/// value schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionValues {
+    /// Display name of the SKAdNetwork conversion value.
+    /// The max allowed display name length is 50 UTF-16 code units.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The fine-grained conversion value.  This is applicable only to the first
+    /// postback window. Its valid values are \[0,63\], both inclusive. It must be
+    /// set for postback window 1, and must not be set for postback window 2 & 3.
+    /// This value is not guaranteed to be unique.
+    ///
+    /// If the configuration for the first postback window is re-used for second or
+    /// third postback windows this field has no effect.
+    #[prost(int32, optional, tag = "2")]
+    pub fine_value: ::core::option::Option<i32>,
+    /// Required. A coarse grained conversion value.
+    ///
+    /// This value is not guaranteed to be unique.
+    #[prost(enumeration = "CoarseValue", tag = "3")]
+    pub coarse_value: i32,
+    /// Event conditions that must be met for this Conversion Value to be achieved.
+    /// The conditions in this list are ANDed together. It must have minimum of 1
+    /// entry and maximum of 3 entries, if the postback window is enabled.
+    #[prost(message, repeated, tag = "4")]
+    pub event_mappings: ::prost::alloc::vec::Vec<EventMapping>,
+    /// If true, the SDK should lock to this conversion value for the current
+    /// postback window.
+    #[prost(bool, tag = "5")]
+    pub lock_enabled: bool,
+}
+/// Event setting conditions to match an event.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventMapping {
+    /// Required. Name of the GA4 event. It must always be set.
+    /// The max allowed display name length is 40 UTF-16 code units.
+    #[prost(string, tag = "1")]
+    pub event_name: ::prost::alloc::string::String,
+    /// At least one of the following four min/max values must be set. The
+    /// values set will be ANDed together to qualify an event.
+    /// The minimum number of times the event occurred. If not set, minimum event
+    /// count won't be checked.
+    #[prost(int64, optional, tag = "2")]
+    pub min_event_count: ::core::option::Option<i64>,
+    /// The maximum number of times the event occurred. If not set, maximum event
+    /// count won't be checked.
+    #[prost(int64, optional, tag = "3")]
+    pub max_event_count: ::core::option::Option<i64>,
+    /// The minimum revenue generated due to the event. Revenue currency will be
+    /// defined at the property level. If not set, minimum event value won't be
+    /// checked.
+    #[prost(double, optional, tag = "4")]
+    pub min_event_value: ::core::option::Option<f64>,
+    /// The maximum revenue generated due to the event. Revenue currency will be
+    /// defined at the property level. If not set, maximum event value won't be
+    /// checked.
+    #[prost(double, optional, tag = "5")]
+    pub max_event_value: ::core::option::Option<f64>,
+}
 /// A set of changes within a Google Analytics account or its child properties
 /// that resulted from the same cause. Common causes would be updates made in the
 /// Google Analytics UI, changes from customer support, or automatic Google
@@ -2212,7 +2337,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 27, 28, 29"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 26, 27, 28, 29"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2282,6 +2407,12 @@ pub mod change_history_change {
             /// A snapshot of EnhancedMeasurementSettings resource in change history.
             #[prost(message, tag = "24")]
             EnhancedMeasurementSettings(super::super::EnhancedMeasurementSettings),
+            /// A snapshot of SKAdNetworkConversionValueSchema resource in change
+            /// history.
+            #[prost(message, tag = "26")]
+            SkadnetworkConversionValueSchema(
+                super::super::SkAdNetworkConversionValueSchema,
+            ),
             /// A snapshot of an AdSenseLink resource in change history.
             #[prost(message, tag = "27")]
             AdsenseLink(super::super::AdSenseLink),
@@ -2458,6 +2589,61 @@ pub struct ConversionEvent {
     /// custom conversion events that may be created per property.
     #[prost(bool, tag = "5")]
     pub custom: bool,
+    /// Optional. The method by which conversions will be counted across multiple
+    /// events within a session. If this value is not provided, it will be set to
+    /// `ONCE_PER_EVENT`.
+    #[prost(enumeration = "conversion_event::ConversionCountingMethod", tag = "6")]
+    pub counting_method: i32,
+}
+/// Nested message and enum types in `ConversionEvent`.
+pub mod conversion_event {
+    /// The method by which conversions will be counted across multiple events
+    /// within a session.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConversionCountingMethod {
+        /// Counting method not specified.
+        Unspecified = 0,
+        /// Each Event instance is considered a Conversion.
+        OncePerEvent = 1,
+        /// An Event instance is considered a Conversion at most once per session per
+        /// user.
+        OncePerSession = 2,
+    }
+    impl ConversionCountingMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConversionCountingMethod::Unspecified => {
+                    "CONVERSION_COUNTING_METHOD_UNSPECIFIED"
+                }
+                ConversionCountingMethod::OncePerEvent => "ONCE_PER_EVENT",
+                ConversionCountingMethod::OncePerSession => "ONCE_PER_SESSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONVERSION_COUNTING_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "ONCE_PER_EVENT" => Some(Self::OncePerEvent),
+                "ONCE_PER_SESSION" => Some(Self::OncePerSession),
+                _ => None,
+            }
+        }
+    }
 }
 /// Settings values for Google Signals.  This is a singleton resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3288,9 +3474,9 @@ pub struct BigQueryLink {
     /// If set true, enables streaming export to the linked Google Cloud project.
     #[prost(bool, tag = "5")]
     pub streaming_export_enabled: bool,
-    /// If set true, enables intraday export to the linked Google Cloud project.
+    /// If set true, enables fresh daily export to the linked Google Cloud project.
     #[prost(bool, tag = "9")]
-    pub intraday_export_enabled: bool,
+    pub fresh_daily_export_enabled: bool,
     /// If set true, exported data will include advertising identifiers for mobile
     /// app streams.
     #[prost(bool, tag = "6")]
@@ -3669,6 +3855,8 @@ pub enum ChangeHistoryResourceType {
     ChannelGroup = 22,
     /// EnhancedMeasurementSettings resource
     EnhancedMeasurementSettings = 24,
+    /// SKAdNetworkConversionValueSchema resource
+    SkadnetworkConversionValueSchema = 26,
     /// AdSenseLink resource
     AdsenseLink = 27,
     /// Audience resource
@@ -3712,6 +3900,9 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::EnhancedMeasurementSettings => {
                 "ENHANCED_MEASUREMENT_SETTINGS"
             }
+            ChangeHistoryResourceType::SkadnetworkConversionValueSchema => {
+                "SKADNETWORK_CONVERSION_VALUE_SCHEMA"
+            }
             ChangeHistoryResourceType::AdsenseLink => "ADSENSE_LINK",
             ChangeHistoryResourceType::Audience => "AUDIENCE",
             ChangeHistoryResourceType::EventCreateRule => "EVENT_CREATE_RULE",
@@ -3743,6 +3934,9 @@ impl ChangeHistoryResourceType {
             "EXPANDED_DATA_SET" => Some(Self::ExpandedDataSet),
             "CHANNEL_GROUP" => Some(Self::ChannelGroup),
             "ENHANCED_MEASUREMENT_SETTINGS" => Some(Self::EnhancedMeasurementSettings),
+            "SKADNETWORK_CONVERSION_VALUE_SCHEMA" => {
+                Some(Self::SkadnetworkConversionValueSchema)
+            }
             "ADSENSE_LINK" => Some(Self::AdsenseLink),
             "AUDIENCE" => Some(Self::Audience),
             "EVENT_CREATE_RULE" => Some(Self::EventCreateRule),
@@ -3953,6 +4147,46 @@ impl PropertyType {
             "PROPERTY_TYPE_ORDINARY" => Some(Self::Ordinary),
             "PROPERTY_TYPE_SUBPROPERTY" => Some(Self::Subproperty),
             "PROPERTY_TYPE_ROLLUP" => Some(Self::Rollup),
+            _ => None,
+        }
+    }
+}
+/// The coarse conversion value set on the updatePostbackConversionValue SDK call
+/// when a ConversionValues.event_mappings conditions are satisfied. For
+/// more information, see
+/// \[SKAdNetwork.CoarseConversionValue\](<https://developer.apple.com/documentation/storekit/skadnetwork/coarseconversionvalue>).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CoarseValue {
+    /// Coarse value not specified.
+    Unspecified = 0,
+    /// Coarse value of low.
+    Low = 1,
+    /// Coarse value of medium.
+    Medium = 2,
+    /// Coarse value of high.
+    High = 3,
+}
+impl CoarseValue {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            CoarseValue::Unspecified => "COARSE_VALUE_UNSPECIFIED",
+            CoarseValue::Low => "COARSE_VALUE_LOW",
+            CoarseValue::Medium => "COARSE_VALUE_MEDIUM",
+            CoarseValue::High => "COARSE_VALUE_HIGH",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COARSE_VALUE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COARSE_VALUE_LOW" => Some(Self::Low),
+            "COARSE_VALUE_MEDIUM" => Some(Self::Medium),
+            "COARSE_VALUE_HIGH" => Some(Self::High),
             _ => None,
         }
     }
@@ -4791,6 +5025,95 @@ pub struct ListMeasurementProtocolSecretsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for GetSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSkAdNetworkConversionValueSchemaRequest {
+    /// Required. The resource name of SKAdNetwork conversion value schema to look
+    /// up. Format:
+    /// properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for CreateSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSkAdNetworkConversionValueSchemaRequest {
+    /// Required. The parent resource where this schema will be created.
+    /// Format: properties/{property}/dataStreams/{dataStream}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. SKAdNetwork conversion value schema to create.
+    #[prost(message, optional, tag = "2")]
+    pub skadnetwork_conversion_value_schema: ::core::option::Option<
+        SkAdNetworkConversionValueSchema,
+    >,
+}
+/// Request message for DeleteSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSkAdNetworkConversionValueSchemaRequest {
+    /// Required. The name of the SKAdNetworkConversionValueSchema to delete.
+    /// Format:
+    /// properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateSKAdNetworkConversionValueSchema RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSkAdNetworkConversionValueSchemaRequest {
+    /// Required. SKAdNetwork conversion value schema to update.
+    #[prost(message, optional, tag = "1")]
+    pub skadnetwork_conversion_value_schema: ::core::option::Option<
+        SkAdNetworkConversionValueSchema,
+    >,
+    /// Required. The list of fields to be updated. Omitted fields will not be
+    /// updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for ListSKAdNetworkConversionValueSchemas RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSkAdNetworkConversionValueSchemasRequest {
+    /// Required. Format:
+    /// properties/{property_id}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
+    /// Example: properties/1234/dataStreams/5678/sKAdNetworkConversionValueSchema
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous
+    /// `ListSKAdNetworkConversionValueSchemas` call. Provide this to retrieve the
+    /// subsequent page. When paginating, all other parameters provided to
+    /// `ListSKAdNetworkConversionValueSchema` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListSKAdNetworkConversionValueSchemas RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSkAdNetworkConversionValueSchemasResponse {
+    /// List of SKAdNetworkConversionValueSchemas. This will have at most one
+    /// value.
+    #[prost(message, repeated, tag = "1")]
+    pub skadnetwork_conversion_value_schemas: ::prost::alloc::vec::Vec<
+        SkAdNetworkConversionValueSchema,
+    >,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    /// Currently, Google Analytics supports only one
+    /// SKAdNetworkConversionValueSchema per dataStream, so this will never be
+    /// populated.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Request message for GetGoogleSignalsSettings RPC
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4826,6 +5149,21 @@ pub struct CreateConversionEventRequest {
     /// event will be created. Format: properties/123
     #[prost(string, tag = "2")]
     pub parent: ::prost::alloc::string::String,
+}
+/// Request message for UpdateConversionEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConversionEventRequest {
+    /// Required. The conversion event to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub conversion_event: ::core::option::Option<ConversionEvent>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetConversionEvent RPC
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7343,6 +7681,169 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Looks up a single SKAdNetworkConversionValueSchema.
+        pub async fn get_sk_ad_network_conversion_value_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetSkAdNetworkConversionValueSchemaRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SkAdNetworkConversionValueSchema>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSKAdNetworkConversionValueSchema",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetSKAdNetworkConversionValueSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a SKAdNetworkConversionValueSchema.
+        pub async fn create_sk_ad_network_conversion_value_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CreateSkAdNetworkConversionValueSchemaRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SkAdNetworkConversionValueSchema>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSKAdNetworkConversionValueSchema",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateSKAdNetworkConversionValueSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes target SKAdNetworkConversionValueSchema.
+        pub async fn delete_sk_ad_network_conversion_value_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::DeleteSkAdNetworkConversionValueSchemaRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSKAdNetworkConversionValueSchema",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteSKAdNetworkConversionValueSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a SKAdNetworkConversionValueSchema.
+        pub async fn update_sk_ad_network_conversion_value_schema(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateSkAdNetworkConversionValueSchemaRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SkAdNetworkConversionValueSchema>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSKAdNetworkConversionValueSchema",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateSKAdNetworkConversionValueSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists SKAdNetworkConversionValueSchema on a stream.
+        /// Properties can have at most one SKAdNetworkConversionValueSchema.
+        pub async fn list_sk_ad_network_conversion_value_schemas(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListSkAdNetworkConversionValueSchemasRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSkAdNetworkConversionValueSchemasResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSKAdNetworkConversionValueSchemas",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListSKAdNetworkConversionValueSchemas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Searches through all changes to an account or its children given the
         /// specified set of filters.
         pub async fn search_change_history_events(
@@ -7464,6 +7965,37 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "CreateConversionEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a conversion event with the specified attributes.
+        pub async fn update_conversion_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConversionEventRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ConversionEvent>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateConversionEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateConversionEvent",
                     ),
                 );
             self.inner.unary(req, path, codec).await

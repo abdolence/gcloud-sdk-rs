@@ -213,6 +213,15 @@ pub struct AllUpdatesRule {
     /// account.
     #[prost(bool, tag = "4")]
     pub disable_default_iam_recipients: bool,
+    /// Optional. When set to true, and when the budget has a single project
+    /// configured, notifications will be sent to project level recipients of that
+    /// project. This field will be ignored if the budget has multiple or no
+    /// project configured.
+    ///
+    /// Currently, project level recipients are the users with `Owner` role on a
+    /// cloud project.
+    #[prost(bool, tag = "5")]
+    pub enable_project_level_recipients: bool,
 }
 /// A filter for a budget, limiting the scope of the cost to calculate.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -227,8 +236,10 @@ pub struct Filter {
     /// Optional. A set of folder and organization names of the form
     /// `folders/{folderId}` or `organizations/{organizationId}`, specifying that
     /// usage from only this set of folders and organizations should be included in
-    /// the budget. If omitted, the report includes all usage for all
-    /// organizations, regardless of which organization the usage occurred on.
+    /// the budget. If omitted, the budget includes all usage that the billing
+    /// account pays for. If the folder or organization contains projects that are
+    /// paid for by a different Cloud Billing account, the budget *doesn't* apply
+    /// to those projects.
     #[prost(string, repeated, tag = "2")]
     pub resource_ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If
@@ -463,6 +474,14 @@ pub struct ListBudgetsRequest {
     /// are of the form `billingAccounts/{billingAccountId}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. Set the scope of the budgets to be returned, in the format of the
+    /// resource name. The scope of a budget is the cost that it tracks, such as
+    /// costs for a single project, or the costs for all projects in a folder. Only
+    /// project scope (in the format of "projects/project-id" or "projects/123") is
+    /// supported in this field. When this field is set to a project's resource
+    /// name, the budgets returned are tracking the costs for that project.
+    #[prost(string, tag = "4")]
+    pub scope: ::prost::alloc::string::String,
     /// Optional. The maximum number of budgets to return per page.
     /// The default and maximum value are 100.
     #[prost(int32, tag = "2")]

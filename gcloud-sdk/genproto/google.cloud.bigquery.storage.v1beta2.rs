@@ -674,9 +674,9 @@ pub struct CreateWriteStreamRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsRequest {
-    /// Required. The stream that is the target of the append operation. This value must be
-    /// specified for the initial request. If subsequent requests specify the
-    /// stream name, it must equal to the value provided in the first request.
+    /// Required. The stream that is the target of the append operation. This value
+    /// must be specified for the initial request. If subsequent requests specify
+    /// the stream name, it must equal to the value provided in the first request.
     /// To write to the _default stream, populate this field with a string in the
     /// format `projects/{project}/datasets/{dataset}/tables/{table}/_default`.
     #[prost(string, tag = "1")]
@@ -789,8 +789,8 @@ pub struct GetWriteStreamRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCommitWriteStreamsRequest {
-    /// Required. Parent table that all the streams should belong to, in the form of
-    /// `projects/{project}/datasets/{dataset}/tables/{table}`.
+    /// Required. Parent table that all the streams should belong to, in the form
+    /// of `projects/{project}/datasets/{dataset}/tables/{table}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The group of streams that will be committed atomically.
@@ -1159,6 +1159,10 @@ pub mod big_query_write_client {
     /// BigQuery Write API.
     ///
     /// The Write API can be used to write data to BigQuery.
+    ///
+    /// The [google.cloud.bigquery.storage.v1
+    ///   API](/bigquery/docs/reference/storage/rpc/google.cloud.bigquery.storage.v1)
+    ///   should be used instead of the v1beta2 API for BigQueryWrite operations.
     #[derive(Debug, Clone)]
     pub struct BigQueryWriteClient<T> {
         inner: tonic::client::Grpc<T>,
