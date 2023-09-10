@@ -14,7 +14,7 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: '3.x'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
