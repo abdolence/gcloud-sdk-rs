@@ -2,7 +2,7 @@
 
 SCRIPT_LOCATION=$( dirname -- "$0"; );
 SPEC_LOCATIONS="$SCRIPT_LOCATION/google"
-GENERATOR_LOCATION="$SCRIPT_LOCATION/generator/openapi-generator-cli-6.2.0.jar"
+GENERATOR_LOCATION="$SCRIPT_LOCATION/generator/openapi-generator-cli-6.6.0.jar"
 GCLOUD_SDK_DIR="$SCRIPT_LOCATION/../../gcloud-sdk"
 TEMPLATES_DIR="$SCRIPT_LOCATION/templates"
 
