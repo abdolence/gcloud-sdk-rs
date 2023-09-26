@@ -22,7 +22,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .get()
         .list_voices(tonic::Request::new(ListVoicesRequest {
             language_code: "en-US".to_string(),
-            ..Default::default()
         }))
         .await?;
     println!("Response: {:?}", response);
