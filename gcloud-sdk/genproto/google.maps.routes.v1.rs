@@ -1039,7 +1039,7 @@ pub struct Route {
     /// For example, suppose the input is Origin: LA; Intermediates: Dallas,
     /// Bangor, Phoenix;  Destination: New York; and the optimized intermediate
     /// waypoint order is:  Phoenix, Dallas, Bangor. Then this field contains the
-    /// values [2, 0, 1]. The index starts with 0 for the first intermediate
+    /// values \[2, 0, 1\]. The index starts with 0 for the first intermediate
     /// waypoint.
     #[prost(int32, repeated, tag = "10")]
     pub optimized_intermediate_waypoint_index: ::prost::alloc::vec::Vec<i32>,

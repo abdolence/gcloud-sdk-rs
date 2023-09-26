@@ -1,5 +1,5 @@
-/// A contiguous set of days: `startDate`, `startDate + 1`, ..., `endDate`.
-/// Requests are allowed up to 4 date ranges.
+/// A contiguous set of days: startDate, startDate + 1, ..., endDate. Requests
+/// are allowed up to 4 date ranges.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
@@ -22,8 +22,8 @@ pub struct DateRange {
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
 }
-/// A contiguous set of minutes: `startMinutesAgo`, `startMinutesAgo + 1`, ...,
-/// `endMinutesAgo`. Requests are allowed up to 2 minute ranges.
+/// A contiguous set of minutes: startMinutesAgo, startMinutesAgo + 1, ...,
+/// endMinutesAgo. Requests are allowed up to 2 minute ranges.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MinuteRange {
@@ -586,7 +586,7 @@ pub struct Pivot {
     /// single pivot requests.
     ///
     /// The product of the `limit` for each `pivot` in a `RunPivotReportRequest`
-    /// must not exceed 250,000. For example, a two pivot request with `limit:
+    /// must not exceed 100,000. For example, a two pivot request with `limit:
     /// 1000` in each pivot will fail because the product is `1,000,000`.
     #[prost(int64, tag = "4")]
     pub limit: i64,
@@ -772,18 +772,6 @@ pub struct CohortReportSettings {
 pub struct ResponseMetaData {
     /// If true, indicates some buckets of dimension combinations are rolled into
     /// "(other)" row. This can happen for high cardinality reports.
-    ///
-    /// The metadata parameter dataLossFromOtherRow is populated based on the
-    /// aggregated data table used in the report. The parameter will be accurately
-    /// populated regardless of the filters and limits in the report.
-    ///
-    /// For example, the (other) row could be dropped from the report because the
-    /// request contains a filter on sessionSource = google. This parameter will
-    /// still be populated if data loss from other row was present in the input
-    /// aggregate data used to generate this report.
-    ///
-    /// To learn more, see [About the (other) row and data
-    /// sampling](<https://support.google.com/analytics/answer/13208658#reports>).
     #[prost(bool, tag = "3")]
     pub data_loss_from_other_row: bool,
     /// Describes the schema restrictions actively enforced in creating this
@@ -1022,13 +1010,13 @@ pub mod numeric_value {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyQuota {
-    /// Standard Analytics Properties can use up to 200,000 tokens per day;
-    /// Analytics 360 Properties can use 2,000,000 tokens per day. Most requests
+    /// Standard Analytics Properties can use up to 25,000 tokens per day;
+    /// Analytics 360 Properties can use 250,000 tokens per day. Most requests
     /// consume fewer than 10 tokens.
     #[prost(message, optional, tag = "1")]
     pub tokens_per_day: ::core::option::Option<QuotaStatus>,
-    /// Standard Analytics Properties can use up to 40,000 tokens per hour;
-    /// Analytics 360 Properties can use 400,000 tokens per hour. An API request
+    /// Standard Analytics Properties can use up to 5,000 tokens per hour;
+    /// Analytics 360 Properties can use 50,000 tokens per hour. An API request
     /// consumes a single number of tokens, and that number is deducted from all of
     /// the hourly, daily, and per project hourly quotas.
     #[prost(message, optional, tag = "2")]
@@ -1048,9 +1036,9 @@ pub struct PropertyQuota {
     /// thresholded dimensions.
     #[prost(message, optional, tag = "5")]
     pub potentially_thresholded_requests_per_hour: ::core::option::Option<QuotaStatus>,
-    /// Analytics Properties can use up to 35% of their tokens per project per
-    /// hour. This amounts to standard Analytics Properties can use up to 14,000
-    /// tokens per project per hour, and Analytics 360 Properties can use 140,000
+    /// Analytics Properties can use up to 25% of their tokens per project per
+    /// hour. This amounts to standard Analytics Properties can use up to 1,250
+    /// tokens per project per hour, and Analytics 360 Properties can use 12,500
     /// tokens per project per hour. An API request consumes a single number of
     /// tokens, and that number is deducted from all of the hourly, daily, and per
     /// project hourly quotas.
@@ -1072,7 +1060,7 @@ pub struct QuotaStatus {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionMetadata {
-    /// This dimension's name. Useable in \[Dimension\](#Dimension)'s `name`. For
+    /// This dimension's name. Useable in [Dimension](#Dimension)'s `name`. For
     /// example, `eventName`.
     #[prost(string, tag = "1")]
     pub api_name: ::prost::alloc::string::String,
@@ -1101,7 +1089,7 @@ pub struct DimensionMetadata {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricMetadata {
-    /// A metric name. Useable in \[Metric\](#Metric)'s `name`. For example,
+    /// A metric name. Useable in [Metric](#Metric)'s `name`. For example,
     /// `eventCount`.
     #[prost(string, tag = "1")]
     pub api_name: ::prost::alloc::string::String,
@@ -1122,7 +1110,7 @@ pub struct MetricMetadata {
     #[prost(enumeration = "MetricType", tag = "5")]
     pub r#type: i32,
     /// The mathematical expression for this derived metric. Can be used in
-    /// \[Metric\](#Metric)'s `expression` field for equivalent reports. Most metrics
+    /// [Metric](#Metric)'s `expression` field for equivalent reports. Most metrics
     /// are not expressions, and for non-expressions, this field is empty.
     #[prost(string, tag = "6")]
     pub expression: ::prost::alloc::string::String,
@@ -1416,6 +1404,10 @@ pub struct CheckCompatibilityRequest {
     /// `property` should be the same value as in your `runReport` request.
     ///
     /// Example: properties/1234
+    ///
+    /// Set the Property ID to 0 for compatibility checking on dimensions and
+    /// metrics common to all properties. In this special mode, this method will
+    /// not return custom dimensions and metrics.
     #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
     /// The dimensions in this report. `dimensions` should be the same value as in
@@ -1492,7 +1484,7 @@ pub struct RunReportRequest {
     /// must be unspecified.
     #[prost(message, repeated, tag = "4")]
     pub date_ranges: ::prost::alloc::vec::Vec<DateRange>,
-    /// Dimension filters let you ask for only specific dimension values in
+    /// Dimension filters allow you to ask for only specific dimension values in
     /// the report. To learn more, see [Fundamentals of Dimension
     /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
     /// for examples. Metrics cannot be used in this filter.
@@ -1510,11 +1502,11 @@ pub struct RunReportRequest {
     /// request returns the second `limit` of rows.
     ///
     /// To learn more about this pagination parameter, see
-    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int64, tag = "7")]
     pub offset: i64,
     /// The number of rows to return. If unspecified, 10,000 rows are returned. The
-    /// API returns a maximum of 250,000 rows per request, no matter how many you
+    /// API returns a maximum of 100,000 rows per request, no matter how many you
     /// ask for. `limit` must be positive.
     ///
     /// The API can also return fewer rows than the requested `limit`, if there
@@ -1524,7 +1516,7 @@ pub struct RunReportRequest {
     /// set `limit` to a higher value.
     ///
     /// To learn more about this pagination parameter, see
-    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int64, tag = "8")]
     pub limit: i64,
     /// Aggregation of metrics. Aggregated metric values will be shown in rows
@@ -1545,17 +1537,10 @@ pub struct RunReportRequest {
     /// If false or unspecified, each row with all metrics equal to 0 will not be
     /// returned. If true, these rows will be returned if they are not separately
     /// removed by a filter.
-    ///
-    /// Regardless of this `keep_empty_rows` setting, only data recorded by the
-    /// Google Analytics (GA4) property can be displayed in a report.
-    ///
-    /// For example if a property never logs a `purchase` event, then a query for
-    /// the `eventName` dimension and  `eventCount` metric will not have a row
-    /// eventName: "purchase" and eventCount: 0.
     #[prost(bool, tag = "13")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
+    /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "14")]
     pub return_property_quota: bool,
 }
@@ -1590,7 +1575,7 @@ pub struct RunReportResponse {
     /// response will contain `rowCount` of 175 but only 50 rows.
     ///
     /// To learn more about this pagination parameter, see
-    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int32, tag = "7")]
     pub row_count: i32,
     /// Metadata for the report.
@@ -1661,17 +1646,10 @@ pub struct RunPivotReportRequest {
     /// If false or unspecified, each row with all metrics equal to 0 will not be
     /// returned. If true, these rows will be returned if they are not separately
     /// removed by a filter.
-    ///
-    /// Regardless of this `keep_empty_rows` setting, only data recorded by the
-    /// Google Analytics (GA4) property can be displayed in a report.
-    ///
-    /// For example if a property never logs a `purchase` event, then a query for
-    /// the `eventName` dimension and  `eventCount` metric will not have a row
-    /// eventName: "purchase" and eventCount: 0.
     #[prost(bool, tag = "10")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
+    /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "11")]
     pub return_property_quota: bool,
 }
@@ -1709,10 +1687,10 @@ pub struct RunPivotReportResponse {
     ///      },
     ///      {
     ///        "dimensionHeaders": [{
-    ///          "dimensionValues": [{ "value": "session_start" }]
+    ///          "dimensionValues": \[{ "value": "session_start" }\]
     ///        },
     ///        {
-    ///          "dimensionValues": [{ "value": "scroll" }]
+    ///          "dimensionValues": \[{ "value": "scroll" }\]
     ///        }]
     ///      }]
     #[prost(message, repeated, tag = "1")]
@@ -1856,7 +1834,7 @@ pub struct RunRealtimeReportRequest {
     #[prost(message, optional, tag = "5")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// The number of rows to return. If unspecified, 10,000 rows are returned. The
-    /// API returns a maximum of 250,000 rows per request, no matter how many you
+    /// API returns a maximum of 100,000 rows per request, no matter how many you
     /// ask for. `limit` must be positive.
     ///
     /// The API can also return fewer rows than the requested `limit`, if there
@@ -1874,7 +1852,7 @@ pub struct RunRealtimeReportRequest {
     #[prost(message, repeated, tag = "8")]
     pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
     /// Toggles whether to return the current state of this Analytics Property's
-    /// Realtime quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
+    /// Realtime quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "9")]
     pub return_property_quota: bool,
     /// The minute ranges of event data to read. If unspecified, one minute range

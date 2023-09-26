@@ -1,27 +1,27 @@
-/// A \[Secret][google.cloud.secrets.v1beta1.Secret\] is a logical secret whose value and versions can
+/// A [Secret][google.cloud.secrets.v1beta1.Secret] is a logical secret whose value and versions can
 /// be accessed.
 ///
-/// A \[Secret][google.cloud.secrets.v1beta1.Secret\] is made up of zero or more \[SecretVersions][google.cloud.secrets.v1beta1.SecretVersion\] that
+/// A [Secret][google.cloud.secrets.v1beta1.Secret] is made up of zero or more [SecretVersions][google.cloud.secrets.v1beta1.SecretVersion] that
 /// represent the secret data.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
-    /// Output only. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] in the format `projects/*/secrets/*`.
+    /// Output only. The resource name of the [Secret][google.cloud.secrets.v1beta1.Secret] in the format `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Immutable. The replication policy of the secret data attached to the \[Secret][google.cloud.secrets.v1beta1.Secret\].
+    /// Required. Immutable. The replication policy of the secret data attached to the [Secret][google.cloud.secrets.v1beta1.Secret].
     ///
     /// The replication policy cannot be changed after the Secret has been created.
     #[prost(message, optional, tag = "2")]
     pub replication: ::core::option::Option<Replication>,
-    /// Output only. The time at which the \[Secret][google.cloud.secrets.v1beta1.Secret\] was created.
+    /// Output only. The time at which the [Secret][google.cloud.secrets.v1beta1.Secret] was created.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels assigned to this Secret.
     ///
     /// Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
     /// of maximum 128 bytes, and must conform to the following PCRE regular
-    /// expression: `\[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-\]{0,62}`
+    /// expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
     ///
     /// Label values must be between 0 and 63 characters long, have a UTF-8
     /// encoding of maximum 128 bytes, and must conform to the following PCRE
@@ -38,28 +38,28 @@ pub struct Secret {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretVersion {
-    /// Output only. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the
+    /// Output only. The resource name of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] in the
     /// format `projects/*/secrets/*/versions/*`.
     ///
-    /// \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] IDs in a \[Secret][google.cloud.secrets.v1beta1.Secret\] start at 1 and
+    /// [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] IDs in a [Secret][google.cloud.secrets.v1beta1.Secret] start at 1 and
     /// are incremented for each subsequent version of the secret.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The time at which the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] was created.
+    /// Output only. The time at which the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] was created.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time this \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] was destroyed.
-    /// Only present if \[state][google.cloud.secrets.v1beta1.SecretVersion.state\] is
-    /// \[DESTROYED][google.cloud.secrets.v1beta1.SecretVersion.State.DESTROYED\].
+    /// Output only. The time this [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] was destroyed.
+    /// Only present if [state][google.cloud.secrets.v1beta1.SecretVersion.state] is
+    /// [DESTROYED][google.cloud.secrets.v1beta1.SecretVersion.State.DESTROYED].
     #[prost(message, optional, tag = "3")]
     pub destroy_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The current state of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\].
+    /// Output only. The current state of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion].
     #[prost(enumeration = "secret_version::State", tag = "4")]
     pub state: i32,
 }
 /// Nested message and enum types in `SecretVersion`.
 pub mod secret_version {
-    /// The state of a \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\], indicating if it can be accessed.
+    /// The state of a [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion], indicating if it can be accessed.
     #[derive(
         Clone,
         Copy,
@@ -75,13 +75,13 @@ pub mod secret_version {
     pub enum State {
         /// Not specified. This value is unused and invalid.
         Unspecified = 0,
-        /// The \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] may be accessed.
+        /// The [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] may be accessed.
         Enabled = 1,
-        /// The \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] may not be accessed, but the secret data
-        /// is still available and can be placed back into the \[ENABLED][google.cloud.secrets.v1beta1.SecretVersion.State.ENABLED\]
+        /// The [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] may not be accessed, but the secret data
+        /// is still available and can be placed back into the [ENABLED][google.cloud.secrets.v1beta1.SecretVersion.State.ENABLED]
         /// state.
         Disabled = 2,
-        /// The \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] is destroyed and the secret data is no longer
+        /// The [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] is destroyed and the secret data is no longer
         /// stored. A version may not leave this state once entered.
         Destroyed = 3,
     }
@@ -120,17 +120,17 @@ pub struct Replication {
 }
 /// Nested message and enum types in `Replication`.
 pub mod replication {
-    /// A replication policy that replicates the \[Secret][google.cloud.secrets.v1beta1.Secret\] payload without any
+    /// A replication policy that replicates the [Secret][google.cloud.secrets.v1beta1.Secret] payload without any
     /// restrictions.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Automatic {}
-    /// A replication policy that replicates the \[Secret][google.cloud.secrets.v1beta1.Secret\] payload into the
-    /// locations specified in \[Secret.replication.user_managed.replicas][\]
+    /// A replication policy that replicates the [Secret][google.cloud.secrets.v1beta1.Secret] payload into the
+    /// locations specified in [Secret.replication.user_managed.replicas][]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UserManaged {
-        /// Required. The list of Replicas for this \[Secret][google.cloud.secrets.v1beta1.Secret\].
+        /// Required. The list of Replicas for this [Secret][google.cloud.secrets.v1beta1.Secret].
         ///
         /// Cannot be empty.
         #[prost(message, repeated, tag = "1")]
@@ -138,7 +138,7 @@ pub mod replication {
     }
     /// Nested message and enum types in `UserManaged`.
     pub mod user_managed {
-        /// Represents a Replica for this \[Secret][google.cloud.secrets.v1beta1.Secret\].
+        /// Represents a Replica for this [Secret][google.cloud.secrets.v1beta1.Secret].
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Replica {
@@ -152,16 +152,16 @@ pub mod replication {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Replication {
-        /// The \[Secret][google.cloud.secrets.v1beta1.Secret\] will automatically be replicated without any restrictions.
+        /// The [Secret][google.cloud.secrets.v1beta1.Secret] will automatically be replicated without any restrictions.
         #[prost(message, tag = "1")]
         Automatic(Automatic),
-        /// The \[Secret][google.cloud.secrets.v1beta1.Secret\] will only be replicated into the locations specified.
+        /// The [Secret][google.cloud.secrets.v1beta1.Secret] will only be replicated into the locations specified.
         #[prost(message, tag = "2")]
         UserManaged(UserManaged),
     }
 }
 /// A secret payload resource in the Secret Manager API. This contains the
-/// sensitive secret data that is associated with a \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\].
+/// sensitive secret data that is associated with a [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretPayload {
@@ -169,12 +169,12 @@ pub struct SecretPayload {
     #[prost(bytes = "vec", tag = "1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
-/// Request message for \[SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets\].
+/// Request message for [SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretsRequest {
     /// Required. The resource name of the project associated with the
-    /// \[Secrets][google.cloud.secrets.v1beta1.Secret\], in the format `projects/*`.
+    /// [Secrets][google.cloud.secrets.v1beta1.Secret], in the format `projects/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to be returned in a single page. If
@@ -183,32 +183,32 @@ pub struct ListSecretsRequest {
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Pagination token, returned earlier via
-    /// \[ListSecretsResponse.next_page_token][google.cloud.secrets.v1beta1.ListSecretsResponse.next_page_token\].
+    /// [ListSecretsResponse.next_page_token][google.cloud.secrets.v1beta1.ListSecretsResponse.next_page_token].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets\].
+/// Response message for [SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretsResponse {
-    /// The list of \[Secrets][google.cloud.secrets.v1beta1.Secret\] sorted in reverse by create_time (newest
+    /// The list of [Secrets][google.cloud.secrets.v1beta1.Secret] sorted in reverse by create_time (newest
     /// first).
     #[prost(message, repeated, tag = "1")]
     pub secrets: ::prost::alloc::vec::Vec<Secret>,
     /// A token to retrieve the next page of results. Pass this value in
-    /// \[ListSecretsRequest.page_token][google.cloud.secrets.v1beta1.ListSecretsRequest.page_token\] to retrieve the next page.
+    /// [ListSecretsRequest.page_token][google.cloud.secrets.v1beta1.ListSecretsRequest.page_token] to retrieve the next page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// The total number of \[Secrets][google.cloud.secrets.v1beta1.Secret\].
+    /// The total number of [Secrets][google.cloud.secrets.v1beta1.Secret].
     #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
-/// Request message for \[SecretManagerService.CreateSecret][google.cloud.secrets.v1beta1.SecretManagerService.CreateSecret\].
+/// Request message for [SecretManagerService.CreateSecret][google.cloud.secrets.v1beta1.SecretManagerService.CreateSecret].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSecretRequest {
     /// Required. The resource name of the project to associate with the
-    /// \[Secret][google.cloud.secrets.v1beta1.Secret\], in the format `projects/*`.
+    /// [Secret][google.cloud.secrets.v1beta1.Secret], in the format `projects/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. This must be unique within the project.
@@ -218,36 +218,36 @@ pub struct CreateSecretRequest {
     /// underscore (`_`) characters.
     #[prost(string, tag = "2")]
     pub secret_id: ::prost::alloc::string::String,
-    /// Required. A \[Secret][google.cloud.secrets.v1beta1.Secret\] with initial field values.
+    /// Required. A [Secret][google.cloud.secrets.v1beta1.Secret] with initial field values.
     #[prost(message, optional, tag = "3")]
     pub secret: ::core::option::Option<Secret>,
 }
-/// Request message for \[SecretManagerService.AddSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AddSecretVersion\].
+/// Request message for [SecretManagerService.AddSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AddSecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddSecretVersionRequest {
-    /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] to associate with the
-    /// \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the format `projects/*/secrets/*`.
+    /// Required. The resource name of the [Secret][google.cloud.secrets.v1beta1.Secret] to associate with the
+    /// [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] in the format `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The secret payload of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\].
+    /// Required. The secret payload of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion].
     #[prost(message, optional, tag = "2")]
     pub payload: ::core::option::Option<SecretPayload>,
 }
-/// Request message for \[SecretManagerService.GetSecret][google.cloud.secrets.v1beta1.SecretManagerService.GetSecret\].
+/// Request message for [SecretManagerService.GetSecret][google.cloud.secrets.v1beta1.SecretManagerService.GetSecret].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretRequest {
-    /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\], in the format `projects/*/secrets/*`.
+    /// Required. The resource name of the [Secret][google.cloud.secrets.v1beta1.Secret], in the format `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions\].
+/// Request message for [SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretVersionsRequest {
-    /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] associated with the
-    /// \[SecretVersions][google.cloud.secrets.v1beta1.SecretVersion\] to list, in the format
+    /// Required. The resource name of the [Secret][google.cloud.secrets.v1beta1.Secret] associated with the
+    /// [SecretVersions][google.cloud.secrets.v1beta1.SecretVersion] to list, in the format
     /// `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -261,58 +261,58 @@ pub struct ListSecretVersionsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions\].
+/// Response message for [SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretVersionsResponse {
-    /// The list of \[SecretVersions][google.cloud.secrets.v1beta1.SecretVersion\] sorted in reverse by
+    /// The list of [SecretVersions][google.cloud.secrets.v1beta1.SecretVersion] sorted in reverse by
     /// create_time (newest first).
     #[prost(message, repeated, tag = "1")]
     pub versions: ::prost::alloc::vec::Vec<SecretVersion>,
     /// A token to retrieve the next page of results. Pass this value in
-    /// \[ListSecretVersionsRequest.page_token][google.cloud.secrets.v1beta1.ListSecretVersionsRequest.page_token\] to retrieve the next page.
+    /// [ListSecretVersionsRequest.page_token][google.cloud.secrets.v1beta1.ListSecretVersionsRequest.page_token] to retrieve the next page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// The total number of \[SecretVersions][google.cloud.secrets.v1beta1.SecretVersion\].
+    /// The total number of [SecretVersions][google.cloud.secrets.v1beta1.SecretVersion].
     #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
-/// Request message for \[SecretManagerService.GetSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.GetSecretVersion\].
+/// Request message for [SecretManagerService.GetSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.GetSecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretVersionRequest {
-    /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the format
+    /// Required. The resource name of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] in the format
     /// `projects/*/secrets/*/versions/*`.
     /// `projects/*/secrets/*/versions/latest` is an alias to the `latest`
-    /// \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\].
+    /// [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[SecretManagerService.UpdateSecret][google.cloud.secrets.v1beta1.SecretManagerService.UpdateSecret\].
+/// Request message for [SecretManagerService.UpdateSecret][google.cloud.secrets.v1beta1.SecretManagerService.UpdateSecret].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecretRequest {
-    /// Required. \[Secret][google.cloud.secrets.v1beta1.Secret\] with updated field values.
+    /// Required. [Secret][google.cloud.secrets.v1beta1.Secret] with updated field values.
     #[prost(message, optional, tag = "1")]
     pub secret: ::core::option::Option<Secret>,
     /// Required. Specifies the fields to be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for \[SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion\].
+/// Request message for [SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSecretVersionRequest {
-    /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the format
+    /// Required. The resource name of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Response message for \[SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion\].
+/// Response message for [SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSecretVersionResponse {
-    /// The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the format
+    /// The resource name of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -320,38 +320,38 @@ pub struct AccessSecretVersionResponse {
     #[prost(message, optional, tag = "2")]
     pub payload: ::core::option::Option<SecretPayload>,
 }
-/// Request message for \[SecretManagerService.DeleteSecret][google.cloud.secrets.v1beta1.SecretManagerService.DeleteSecret\].
+/// Request message for [SecretManagerService.DeleteSecret][google.cloud.secrets.v1beta1.SecretManagerService.DeleteSecret].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSecretRequest {
-    /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] to delete in the format
+    /// Required. The resource name of the [Secret][google.cloud.secrets.v1beta1.Secret] to delete in the format
     /// `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[SecretManagerService.DisableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DisableSecretVersion\].
+/// Request message for [SecretManagerService.DisableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DisableSecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableSecretVersionRequest {
-    /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] to disable in the format
+    /// Required. The resource name of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] to disable in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[SecretManagerService.EnableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.EnableSecretVersion\].
+/// Request message for [SecretManagerService.EnableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.EnableSecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableSecretVersionRequest {
-    /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] to enable in the format
+    /// Required. The resource name of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] to enable in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[SecretManagerService.DestroySecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DestroySecretVersion\].
+/// Request message for [SecretManagerService.DestroySecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DestroySecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestroySecretVersionRequest {
-    /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] to destroy in the format
+    /// Required. The resource name of the [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion] to destroy in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,

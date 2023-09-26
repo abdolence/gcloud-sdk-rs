@@ -10,8 +10,13 @@ use serde::{Deserialize, Serialize}; /*
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct TableCell {
-    #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
-    pub v: Option<serde_json::Value>,
+    #[serde(
+        rename = "v",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub v: Option<Option<serde_json::Value>>,
 }
 
 impl TableCell {

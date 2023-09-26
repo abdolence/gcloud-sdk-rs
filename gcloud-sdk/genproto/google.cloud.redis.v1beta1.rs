@@ -20,8 +20,8 @@ pub struct Instance {
     /// Note: Redis instances are managed and addressed at regional level so
     /// location_id here refers to a GCP region; however, users may choose which
     /// specific zone (or collection of zones for cross-zone instances) an instance
-    /// should be provisioned in. Refer to \[location_id][google.cloud.redis.v1beta1.Instance.location_id\] and
-    /// \[alternative_location_id][google.cloud.redis.v1beta1.Instance.alternative_location_id\] fields for more details.
+    /// should be provisioned in. Refer to [location_id][google.cloud.redis.v1beta1.Instance.location_id] and
+    /// [alternative_location_id][google.cloud.redis.v1beta1.Instance.alternative_location_id] fields for more details.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// An arbitrary and optional user-provided name for the instance.
@@ -128,7 +128,7 @@ pub struct Instance {
     #[prost(int32, tag = "18")]
     pub memory_size_gb: i32,
     /// Optional. The full name of the Google Compute Engine
-    /// \[network\](<https://cloud.google.com/vpc/docs/vpc>) to which the
+    /// [network](<https://cloud.google.com/vpc/docs/vpc>) to which the
     /// instance is connected. If left unspecified, the `default` network
     /// will be used.
     #[prost(string, tag = "20")]
@@ -565,7 +565,7 @@ pub mod persistence_config {
         }
     }
 }
-/// Request for \[RescheduleMaintenance][google.cloud.redis.v1beta1.CloudRedis.RescheduleMaintenance\].
+/// Request for [RescheduleMaintenance][google.cloud.redis.v1beta1.CloudRedis.RescheduleMaintenance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RescheduleMaintenanceRequest {
@@ -689,7 +689,7 @@ pub struct MaintenanceSchedule {
     #[prost(message, optional, tag = "5")]
     pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Request for \[ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances\].
+/// Request for [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
@@ -703,16 +703,16 @@ pub struct ListInstancesRequest {
     /// If not specified, a default value of 1000 will be used by the service.
     /// Regardless of the page_size value, the response may include a partial list
     /// and a caller should only rely on response's
-    /// \[`next_page_token`][google.cloud.redis.v1beta1.ListInstancesResponse.next_page_token\]
+    /// [`next_page_token`][google.cloud.redis.v1beta1.ListInstancesResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The `next_page_token` value returned from a previous
-    /// \[ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances\] request, if any.
+    /// [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances] request, if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response for \[ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances\].
+/// Response for [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
@@ -737,7 +737,7 @@ pub struct ListInstancesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for \[GetInstance][google.cloud.redis.v1beta1.CloudRedis.GetInstance\].
+/// Request for [GetInstance][google.cloud.redis.v1beta1.CloudRedis.GetInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
@@ -747,7 +747,7 @@ pub struct GetInstanceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[GetInstanceAuthString][google.cloud.redis.v1beta1.CloudRedis.GetInstanceAuthString\].
+/// Request for [GetInstanceAuthString][google.cloud.redis.v1beta1.CloudRedis.GetInstanceAuthString].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceAuthStringRequest {
@@ -765,7 +765,7 @@ pub struct InstanceAuthString {
     #[prost(string, tag = "1")]
     pub auth_string: ::prost::alloc::string::String,
 }
-/// Request for \[CreateInstance][google.cloud.redis.v1beta1.CloudRedis.CreateInstance\].
+/// Request for [CreateInstance][google.cloud.redis.v1beta1.CloudRedis.CreateInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
@@ -788,13 +788,13 @@ pub struct CreateInstanceRequest {
     #[prost(message, optional, tag = "3")]
     pub instance: ::core::option::Option<Instance>,
 }
-/// Request for \[UpdateInstance][google.cloud.redis.v1beta1.CloudRedis.UpdateInstance\].
+/// Request for [UpdateInstance][google.cloud.redis.v1beta1.CloudRedis.UpdateInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
     /// this field. The elements of the repeated paths field may only include these
-    /// fields from \[Instance][google.cloud.redis.v1beta1.Instance\]:
+    /// fields from [Instance][google.cloud.redis.v1beta1.Instance]:
     ///
     ///   *   `displayName`
     ///   *   `labels`
@@ -808,7 +808,7 @@ pub struct UpdateInstanceRequest {
     #[prost(message, optional, tag = "2")]
     pub instance: ::core::option::Option<Instance>,
 }
-/// Request for \[UpgradeInstance][google.cloud.redis.v1beta1.CloudRedis.UpgradeInstance\].
+/// Request for [UpgradeInstance][google.cloud.redis.v1beta1.CloudRedis.UpgradeInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeInstanceRequest {
@@ -821,7 +821,7 @@ pub struct UpgradeInstanceRequest {
     #[prost(string, tag = "2")]
     pub redis_version: ::prost::alloc::string::String,
 }
-/// Request for \[DeleteInstance][google.cloud.redis.v1beta1.CloudRedis.DeleteInstance\].
+/// Request for [DeleteInstance][google.cloud.redis.v1beta1.CloudRedis.DeleteInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
@@ -858,7 +858,7 @@ pub mod input_config {
         GcsSource(super::GcsSource),
     }
 }
-/// Request for \[Import][google.cloud.redis.v1beta1.CloudRedis.ImportInstance\].
+/// Request for [Import][google.cloud.redis.v1beta1.CloudRedis.ImportInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportInstanceRequest {
@@ -899,7 +899,7 @@ pub mod output_config {
         GcsDestination(super::GcsDestination),
     }
 }
-/// Request for \[Export][google.cloud.redis.v1beta1.CloudRedis.ExportInstance\].
+/// Request for [Export][google.cloud.redis.v1beta1.CloudRedis.ExportInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInstanceRequest {
@@ -912,7 +912,7 @@ pub struct ExportInstanceRequest {
     #[prost(message, optional, tag = "3")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
-/// Request for \[Failover][google.cloud.redis.v1beta1.CloudRedis.FailoverInstance\].
+/// Request for [Failover][google.cloud.redis.v1beta1.CloudRedis.FailoverInstance].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailoverInstanceRequest {

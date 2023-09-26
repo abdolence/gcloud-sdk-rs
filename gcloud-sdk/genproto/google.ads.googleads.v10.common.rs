@@ -4200,7 +4200,7 @@ pub struct KeywordPlanHistoricalMetrics {
         tag = "2"
     )]
     pub competition: i32,
-    /// The competition index for the query in the range [0, 100].
+    /// The competition index for the query in the range \[0, 100\].
     /// Shows how competitive ad placement is for a keyword.
     /// The level of competition from 0-100 is determined by the number of ad slots
     /// filled divided by the total number of ad slots available. If not enough
@@ -6391,7 +6391,7 @@ pub mod target_restriction_operation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextLabel {
     /// Background color of the label in RGB format. This string must match the
-    /// regular expression '^\#(\[a-fA-F0-9]{6}|[a-fA-F0-9\]{3})$'.
+    /// regular expression '^\#(\[a-fA-F0-9\]{6}|\[a-fA-F0-9\]{3})$'.
     /// Note: The background color may not be visible for manager accounts.
     #[prost(string, optional, tag = "3")]
     pub background_color: ::core::option::Option<::prost::alloc::string::String>,

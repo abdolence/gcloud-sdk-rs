@@ -41,65 +41,20 @@ pub struct AvroRows {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReadOptions {
-    /// Optional. The names of the fields in the table to be returned. If no
-    /// field names are specified, then all fields in the table are returned.
-    ///
-    /// Nested fields -- the child elements of a STRUCT field -- can be selected
-    /// individually using their fully-qualified names, and will be returned as
-    /// record fields containing only the selected nested fields. If a STRUCT
-    /// field is specified in the selected fields list, all of the child elements
-    /// will be returned.
-    ///
-    /// As an example, consider a table with the following schema:
-    ///
-    ///    {
-    ///        "name": "struct_field",
-    ///        "type": "RECORD",
-    ///        "mode": "NULLABLE",
-    ///        "fields": [
-    ///            {
-    ///                "name": "string_field1",
-    ///                "type": "STRING",
-    /// .              "mode": "NULLABLE"
-    ///            },
-    ///            {
-    ///                "name": "string_field2",
-    ///                "type": "STRING",
-    ///                "mode": "NULLABLE"
-    ///            }
-    ///        ]
-    ///    }
-    ///
-    /// Specifying "struct_field" in the selected fields list will result in a
-    /// read session schema with the following logical structure:
-    ///
-    ///    struct_field {
-    ///        string_field1
-    ///        string_field2
-    ///    }
-    ///
-    /// Specifying "struct_field.string_field1" in the selected fields list will
-    /// result in a read session schema with the following logical structure:
-    ///
-    ///    struct_field {
-    ///        string_field1
-    ///    }
-    ///
-    /// The order of the fields in the read session schema is derived from the
-    /// table schema and does not correspond to the order in which the fields are
-    /// specified in this list.
+    /// Optional. Names of the fields in the table that should be read. If empty,
+    /// all fields will be read. If the specified field is a nested field, all the
+    /// sub-fields in the field will be selected. The output field order is
+    /// unrelated to the order of fields in selected_fields.
     #[prost(string, repeated, tag = "1")]
     pub selected_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. SQL text filtering statement, similar to a WHERE clause in
-    /// a SQL query. Aggregates are not supported.
+    /// a query. Aggregates are not supported.
     ///
     /// Examples: "int_field > 5"
     ///            "date_field = CAST('2014-9-27' as DATE)"
     ///            "nullable_field is not NULL"
     ///            "st_equals(geo_field, st_geofromtext("POINT(2, 2)"))"
     ///            "numeric_field BETWEEN 1.0 AND 5.0"
-    ///
-    /// Restricted to a maximum length for 1 MB.
     #[prost(string, tag = "2")]
     pub row_restriction: ::prost::alloc::string::String,
 }
@@ -220,7 +175,6 @@ pub struct CreateReadSessionRequest {
     #[prost(message, optional, tag = "4")]
     pub read_options: ::core::option::Option<TableReadOptions>,
     /// Data output format. Currently default to Avro.
-    /// DATA_FORMAT_UNSPECIFIED not supported.
     #[prost(enumeration = "DataFormat", tag = "5")]
     pub format: i32,
     /// The strategy to use for distributing data among multiple streams. Currently
@@ -247,7 +201,7 @@ pub struct StreamStatus {
     /// or slow.
     #[prost(int64, tag = "1")]
     pub estimated_row_count: i64,
-    /// A value in the range [0.0, 1.0] that represents the fraction of rows
+    /// A value in the range \[0.0, 1.0\] that represents the fraction of rows
     /// assigned to this stream that have been processed by the server. In the
     /// presence of read filters, the server may process more rows than it returns,
     /// so this value reflects progress through the pre-filtering rows.
@@ -318,13 +272,6 @@ pub struct ReadRowsResponse {
     /// Row data is returned in format specified during session creation.
     #[prost(oneof = "read_rows_response::Rows", tags = "3, 4")]
     pub rows: ::core::option::Option<read_rows_response::Rows>,
-    /// The schema for the read. If read_options.selected_fields is set, the
-    /// schema may be different from the table schema as it will only contain
-    /// the selected fields. This schema is equivalent to the one returned by
-    /// CreateSession. This field is only populated in the first ReadRowsResponse
-    /// RPC.
-    #[prost(oneof = "read_rows_response::Schema", tags = "7, 8")]
-    pub schema: ::core::option::Option<read_rows_response::Schema>,
 }
 /// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
@@ -338,21 +285,6 @@ pub mod read_rows_response {
         /// Serialized row data in Arrow RecordBatch format.
         #[prost(message, tag = "4")]
         ArrowRecordBatch(super::ArrowRecordBatch),
-    }
-    /// The schema for the read. If read_options.selected_fields is set, the
-    /// schema may be different from the table schema as it will only contain
-    /// the selected fields. This schema is equivalent to the one returned by
-    /// CreateSession. This field is only populated in the first ReadRowsResponse
-    /// RPC.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Schema {
-        /// Output only. Avro schema.
-        #[prost(message, tag = "7")]
-        AvroSchema(super::AvroSchema),
-        /// Output only. Arrow schema.
-        #[prost(message, tag = "8")]
-        ArrowSchema(super::ArrowSchema),
     }
 }
 /// Information needed to request additional streams for an established read
@@ -427,8 +359,6 @@ pub enum DataFormat {
     /// Avro is a standard open source row based file format.
     /// See <https://avro.apache.org/> for more details.
     Avro = 1,
-    /// Arrow is a standard open source column-based message format.
-    /// See <https://arrow.apache.org/> for more details.
     Arrow = 3,
 }
 impl DataFormat {
@@ -502,11 +432,6 @@ pub mod big_query_storage_client {
     /// BigQuery storage API.
     ///
     /// The BigQuery storage API can be used to read data stored in BigQuery.
-    ///
-    /// The v1beta1 API is not yet officially deprecated, and will go through a full
-    /// deprecation cycle (https://cloud.google.com/products#product-launch-stages)
-    /// before the service is turned down. However, new code should use the v1 API
-    /// going forward.
     #[derive(Debug, Clone)]
     pub struct BigQueryStorageClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -597,7 +522,7 @@ pub mod big_query_storage_client {
         /// reached the end of each stream in the session, then all the data in the
         /// table has been read.
         ///
-        /// Read sessions automatically expire 6 hours after they are created and do
+        /// Read sessions automatically expire 24 hours after they are created and do
         /// not require manual clean-up by the caller.
         pub async fn create_read_session(
             &mut self,
@@ -698,7 +623,7 @@ pub mod big_query_storage_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Causes a single stream in a ReadSession to gracefully stop. This
+        /// Triggers the graceful termination of a single stream in a ReadSession. This
         /// API can be used to dynamically adjust the parallelism of a batch processing
         /// task downwards without losing data.
         ///

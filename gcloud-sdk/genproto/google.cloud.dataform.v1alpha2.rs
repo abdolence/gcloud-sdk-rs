@@ -1354,7 +1354,7 @@ pub struct WorkflowInvocationAction {
     /// Output only. This action's timing details.
     /// `start_time` will be set if the action is in [RUNNING, SUCCEEDED,
     /// CANCELLED, FAILED] state.
-    /// `end_time` will be set if the action is in [SUCCEEDED, CANCELLED, FAILED]
+    /// `end_time` will be set if the action is in \[SUCCEEDED, CANCELLED, FAILED\]
     /// state.
     #[prost(message, optional, tag = "5")]
     pub invocation_timing: ::core::option::Option<super::super::super::r#type::Interval>,

@@ -623,7 +623,7 @@ pub struct HumanAnnotationConfig {
     #[prost(string, tag = "4")]
     pub label_group: ::prost::alloc::string::String,
     /// Optional. The Language of this question, as a
-    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>).
+    /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>).
     /// Default value is en-US.
     /// Only need to set this when task is language related. For example, French
     /// text classification.
@@ -879,11 +879,11 @@ pub struct InputConfig {
     pub data_type: i32,
     /// Optional. The type of annotation to be performed on this data. You must
     /// specify this field if you are using this InputConfig in an
-    /// \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\].
+    /// [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
     #[prost(enumeration = "AnnotationType", tag = "3")]
     pub annotation_type: i32,
     /// Optional. Metadata about annotations for the input. You must specify this
-    /// field if you are using this InputConfig in an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\] for a
+    /// field if you are using this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] for a
     /// model version that performs classification.
     #[prost(message, optional, tag = "4")]
     pub classification_metadata: ::core::option::Option<ClassificationMetadata>,
@@ -912,7 +912,7 @@ pub mod input_config {
         #[prost(message, tag = "2")]
         GcsSource(super::GcsSource),
         /// Source located in BigQuery. You must specify this field if you are using
-        /// this InputConfig in an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\].
+        /// this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
         #[prost(message, tag = "5")]
         BigquerySource(super::BigQuerySource),
     }
@@ -922,7 +922,7 @@ pub mod input_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextMetadata {
     /// The language of this text, as a
-    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>).
+    /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>).
     /// Default value is en-US.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
@@ -947,7 +947,7 @@ pub struct GcsSource {
     #[prost(string, tag = "2")]
     pub mime_type: ::prost::alloc::string::String,
 }
-/// The BigQuery location for input data. If used in an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\], this
+/// The BigQuery location for input data. If used in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob], this
 /// is where the service saves the prediction input and output sampled from the
 /// model version.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -956,7 +956,7 @@ pub struct BigQuerySource {
     /// Required. BigQuery URI to a table, up to 2,000 characters long. If you
     /// specify the URI of a table that does not exist, Data Labeling Service
     /// creates a table at the URI with the correct schema when you create your
-    /// \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\]. If you specify the URI of a table that already exists,
+    /// [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob]. If you specify the URI of a table that already exists,
     /// it must have the
     /// [correct
     /// schema](/ml-engine/docs/continuous-evaluation/create-job#table-schema).
@@ -1235,7 +1235,7 @@ impl DataType {
     }
 }
 /// Describes an evaluation between a machine learning model's predictions and
-/// ground truth labels. Created when an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\] runs successfully.
+/// ground truth labels. Created when an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] runs successfully.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Evaluation {
@@ -1262,7 +1262,7 @@ pub struct Evaluation {
     /// Output only. Type of task that the model version being evaluated performs,
     /// as defined in the
     ///
-    /// \[evaluationJobConfig.inputConfig.annotationType][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\]
+    /// [evaluationJobConfig.inputConfig.annotationType][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config]
     /// field of the evaluation job that created this evaluation.
     #[prost(enumeration = "AnnotationType", tag = "6")]
     pub annotation_type: i32,
@@ -1273,7 +1273,7 @@ pub struct Evaluation {
     pub evaluated_item_count: i64,
 }
 /// Configuration details used for calculating evaluation metrics and creating an
-/// \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\].
+/// [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluationConfig {
@@ -1402,7 +1402,7 @@ pub mod pr_curve {
         /// Precision value for entries with label that has highest score.
         #[prost(float, tag = "6")]
         pub precision_at1: f32,
-        /// The harmonic mean of \[recall_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1\] and \[precision_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at1\].
+        /// The harmonic mean of [recall_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1] and [precision_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at1].
         #[prost(float, tag = "7")]
         pub f1_score_at1: f32,
         /// Recall value for entries with label that has highest 5 scores.
@@ -1411,7 +1411,7 @@ pub mod pr_curve {
         /// Precision value for entries with label that has highest 5 scores.
         #[prost(float, tag = "9")]
         pub precision_at5: f32,
-        /// The harmonic mean of \[recall_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5\] and \[precision_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5\].
+        /// The harmonic mean of [recall_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5] and [precision_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5].
         #[prost(float, tag = "10")]
         pub f1_score_at5: f32,
     }
@@ -1453,7 +1453,7 @@ pub mod confusion_matrix {
     }
 }
 /// Defines an evaluation job that runs periodically to generate
-/// \[Evaluations][google.cloud.datalabeling.v1beta1.Evaluation\]. [Creating an evaluation
+/// [Evaluations][google.cloud.datalabeling.v1beta1.Evaluation]. [Creating an evaluation
 /// job](/ml-engine/docs/continuous-evaluation/create-job) is the starting point
 /// for using continuous evaluation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1498,7 +1498,7 @@ pub struct EvaluationJob {
     /// Required. Configuration details for the evaluation job.
     #[prost(message, optional, tag = "6")]
     pub evaluation_job_config: ::core::option::Option<EvaluationJobConfig>,
-    /// Required. Name of the \[AnnotationSpecSet][google.cloud.datalabeling.v1beta1.AnnotationSpecSet\] describing all the
+    /// Required. Name of the [AnnotationSpecSet][google.cloud.datalabeling.v1beta1.AnnotationSpecSet] describing all the
     /// labels that your machine learning model outputs. You must create this
     /// resource before you create an evaluation job and provide its name in the
     /// following format:
@@ -1538,9 +1538,9 @@ pub mod evaluation_job {
     #[repr(i32)]
     pub enum State {
         Unspecified = 0,
-        /// The job is scheduled to run at the [configured interval]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. You
-        /// can \[pause][google.cloud.datalabeling.v1beta1.DataLabelingService.PauseEvaluationJob\] or
-        /// \[delete][google.cloud.datalabeling.v1beta1.DataLabelingService.DeleteEvaluationJob\] the job.
+        /// The job is scheduled to run at the [configured interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. You
+        /// can [pause][google.cloud.datalabeling.v1beta1.DataLabelingService.PauseEvaluationJob] or
+        /// [delete][google.cloud.datalabeling.v1beta1.DataLabelingService.DeleteEvaluationJob] the job.
         ///
         /// When the job is in this state, it samples prediction input and output
         /// from your model version into your BigQuery table as predictions occur.
@@ -1550,7 +1550,7 @@ pub mod evaluation_job {
         ///
         /// 1. If you have configured your job to use Data Labeling Service for
         ///     ground truth labeling, the service creates a
-        ///     \[Dataset][google.cloud.datalabeling.v1beta1.Dataset\] and a labeling task for all data sampled
+        ///     [Dataset][google.cloud.datalabeling.v1beta1.Dataset] and a labeling task for all data sampled
         ///     since the last time the job ran. Human labelers provide ground truth
         ///     labels for your data. Human labeling may take hours, or even days,
         ///     depending on how much data has been sampled. The job remains in the
@@ -1560,12 +1560,12 @@ pub mod evaluation_job {
         ///     finished labeling the data, the next step occurs.
         ///     <br><br>
         ///     If you have configured your job to provide your own ground truth
-        ///     labels, Data Labeling Service still creates a \[Dataset][google.cloud.datalabeling.v1beta1.Dataset\] for newly
+        ///     labels, Data Labeling Service still creates a [Dataset][google.cloud.datalabeling.v1beta1.Dataset] for newly
         ///     sampled data, but it expects that you have already added ground truth
         ///     labels to the BigQuery table by this time. The next step occurs
         ///     immediately.
         ///
-        /// 2. Data Labeling Service creates an \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\] by comparing your
+        /// 2. Data Labeling Service creates an [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation] by comparing your
         ///     model version's predictions with the ground truth labels.
         ///
         /// If the job remains in this state for a long time, it continues to sample
@@ -1574,7 +1574,7 @@ pub mod evaluation_job {
         Running = 2,
         /// The job is not sampling prediction input and output into your BigQuery
         /// table and it will not run according to its schedule. You can
-        /// \[resume][google.cloud.datalabeling.v1beta1.DataLabelingService.ResumeEvaluationJob\] the job.
+        /// [resume][google.cloud.datalabeling.v1beta1.DataLabelingService.ResumeEvaluationJob] the job.
         Paused = 3,
         /// The job has this state right before it is deleted.
         Stopped = 4,
@@ -1624,18 +1624,18 @@ pub struct EvaluationJobConfig {
     #[prost(message, optional, tag = "1")]
     pub input_config: ::core::option::Option<InputConfig>,
     /// Required. Details for calculating evaluation metrics and creating
-    /// \[Evaulations][google.cloud.datalabeling.v1beta1.Evaluation\]. If your model version performs image object
+    /// [Evaulations][google.cloud.datalabeling.v1beta1.Evaluation]. If your model version performs image object
     /// detection, you must specify the `boundingBoxEvaluationOptions` field within
     /// this configuration. Otherwise, provide an empty object for this
     /// configuration.
     #[prost(message, optional, tag = "2")]
     pub evaluation_config: ::core::option::Option<EvaluationConfig>,
     /// Optional. Details for human annotation of your data. If you set
-    /// \[labelMissingGroundTruth][google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth\] to
+    /// [labelMissingGroundTruth][google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth] to
     /// `true` for this evaluation job, then you must specify this field. If you
     /// plan to provide your own ground truth labels, then omit this field.
     ///
-    /// Note that you must create an \[Instruction][google.cloud.datalabeling.v1beta1.Instruction\] resource before you can
+    /// Note that you must create an [Instruction][google.cloud.datalabeling.v1beta1.Instruction] resource before you can
     /// specify this field. Provide the name of the instruction resource in the
     /// `instruction` field within this configuration.
     #[prost(message, optional, tag = "3")]
@@ -1665,14 +1665,14 @@ pub struct EvaluationJobConfig {
         ::prost::alloc::string::String,
     >,
     /// Required. The maximum number of predictions to sample and save to BigQuery
-    /// during each [evaluation interval]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. This limit
+    /// during each [evaluation interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. This limit
     /// overrides `example_sample_percentage`: even if the service has not sampled
     /// enough predictions to fulfill `example_sample_perecentage` during an
     /// interval, it stops sampling predictions when it meets this limit.
     #[prost(int32, tag = "10")]
     pub example_count: i32,
     /// Required. Fraction of predictions to sample and save to BigQuery during
-    /// each [evaluation interval]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. For example, 0.1 means
+    /// each [evaluation interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. For example, 0.1 means
     /// 10% of predictions served by your model version get saved to BigQuery.
     #[prost(double, tag = "11")]
     pub example_sample_percentage: f64,
@@ -1702,24 +1702,24 @@ pub mod evaluation_job_config {
         /// general classification.
         ///
         /// `annotationSpecSet` in this configuration must match
-        /// \[EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].
+        /// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].
         /// `allowMultiLabel` in this configuration must match
-        /// `classificationMetadata.isMultiLabel` in \[input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\].
+        /// `classificationMetadata.isMultiLabel` in [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].
         #[prost(message, tag = "4")]
         ImageClassificationConfig(super::ImageClassificationConfig),
         /// Specify this field if your model version performs image object detection
         /// (bounding box detection).
         ///
         /// `annotationSpecSet` in this configuration must match
-        /// \[EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].
+        /// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].
         #[prost(message, tag = "5")]
         BoundingPolyConfig(super::BoundingPolyConfig),
         /// Specify this field if your model version performs text classification.
         ///
         /// `annotationSpecSet` in this configuration must match
-        /// \[EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].
+        /// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].
         /// `allowMultiLabel` in this configuration must match
-        /// `classificationMetadata.isMultiLabel` in \[input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\].
+        /// `classificationMetadata.isMultiLabel` in [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].
         #[prost(message, tag = "8")]
         TextClassificationConfig(super::TextClassificationConfig),
     }
@@ -1735,7 +1735,7 @@ pub struct EvaluationJobAlertConfig {
     /// Required. A number between 0 and 1 that describes a minimum mean average
     /// precision threshold. When the evaluation job runs, if it calculates that
     /// your model version's predictions from the recent interval have
-    /// \[meanAveragePrecision][google.cloud.datalabeling.v1beta1.PrCurve.mean_average_precision\] below this
+    /// [meanAveragePrecision][google.cloud.datalabeling.v1beta1.PrCurve.mean_average_precision] below this
     /// threshold, then it sends an alert to your specified email.
     #[prost(double, tag = "2")]
     pub min_acceptable_mean_average_precision: f64,
@@ -1848,7 +1848,7 @@ pub struct ListDatasetsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// \[ListDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDatasetsResponse.next_page_token\] of the previous
+    /// [ListDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDatasetsResponse.next_page_token] of the previous
     /// \[DataLabelingService.ListDatasets\] call.
     /// Returns the first page if empty.
     #[prost(string, tag = "4")]
@@ -1942,7 +1942,7 @@ pub struct ListDataItemsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// \[ListDataItemsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDataItemsResponse.next_page_token\] of the previous
+    /// [ListDataItemsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDataItemsResponse.next_page_token] of the previous
     /// \[DataLabelingService.ListDataItems\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -1986,7 +1986,7 @@ pub struct ListAnnotatedDatasetsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// \[ListAnnotatedDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse.next_page_token\] of the previous
+    /// [ListAnnotatedDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse.next_page_token] of the previous
     /// \[DataLabelingService.ListAnnotatedDatasets\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -2335,7 +2335,7 @@ pub struct ListExamplesRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// \[ListExamplesResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListExamplesResponse.next_page_token\] of the previous
+    /// [ListExamplesResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListExamplesResponse.next_page_token] of the previous
     /// \[DataLabelingService.ListExamples\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -2392,7 +2392,7 @@ pub struct ListAnnotationSpecSetsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// \[ListAnnotationSpecSetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse.next_page_token\] of the previous
+    /// [ListAnnotationSpecSetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse.next_page_token] of the previous
     /// \[DataLabelingService.ListAnnotationSpecSets\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -2465,7 +2465,7 @@ pub struct ListInstructionsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// \[ListInstructionsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListInstructionsResponse.next_page_token\] of the previous
+    /// [ListInstructionsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListInstructionsResponse.next_page_token] of the previous
     /// \[DataLabelingService.ListInstructions\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -2503,21 +2503,21 @@ pub struct SearchEvaluationsRequest {
     /// Optional. To search evaluations, you can filter by the following:
     ///
     /// * evaluation<span>_</span>job.evaluation_job_id (the last part of
-    ///    \[EvaluationJob.name][google.cloud.datalabeling.v1beta1.EvaluationJob.name\])
+    ///    [EvaluationJob.name][google.cloud.datalabeling.v1beta1.EvaluationJob.name])
     /// * evaluation<span>_</span>job.model_id (the <var>{model_name}</var> portion
-    ///    of \[EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version\])
+    ///    of [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version])
     /// * evaluation<span>_</span>job.evaluation_job_run_time_start (Minimum
     ///    threshold for the
-    ///    \[evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time\] that created
+    ///    [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time] that created
     ///    the evaluation)
     /// * evaluation<span>_</span>job.evaluation_job_run_time_end (Maximum
     ///    threshold for the
-    ///    \[evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time\] that created
+    ///    [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time] that created
     ///    the evaluation)
-    /// * evaluation<span>_</span>job.job_state (\[EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state\])
+    /// * evaluation<span>_</span>job.job_state ([EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state])
     /// * annotation<span>_</span>spec.display_name (the Evaluation contains a
     ///    metric for the annotation spec with this
-    ///    \[displayName][google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name\])
+    ///    [displayName][google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name])
     ///
     /// To filter by multiple critiera, use the `AND` operator or the `OR`
     /// operator. The following examples shows a string that filters by several
@@ -2539,7 +2539,7 @@ pub struct SearchEvaluationsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by the
-    /// \[nextPageToken][google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.next_page_token\] of the response
+    /// [nextPageToken][google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.next_page_token] of the response
     /// to a previous search request.
     ///
     /// If you don't specify this field, the API call requests the first page of
@@ -2562,7 +2562,7 @@ pub struct SearchEvaluationsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchExampleComparisonsRequest {
-    /// Required. Name of the \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\] resource to search for example
+    /// Required. Name of the [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation] resource to search for example
     /// comparisons from. Format:
     ///
     /// "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>"
@@ -2574,7 +2574,7 @@ pub struct SearchExampleComparisonsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by the
-    /// \[nextPageToken][SearchExampleComparisons.next_page_token\] of the response
+    /// [nextPageToken][SearchExampleComparisons.next_page_token] of the response
     /// to a previous search rquest.
     ///
     /// If you don't specify this field, the API call requests the first page of
@@ -2691,8 +2691,8 @@ pub struct ListEvaluationJobsRequest {
     pub parent: ::prost::alloc::string::String,
     /// Optional. You can filter the jobs to list by model_id (also known as
     /// model_name, as described in
-    /// \[EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version\]) or by
-    /// evaluation job state (as described in \[EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state\]). To filter
+    /// [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version]) or by
+    /// evaluation job state (as described in [EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state]). To filter
     /// by both criteria, use the `AND` operator or the `OR` operator. For example,
     /// you can use the following string for your filter:
     /// "evaluation<span>_</span>job.model_id = <var>{model_name}</var> AND
@@ -2705,7 +2705,7 @@ pub struct ListEvaluationJobsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by the
-    /// \[nextPageToken][google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.next_page_token\] in the response
+    /// [nextPageToken][google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.next_page_token] in the response
     /// to the previous request. The request returns the first page if this is
     /// empty.
     #[prost(string, tag = "4")]
@@ -3910,7 +3910,7 @@ pub struct ExportDataOperationMetadata {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelOperationMetadata {
-    /// Output only. Progress of label operation. Range: [0, 100].
+    /// Output only. Progress of label operation. Range: \[0, 100\].
     #[prost(int32, tag = "1")]
     pub progress_percent: i32,
     /// Output only. Partial failures encountered.

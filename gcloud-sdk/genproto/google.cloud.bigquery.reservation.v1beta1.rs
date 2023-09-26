@@ -1,9 +1,10 @@
 /// A reservation is a mechanism used to guarantee slots to users.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reservation {
     /// The resource name of the reservation, e.g.,
     /// `projects/*/locations/*/reservations/team1-prod`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Minimum slots available to this reservation. A slot is a unit of
     /// computational power in BigQuery, and serves as the unit of parallelism.
@@ -15,12 +16,12 @@ pub struct Reservation {
     /// if total slot capacity of the new reservation and its siblings exceeds the
     /// parent's slot capacity, the request will fail with
     /// `google.rpc.Code.RESOURCE_EXHAUSTED`.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub slot_capacity: i64,
     /// If false, any query using this reservation will use idle slots from other
     /// reservations within the same admin project. If true, a query using this
     /// reservation will execute with the slot capacity specified above at most.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub ignore_idle_slots: bool,
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
@@ -33,39 +34,50 @@ pub struct Reservation {
 ///
 /// A capacity commitment resource exists as a child resource of the admin
 /// project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityCommitment {
     /// Output only. The resource name of the capacity commitment, e.g.,
     /// `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Number of slots in this commitment.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub slot_count: i64,
     /// Capacity commitment commitment plan.
-    #[prost(enumeration="capacity_commitment::CommitmentPlan", tag="3")]
+    #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "3")]
     pub plan: i32,
     /// Output only. State of the commitment.
-    #[prost(enumeration="capacity_commitment::State", tag="4")]
+    #[prost(enumeration = "capacity_commitment::State", tag = "4")]
     pub state: i32,
     /// Output only. The end of the current commitment period. It is applicable
     /// only for ACTIVE capacity commitments.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub commitment_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For FAILED commitment plan, provides the reason of failure.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub failure_status: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// The plan this capacity commitment is converted to after commitment_end_time
     /// passes. Once the plan is changed, committed period is extended according to
     /// commitment plan. Only applicable for ANNUAL commitments.
-    #[prost(enumeration="capacity_commitment::CommitmentPlan", tag="8")]
+    #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "8")]
     pub renewal_plan: i32,
 }
 /// Nested message and enum types in `CapacityCommitment`.
 pub mod capacity_commitment {
     /// Commitment plan defines the current committed period. Capacity commitment
     /// cannot be deleted during it's committed period.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CommitmentPlan {
         /// Invalid plan value. Requests with this value will be rejected with
@@ -103,10 +115,31 @@ pub mod capacity_commitment {
                 CommitmentPlan::Annual => "ANNUAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMMITMENT_PLAN_UNSPECIFIED" => Some(Self::Unspecified),
+                "FLEX" => Some(Self::Flex),
+                "TRIAL" => Some(Self::Trial),
+                "MONTHLY" => Some(Self::Monthly),
+                "ANNUAL" => Some(Self::Annual),
+                _ => None,
+            }
+        }
     }
     /// Capacity commitment can either become ACTIVE right away or transition
     /// from PENDING to ACTIVE or FAILED.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Invalid state value.
@@ -133,219 +166,257 @@ pub mod capacity_commitment {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
 /// The request for
-/// \[ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateReservation\].
+/// [ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateReservation].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReservationRequest {
     /// Required. Project, location. E.g.,
     /// `projects/myproject/locations/US`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The reservation ID. This field must only contain lower case alphanumeric
     /// characters or dash. Max length is 64 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub reservation_id: ::prost::alloc::string::String,
     /// Content of the new reservation to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub reservation: ::core::option::Option<Reservation>,
 }
 /// The request for
-/// \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations\].
+/// [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsRequest {
     /// Required. The parent resource name containing project and location, e.g.:
     ///    `projects/myproject/locations/US`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Can be used to filter out reservations based on names, capacity, etc, e.g.:
     /// filter="reservation.slot_capacity > 200"
     /// filter="reservation.name = \"*dev/*\""
     /// Advanced filtering syntax can be
-    /// \[here\](<https://cloud.google.com/logging/docs/view/advanced-filters>).
-    #[prost(string, tag="4")]
+    /// [here](<https://cloud.google.com/logging/docs/view/advanced-filters>).
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// The response for
-/// \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations\].
+/// [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsResponse {
     /// List of reservations visible to the user.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub reservations: ::prost::alloc::vec::Vec<Reservation>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.GetReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetReservation\].
+/// [ReservationService.GetReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetReservation].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
     ///     `projects/myproject/locations/US/reservations/team1-prod`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteReservation\].
+/// [ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteReservation].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
     ///     `projects/myproject/locations/US/reservations/team1-prod`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateReservation\].
+/// [ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateReservation].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
     /// Content of the reservation to update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub reservation: ::core::option::Option<Reservation>,
     /// Standard field mask for the set of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
-/// \[ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateCapacityCommitment\].
+/// [ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateCapacityCommitment].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCapacityCommitmentRequest {
     /// Required. Resource name of the parent reservation. E.g.,
     ///     `projects/myproject/locations/US`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Content of the capacity commitment to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub capacity_commitment: ::core::option::Option<CapacityCommitment>,
     /// If true, fail the request if another project in the organization has a
     /// capacity commitment.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub enforce_single_admin_project_per_org: bool,
 }
 /// The request for
-/// \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments\].
+/// [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsRequest {
     /// Required. Resource name of the parent reservation. E.g.,
     ///     `projects/myproject/locations/US`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments\].
+/// [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsResponse {
     /// List of capacity commitments visible to the user.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub capacity_commitments: ::prost::alloc::vec::Vec<CapacityCommitment>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetCapacityCommitment\].
+/// [ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetCapacityCommitment].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to retrieve. E.g.,
     ///     `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteCapacityCommitment\].
+/// [ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteCapacityCommitment].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to delete. E.g.,
     ///     `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateCapacityCommitment\].
+/// [ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateCapacityCommitment].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCapacityCommitmentRequest {
     /// Content of the capacity commitment to update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub capacity_commitment: ::core::option::Option<CapacityCommitment>,
     /// Standard field mask for the set of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
-/// \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment\].
+/// [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentRequest {
     /// Required. The resource name e.g.,:
     ///   `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Number of slots in the capacity commitment after the split.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub slot_count: i64,
 }
 /// The response for
-/// \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment\].
+/// [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentResponse {
     /// First capacity commitment, result of a split.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub first: ::core::option::Option<CapacityCommitment>,
     /// Second capacity commitment, result of a split.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub second: ::core::option::Option<CapacityCommitment>,
 }
 /// The request for
-/// \[ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.MergeCapacityCommitments\].
+/// [ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.MergeCapacityCommitments].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeCapacityCommitmentsRequest {
     /// Parent resource that identifies admin project and location e.g.,
     ///   `projects/myproject/locations/us`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Ids of capacity commitments to merge.
     /// These capacity commitments must exist under admin project and location
     /// specified in the parent.
-    #[prost(string, repeated, tag="2")]
-    pub capacity_commitment_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "2")]
+    pub capacity_commitment_ids: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// A Assignment allows a project to submit jobs
 /// of a certain type using slots from the specified reservation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Assignment {
     /// Output only. Name of the resource. E.g.:
     /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The resource which will use the reservation. E.g.
     /// `projects/myproject`, `folders/123`, or `organizations/456`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub assignee: ::prost::alloc::string::String,
     /// Which type of jobs will use the reservation.
-    #[prost(enumeration="assignment::JobType", tag="3")]
+    #[prost(enumeration = "assignment::JobType", tag = "3")]
     pub job_type: i32,
     /// Output only. State of the assignment.
-    #[prost(enumeration="assignment::State", tag="6")]
+    #[prost(enumeration = "assignment::State", tag = "6")]
     pub state: i32,
 }
 /// Nested message and enum types in `Assignment`.
 pub mod assignment {
     /// Types of job, which could be specified when using the reservation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum JobType {
         /// Invalid type. Requests with this value will be rejected with
@@ -368,11 +439,30 @@ pub mod assignment {
                 JobType::Query => "QUERY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JOB_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PIPELINE" => Some(Self::Pipeline),
+                "QUERY" => Some(Self::Query),
+                _ => None,
+            }
+        }
     }
     /// Assignment will remain in PENDING state if no active capacity commitment is
     /// present. It will become ACTIVE when some capacity commitment becomes
     /// active.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Invalid state value.
@@ -395,24 +485,35 @@ pub mod assignment {
                 State::Active => "ACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
+            }
+        }
     }
 }
 /// The request for
-/// \[ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateAssignment\].
+/// [ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateAssignment].
 /// Note: "bigquery.reservationAssignments.create" permission is required on the
 /// related assignee.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssignmentRequest {
     /// Required. The parent resource name of the assignment
     /// E.g. `projects/myproject/locations/US/reservations/team1-prod`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Assignment resource to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub assignment: ::core::option::Option<Assignment>,
 }
 /// The request for
-/// \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments\].
+/// [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsRequest {
     /// Required. The parent resource name e.g.:
@@ -422,48 +523,51 @@ pub struct ListAssignmentsRequest {
     /// Or:
     ///
     /// `projects/myproject/locations/US/reservations/-`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments\].
+/// [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsResponse {
     /// List of assignments visible to the user.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub assignments: ::prost::alloc::vec::Vec<Assignment>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteAssignment\].
+/// [ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteAssignment].
 /// Note: "bigquery.reservationAssignments.delete" permission is required on the
 /// related assignee.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAssignmentRequest {
     /// Required. Name of the resource, e.g.
     ///    `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments\].
+/// [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments].
 /// Note: "bigquery.reservationAssignments.search" permission is required on the
 /// related assignee.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsRequest {
     /// Required. The resource name of the admin project(containing project and
     /// location), e.g.:
     ///    `projects/myproject/locations/US`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Please specify resource name as assignee in the query.
     ///
@@ -472,29 +576,30 @@ pub struct SearchAssignmentsRequest {
     /// * `assignee=projects/myproject`
     /// * `assignee=folders/123`
     /// * `assignee=organizations/456`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments\].
+/// [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsResponse {
     /// List of assignments visible to the user.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub assignments: ::prost::alloc::vec::Vec<Assignment>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.MoveAssignment\].
+/// [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.MoveAssignment].
 ///
 /// **Note**: "bigquery.reservationAssignments.create" permission is required on
 /// the destination_id.
@@ -502,49 +607,53 @@ pub struct SearchAssignmentsResponse {
 /// **Note**: "bigquery.reservationAssignments.create" and
 /// "bigquery.reservationAssignments.delete" permission are required on the
 /// related assignee.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveAssignmentRequest {
     /// Required. The resource name of the assignment,
     /// e.g.
     /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The new reservation ID, e.g.:
     ///    `projects/myotherproject/locations/US/reservations/team2-prod`
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub destination_id: ::prost::alloc::string::String,
 }
 /// Represents a BI Reservation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiReservation {
     /// The resource name of the singleton BI reservation.
     /// Reservation names have the form
     /// `projects/{project_id}/locations/{location_id}/bireservation`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The last update timestamp of a reservation.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Size of a reservation, in bytes.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub size: i64,
 }
 /// A request to get a singleton BI reservation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBiReservationRequest {
     /// Required. Name of the requested reservation, for example:
     /// `projects/{project_id}/locations/{location_id}/bireservation`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A request to update a BI reservation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBiReservationRequest {
     /// A reservation to update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub reservation: ::core::option::Option<BiReservation>,
     /// A list of fields to be updated in this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Generated client implementations.
@@ -576,7 +685,7 @@ pub mod reservation_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -632,11 +741,27 @@ pub mod reservation_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a new reservation resource.
         pub async fn create_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReservationRequest>,
-        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -650,13 +775,24 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "CreateReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the reservations for the project in the specified location.
         pub async fn list_reservations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReservationsRequest>,
-        ) -> Result<tonic::Response<super::ListReservationsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListReservationsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -670,13 +806,21 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListReservations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "ListReservations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information about the reservation.
         pub async fn get_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReservationRequest>,
-        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -690,7 +834,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "GetReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a reservation.
         /// Returns `google.rpc.Code.FAILED_PRECONDITION` when reservation has
@@ -698,7 +850,7 @@ pub mod reservation_service_client {
         pub async fn delete_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteReservationRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -712,13 +864,21 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "DeleteReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing reservation resource.
         pub async fn update_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateReservationRequest>,
-        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Reservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -732,13 +892,24 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "UpdateReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new capacity commitment resource.
         pub async fn create_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCapacityCommitmentRequest>,
-        ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CapacityCommitment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -752,13 +923,21 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateCapacityCommitment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "CreateCapacityCommitment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all the capacity commitments for the admin project.
         pub async fn list_capacity_commitments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCapacityCommitmentsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListCapacityCommitmentsResponse>,
             tonic::Status,
         > {
@@ -775,13 +954,24 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListCapacityCommitments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "ListCapacityCommitments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns information about the capacity commitment.
         pub async fn get_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCapacityCommitmentRequest>,
-        ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CapacityCommitment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -795,7 +985,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetCapacityCommitment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "GetCapacityCommitment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a capacity commitment. Attempting to delete capacity commitment
         /// before its commitment_end_time will fail with the error code
@@ -803,7 +1001,7 @@ pub mod reservation_service_client {
         pub async fn delete_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCapacityCommitmentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -817,7 +1015,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteCapacityCommitment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "DeleteCapacityCommitment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates an existing capacity commitment.
         ///
@@ -829,7 +1035,10 @@ pub mod reservation_service_client {
         pub async fn update_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCapacityCommitmentRequest>,
-        ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CapacityCommitment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -843,7 +1052,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateCapacityCommitment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "UpdateCapacityCommitment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Splits capacity commitment to two commitments of the same plan and
         /// `commitment_end_time`.
@@ -856,7 +1073,7 @@ pub mod reservation_service_client {
         pub async fn split_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::SplitCapacityCommitmentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SplitCapacityCommitmentResponse>,
             tonic::Status,
         > {
@@ -873,7 +1090,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SplitCapacityCommitment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "SplitCapacityCommitment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Merges capacity commitments of the same plan into a single commitment.
         ///
@@ -885,7 +1110,10 @@ pub mod reservation_service_client {
         pub async fn merge_capacity_commitments(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeCapacityCommitmentsRequest>,
-        ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CapacityCommitment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -899,7 +1127,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MergeCapacityCommitments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "MergeCapacityCommitments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates an assignment object which allows the given project to submit jobs
         /// of a certain type using slots from the specified reservation.
@@ -934,7 +1170,7 @@ pub mod reservation_service_client {
         pub async fn create_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAssignmentRequest>,
-        ) -> Result<tonic::Response<super::Assignment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Assignment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -948,7 +1184,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateAssignment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "CreateAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists assignments.
         ///
@@ -974,7 +1218,10 @@ pub mod reservation_service_client {
         pub async fn list_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssignmentsRequest>,
-        ) -> Result<tonic::Response<super::ListAssignmentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListAssignmentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -988,7 +1235,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListAssignments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "ListAssignments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a assignment. No expansion will happen.
         ///
@@ -1008,7 +1263,7 @@ pub mod reservation_service_client {
         pub async fn delete_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAssignmentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1022,7 +1277,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteAssignment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "DeleteAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Looks up assignments for a specified resource for a particular region.
         /// If the request is about a project:
@@ -1050,7 +1313,10 @@ pub mod reservation_service_client {
         pub async fn search_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAssignmentsRequest>,
-        ) -> Result<tonic::Response<super::SearchAssignmentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchAssignmentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1064,7 +1330,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SearchAssignments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "SearchAssignments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Moves an assignment under a new reservation.
         ///
@@ -1074,7 +1348,7 @@ pub mod reservation_service_client {
         pub async fn move_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveAssignmentRequest>,
-        ) -> Result<tonic::Response<super::Assignment>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Assignment>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1088,13 +1362,21 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MoveAssignment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "MoveAssignment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves a BI reservation.
         pub async fn get_bi_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBiReservationRequest>,
-        ) -> Result<tonic::Response<super::BiReservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BiReservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1108,7 +1390,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetBiReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "GetBiReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a BI reservation.
         ///
@@ -1121,7 +1411,7 @@ pub mod reservation_service_client {
         pub async fn update_bi_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBiReservationRequest>,
-        ) -> Result<tonic::Response<super::BiReservation>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::BiReservation>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1135,7 +1425,15 @@ pub mod reservation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateBiReservation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.reservation.v1beta1.ReservationService",
+                        "UpdateBiReservation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

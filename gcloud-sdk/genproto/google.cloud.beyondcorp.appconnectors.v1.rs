@@ -141,7 +141,7 @@ pub struct ListAppConnectorsRequest {
     /// If not specified, a default value of 50 will be used by the service.
     /// Regardless of the page_size value, the response may include a partial list
     /// and a caller should only rely on response's
-    /// \[next_page_token][BeyondCorp.ListAppConnectorsResponse.next_page_token\] to
+    /// [next_page_token][BeyondCorp.ListAppConnectorsResponse.next_page_token] to
     /// determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -194,7 +194,7 @@ pub struct CreateAppConnectorRequest {
     /// Optional. User-settable AppConnector resource ID.
     ///
     ///   * Must start with a letter.
-    ///   * Must contain between 4-63 characters from `/\[a-z][0-9\]-/`.
+    ///   * Must contain between 4-63 characters from `/[a-z][0-9]-/`.
     ///   * Must end with a number or a letter.
     #[prost(string, tag = "2")]
     pub app_connector_id: ::prost::alloc::string::String,
@@ -462,8 +462,8 @@ pub struct AppConnectorOperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -476,12 +476,12 @@ pub mod app_connectors_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// API Overview:
+    /// ## API Overview
     ///
     /// The `beyondcorp.googleapis.com` service implements the Google Cloud
     /// BeyondCorp API.
     ///
-    /// Data Model:
+    /// ## Data Model
     ///
     /// The AppConnectorsService exposes the following resource:
     ///

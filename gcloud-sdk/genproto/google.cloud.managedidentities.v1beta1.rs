@@ -16,7 +16,7 @@ pub struct Domain {
         ::prost::alloc::string::String,
     >,
     /// Optional. The full names of the Google Compute Engine
-    /// \[networks\](/compute/docs/networks-and-firewalls#networks) the domain
+    /// [networks](/compute/docs/networks-and-firewalls#networks) the domain
     /// instance is connected to. Networks can be added using UpdateDomain.
     /// The domain is only available on networks listed in `authorized_networks`.
     /// If CIDR subnets overlap between networks, domain creation will fail.
@@ -25,11 +25,11 @@ pub struct Domain {
     /// Required. The CIDR range of internal addresses that are reserved for this
     /// domain. Reserved networks must be /24 or larger. Ranges must be
     /// unique and non-overlapping with existing subnets in
-    /// \[Domain].[authorized_networks\].
+    /// \[Domain\].[authorized_networks].
     #[prost(string, tag = "4")]
     pub reserved_ip_range: ::prost::alloc::string::String,
     /// Required. Locations where domain needs to be provisioned.
-    /// \[regions][compute/docs/regions-zones/\]
+    /// [regions][compute/docs/regions-zones/]
     /// e.g. us-west1 or us-east4
     /// Service supports up to 4 locations at once. Each location will use a /26
     /// block.
@@ -279,7 +279,7 @@ pub mod trust {
     }
     /// Represents the direction of trust.
     /// See
-    /// \[System.DirectoryServices.ActiveDirectory.TrustDirection\](<https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectory.trustdirection?view=netframework-4.7.2>)
+    /// [System.DirectoryServices.ActiveDirectory.TrustDirection](<https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectory.trustdirection?view=netframework-4.7.2>)
     /// for more information.
     #[derive(
         Clone,
@@ -346,7 +346,7 @@ pub struct OpMetadata {
     pub verb: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "5")]
     pub requested_cancellation: bool,
@@ -355,7 +355,7 @@ pub struct OpMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[CreateMicrosoftAdDomain][google.cloud.managedidentities.v1beta1.CreateMicrosoftAdDomain\]
+/// [CreateMicrosoftAdDomain][google.cloud.managedidentities.v1beta1.CreateMicrosoftAdDomain]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMicrosoftAdDomainRequest {
@@ -380,7 +380,7 @@ pub struct CreateMicrosoftAdDomainRequest {
     pub domain: ::core::option::Option<Domain>,
 }
 /// Request message for
-/// \[ResetAdminPassword][google.cloud.managedidentities.v1beta1.ResetAdminPassword\]
+/// [ResetAdminPassword][google.cloud.managedidentities.v1beta1.ResetAdminPassword]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetAdminPasswordRequest {
@@ -390,16 +390,16 @@ pub struct ResetAdminPasswordRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ResetAdminPassword][google.cloud.managedidentities.v1beta1.ResetAdminPassword\]
+/// [ResetAdminPassword][google.cloud.managedidentities.v1beta1.ResetAdminPassword]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetAdminPasswordResponse {
-    /// A random password. See \[admin][google.cloud.managedidentities.v1beta1.Domain.admin\] for more information.
+    /// A random password. See [admin][google.cloud.managedidentities.v1beta1.Domain.admin] for more information.
     #[prost(string, tag = "1")]
     pub password: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[ListDomains][google.cloud.managedidentities.v1beta1.ListDomains\]
+/// [ListDomains][google.cloud.managedidentities.v1beta1.ListDomains]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDomainsRequest {
@@ -411,7 +411,7 @@ pub struct ListDomainsRequest {
     /// If not specified, a default value of 1000 will be used.
     /// Regardless of the page_size value, the response may include a partial list.
     /// Callers should rely on a response's
-    /// \[next_page_token][google.cloud.managedidentities.v1beta1.ListDomainsResponse.next_page_token\]
+    /// [next_page_token][google.cloud.managedidentities.v1beta1.ListDomainsResponse.next_page_token]
     /// to determine if there are additional results to list.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -431,7 +431,7 @@ pub struct ListDomainsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ListDomains][google.cloud.managedidentities.v1beta1.ListDomains\]
+/// [ListDomains][google.cloud.managedidentities.v1beta1.ListDomains]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDomainsResponse {
@@ -447,7 +447,7 @@ pub struct ListDomainsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// \[GetDomain][google.cloud.managedidentities.v1beta1.GetDomain\]
+/// [GetDomain][google.cloud.managedidentities.v1beta1.GetDomain]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDomainRequest {
@@ -457,13 +457,13 @@ pub struct GetDomainRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[UpdateDomain][google.cloud.managedidentities.v1beta1.UpdateDomain\]
+/// [UpdateDomain][google.cloud.managedidentities.v1beta1.UpdateDomain]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDomainRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in this
     /// field. The elements of the repeated paths field may only include
-    /// fields from \[Domain][google.cloud.managedidentities.v1beta1.Domain\]:
+    /// fields from [Domain][google.cloud.managedidentities.v1beta1.Domain]:
     ///   * `labels`
     ///   * `locations`
     ///   * `authorized_networks`
@@ -476,7 +476,7 @@ pub struct UpdateDomainRequest {
     pub domain: ::core::option::Option<Domain>,
 }
 /// Request message for
-/// \[DeleteDomain][google.cloud.managedidentities.v1beta1.DeleteDomain\]
+/// [DeleteDomain][google.cloud.managedidentities.v1beta1.DeleteDomain]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDomainRequest {
@@ -486,7 +486,7 @@ pub struct DeleteDomainRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[AttachTrust][google.cloud.managedidentities.v1beta1.AttachTrust\]
+/// [AttachTrust][google.cloud.managedidentities.v1beta1.AttachTrust]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachTrustRequest {
@@ -499,7 +499,7 @@ pub struct AttachTrustRequest {
     pub trust: ::core::option::Option<Trust>,
 }
 /// Request message for
-/// \[ReconfigureTrust][google.cloud.managedidentities.v1beta1.ReconfigureTrust\]
+/// [ReconfigureTrust][google.cloud.managedidentities.v1beta1.ReconfigureTrust]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReconfigureTrustRequest {
@@ -519,7 +519,7 @@ pub struct ReconfigureTrustRequest {
     >,
 }
 /// Request message for
-/// \[DetachTrust][google.cloud.managedidentities.v1beta1.DetachTrust\]
+/// [DetachTrust][google.cloud.managedidentities.v1beta1.DetachTrust]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachTrustRequest {
@@ -532,7 +532,7 @@ pub struct DetachTrustRequest {
     pub trust: ::core::option::Option<Trust>,
 }
 /// Request message for
-/// \[ValidateTrust][google.cloud.managedidentities.v1beta1.ValidateTrust\]
+/// [ValidateTrust][google.cloud.managedidentities.v1beta1.ValidateTrust]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateTrustRequest {

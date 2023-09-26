@@ -47,8 +47,8 @@ pub struct Node {
     /// Output only. The current state for the TPU Node.
     #[prost(enumeration = "node::State", tag = "9")]
     pub state: i32,
-    /// Output only. If this field is populated, it contains a description of why
-    /// the TPU Node is unhealthy.
+    /// Output only. If this field is populated, it contains a description of why the TPU Node
+    /// is unhealthy.
     #[prost(string, tag = "10")]
     pub health_description: ::prost::alloc::string::String,
     /// Required. The version of Tensorflow running in the Node.
@@ -69,10 +69,10 @@ pub struct Node {
     /// block.
     #[prost(string, tag = "13")]
     pub cidr_block: ::prost::alloc::string::String,
-    /// Output only. The service account used to run the tensor flow services
-    /// within the node. To share resources, including Google Cloud Storage data,
-    /// with the Tensorflow job running in the Node, this account must have
-    /// permissions to that data.
+    /// Output only. The service account used to run the tensor flow services within the node.
+    /// To share resources, including Google Cloud Storage data, with the
+    /// Tensorflow job running in the Node, this account must have permissions to
+    /// that data.
     #[prost(string, tag = "15")]
     pub service_account: ::prost::alloc::string::String,
     /// Output only. The time when the node was created.
@@ -129,7 +129,7 @@ pub mod node {
         Unspecified = 0,
         /// TPU node is being created.
         Creating = 1,
-        /// TPU node has been created.
+        /// TPU node has been created and is fully usable.
         Ready = 2,
         /// TPU node is restarting.
         Restarting = 3,
@@ -309,7 +309,7 @@ pub mod node {
         }
     }
 }
-/// Request for \[ListNodes][google.cloud.tpu.v1.Tpu.ListNodes\].
+/// Request for [ListNodes][google.cloud.tpu.v1.Tpu.ListNodes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodesRequest {
@@ -323,7 +323,7 @@ pub struct ListNodesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response for \[ListNodes][google.cloud.tpu.v1.Tpu.ListNodes\].
+/// Response for [ListNodes][google.cloud.tpu.v1.Tpu.ListNodes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodesResponse {
@@ -337,7 +337,7 @@ pub struct ListNodesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for \[GetNode][google.cloud.tpu.v1.Tpu.GetNode\].
+/// Request for [GetNode][google.cloud.tpu.v1.Tpu.GetNode].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodeRequest {
@@ -345,7 +345,7 @@ pub struct GetNodeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[CreateNode][google.cloud.tpu.v1.Tpu.CreateNode\].
+/// Request for [CreateNode][google.cloud.tpu.v1.Tpu.CreateNode].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNodeRequest {
@@ -359,7 +359,7 @@ pub struct CreateNodeRequest {
     #[prost(message, optional, tag = "3")]
     pub node: ::core::option::Option<Node>,
 }
-/// Request for \[DeleteNode][google.cloud.tpu.v1.Tpu.DeleteNode\].
+/// Request for [DeleteNode][google.cloud.tpu.v1.Tpu.DeleteNode].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodeRequest {
@@ -367,7 +367,7 @@ pub struct DeleteNodeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[ReimageNode][google.cloud.tpu.v1.Tpu.ReimageNode\].
+/// Request for [ReimageNode][google.cloud.tpu.v1.Tpu.ReimageNode].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReimageNodeRequest {
@@ -378,7 +378,7 @@ pub struct ReimageNodeRequest {
     #[prost(string, tag = "2")]
     pub tensorflow_version: ::prost::alloc::string::String,
 }
-/// Request for \[StopNode][google.cloud.tpu.v1.Tpu.StopNode\].
+/// Request for [StopNode][google.cloud.tpu.v1.Tpu.StopNode].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopNodeRequest {
@@ -386,7 +386,7 @@ pub struct StopNodeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[StartNode][google.cloud.tpu.v1.Tpu.StartNode\].
+/// Request for [StartNode][google.cloud.tpu.v1.Tpu.StartNode].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartNodeRequest {
@@ -405,8 +405,7 @@ pub struct TensorFlowVersion {
     #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
 }
-/// Request for
-/// \[GetTensorFlowVersion][google.cloud.tpu.v1.Tpu.GetTensorFlowVersion\].
+/// Request for [GetTensorFlowVersion][google.cloud.tpu.v1.Tpu.GetTensorFlowVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTensorFlowVersionRequest {
@@ -414,8 +413,7 @@ pub struct GetTensorFlowVersionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for
-/// \[ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions\].
+/// Request for [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorFlowVersionsRequest {
@@ -435,8 +433,7 @@ pub struct ListTensorFlowVersionsRequest {
     #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for
-/// \[ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions\].
+/// Response for [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorFlowVersionsResponse {
@@ -461,7 +458,7 @@ pub struct AcceleratorType {
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
 }
-/// Request for \[GetAcceleratorType][google.cloud.tpu.v1.Tpu.GetAcceleratorType\].
+/// Request for [GetAcceleratorType][google.cloud.tpu.v1.Tpu.GetAcceleratorType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAcceleratorTypeRequest {
@@ -469,8 +466,7 @@ pub struct GetAcceleratorTypeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for
-/// \[ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes\].
+/// Request for [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesRequest {
@@ -490,8 +486,7 @@ pub struct ListAcceleratorTypesRequest {
     #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for
-/// \[ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes\].
+/// Response for [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesResponse {
@@ -505,7 +500,7 @@ pub struct ListAcceleratorTypesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Metadata describing an \[Operation][google.longrunning.Operation\]
+/// Metadata describing an [Operation][google.longrunning.Operation]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
@@ -828,7 +823,7 @@ pub mod tpu_client {
                 .insert(GrpcMethod::new("google.cloud.tpu.v1.Tpu", "ReimageNode"));
             self.inner.unary(req, path, codec).await
         }
-        /// Stops a node, this operation is only available with single TPU nodes.
+        /// Stops a node.
         pub async fn stop_node(
             &mut self,
             request: impl tonic::IntoRequest<super::StopNodeRequest>,

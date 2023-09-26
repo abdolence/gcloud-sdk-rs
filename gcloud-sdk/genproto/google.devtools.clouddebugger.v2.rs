@@ -318,7 +318,7 @@ pub struct Breakpoint {
     /// `log_message_format` are not logged.
     ///
     /// Example: `Message received, id = $0, count = $1` with
-    /// `expressions` = `[ message.id, message.count ]`.
+    /// `expressions` = `\[ message.id, message.count \]`.
     #[prost(string, tag = "14")]
     pub log_message_format: ::prost::alloc::string::String,
     /// Indicates the severity of the log. Only relevant when action is `LOG`.

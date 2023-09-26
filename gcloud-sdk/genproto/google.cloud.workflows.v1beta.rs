@@ -117,7 +117,7 @@ pub mod workflow {
     }
 }
 /// Request for the
-/// \[ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows\]
+/// [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -150,7 +150,7 @@ pub struct ListWorkflowsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the
-/// \[ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows\]
+/// [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -167,7 +167,7 @@ pub struct ListWorkflowsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the
-/// \[GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow\] method.
+/// [GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowRequest {
@@ -177,7 +177,7 @@ pub struct GetWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the
-/// \[CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow\]
+/// [CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -201,7 +201,7 @@ pub struct CreateWorkflowRequest {
     pub workflow_id: ::prost::alloc::string::String,
 }
 /// Request for the
-/// \[DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow\]
+/// [DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -212,7 +212,7 @@ pub struct DeleteWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the
-/// \[UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow\]
+/// [UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

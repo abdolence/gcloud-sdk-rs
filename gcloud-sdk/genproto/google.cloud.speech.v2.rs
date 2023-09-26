@@ -1,5 +1,5 @@
 /// Request message for the
-/// \[CreateRecognizer][google.cloud.speech.v2.Speech.CreateRecognizer\] method.
+/// [CreateRecognizer][google.cloud.speech.v2.Speech.CreateRecognizer] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRecognizerRequest {
@@ -14,7 +14,7 @@ pub struct CreateRecognizerRequest {
     /// the Recognizer's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     #[prost(string, tag = "3")]
     pub recognizer_id: ::prost::alloc::string::String,
     /// Required. The project and location where this Recognizer will be created.
@@ -60,7 +60,7 @@ pub struct OperationMetadata {
         tags = "8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21"
     )]
     pub request: ::core::option::Option<operation_metadata::Request>,
-    /// Specific metadata per RPC.
+    /// Specific metadata per RPC
     #[prost(oneof = "operation_metadata::Metadata", tags = "23")]
     pub metadata: ::core::option::Option<operation_metadata::Metadata>,
 }
@@ -113,7 +113,7 @@ pub mod operation_metadata {
         #[prost(message, tag = "21")]
         UpdateConfigRequest(super::UpdateConfigRequest),
     }
-    /// Specific metadata per RPC.
+    /// Specific metadata per RPC
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
@@ -123,7 +123,7 @@ pub mod operation_metadata {
     }
 }
 /// Request message for the
-/// \[ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers\] method.
+/// [ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecognizersRequest {
@@ -132,16 +132,16 @@ pub struct ListRecognizersRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of Recognizers to return. The service may return fewer
-    /// than this value. If unspecified, at most 5 Recognizers will be returned.
-    /// The maximum value is 100; values above 100 will be coerced to 100.
+    /// than this value. If unspecified, at most 20 Recognizers will be returned.
+    /// The maximum value is 20; values above 20 will be coerced to 20.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous
-    /// \[ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers\] call.
+    /// [ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers] call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to
-    /// \[ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers\] must match
+    /// [ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers] must match
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -150,7 +150,7 @@ pub struct ListRecognizersRequest {
     pub show_deleted: bool,
 }
 /// Response message for the
-/// \[ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers\] method.
+/// [ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecognizersResponse {
@@ -158,14 +158,14 @@ pub struct ListRecognizersResponse {
     #[prost(message, repeated, tag = "1")]
     pub recognizers: ::prost::alloc::vec::Vec<Recognizer>,
     /// A token, which can be sent as
-    /// \[page_token][google.cloud.speech.v2.ListRecognizersRequest.page_token\] to
+    /// [page_token][google.cloud.speech.v2.ListRecognizersRequest.page_token] to
     /// retrieve the next page. If this field is omitted, there are no subsequent
     /// pages. This token expires after 72 hours.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[GetRecognizer][google.cloud.speech.v2.Speech.GetRecognizer\] method.
+/// [GetRecognizer][google.cloud.speech.v2.Speech.GetRecognizer] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRecognizerRequest {
@@ -175,7 +175,7 @@ pub struct GetRecognizerRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[UpdateRecognizer][google.cloud.speech.v2.Speech.UpdateRecognizer\] method.
+/// [UpdateRecognizer][google.cloud.speech.v2.Speech.UpdateRecognizer] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRecognizerRequest {
@@ -195,7 +195,7 @@ pub struct UpdateRecognizerRequest {
     pub validate_only: bool,
 }
 /// Request message for the
-/// \[DeleteRecognizer][google.cloud.speech.v2.Speech.DeleteRecognizer\] method.
+/// [DeleteRecognizer][google.cloud.speech.v2.Speech.DeleteRecognizer] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRecognizerRequest {
@@ -218,7 +218,7 @@ pub struct DeleteRecognizerRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[UndeleteRecognizer][google.cloud.speech.v2.Speech.UndeleteRecognizer\]
+/// [UndeleteRecognizer][google.cloud.speech.v2.Speech.UndeleteRecognizer]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -252,23 +252,37 @@ pub struct Recognizer {
     /// characters or less.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Which model to use for recognition requests. Select the model
+    /// Required. Which model to use for recognition requests. Select the model
     /// best suited to your domain to get best results.
     ///
-    /// Guidance for choosing which model to use can be found in the [Transcription
-    /// Models
-    /// Documentation](<https://cloud.google.com/speech-to-text/v2/docs/transcription-model>)
-    /// and the models supported in each region can be found in the [Table Of
-    /// Supported
-    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
-    #[deprecated]
+    /// Supported models:
+    ///
+    /// - `latest_long`
+    ///
+    ///    Best for long form content like media or conversation.
+    ///
+    /// - `latest_short`
+    ///
+    ///    Best for short form content like commands or single shot directed speech.
+    ///    When using this model, the service will stop transcribing audio after the
+    ///    first utterance is detected and completed.
+    ///
+    /// When using this model,
+    /// [SEPARATE_RECOGNITION_PER_CHANNEL][google.cloud.speech.v2.RecognitionFeatures.MultiChannelMode.SEPARATE_RECOGNITION_PER_CHANNEL]
+    /// is not supported; multi-channel audio is accepted, but only the first
+    /// channel will be processed and transcribed.
     #[prost(string, tag = "4")]
     pub model: ::prost::alloc::string::String,
-    /// Optional. The language of the supplied audio as a
-    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
+    /// Required. The language of the supplied audio as a
+    /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     ///
-    /// Supported languages for each model are listed in the [Table of Supported
-    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
+    /// Supported languages:
+    ///
+    /// - `en-US`
+    ///
+    /// - `en-GB`
+    ///
+    /// - `fr-FR`
     ///
     /// If additional languages are provided, recognition result will contain
     /// recognition in the most likely language detected. The recognition result
@@ -276,12 +290,11 @@ pub struct Recognizer {
     /// When you create or update a Recognizer, these values are
     /// stored in normalized BCP-47 form. For example, "en-us" is stored as
     /// "en-US".
-    #[deprecated]
     #[prost(string, repeated, tag = "17")]
     pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Default configuration to use for requests with this Recognizer.
     /// This can be overwritten by inline configuration in the
-    /// \[RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config\]
+    /// [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]
     /// field.
     #[prost(message, optional, tag = "6")]
     pub default_recognition_config: ::core::option::Option<RecognitionConfig>,
@@ -378,23 +391,14 @@ pub mod recognizer {
 }
 /// Automatically detected decoding parameters.
 /// Supported for the following encodings:
-///
 /// * WAV_LINEAR16: 16-bit signed little-endian PCM samples in a WAV container.
-///
 /// * WAV_MULAW: 8-bit companded mulaw samples in a WAV container.
-///
 /// * WAV_ALAW: 8-bit companded alaw samples in a WAV container.
-///
 /// * RFC4867_5_AMR: AMR frames with an rfc4867.5 header.
-///
 /// * RFC4867_5_AMRWB: AMR-WB frames with an rfc4867.5 header.
-///
 /// * FLAC: FLAC frames in the "native FLAC" container format.
-///
 /// * MP3: MPEG audio frames with optional (ignored) ID3 metadata.
-///
 /// * OGG_OPUS: Opus audio frames in an Ogg container.
-///
 /// * WEBM_OPUS: Opus audio frames in a WebM container.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -411,24 +415,16 @@ pub struct ExplicitDecodingConfig {
     /// sampling rate of the audio source to 16000 Hz. If that's not possible, use
     /// the native sample rate of the audio source (instead of re-sampling).
     /// Supported for the following encodings:
-    ///
     /// * LINEAR16: Headerless 16-bit signed little-endian PCM samples.
-    ///
     /// * MULAW: Headerless 8-bit companded mulaw samples.
-    ///
     /// * ALAW: Headerless 8-bit companded alaw samples.
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
     /// Number of channels present in the audio data sent for recognition.
     /// Supported for the following encodings:
-    ///
     /// * LINEAR16: Headerless 16-bit signed little-endian PCM samples.
-    ///
     /// * MULAW: Headerless 8-bit companded mulaw samples.
-    ///
     /// * ALAW: Headerless 8-bit companded alaw samples.
-    ///
-    /// The maximum allowed value is 8.
     #[prost(int32, tag = "3")]
     pub audio_channel_count: i32,
 }
@@ -488,7 +484,7 @@ pub mod explicit_decoding_config {
 pub struct SpeakerDiarizationConfig {
     /// Required. Minimum number of speakers in the conversation. This range gives
     /// you more flexibility by allowing the system to automatically determine the
-    /// correct number of speakers.
+    /// correct number of speakers. If not set, the default value is 2.
     ///
     /// To fix the number of speakers detected in the audio, set
     /// `min_speaker_count` = `max_speaker_count`.
@@ -581,7 +577,7 @@ pub mod recognition_features {
         Unspecified = 0,
         /// If selected, each channel in the provided audio is transcribed
         /// independently. This cannot be selected if the selected
-        /// \[model][google.cloud.speech.v2.Recognizer.model\] is `latest_short`.
+        /// [model][google.cloud.speech.v2.Recognizer.model] is `latest_short`.
         SeparateRecognitionPerChannel = 1,
     }
     impl MultiChannelMode {
@@ -610,23 +606,23 @@ pub mod recognition_features {
     }
 }
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
-/// in the results. PhraseSets can be specified as an inline resource, or a
-/// reference to an existing PhraseSet resource.
+/// in the results. Phrase sets can be specified as an inline resource, or a
+/// reference to an existing phrase set resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechAdaptation {
-    /// A list of inline or referenced PhraseSets.
+    /// A list of inline or referenced phrase sets.
     #[prost(message, repeated, tag = "1")]
     pub phrase_sets: ::prost::alloc::vec::Vec<speech_adaptation::AdaptationPhraseSet>,
-    /// A list of inline CustomClasses. Existing CustomClass resources can be
-    /// referenced directly in a PhraseSet.
+    /// A list of inline custom classes. Existing custom class resources can be
+    /// referenced directly in a phrase set.
     #[prost(message, repeated, tag = "2")]
     pub custom_classes: ::prost::alloc::vec::Vec<CustomClass>,
 }
 /// Nested message and enum types in `SpeechAdaptation`.
 pub mod speech_adaptation {
-    /// A biasing PhraseSet, which can be either a string referencing the name of
-    /// an existing PhraseSets resource, or an inline definition of a PhraseSet.
+    /// A biasing phrase set, which can be either a string referencing the name of
+    /// an existing phrase set resource, or an inline definition of a phrase set.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AdaptationPhraseSet {
@@ -638,11 +634,11 @@ pub mod speech_adaptation {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Value {
-            /// The name of an existing PhraseSet resource. The user must have read
+            /// The name of an existing phrase set resource. The user must have read
             /// access to the resource and it must not be deleted.
             #[prost(string, tag = "1")]
             PhraseSet(::prost::alloc::string::String),
-            /// An inline defined PhraseSet.
+            /// An inline defined phrase set.
             #[prost(message, tag = "2")]
             InlinePhraseSet(super::super::PhraseSet),
         }
@@ -653,30 +649,6 @@ pub mod speech_adaptation {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionConfig {
-    /// Optional. Which model to use for recognition requests. Select the model
-    /// best suited to your domain to get best results.
-    ///
-    /// Guidance for choosing which model to use can be found in the [Transcription
-    /// Models
-    /// Documentation](<https://cloud.google.com/speech-to-text/v2/docs/transcription-model>)
-    /// and the models supported in each region can be found in the [Table Of
-    /// Supported
-    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
-    #[prost(string, tag = "9")]
-    pub model: ::prost::alloc::string::String,
-    /// Optional. The language of the supplied audio as a
-    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
-    /// Language tags are normalized to BCP-47 before they are used eg "en-us"
-    /// becomes "en-US".
-    ///
-    /// Supported languages for each model are listed in the [Table of Supported
-    /// Models](<https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>).
-    ///
-    /// If additional languages are provided, recognition result will contain
-    /// recognition in the most likely language detected. The recognition result
-    /// will include the language tag of the language detected in the audio.
-    #[prost(string, repeated, tag = "10")]
-    pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Speech recognition features to enable.
     #[prost(message, optional, tag = "2")]
     pub features: ::core::option::Option<RecognitionFeatures>,
@@ -705,38 +677,37 @@ pub mod recognition_config {
     }
 }
 /// Request message for the
-/// \[Recognize][google.cloud.speech.v2.Speech.Recognize\] method. Either
+/// [Recognize][google.cloud.speech.v2.Speech.Recognize] method. Either
 /// `content` or `uri` must be supplied. Supplying both or neither returns
-/// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]. See [content
+/// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. See [content
 /// limits](<https://cloud.google.com/speech-to-text/quotas#content>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognizeRequest {
     /// Required. The name of the Recognizer to use during recognition. The
     /// expected format is
-    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`. The
-    /// {recognizer} segment may be set to `_` to use an empty implicit Recognizer.
+    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`.
     #[prost(string, tag = "3")]
     pub recognizer: ::prost::alloc::string::String,
     /// Features and audio metadata to use for the Automatic Speech Recognition.
     /// This field in combination with the
-    /// \[config_mask][google.cloud.speech.v2.RecognizeRequest.config_mask\] field
+    /// [config_mask][google.cloud.speech.v2.RecognizeRequest.config_mask] field
     /// can be used to override parts of the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the Recognizer resource.
     #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<RecognitionConfig>,
     /// The list of fields in
-    /// \[config][google.cloud.speech.v2.RecognizeRequest.config\] that override the
+    /// [config][google.cloud.speech.v2.RecognizeRequest.config] that override the
     /// values in the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the recognizer during this recognition request. If no mask is provided,
     /// all non-default valued fields in
-    /// \[config][google.cloud.speech.v2.RecognizeRequest.config\] override the
+    /// [config][google.cloud.speech.v2.RecognizeRequest.config] override the
     /// values in the recognizer for this recognition request. If a mask is
     /// provided, only the fields listed in the mask override the config in the
     /// recognizer for this recognition request. If a wildcard (`*`) is provided,
-    /// \[config][google.cloud.speech.v2.RecognizeRequest.config\] completely
+    /// [config][google.cloud.speech.v2.RecognizeRequest.config] completely
     /// overrides and replaces the config in the recognizer for this recognition
     /// request.
     #[prost(message, optional, tag = "8")]
@@ -754,17 +725,17 @@ pub mod recognize_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AudioSource {
         /// The audio data bytes encoded as specified in
-        /// \[RecognitionConfig][google.cloud.speech.v2.RecognitionConfig\]. As
+        /// [RecognitionConfig][google.cloud.speech.v2.RecognitionConfig]. As
         /// with all bytes fields, proto buffers use a pure binary representation,
         /// whereas JSON representations use base64.
         #[prost(bytes, tag = "5")]
         Content(::prost::alloc::vec::Vec<u8>),
         /// URI that points to a file that contains audio data bytes as specified in
-        /// \[RecognitionConfig][google.cloud.speech.v2.RecognitionConfig\]. The file
+        /// [RecognitionConfig][google.cloud.speech.v2.RecognitionConfig]. The file
         /// must not be compressed (for example, gzip). Currently, only Google Cloud
         /// Storage URIs are supported, which must be specified in the following
         /// format: `gs://bucket_name/object_name` (other URI formats return
-        /// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more
+        /// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more
         /// information, see [Request
         /// URIs](<https://cloud.google.com/storage/docs/reference-uris>).
         #[prost(string, tag = "6")]
@@ -790,16 +761,16 @@ pub struct SpeechRecognitionAlternative {
     /// indicates an estimated greater likelihood that the recognized words are
     /// correct. This field is set only for the top alternative of a non-streaming
     /// result or, of a streaming result where
-    /// \[is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final\] is
+    /// [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final] is
     /// set to `true`. This field is not guaranteed to be accurate and users should
     /// not rely on it to be always provided. The default of 0.0 is a sentinel
     /// value indicating `confidence` was not set.
     #[prost(float, tag = "2")]
     pub confidence: f32,
     /// A list of word-specific information for each recognized word.
-    /// When the
-    /// \[SpeakerDiarizationConfig][google.cloud.speech.v2.SpeakerDiarizationConfig\]
-    /// is set, you will see all the words from the beginning of the audio.
+    /// When
+    /// [enable_speaker_diarization][google.cloud.speech.v2.SpeakerDiarizationConfig.enable_speaker_diarization]
+    /// is true, you will see all the words from the beginning of the audio.
     #[prost(message, repeated, tag = "3")]
     pub words: ::prost::alloc::vec::Vec<WordInfo>,
 }
@@ -810,7 +781,7 @@ pub struct WordInfo {
     /// Time offset relative to the beginning of the audio,
     /// and corresponding to the start of the spoken word.
     /// This field is only set if
-    /// \[enable_word_time_offsets][google.cloud.speech.v2.RecognitionFeatures.enable_word_time_offsets\]
+    /// [enable_word_time_offsets][google.cloud.speech.v2.RecognitionFeatures.enable_word_time_offsets]
     /// is `true` and only in the top hypothesis. This is an experimental feature
     /// and the accuracy of the time offset can vary.
     #[prost(message, optional, tag = "1")]
@@ -818,7 +789,7 @@ pub struct WordInfo {
     /// Time offset relative to the beginning of the audio,
     /// and corresponding to the end of the spoken word.
     /// This field is only set if
-    /// \[enable_word_time_offsets][google.cloud.speech.v2.RecognitionFeatures.enable_word_time_offsets\]
+    /// [enable_word_time_offsets][google.cloud.speech.v2.RecognitionFeatures.enable_word_time_offsets]
     /// is `true` and only in the top hypothesis. This is an experimental feature
     /// and the accuracy of the time offset can vary.
     #[prost(message, optional, tag = "2")]
@@ -830,7 +801,7 @@ pub struct WordInfo {
     /// indicates an estimated greater likelihood that the recognized words are
     /// correct. This field is set only for the top alternative of a non-streaming
     /// result or, of a streaming result where
-    /// \[is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final\] is
+    /// [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final] is
     /// set to `true`. This field is not guaranteed to be accurate and users should
     /// not rely on it to be always provided. The default of 0.0 is a sentinel
     /// value indicating `confidence` was not set.
@@ -839,8 +810,8 @@ pub struct WordInfo {
     /// A distinct label is assigned for every speaker within the audio. This field
     /// specifies which one of those speakers was detected to have spoken this
     /// word. `speaker_label` is set if
-    /// \[SpeakerDiarizationConfig][google.cloud.speech.v2.SpeakerDiarizationConfig\]
-    /// is given and only in the top alternative.
+    /// [enable_speaker_diarization][google.cloud.speech.v2.SpeakerDiarizationConfig.enable_speaker_diarization]
+    /// is `true` and only in the top alternative.
     #[prost(string, tag = "6")]
     pub speaker_label: ::prost::alloc::string::String,
 }
@@ -863,14 +834,14 @@ pub struct SpeechRecognitionResult {
     /// audio.
     #[prost(message, optional, tag = "4")]
     pub result_end_offset: ::core::option::Option<::prost_types::Duration>,
-    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
+    /// Output only. The [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
     /// language tag of the language in this result. This language code was
     /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "5")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Response message for the
-/// \[Recognize][google.cloud.speech.v2.Speech.Recognize\] method.
+/// [Recognize][google.cloud.speech.v2.Speech.Recognize] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognizeResponse {
@@ -927,23 +898,23 @@ pub mod streaming_recognition_features {
 pub struct StreamingRecognitionConfig {
     /// Required. Features and audio metadata to use for the Automatic Speech
     /// Recognition. This field in combination with the
-    /// \[config_mask][google.cloud.speech.v2.StreamingRecognitionConfig.config_mask\]
+    /// [config_mask][google.cloud.speech.v2.StreamingRecognitionConfig.config_mask]
     /// field can be used to override parts of the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the Recognizer resource.
     #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<RecognitionConfig>,
     /// The list of fields in
-    /// \[config][google.cloud.speech.v2.StreamingRecognitionConfig.config\] that
+    /// [config][google.cloud.speech.v2.StreamingRecognitionConfig.config] that
     /// override the values in the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the recognizer during this recognition request. If no mask is provided,
     /// all non-default valued fields in
-    /// \[config][google.cloud.speech.v2.StreamingRecognitionConfig.config\] override
-    /// the values in the Recognizer for this recognition request. If a mask is
+    /// [config][google.cloud.speech.v2.StreamingRecognitionConfig.config] override
+    /// the values in the recognizer for this recognition request. If a mask is
     /// provided, only the fields listed in the mask override the config in the
-    /// Recognizer for this recognition request. If a wildcard (`*`) is provided,
-    /// \[config][google.cloud.speech.v2.StreamingRecognitionConfig.config\]
+    /// recognizer for this recognition request. If a wildcard (`*`) is provided,
+    /// [config][google.cloud.speech.v2.StreamingRecognitionConfig.config]
     /// completely overrides and replaces the config in the recognizer for this
     /// recognition request.
     #[prost(message, optional, tag = "3")]
@@ -954,32 +925,29 @@ pub struct StreamingRecognitionConfig {
     pub streaming_features: ::core::option::Option<StreamingRecognitionFeatures>,
 }
 /// Request message for the
-/// \[StreamingRecognize][google.cloud.speech.v2.Speech.StreamingRecognize\]
+/// [StreamingRecognize][google.cloud.speech.v2.Speech.StreamingRecognize]
 /// method. Multiple
-/// \[StreamingRecognizeRequest][google.cloud.speech.v2.StreamingRecognizeRequest\]
-/// messages are sent in one call.
-///
-/// If the \[Recognizer][google.cloud.speech.v2.Recognizer\] referenced by
-/// \[recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer\]
-/// contains a fully specified request configuration then the stream may only
-/// contain messages with only
-/// \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\] set.
-///
-/// Otherwise the first message must contain a
-/// \[recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer\] and
-/// a
-/// \[streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config\]
-/// message that together fully specify the request configuration and must not
-/// contain \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\]. All
-/// subsequent messages must only have
-/// \[audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio\] set.
+/// [StreamingRecognizeRequest][google.cloud.speech.v2.StreamingRecognizeRequest]
+/// messages are sent. The first message must contain a
+/// [recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer] and
+/// optionally a
+/// [streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config]
+/// message and must not contain
+/// [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio]. All
+/// subsequent messages must contain
+/// [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio] and must not
+/// contain a
+/// [streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config]
+/// message.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognizeRequest {
-    /// Required. The name of the Recognizer to use during recognition. The
-    /// expected format is
-    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`. The
-    /// {recognizer} segment may be set to `_` to use an empty implicit Recognizer.
+    /// Required. Streaming recognition should start with an initial request having
+    /// a `recognizer`. Subsequent requests carry the audio data to be recognized.
+    ///
+    /// The initial request with configuration can be omitted if the Recognizer
+    /// being used has a
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config].
     #[prost(string, tag = "3")]
     pub recognizer: ::prost::alloc::string::String,
     #[prost(oneof = "streaming_recognize_request::StreamingRequest", tags = "6, 5")]
@@ -998,142 +966,49 @@ pub mod streaming_recognize_request {
         #[prost(message, tag = "6")]
         StreamingConfig(super::StreamingRecognitionConfig),
         /// Inline audio bytes to be Recognized.
-        /// Maximum size for this field is 15 KB per request.
         #[prost(bytes, tag = "5")]
         Audio(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Request message for the
-/// \[BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize\]
+/// [BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeRequest {
-    /// Required. The name of the Recognizer to use during recognition. The
-    /// expected format is
-    /// `projects/{project}/locations/{location}/recognizers/{recognizer}`. The
-    /// {recognizer} segment may be set to `_` to use an empty implicit Recognizer.
+    /// Required. Resource name of the recognizer to be used for ASR.
     #[prost(string, tag = "1")]
     pub recognizer: ::prost::alloc::string::String,
     /// Features and audio metadata to use for the Automatic Speech Recognition.
     /// This field in combination with the
-    /// \[config_mask][google.cloud.speech.v2.BatchRecognizeRequest.config_mask\]
+    /// [config_mask][google.cloud.speech.v2.BatchRecognizeRequest.config_mask]
     /// field can be used to override parts of the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the Recognizer resource.
     #[prost(message, optional, tag = "4")]
     pub config: ::core::option::Option<RecognitionConfig>,
     /// The list of fields in
-    /// \[config][google.cloud.speech.v2.BatchRecognizeRequest.config\] that override
+    /// [config][google.cloud.speech.v2.BatchRecognizeRequest.config] that override
     /// the values in the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the recognizer during this recognition request. If no mask is provided,
     /// all given fields in
-    /// \[config][google.cloud.speech.v2.BatchRecognizeRequest.config\] override the
+    /// [config][google.cloud.speech.v2.BatchRecognizeRequest.config] override the
     /// values in the recognizer for this recognition request. If a mask is
     /// provided, only the fields listed in the mask override the config in the
     /// recognizer for this recognition request. If a wildcard (`*`) is provided,
-    /// \[config][google.cloud.speech.v2.BatchRecognizeRequest.config\] completely
+    /// [config][google.cloud.speech.v2.BatchRecognizeRequest.config] completely
     /// overrides and replaces the config in the recognizer for this recognition
     /// request.
     #[prost(message, optional, tag = "5")]
     pub config_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Audio files with file metadata for ASR.
-    /// The maximum number of files allowed to be specified is 5.
     #[prost(message, repeated, tag = "3")]
     pub files: ::prost::alloc::vec::Vec<BatchRecognizeFileMetadata>,
-    /// Configuration options for where to output the transcripts of each file.
-    #[prost(message, optional, tag = "6")]
-    pub recognition_output_config: ::core::option::Option<RecognitionOutputConfig>,
-    /// Processing strategy to use for this request.
-    #[prost(enumeration = "batch_recognize_request::ProcessingStrategy", tag = "7")]
-    pub processing_strategy: i32,
-}
-/// Nested message and enum types in `BatchRecognizeRequest`.
-pub mod batch_recognize_request {
-    /// Possible processing strategies for batch requests.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum ProcessingStrategy {
-        /// Default value for the processing strategy. The request is processed as
-        /// soon as its received.
-        Unspecified = 0,
-        /// If selected, processes the request during lower utilization periods for a
-        /// price discount. The request is fulfilled within 24 hours.
-        DynamicBatching = 1,
-    }
-    impl ProcessingStrategy {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                ProcessingStrategy::Unspecified => "PROCESSING_STRATEGY_UNSPECIFIED",
-                ProcessingStrategy::DynamicBatching => "DYNAMIC_BATCHING",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "PROCESSING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
-                "DYNAMIC_BATCHING" => Some(Self::DynamicBatching),
-                _ => None,
-            }
-        }
-    }
-}
-/// Output configurations for Cloud Storage.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GcsOutputConfig {
-    /// The Cloud Storage URI prefix with which recognition results will be
-    /// written.
-    #[prost(string, tag = "1")]
-    pub uri: ::prost::alloc::string::String,
-}
-/// Output configurations for inline response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InlineOutputConfig {}
-/// Configuration options for the output(s) of recognition.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RecognitionOutputConfig {
-    #[prost(oneof = "recognition_output_config::Output", tags = "1, 2")]
-    pub output: ::core::option::Option<recognition_output_config::Output>,
-}
-/// Nested message and enum types in `RecognitionOutputConfig`.
-pub mod recognition_output_config {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Output {
-        /// If this message is populated, recognition results are written to the
-        /// provided Google Cloud Storage URI.
-        #[prost(message, tag = "1")]
-        GcsOutputConfig(super::GcsOutputConfig),
-        /// If this message is populated, recognition results are provided in the
-        /// \[BatchRecognizeResponse][google.cloud.speech.v2.BatchRecognizeResponse\]
-        /// message of the Operation when completed. This is only supported when
-        /// calling \[BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize\]
-        /// with just one audio file.
-        #[prost(message, tag = "2")]
-        InlineResponseConfig(super::InlineOutputConfig),
-    }
 }
 /// Response message for
-/// \[BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize\] that is
-/// packaged into a longrunning \[Operation][google.longrunning.Operation\].
+/// [BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize] that is
+/// packaged into a longrunning [Operation][google.longrunning.Operation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeResponse {
@@ -1143,42 +1018,17 @@ pub struct BatchRecognizeResponse {
         ::prost::alloc::string::String,
         BatchRecognizeFileResult,
     >,
-    /// When available, billed audio seconds for the corresponding request.
-    #[prost(message, optional, tag = "2")]
-    pub total_billed_duration: ::core::option::Option<::prost_types::Duration>,
-}
-/// Output type for Cloud Storage of BatchRecognize transcripts. Though this
-/// proto isn't returned in this API anywhere, the Cloud Storage transcripts will
-/// be this proto serialized and should be parsed as such.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchRecognizeResults {
-    /// Sequential list of transcription results corresponding to sequential
-    /// portions of audio.
-    #[prost(message, repeated, tag = "1")]
-    pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
-    /// Metadata about the recognition.
-    #[prost(message, optional, tag = "2")]
-    pub metadata: ::core::option::Option<RecognitionResponseMetadata>,
 }
 /// Final results for a single file.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeFileResult {
-    /// The Cloud Storage URI to which recognition results were written.
+    /// The GCS URI to which recognition results were written.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
     /// Error if one was encountered.
     #[prost(message, optional, tag = "2")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    #[prost(message, optional, tag = "3")]
-    pub metadata: ::core::option::Option<RecognitionResponseMetadata>,
-    /// The transcript for the audio file. This is populated only when
-    /// \[InlineOutputConfig][google.cloud.speech.v2.InlineOutputConfig\] is set in
-    /// the
-    /// \[RecognitionOutputConfig][[google.cloud.speech.v2.RecognitionOutputConfig\].
-    #[prost(message, optional, tag = "4")]
-    pub transcript: ::core::option::Option<BatchRecognizeResults>,
 }
 /// Metadata about transcription for a single file (for example, progress
 /// percent).
@@ -1191,12 +1041,12 @@ pub struct BatchRecognizeTranscriptionMetadata {
     /// Error if one was encountered.
     #[prost(message, optional, tag = "2")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    /// The Cloud Storage URI to which recognition results will be written.
+    /// The GCS URI to which recognition results will be written.
     #[prost(string, tag = "3")]
     pub uri: ::prost::alloc::string::String,
 }
 /// Operation metadata for
-/// \[BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize\].
+/// [BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeMetadata {
@@ -1213,25 +1063,25 @@ pub struct BatchRecognizeMetadata {
 pub struct BatchRecognizeFileMetadata {
     /// Features and audio metadata to use for the Automatic Speech Recognition.
     /// This field in combination with the
-    /// \[config_mask][google.cloud.speech.v2.BatchRecognizeFileMetadata.config_mask\]
+    /// [config_mask][google.cloud.speech.v2.BatchRecognizeFileMetadata.config_mask]
     /// field can be used to override parts of the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the Recognizer resource as well as the
-    /// \[config][google.cloud.speech.v2.BatchRecognizeRequest.config\] at the
+    /// [config][google.cloud.speech.v2.BatchRecognizeRequest.config] at the
     /// request level.
     #[prost(message, optional, tag = "4")]
     pub config: ::core::option::Option<RecognitionConfig>,
     /// The list of fields in
-    /// \[config][google.cloud.speech.v2.BatchRecognizeFileMetadata.config\] that
+    /// [config][google.cloud.speech.v2.BatchRecognizeFileMetadata.config] that
     /// override the values in the
-    /// \[default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config\]
+    /// [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config]
     /// of the recognizer during this recognition request. If no mask is provided,
     /// all non-default valued fields in
-    /// \[config][google.cloud.speech.v2.BatchRecognizeFileMetadata.config\] override
+    /// [config][google.cloud.speech.v2.BatchRecognizeFileMetadata.config] override
     /// the values in the recognizer for this recognition request. If a mask is
     /// provided, only the fields listed in the mask override the config in the
     /// recognizer for this recognition request. If a wildcard (`*`) is provided,
-    /// \[config][google.cloud.speech.v2.BatchRecognizeFileMetadata.config\]
+    /// [config][google.cloud.speech.v2.BatchRecognizeFileMetadata.config]
     /// completely overrides and replaces the config in the recognizer for this
     /// recognition request.
     #[prost(message, optional, tag = "5")]
@@ -1262,10 +1112,10 @@ pub struct StreamingRecognitionResult {
     #[prost(message, repeated, tag = "1")]
     pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
     /// If `false`, this
-    /// \[StreamingRecognitionResult][google.cloud.speech.v2.StreamingRecognitionResult\]
+    /// [StreamingRecognitionResult][google.cloud.speech.v2.StreamingRecognitionResult]
     /// represents an interim result that may change. If `true`, this is the final
     /// time the speech service will return this particular
-    /// \[StreamingRecognitionResult][google.cloud.speech.v2.StreamingRecognitionResult\],
+    /// [StreamingRecognitionResult][google.cloud.speech.v2.StreamingRecognitionResult],
     /// the recognizer will not return any further hypotheses for this portion of
     /// the transcript and corresponding audio.
     #[prost(bool, tag = "2")]
@@ -1273,7 +1123,7 @@ pub struct StreamingRecognitionResult {
     /// An estimate of the likelihood that the recognizer will not change its guess
     /// about this interim result. Values range from 0.0 (completely unstable)
     /// to 1.0 (completely stable). This field is only provided for interim results
-    /// (\[is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final\]=`false`).
+    /// ([is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=`false`).
     /// The default of 0.0 is a sentinel value indicating `stability` was not set.
     #[prost(float, tag = "3")]
     pub stability: f32,
@@ -1287,7 +1137,7 @@ pub struct StreamingRecognitionResult {
     /// `audio_channel_count` = `N`, its output values can range from `1` to `N`.
     #[prost(int32, tag = "5")]
     pub channel_tag: i32,
-    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
+    /// Output only. The [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
     /// language tag of the language in this result. This language code was
     /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "6")]
@@ -1347,9 +1197,9 @@ pub struct StreamingRecognizeResponse {
     /// This repeated list contains zero or more results that
     /// correspond to consecutive portions of the audio currently being processed.
     /// It contains zero or one
-    /// \[is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final\]=`true`
+    /// [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=`true`
     /// result (the newly settled portion), followed by zero or more
-    /// \[is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final\]=`false`
+    /// [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=`false`
     /// results (the interim results).
     #[prost(message, repeated, tag = "6")]
     pub results: ::prost::alloc::vec::Vec<StreamingRecognitionResult>,
@@ -1386,7 +1236,7 @@ pub mod streaming_recognize_response {
         /// will not process additional audio and will close the gRPC bidirectional
         /// stream. This event is only sent if there was a force cutoff due to
         /// silence being detected early. This event is only available through the
-        /// `latest_short` \[model][google.cloud.speech.v2.Recognizer.model\].
+        /// `latest_short` [model][google.cloud.speech.v2.Recognizer.model].
         EndOfSingleUtterance = 1,
         /// This event indicates that the server has detected the beginning of human
         /// voice activity in the stream. This event can be returned multiple times
@@ -1448,7 +1298,7 @@ pub struct Config {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for the
-/// \[GetConfig][google.cloud.speech.v2.Speech.GetConfig\] method.
+/// [GetConfig][google.cloud.speech.v2.Speech.GetConfig] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConfigRequest {
@@ -1459,7 +1309,7 @@ pub struct GetConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[UpdateConfig][google.cloud.speech.v2.Speech.UpdateConfig\] method.
+/// [UpdateConfig][google.cloud.speech.v2.Speech.UpdateConfig] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConfigRequest {
@@ -1614,8 +1464,7 @@ pub struct PhraseSet {
     /// phrase will be recognized over other similar sounding phrases. The higher
     /// the boost, the higher the chance of false positive recognition as well.
     /// Valid `boost` values are between 0 (exclusive) and 20. We recommend using a
-    /// binary search approach to finding the optimal value for your use case as
-    /// well as adding phrases both with and without boost to your requests.
+    /// binary search approach to finding the optimal value for your use case.
     #[prost(float, tag = "4")]
     pub boost: f32,
     /// User-settable, human-readable name for the PhraseSet. Must be 63
@@ -1688,11 +1537,11 @@ pub mod phrase_set {
         /// be recognized over other similar sounding phrases. The higher the boost,
         /// the higher the chance of false positive recognition as well. Negative
         /// boost values would correspond to anti-biasing. Anti-biasing is not
-        /// enabled, so negative boost values will return an error. Boost values must
-        /// be between 0 and 20. Any values outside that range will return an error.
-        /// We recommend using a binary search approach to finding the optimal value
-        /// for your use case as well as adding phrases both with and without boost
-        /// to your requests.
+        /// enabled, so negative boost will simply be ignored. Though `boost` can
+        /// accept a wide range of positive values, most use cases are best served
+        /// with values between 0 and 20. We recommend using a binary search approach
+        /// to finding the optimal value for your use case. Speech recognition
+        /// will skip PhraseSets with a boost value of 0.
         #[prost(float, tag = "2")]
         pub boost: f32,
     }
@@ -1742,7 +1591,7 @@ pub mod phrase_set {
     }
 }
 /// Request message for the
-/// \[CreateCustomClass][google.cloud.speech.v2.Speech.CreateCustomClass\] method.
+/// [CreateCustomClass][google.cloud.speech.v2.Speech.CreateCustomClass] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomClassRequest {
@@ -1757,7 +1606,7 @@ pub struct CreateCustomClassRequest {
     /// the CustomClass's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     #[prost(string, tag = "3")]
     pub custom_class_id: ::prost::alloc::string::String,
     /// Required. The project and location where this CustomClass will be created.
@@ -1766,7 +1615,7 @@ pub struct CreateCustomClassRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses\] method.
+/// [ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomClassesRequest {
@@ -1774,18 +1623,18 @@ pub struct ListCustomClassesRequest {
     /// expected format is `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Number of results per requests. A valid page_size ranges from 0 to 100
+    /// Number of results per requests. A valid page_size ranges from 0 to 20
     /// inclusive. If the page_size is zero or unspecified, a page size of 5 will
-    /// be chosen. If the page size exceeds 100, it will be coerced down to 100.
-    /// Note that a call might return fewer results than the requested page size.
+    /// be chosen. If the page size exceeds 20, it will be coerced down to 20. Note
+    /// that a call might return fewer results than the requested page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous
-    /// \[ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses\] call.
+    /// [ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses] call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to
-    /// \[ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses\] must
+    /// [ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses] must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -1794,7 +1643,7 @@ pub struct ListCustomClassesRequest {
     pub show_deleted: bool,
 }
 /// Response message for the
-/// \[ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses\] method.
+/// [ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomClassesResponse {
@@ -1802,14 +1651,14 @@ pub struct ListCustomClassesResponse {
     #[prost(message, repeated, tag = "1")]
     pub custom_classes: ::prost::alloc::vec::Vec<CustomClass>,
     /// A token, which can be sent as
-    /// \[page_token][google.cloud.speech.v2.ListCustomClassesRequest.page_token\] to
+    /// [page_token][google.cloud.speech.v2.ListCustomClassesRequest.page_token] to
     /// retrieve the next page. If this field is omitted, there are no subsequent
     /// pages. This token expires after 72 hours.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[GetCustomClass][google.cloud.speech.v2.Speech.GetCustomClass\] method.
+/// [GetCustomClass][google.cloud.speech.v2.Speech.GetCustomClass] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomClassRequest {
@@ -1819,7 +1668,7 @@ pub struct GetCustomClassRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[UpdateCustomClass][google.cloud.speech.v2.Speech.UpdateCustomClass\] method.
+/// [UpdateCustomClass][google.cloud.speech.v2.Speech.UpdateCustomClass] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCustomClassRequest {
@@ -1840,7 +1689,7 @@ pub struct UpdateCustomClassRequest {
     pub validate_only: bool,
 }
 /// Request message for the
-/// \[DeleteCustomClass][google.cloud.speech.v2.Speech.DeleteCustomClass\] method.
+/// [DeleteCustomClass][google.cloud.speech.v2.Speech.DeleteCustomClass] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCustomClassRequest {
@@ -1864,7 +1713,7 @@ pub struct DeleteCustomClassRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[UndeleteCustomClass][google.cloud.speech.v2.Speech.UndeleteCustomClass\]
+/// [UndeleteCustomClass][google.cloud.speech.v2.Speech.UndeleteCustomClass]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1885,7 +1734,7 @@ pub struct UndeleteCustomClassRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[CreatePhraseSet][google.cloud.speech.v2.Speech.CreatePhraseSet\] method.
+/// [CreatePhraseSet][google.cloud.speech.v2.Speech.CreatePhraseSet] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhraseSetRequest {
@@ -1900,7 +1749,7 @@ pub struct CreatePhraseSetRequest {
     /// the PhraseSet's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     #[prost(string, tag = "3")]
     pub phrase_set_id: ::prost::alloc::string::String,
     /// Required. The project and location where this PhraseSet will be created.
@@ -1909,7 +1758,7 @@ pub struct CreatePhraseSetRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets\] method.
+/// [ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseSetsRequest {
@@ -1918,16 +1767,16 @@ pub struct ListPhraseSetsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of PhraseSets to return. The service may return fewer
-    /// than this value. If unspecified, at most 5 PhraseSets will be returned.
-    /// The maximum value is 100; values above 100 will be coerced to 100.
+    /// than this value. If unspecified, at most 20 PhraseSets will be returned.
+    /// The maximum value is 20; values above 20 will be coerced to 20.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous
-    /// \[ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets\] call.
+    /// [ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets] call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to
-    /// \[ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets\] must match
+    /// [ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets] must match
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -1936,7 +1785,7 @@ pub struct ListPhraseSetsRequest {
     pub show_deleted: bool,
 }
 /// Response message for the
-/// \[ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets\] method.
+/// [ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseSetsResponse {
@@ -1944,14 +1793,14 @@ pub struct ListPhraseSetsResponse {
     #[prost(message, repeated, tag = "1")]
     pub phrase_sets: ::prost::alloc::vec::Vec<PhraseSet>,
     /// A token, which can be sent as
-    /// \[page_token][google.cloud.speech.v2.ListPhraseSetsRequest.page_token\] to
+    /// [page_token][google.cloud.speech.v2.ListPhraseSetsRequest.page_token] to
     /// retrieve the next page. If this field is omitted, there are no subsequent
     /// pages. This token expires after 72 hours.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[GetPhraseSet][google.cloud.speech.v2.Speech.GetPhraseSet\] method.
+/// [GetPhraseSet][google.cloud.speech.v2.Speech.GetPhraseSet] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhraseSetRequest {
@@ -1961,7 +1810,7 @@ pub struct GetPhraseSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[UpdatePhraseSet][google.cloud.speech.v2.Speech.UpdatePhraseSet\] method.
+/// [UpdatePhraseSet][google.cloud.speech.v2.Speech.UpdatePhraseSet] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePhraseSetRequest {
@@ -1981,7 +1830,7 @@ pub struct UpdatePhraseSetRequest {
     pub validate_only: bool,
 }
 /// Request message for the
-/// \[DeletePhraseSet][google.cloud.speech.v2.Speech.DeletePhraseSet\] method.
+/// [DeletePhraseSet][google.cloud.speech.v2.Speech.DeletePhraseSet] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhraseSetRequest {
@@ -2004,7 +1853,7 @@ pub struct DeletePhraseSetRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for the
-/// \[UndeletePhraseSet][google.cloud.speech.v2.Speech.UndeletePhraseSet\]
+/// [UndeletePhraseSet][google.cloud.speech.v2.Speech.UndeletePhraseSet]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2167,7 +2016,7 @@ pub mod speech_client {
         }
         /// Returns the requested
         /// [Recognizer][google.cloud.speech.v2.Recognizer]. Fails with
-        /// [NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested Recognizer doesn't
+        /// [NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested recognizer doesn't
         /// exist.
         pub async fn get_recognizer(
             &mut self,

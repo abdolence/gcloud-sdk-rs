@@ -1,13 +1,21 @@
-// Proto file describing policy topic entry types.
-
 /// Container for enum describing possible policy topic entry types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEntryTypeEnum {
-}
+pub struct PolicyTopicEntryTypeEnum {}
 /// Nested message and enum types in `PolicyTopicEntryTypeEnum`.
 pub mod policy_topic_entry_type_enum {
     /// The possible policy topic entry types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PolicyTopicEntryType {
         /// No value has been specified.
@@ -48,19 +56,41 @@ pub mod policy_topic_entry_type_enum {
                 PolicyTopicEntryType::AreaOfInterestOnly => "AREA_OF_INTEREST_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROHIBITED" => Some(Self::Prohibited),
+                "LIMITED" => Some(Self::Limited),
+                "FULLY_LIMITED" => Some(Self::FullyLimited),
+                "DESCRIPTIVE" => Some(Self::Descriptive),
+                "BROADENING" => Some(Self::Broadening),
+                "AREA_OF_INTEREST_ONLY" => Some(Self::AreaOfInterestOnly),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing policy topic evidence destination mismatch url types.
-
 /// Container for enum describing possible policy topic evidence destination
 /// mismatch url types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidenceDestinationMismatchUrlTypeEnum {
-}
+pub struct PolicyTopicEvidenceDestinationMismatchUrlTypeEnum {}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationMismatchUrlTypeEnum`.
 pub mod policy_topic_evidence_destination_mismatch_url_type_enum {
     /// The possible policy topic evidence destination mismatch url types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PolicyTopicEvidenceDestinationMismatchUrlType {
         /// No value has been specified.
@@ -87,29 +117,59 @@ pub mod policy_topic_evidence_destination_mismatch_url_type_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyTopicEvidenceDestinationMismatchUrlType::Unspecified => "UNSPECIFIED",
+                PolicyTopicEvidenceDestinationMismatchUrlType::Unspecified => {
+                    "UNSPECIFIED"
+                }
                 PolicyTopicEvidenceDestinationMismatchUrlType::Unknown => "UNKNOWN",
-                PolicyTopicEvidenceDestinationMismatchUrlType::DisplayUrl => "DISPLAY_URL",
+                PolicyTopicEvidenceDestinationMismatchUrlType::DisplayUrl => {
+                    "DISPLAY_URL"
+                }
                 PolicyTopicEvidenceDestinationMismatchUrlType::FinalUrl => "FINAL_URL",
-                PolicyTopicEvidenceDestinationMismatchUrlType::FinalMobileUrl => "FINAL_MOBILE_URL",
-                PolicyTopicEvidenceDestinationMismatchUrlType::TrackingUrl => "TRACKING_URL",
-                PolicyTopicEvidenceDestinationMismatchUrlType::MobileTrackingUrl => "MOBILE_TRACKING_URL",
+                PolicyTopicEvidenceDestinationMismatchUrlType::FinalMobileUrl => {
+                    "FINAL_MOBILE_URL"
+                }
+                PolicyTopicEvidenceDestinationMismatchUrlType::TrackingUrl => {
+                    "TRACKING_URL"
+                }
+                PolicyTopicEvidenceDestinationMismatchUrlType::MobileTrackingUrl => {
+                    "MOBILE_TRACKING_URL"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DISPLAY_URL" => Some(Self::DisplayUrl),
+                "FINAL_URL" => Some(Self::FinalUrl),
+                "FINAL_MOBILE_URL" => Some(Self::FinalMobileUrl),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "MOBILE_TRACKING_URL" => Some(Self::MobileTrackingUrl),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing device of destination not working policy topic
-// evidence.
-
 /// Container for enum describing possible policy topic evidence destination not
 /// working devices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidenceDestinationNotWorkingDeviceEnum {
-}
+pub struct PolicyTopicEvidenceDestinationNotWorkingDeviceEnum {}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationNotWorkingDeviceEnum`.
 pub mod policy_topic_evidence_destination_not_working_device_enum {
     /// The possible policy topic evidence destination not working devices.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PolicyTopicEvidenceDestinationNotWorkingDevice {
         /// No value has been specified.
@@ -132,27 +192,47 @@ pub mod policy_topic_evidence_destination_not_working_device_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyTopicEvidenceDestinationNotWorkingDevice::Unspecified => "UNSPECIFIED",
+                PolicyTopicEvidenceDestinationNotWorkingDevice::Unspecified => {
+                    "UNSPECIFIED"
+                }
                 PolicyTopicEvidenceDestinationNotWorkingDevice::Unknown => "UNKNOWN",
                 PolicyTopicEvidenceDestinationNotWorkingDevice::Desktop => "DESKTOP",
                 PolicyTopicEvidenceDestinationNotWorkingDevice::Android => "ANDROID",
                 PolicyTopicEvidenceDestinationNotWorkingDevice::Ios => "IOS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DESKTOP" => Some(Self::Desktop),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing DNS error types of destination not working policy topic
-// evidence.
-
 /// Container for enum describing possible policy topic evidence destination not
 /// working DNS error types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum {
-}
+pub struct PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum {}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum`.
 pub mod policy_topic_evidence_destination_not_working_dns_error_type_enum {
     /// The possible policy topic evidence destination not working DNS error types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PolicyTopicEvidenceDestinationNotWorkingDnsErrorType {
         /// No value has been specified.
@@ -175,26 +255,52 @@ pub mod policy_topic_evidence_destination_not_working_dns_error_type_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::Unspecified => "UNSPECIFIED",
-                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::Unknown => "UNKNOWN",
-                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::HostnameNotFound => "HOSTNAME_NOT_FOUND",
-                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::GoogleCrawlerDnsIssue => "GOOGLE_CRAWLER_DNS_ISSUE",
+                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::Unspecified => {
+                    "UNSPECIFIED"
+                }
+                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::Unknown => {
+                    "UNKNOWN"
+                }
+                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::HostnameNotFound => {
+                    "HOSTNAME_NOT_FOUND"
+                }
+                PolicyTopicEvidenceDestinationNotWorkingDnsErrorType::GoogleCrawlerDnsIssue => {
+                    "GOOGLE_CRAWLER_DNS_ISSUE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HOSTNAME_NOT_FOUND" => Some(Self::HostnameNotFound),
+                "GOOGLE_CRAWLER_DNS_ISSUE" => Some(Self::GoogleCrawlerDnsIssue),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing policy approval statuses.
-
 /// Container for enum describing possible policy approval statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyApprovalStatusEnum {
-}
+pub struct PolicyApprovalStatusEnum {}
 /// Nested message and enum types in `PolicyApprovalStatusEnum`.
 pub mod policy_approval_status_enum {
     /// The possible policy approval statuses. When there are several approval
     /// statuses available the most severe one will be used. The order of severity
     /// is DISAPPROVED, AREA_OF_INTEREST_ONLY, APPROVED_LIMITED and APPROVED.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PolicyApprovalStatus {
         /// No value has been specified.
@@ -228,18 +334,38 @@ pub mod policy_approval_status_enum {
                 PolicyApprovalStatus::AreaOfInterestOnly => "AREA_OF_INTEREST_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DISAPPROVED" => Some(Self::Disapproved),
+                "APPROVED_LIMITED" => Some(Self::ApprovedLimited),
+                "APPROVED" => Some(Self::Approved),
+                "AREA_OF_INTEREST_ONLY" => Some(Self::AreaOfInterestOnly),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing policy review statuses.
-
 /// Container for enum describing possible policy review statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyReviewStatusEnum {
-}
+pub struct PolicyReviewStatusEnum {}
 /// Nested message and enum types in `PolicyReviewStatusEnum`.
 pub mod policy_review_status_enum {
     /// The possible policy review statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PolicyReviewStatus {
         /// No value has been specified.
@@ -274,19 +400,39 @@ pub mod policy_review_status_enum {
                 PolicyReviewStatus::EligibleMayServe => "ELIGIBLE_MAY_SERVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REVIEW_IN_PROGRESS" => Some(Self::ReviewInProgress),
+                "REVIEWED" => Some(Self::Reviewed),
+                "UNDER_APPEAL" => Some(Self::UnderAppeal),
+                "ELIGIBLE_MAY_SERVE" => Some(Self::EligibleMayServe),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the performance label of an asset.
-
 /// Container for enum describing the performance label of an asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetPerformanceLabelEnum {
-}
+pub struct AssetPerformanceLabelEnum {}
 /// Nested message and enum types in `AssetPerformanceLabelEnum`.
 pub mod asset_performance_label_enum {
     /// Enum describing the possible performance labels of an asset, usually
     /// computed in the context of a linkage.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetPerformanceLabel {
         /// Not specified.
@@ -322,18 +468,39 @@ pub mod asset_performance_label_enum {
                 AssetPerformanceLabel::Best => "BEST",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "LEARNING" => Some(Self::Learning),
+                "LOW" => Some(Self::Low),
+                "GOOD" => Some(Self::Good),
+                "BEST" => Some(Self::Best),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing policy review statuses.
-
 /// Container for enum describing possible asset field types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ServedAssetFieldTypeEnum {
-}
+pub struct ServedAssetFieldTypeEnum {}
 /// Nested message and enum types in `ServedAssetFieldTypeEnum`.
 pub mod served_asset_field_type_enum {
     /// The possible asset field types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ServedAssetFieldType {
         /// No value has been specified.
@@ -369,19 +536,40 @@ pub mod served_asset_field_type_enum {
                 ServedAssetFieldType::Description2 => "DESCRIPTION_2",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HEADLINE_1" => Some(Self::Headline1),
+                "HEADLINE_2" => Some(Self::Headline2),
+                "HEADLINE_3" => Some(Self::Headline3),
+                "DESCRIPTION_1" => Some(Self::Description1),
+                "DESCRIPTION_2" => Some(Self::Description2),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing call conversion reporting state.
-
 /// Container for enum describing possible data types for call conversion
 /// reporting state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallConversionReportingStateEnum {
-}
+pub struct CallConversionReportingStateEnum {}
 /// Nested message and enum types in `CallConversionReportingStateEnum`.
 pub mod call_conversion_reporting_state_enum {
     /// Possible data types for a call conversion action state.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CallConversionReportingState {
         /// Not specified.
@@ -407,22 +595,49 @@ pub mod call_conversion_reporting_state_enum {
                 CallConversionReportingState::Unspecified => "UNSPECIFIED",
                 CallConversionReportingState::Unknown => "UNKNOWN",
                 CallConversionReportingState::Disabled => "DISABLED",
-                CallConversionReportingState::UseAccountLevelCallConversionAction => "USE_ACCOUNT_LEVEL_CALL_CONVERSION_ACTION",
-                CallConversionReportingState::UseResourceLevelCallConversionAction => "USE_RESOURCE_LEVEL_CALL_CONVERSION_ACTION",
+                CallConversionReportingState::UseAccountLevelCallConversionAction => {
+                    "USE_ACCOUNT_LEVEL_CALL_CONVERSION_ACTION"
+                }
+                CallConversionReportingState::UseResourceLevelCallConversionAction => {
+                    "USE_RESOURCE_LEVEL_CALL_CONVERSION_ACTION"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DISABLED" => Some(Self::Disabled),
+                "USE_ACCOUNT_LEVEL_CALL_CONVERSION_ACTION" => {
+                    Some(Self::UseAccountLevelCallConversionAction)
+                }
+                "USE_RESOURCE_LEVEL_CALL_CONVERSION_ACTION" => {
+                    Some(Self::UseResourceLevelCallConversionAction)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing display ad format settings.
-
 /// Container for display ad format settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DisplayAdFormatSettingEnum {
-}
+pub struct DisplayAdFormatSettingEnum {}
 /// Nested message and enum types in `DisplayAdFormatSettingEnum`.
 pub mod display_ad_format_setting_enum {
     /// Enumerates display ad format settings.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DisplayAdFormatSetting {
         /// Not specified.
@@ -451,22 +666,41 @@ pub mod display_ad_format_setting_enum {
                 DisplayAdFormatSetting::Native => "NATIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL_FORMATS" => Some(Self::AllFormats),
+                "NON_NATIVE" => Some(Self::NonNative),
+                "NATIVE" => Some(Self::Native),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing display upload product types.
-
 /// Container for display upload product types. Product types that have the word
 /// "DYNAMIC" in them must be associated with a campaign that has a dynamic
 /// remarketing feed. See <https://support.google.com/google-ads/answer/6053288>
 /// for more info about dynamic remarketing. Other product types are regarded
 /// as "static" and do not have this requirement.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DisplayUploadProductTypeEnum {
-}
+pub struct DisplayUploadProductTypeEnum {}
 /// Nested message and enum types in `DisplayUploadProductTypeEnum`.
 pub mod display_upload_product_type_enum {
     /// Enumerates display upload product types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DisplayUploadProductType {
         /// Not specified.
@@ -523,29 +757,67 @@ pub mod display_upload_product_type_enum {
                 DisplayUploadProductType::Unspecified => "UNSPECIFIED",
                 DisplayUploadProductType::Unknown => "UNKNOWN",
                 DisplayUploadProductType::Html5UploadAd => "HTML5_UPLOAD_AD",
-                DisplayUploadProductType::DynamicHtml5EducationAd => "DYNAMIC_HTML5_EDUCATION_AD",
-                DisplayUploadProductType::DynamicHtml5FlightAd => "DYNAMIC_HTML5_FLIGHT_AD",
-                DisplayUploadProductType::DynamicHtml5HotelRentalAd => "DYNAMIC_HTML5_HOTEL_RENTAL_AD",
+                DisplayUploadProductType::DynamicHtml5EducationAd => {
+                    "DYNAMIC_HTML5_EDUCATION_AD"
+                }
+                DisplayUploadProductType::DynamicHtml5FlightAd => {
+                    "DYNAMIC_HTML5_FLIGHT_AD"
+                }
+                DisplayUploadProductType::DynamicHtml5HotelRentalAd => {
+                    "DYNAMIC_HTML5_HOTEL_RENTAL_AD"
+                }
                 DisplayUploadProductType::DynamicHtml5JobAd => "DYNAMIC_HTML5_JOB_AD",
                 DisplayUploadProductType::DynamicHtml5LocalAd => "DYNAMIC_HTML5_LOCAL_AD",
-                DisplayUploadProductType::DynamicHtml5RealEstateAd => "DYNAMIC_HTML5_REAL_ESTATE_AD",
-                DisplayUploadProductType::DynamicHtml5CustomAd => "DYNAMIC_HTML5_CUSTOM_AD",
-                DisplayUploadProductType::DynamicHtml5TravelAd => "DYNAMIC_HTML5_TRAVEL_AD",
+                DisplayUploadProductType::DynamicHtml5RealEstateAd => {
+                    "DYNAMIC_HTML5_REAL_ESTATE_AD"
+                }
+                DisplayUploadProductType::DynamicHtml5CustomAd => {
+                    "DYNAMIC_HTML5_CUSTOM_AD"
+                }
+                DisplayUploadProductType::DynamicHtml5TravelAd => {
+                    "DYNAMIC_HTML5_TRAVEL_AD"
+                }
                 DisplayUploadProductType::DynamicHtml5HotelAd => "DYNAMIC_HTML5_HOTEL_AD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HTML5_UPLOAD_AD" => Some(Self::Html5UploadAd),
+                "DYNAMIC_HTML5_EDUCATION_AD" => Some(Self::DynamicHtml5EducationAd),
+                "DYNAMIC_HTML5_FLIGHT_AD" => Some(Self::DynamicHtml5FlightAd),
+                "DYNAMIC_HTML5_HOTEL_RENTAL_AD" => Some(Self::DynamicHtml5HotelRentalAd),
+                "DYNAMIC_HTML5_JOB_AD" => Some(Self::DynamicHtml5JobAd),
+                "DYNAMIC_HTML5_LOCAL_AD" => Some(Self::DynamicHtml5LocalAd),
+                "DYNAMIC_HTML5_REAL_ESTATE_AD" => Some(Self::DynamicHtml5RealEstateAd),
+                "DYNAMIC_HTML5_CUSTOM_AD" => Some(Self::DynamicHtml5CustomAd),
+                "DYNAMIC_HTML5_TRAVEL_AD" => Some(Self::DynamicHtml5TravelAd),
+                "DYNAMIC_HTML5_HOTEL_AD" => Some(Self::DynamicHtml5HotelAd),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing app store types for a legacy app install ad.
-
 /// Container for enum describing app store type in a legacy app install ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LegacyAppInstallAdAppStoreEnum {
-}
+pub struct LegacyAppInstallAdAppStoreEnum {}
 /// Nested message and enum types in `LegacyAppInstallAdAppStoreEnum`.
 pub mod legacy_app_install_ad_app_store_enum {
     /// App store type in a legacy app install ad.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LegacyAppInstallAdAppStore {
         /// Not specified.
@@ -579,18 +851,39 @@ pub mod legacy_app_install_ad_app_store_enum {
                 LegacyAppInstallAdAppStore::CnAppStore => "CN_APP_STORE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_APP_STORE" => Some(Self::AppleAppStore),
+                "GOOGLE_PLAY" => Some(Self::GooglePlay),
+                "WINDOWS_STORE" => Some(Self::WindowsStore),
+                "WINDOWS_PHONE_STORE" => Some(Self::WindowsPhoneStore),
+                "CN_APP_STORE" => Some(Self::CnAppStore),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing mime types.
-
 /// Container for enum describing the mime types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MimeTypeEnum {
-}
+pub struct MimeTypeEnum {}
 /// Nested message and enum types in `MimeTypeEnum`.
 pub mod mime_type_enum {
     /// The mime type
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MimeType {
         /// The mime type has not been specified.
@@ -647,20 +940,48 @@ pub mod mime_type_enum {
                 MimeType::Html5AdZip => "HTML5_AD_ZIP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMAGE_JPEG" => Some(Self::ImageJpeg),
+                "IMAGE_GIF" => Some(Self::ImageGif),
+                "IMAGE_PNG" => Some(Self::ImagePng),
+                "FLASH" => Some(Self::Flash),
+                "TEXT_HTML" => Some(Self::TextHtml),
+                "PDF" => Some(Self::Pdf),
+                "MSWORD" => Some(Self::Msword),
+                "MSEXCEL" => Some(Self::Msexcel),
+                "RTF" => Some(Self::Rtf),
+                "AUDIO_WAV" => Some(Self::AudioWav),
+                "AUDIO_MP3" => Some(Self::AudioMp3),
+                "HTML5_AD_ZIP" => Some(Self::Html5AdZip),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing video thumbnails.
-
 /// Defines the thumbnail to use for In-Display video ads. Note that
 /// DEFAULT_THUMBNAIL may have been uploaded by the user while thumbnails 1-3 are
 /// auto-generated from the video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VideoThumbnailEnum {
-}
+pub struct VideoThumbnailEnum {}
 /// Nested message and enum types in `VideoThumbnailEnum`.
 pub mod video_thumbnail_enum {
     /// Enum listing the possible types of a video thumbnail.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum VideoThumbnail {
         /// The type has not been specified.
@@ -692,18 +1013,38 @@ pub mod video_thumbnail_enum {
                 VideoThumbnail::Thumbnail3 => "THUMBNAIL_3",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEFAULT_THUMBNAIL" => Some(Self::DefaultThumbnail),
+                "THUMBNAIL_1" => Some(Self::Thumbnail1),
+                "THUMBNAIL_2" => Some(Self::Thumbnail2),
+                "THUMBNAIL_3" => Some(Self::Thumbnail3),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing age range types.
-
 /// Container for enum describing the type of demographic age ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AgeRangeTypeEnum {
-}
+pub struct AgeRangeTypeEnum {}
 /// Nested message and enum types in `AgeRangeTypeEnum`.
 pub mod age_range_type_enum {
     /// The type of demographic age ranges (e.g. between 18 and 24 years old).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AgeRangeType {
         /// Not specified.
@@ -743,18 +1084,41 @@ pub mod age_range_type_enum {
                 AgeRangeType::AgeRangeUndetermined => "AGE_RANGE_UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AGE_RANGE_18_24" => Some(Self::AgeRange1824),
+                "AGE_RANGE_25_34" => Some(Self::AgeRange2534),
+                "AGE_RANGE_35_44" => Some(Self::AgeRange3544),
+                "AGE_RANGE_45_54" => Some(Self::AgeRange4554),
+                "AGE_RANGE_55_64" => Some(Self::AgeRange5564),
+                "AGE_RANGE_65_UP" => Some(Self::AgeRange65Up),
+                "AGE_RANGE_UNDETERMINED" => Some(Self::AgeRangeUndetermined),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing criteria types.
-
 /// Represents a criterion for targeting paid apps.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppPaymentModelTypeEnum {
-}
+pub struct AppPaymentModelTypeEnum {}
 /// Nested message and enum types in `AppPaymentModelTypeEnum`.
 pub mod app_payment_model_type_enum {
     /// Enum describing possible app payment models.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AppPaymentModelType {
         /// Not specified.
@@ -776,18 +1140,35 @@ pub mod app_payment_model_type_enum {
                 AppPaymentModelType::Paid => "PAID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PAID" => Some(Self::Paid),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing content label types.
-
 /// Container for enum describing content label types in ContentLabel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ContentLabelTypeEnum {
-}
+pub struct ContentLabelTypeEnum {}
 /// Nested message and enum types in `ContentLabelTypeEnum`.
 pub mod content_label_type_enum {
     /// Enum listing the content label types supported by ContentLabel criterion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ContentLabelType {
         /// Not specified.
@@ -851,18 +1232,49 @@ pub mod content_label_type_enum {
                 ContentLabelType::SocialIssues => "SOCIAL_ISSUES",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEXUALLY_SUGGESTIVE" => Some(Self::SexuallySuggestive),
+                "BELOW_THE_FOLD" => Some(Self::BelowTheFold),
+                "PARKED_DOMAIN" => Some(Self::ParkedDomain),
+                "JUVENILE" => Some(Self::Juvenile),
+                "PROFANITY" => Some(Self::Profanity),
+                "TRAGEDY" => Some(Self::Tragedy),
+                "VIDEO" => Some(Self::Video),
+                "VIDEO_RATING_DV_G" => Some(Self::VideoRatingDvG),
+                "VIDEO_RATING_DV_PG" => Some(Self::VideoRatingDvPg),
+                "VIDEO_RATING_DV_T" => Some(Self::VideoRatingDvT),
+                "VIDEO_RATING_DV_MA" => Some(Self::VideoRatingDvMa),
+                "VIDEO_NOT_YET_RATED" => Some(Self::VideoNotYetRated),
+                "EMBEDDED_VIDEO" => Some(Self::EmbeddedVideo),
+                "LIVE_STREAMING_VIDEO" => Some(Self::LiveStreamingVideo),
+                "SOCIAL_ISSUES" => Some(Self::SocialIssues),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing days of week.
-
 /// Container for enumeration of days of the week, e.g., "Monday".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DayOfWeekEnum {
-}
+pub struct DayOfWeekEnum {}
 /// Nested message and enum types in `DayOfWeekEnum`.
 pub mod day_of_week_enum {
     /// Enumerates days of the week, e.g., "Monday".
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DayOfWeek {
         /// Not specified.
@@ -902,18 +1314,41 @@ pub mod day_of_week_enum {
                 DayOfWeek::Sunday => "SUNDAY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MONDAY" => Some(Self::Monday),
+                "TUESDAY" => Some(Self::Tuesday),
+                "WEDNESDAY" => Some(Self::Wednesday),
+                "THURSDAY" => Some(Self::Thursday),
+                "FRIDAY" => Some(Self::Friday),
+                "SATURDAY" => Some(Self::Saturday),
+                "SUNDAY" => Some(Self::Sunday),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing devices.
-
 /// Container for enumeration of Google Ads devices available for targeting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeviceEnum {
-}
+pub struct DeviceEnum {}
 /// Nested message and enum types in `DeviceEnum`.
 pub mod device_enum {
     /// Enumerates Google Ads devices available for targeting.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Device {
         /// Not specified.
@@ -947,18 +1382,39 @@ pub mod device_enum {
                 Device::Other => "OTHER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "TABLET" => Some(Self::Tablet),
+                "DESKTOP" => Some(Self::Desktop),
+                "CONNECTED_TV" => Some(Self::ConnectedTv),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing gender types.
-
 /// Container for enum describing the type of demographic genders.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenderTypeEnum {
-}
+pub struct GenderTypeEnum {}
 /// Nested message and enum types in `GenderTypeEnum`.
 pub mod gender_type_enum {
     /// The type of demographic genders (e.g. female).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GenderType {
         /// Not specified.
@@ -986,18 +1442,37 @@ pub mod gender_type_enum {
                 GenderType::Undetermined => "UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MALE" => Some(Self::Male),
+                "FEMALE" => Some(Self::Female),
+                "UNDETERMINED" => Some(Self::Undetermined),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing hotel date selection types.
-
 /// Container for enum describing possible hotel date selection types
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelDateSelectionTypeEnum {
-}
+pub struct HotelDateSelectionTypeEnum {}
 /// Nested message and enum types in `HotelDateSelectionTypeEnum`.
 pub mod hotel_date_selection_type_enum {
     /// Enum describing possible hotel date selection types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HotelDateSelectionType {
         /// Not specified.
@@ -1022,18 +1497,36 @@ pub mod hotel_date_selection_type_enum {
                 HotelDateSelectionType::UserSelected => "USER_SELECTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEFAULT_SELECTION" => Some(Self::DefaultSelection),
+                "USER_SELECTED" => Some(Self::UserSelected),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing income range types.
-
 /// Container for enum describing the type of demographic income ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IncomeRangeTypeEnum {
-}
+pub struct IncomeRangeTypeEnum {}
 /// Nested message and enum types in `IncomeRangeTypeEnum`.
 pub mod income_range_type_enum {
     /// The type of demographic income ranges (e.g. between 0% to 50%).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum IncomeRangeType {
         /// Not specified.
@@ -1073,18 +1566,41 @@ pub mod income_range_type_enum {
                 IncomeRangeType::IncomeRangeUndetermined => "INCOME_RANGE_UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INCOME_RANGE_0_50" => Some(Self::IncomeRange050),
+                "INCOME_RANGE_50_60" => Some(Self::IncomeRange5060),
+                "INCOME_RANGE_60_70" => Some(Self::IncomeRange6070),
+                "INCOME_RANGE_70_80" => Some(Self::IncomeRange7080),
+                "INCOME_RANGE_80_90" => Some(Self::IncomeRange8090),
+                "INCOME_RANGE_90_UP" => Some(Self::IncomeRange90Up),
+                "INCOME_RANGE_UNDETERMINED" => Some(Self::IncomeRangeUndetermined),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing interaction types.
-
 /// Container for enum describing possible interaction types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InteractionTypeEnum {
-}
+pub struct InteractionTypeEnum {}
 /// Nested message and enum types in `InteractionTypeEnum`.
 pub mod interaction_type_enum {
     /// Enum describing possible interaction types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum InteractionType {
         /// Not specified.
@@ -1106,18 +1622,35 @@ pub mod interaction_type_enum {
                 InteractionType::Calls => "CALLS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CALLS" => Some(Self::Calls),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Keyword match types.
-
 /// Message describing Keyword match types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordMatchTypeEnum {
-}
+pub struct KeywordMatchTypeEnum {}
 /// Nested message and enum types in `KeywordMatchTypeEnum`.
 pub mod keyword_match_type_enum {
     /// Possible Keyword match types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum KeywordMatchType {
         /// Not specified.
@@ -1145,18 +1678,37 @@ pub mod keyword_match_type_enum {
                 KeywordMatchType::Broad => "BROAD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXACT" => Some(Self::Exact),
+                "PHRASE" => Some(Self::Phrase),
+                "BROAD" => Some(Self::Broad),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Container for enum describing the type of the listing group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupTypeEnum {
-}
+pub struct ListingGroupTypeEnum {}
 /// Nested message and enum types in `ListingGroupTypeEnum`.
 pub mod listing_group_type_enum {
     /// The type of the listing group.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupType {
         /// Not specified.
@@ -1183,18 +1735,36 @@ pub mod listing_group_type_enum {
                 ListingGroupType::Unit => "UNIT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SUBDIVISION" => Some(Self::Subdivision),
+                "UNIT" => Some(Self::Unit),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing location group radius units.
-
 /// Container for enum describing unit of radius in location group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationGroupRadiusUnitsEnum {
-}
+pub struct LocationGroupRadiusUnitsEnum {}
 /// Nested message and enum types in `LocationGroupRadiusUnitsEnum`.
 pub mod location_group_radius_units_enum {
     /// The unit of radius distance in location group (e.g. MILES)
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LocationGroupRadiusUnits {
         /// Not specified.
@@ -1222,18 +1792,37 @@ pub mod location_group_radius_units_enum {
                 LocationGroupRadiusUnits::MilliMiles => "MILLI_MILES",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "METERS" => Some(Self::Meters),
+                "MILES" => Some(Self::Miles),
+                "MILLI_MILES" => Some(Self::MilliMiles),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing days of week.
-
 /// Container for enumeration of quarter-hours.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MinuteOfHourEnum {
-}
+pub struct MinuteOfHourEnum {}
 /// Nested message and enum types in `MinuteOfHourEnum`.
 pub mod minute_of_hour_enum {
     /// Enumerates of quarter-hours. E.g. "FIFTEEN"
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MinuteOfHour {
         /// Not specified.
@@ -1264,18 +1853,38 @@ pub mod minute_of_hour_enum {
                 MinuteOfHour::FortyFive => "FORTY_FIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ZERO" => Some(Self::Zero),
+                "FIFTEEN" => Some(Self::Fifteen),
+                "THIRTY" => Some(Self::Thirty),
+                "FORTY_FIVE" => Some(Self::FortyFive),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing parenal status types.
-
 /// Container for enum describing the type of demographic parental statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ParentalStatusTypeEnum {
-}
+pub struct ParentalStatusTypeEnum {}
 /// Nested message and enum types in `ParentalStatusTypeEnum`.
 pub mod parental_status_type_enum {
     /// The type of parental statuses (e.g. not a parent).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ParentalStatusType {
         /// Not specified.
@@ -1303,18 +1912,37 @@ pub mod parental_status_type_enum {
                 ParentalStatusType::Undetermined => "UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PARENT" => Some(Self::Parent),
+                "NOT_A_PARENT" => Some(Self::NotAParent),
+                "UNDETERMINED" => Some(Self::Undetermined),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing preferred content criterion type.
-
 /// Container for enumeration of preferred content criterion type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PreferredContentTypeEnum {
-}
+pub struct PreferredContentTypeEnum {}
 /// Nested message and enum types in `PreferredContentTypeEnum`.
 pub mod preferred_content_type_enum {
     /// Enumerates preferred content criterion type.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PreferredContentType {
         /// Not specified.
@@ -1336,16 +1964,35 @@ pub mod preferred_content_type_enum {
                 PreferredContentType::YoutubeTopContent => "YOUTUBE_TOP_CONTENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "YOUTUBE_TOP_CONTENT" => Some(Self::YoutubeTopContent),
+                _ => None,
+            }
+        }
     }
 }
 /// Level of a product bidding category.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductBiddingCategoryLevelEnum {
-}
+pub struct ProductBiddingCategoryLevelEnum {}
 /// Nested message and enum types in `ProductBiddingCategoryLevelEnum`.
 pub mod product_bidding_category_level_enum {
     /// Enum describing the level of the product bidding category.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProductBiddingCategoryLevel {
         /// Not specified.
@@ -1379,18 +2026,39 @@ pub mod product_bidding_category_level_enum {
                 ProductBiddingCategoryLevel::Level5 => "LEVEL5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bidding schemes.
-
 /// Locality of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductChannelEnum {
-}
+pub struct ProductChannelEnum {}
 /// Nested message and enum types in `ProductChannelEnum`.
 pub mod product_channel_enum {
     /// Enum describing the locality of a product offer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProductChannel {
         /// Not specified.
@@ -1415,18 +2083,36 @@ pub mod product_channel_enum {
                 ProductChannel::Local => "LOCAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ONLINE" => Some(Self::Online),
+                "LOCAL" => Some(Self::Local),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bidding schemes.
-
 /// Availability of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductChannelExclusivityEnum {
-}
+pub struct ProductChannelExclusivityEnum {}
 /// Nested message and enum types in `ProductChannelExclusivityEnum`.
 pub mod product_channel_exclusivity_enum {
     /// Enum describing the availability of a product offer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProductChannelExclusivity {
         /// Not specified.
@@ -1453,18 +2139,36 @@ pub mod product_channel_exclusivity_enum {
                 ProductChannelExclusivity::MultiChannel => "MULTI_CHANNEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SINGLE_CHANNEL" => Some(Self::SingleChannel),
+                "MULTI_CHANNEL" => Some(Self::MultiChannel),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bidding schemes.
-
 /// Condition of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductConditionEnum {
-}
+pub struct ProductConditionEnum {}
 /// Nested message and enum types in `ProductConditionEnum`.
 pub mod product_condition_enum {
     /// Enum describing the condition of a product offer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProductCondition {
         /// Not specified.
@@ -1492,18 +2196,37 @@ pub mod product_condition_enum {
                 ProductCondition::Used => "USED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW" => Some(Self::New),
+                "REFURBISHED" => Some(Self::Refurbished),
+                "USED" => Some(Self::Used),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing product custom attributes.
-
 /// Container for enum describing the index of the product custom attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductCustomAttributeIndexEnum {
-}
+pub struct ProductCustomAttributeIndexEnum {}
 /// Nested message and enum types in `ProductCustomAttributeIndexEnum`.
 pub mod product_custom_attribute_index_enum {
     /// The index of the product custom attribute.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProductCustomAttributeIndex {
         /// Not specified.
@@ -1537,18 +2260,39 @@ pub mod product_custom_attribute_index_enum {
                 ProductCustomAttributeIndex::Index4 => "INDEX4",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INDEX0" => Some(Self::Index0),
+                "INDEX1" => Some(Self::Index1),
+                "INDEX2" => Some(Self::Index2),
+                "INDEX3" => Some(Self::Index3),
+                "INDEX4" => Some(Self::Index4),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bidding schemes.
-
 /// Level of the type of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductTypeLevelEnum {
-}
+pub struct ProductTypeLevelEnum {}
 /// Nested message and enum types in `ProductTypeLevelEnum`.
 pub mod product_type_level_enum {
     /// Enum describing the level of the type of a product offer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProductTypeLevel {
         /// Not specified.
@@ -1582,18 +2326,39 @@ pub mod product_type_level_enum {
                 ProductTypeLevel::Level5 => "LEVEL5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing proximity radius units.
-
 /// Container for enum describing unit of radius in proximity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProximityRadiusUnitsEnum {
-}
+pub struct ProximityRadiusUnitsEnum {}
 /// Nested message and enum types in `ProximityRadiusUnitsEnum`.
 pub mod proximity_radius_units_enum {
     /// The unit of radius distance in proximity (e.g. MILES)
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProximityRadiusUnits {
         /// Not specified.
@@ -1618,18 +2383,36 @@ pub mod proximity_radius_units_enum {
                 ProximityRadiusUnits::Kilometers => "KILOMETERS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MILES" => Some(Self::Miles),
+                "KILOMETERS" => Some(Self::Kilometers),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing webpage condition operand.
-
 /// Container for enum describing webpage condition operand in webpage criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebpageConditionOperandEnum {
-}
+pub struct WebpageConditionOperandEnum {}
 /// Nested message and enum types in `WebpageConditionOperandEnum`.
 pub mod webpage_condition_operand_enum {
     /// The webpage condition operand in webpage criterion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum WebpageConditionOperand {
         /// Not specified.
@@ -1663,19 +2446,40 @@ pub mod webpage_condition_operand_enum {
                 WebpageConditionOperand::CustomLabel => "CUSTOM_LABEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "URL" => Some(Self::Url),
+                "CATEGORY" => Some(Self::Category),
+                "PAGE_TITLE" => Some(Self::PageTitle),
+                "PAGE_CONTENT" => Some(Self::PageContent),
+                "CUSTOM_LABEL" => Some(Self::CustomLabel),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing webpage condition operator.
-
 /// Container for enum describing webpage condition operator in webpage
 /// criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebpageConditionOperatorEnum {
-}
+pub struct WebpageConditionOperatorEnum {}
 /// Nested message and enum types in `WebpageConditionOperatorEnum`.
 pub mod webpage_condition_operator_enum {
     /// The webpage condition operator in webpage criterion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum WebpageConditionOperator {
         /// Not specified.
@@ -1700,18 +2504,36 @@ pub mod webpage_condition_operator_enum {
                 WebpageConditionOperator::Contains => "CONTAINS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EQUALS" => Some(Self::Equals),
+                "CONTAINS" => Some(Self::Contains),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing call to action type.
-
 /// Container for enum describing the call to action types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallToActionTypeEnum {
-}
+pub struct CallToActionTypeEnum {}
 /// Nested message and enum types in `CallToActionTypeEnum`.
 pub mod call_to_action_type_enum {
     /// Enum describing possible types of call to action.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CallToActionType {
         /// Not specified.
@@ -1757,16 +2579,43 @@ pub mod call_to_action_type_enum {
                 CallToActionType::ShopNow => "SHOP_NOW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEARN_MORE" => Some(Self::LearnMore),
+                "GET_QUOTE" => Some(Self::GetQuote),
+                "APPLY_NOW" => Some(Self::ApplyNow),
+                "SIGN_UP" => Some(Self::SignUp),
+                "CONTACT_US" => Some(Self::ContactUs),
+                "SUBSCRIBE" => Some(Self::Subscribe),
+                "DOWNLOAD" => Some(Self::Download),
+                "BOOK_NOW" => Some(Self::BookNow),
+                "SHOP_NOW" => Some(Self::ShopNow),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes the type of call-to-action phrases in a lead form.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormCallToActionTypeEnum {
-}
+pub struct LeadFormCallToActionTypeEnum {}
 /// Nested message and enum types in `LeadFormCallToActionTypeEnum`.
 pub mod lead_form_call_to_action_type_enum {
     /// Enum describing the type of call-to-action phrases in a lead form.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LeadFormCallToActionType {
         /// Not specified.
@@ -1827,16 +2676,48 @@ pub mod lead_form_call_to_action_type_enum {
                 LeadFormCallToActionType::GetStarted => "GET_STARTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEARN_MORE" => Some(Self::LearnMore),
+                "GET_QUOTE" => Some(Self::GetQuote),
+                "APPLY_NOW" => Some(Self::ApplyNow),
+                "SIGN_UP" => Some(Self::SignUp),
+                "CONTACT_US" => Some(Self::ContactUs),
+                "SUBSCRIBE" => Some(Self::Subscribe),
+                "DOWNLOAD" => Some(Self::Download),
+                "BOOK_NOW" => Some(Self::BookNow),
+                "GET_OFFER" => Some(Self::GetOffer),
+                "REGISTER" => Some(Self::Register),
+                "GET_INFO" => Some(Self::GetInfo),
+                "REQUEST_DEMO" => Some(Self::RequestDemo),
+                "JOIN_NOW" => Some(Self::JoinNow),
+                "GET_STARTED" => Some(Self::GetStarted),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes the desired level of intent of generated leads.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormDesiredIntentEnum {
-}
+pub struct LeadFormDesiredIntentEnum {}
 /// Nested message and enum types in `LeadFormDesiredIntentEnum`.
 pub mod lead_form_desired_intent_enum {
     /// Enum describing the desired level of intent of generated leads.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LeadFormDesiredIntent {
         /// Not specified.
@@ -1861,16 +2742,36 @@ pub mod lead_form_desired_intent_enum {
                 LeadFormDesiredIntent::HighIntent => "HIGH_INTENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOW_INTENT" => Some(Self::LowIntent),
+                "HIGH_INTENT" => Some(Self::HighIntent),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes the input type of a lead form field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormFieldUserInputTypeEnum {
-}
+pub struct LeadFormFieldUserInputTypeEnum {}
 /// Nested message and enum types in `LeadFormFieldUserInputTypeEnum`.
 pub mod lead_form_field_user_input_type_enum {
     /// Enum describing the input type of a lead form field.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LeadFormFieldUserInputType {
         /// Not specified.
@@ -2074,7 +2975,9 @@ pub mod lead_form_field_user_input_type_enum {
                 LeadFormFieldUserInputType::VehicleModel => "VEHICLE_MODEL",
                 LeadFormFieldUserInputType::VehicleType => "VEHICLE_TYPE",
                 LeadFormFieldUserInputType::PreferredDealership => "PREFERRED_DEALERSHIP",
-                LeadFormFieldUserInputType::VehiclePurchaseTimeline => "VEHICLE_PURCHASE_TIMELINE",
+                LeadFormFieldUserInputType::VehiclePurchaseTimeline => {
+                    "VEHICLE_PURCHASE_TIMELINE"
+                }
                 LeadFormFieldUserInputType::VehicleOwnership => "VEHICLE_OWNERSHIP",
                 LeadFormFieldUserInputType::VehiclePaymentType => "VEHICLE_PAYMENT_TYPE",
                 LeadFormFieldUserInputType::VehicleCondition => "VEHICLE_CONDITION",
@@ -2089,9 +2992,13 @@ pub mod lead_form_field_user_input_type_enum {
                 LeadFormFieldUserInputType::Service => "SERVICE",
                 LeadFormFieldUserInputType::Offer => "OFFER",
                 LeadFormFieldUserInputType::Category => "CATEGORY",
-                LeadFormFieldUserInputType::PreferredContactMethod => "PREFERRED_CONTACT_METHOD",
+                LeadFormFieldUserInputType::PreferredContactMethod => {
+                    "PREFERRED_CONTACT_METHOD"
+                }
                 LeadFormFieldUserInputType::PreferredLocation => "PREFERRED_LOCATION",
-                LeadFormFieldUserInputType::PreferredContactTime => "PREFERRED_CONTACT_TIME",
+                LeadFormFieldUserInputType::PreferredContactTime => {
+                    "PREFERRED_CONTACT_TIME"
+                }
                 LeadFormFieldUserInputType::PurchaseTimeline => "PURCHASE_TIMELINE",
                 LeadFormFieldUserInputType::YearsOfExperience => "YEARS_OF_EXPERIENCE",
                 LeadFormFieldUserInputType::JobIndustry => "JOB_INDUSTRY",
@@ -2102,13 +3009,25 @@ pub mod lead_form_field_user_input_type_enum {
                 LeadFormFieldUserInputType::PriceRange => "PRICE_RANGE",
                 LeadFormFieldUserInputType::NumberOfBedrooms => "NUMBER_OF_BEDROOMS",
                 LeadFormFieldUserInputType::FurnishedProperty => "FURNISHED_PROPERTY",
-                LeadFormFieldUserInputType::PetsAllowedProperty => "PETS_ALLOWED_PROPERTY",
-                LeadFormFieldUserInputType::NextPlannedPurchase => "NEXT_PLANNED_PURCHASE",
-                LeadFormFieldUserInputType::EventSignupInterest => "EVENT_SIGNUP_INTEREST",
-                LeadFormFieldUserInputType::PreferredShoppingPlaces => "PREFERRED_SHOPPING_PLACES",
+                LeadFormFieldUserInputType::PetsAllowedProperty => {
+                    "PETS_ALLOWED_PROPERTY"
+                }
+                LeadFormFieldUserInputType::NextPlannedPurchase => {
+                    "NEXT_PLANNED_PURCHASE"
+                }
+                LeadFormFieldUserInputType::EventSignupInterest => {
+                    "EVENT_SIGNUP_INTEREST"
+                }
+                LeadFormFieldUserInputType::PreferredShoppingPlaces => {
+                    "PREFERRED_SHOPPING_PLACES"
+                }
                 LeadFormFieldUserInputType::FavoriteBrand => "FAVORITE_BRAND",
-                LeadFormFieldUserInputType::TransportationCommercialLicenseType => "TRANSPORTATION_COMMERCIAL_LICENSE_TYPE",
-                LeadFormFieldUserInputType::EventBookingInterest => "EVENT_BOOKING_INTEREST",
+                LeadFormFieldUserInputType::TransportationCommercialLicenseType => {
+                    "TRANSPORTATION_COMMERCIAL_LICENSE_TYPE"
+                }
+                LeadFormFieldUserInputType::EventBookingInterest => {
+                    "EVENT_BOOKING_INTEREST"
+                }
                 LeadFormFieldUserInputType::DestinationCountry => "DESTINATION_COUNTRY",
                 LeadFormFieldUserInputType::DestinationCity => "DESTINATION_CITY",
                 LeadFormFieldUserInputType::DepartureCountry => "DEPARTURE_COUNTRY",
@@ -2120,17 +3039,97 @@ pub mod lead_form_field_user_input_type_enum {
                 LeadFormFieldUserInputType::TravelAccommodation => "TRAVEL_ACCOMMODATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FULL_NAME" => Some(Self::FullName),
+                "EMAIL" => Some(Self::Email),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "CITY" => Some(Self::City),
+                "REGION" => Some(Self::Region),
+                "COUNTRY" => Some(Self::Country),
+                "WORK_EMAIL" => Some(Self::WorkEmail),
+                "COMPANY_NAME" => Some(Self::CompanyName),
+                "WORK_PHONE" => Some(Self::WorkPhone),
+                "JOB_TITLE" => Some(Self::JobTitle),
+                "FIRST_NAME" => Some(Self::FirstName),
+                "LAST_NAME" => Some(Self::LastName),
+                "VEHICLE_MODEL" => Some(Self::VehicleModel),
+                "VEHICLE_TYPE" => Some(Self::VehicleType),
+                "PREFERRED_DEALERSHIP" => Some(Self::PreferredDealership),
+                "VEHICLE_PURCHASE_TIMELINE" => Some(Self::VehiclePurchaseTimeline),
+                "VEHICLE_OWNERSHIP" => Some(Self::VehicleOwnership),
+                "VEHICLE_PAYMENT_TYPE" => Some(Self::VehiclePaymentType),
+                "VEHICLE_CONDITION" => Some(Self::VehicleCondition),
+                "COMPANY_SIZE" => Some(Self::CompanySize),
+                "ANNUAL_SALES" => Some(Self::AnnualSales),
+                "YEARS_IN_BUSINESS" => Some(Self::YearsInBusiness),
+                "JOB_DEPARTMENT" => Some(Self::JobDepartment),
+                "JOB_ROLE" => Some(Self::JobRole),
+                "EDUCATION_PROGRAM" => Some(Self::EducationProgram),
+                "EDUCATION_COURSE" => Some(Self::EducationCourse),
+                "PRODUCT" => Some(Self::Product),
+                "SERVICE" => Some(Self::Service),
+                "OFFER" => Some(Self::Offer),
+                "CATEGORY" => Some(Self::Category),
+                "PREFERRED_CONTACT_METHOD" => Some(Self::PreferredContactMethod),
+                "PREFERRED_LOCATION" => Some(Self::PreferredLocation),
+                "PREFERRED_CONTACT_TIME" => Some(Self::PreferredContactTime),
+                "PURCHASE_TIMELINE" => Some(Self::PurchaseTimeline),
+                "YEARS_OF_EXPERIENCE" => Some(Self::YearsOfExperience),
+                "JOB_INDUSTRY" => Some(Self::JobIndustry),
+                "LEVEL_OF_EDUCATION" => Some(Self::LevelOfEducation),
+                "PROPERTY_TYPE" => Some(Self::PropertyType),
+                "REALTOR_HELP_GOAL" => Some(Self::RealtorHelpGoal),
+                "PROPERTY_COMMUNITY" => Some(Self::PropertyCommunity),
+                "PRICE_RANGE" => Some(Self::PriceRange),
+                "NUMBER_OF_BEDROOMS" => Some(Self::NumberOfBedrooms),
+                "FURNISHED_PROPERTY" => Some(Self::FurnishedProperty),
+                "PETS_ALLOWED_PROPERTY" => Some(Self::PetsAllowedProperty),
+                "NEXT_PLANNED_PURCHASE" => Some(Self::NextPlannedPurchase),
+                "EVENT_SIGNUP_INTEREST" => Some(Self::EventSignupInterest),
+                "PREFERRED_SHOPPING_PLACES" => Some(Self::PreferredShoppingPlaces),
+                "FAVORITE_BRAND" => Some(Self::FavoriteBrand),
+                "TRANSPORTATION_COMMERCIAL_LICENSE_TYPE" => {
+                    Some(Self::TransportationCommercialLicenseType)
+                }
+                "EVENT_BOOKING_INTEREST" => Some(Self::EventBookingInterest),
+                "DESTINATION_COUNTRY" => Some(Self::DestinationCountry),
+                "DESTINATION_CITY" => Some(Self::DestinationCity),
+                "DEPARTURE_COUNTRY" => Some(Self::DepartureCountry),
+                "DEPARTURE_CITY" => Some(Self::DepartureCity),
+                "DEPARTURE_DATE" => Some(Self::DepartureDate),
+                "RETURN_DATE" => Some(Self::ReturnDate),
+                "NUMBER_OF_TRAVELERS" => Some(Self::NumberOfTravelers),
+                "TRAVEL_BUDGET" => Some(Self::TravelBudget),
+                "TRAVEL_ACCOMMODATION" => Some(Self::TravelAccommodation),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes the type of post-submit call-to-action phrases for a lead form.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormPostSubmitCallToActionTypeEnum {
-}
+pub struct LeadFormPostSubmitCallToActionTypeEnum {}
 /// Nested message and enum types in `LeadFormPostSubmitCallToActionTypeEnum`.
 pub mod lead_form_post_submit_call_to_action_type_enum {
     /// Enum describing the type of post-submit call-to-action phrases for a lead
     /// form.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LeadFormPostSubmitCallToActionType {
         /// Not specified.
@@ -2161,16 +3160,38 @@ pub mod lead_form_post_submit_call_to_action_type_enum {
                 LeadFormPostSubmitCallToActionType::ShopNow => "SHOP_NOW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "VISIT_SITE" => Some(Self::VisitSite),
+                "DOWNLOAD" => Some(Self::Download),
+                "LEARN_MORE" => Some(Self::LearnMore),
+                "SHOP_NOW" => Some(Self::ShopNow),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing different types of mobile app vendors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MobileAppVendorEnum {
-}
+pub struct MobileAppVendorEnum {}
 /// Nested message and enum types in `MobileAppVendorEnum`.
 pub mod mobile_app_vendor_enum {
     /// The type of mobile app vendor
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MobileAppVendor {
         /// Not specified.
@@ -2195,18 +3216,36 @@ pub mod mobile_app_vendor_enum {
                 MobileAppVendor::GoogleAppStore => "GOOGLE_APP_STORE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_APP_STORE" => Some(Self::AppleAppStore),
+                "GOOGLE_APP_STORE" => Some(Self::GoogleAppStore),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing price extension price qualifier type.
-
 /// Container for enum describing a price extension price qualifier.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionPriceQualifierEnum {
-}
+pub struct PriceExtensionPriceQualifierEnum {}
 /// Nested message and enum types in `PriceExtensionPriceQualifierEnum`.
 pub mod price_extension_price_qualifier_enum {
     /// Enums of price extension price qualifier.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PriceExtensionPriceQualifier {
         /// Not specified.
@@ -2234,18 +3273,37 @@ pub mod price_extension_price_qualifier_enum {
                 PriceExtensionPriceQualifier::Average => "AVERAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FROM" => Some(Self::From),
+                "UP_TO" => Some(Self::UpTo),
+                "AVERAGE" => Some(Self::Average),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing price extension price unit.
-
 /// Container for enum describing price extension price unit.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionPriceUnitEnum {
-}
+pub struct PriceExtensionPriceUnitEnum {}
 /// Nested message and enum types in `PriceExtensionPriceUnitEnum`.
 pub mod price_extension_price_unit_enum {
     /// Price extension price unit.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PriceExtensionPriceUnit {
         /// Not specified.
@@ -2282,18 +3340,40 @@ pub mod price_extension_price_unit_enum {
                 PriceExtensionPriceUnit::PerNight => "PER_NIGHT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PER_HOUR" => Some(Self::PerHour),
+                "PER_DAY" => Some(Self::PerDay),
+                "PER_WEEK" => Some(Self::PerWeek),
+                "PER_MONTH" => Some(Self::PerMonth),
+                "PER_YEAR" => Some(Self::PerYear),
+                "PER_NIGHT" => Some(Self::PerNight),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing price extension type.
-
 /// Container for enum describing types for a price extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionTypeEnum {
-}
+pub struct PriceExtensionTypeEnum {}
 /// Nested message and enum types in `PriceExtensionTypeEnum`.
 pub mod price_extension_type_enum {
     /// Price extension type.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PriceExtensionType {
         /// Not specified.
@@ -2339,19 +3419,44 @@ pub mod price_extension_type_enum {
                 PriceExtensionType::ServiceTiers => "SERVICE_TIERS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BRANDS" => Some(Self::Brands),
+                "EVENTS" => Some(Self::Events),
+                "LOCATIONS" => Some(Self::Locations),
+                "NEIGHBORHOODS" => Some(Self::Neighborhoods),
+                "PRODUCT_CATEGORIES" => Some(Self::ProductCategories),
+                "PRODUCT_TIERS" => Some(Self::ProductTiers),
+                "SERVICES" => Some(Self::Services),
+                "SERVICE_CATEGORIES" => Some(Self::ServiceCategories),
+                "SERVICE_TIERS" => Some(Self::ServiceTiers),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing promotion extension discount modifier.
-
 /// Container for enum describing possible a promotion extension
 /// discount modifier.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PromotionExtensionDiscountModifierEnum {
-}
+pub struct PromotionExtensionDiscountModifierEnum {}
 /// Nested message and enum types in `PromotionExtensionDiscountModifierEnum`.
 pub mod promotion_extension_discount_modifier_enum {
     /// A promotion extension discount modifier.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PromotionExtensionDiscountModifier {
         /// Not specified.
@@ -2373,20 +3478,37 @@ pub mod promotion_extension_discount_modifier_enum {
                 PromotionExtensionDiscountModifier::UpTo => "UP_TO",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UP_TO" => Some(Self::UpTo),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing promotion extension occasion.
-
 /// Container for enum describing a promotion extension occasion.
 /// For more information about the occasions please check:
 /// <https://support.google.com/google-ads/answer/7367521>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PromotionExtensionOccasionEnum {
-}
+pub struct PromotionExtensionOccasionEnum {}
 /// Nested message and enum types in `PromotionExtensionOccasionEnum`.
 pub mod promotion_extension_occasion_enum {
     /// A promotion extension occasion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PromotionExtensionOccasion {
         /// Not specified.
@@ -2516,20 +3638,73 @@ pub mod promotion_extension_occasion_enum {
                 PromotionExtensionOccasion::YearEndGift => "YEAR_END_GIFT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW_YEARS" => Some(Self::NewYears),
+                "CHINESE_NEW_YEAR" => Some(Self::ChineseNewYear),
+                "VALENTINES_DAY" => Some(Self::ValentinesDay),
+                "EASTER" => Some(Self::Easter),
+                "MOTHERS_DAY" => Some(Self::MothersDay),
+                "FATHERS_DAY" => Some(Self::FathersDay),
+                "LABOR_DAY" => Some(Self::LaborDay),
+                "BACK_TO_SCHOOL" => Some(Self::BackToSchool),
+                "HALLOWEEN" => Some(Self::Halloween),
+                "BLACK_FRIDAY" => Some(Self::BlackFriday),
+                "CYBER_MONDAY" => Some(Self::CyberMonday),
+                "CHRISTMAS" => Some(Self::Christmas),
+                "BOXING_DAY" => Some(Self::BoxingDay),
+                "INDEPENDENCE_DAY" => Some(Self::IndependenceDay),
+                "NATIONAL_DAY" => Some(Self::NationalDay),
+                "END_OF_SEASON" => Some(Self::EndOfSeason),
+                "WINTER_SALE" => Some(Self::WinterSale),
+                "SUMMER_SALE" => Some(Self::SummerSale),
+                "FALL_SALE" => Some(Self::FallSale),
+                "SPRING_SALE" => Some(Self::SpringSale),
+                "RAMADAN" => Some(Self::Ramadan),
+                "EID_AL_FITR" => Some(Self::EidAlFitr),
+                "EID_AL_ADHA" => Some(Self::EidAlAdha),
+                "SINGLES_DAY" => Some(Self::SinglesDay),
+                "WOMENS_DAY" => Some(Self::WomensDay),
+                "HOLI" => Some(Self::Holi),
+                "PARENTS_DAY" => Some(Self::ParentsDay),
+                "ST_NICHOLAS_DAY" => Some(Self::StNicholasDay),
+                "CARNIVAL" => Some(Self::Carnival),
+                "EPIPHANY" => Some(Self::Epiphany),
+                "ROSH_HASHANAH" => Some(Self::RoshHashanah),
+                "PASSOVER" => Some(Self::Passover),
+                "HANUKKAH" => Some(Self::Hanukkah),
+                "DIWALI" => Some(Self::Diwali),
+                "NAVRATRI" => Some(Self::Navratri),
+                "SONGKRAN" => Some(Self::Songkran),
+                "YEAR_END_GIFT" => Some(Self::YearEndGift),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing target impression share goal.
-
 /// Container for enum describing where on the first search results page the
 /// automated bidding system should target impressions for the
 /// TargetImpressionShare bidding strategy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetImpressionShareLocationEnum {
-}
+pub struct TargetImpressionShareLocationEnum {}
 /// Nested message and enum types in `TargetImpressionShareLocationEnum`.
 pub mod target_impression_share_location_enum {
     /// Enum describing possible goals.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TargetImpressionShareLocation {
         /// Not specified.
@@ -2554,21 +3729,42 @@ pub mod target_impression_share_location_enum {
                 TargetImpressionShareLocation::Unknown => "UNKNOWN",
                 TargetImpressionShareLocation::AnywhereOnPage => "ANYWHERE_ON_PAGE",
                 TargetImpressionShareLocation::TopOfPage => "TOP_OF_PAGE",
-                TargetImpressionShareLocation::AbsoluteTopOfPage => "ABSOLUTE_TOP_OF_PAGE",
+                TargetImpressionShareLocation::AbsoluteTopOfPage => {
+                    "ABSOLUTE_TOP_OF_PAGE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ANYWHERE_ON_PAGE" => Some(Self::AnywhereOnPage),
+                "TOP_OF_PAGE" => Some(Self::TopOfPage),
+                "ABSOLUTE_TOP_OF_PAGE" => Some(Self::AbsoluteTopOfPage),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing advertising channel subtypes.
-
 /// An immutable specialization of an Advertising Channel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdvertisingChannelSubTypeEnum {
-}
+pub struct AdvertisingChannelSubTypeEnum {}
 /// Nested message and enum types in `AdvertisingChannelSubTypeEnum`.
 pub mod advertising_channel_sub_type_enum {
     /// Enum describing the different channel subtypes.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdvertisingChannelSubType {
         /// Not specified.
@@ -2632,31 +3828,76 @@ pub mod advertising_channel_sub_type_enum {
                 AdvertisingChannelSubType::DisplayExpress => "DISPLAY_EXPRESS",
                 AdvertisingChannelSubType::ShoppingSmartAds => "SHOPPING_SMART_ADS",
                 AdvertisingChannelSubType::DisplayGmailAd => "DISPLAY_GMAIL_AD",
-                AdvertisingChannelSubType::DisplaySmartCampaign => "DISPLAY_SMART_CAMPAIGN",
+                AdvertisingChannelSubType::DisplaySmartCampaign => {
+                    "DISPLAY_SMART_CAMPAIGN"
+                }
                 AdvertisingChannelSubType::VideoOutstream => "VIDEO_OUTSTREAM",
                 AdvertisingChannelSubType::VideoAction => "VIDEO_ACTION",
                 AdvertisingChannelSubType::VideoNonSkippable => "VIDEO_NON_SKIPPABLE",
                 AdvertisingChannelSubType::AppCampaign => "APP_CAMPAIGN",
-                AdvertisingChannelSubType::AppCampaignForEngagement => "APP_CAMPAIGN_FOR_ENGAGEMENT",
+                AdvertisingChannelSubType::AppCampaignForEngagement => {
+                    "APP_CAMPAIGN_FOR_ENGAGEMENT"
+                }
                 AdvertisingChannelSubType::LocalCampaign => "LOCAL_CAMPAIGN",
-                AdvertisingChannelSubType::ShoppingComparisonListingAds => "SHOPPING_COMPARISON_LISTING_ADS",
+                AdvertisingChannelSubType::ShoppingComparisonListingAds => {
+                    "SHOPPING_COMPARISON_LISTING_ADS"
+                }
                 AdvertisingChannelSubType::SmartCampaign => "SMART_CAMPAIGN",
                 AdvertisingChannelSubType::VideoSequence => "VIDEO_SEQUENCE",
-                AdvertisingChannelSubType::AppCampaignForPreRegistration => "APP_CAMPAIGN_FOR_PRE_REGISTRATION",
+                AdvertisingChannelSubType::AppCampaignForPreRegistration => {
+                    "APP_CAMPAIGN_FOR_PRE_REGISTRATION"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH_MOBILE_APP" => Some(Self::SearchMobileApp),
+                "DISPLAY_MOBILE_APP" => Some(Self::DisplayMobileApp),
+                "SEARCH_EXPRESS" => Some(Self::SearchExpress),
+                "DISPLAY_EXPRESS" => Some(Self::DisplayExpress),
+                "SHOPPING_SMART_ADS" => Some(Self::ShoppingSmartAds),
+                "DISPLAY_GMAIL_AD" => Some(Self::DisplayGmailAd),
+                "DISPLAY_SMART_CAMPAIGN" => Some(Self::DisplaySmartCampaign),
+                "VIDEO_OUTSTREAM" => Some(Self::VideoOutstream),
+                "VIDEO_ACTION" => Some(Self::VideoAction),
+                "VIDEO_NON_SKIPPABLE" => Some(Self::VideoNonSkippable),
+                "APP_CAMPAIGN" => Some(Self::AppCampaign),
+                "APP_CAMPAIGN_FOR_ENGAGEMENT" => Some(Self::AppCampaignForEngagement),
+                "LOCAL_CAMPAIGN" => Some(Self::LocalCampaign),
+                "SHOPPING_COMPARISON_LISTING_ADS" => {
+                    Some(Self::ShoppingComparisonListingAds)
+                }
+                "SMART_CAMPAIGN" => Some(Self::SmartCampaign),
+                "VIDEO_SEQUENCE" => Some(Self::VideoSequence),
+                "APP_CAMPAIGN_FOR_PRE_REGISTRATION" => {
+                    Some(Self::AppCampaignForPreRegistration)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing advertising channel types
-
 /// The channel type a campaign may target to serve on.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdvertisingChannelTypeEnum {
-}
+pub struct AdvertisingChannelTypeEnum {}
 /// Nested message and enum types in `AdvertisingChannelTypeEnum`.
 pub mod advertising_channel_type_enum {
     /// Enum describing the various advertising channel types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdvertisingChannelType {
         /// Not specified.
@@ -2704,21 +3945,46 @@ pub mod advertising_channel_type_enum {
                 AdvertisingChannelType::PerformanceMax => "PERFORMANCE_MAX",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH" => Some(Self::Search),
+                "DISPLAY" => Some(Self::Display),
+                "SHOPPING" => Some(Self::Shopping),
+                "HOTEL" => Some(Self::Hotel),
+                "VIDEO" => Some(Self::Video),
+                "MULTI_CHANNEL" => Some(Self::MultiChannel),
+                "LOCAL" => Some(Self::Local),
+                "SMART" => Some(Self::Smart),
+                "PERFORMANCE_MAX" => Some(Self::PerformanceMax),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the criterion category channel availability mode.
-
 /// Describes channel availability mode for a criterion availability - whether
 /// the availability is meant to include all advertising channels, or a
 /// particular channel with all its channel subtypes, or a channel with a certain
 /// subset of channel subtypes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryChannelAvailabilityModeEnum {
-}
+pub struct CriterionCategoryChannelAvailabilityModeEnum {}
 /// Nested message and enum types in `CriterionCategoryChannelAvailabilityModeEnum`.
 pub mod criterion_category_channel_availability_mode_enum {
     /// Enum containing the possible CriterionCategoryChannelAvailabilityMode.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CriterionCategoryChannelAvailabilityMode {
         /// Not specified.
@@ -2744,24 +4010,49 @@ pub mod criterion_category_channel_availability_mode_enum {
                 CriterionCategoryChannelAvailabilityMode::Unspecified => "UNSPECIFIED",
                 CriterionCategoryChannelAvailabilityMode::Unknown => "UNKNOWN",
                 CriterionCategoryChannelAvailabilityMode::AllChannels => "ALL_CHANNELS",
-                CriterionCategoryChannelAvailabilityMode::ChannelTypeAndAllSubtypes => "CHANNEL_TYPE_AND_ALL_SUBTYPES",
-                CriterionCategoryChannelAvailabilityMode::ChannelTypeAndSubsetSubtypes => "CHANNEL_TYPE_AND_SUBSET_SUBTYPES",
+                CriterionCategoryChannelAvailabilityMode::ChannelTypeAndAllSubtypes => {
+                    "CHANNEL_TYPE_AND_ALL_SUBTYPES"
+                }
+                CriterionCategoryChannelAvailabilityMode::ChannelTypeAndSubsetSubtypes => {
+                    "CHANNEL_TYPE_AND_SUBSET_SUBTYPES"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL_CHANNELS" => Some(Self::AllChannels),
+                "CHANNEL_TYPE_AND_ALL_SUBTYPES" => Some(Self::ChannelTypeAndAllSubtypes),
+                "CHANNEL_TYPE_AND_SUBSET_SUBTYPES" => {
+                    Some(Self::ChannelTypeAndSubsetSubtypes)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing the criterion category locale availability mode.
-
 /// Describes locale availability mode for a criterion availability - whether
 /// it's available globally, or a particular country with all languages, or a
 /// particular language with all countries, or a country-language pair.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryLocaleAvailabilityModeEnum {
-}
+pub struct CriterionCategoryLocaleAvailabilityModeEnum {}
 /// Nested message and enum types in `CriterionCategoryLocaleAvailabilityModeEnum`.
 pub mod criterion_category_locale_availability_mode_enum {
     /// Enum containing the possible CriterionCategoryLocaleAvailabilityMode.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CriterionCategoryLocaleAvailabilityMode {
         /// Not specified.
@@ -2790,23 +4081,49 @@ pub mod criterion_category_locale_availability_mode_enum {
                 CriterionCategoryLocaleAvailabilityMode::Unspecified => "UNSPECIFIED",
                 CriterionCategoryLocaleAvailabilityMode::Unknown => "UNKNOWN",
                 CriterionCategoryLocaleAvailabilityMode::AllLocales => "ALL_LOCALES",
-                CriterionCategoryLocaleAvailabilityMode::CountryAndAllLanguages => "COUNTRY_AND_ALL_LANGUAGES",
-                CriterionCategoryLocaleAvailabilityMode::LanguageAndAllCountries => "LANGUAGE_AND_ALL_COUNTRIES",
-                CriterionCategoryLocaleAvailabilityMode::CountryAndLanguage => "COUNTRY_AND_LANGUAGE",
+                CriterionCategoryLocaleAvailabilityMode::CountryAndAllLanguages => {
+                    "COUNTRY_AND_ALL_LANGUAGES"
+                }
+                CriterionCategoryLocaleAvailabilityMode::LanguageAndAllCountries => {
+                    "LANGUAGE_AND_ALL_COUNTRIES"
+                }
+                CriterionCategoryLocaleAvailabilityMode::CountryAndLanguage => {
+                    "COUNTRY_AND_LANGUAGE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL_LOCALES" => Some(Self::AllLocales),
+                "COUNTRY_AND_ALL_LANGUAGES" => Some(Self::CountryAndAllLanguages),
+                "LANGUAGE_AND_ALL_COUNTRIES" => Some(Self::LanguageAndAllCountries),
+                "COUNTRY_AND_LANGUAGE" => Some(Self::CountryAndLanguage),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing customizer attribute type.
-
 /// Container for enum describing possible types of a customizer attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomizerAttributeTypeEnum {
-}
+pub struct CustomizerAttributeTypeEnum {}
 /// Nested message and enum types in `CustomizerAttributeTypeEnum`.
 pub mod customizer_attribute_type_enum {
     /// The possible types of a customizer attribute.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomizerAttributeType {
         /// The status has not been specified.
@@ -2837,18 +4154,38 @@ pub mod customizer_attribute_type_enum {
                 CustomizerAttributeType::Percent => "PERCENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT" => Some(Self::Text),
+                "NUMBER" => Some(Self::Number),
+                "PRICE" => Some(Self::Price),
+                "PERCENT" => Some(Self::Percent),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing days of week.
-
 /// Container for enumeration of months of the year, e.g., "January".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MonthOfYearEnum {
-}
+pub struct MonthOfYearEnum {}
 /// Nested message and enum types in `MonthOfYearEnum`.
 pub mod month_of_year_enum {
     /// Enumerates months of the year, e.g., "January".
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MonthOfYear {
         /// Not specified.
@@ -2903,18 +4240,46 @@ pub mod month_of_year_enum {
                 MonthOfYear::December => "DECEMBER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "JANUARY" => Some(Self::January),
+                "FEBRUARY" => Some(Self::February),
+                "MARCH" => Some(Self::March),
+                "APRIL" => Some(Self::April),
+                "MAY" => Some(Self::May),
+                "JUNE" => Some(Self::June),
+                "JULY" => Some(Self::July),
+                "AUGUST" => Some(Self::August),
+                "SEPTEMBER" => Some(Self::September),
+                "OCTOBER" => Some(Self::October),
+                "NOVEMBER" => Some(Self::November),
+                "DECEMBER" => Some(Self::December),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing app store types for an app extension.
-
 /// Container for enum describing app store type in an app extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppStoreEnum {
-}
+pub struct AppStoreEnum {}
 /// Nested message and enum types in `AppStoreEnum`.
 pub mod app_store_enum {
     /// App store type in an app extension.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AppStore {
         /// Not specified.
@@ -2939,16 +4304,36 @@ pub mod app_store_enum {
                 AppStore::GooglePlay => "GOOGLE_PLAY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_ITUNES" => Some(Self::AppleItunes),
+                "GOOGLE_PLAY" => Some(Self::GooglePlay),
+                _ => None,
+            }
+        }
     }
 }
 /// The type of string matching to be used for a dynamic FeedItemSet filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemSetStringFilterTypeEnum {
-}
+pub struct FeedItemSetStringFilterTypeEnum {}
 /// Nested message and enum types in `FeedItemSetStringFilterTypeEnum`.
 pub mod feed_item_set_string_filter_type_enum {
     /// describe the possible types for a FeedItemSetStringFilter.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemSetStringFilterType {
         /// Not specified.
@@ -2970,18 +4355,35 @@ pub mod feed_item_set_string_filter_type_enum {
                 FeedItemSetStringFilterType::Exact => "EXACT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXACT" => Some(Self::Exact),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing operating system for a deeplink app URL.
-
 /// The possible OS types for a deeplink AppUrl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppUrlOperatingSystemTypeEnum {
-}
+pub struct AppUrlOperatingSystemTypeEnum {}
 /// Nested message and enum types in `AppUrlOperatingSystemTypeEnum`.
 pub mod app_url_operating_system_type_enum {
     /// Operating System
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AppUrlOperatingSystemType {
         /// Not specified.
@@ -3006,18 +4408,36 @@ pub mod app_url_operating_system_type_enum {
                 AppUrlOperatingSystemType::Android => "ANDROID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IOS" => Some(Self::Ios),
+                "ANDROID" => Some(Self::Android),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing frequency caps.
-
 /// Container for enum describing the type of event that the cap applies to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapEventTypeEnum {
-}
+pub struct FrequencyCapEventTypeEnum {}
 /// Nested message and enum types in `FrequencyCapEventTypeEnum`.
 pub mod frequency_cap_event_type_enum {
     /// The type of event that the cap applies to (e.g. impression).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FrequencyCapEventType {
         /// Not specified.
@@ -3042,19 +4462,37 @@ pub mod frequency_cap_event_type_enum {
                 FrequencyCapEventType::VideoView => "VIDEO_VIEW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMPRESSION" => Some(Self::Impression),
+                "VIDEO_VIEW" => Some(Self::VideoView),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing frequency caps.
-
 /// Container for enum describing the level on which the cap is to be applied.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapLevelEnum {
-}
+pub struct FrequencyCapLevelEnum {}
 /// Nested message and enum types in `FrequencyCapLevelEnum`.
 pub mod frequency_cap_level_enum {
     /// The level on which the cap is to be applied (e.g ad group ad, ad group).
     /// Cap is applied to all the resources of this level.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FrequencyCapLevel {
         /// Not specified.
@@ -3082,18 +4520,37 @@ pub mod frequency_cap_level_enum {
                 FrequencyCapLevel::Campaign => "CAMPAIGN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_GROUP_AD" => Some(Self::AdGroupAd),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "CAMPAIGN" => Some(Self::Campaign),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing frequency caps.
-
 /// Container for enum describing the unit of time the cap is defined at.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapTimeUnitEnum {
-}
+pub struct FrequencyCapTimeUnitEnum {}
 /// Nested message and enum types in `FrequencyCapTimeUnitEnum`.
 pub mod frequency_cap_time_unit_enum {
     /// Unit of time the cap is defined at (e.g. day, week).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FrequencyCapTimeUnit {
         /// Not specified.
@@ -3121,18 +4578,37 @@ pub mod frequency_cap_time_unit_enum {
                 FrequencyCapTimeUnit::Month => "MONTH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DAY" => Some(Self::Day),
+                "WEEK" => Some(Self::Week),
+                "MONTH" => Some(Self::Month),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing keyword plan aggregate metric types.
-
 /// The enumeration of keyword plan aggregate metric types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanAggregateMetricTypeEnum {
-}
+pub struct KeywordPlanAggregateMetricTypeEnum {}
 /// Nested message and enum types in `KeywordPlanAggregateMetricTypeEnum`.
 pub mod keyword_plan_aggregate_metric_type_enum {
     /// Aggregate fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum KeywordPlanAggregateMetricType {
         /// Not specified.
@@ -3154,33 +4630,50 @@ pub mod keyword_plan_aggregate_metric_type_enum {
                 KeywordPlanAggregateMetricType::Device => "DEVICE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEVICE" => Some(Self::Device),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Keyword Planner competition levels.
-
 /// Container for enumeration of keyword competition levels. The competition
 /// level indicates how competitive ad placement is for a keyword and
 /// is determined by the number of advertisers bidding on that keyword relative
 /// to all keywords across Google. The competition level can depend on the
 /// location and Search Network targeting options you've selected.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanCompetitionLevelEnum {
-}
+pub struct KeywordPlanCompetitionLevelEnum {}
 /// Nested message and enum types in `KeywordPlanCompetitionLevelEnum`.
 pub mod keyword_plan_competition_level_enum {
     /// Competition level of a keyword.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum KeywordPlanCompetitionLevel {
         /// Not specified.
         Unspecified = 0,
         /// The value is unknown in this version.
         Unknown = 1,
-        /// Low competition. The Competition Index range for this is [0, 33].
+        /// Low competition. The Competition Index range for this is \[0, 33\].
         Low = 2,
-        /// Medium competition. The Competition Index range for this is [34, 66].
+        /// Medium competition. The Competition Index range for this is \[34, 66\].
         Medium = 3,
-        /// High competition. The Competition Index range for this is [67, 100].
+        /// High competition. The Competition Index range for this is \[67, 100\].
         High = 4,
     }
     impl KeywordPlanCompetitionLevel {
@@ -3197,18 +4690,37 @@ pub mod keyword_plan_competition_level_enum {
                 KeywordPlanCompetitionLevel::High => "HIGH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Keyword Planner Concept Group types.
-
 /// Container for enumeration of keyword plan concept group types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanConceptGroupTypeEnum {
-}
+pub struct KeywordPlanConceptGroupTypeEnum {}
 /// Nested message and enum types in `KeywordPlanConceptGroupTypeEnum`.
 pub mod keyword_plan_concept_group_type_enum {
     /// Enumerates keyword plan concept group types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum KeywordPlanConceptGroupType {
         /// The concept group classification different from brand/non-brand.
@@ -3241,18 +4753,37 @@ pub mod keyword_plan_concept_group_type_enum {
                 KeywordPlanConceptGroupType::NonBrand => "NON_BRAND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BRAND" => Some(Self::Brand),
+                "OTHER_BRANDS" => Some(Self::OtherBrands),
+                "NON_BRAND" => Some(Self::NonBrand),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing matching function context types.
-
 /// Container for context types for an operand in a matching function.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MatchingFunctionContextTypeEnum {
-}
+pub struct MatchingFunctionContextTypeEnum {}
 /// Nested message and enum types in `MatchingFunctionContextTypeEnum`.
 pub mod matching_function_context_type_enum {
     /// Possible context types for an operand in a matching function.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MatchingFunctionContextType {
         /// Not specified.
@@ -3280,18 +4811,37 @@ pub mod matching_function_context_type_enum {
                 MatchingFunctionContextType::FeedItemSetId => "FEED_ITEM_SET_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FEED_ITEM_ID" => Some(Self::FeedItemId),
+                "DEVICE_NAME" => Some(Self::DeviceName),
+                "FEED_ITEM_SET_ID" => Some(Self::FeedItemSetId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing matching function operators.
-
 /// Container for enum describing matching function operator.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MatchingFunctionOperatorEnum {
-}
+pub struct MatchingFunctionOperatorEnum {}
 /// Nested message and enum types in `MatchingFunctionOperatorEnum`.
 pub mod matching_function_operator_enum {
     /// Possible operators in a matching function.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MatchingFunctionOperator {
         /// Not specified.
@@ -3331,18 +4881,39 @@ pub mod matching_function_operator_enum {
                 MatchingFunctionOperator::ContainsAny => "CONTAINS_ANY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IN" => Some(Self::In),
+                "IDENTITY" => Some(Self::Identity),
+                "EQUALS" => Some(Self::Equals),
+                "AND" => Some(Self::And),
+                "CONTAINS_ANY" => Some(Self::ContainsAny),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing types of payable and free interactions.
-
 /// Container for enum describing types of payable and free interactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InteractionEventTypeEnum {
-}
+pub struct InteractionEventTypeEnum {}
 /// Nested message and enum types in `InteractionEventTypeEnum`.
 pub mod interaction_event_type_enum {
     /// Enum describing possible types of payable and free interactions.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum InteractionEventType {
         /// Not specified.
@@ -3379,18 +4950,38 @@ pub mod interaction_event_type_enum {
                 InteractionEventType::None => "NONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CLICK" => Some(Self::Click),
+                "ENGAGEMENT" => Some(Self::Engagement),
+                "VIDEO_VIEW" => Some(Self::VideoView),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing quality score buckets.
-
 /// The relative performance compared to other advertisers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QualityScoreBucketEnum {
-}
+pub struct QualityScoreBucketEnum {}
 /// Nested message and enum types in `QualityScoreBucketEnum`.
 pub mod quality_score_bucket_enum {
     /// Enum listing the possible quality score buckets.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum QualityScoreBucket {
         /// Not specified.
@@ -3418,20 +5009,39 @@ pub mod quality_score_bucket_enum {
                 QualityScoreBucket::AboveAverage => "ABOVE_AVERAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BELOW_AVERAGE" => Some(Self::BelowAverage),
+                "AVERAGE" => Some(Self::Average),
+                "ABOVE_AVERAGE" => Some(Self::AboveAverage),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing user identifier source
-
 /// Container for enum describing the source of the user identifier for offline
 /// Store Sales, click conversion, and conversion adjustment uploads.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserIdentifierSourceEnum {
-}
+pub struct UserIdentifierSourceEnum {}
 /// Nested message and enum types in `UserIdentifierSourceEnum`.
 pub mod user_identifier_source_enum {
     /// The type of user identifier source for offline Store Sales, click
     /// conversion, and conversion adjustment uploads.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserIdentifierSource {
         /// Not specified.
@@ -3458,18 +5068,36 @@ pub mod user_identifier_source_enum {
                 UserIdentifierSource::ThirdParty => "THIRD_PARTY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FIRST_PARTY" => Some(Self::FirstParty),
+                "THIRD_PARTY" => Some(Self::ThirdParty),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad destination types.
-
 /// Container for enumeration of Google Ads destination types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdDestinationTypeEnum {
-}
+pub struct AdDestinationTypeEnum {}
 /// Nested message and enum types in `AdDestinationTypeEnum`.
 pub mod ad_destination_type_enum {
     /// Enumerates Google Ads destination types
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdDestinationType {
         /// Not specified.
@@ -3521,18 +5149,45 @@ pub mod ad_destination_type_enum {
                 AdDestinationType::UnmodeledForConversions => "UNMODELED_FOR_CONVERSIONS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOT_APPLICABLE" => Some(Self::NotApplicable),
+                "WEBSITE" => Some(Self::Website),
+                "APP_DEEP_LINK" => Some(Self::AppDeepLink),
+                "APP_STORE" => Some(Self::AppStore),
+                "PHONE_CALL" => Some(Self::PhoneCall),
+                "MAP_DIRECTIONS" => Some(Self::MapDirections),
+                "LOCATION_LISTING" => Some(Self::LocationListing),
+                "MESSAGE" => Some(Self::Message),
+                "LEAD_FORM" => Some(Self::LeadForm),
+                "YOUTUBE" => Some(Self::Youtube),
+                "UNMODELED_FOR_CONVERSIONS" => Some(Self::UnmodeledForConversions),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad network types.
-
 /// Container for enumeration of Google Ads network types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdNetworkTypeEnum {
-}
+pub struct AdNetworkTypeEnum {}
 /// Nested message and enum types in `AdNetworkTypeEnum`.
 pub mod ad_network_type_enum {
     /// Enumerates Google Ads network types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdNetworkType {
         /// Not specified.
@@ -3569,19 +5224,41 @@ pub mod ad_network_type_enum {
                 AdNetworkType::Mixed => "MIXED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH" => Some(Self::Search),
+                "SEARCH_PARTNERS" => Some(Self::SearchPartners),
+                "CONTENT" => Some(Self::Content),
+                "YOUTUBE_SEARCH" => Some(Self::YoutubeSearch),
+                "YOUTUBE_WATCH" => Some(Self::YoutubeWatch),
+                "MIXED" => Some(Self::Mixed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Budget and Campaign association status.
-
 /// Message describing the status of the association between the Budget and the
 /// Campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetCampaignAssociationStatusEnum {
-}
+pub struct BudgetCampaignAssociationStatusEnum {}
 /// Nested message and enum types in `BudgetCampaignAssociationStatusEnum`.
 pub mod budget_campaign_association_status_enum {
     /// Possible statuses of the association between the Budget and the Campaign.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BudgetCampaignAssociationStatus {
         /// Not specified.
@@ -3606,18 +5283,36 @@ pub mod budget_campaign_association_status_enum {
                 BudgetCampaignAssociationStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing click types.
-
 /// Container for enumeration of Google Ads click types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClickTypeEnum {
-}
+pub struct ClickTypeEnum {}
 /// Nested message and enum types in `ClickTypeEnum`.
 pub mod click_type_enum {
     /// Enumerates Google Ads click types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ClickType {
         /// Not specified.
@@ -3765,47 +5460,168 @@ pub mod click_type_enum {
                 ClickType::UrlClicks => "URL_CLICKS",
                 ClickType::VideoAppStoreClicks => "VIDEO_APP_STORE_CLICKS",
                 ClickType::VideoCallToActionClicks => "VIDEO_CALL_TO_ACTION_CLICKS",
-                ClickType::VideoCardActionHeadlineClicks => "VIDEO_CARD_ACTION_HEADLINE_CLICKS",
+                ClickType::VideoCardActionHeadlineClicks => {
+                    "VIDEO_CARD_ACTION_HEADLINE_CLICKS"
+                }
                 ClickType::VideoEndCapClicks => "VIDEO_END_CAP_CLICKS",
                 ClickType::VideoWebsiteClicks => "VIDEO_WEBSITE_CLICKS",
                 ClickType::VisualSitelinks => "VISUAL_SITELINKS",
                 ClickType::WirelessPlan => "WIRELESS_PLAN",
                 ClickType::ProductListingAdLocal => "PRODUCT_LISTING_AD_LOCAL",
-                ClickType::ProductListingAdMultichannelLocal => "PRODUCT_LISTING_AD_MULTICHANNEL_LOCAL",
-                ClickType::ProductListingAdMultichannelOnline => "PRODUCT_LISTING_AD_MULTICHANNEL_ONLINE",
+                ClickType::ProductListingAdMultichannelLocal => {
+                    "PRODUCT_LISTING_AD_MULTICHANNEL_LOCAL"
+                }
+                ClickType::ProductListingAdMultichannelOnline => {
+                    "PRODUCT_LISTING_AD_MULTICHANNEL_ONLINE"
+                }
                 ClickType::ProductListingAdsCoupon => "PRODUCT_LISTING_ADS_COUPON",
-                ClickType::ProductListingAdTransactable => "PRODUCT_LISTING_AD_TRANSACTABLE",
+                ClickType::ProductListingAdTransactable => {
+                    "PRODUCT_LISTING_AD_TRANSACTABLE"
+                }
                 ClickType::ProductAdAppDeeplink => "PRODUCT_AD_APP_DEEPLINK",
                 ClickType::ShowcaseAdCategoryLink => "SHOWCASE_AD_CATEGORY_LINK",
-                ClickType::ShowcaseAdLocalStorefrontLink => "SHOWCASE_AD_LOCAL_STOREFRONT_LINK",
-                ClickType::ShowcaseAdOnlineProductLink => "SHOWCASE_AD_ONLINE_PRODUCT_LINK",
+                ClickType::ShowcaseAdLocalStorefrontLink => {
+                    "SHOWCASE_AD_LOCAL_STOREFRONT_LINK"
+                }
+                ClickType::ShowcaseAdOnlineProductLink => {
+                    "SHOWCASE_AD_ONLINE_PRODUCT_LINK"
+                }
                 ClickType::ShowcaseAdLocalProductLink => "SHOWCASE_AD_LOCAL_PRODUCT_LINK",
                 ClickType::PromotionExtension => "PROMOTION_EXTENSION",
                 ClickType::SwipeableGalleryAdHeadline => "SWIPEABLE_GALLERY_AD_HEADLINE",
                 ClickType::SwipeableGalleryAdSwipes => "SWIPEABLE_GALLERY_AD_SWIPES",
                 ClickType::SwipeableGalleryAdSeeMore => "SWIPEABLE_GALLERY_AD_SEE_MORE",
-                ClickType::SwipeableGalleryAdSitelinkOne => "SWIPEABLE_GALLERY_AD_SITELINK_ONE",
-                ClickType::SwipeableGalleryAdSitelinkTwo => "SWIPEABLE_GALLERY_AD_SITELINK_TWO",
-                ClickType::SwipeableGalleryAdSitelinkThree => "SWIPEABLE_GALLERY_AD_SITELINK_THREE",
-                ClickType::SwipeableGalleryAdSitelinkFour => "SWIPEABLE_GALLERY_AD_SITELINK_FOUR",
-                ClickType::SwipeableGalleryAdSitelinkFive => "SWIPEABLE_GALLERY_AD_SITELINK_FIVE",
+                ClickType::SwipeableGalleryAdSitelinkOne => {
+                    "SWIPEABLE_GALLERY_AD_SITELINK_ONE"
+                }
+                ClickType::SwipeableGalleryAdSitelinkTwo => {
+                    "SWIPEABLE_GALLERY_AD_SITELINK_TWO"
+                }
+                ClickType::SwipeableGalleryAdSitelinkThree => {
+                    "SWIPEABLE_GALLERY_AD_SITELINK_THREE"
+                }
+                ClickType::SwipeableGalleryAdSitelinkFour => {
+                    "SWIPEABLE_GALLERY_AD_SITELINK_FOUR"
+                }
+                ClickType::SwipeableGalleryAdSitelinkFive => {
+                    "SWIPEABLE_GALLERY_AD_SITELINK_FIVE"
+                }
                 ClickType::HotelPrice => "HOTEL_PRICE",
                 ClickType::PriceExtension => "PRICE_EXTENSION",
-                ClickType::HotelBookOnGoogleRoomSelection => "HOTEL_BOOK_ON_GOOGLE_ROOM_SELECTION",
+                ClickType::HotelBookOnGoogleRoomSelection => {
+                    "HOTEL_BOOK_ON_GOOGLE_ROOM_SELECTION"
+                }
                 ClickType::ShoppingComparisonListing => "SHOPPING_COMPARISON_LISTING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APP_DEEPLINK" => Some(Self::AppDeeplink),
+                "BREADCRUMBS" => Some(Self::Breadcrumbs),
+                "BROADBAND_PLAN" => Some(Self::BroadbandPlan),
+                "CALL_TRACKING" => Some(Self::CallTracking),
+                "CALLS" => Some(Self::Calls),
+                "CLICK_ON_ENGAGEMENT_AD" => Some(Self::ClickOnEngagementAd),
+                "GET_DIRECTIONS" => Some(Self::GetDirections),
+                "LOCATION_EXPANSION" => Some(Self::LocationExpansion),
+                "LOCATION_FORMAT_CALL" => Some(Self::LocationFormatCall),
+                "LOCATION_FORMAT_DIRECTIONS" => Some(Self::LocationFormatDirections),
+                "LOCATION_FORMAT_IMAGE" => Some(Self::LocationFormatImage),
+                "LOCATION_FORMAT_LANDING_PAGE" => Some(Self::LocationFormatLandingPage),
+                "LOCATION_FORMAT_MAP" => Some(Self::LocationFormatMap),
+                "LOCATION_FORMAT_STORE_INFO" => Some(Self::LocationFormatStoreInfo),
+                "LOCATION_FORMAT_TEXT" => Some(Self::LocationFormatText),
+                "MOBILE_CALL_TRACKING" => Some(Self::MobileCallTracking),
+                "OFFER_PRINTS" => Some(Self::OfferPrints),
+                "OTHER" => Some(Self::Other),
+                "PRODUCT_EXTENSION_CLICKS" => Some(Self::ProductExtensionClicks),
+                "PRODUCT_LISTING_AD_CLICKS" => Some(Self::ProductListingAdClicks),
+                "SITELINKS" => Some(Self::Sitelinks),
+                "STORE_LOCATOR" => Some(Self::StoreLocator),
+                "URL_CLICKS" => Some(Self::UrlClicks),
+                "VIDEO_APP_STORE_CLICKS" => Some(Self::VideoAppStoreClicks),
+                "VIDEO_CALL_TO_ACTION_CLICKS" => Some(Self::VideoCallToActionClicks),
+                "VIDEO_CARD_ACTION_HEADLINE_CLICKS" => {
+                    Some(Self::VideoCardActionHeadlineClicks)
+                }
+                "VIDEO_END_CAP_CLICKS" => Some(Self::VideoEndCapClicks),
+                "VIDEO_WEBSITE_CLICKS" => Some(Self::VideoWebsiteClicks),
+                "VISUAL_SITELINKS" => Some(Self::VisualSitelinks),
+                "WIRELESS_PLAN" => Some(Self::WirelessPlan),
+                "PRODUCT_LISTING_AD_LOCAL" => Some(Self::ProductListingAdLocal),
+                "PRODUCT_LISTING_AD_MULTICHANNEL_LOCAL" => {
+                    Some(Self::ProductListingAdMultichannelLocal)
+                }
+                "PRODUCT_LISTING_AD_MULTICHANNEL_ONLINE" => {
+                    Some(Self::ProductListingAdMultichannelOnline)
+                }
+                "PRODUCT_LISTING_ADS_COUPON" => Some(Self::ProductListingAdsCoupon),
+                "PRODUCT_LISTING_AD_TRANSACTABLE" => {
+                    Some(Self::ProductListingAdTransactable)
+                }
+                "PRODUCT_AD_APP_DEEPLINK" => Some(Self::ProductAdAppDeeplink),
+                "SHOWCASE_AD_CATEGORY_LINK" => Some(Self::ShowcaseAdCategoryLink),
+                "SHOWCASE_AD_LOCAL_STOREFRONT_LINK" => {
+                    Some(Self::ShowcaseAdLocalStorefrontLink)
+                }
+                "SHOWCASE_AD_ONLINE_PRODUCT_LINK" => {
+                    Some(Self::ShowcaseAdOnlineProductLink)
+                }
+                "SHOWCASE_AD_LOCAL_PRODUCT_LINK" => {
+                    Some(Self::ShowcaseAdLocalProductLink)
+                }
+                "PROMOTION_EXTENSION" => Some(Self::PromotionExtension),
+                "SWIPEABLE_GALLERY_AD_HEADLINE" => Some(Self::SwipeableGalleryAdHeadline),
+                "SWIPEABLE_GALLERY_AD_SWIPES" => Some(Self::SwipeableGalleryAdSwipes),
+                "SWIPEABLE_GALLERY_AD_SEE_MORE" => Some(Self::SwipeableGalleryAdSeeMore),
+                "SWIPEABLE_GALLERY_AD_SITELINK_ONE" => {
+                    Some(Self::SwipeableGalleryAdSitelinkOne)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_TWO" => {
+                    Some(Self::SwipeableGalleryAdSitelinkTwo)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_THREE" => {
+                    Some(Self::SwipeableGalleryAdSitelinkThree)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_FOUR" => {
+                    Some(Self::SwipeableGalleryAdSitelinkFour)
+                }
+                "SWIPEABLE_GALLERY_AD_SITELINK_FIVE" => {
+                    Some(Self::SwipeableGalleryAdSitelinkFive)
+                }
+                "HOTEL_PRICE" => Some(Self::HotelPrice),
+                "PRICE_EXTENSION" => Some(Self::PriceExtension),
+                "HOTEL_BOOK_ON_GOOGLE_ROOM_SELECTION" => {
+                    Some(Self::HotelBookOnGoogleRoomSelection)
+                }
+                "SHOPPING_COMPARISON_LISTING" => Some(Self::ShoppingComparisonListing),
+                _ => None,
             }
         }
     }
 }
 /// Container for enum describing the category of conversions that are associated
 /// with a ConversionAction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionCategoryEnum {
-}
+pub struct ConversionActionCategoryEnum {}
 /// Nested message and enum types in `ConversionActionCategoryEnum`.
 pub mod conversion_action_category_enum {
     /// The category of conversions that are associated with a ConversionAction.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionActionCategory {
         /// Not specified.
@@ -3887,16 +5703,54 @@ pub mod conversion_action_category_enum {
                 ConversionActionCategory::StoreSale => "STORE_SALE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEFAULT" => Some(Self::Default),
+                "PAGE_VIEW" => Some(Self::PageView),
+                "PURCHASE" => Some(Self::Purchase),
+                "SIGNUP" => Some(Self::Signup),
+                "LEAD" => Some(Self::Lead),
+                "DOWNLOAD" => Some(Self::Download),
+                "ADD_TO_CART" => Some(Self::AddToCart),
+                "BEGIN_CHECKOUT" => Some(Self::BeginCheckout),
+                "SUBSCRIBE_PAID" => Some(Self::SubscribePaid),
+                "PHONE_CALL_LEAD" => Some(Self::PhoneCallLead),
+                "IMPORTED_LEAD" => Some(Self::ImportedLead),
+                "SUBMIT_LEAD_FORM" => Some(Self::SubmitLeadForm),
+                "BOOK_APPOINTMENT" => Some(Self::BookAppointment),
+                "REQUEST_QUOTE" => Some(Self::RequestQuote),
+                "GET_DIRECTIONS" => Some(Self::GetDirections),
+                "OUTBOUND_CLICK" => Some(Self::OutboundClick),
+                "CONTACT" => Some(Self::Contact),
+                "ENGAGEMENT" => Some(Self::Engagement),
+                "STORE_VISIT" => Some(Self::StoreVisit),
+                "STORE_SALE" => Some(Self::StoreSale),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum indicating the event type the conversion is attributed to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionAttributionEventTypeEnum {
-}
+pub struct ConversionAttributionEventTypeEnum {}
 /// Nested message and enum types in `ConversionAttributionEventTypeEnum`.
 pub mod conversion_attribution_event_type_enum {
     /// The event type of conversions that are attributed to.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionAttributionEventType {
         /// Not specified.
@@ -3921,17 +5775,37 @@ pub mod conversion_attribution_event_type_enum {
                 ConversionAttributionEventType::Interaction => "INTERACTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMPRESSION" => Some(Self::Impression),
+                "INTERACTION" => Some(Self::Interaction),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum representing the number of days between impression and
 /// conversion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionLagBucketEnum {
-}
+pub struct ConversionLagBucketEnum {}
 /// Nested message and enum types in `ConversionLagBucketEnum`.
 pub mod conversion_lag_bucket_enum {
     /// Enum representing the number of days between impression and conversion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionLagBucket {
         /// Not specified.
@@ -4016,26 +5890,67 @@ pub mod conversion_lag_bucket_enum {
                 ConversionLagBucket::TenToElevenDays => "TEN_TO_ELEVEN_DAYS",
                 ConversionLagBucket::ElevenToTwelveDays => "ELEVEN_TO_TWELVE_DAYS",
                 ConversionLagBucket::TwelveToThirteenDays => "TWELVE_TO_THIRTEEN_DAYS",
-                ConversionLagBucket::ThirteenToFourteenDays => "THIRTEEN_TO_FOURTEEN_DAYS",
-                ConversionLagBucket::FourteenToTwentyOneDays => "FOURTEEN_TO_TWENTY_ONE_DAYS",
+                ConversionLagBucket::ThirteenToFourteenDays => {
+                    "THIRTEEN_TO_FOURTEEN_DAYS"
+                }
+                ConversionLagBucket::FourteenToTwentyOneDays => {
+                    "FOURTEEN_TO_TWENTY_ONE_DAYS"
+                }
                 ConversionLagBucket::TwentyOneToThirtyDays => "TWENTY_ONE_TO_THIRTY_DAYS",
                 ConversionLagBucket::ThirtyToFortyFiveDays => "THIRTY_TO_FORTY_FIVE_DAYS",
                 ConversionLagBucket::FortyFiveToSixtyDays => "FORTY_FIVE_TO_SIXTY_DAYS",
                 ConversionLagBucket::SixtyToNinetyDays => "SIXTY_TO_NINETY_DAYS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LESS_THAN_ONE_DAY" => Some(Self::LessThanOneDay),
+                "ONE_TO_TWO_DAYS" => Some(Self::OneToTwoDays),
+                "TWO_TO_THREE_DAYS" => Some(Self::TwoToThreeDays),
+                "THREE_TO_FOUR_DAYS" => Some(Self::ThreeToFourDays),
+                "FOUR_TO_FIVE_DAYS" => Some(Self::FourToFiveDays),
+                "FIVE_TO_SIX_DAYS" => Some(Self::FiveToSixDays),
+                "SIX_TO_SEVEN_DAYS" => Some(Self::SixToSevenDays),
+                "SEVEN_TO_EIGHT_DAYS" => Some(Self::SevenToEightDays),
+                "EIGHT_TO_NINE_DAYS" => Some(Self::EightToNineDays),
+                "NINE_TO_TEN_DAYS" => Some(Self::NineToTenDays),
+                "TEN_TO_ELEVEN_DAYS" => Some(Self::TenToElevenDays),
+                "ELEVEN_TO_TWELVE_DAYS" => Some(Self::ElevenToTwelveDays),
+                "TWELVE_TO_THIRTEEN_DAYS" => Some(Self::TwelveToThirteenDays),
+                "THIRTEEN_TO_FOURTEEN_DAYS" => Some(Self::ThirteenToFourteenDays),
+                "FOURTEEN_TO_TWENTY_ONE_DAYS" => Some(Self::FourteenToTwentyOneDays),
+                "TWENTY_ONE_TO_THIRTY_DAYS" => Some(Self::TwentyOneToThirtyDays),
+                "THIRTY_TO_FORTY_FIVE_DAYS" => Some(Self::ThirtyToFortyFiveDays),
+                "FORTY_FIVE_TO_SIXTY_DAYS" => Some(Self::FortyFiveToSixtyDays),
+                "SIXTY_TO_NINETY_DAYS" => Some(Self::SixtyToNinetyDays),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum representing the number of days between the impression and
 /// the conversion or between the impression and adjustments to the conversion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionOrAdjustmentLagBucketEnum {
-}
+pub struct ConversionOrAdjustmentLagBucketEnum {}
 /// Nested message and enum types in `ConversionOrAdjustmentLagBucketEnum`.
 pub mod conversion_or_adjustment_lag_bucket_enum {
     /// Enum representing the number of days between the impression and the
     /// conversion or between the impression and adjustments to the conversion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionOrAdjustmentLagBucket {
         /// Not specified.
@@ -4173,61 +6088,238 @@ pub mod conversion_or_adjustment_lag_bucket_enum {
             match self {
                 ConversionOrAdjustmentLagBucket::Unspecified => "UNSPECIFIED",
                 ConversionOrAdjustmentLagBucket::Unknown => "UNKNOWN",
-                ConversionOrAdjustmentLagBucket::ConversionLessThanOneDay => "CONVERSION_LESS_THAN_ONE_DAY",
-                ConversionOrAdjustmentLagBucket::ConversionOneToTwoDays => "CONVERSION_ONE_TO_TWO_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionTwoToThreeDays => "CONVERSION_TWO_TO_THREE_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionThreeToFourDays => "CONVERSION_THREE_TO_FOUR_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionFourToFiveDays => "CONVERSION_FOUR_TO_FIVE_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionFiveToSixDays => "CONVERSION_FIVE_TO_SIX_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionSixToSevenDays => "CONVERSION_SIX_TO_SEVEN_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionSevenToEightDays => "CONVERSION_SEVEN_TO_EIGHT_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionEightToNineDays => "CONVERSION_EIGHT_TO_NINE_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionNineToTenDays => "CONVERSION_NINE_TO_TEN_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionTenToElevenDays => "CONVERSION_TEN_TO_ELEVEN_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionElevenToTwelveDays => "CONVERSION_ELEVEN_TO_TWELVE_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionTwelveToThirteenDays => "CONVERSION_TWELVE_TO_THIRTEEN_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionThirteenToFourteenDays => "CONVERSION_THIRTEEN_TO_FOURTEEN_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionFourteenToTwentyOneDays => "CONVERSION_FOURTEEN_TO_TWENTY_ONE_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionTwentyOneToThirtyDays => "CONVERSION_TWENTY_ONE_TO_THIRTY_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionThirtyToFortyFiveDays => "CONVERSION_THIRTY_TO_FORTY_FIVE_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionFortyFiveToSixtyDays => "CONVERSION_FORTY_FIVE_TO_SIXTY_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionSixtyToNinetyDays => "CONVERSION_SIXTY_TO_NINETY_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentLessThanOneDay => "ADJUSTMENT_LESS_THAN_ONE_DAY",
-                ConversionOrAdjustmentLagBucket::AdjustmentOneToTwoDays => "ADJUSTMENT_ONE_TO_TWO_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentTwoToThreeDays => "ADJUSTMENT_TWO_TO_THREE_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentThreeToFourDays => "ADJUSTMENT_THREE_TO_FOUR_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentFourToFiveDays => "ADJUSTMENT_FOUR_TO_FIVE_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentFiveToSixDays => "ADJUSTMENT_FIVE_TO_SIX_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentSixToSevenDays => "ADJUSTMENT_SIX_TO_SEVEN_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentSevenToEightDays => "ADJUSTMENT_SEVEN_TO_EIGHT_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentEightToNineDays => "ADJUSTMENT_EIGHT_TO_NINE_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentNineToTenDays => "ADJUSTMENT_NINE_TO_TEN_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentTenToElevenDays => "ADJUSTMENT_TEN_TO_ELEVEN_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentElevenToTwelveDays => "ADJUSTMENT_ELEVEN_TO_TWELVE_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentTwelveToThirteenDays => "ADJUSTMENT_TWELVE_TO_THIRTEEN_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentThirteenToFourteenDays => "ADJUSTMENT_THIRTEEN_TO_FOURTEEN_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentFourteenToTwentyOneDays => "ADJUSTMENT_FOURTEEN_TO_TWENTY_ONE_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentTwentyOneToThirtyDays => "ADJUSTMENT_TWENTY_ONE_TO_THIRTY_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentThirtyToFortyFiveDays => "ADJUSTMENT_THIRTY_TO_FORTY_FIVE_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentFortyFiveToSixtyDays => "ADJUSTMENT_FORTY_FIVE_TO_SIXTY_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentSixtyToNinetyDays => "ADJUSTMENT_SIXTY_TO_NINETY_DAYS",
-                ConversionOrAdjustmentLagBucket::AdjustmentNinetyToOneHundredAndFortyFiveDays => "ADJUSTMENT_NINETY_TO_ONE_HUNDRED_AND_FORTY_FIVE_DAYS",
-                ConversionOrAdjustmentLagBucket::ConversionUnknown => "CONVERSION_UNKNOWN",
-                ConversionOrAdjustmentLagBucket::AdjustmentUnknown => "ADJUSTMENT_UNKNOWN",
+                ConversionOrAdjustmentLagBucket::ConversionLessThanOneDay => {
+                    "CONVERSION_LESS_THAN_ONE_DAY"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionOneToTwoDays => {
+                    "CONVERSION_ONE_TO_TWO_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionTwoToThreeDays => {
+                    "CONVERSION_TWO_TO_THREE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionThreeToFourDays => {
+                    "CONVERSION_THREE_TO_FOUR_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionFourToFiveDays => {
+                    "CONVERSION_FOUR_TO_FIVE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionFiveToSixDays => {
+                    "CONVERSION_FIVE_TO_SIX_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionSixToSevenDays => {
+                    "CONVERSION_SIX_TO_SEVEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionSevenToEightDays => {
+                    "CONVERSION_SEVEN_TO_EIGHT_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionEightToNineDays => {
+                    "CONVERSION_EIGHT_TO_NINE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionNineToTenDays => {
+                    "CONVERSION_NINE_TO_TEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionTenToElevenDays => {
+                    "CONVERSION_TEN_TO_ELEVEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionElevenToTwelveDays => {
+                    "CONVERSION_ELEVEN_TO_TWELVE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionTwelveToThirteenDays => {
+                    "CONVERSION_TWELVE_TO_THIRTEEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionThirteenToFourteenDays => {
+                    "CONVERSION_THIRTEEN_TO_FOURTEEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionFourteenToTwentyOneDays => {
+                    "CONVERSION_FOURTEEN_TO_TWENTY_ONE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionTwentyOneToThirtyDays => {
+                    "CONVERSION_TWENTY_ONE_TO_THIRTY_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionThirtyToFortyFiveDays => {
+                    "CONVERSION_THIRTY_TO_FORTY_FIVE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionFortyFiveToSixtyDays => {
+                    "CONVERSION_FORTY_FIVE_TO_SIXTY_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionSixtyToNinetyDays => {
+                    "CONVERSION_SIXTY_TO_NINETY_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentLessThanOneDay => {
+                    "ADJUSTMENT_LESS_THAN_ONE_DAY"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentOneToTwoDays => {
+                    "ADJUSTMENT_ONE_TO_TWO_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentTwoToThreeDays => {
+                    "ADJUSTMENT_TWO_TO_THREE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentThreeToFourDays => {
+                    "ADJUSTMENT_THREE_TO_FOUR_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentFourToFiveDays => {
+                    "ADJUSTMENT_FOUR_TO_FIVE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentFiveToSixDays => {
+                    "ADJUSTMENT_FIVE_TO_SIX_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentSixToSevenDays => {
+                    "ADJUSTMENT_SIX_TO_SEVEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentSevenToEightDays => {
+                    "ADJUSTMENT_SEVEN_TO_EIGHT_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentEightToNineDays => {
+                    "ADJUSTMENT_EIGHT_TO_NINE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentNineToTenDays => {
+                    "ADJUSTMENT_NINE_TO_TEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentTenToElevenDays => {
+                    "ADJUSTMENT_TEN_TO_ELEVEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentElevenToTwelveDays => {
+                    "ADJUSTMENT_ELEVEN_TO_TWELVE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentTwelveToThirteenDays => {
+                    "ADJUSTMENT_TWELVE_TO_THIRTEEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentThirteenToFourteenDays => {
+                    "ADJUSTMENT_THIRTEEN_TO_FOURTEEN_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentFourteenToTwentyOneDays => {
+                    "ADJUSTMENT_FOURTEEN_TO_TWENTY_ONE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentTwentyOneToThirtyDays => {
+                    "ADJUSTMENT_TWENTY_ONE_TO_THIRTY_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentThirtyToFortyFiveDays => {
+                    "ADJUSTMENT_THIRTY_TO_FORTY_FIVE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentFortyFiveToSixtyDays => {
+                    "ADJUSTMENT_FORTY_FIVE_TO_SIXTY_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentSixtyToNinetyDays => {
+                    "ADJUSTMENT_SIXTY_TO_NINETY_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentNinetyToOneHundredAndFortyFiveDays => {
+                    "ADJUSTMENT_NINETY_TO_ONE_HUNDRED_AND_FORTY_FIVE_DAYS"
+                }
+                ConversionOrAdjustmentLagBucket::ConversionUnknown => {
+                    "CONVERSION_UNKNOWN"
+                }
+                ConversionOrAdjustmentLagBucket::AdjustmentUnknown => {
+                    "ADJUSTMENT_UNKNOWN"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CONVERSION_LESS_THAN_ONE_DAY" => Some(Self::ConversionLessThanOneDay),
+                "CONVERSION_ONE_TO_TWO_DAYS" => Some(Self::ConversionOneToTwoDays),
+                "CONVERSION_TWO_TO_THREE_DAYS" => Some(Self::ConversionTwoToThreeDays),
+                "CONVERSION_THREE_TO_FOUR_DAYS" => Some(Self::ConversionThreeToFourDays),
+                "CONVERSION_FOUR_TO_FIVE_DAYS" => Some(Self::ConversionFourToFiveDays),
+                "CONVERSION_FIVE_TO_SIX_DAYS" => Some(Self::ConversionFiveToSixDays),
+                "CONVERSION_SIX_TO_SEVEN_DAYS" => Some(Self::ConversionSixToSevenDays),
+                "CONVERSION_SEVEN_TO_EIGHT_DAYS" => {
+                    Some(Self::ConversionSevenToEightDays)
+                }
+                "CONVERSION_EIGHT_TO_NINE_DAYS" => Some(Self::ConversionEightToNineDays),
+                "CONVERSION_NINE_TO_TEN_DAYS" => Some(Self::ConversionNineToTenDays),
+                "CONVERSION_TEN_TO_ELEVEN_DAYS" => Some(Self::ConversionTenToElevenDays),
+                "CONVERSION_ELEVEN_TO_TWELVE_DAYS" => {
+                    Some(Self::ConversionElevenToTwelveDays)
+                }
+                "CONVERSION_TWELVE_TO_THIRTEEN_DAYS" => {
+                    Some(Self::ConversionTwelveToThirteenDays)
+                }
+                "CONVERSION_THIRTEEN_TO_FOURTEEN_DAYS" => {
+                    Some(Self::ConversionThirteenToFourteenDays)
+                }
+                "CONVERSION_FOURTEEN_TO_TWENTY_ONE_DAYS" => {
+                    Some(Self::ConversionFourteenToTwentyOneDays)
+                }
+                "CONVERSION_TWENTY_ONE_TO_THIRTY_DAYS" => {
+                    Some(Self::ConversionTwentyOneToThirtyDays)
+                }
+                "CONVERSION_THIRTY_TO_FORTY_FIVE_DAYS" => {
+                    Some(Self::ConversionThirtyToFortyFiveDays)
+                }
+                "CONVERSION_FORTY_FIVE_TO_SIXTY_DAYS" => {
+                    Some(Self::ConversionFortyFiveToSixtyDays)
+                }
+                "CONVERSION_SIXTY_TO_NINETY_DAYS" => {
+                    Some(Self::ConversionSixtyToNinetyDays)
+                }
+                "ADJUSTMENT_LESS_THAN_ONE_DAY" => Some(Self::AdjustmentLessThanOneDay),
+                "ADJUSTMENT_ONE_TO_TWO_DAYS" => Some(Self::AdjustmentOneToTwoDays),
+                "ADJUSTMENT_TWO_TO_THREE_DAYS" => Some(Self::AdjustmentTwoToThreeDays),
+                "ADJUSTMENT_THREE_TO_FOUR_DAYS" => Some(Self::AdjustmentThreeToFourDays),
+                "ADJUSTMENT_FOUR_TO_FIVE_DAYS" => Some(Self::AdjustmentFourToFiveDays),
+                "ADJUSTMENT_FIVE_TO_SIX_DAYS" => Some(Self::AdjustmentFiveToSixDays),
+                "ADJUSTMENT_SIX_TO_SEVEN_DAYS" => Some(Self::AdjustmentSixToSevenDays),
+                "ADJUSTMENT_SEVEN_TO_EIGHT_DAYS" => {
+                    Some(Self::AdjustmentSevenToEightDays)
+                }
+                "ADJUSTMENT_EIGHT_TO_NINE_DAYS" => Some(Self::AdjustmentEightToNineDays),
+                "ADJUSTMENT_NINE_TO_TEN_DAYS" => Some(Self::AdjustmentNineToTenDays),
+                "ADJUSTMENT_TEN_TO_ELEVEN_DAYS" => Some(Self::AdjustmentTenToElevenDays),
+                "ADJUSTMENT_ELEVEN_TO_TWELVE_DAYS" => {
+                    Some(Self::AdjustmentElevenToTwelveDays)
+                }
+                "ADJUSTMENT_TWELVE_TO_THIRTEEN_DAYS" => {
+                    Some(Self::AdjustmentTwelveToThirteenDays)
+                }
+                "ADJUSTMENT_THIRTEEN_TO_FOURTEEN_DAYS" => {
+                    Some(Self::AdjustmentThirteenToFourteenDays)
+                }
+                "ADJUSTMENT_FOURTEEN_TO_TWENTY_ONE_DAYS" => {
+                    Some(Self::AdjustmentFourteenToTwentyOneDays)
+                }
+                "ADJUSTMENT_TWENTY_ONE_TO_THIRTY_DAYS" => {
+                    Some(Self::AdjustmentTwentyOneToThirtyDays)
+                }
+                "ADJUSTMENT_THIRTY_TO_FORTY_FIVE_DAYS" => {
+                    Some(Self::AdjustmentThirtyToFortyFiveDays)
+                }
+                "ADJUSTMENT_FORTY_FIVE_TO_SIXTY_DAYS" => {
+                    Some(Self::AdjustmentFortyFiveToSixtyDays)
+                }
+                "ADJUSTMENT_SIXTY_TO_NINETY_DAYS" => {
+                    Some(Self::AdjustmentSixtyToNinetyDays)
+                }
+                "ADJUSTMENT_NINETY_TO_ONE_HUNDRED_AND_FORTY_FIVE_DAYS" => {
+                    Some(Self::AdjustmentNinetyToOneHundredAndFortyFiveDays)
+                }
+                "CONVERSION_UNKNOWN" => Some(Self::ConversionUnknown),
+                "ADJUSTMENT_UNKNOWN" => Some(Self::AdjustmentUnknown),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing conversion value rule primary dimension.
-
 /// Container for enum describing value rule primary dimension for stats.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRulePrimaryDimensionEnum {
-}
+pub struct ConversionValueRulePrimaryDimensionEnum {}
 /// Nested message and enum types in `ConversionValueRulePrimaryDimensionEnum`.
 pub mod conversion_value_rule_primary_dimension_enum {
     /// Identifies the primary dimension for conversion value rule stats.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionValueRulePrimaryDimension {
         /// Not specified.
@@ -4261,24 +6353,51 @@ pub mod conversion_value_rule_primary_dimension_enum {
                 ConversionValueRulePrimaryDimension::Unknown => "UNKNOWN",
                 ConversionValueRulePrimaryDimension::NoRuleApplied => "NO_RULE_APPLIED",
                 ConversionValueRulePrimaryDimension::Original => "ORIGINAL",
-                ConversionValueRulePrimaryDimension::NewVsReturningUser => "NEW_VS_RETURNING_USER",
+                ConversionValueRulePrimaryDimension::NewVsReturningUser => {
+                    "NEW_VS_RETURNING_USER"
+                }
                 ConversionValueRulePrimaryDimension::GeoLocation => "GEO_LOCATION",
                 ConversionValueRulePrimaryDimension::Device => "DEVICE",
                 ConversionValueRulePrimaryDimension::Audience => "AUDIENCE",
                 ConversionValueRulePrimaryDimension::Multiple => "MULTIPLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NO_RULE_APPLIED" => Some(Self::NoRuleApplied),
+                "ORIGINAL" => Some(Self::Original),
+                "NEW_VS_RETURNING_USER" => Some(Self::NewVsReturningUser),
+                "GEO_LOCATION" => Some(Self::GeoLocation),
+                "DEVICE" => Some(Self::Device),
+                "AUDIENCE" => Some(Self::Audience),
+                "MULTIPLE" => Some(Self::Multiple),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the external conversion source that is
 /// associated with a ConversionAction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExternalConversionSourceEnum {
-}
+pub struct ExternalConversionSourceEnum {}
 /// Nested message and enum types in `ExternalConversionSourceEnum`.
 pub mod external_conversion_source_enum {
     /// The external conversion source that is associated with a ConversionAction.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ExternalConversionSource {
         /// Not specified.
@@ -4393,31 +6512,84 @@ pub mod external_conversion_source_enum {
                 ExternalConversionSource::ClickToCall => "CLICK_TO_CALL",
                 ExternalConversionSource::Salesforce => "SALESFORCE",
                 ExternalConversionSource::StoreSalesCrm => "STORE_SALES_CRM",
-                ExternalConversionSource::StoreSalesPaymentNetwork => "STORE_SALES_PAYMENT_NETWORK",
+                ExternalConversionSource::StoreSalesPaymentNetwork => {
+                    "STORE_SALES_PAYMENT_NETWORK"
+                }
                 ExternalConversionSource::GooglePlay => "GOOGLE_PLAY",
-                ExternalConversionSource::ThirdPartyAppAnalytics => "THIRD_PARTY_APP_ANALYTICS",
+                ExternalConversionSource::ThirdPartyAppAnalytics => {
+                    "THIRD_PARTY_APP_ANALYTICS"
+                }
                 ExternalConversionSource::GoogleAttribution => "GOOGLE_ATTRIBUTION",
-                ExternalConversionSource::StoreSalesDirectUpload => "STORE_SALES_DIRECT_UPLOAD",
+                ExternalConversionSource::StoreSalesDirectUpload => {
+                    "STORE_SALES_DIRECT_UPLOAD"
+                }
                 ExternalConversionSource::StoreSales => "STORE_SALES",
                 ExternalConversionSource::SearchAds360 => "SEARCH_ADS_360",
                 ExternalConversionSource::GoogleHosted => "GOOGLE_HOSTED",
                 ExternalConversionSource::Floodlight => "FLOODLIGHT",
-                ExternalConversionSource::AnalyticsSearchAds360 => "ANALYTICS_SEARCH_ADS_360",
-                ExternalConversionSource::FirebaseSearchAds360 => "FIREBASE_SEARCH_ADS_360",
+                ExternalConversionSource::AnalyticsSearchAds360 => {
+                    "ANALYTICS_SEARCH_ADS_360"
+                }
+                ExternalConversionSource::FirebaseSearchAds360 => {
+                    "FIREBASE_SEARCH_ADS_360"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBPAGE" => Some(Self::Webpage),
+                "ANALYTICS" => Some(Self::Analytics),
+                "UPLOAD" => Some(Self::Upload),
+                "AD_CALL_METRICS" => Some(Self::AdCallMetrics),
+                "WEBSITE_CALL_METRICS" => Some(Self::WebsiteCallMetrics),
+                "STORE_VISITS" => Some(Self::StoreVisits),
+                "ANDROID_IN_APP" => Some(Self::AndroidInApp),
+                "IOS_IN_APP" => Some(Self::IosInApp),
+                "IOS_FIRST_OPEN" => Some(Self::IosFirstOpen),
+                "APP_UNSPECIFIED" => Some(Self::AppUnspecified),
+                "ANDROID_FIRST_OPEN" => Some(Self::AndroidFirstOpen),
+                "UPLOAD_CALLS" => Some(Self::UploadCalls),
+                "FIREBASE" => Some(Self::Firebase),
+                "CLICK_TO_CALL" => Some(Self::ClickToCall),
+                "SALESFORCE" => Some(Self::Salesforce),
+                "STORE_SALES_CRM" => Some(Self::StoreSalesCrm),
+                "STORE_SALES_PAYMENT_NETWORK" => Some(Self::StoreSalesPaymentNetwork),
+                "GOOGLE_PLAY" => Some(Self::GooglePlay),
+                "THIRD_PARTY_APP_ANALYTICS" => Some(Self::ThirdPartyAppAnalytics),
+                "GOOGLE_ATTRIBUTION" => Some(Self::GoogleAttribution),
+                "STORE_SALES_DIRECT_UPLOAD" => Some(Self::StoreSalesDirectUpload),
+                "STORE_SALES" => Some(Self::StoreSales),
+                "SEARCH_ADS_360" => Some(Self::SearchAds360),
+                "GOOGLE_HOSTED" => Some(Self::GoogleHosted),
+                "FLOODLIGHT" => Some(Self::Floodlight),
+                "ANALYTICS_SEARCH_ADS_360" => Some(Self::AnalyticsSearchAds360),
+                "FIREBASE_SEARCH_ADS_360" => Some(Self::FirebaseSearchAds360),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing hotel price buckets.
-
 /// Container for enum describing hotel price bucket for a hotel itinerary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelPriceBucketEnum {
-}
+pub struct HotelPriceBucketEnum {}
 /// Nested message and enum types in `HotelPriceBucketEnum`.
 pub mod hotel_price_bucket_enum {
     /// Enum describing possible hotel price buckets.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HotelPriceBucket {
         /// Not specified.
@@ -4451,18 +6623,38 @@ pub mod hotel_price_bucket_enum {
                 HotelPriceBucket::OnlyPartnerShown => "ONLY_PARTNER_SHOWN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOWEST_UNIQUE" => Some(Self::LowestUnique),
+                "LOWEST_TIED" => Some(Self::LowestTied),
+                "NOT_LOWEST" => Some(Self::NotLowest),
+                "ONLY_PARTNER_SHOWN" => Some(Self::OnlyPartnerShown),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing hotel rate types.
-
 /// Container for enum describing possible hotel rate types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelRateTypeEnum {
-}
+pub struct HotelRateTypeEnum {}
 /// Nested message and enum types in `HotelRateTypeEnum`.
 pub mod hotel_rate_type_enum {
     /// Enum describing possible hotel rate types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HotelRateType {
         /// Not specified.
@@ -4499,18 +6691,38 @@ pub mod hotel_rate_type_enum {
                 HotelRateType::PrivateRate => "PRIVATE_RATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "PUBLIC_RATE" => Some(Self::PublicRate),
+                "QUALIFIED_RATE" => Some(Self::QualifiedRate),
+                "PRIVATE_RATE" => Some(Self::PrivateRate),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed placeholder types.
-
 /// Container for enum describing possible placeholder types for a feed mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PlaceholderTypeEnum {
-}
+pub struct PlaceholderTypeEnum {}
 /// Nested message and enum types in `PlaceholderTypeEnum`.
 pub mod placeholder_type_enum {
     /// Possible placeholder types for a feed mapping.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PlaceholderType {
         /// Not specified.
@@ -4609,18 +6821,54 @@ pub mod placeholder_type_enum {
                 PlaceholderType::Image => "IMAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SITELINK" => Some(Self::Sitelink),
+                "CALL" => Some(Self::Call),
+                "APP" => Some(Self::App),
+                "LOCATION" => Some(Self::Location),
+                "AFFILIATE_LOCATION" => Some(Self::AffiliateLocation),
+                "CALLOUT" => Some(Self::Callout),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "MESSAGE" => Some(Self::Message),
+                "PRICE" => Some(Self::Price),
+                "PROMOTION" => Some(Self::Promotion),
+                "AD_CUSTOMIZER" => Some(Self::AdCustomizer),
+                "DYNAMIC_EDUCATION" => Some(Self::DynamicEducation),
+                "DYNAMIC_FLIGHT" => Some(Self::DynamicFlight),
+                "DYNAMIC_CUSTOM" => Some(Self::DynamicCustom),
+                "DYNAMIC_HOTEL" => Some(Self::DynamicHotel),
+                "DYNAMIC_REAL_ESTATE" => Some(Self::DynamicRealEstate),
+                "DYNAMIC_TRAVEL" => Some(Self::DynamicTravel),
+                "DYNAMIC_LOCAL" => Some(Self::DynamicLocal),
+                "DYNAMIC_JOB" => Some(Self::DynamicJob),
+                "IMAGE" => Some(Self::Image),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Recommendation types.
-
 /// Container for enum describing types of recommendations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RecommendationTypeEnum {
-}
+pub struct RecommendationTypeEnum {}
 /// Nested message and enum types in `RecommendationTypeEnum`.
 pub mod recommendation_type_enum {
     /// Types of recommendations.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RecommendationType {
         /// Not specified.
@@ -4691,7 +6939,9 @@ pub mod recommendation_type_enum {
                 RecommendationType::Keyword => "KEYWORD",
                 RecommendationType::TextAd => "TEXT_AD",
                 RecommendationType::TargetCpaOptIn => "TARGET_CPA_OPT_IN",
-                RecommendationType::MaximizeConversionsOptIn => "MAXIMIZE_CONVERSIONS_OPT_IN",
+                RecommendationType::MaximizeConversionsOptIn => {
+                    "MAXIMIZE_CONVERSIONS_OPT_IN"
+                }
                 RecommendationType::EnhancedCpcOptIn => "ENHANCED_CPC_OPT_IN",
                 RecommendationType::SearchPartnersOptIn => "SEARCH_PARTNERS_OPT_IN",
                 RecommendationType::MaximizeClicksOptIn => "MAXIMIZE_CLICKS_OPT_IN",
@@ -4701,24 +6951,62 @@ pub mod recommendation_type_enum {
                 RecommendationType::CallExtension => "CALL_EXTENSION",
                 RecommendationType::KeywordMatchType => "KEYWORD_MATCH_TYPE",
                 RecommendationType::MoveUnusedBudget => "MOVE_UNUSED_BUDGET",
-                RecommendationType::ForecastingCampaignBudget => "FORECASTING_CAMPAIGN_BUDGET",
+                RecommendationType::ForecastingCampaignBudget => {
+                    "FORECASTING_CAMPAIGN_BUDGET"
+                }
                 RecommendationType::TargetRoasOptIn => "TARGET_ROAS_OPT_IN",
                 RecommendationType::ResponsiveSearchAd => "RESPONSIVE_SEARCH_AD",
-                RecommendationType::MarginalRoiCampaignBudget => "MARGINAL_ROI_CAMPAIGN_BUDGET",
+                RecommendationType::MarginalRoiCampaignBudget => {
+                    "MARGINAL_ROI_CAMPAIGN_BUDGET"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN_BUDGET" => Some(Self::CampaignBudget),
+                "KEYWORD" => Some(Self::Keyword),
+                "TEXT_AD" => Some(Self::TextAd),
+                "TARGET_CPA_OPT_IN" => Some(Self::TargetCpaOptIn),
+                "MAXIMIZE_CONVERSIONS_OPT_IN" => Some(Self::MaximizeConversionsOptIn),
+                "ENHANCED_CPC_OPT_IN" => Some(Self::EnhancedCpcOptIn),
+                "SEARCH_PARTNERS_OPT_IN" => Some(Self::SearchPartnersOptIn),
+                "MAXIMIZE_CLICKS_OPT_IN" => Some(Self::MaximizeClicksOptIn),
+                "OPTIMIZE_AD_ROTATION" => Some(Self::OptimizeAdRotation),
+                "CALLOUT_EXTENSION" => Some(Self::CalloutExtension),
+                "SITELINK_EXTENSION" => Some(Self::SitelinkExtension),
+                "CALL_EXTENSION" => Some(Self::CallExtension),
+                "KEYWORD_MATCH_TYPE" => Some(Self::KeywordMatchType),
+                "MOVE_UNUSED_BUDGET" => Some(Self::MoveUnusedBudget),
+                "FORECASTING_CAMPAIGN_BUDGET" => Some(Self::ForecastingCampaignBudget),
+                "TARGET_ROAS_OPT_IN" => Some(Self::TargetRoasOptIn),
+                "RESPONSIVE_SEARCH_AD" => Some(Self::ResponsiveSearchAd),
+                "MARGINAL_ROI_CAMPAIGN_BUDGET" => Some(Self::MarginalRoiCampaignBudget),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing search engine results page types.
-
 /// The type of the search engine results page.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SearchEngineResultsPageTypeEnum {
-}
+pub struct SearchEngineResultsPageTypeEnum {}
 /// Nested message and enum types in `SearchEngineResultsPageTypeEnum`.
 pub mod search_engine_results_page_type_enum {
     /// The type of the search engine results page.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SearchEngineResultsPageType {
         /// Not specified.
@@ -4747,18 +7035,37 @@ pub mod search_engine_results_page_type_enum {
                 SearchEngineResultsPageType::AdsAndOrganic => "ADS_AND_ORGANIC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADS_ONLY" => Some(Self::AdsOnly),
+                "ORGANIC_ONLY" => Some(Self::OrganicOnly),
+                "ADS_AND_ORGANIC" => Some(Self::AdsAndOrganic),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing search term match types.
-
 /// Container for enum describing match types for a keyword triggering an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SearchTermMatchTypeEnum {
-}
+pub struct SearchTermMatchTypeEnum {}
 /// Nested message and enum types in `SearchTermMatchTypeEnum`.
 pub mod search_term_match_type_enum {
     /// Possible match types for a keyword triggering an ad, including variants.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SearchTermMatchType {
         /// Not specified.
@@ -4792,18 +7099,39 @@ pub mod search_term_match_type_enum {
                 SearchTermMatchType::NearPhrase => "NEAR_PHRASE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BROAD" => Some(Self::Broad),
+                "EXACT" => Some(Self::Exact),
+                "PHRASE" => Some(Self::Phrase),
+                "NEAR_EXACT" => Some(Self::NearExact),
+                "NEAR_PHRASE" => Some(Self::NearPhrase),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing slots.
-
 /// Container for enumeration of possible positions of the Ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SlotEnum {
-}
+pub struct SlotEnum {}
 /// Nested message and enum types in `SlotEnum`.
 pub mod slot_enum {
     /// Enumerates possible positions of the Ad.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Slot {
         /// Not specified.
@@ -4843,18 +7171,43 @@ pub mod slot_enum {
                 Slot::Mixed => "MIXED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH_SIDE" => Some(Self::SearchSide),
+                "SEARCH_TOP" => Some(Self::SearchTop),
+                "SEARCH_OTHER" => Some(Self::SearchOther),
+                "CONTENT" => Some(Self::Content),
+                "SEARCH_PARTNER_TOP" => Some(Self::SearchPartnerTop),
+                "SEARCH_PARTNER_OTHER" => Some(Self::SearchPartnerOther),
+                "MIXED" => Some(Self::Mixed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the format of the web page where the tracking
 /// tag and snippet will be installed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TrackingCodePageFormatEnum {
-}
+pub struct TrackingCodePageFormatEnum {}
 /// Nested message and enum types in `TrackingCodePageFormatEnum`.
 pub mod tracking_code_page_format_enum {
     /// The format of the web page where the tracking tag and snippet will be
     /// installed.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TrackingCodePageFormat {
         /// Not specified.
@@ -4879,17 +7232,37 @@ pub mod tracking_code_page_format_enum {
                 TrackingCodePageFormat::Amp => "AMP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HTML" => Some(Self::Html),
+                "AMP" => Some(Self::Amp),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing the type of the generated tag snippets for
 /// tracking conversions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TrackingCodeTypeEnum {
-}
+pub struct TrackingCodeTypeEnum {}
 /// Nested message and enum types in `TrackingCodeTypeEnum`.
 pub mod tracking_code_type_enum {
     /// The type of the generated tag snippets for tracking conversions.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TrackingCodeType {
         /// Not specified.
@@ -4924,18 +7297,38 @@ pub mod tracking_code_type_enum {
                 TrackingCodeType::WebsiteCall => "WEBSITE_CALL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBPAGE" => Some(Self::Webpage),
+                "WEBPAGE_ONCLICK" => Some(Self::WebpageOnclick),
+                "CLICK_TO_CALL" => Some(Self::ClickToCall),
+                "WEBSITE_CALL" => Some(Self::WebsiteCall),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing criteria types.
-
 /// The dimensions that can be targeted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetingDimensionEnum {
-}
+pub struct TargetingDimensionEnum {}
 /// Nested message and enum types in `TargetingDimensionEnum`.
 pub mod targeting_dimension_enum {
     /// Enum describing possible targeting dimensions.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TargetingDimension {
         /// Not specified.
@@ -4984,16 +7377,42 @@ pub mod targeting_dimension_enum {
                 TargetingDimension::IncomeRange => "INCOME_RANGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "AUDIENCE" => Some(Self::Audience),
+                "TOPIC" => Some(Self::Topic),
+                "GENDER" => Some(Self::Gender),
+                "AGE_RANGE" => Some(Self::AgeRange),
+                "PLACEMENT" => Some(Self::Placement),
+                "PARENTAL_STATUS" => Some(Self::ParentalStatus),
+                "INCOME_RANGE" => Some(Self::IncomeRange),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates what type of data are the user list's members matched from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerMatchUploadKeyTypeEnum {
-}
+pub struct CustomerMatchUploadKeyTypeEnum {}
 /// Nested message and enum types in `CustomerMatchUploadKeyTypeEnum`.
 pub mod customer_match_upload_key_type_enum {
     /// Enum describing possible customer match upload key types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomerMatchUploadKeyType {
         /// Not specified.
@@ -5020,19 +7439,42 @@ pub mod customer_match_upload_key_type_enum {
                 CustomerMatchUploadKeyType::Unknown => "UNKNOWN",
                 CustomerMatchUploadKeyType::ContactInfo => "CONTACT_INFO",
                 CustomerMatchUploadKeyType::CrmId => "CRM_ID",
-                CustomerMatchUploadKeyType::MobileAdvertisingId => "MOBILE_ADVERTISING_ID",
+                CustomerMatchUploadKeyType::MobileAdvertisingId => {
+                    "MOBILE_ADVERTISING_ID"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CONTACT_INFO" => Some(Self::ContactInfo),
+                "CRM_ID" => Some(Self::CrmId),
+                "MOBILE_ADVERTISING_ID" => Some(Self::MobileAdvertisingId),
+                _ => None,
             }
         }
     }
 }
 /// Logical operator connecting two rules.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListCombinedRuleOperatorEnum {
-}
+pub struct UserListCombinedRuleOperatorEnum {}
 /// Nested message and enum types in `UserListCombinedRuleOperatorEnum`.
 pub mod user_list_combined_rule_operator_enum {
     /// Enum describing possible user list combined rule operators.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListCombinedRuleOperator {
         /// Not specified.
@@ -5057,16 +7499,36 @@ pub mod user_list_combined_rule_operator_enum {
                 UserListCombinedRuleOperator::AndNot => "AND_NOT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AND" => Some(Self::And),
+                "AND_NOT" => Some(Self::AndNot),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates source of Crm upload data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListCrmDataSourceTypeEnum {
-}
+pub struct UserListCrmDataSourceTypeEnum {}
 /// Nested message and enum types in `UserListCrmDataSourceTypeEnum`.
 pub mod user_list_crm_data_source_type_enum {
     /// Enum describing possible user list crm data source type.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListCrmDataSourceType {
         /// Not specified.
@@ -5090,20 +7552,45 @@ pub mod user_list_crm_data_source_type_enum {
                 UserListCrmDataSourceType::Unspecified => "UNSPECIFIED",
                 UserListCrmDataSourceType::Unknown => "UNKNOWN",
                 UserListCrmDataSourceType::FirstParty => "FIRST_PARTY",
-                UserListCrmDataSourceType::ThirdPartyCreditBureau => "THIRD_PARTY_CREDIT_BUREAU",
-                UserListCrmDataSourceType::ThirdPartyVoterFile => "THIRD_PARTY_VOTER_FILE",
+                UserListCrmDataSourceType::ThirdPartyCreditBureau => {
+                    "THIRD_PARTY_CREDIT_BUREAU"
+                }
+                UserListCrmDataSourceType::ThirdPartyVoterFile => {
+                    "THIRD_PARTY_VOTER_FILE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "FIRST_PARTY" => Some(Self::FirstParty),
+                "THIRD_PARTY_CREDIT_BUREAU" => Some(Self::ThirdPartyCreditBureau),
+                "THIRD_PARTY_VOTER_FILE" => Some(Self::ThirdPartyVoterFile),
+                _ => None,
             }
         }
     }
 }
 /// Supported rule operator for date type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListDateRuleItemOperatorEnum {
-}
+pub struct UserListDateRuleItemOperatorEnum {}
 /// Nested message and enum types in `UserListDateRuleItemOperatorEnum`.
 pub mod user_list_date_rule_item_operator_enum {
     /// Enum describing possible user list date rule item operators.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListDateRuleItemOperator {
         /// Not specified.
@@ -5134,16 +7621,38 @@ pub mod user_list_date_rule_item_operator_enum {
                 UserListDateRuleItemOperator::After => "AFTER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EQUALS" => Some(Self::Equals),
+                "NOT_EQUALS" => Some(Self::NotEquals),
+                "BEFORE" => Some(Self::Before),
+                "AFTER" => Some(Self::After),
+                _ => None,
+            }
+        }
     }
 }
 /// The logical operator of the rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListLogicalRuleOperatorEnum {
-}
+pub struct UserListLogicalRuleOperatorEnum {}
 /// Nested message and enum types in `UserListLogicalRuleOperatorEnum`.
 pub mod user_list_logical_rule_operator_enum {
     /// Enum describing possible user list logical rule operators.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListLogicalRuleOperator {
         /// Not specified.
@@ -5171,16 +7680,37 @@ pub mod user_list_logical_rule_operator_enum {
                 UserListLogicalRuleOperator::None => "NONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL" => Some(Self::All),
+                "ANY" => Some(Self::Any),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
     }
 }
 /// Supported rule operator for number type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListNumberRuleItemOperatorEnum {
-}
+pub struct UserListNumberRuleItemOperatorEnum {}
 /// Nested message and enum types in `UserListNumberRuleItemOperatorEnum`.
 pub mod user_list_number_rule_item_operator_enum {
     /// Enum describing possible user list number rule item operators.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListNumberRuleItemOperator {
         /// Not specified.
@@ -5210,23 +7740,49 @@ pub mod user_list_number_rule_item_operator_enum {
                 UserListNumberRuleItemOperator::Unspecified => "UNSPECIFIED",
                 UserListNumberRuleItemOperator::Unknown => "UNKNOWN",
                 UserListNumberRuleItemOperator::GreaterThan => "GREATER_THAN",
-                UserListNumberRuleItemOperator::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+                UserListNumberRuleItemOperator::GreaterThanOrEqual => {
+                    "GREATER_THAN_OR_EQUAL"
+                }
                 UserListNumberRuleItemOperator::Equals => "EQUALS",
                 UserListNumberRuleItemOperator::NotEquals => "NOT_EQUALS",
                 UserListNumberRuleItemOperator::LessThan => "LESS_THAN",
                 UserListNumberRuleItemOperator::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GREATER_THAN" => Some(Self::GreaterThan),
+                "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                "EQUALS" => Some(Self::Equals),
+                "NOT_EQUALS" => Some(Self::NotEquals),
+                "LESS_THAN" => Some(Self::LessThan),
+                "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates status of prepopulation based on the rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListPrepopulationStatusEnum {
-}
+pub struct UserListPrepopulationStatusEnum {}
 /// Nested message and enum types in `UserListPrepopulationStatusEnum`.
 pub mod user_list_prepopulation_status_enum {
     /// Enum describing possible user list prepopulation status.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListPrepopulationStatus {
         /// Not specified.
@@ -5254,16 +7810,37 @@ pub mod user_list_prepopulation_status_enum {
                 UserListPrepopulationStatus::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REQUESTED" => Some(Self::Requested),
+                "FINISHED" => Some(Self::Finished),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
 /// Rule based user list rule type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListRuleTypeEnum {
-}
+pub struct UserListRuleTypeEnum {}
 /// Nested message and enum types in `UserListRuleTypeEnum`.
 pub mod user_list_rule_type_enum {
     /// Enum describing possible user list rule types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListRuleType {
         /// Not specified.
@@ -5288,16 +7865,36 @@ pub mod user_list_rule_type_enum {
                 UserListRuleType::OrOfAnds => "OR_OF_ANDS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AND_OF_ORS" => Some(Self::AndOfOrs),
+                "OR_OF_ANDS" => Some(Self::OrOfAnds),
+                _ => None,
+            }
+        }
     }
 }
 /// Supported rule operator for string type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListStringRuleItemOperatorEnum {
-}
+pub struct UserListStringRuleItemOperatorEnum {}
 /// Nested message and enum types in `UserListStringRuleItemOperatorEnum`.
 pub mod user_list_string_rule_item_operator_enum {
     /// Enum describing possible user list string rule item operators.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListStringRuleItemOperator {
         /// Not specified.
@@ -5340,18 +7937,42 @@ pub mod user_list_string_rule_item_operator_enum {
                 UserListStringRuleItemOperator::NotEndsWith => "NOT_ENDS_WITH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CONTAINS" => Some(Self::Contains),
+                "EQUALS" => Some(Self::Equals),
+                "STARTS_WITH" => Some(Self::StartsWith),
+                "ENDS_WITH" => Some(Self::EndsWith),
+                "NOT_EQUALS" => Some(Self::NotEquals),
+                "NOT_CONTAINS" => Some(Self::NotContains),
+                "NOT_STARTS_WITH" => Some(Self::NotStartsWith),
+                "NOT_ENDS_WITH" => Some(Self::NotEndsWith),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing AccessInvitationStatus enum.
-
 /// Container for enum for identifying the status of access invitation
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccessInvitationStatusEnum {
-}
+pub struct AccessInvitationStatusEnum {}
 /// Nested message and enum types in `AccessInvitationStatusEnum`.
 pub mod access_invitation_status_enum {
     /// Possible access invitation status of a user
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccessInvitationStatus {
         /// Not specified.
@@ -5381,16 +8002,37 @@ pub mod access_invitation_status_enum {
                 AccessInvitationStatus::Expired => "EXPIRED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "DECLINED" => Some(Self::Declined),
+                "EXPIRED" => Some(Self::Expired),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates the way the resource such as user list is related to a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccessReasonEnum {
-}
+pub struct AccessReasonEnum {}
 /// Nested message and enum types in `AccessReasonEnum`.
 pub mod access_reason_enum {
     /// Enum describing possible access reasons.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccessReason {
         /// Not specified.
@@ -5424,16 +8066,39 @@ pub mod access_reason_enum {
                 AccessReason::Affiliated => "AFFILIATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OWNED" => Some(Self::Owned),
+                "SHARED" => Some(Self::Shared),
+                "LICENSED" => Some(Self::Licensed),
+                "SUBSCRIBED" => Some(Self::Subscribed),
+                "AFFILIATED" => Some(Self::Affiliated),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible access role for user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccessRoleEnum {
-}
+pub struct AccessRoleEnum {}
 /// Nested message and enum types in `AccessRoleEnum`.
 pub mod access_role_enum {
     /// Possible access role of a user.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccessRole {
         /// Not specified.
@@ -5465,18 +8130,38 @@ pub mod access_role_enum {
                 AccessRole::EmailOnly => "EMAIL_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADMIN" => Some(Self::Admin),
+                "STANDARD" => Some(Self::Standard),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "EMAIL_ONLY" => Some(Self::EmailOnly),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing AccountBudgetProposal statuses.
-
 /// Message describing AccountBudgetProposal statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountBudgetProposalStatusEnum {
-}
+pub struct AccountBudgetProposalStatusEnum {}
 /// Nested message and enum types in `AccountBudgetProposalStatusEnum`.
 pub mod account_budget_proposal_status_enum {
     /// The possible statuses of an AccountBudgetProposal.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccountBudgetProposalStatus {
         /// Not specified.
@@ -5514,18 +8199,39 @@ pub mod account_budget_proposal_status_enum {
                 AccountBudgetProposalStatus::Rejected => "REJECTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "APPROVED_HELD" => Some(Self::ApprovedHeld),
+                "APPROVED" => Some(Self::Approved),
+                "CANCELLED" => Some(Self::Cancelled),
+                "REJECTED" => Some(Self::Rejected),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing AccountBudgetProposal types.
-
 /// Message describing AccountBudgetProposal types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountBudgetProposalTypeEnum {
-}
+pub struct AccountBudgetProposalTypeEnum {}
 /// Nested message and enum types in `AccountBudgetProposalTypeEnum`.
 pub mod account_budget_proposal_type_enum {
     /// The possible types of an AccountBudgetProposal.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccountBudgetProposalType {
         /// Not specified.
@@ -5556,18 +8262,38 @@ pub mod account_budget_proposal_type_enum {
                 AccountBudgetProposalType::Remove => "REMOVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "END" => Some(Self::End),
+                "REMOVE" => Some(Self::Remove),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing AccountBudget statuses.
-
 /// Message describing AccountBudget statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountBudgetStatusEnum {
-}
+pub struct AccountBudgetStatusEnum {}
 /// Nested message and enum types in `AccountBudgetStatusEnum`.
 pub mod account_budget_status_enum {
     /// The possible statuses of an AccountBudget.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccountBudgetStatus {
         /// Not specified.
@@ -5595,17 +8321,38 @@ pub mod account_budget_status_enum {
                 AccountBudgetStatus::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "APPROVED" => Some(Self::Approved),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible statuses of an account link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountLinkStatusEnum {
-}
+pub struct AccountLinkStatusEnum {}
 /// Nested message and enum types in `AccountLinkStatusEnum`.
 pub mod account_link_status_enum {
     /// Describes the possible statuses for a link between a Google Ads customer
     /// and another account.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccountLinkStatus {
         /// Not specified.
@@ -5644,18 +8391,40 @@ pub mod account_link_status_enum {
                 AccountLinkStatus::Revoked => "REVOKED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "REQUESTED" => Some(Self::Requested),
+                "PENDING_APPROVAL" => Some(Self::PendingApproval),
+                "REJECTED" => Some(Self::Rejected),
+                "REVOKED" => Some(Self::Revoked),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Ad Customizer placeholder fields.
-
 /// Values for Ad Customizer placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdCustomizerPlaceholderFieldEnum {
-}
+pub struct AdCustomizerPlaceholderFieldEnum {}
 /// Nested message and enum types in `AdCustomizerPlaceholderFieldEnum`.
 pub mod ad_customizer_placeholder_field_enum {
     /// Possible values for Ad Customizers placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdCustomizerPlaceholderField {
         /// Not specified.
@@ -5686,19 +8455,39 @@ pub mod ad_customizer_placeholder_field_enum {
                 AdCustomizerPlaceholderField::String => "STRING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INTEGER" => Some(Self::Integer),
+                "PRICE" => Some(Self::Price),
+                "DATE" => Some(Self::Date),
+                "STRING" => Some(Self::String),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad group ad rotation mode.
-
 /// Container for enum describing possible ad rotation modes of ads within an
 /// ad group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupAdRotationModeEnum {
-}
+pub struct AdGroupAdRotationModeEnum {}
 /// Nested message and enum types in `AdGroupAdRotationModeEnum`.
 pub mod ad_group_ad_rotation_mode_enum {
     /// The possible ad rotation modes of an ad group.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdGroupAdRotationMode {
         /// The ad rotation mode has not been specified.
@@ -5725,18 +8514,36 @@ pub mod ad_group_ad_rotation_mode_enum {
                 AdGroupAdRotationMode::RotateForever => "ROTATE_FOREVER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPTIMIZE" => Some(Self::Optimize),
+                "ROTATE_FOREVER" => Some(Self::RotateForever),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad group status.
-
 /// Container for enum describing possible statuses of an AdGroupAd.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupAdStatusEnum {
-}
+pub struct AdGroupAdStatusEnum {}
 /// Nested message and enum types in `AdGroupAdStatusEnum`.
 pub mod ad_group_ad_status_enum {
     /// The possible statuses of an AdGroupAd.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdGroupAdStatus {
         /// No value has been specified.
@@ -5766,18 +8573,37 @@ pub mod ad_group_ad_status_enum {
                 AdGroupAdStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing approval status for the criterion.
-
 /// Container for enum describing possible AdGroupCriterion approval statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionApprovalStatusEnum {
-}
+pub struct AdGroupCriterionApprovalStatusEnum {}
 /// Nested message and enum types in `AdGroupCriterionApprovalStatusEnum`.
 pub mod ad_group_criterion_approval_status_enum {
     /// Enumerates AdGroupCriterion approval statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdGroupCriterionApprovalStatus {
         /// Not specified.
@@ -5808,18 +8634,38 @@ pub mod ad_group_criterion_approval_status_enum {
                 AdGroupCriterionApprovalStatus::UnderReview => "UNDER_REVIEW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPROVED" => Some(Self::Approved),
+                "DISAPPROVED" => Some(Self::Disapproved),
+                "PENDING_REVIEW" => Some(Self::PendingReview),
+                "UNDER_REVIEW" => Some(Self::UnderReview),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing AdGroupCriterion statuses.
-
 /// Message describing AdGroupCriterion statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionStatusEnum {
-}
+pub struct AdGroupCriterionStatusEnum {}
 /// Nested message and enum types in `AdGroupCriterionStatusEnum`.
 pub mod ad_group_criterion_status_enum {
     /// The possible statuses of an AdGroupCriterion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdGroupCriterionStatus {
         /// No value has been specified.
@@ -5849,18 +8695,37 @@ pub mod ad_group_criterion_status_enum {
                 AdGroupCriterionStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad group status.
-
 /// Container for enum describing possible statuses of an ad group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupStatusEnum {
-}
+pub struct AdGroupStatusEnum {}
 /// Nested message and enum types in `AdGroupStatusEnum`.
 pub mod ad_group_status_enum {
     /// The possible statuses of an ad group.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdGroupStatus {
         /// The status has not been specified.
@@ -5890,20 +8755,39 @@ pub mod ad_group_status_enum {
                 AdGroupStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad group types.
-
 /// Defines types of an ad group, specific to a particular campaign channel
 /// type. This type drives validations that restrict which entities can be
 /// added to the ad group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupTypeEnum {
-}
+pub struct AdGroupTypeEnum {}
 /// Nested message and enum types in `AdGroupTypeEnum`.
 pub mod ad_group_type_enum {
     /// Enum listing the possible types of an ad group.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdGroupType {
         /// The type has not been specified.
@@ -5965,25 +8849,61 @@ pub mod ad_group_type_enum {
                 AdGroupType::VideoNonSkippableInStream => "VIDEO_NON_SKIPPABLE_IN_STREAM",
                 AdGroupType::VideoOutstream => "VIDEO_OUTSTREAM",
                 AdGroupType::SearchDynamicAds => "SEARCH_DYNAMIC_ADS",
-                AdGroupType::ShoppingComparisonListingAds => "SHOPPING_COMPARISON_LISTING_ADS",
+                AdGroupType::ShoppingComparisonListingAds => {
+                    "SHOPPING_COMPARISON_LISTING_ADS"
+                }
                 AdGroupType::PromotedHotelAds => "PROMOTED_HOTEL_ADS",
                 AdGroupType::VideoResponsive => "VIDEO_RESPONSIVE",
                 AdGroupType::VideoEfficientReach => "VIDEO_EFFICIENT_REACH",
                 AdGroupType::SmartCampaignAds => "SMART_CAMPAIGN_ADS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SEARCH_STANDARD" => Some(Self::SearchStandard),
+                "DISPLAY_STANDARD" => Some(Self::DisplayStandard),
+                "SHOPPING_PRODUCT_ADS" => Some(Self::ShoppingProductAds),
+                "HOTEL_ADS" => Some(Self::HotelAds),
+                "SHOPPING_SMART_ADS" => Some(Self::ShoppingSmartAds),
+                "VIDEO_BUMPER" => Some(Self::VideoBumper),
+                "VIDEO_TRUE_VIEW_IN_STREAM" => Some(Self::VideoTrueViewInStream),
+                "VIDEO_TRUE_VIEW_IN_DISPLAY" => Some(Self::VideoTrueViewInDisplay),
+                "VIDEO_NON_SKIPPABLE_IN_STREAM" => Some(Self::VideoNonSkippableInStream),
+                "VIDEO_OUTSTREAM" => Some(Self::VideoOutstream),
+                "SEARCH_DYNAMIC_ADS" => Some(Self::SearchDynamicAds),
+                "SHOPPING_COMPARISON_LISTING_ADS" => {
+                    Some(Self::ShoppingComparisonListingAds)
+                }
+                "PROMOTED_HOTEL_ADS" => Some(Self::PromotedHotelAds),
+                "VIDEO_RESPONSIVE" => Some(Self::VideoResponsive),
+                "VIDEO_EFFICIENT_REACH" => Some(Self::VideoEfficientReach),
+                "SMART_CAMPAIGN_ADS" => Some(Self::SmartCampaignAds),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad serving statuses.
-
 /// Possible ad serving statuses of a campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdServingOptimizationStatusEnum {
-}
+pub struct AdServingOptimizationStatusEnum {}
 /// Nested message and enum types in `AdServingOptimizationStatusEnum`.
 pub mod ad_serving_optimization_status_enum {
     /// Enum describing possible serving statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdServingOptimizationStatus {
         /// No value has been specified.
@@ -6022,18 +8942,39 @@ pub mod ad_serving_optimization_status_enum {
                 AdServingOptimizationStatus::Unavailable => "UNAVAILABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPTIMIZE" => Some(Self::Optimize),
+                "CONVERSION_OPTIMIZE" => Some(Self::ConversionOptimize),
+                "ROTATE" => Some(Self::Rotate),
+                "ROTATE_INDEFINITELY" => Some(Self::RotateIndefinitely),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad strengths.
-
 /// Container for enum describing possible ad strengths.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdStrengthEnum {
-}
+pub struct AdStrengthEnum {}
 /// Nested message and enum types in `AdStrengthEnum`.
 pub mod ad_strength_enum {
     /// Enum listing the possible ad strengths.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdStrength {
         /// Not specified.
@@ -6070,18 +9011,40 @@ pub mod ad_strength_enum {
                 AdStrength::Excellent => "EXCELLENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "NO_ADS" => Some(Self::NoAds),
+                "POOR" => Some(Self::Poor),
+                "AVERAGE" => Some(Self::Average),
+                "GOOD" => Some(Self::Good),
+                "EXCELLENT" => Some(Self::Excellent),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the ad type.
-
 /// Container for enum describing possible types of an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdTypeEnum {
-}
+pub struct AdTypeEnum {}
 /// Nested message and enum types in `AdTypeEnum`.
 pub mod ad_type_enum {
     /// The possible types of an ad.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AdType {
         /// No value has been specified.
@@ -6187,19 +9150,67 @@ pub mod ad_type_enum {
                 AdType::AppPreRegistrationAd => "APP_PRE_REGISTRATION_AD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT_AD" => Some(Self::TextAd),
+                "EXPANDED_TEXT_AD" => Some(Self::ExpandedTextAd),
+                "EXPANDED_DYNAMIC_SEARCH_AD" => Some(Self::ExpandedDynamicSearchAd),
+                "HOTEL_AD" => Some(Self::HotelAd),
+                "SHOPPING_SMART_AD" => Some(Self::ShoppingSmartAd),
+                "SHOPPING_PRODUCT_AD" => Some(Self::ShoppingProductAd),
+                "VIDEO_AD" => Some(Self::VideoAd),
+                "GMAIL_AD" => Some(Self::GmailAd),
+                "IMAGE_AD" => Some(Self::ImageAd),
+                "RESPONSIVE_SEARCH_AD" => Some(Self::ResponsiveSearchAd),
+                "LEGACY_RESPONSIVE_DISPLAY_AD" => Some(Self::LegacyResponsiveDisplayAd),
+                "APP_AD" => Some(Self::AppAd),
+                "LEGACY_APP_INSTALL_AD" => Some(Self::LegacyAppInstallAd),
+                "RESPONSIVE_DISPLAY_AD" => Some(Self::ResponsiveDisplayAd),
+                "LOCAL_AD" => Some(Self::LocalAd),
+                "HTML5_UPLOAD_AD" => Some(Self::Html5UploadAd),
+                "DYNAMIC_HTML5_AD" => Some(Self::DynamicHtml5Ad),
+                "APP_ENGAGEMENT_AD" => Some(Self::AppEngagementAd),
+                "SHOPPING_COMPARISON_LISTING_AD" => {
+                    Some(Self::ShoppingComparisonListingAd)
+                }
+                "VIDEO_BUMPER_AD" => Some(Self::VideoBumperAd),
+                "VIDEO_NON_SKIPPABLE_IN_STREAM_AD" => {
+                    Some(Self::VideoNonSkippableInStreamAd)
+                }
+                "VIDEO_OUTSTREAM_AD" => Some(Self::VideoOutstreamAd),
+                "VIDEO_TRUEVIEW_DISCOVERY_AD" => Some(Self::VideoTrueviewDiscoveryAd),
+                "VIDEO_TRUEVIEW_IN_STREAM_AD" => Some(Self::VideoTrueviewInStreamAd),
+                "VIDEO_RESPONSIVE_AD" => Some(Self::VideoResponsiveAd),
+                "SMART_CAMPAIGN_AD" => Some(Self::SmartCampaignAd),
+                "CALL_AD" => Some(Self::CallAd),
+                "APP_PRE_REGISTRATION_AD" => Some(Self::AppPreRegistrationAd),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing relation type for affiliate location feeds.
-
 /// Container for enum describing possible values for a relationship type for
 /// an affiliate location feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AffiliateLocationFeedRelationshipTypeEnum {
-}
+pub struct AffiliateLocationFeedRelationshipTypeEnum {}
 /// Nested message and enum types in `AffiliateLocationFeedRelationshipTypeEnum`.
 pub mod affiliate_location_feed_relationship_type_enum {
     /// Possible values for a relationship type for an affiliate location feed.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AffiliateLocationFeedRelationshipType {
         /// Not specified.
@@ -6218,21 +9229,40 @@ pub mod affiliate_location_feed_relationship_type_enum {
             match self {
                 AffiliateLocationFeedRelationshipType::Unspecified => "UNSPECIFIED",
                 AffiliateLocationFeedRelationshipType::Unknown => "UNKNOWN",
-                AffiliateLocationFeedRelationshipType::GeneralRetailer => "GENERAL_RETAILER",
+                AffiliateLocationFeedRelationshipType::GeneralRetailer => {
+                    "GENERAL_RETAILER"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GENERAL_RETAILER" => Some(Self::GeneralRetailer),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing Affiliate Location placeholder fields.
-
 /// Values for Affiliate Location placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AffiliateLocationPlaceholderFieldEnum {
-}
+pub struct AffiliateLocationPlaceholderFieldEnum {}
 /// Nested message and enum types in `AffiliateLocationPlaceholderFieldEnum`.
 pub mod affiliate_location_placeholder_field_enum {
     /// Possible values for Affiliate Location placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AffiliateLocationPlaceholderField {
         /// Not specified.
@@ -6284,18 +9314,45 @@ pub mod affiliate_location_placeholder_field_enum {
                 AffiliateLocationPlaceholderField::ChainName => "CHAIN_NAME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "ADDRESS_LINE_1" => Some(Self::AddressLine1),
+                "ADDRESS_LINE_2" => Some(Self::AddressLine2),
+                "CITY" => Some(Self::City),
+                "PROVINCE" => Some(Self::Province),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "LANGUAGE_CODE" => Some(Self::LanguageCode),
+                "CHAIN_ID" => Some(Self::ChainId),
+                "CHAIN_NAME" => Some(Self::ChainName),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing App Campaign app store.
-
 /// The application store that distributes mobile applications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppCampaignAppStoreEnum {
-}
+pub struct AppCampaignAppStoreEnum {}
 /// Nested message and enum types in `AppCampaignAppStoreEnum`.
 pub mod app_campaign_app_store_enum {
     /// Enum describing app campaign app store.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AppCampaignAppStore {
         /// Not specified.
@@ -6320,19 +9377,37 @@ pub mod app_campaign_app_store_enum {
                 AppCampaignAppStore::GoogleAppStore => "GOOGLE_APP_STORE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPLE_APP_STORE" => Some(Self::AppleAppStore),
+                "GOOGLE_APP_STORE" => Some(Self::GoogleAppStore),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing App Campaign bidding strategy goal types.
-
 /// Container for enum describing goal towards which the bidding strategy of an
 /// app campaign should optimize for.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppCampaignBiddingStrategyGoalTypeEnum {
-}
+pub struct AppCampaignBiddingStrategyGoalTypeEnum {}
 /// Nested message and enum types in `AppCampaignBiddingStrategyGoalTypeEnum`.
 pub mod app_campaign_bidding_strategy_goal_type_enum {
     /// Goal type of App campaign BiddingStrategy.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AppCampaignBiddingStrategyGoalType {
         /// Not specified.
@@ -6368,26 +9443,72 @@ pub mod app_campaign_bidding_strategy_goal_type_enum {
             match self {
                 AppCampaignBiddingStrategyGoalType::Unspecified => "UNSPECIFIED",
                 AppCampaignBiddingStrategyGoalType::Unknown => "UNKNOWN",
-                AppCampaignBiddingStrategyGoalType::OptimizeInstallsTargetInstallCost => "OPTIMIZE_INSTALLS_TARGET_INSTALL_COST",
-                AppCampaignBiddingStrategyGoalType::OptimizeInAppConversionsTargetInstallCost => "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_INSTALL_COST",
-                AppCampaignBiddingStrategyGoalType::OptimizeInAppConversionsTargetConversionCost => "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_CONVERSION_COST",
-                AppCampaignBiddingStrategyGoalType::OptimizeReturnOnAdvertisingSpend => "OPTIMIZE_RETURN_ON_ADVERTISING_SPEND",
-                AppCampaignBiddingStrategyGoalType::OptimizePreRegistrationConversionVolume => "OPTIMIZE_PRE_REGISTRATION_CONVERSION_VOLUME",
-                AppCampaignBiddingStrategyGoalType::OptimizeInstallsWithoutTargetInstallCost => "OPTIMIZE_INSTALLS_WITHOUT_TARGET_INSTALL_COST",
+                AppCampaignBiddingStrategyGoalType::OptimizeInstallsTargetInstallCost => {
+                    "OPTIMIZE_INSTALLS_TARGET_INSTALL_COST"
+                }
+                AppCampaignBiddingStrategyGoalType::OptimizeInAppConversionsTargetInstallCost => {
+                    "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_INSTALL_COST"
+                }
+                AppCampaignBiddingStrategyGoalType::OptimizeInAppConversionsTargetConversionCost => {
+                    "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_CONVERSION_COST"
+                }
+                AppCampaignBiddingStrategyGoalType::OptimizeReturnOnAdvertisingSpend => {
+                    "OPTIMIZE_RETURN_ON_ADVERTISING_SPEND"
+                }
+                AppCampaignBiddingStrategyGoalType::OptimizePreRegistrationConversionVolume => {
+                    "OPTIMIZE_PRE_REGISTRATION_CONVERSION_VOLUME"
+                }
+                AppCampaignBiddingStrategyGoalType::OptimizeInstallsWithoutTargetInstallCost => {
+                    "OPTIMIZE_INSTALLS_WITHOUT_TARGET_INSTALL_COST"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPTIMIZE_INSTALLS_TARGET_INSTALL_COST" => {
+                    Some(Self::OptimizeInstallsTargetInstallCost)
+                }
+                "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_INSTALL_COST" => {
+                    Some(Self::OptimizeInAppConversionsTargetInstallCost)
+                }
+                "OPTIMIZE_IN_APP_CONVERSIONS_TARGET_CONVERSION_COST" => {
+                    Some(Self::OptimizeInAppConversionsTargetConversionCost)
+                }
+                "OPTIMIZE_RETURN_ON_ADVERTISING_SPEND" => {
+                    Some(Self::OptimizeReturnOnAdvertisingSpend)
+                }
+                "OPTIMIZE_PRE_REGISTRATION_CONVERSION_VOLUME" => {
+                    Some(Self::OptimizePreRegistrationConversionVolume)
+                }
+                "OPTIMIZE_INSTALLS_WITHOUT_TARGET_INSTALL_COST" => {
+                    Some(Self::OptimizeInstallsWithoutTargetInstallCost)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing App placeholder fields.
-
 /// Values for App placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppPlaceholderFieldEnum {
-}
+pub struct AppPlaceholderFieldEnum {}
 /// Nested message and enum types in `AppPlaceholderFieldEnum`.
 pub mod app_placeholder_field_enum {
     /// Possible values for App placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AppPlaceholderField {
         /// Not specified.
@@ -6437,18 +9558,42 @@ pub mod app_placeholder_field_enum {
                 AppPlaceholderField::FinalUrlSuffix => "FINAL_URL_SUFFIX",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STORE" => Some(Self::Store),
+                "ID" => Some(Self::Id),
+                "LINK_TEXT" => Some(Self::LinkText),
+                "URL" => Some(Self::Url),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing asset type.
-
 /// Container for enum describing the possible placements of an asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetFieldTypeEnum {
-}
+pub struct AssetFieldTypeEnum {}
 /// Nested message and enum types in `AssetFieldTypeEnum`.
 pub mod asset_field_type_enum {
     /// Enum describing the possible placements of an asset.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetFieldType {
         /// Not specified.
@@ -6540,18 +9685,58 @@ pub mod asset_field_type_enum {
                 AssetFieldType::CallToActionSelection => "CALL_TO_ACTION_SELECTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HEADLINE" => Some(Self::Headline),
+                "DESCRIPTION" => Some(Self::Description),
+                "MANDATORY_AD_TEXT" => Some(Self::MandatoryAdText),
+                "MARKETING_IMAGE" => Some(Self::MarketingImage),
+                "MEDIA_BUNDLE" => Some(Self::MediaBundle),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "BOOK_ON_GOOGLE" => Some(Self::BookOnGoogle),
+                "LEAD_FORM" => Some(Self::LeadForm),
+                "PROMOTION" => Some(Self::Promotion),
+                "CALLOUT" => Some(Self::Callout),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "SITELINK" => Some(Self::Sitelink),
+                "MOBILE_APP" => Some(Self::MobileApp),
+                "HOTEL_CALLOUT" => Some(Self::HotelCallout),
+                "CALL" => Some(Self::Call),
+                "PRICE" => Some(Self::Price),
+                "LONG_HEADLINE" => Some(Self::LongHeadline),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "SQUARE_MARKETING_IMAGE" => Some(Self::SquareMarketingImage),
+                "PORTRAIT_MARKETING_IMAGE" => Some(Self::PortraitMarketingImage),
+                "LOGO" => Some(Self::Logo),
+                "LANDSCAPE_LOGO" => Some(Self::LandscapeLogo),
+                "VIDEO" => Some(Self::Video),
+                "CALL_TO_ACTION_SELECTION" => Some(Self::CallToActionSelection),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing asset group status.
-
 /// Container for enum describing possible statuses of an asset group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetGroupStatusEnum {
-}
+pub struct AssetGroupStatusEnum {}
 /// Nested message and enum types in `AssetGroupStatusEnum`.
 pub mod asset_group_status_enum {
     /// The possible statuses of an asset group.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetGroupStatus {
         /// The status has not been specified.
@@ -6579,18 +9764,37 @@ pub mod asset_group_status_enum {
                 AssetGroupStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing status of an asset link.
-
 /// Container for enum describing possible statuses of an asset link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetLinkStatusEnum {
-}
+pub struct AssetLinkStatusEnum {}
 /// Nested message and enum types in `AssetLinkStatusEnum`.
 pub mod asset_link_status_enum {
     /// Enum describing statuses of an asset link.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetLinkStatus {
         /// Not specified.
@@ -6618,18 +9822,37 @@ pub mod asset_link_status_enum {
                 AssetLinkStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing asset set status.
-
 /// Container for enum describing possible statuses of an asset set asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetAssetStatusEnum {
-}
+pub struct AssetSetAssetStatusEnum {}
 /// Nested message and enum types in `AssetSetAssetStatusEnum`.
 pub mod asset_set_asset_status_enum {
     /// The possible statuses of an asset set asset.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetSetAssetStatus {
         /// The status has not been specified.
@@ -6655,19 +9878,37 @@ pub mod asset_set_asset_status_enum {
                 AssetSetAssetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing asset set status.
-
 /// Container for enum describing possible statuses of the linkage between asset
 /// set and its container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetLinkStatusEnum {
-}
+pub struct AssetSetLinkStatusEnum {}
 /// Nested message and enum types in `AssetSetLinkStatusEnum`.
 pub mod asset_set_link_status_enum {
     /// The possible statuses of he linkage between asset set and its container.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetSetLinkStatus {
         /// The status has not been specified.
@@ -6693,18 +9934,36 @@ pub mod asset_set_link_status_enum {
                 AssetSetLinkStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing asset set status.
-
 /// Container for enum describing possible statuses of an asset set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetStatusEnum {
-}
+pub struct AssetSetStatusEnum {}
 /// Nested message and enum types in `AssetSetStatusEnum`.
 pub mod asset_set_status_enum {
     /// The possible statuses of an asset set.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetSetStatus {
         /// The status has not been specified.
@@ -6730,18 +9989,36 @@ pub mod asset_set_status_enum {
                 AssetSetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing asset set type.
-
 /// Container for enum describing possible types of an asset set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetTypeEnum {
-}
+pub struct AssetSetTypeEnum {}
 /// Nested message and enum types in `AssetSetTypeEnum`.
 pub mod asset_set_type_enum {
     /// Possible types of an asset set.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetSetType {
         /// Not specified.
@@ -6769,18 +10046,37 @@ pub mod asset_set_type_enum {
                 AssetSetType::MerchantCenterFeed => "MERCHANT_CENTER_FEED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PAGE_FEED" => Some(Self::PageFeed),
+                "DYNAMIC_EDUCATION" => Some(Self::DynamicEducation),
+                "MERCHANT_CENTER_FEED" => Some(Self::MerchantCenterFeed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing asset type.
-
 /// Container for enum describing the types of asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetTypeEnum {
-}
+pub struct AssetTypeEnum {}
 /// Nested message and enum types in `AssetTypeEnum`.
 pub mod asset_type_enum {
     /// Enum describing possible types of asset.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetType {
         /// Not specified.
@@ -6850,19 +10146,54 @@ pub mod asset_type_enum {
                 AssetType::CallToAction => "CALL_TO_ACTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "MEDIA_BUNDLE" => Some(Self::MediaBundle),
+                "IMAGE" => Some(Self::Image),
+                "TEXT" => Some(Self::Text),
+                "LEAD_FORM" => Some(Self::LeadForm),
+                "BOOK_ON_GOOGLE" => Some(Self::BookOnGoogle),
+                "PROMOTION" => Some(Self::Promotion),
+                "CALLOUT" => Some(Self::Callout),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "SITELINK" => Some(Self::Sitelink),
+                "PAGE_FEED" => Some(Self::PageFeed),
+                "DYNAMIC_EDUCATION" => Some(Self::DynamicEducation),
+                "MOBILE_APP" => Some(Self::MobileApp),
+                "HOTEL_CALLOUT" => Some(Self::HotelCallout),
+                "CALL" => Some(Self::Call),
+                "PRICE" => Some(Self::Price),
+                "CALL_TO_ACTION" => Some(Self::CallToAction),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum representing the attribution model that describes how to
 /// distribute credit for a particular conversion across potentially many prior
 /// interactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AttributionModelEnum {
-}
+pub struct AttributionModelEnum {}
 /// Nested message and enum types in `AttributionModelEnum`.
 pub mod attribution_model_enum {
     /// The attribution model that describes how to distribute credit for a
     /// particular conversion across potentially many prior interactions.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AttributionModel {
         /// Not specified.
@@ -6901,25 +10232,68 @@ pub mod attribution_model_enum {
                 AttributionModel::Unknown => "UNKNOWN",
                 AttributionModel::External => "EXTERNAL",
                 AttributionModel::GoogleAdsLastClick => "GOOGLE_ADS_LAST_CLICK",
-                AttributionModel::GoogleSearchAttributionFirstClick => "GOOGLE_SEARCH_ATTRIBUTION_FIRST_CLICK",
-                AttributionModel::GoogleSearchAttributionLinear => "GOOGLE_SEARCH_ATTRIBUTION_LINEAR",
-                AttributionModel::GoogleSearchAttributionTimeDecay => "GOOGLE_SEARCH_ATTRIBUTION_TIME_DECAY",
-                AttributionModel::GoogleSearchAttributionPositionBased => "GOOGLE_SEARCH_ATTRIBUTION_POSITION_BASED",
-                AttributionModel::GoogleSearchAttributionDataDriven => "GOOGLE_SEARCH_ATTRIBUTION_DATA_DRIVEN",
+                AttributionModel::GoogleSearchAttributionFirstClick => {
+                    "GOOGLE_SEARCH_ATTRIBUTION_FIRST_CLICK"
+                }
+                AttributionModel::GoogleSearchAttributionLinear => {
+                    "GOOGLE_SEARCH_ATTRIBUTION_LINEAR"
+                }
+                AttributionModel::GoogleSearchAttributionTimeDecay => {
+                    "GOOGLE_SEARCH_ATTRIBUTION_TIME_DECAY"
+                }
+                AttributionModel::GoogleSearchAttributionPositionBased => {
+                    "GOOGLE_SEARCH_ATTRIBUTION_POSITION_BASED"
+                }
+                AttributionModel::GoogleSearchAttributionDataDriven => {
+                    "GOOGLE_SEARCH_ATTRIBUTION_DATA_DRIVEN"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXTERNAL" => Some(Self::External),
+                "GOOGLE_ADS_LAST_CLICK" => Some(Self::GoogleAdsLastClick),
+                "GOOGLE_SEARCH_ATTRIBUTION_FIRST_CLICK" => {
+                    Some(Self::GoogleSearchAttributionFirstClick)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_LINEAR" => {
+                    Some(Self::GoogleSearchAttributionLinear)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_TIME_DECAY" => {
+                    Some(Self::GoogleSearchAttributionTimeDecay)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_POSITION_BASED" => {
+                    Some(Self::GoogleSearchAttributionPositionBased)
+                }
+                "GOOGLE_SEARCH_ATTRIBUTION_DATA_DRIVEN" => {
+                    Some(Self::GoogleSearchAttributionDataDriven)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing batch job statuses.
-
 /// Container for enum describing possible batch job statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchJobStatusEnum {
-}
+pub struct BatchJobStatusEnum {}
 /// Nested message and enum types in `BatchJobStatusEnum`.
 pub mod batch_job_status_enum {
     /// The batch job statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BatchJobStatus {
         /// Not specified.
@@ -6947,18 +10321,37 @@ pub mod batch_job_status_enum {
                 BatchJobStatus::Done => "DONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bid modifier source.
-
 /// Container for enum describing possible bid modifier sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BidModifierSourceEnum {
-}
+pub struct BidModifierSourceEnum {}
 /// Nested message and enum types in `BidModifierSourceEnum`.
 pub mod bid_modifier_source_enum {
     /// Enum describing possible bid modifier sources.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BidModifierSource {
         /// Not specified.
@@ -6984,20 +10377,38 @@ pub mod bid_modifier_source_enum {
                 BidModifierSource::AdGroup => "AD_GROUP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "AD_GROUP" => Some(Self::AdGroup),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bidding sources.
-
 /// Container for enum describing possible bidding sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingSourceEnum {
-}
+pub struct BiddingSourceEnum {}
 /// Nested message and enum types in `BiddingSourceEnum`.
 pub mod bidding_source_enum {
     /// Indicates where a bid or target is defined. For example, an ad group
     /// criterion may define a cpc bid directly, or it can inherit its cpc bid from
     /// the ad group.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BiddingSource {
         /// Not specified.
@@ -7025,18 +10436,37 @@ pub mod bidding_source_enum {
                 BiddingSource::AdGroupCriterion => "AD_GROUP_CRITERION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN_BIDDING_STRATEGY" => Some(Self::CampaignBiddingStrategy),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "AD_GROUP_CRITERION" => Some(Self::AdGroupCriterion),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing BiddingStrategy statuses.
-
 /// Message describing BiddingStrategy statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingStrategyStatusEnum {
-}
+pub struct BiddingStrategyStatusEnum {}
 /// Nested message and enum types in `BiddingStrategyStatusEnum`.
 pub mod bidding_strategy_status_enum {
     /// The possible statuses of a BiddingStrategy.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BiddingStrategyStatus {
         /// No value has been specified.
@@ -7063,18 +10493,36 @@ pub mod bidding_strategy_status_enum {
                 BiddingStrategyStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bidding schemes.
-
 /// Container for enum describing possible bidding strategy types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingStrategyTypeEnum {
-}
+pub struct BiddingStrategyTypeEnum {}
 /// Nested message and enum types in `BiddingStrategyTypeEnum`.
 pub mod bidding_strategy_type_enum {
     /// Enum describing possible bidding strategy types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BiddingStrategyType {
         /// Not specified.
@@ -7157,7 +10605,9 @@ pub mod bidding_strategy_type_enum {
                 BiddingStrategyType::ManualCpm => "MANUAL_CPM",
                 BiddingStrategyType::ManualCpv => "MANUAL_CPV",
                 BiddingStrategyType::MaximizeConversions => "MAXIMIZE_CONVERSIONS",
-                BiddingStrategyType::MaximizeConversionValue => "MAXIMIZE_CONVERSION_VALUE",
+                BiddingStrategyType::MaximizeConversionValue => {
+                    "MAXIMIZE_CONVERSION_VALUE"
+                }
                 BiddingStrategyType::PageOnePromoted => "PAGE_ONE_PROMOTED",
                 BiddingStrategyType::PercentCpc => "PERCENT_CPC",
                 BiddingStrategyType::TargetCpa => "TARGET_CPA",
@@ -7168,18 +10618,50 @@ pub mod bidding_strategy_type_enum {
                 BiddingStrategyType::TargetSpend => "TARGET_SPEND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "COMMISSION" => Some(Self::Commission),
+                "ENHANCED_CPC" => Some(Self::EnhancedCpc),
+                "INVALID" => Some(Self::Invalid),
+                "MANUAL_CPC" => Some(Self::ManualCpc),
+                "MANUAL_CPM" => Some(Self::ManualCpm),
+                "MANUAL_CPV" => Some(Self::ManualCpv),
+                "MAXIMIZE_CONVERSIONS" => Some(Self::MaximizeConversions),
+                "MAXIMIZE_CONVERSION_VALUE" => Some(Self::MaximizeConversionValue),
+                "PAGE_ONE_PROMOTED" => Some(Self::PageOnePromoted),
+                "PERCENT_CPC" => Some(Self::PercentCpc),
+                "TARGET_CPA" => Some(Self::TargetCpa),
+                "TARGET_CPM" => Some(Self::TargetCpm),
+                "TARGET_IMPRESSION_SHARE" => Some(Self::TargetImpressionShare),
+                "TARGET_OUTRANK_SHARE" => Some(Self::TargetOutrankShare),
+                "TARGET_ROAS" => Some(Self::TargetRoas),
+                "TARGET_SPEND" => Some(Self::TargetSpend),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing BillingSetup statuses.
-
 /// Message describing BillingSetup statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BillingSetupStatusEnum {
-}
+pub struct BillingSetupStatusEnum {}
 /// Nested message and enum types in `BillingSetupStatusEnum`.
 pub mod billing_setup_status_enum {
     /// The possible statuses of a BillingSetup.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BillingSetupStatus {
         /// Not specified.
@@ -7212,18 +10694,38 @@ pub mod billing_setup_status_enum {
                 BillingSetupStatus::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "APPROVED_HELD" => Some(Self::ApprovedHeld),
+                "APPROVED" => Some(Self::Approved),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing brand safety suitability settings.
-
 /// Container for enum with 3-Tier brand safety suitability control.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BrandSafetySuitabilityEnum {
-}
+pub struct BrandSafetySuitabilityEnum {}
 /// Nested message and enum types in `BrandSafetySuitabilityEnum`.
 pub mod brand_safety_suitability_enum {
     /// 3-Tier brand safety suitability control.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BrandSafetySuitability {
         /// Not specified.
@@ -7271,19 +10773,38 @@ pub mod brand_safety_suitability_enum {
                 BrandSafetySuitability::LimitedInventory => "LIMITED_INVENTORY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXPANDED_INVENTORY" => Some(Self::ExpandedInventory),
+                "STANDARD_INVENTORY" => Some(Self::StandardInventory),
+                "LIMITED_INVENTORY" => Some(Self::LimitedInventory),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Budget delivery methods.
-
 /// Message describing Budget delivery methods. A delivery method determines the
 /// rate at which the Budget is spent.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetDeliveryMethodEnum {
-}
+pub struct BudgetDeliveryMethodEnum {}
 /// Nested message and enum types in `BudgetDeliveryMethodEnum`.
 pub mod budget_delivery_method_enum {
     /// Possible delivery methods of a Budget.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BudgetDeliveryMethod {
         /// Not specified.
@@ -7310,18 +10831,36 @@ pub mod budget_delivery_method_enum {
                 BudgetDeliveryMethod::Accelerated => "ACCELERATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STANDARD" => Some(Self::Standard),
+                "ACCELERATED" => Some(Self::Accelerated),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Budget delivery methods.
-
 /// Message describing Budget period.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetPeriodEnum {
-}
+pub struct BudgetPeriodEnum {}
 /// Nested message and enum types in `BudgetPeriodEnum`.
 pub mod budget_period_enum {
     /// Possible period of a Budget.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BudgetPeriod {
         /// Not specified.
@@ -7349,18 +10888,36 @@ pub mod budget_period_enum {
                 BudgetPeriod::CustomPeriod => "CUSTOM_PERIOD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DAILY" => Some(Self::Daily),
+                "CUSTOM_PERIOD" => Some(Self::CustomPeriod),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Budget statuses
-
 /// Message describing a Budget status
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetStatusEnum {
-}
+pub struct BudgetStatusEnum {}
 /// Nested message and enum types in `BudgetStatusEnum`.
 pub mod budget_status_enum {
     /// Possible statuses of a Budget.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BudgetStatus {
         /// Not specified.
@@ -7385,18 +10942,36 @@ pub mod budget_status_enum {
                 BudgetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Budget types.
-
 /// Describes Budget types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetTypeEnum {
-}
+pub struct BudgetTypeEnum {}
 /// Nested message and enum types in `BudgetTypeEnum`.
 pub mod budget_type_enum {
     /// Possible Budget types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BudgetType {
         /// Not specified.
@@ -7437,18 +11012,37 @@ pub mod budget_type_enum {
                 BudgetType::SmartCampaign => "SMART_CAMPAIGN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STANDARD" => Some(Self::Standard),
+                "FIXED_CPA" => Some(Self::FixedCpa),
+                "SMART_CAMPAIGN" => Some(Self::SmartCampaign),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Call placeholder fields.
-
 /// Values for Call placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallPlaceholderFieldEnum {
-}
+pub struct CallPlaceholderFieldEnum {}
 /// Nested message and enum types in `CallPlaceholderFieldEnum`.
 pub mod call_placeholder_field_enum {
     /// Possible values for Call placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CallPlaceholderField {
         /// Not specified.
@@ -7486,21 +11080,44 @@ pub mod call_placeholder_field_enum {
                 CallPlaceholderField::CountryCode => "COUNTRY_CODE",
                 CallPlaceholderField::Tracked => "TRACKED",
                 CallPlaceholderField::ConversionTypeId => "CONVERSION_TYPE_ID",
-                CallPlaceholderField::ConversionReportingState => "CONVERSION_REPORTING_STATE",
+                CallPlaceholderField::ConversionReportingState => {
+                    "CONVERSION_REPORTING_STATE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "TRACKED" => Some(Self::Tracked),
+                "CONVERSION_TYPE_ID" => Some(Self::ConversionTypeId),
+                "CONVERSION_REPORTING_STATE" => Some(Self::ConversionReportingState),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing call tracking display location.
-
 /// Container for enum describing possible call tracking display locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallTrackingDisplayLocationEnum {
-}
+pub struct CallTrackingDisplayLocationEnum {}
 /// Nested message and enum types in `CallTrackingDisplayLocationEnum`.
 pub mod call_tracking_display_location_enum {
     /// Possible call tracking display locations.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CallTrackingDisplayLocation {
         /// Not specified.
@@ -7525,19 +11142,37 @@ pub mod call_tracking_display_location_enum {
                 CallTrackingDisplayLocation::LandingPage => "LANDING_PAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD" => Some(Self::Ad),
+                "LANDING_PAGE" => Some(Self::LandingPage),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing call types.
-
 /// Container for enum describing possible types of property from where the call
 /// was made.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallTypeEnum {
-}
+pub struct CallTypeEnum {}
 /// Nested message and enum types in `CallTypeEnum`.
 pub mod call_type_enum {
     /// Possible types of property from where the call was made.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CallType {
         /// Not specified.
@@ -7562,18 +11197,36 @@ pub mod call_type_enum {
                 CallType::HighEndMobileSearch => "HIGH_END_MOBILE_SEARCH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MANUALLY_DIALED" => Some(Self::ManuallyDialed),
+                "HIGH_END_MOBILE_SEARCH" => Some(Self::HighEndMobileSearch),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Callout placeholder fields.
-
 /// Values for Callout placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CalloutPlaceholderFieldEnum {
-}
+pub struct CalloutPlaceholderFieldEnum {}
 /// Nested message and enum types in `CalloutPlaceholderFieldEnum`.
 pub mod callout_placeholder_field_enum {
     /// Possible values for Callout placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CalloutPlaceholderField {
         /// Not specified.
@@ -7595,18 +11248,35 @@ pub mod callout_placeholder_field_enum {
                 CalloutPlaceholderField::CalloutText => "CALLOUT_TEXT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CALLOUT_TEXT" => Some(Self::CalloutText),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing CampaignCriterion statuses.
-
 /// Message describing CampaignCriterion statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignCriterionStatusEnum {
-}
+pub struct CampaignCriterionStatusEnum {}
 /// Nested message and enum types in `CampaignCriterionStatusEnum`.
 pub mod campaign_criterion_status_enum {
     /// The possible statuses of a CampaignCriterion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignCriterionStatus {
         /// No value has been specified.
@@ -7636,18 +11306,37 @@ pub mod campaign_criterion_status_enum {
                 CampaignCriterionStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing campaign draft status.
-
 /// Container for enum describing possible statuses of a campaign draft.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignDraftStatusEnum {
-}
+pub struct CampaignDraftStatusEnum {}
 /// Nested message and enum types in `CampaignDraftStatusEnum`.
 pub mod campaign_draft_status_enum {
     /// Possible statuses of a campaign draft.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignDraftStatus {
         /// The status has not been specified.
@@ -7687,18 +11376,39 @@ pub mod campaign_draft_status_enum {
                 CampaignDraftStatus::PromoteFailed => "PROMOTE_FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROPOSED" => Some(Self::Proposed),
+                "REMOVED" => Some(Self::Removed),
+                "PROMOTING" => Some(Self::Promoting),
+                "PROMOTED" => Some(Self::Promoted),
+                "PROMOTE_FAILED" => Some(Self::PromoteFailed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing campaign experiment status.
-
 /// Container for enum describing possible statuses of a campaign experiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignExperimentStatusEnum {
-}
+pub struct CampaignExperimentStatusEnum {}
 /// Nested message and enum types in `CampaignExperimentStatusEnum`.
 pub mod campaign_experiment_status_enum {
     /// Possible statuses of a campaign experiment.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignExperimentStatus {
         /// The status has not been specified.
@@ -7750,19 +11460,44 @@ pub mod campaign_experiment_status_enum {
                 CampaignExperimentStatus::EndedManually => "ENDED_MANUALLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INITIALIZING" => Some(Self::Initializing),
+                "INITIALIZATION_FAILED" => Some(Self::InitializationFailed),
+                "ENABLED" => Some(Self::Enabled),
+                "GRADUATED" => Some(Self::Graduated),
+                "REMOVED" => Some(Self::Removed),
+                "PROMOTING" => Some(Self::Promoting),
+                "PROMOTION_FAILED" => Some(Self::PromotionFailed),
+                "PROMOTED" => Some(Self::Promoted),
+                "ENDED_MANUALLY" => Some(Self::EndedManually),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing campaign experiment traffic split type.
-
 /// Container for enum describing campaign experiment traffic split type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignExperimentTrafficSplitTypeEnum {
-}
+pub struct CampaignExperimentTrafficSplitTypeEnum {}
 /// Nested message and enum types in `CampaignExperimentTrafficSplitTypeEnum`.
 pub mod campaign_experiment_traffic_split_type_enum {
     /// Enum of strategies for splitting traffic between base and experiment
     /// campaigns in campaign experiment.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignExperimentTrafficSplitType {
         /// Not specified.
@@ -7789,19 +11524,37 @@ pub mod campaign_experiment_traffic_split_type_enum {
                 CampaignExperimentTrafficSplitType::Cookie => "COOKIE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "RANDOM_QUERY" => Some(Self::RandomQuery),
+                "COOKIE" => Some(Self::Cookie),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing campaign experiment type.
-
 /// Container for enum describing campaign experiment type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignExperimentTypeEnum {
-}
+pub struct CampaignExperimentTypeEnum {}
 /// Nested message and enum types in `CampaignExperimentTypeEnum`.
 pub mod campaign_experiment_type_enum {
     /// Indicates if this campaign is a normal campaign,
     /// a draft campaign, or an experiment campaign.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignExperimentType {
         /// Not specified.
@@ -7834,18 +11587,37 @@ pub mod campaign_experiment_type_enum {
                 CampaignExperimentType::Experiment => "EXPERIMENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BASE" => Some(Self::Base),
+                "DRAFT" => Some(Self::Draft),
+                "EXPERIMENT" => Some(Self::Experiment),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Campaign serving statuses.
-
 /// Message describing Campaign serving statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignServingStatusEnum {
-}
+pub struct CampaignServingStatusEnum {}
 /// Nested message and enum types in `CampaignServingStatusEnum`.
 pub mod campaign_serving_status_enum {
     /// Possible serving statuses of a campaign.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignServingStatus {
         /// No value has been specified.
@@ -7881,18 +11653,39 @@ pub mod campaign_serving_status_enum {
                 CampaignServingStatus::Suspended => "SUSPENDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SERVING" => Some(Self::Serving),
+                "NONE" => Some(Self::None),
+                "ENDED" => Some(Self::Ended),
+                "PENDING" => Some(Self::Pending),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing campaign shared set statuses.
-
 /// Container for enum describing types of campaign shared set statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignSharedSetStatusEnum {
-}
+pub struct CampaignSharedSetStatusEnum {}
 /// Nested message and enum types in `CampaignSharedSetStatusEnum`.
 pub mod campaign_shared_set_status_enum {
     /// Enum listing the possible campaign shared set statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignSharedSetStatus {
         /// Not specified.
@@ -7917,18 +11710,36 @@ pub mod campaign_shared_set_status_enum {
                 CampaignSharedSetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing campaign status.
-
 /// Container for enum describing possible statuses of a campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignStatusEnum {
-}
+pub struct CampaignStatusEnum {}
 /// Nested message and enum types in `CampaignStatusEnum`.
 pub mod campaign_status_enum {
     /// Possible statuses of a campaign.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CampaignStatus {
         /// Not specified.
@@ -7956,20 +11767,38 @@ pub mod campaign_status_enum {
                 CampaignStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the sources that the change event resource was
-// made through.
-
 /// Container for enum describing the sources that the change event resource
 /// was made through.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeClientTypeEnum {
-}
+pub struct ChangeClientTypeEnum {}
 /// Nested message and enum types in `ChangeClientTypeEnum`.
 pub mod change_client_type_enum {
     /// The source that the change_event resource was made through.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ChangeClientType {
         /// No value has been specified.
@@ -8022,26 +11851,56 @@ pub mod change_client_type_enum {
                 ChangeClientType::GoogleAdsApi => "GOOGLE_ADS_API",
                 ChangeClientType::GoogleAdsEditor => "GOOGLE_ADS_EDITOR",
                 ChangeClientType::GoogleAdsMobileApp => "GOOGLE_ADS_MOBILE_APP",
-                ChangeClientType::GoogleAdsRecommendations => "GOOGLE_ADS_RECOMMENDATIONS",
+                ChangeClientType::GoogleAdsRecommendations => {
+                    "GOOGLE_ADS_RECOMMENDATIONS"
+                }
                 ChangeClientType::SearchAds360Sync => "SEARCH_ADS_360_SYNC",
                 ChangeClientType::SearchAds360Post => "SEARCH_ADS_360_POST",
                 ChangeClientType::InternalTool => "INTERNAL_TOOL",
                 ChangeClientType::Other => "OTHER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GOOGLE_ADS_WEB_CLIENT" => Some(Self::GoogleAdsWebClient),
+                "GOOGLE_ADS_AUTOMATED_RULE" => Some(Self::GoogleAdsAutomatedRule),
+                "GOOGLE_ADS_SCRIPTS" => Some(Self::GoogleAdsScripts),
+                "GOOGLE_ADS_BULK_UPLOAD" => Some(Self::GoogleAdsBulkUpload),
+                "GOOGLE_ADS_API" => Some(Self::GoogleAdsApi),
+                "GOOGLE_ADS_EDITOR" => Some(Self::GoogleAdsEditor),
+                "GOOGLE_ADS_MOBILE_APP" => Some(Self::GoogleAdsMobileApp),
+                "GOOGLE_ADS_RECOMMENDATIONS" => Some(Self::GoogleAdsRecommendations),
+                "SEARCH_ADS_360_SYNC" => Some(Self::SearchAds360Sync),
+                "SEARCH_ADS_360_POST" => Some(Self::SearchAds360Post),
+                "INTERNAL_TOOL" => Some(Self::InternalTool),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the resource types the ChangeEvent resource supports.
-
 /// Container for enum describing supported resource types for the ChangeEvent
 /// resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeEventResourceTypeEnum {
-}
+pub struct ChangeEventResourceTypeEnum {}
 /// Nested message and enum types in `ChangeEventResourceTypeEnum`.
 pub mod change_event_resource_type_enum {
     /// Enum listing the resource types support by the ChangeEvent resource.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ChangeEventResourceType {
         /// No value has been specified.
@@ -8109,18 +11968,50 @@ pub mod change_event_resource_type_enum {
                 ChangeEventResourceType::AdGroupAsset => "AD_GROUP_ASSET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD" => Some(Self::Ad),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "AD_GROUP_CRITERION" => Some(Self::AdGroupCriterion),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "CAMPAIGN_BUDGET" => Some(Self::CampaignBudget),
+                "AD_GROUP_BID_MODIFIER" => Some(Self::AdGroupBidModifier),
+                "CAMPAIGN_CRITERION" => Some(Self::CampaignCriterion),
+                "FEED" => Some(Self::Feed),
+                "FEED_ITEM" => Some(Self::FeedItem),
+                "CAMPAIGN_FEED" => Some(Self::CampaignFeed),
+                "AD_GROUP_FEED" => Some(Self::AdGroupFeed),
+                "AD_GROUP_AD" => Some(Self::AdGroupAd),
+                "ASSET" => Some(Self::Asset),
+                "CUSTOMER_ASSET" => Some(Self::CustomerAsset),
+                "CAMPAIGN_ASSET" => Some(Self::CampaignAsset),
+                "AD_GROUP_ASSET" => Some(Self::AdGroupAsset),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the change status operations.
-
 /// Container for enum describing operations for the ChangeStatus resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeStatusOperationEnum {
-}
+pub struct ChangeStatusOperationEnum {}
 /// Nested message and enum types in `ChangeStatusOperationEnum`.
 pub mod change_status_operation_enum {
     /// Status of the changed resource
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ChangeStatusOperation {
         /// No value has been specified.
@@ -8149,19 +12040,38 @@ pub mod change_status_operation_enum {
                 ChangeStatusOperation::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADDED" => Some(Self::Added),
+                "CHANGED" => Some(Self::Changed),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the resource types the ChangeStatus resource supports.
-
 /// Container for enum describing supported resource types for the ChangeStatus
 /// resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeStatusResourceTypeEnum {
-}
+pub struct ChangeStatusResourceTypeEnum {}
 /// Nested message and enum types in `ChangeStatusResourceTypeEnum`.
 pub mod change_status_resource_type_enum {
     /// Enum listing the resource types support by the ChangeStatus resource.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ChangeStatusResourceType {
         /// No value has been specified.
@@ -8229,18 +12139,50 @@ pub mod change_status_resource_type_enum {
                 ChangeStatusResourceType::AdGroupAsset => "AD_GROUP_ASSET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "AD_GROUP_AD" => Some(Self::AdGroupAd),
+                "AD_GROUP_CRITERION" => Some(Self::AdGroupCriterion),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "CAMPAIGN_CRITERION" => Some(Self::CampaignCriterion),
+                "FEED" => Some(Self::Feed),
+                "FEED_ITEM" => Some(Self::FeedItem),
+                "AD_GROUP_FEED" => Some(Self::AdGroupFeed),
+                "CAMPAIGN_FEED" => Some(Self::CampaignFeed),
+                "AD_GROUP_BID_MODIFIER" => Some(Self::AdGroupBidModifier),
+                "SHARED_SET" => Some(Self::SharedSet),
+                "CAMPAIGN_SHARED_SET" => Some(Self::CampaignSharedSet),
+                "ASSET" => Some(Self::Asset),
+                "CUSTOMER_ASSET" => Some(Self::CustomerAsset),
+                "CAMPAIGN_ASSET" => Some(Self::CampaignAsset),
+                "AD_GROUP_ASSET" => Some(Self::AdGroupAsset),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing combined audience status.
-
 /// The status of combined audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CombinedAudienceStatusEnum {
-}
+pub struct CombinedAudienceStatusEnum {}
 /// Nested message and enum types in `CombinedAudienceStatusEnum`.
 pub mod combined_audience_status_enum {
     /// Enum containing possible combined audience status types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CombinedAudienceStatus {
         /// Not specified.
@@ -8266,20 +12208,38 @@ pub mod combined_audience_status_enum {
                 CombinedAudienceStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion action counting type.
-
 /// Container for enum describing the conversion deduplication mode for
 /// conversion optimizer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionCountingTypeEnum {
-}
+pub struct ConversionActionCountingTypeEnum {}
 /// Nested message and enum types in `ConversionActionCountingTypeEnum`.
 pub mod conversion_action_counting_type_enum {
     /// Indicates how conversions for this action will be counted. For more
     /// information, see <https://support.google.com/google-ads/answer/3438531.>
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionActionCountingType {
         /// Not specified.
@@ -8304,18 +12264,36 @@ pub mod conversion_action_counting_type_enum {
                 ConversionActionCountingType::ManyPerClick => "MANY_PER_CLICK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ONE_PER_CLICK" => Some(Self::OnePerClick),
+                "MANY_PER_CLICK" => Some(Self::ManyPerClick),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion action status.
-
 /// Container for enum describing possible statuses of a conversion action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionStatusEnum {
-}
+pub struct ConversionActionStatusEnum {}
 /// Nested message and enum types in `ConversionActionStatusEnum`.
 pub mod conversion_action_status_enum {
     /// Possible statuses of a conversion action.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionActionStatus {
         /// Not specified.
@@ -8344,18 +12322,37 @@ pub mod conversion_action_status_enum {
                 ConversionActionStatus::Hidden => "HIDDEN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "HIDDEN" => Some(Self::Hidden),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion action type.
-
 /// Container for enum describing possible types of a conversion action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionTypeEnum {
-}
+pub struct ConversionActionTypeEnum {}
 /// Nested message and enum types in `ConversionActionTypeEnum`.
 pub mod conversion_action_type_enum {
     /// Possible types of a conversion action.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionActionType {
         /// Not specified.
@@ -8470,54 +12467,159 @@ pub mod conversion_action_type_enum {
                 ConversionActionType::AdCall => "AD_CALL",
                 ConversionActionType::ClickToCall => "CLICK_TO_CALL",
                 ConversionActionType::GooglePlayDownload => "GOOGLE_PLAY_DOWNLOAD",
-                ConversionActionType::GooglePlayInAppPurchase => "GOOGLE_PLAY_IN_APP_PURCHASE",
+                ConversionActionType::GooglePlayInAppPurchase => {
+                    "GOOGLE_PLAY_IN_APP_PURCHASE"
+                }
                 ConversionActionType::UploadCalls => "UPLOAD_CALLS",
                 ConversionActionType::UploadClicks => "UPLOAD_CLICKS",
                 ConversionActionType::Webpage => "WEBPAGE",
                 ConversionActionType::WebsiteCall => "WEBSITE_CALL",
-                ConversionActionType::StoreSalesDirectUpload => "STORE_SALES_DIRECT_UPLOAD",
+                ConversionActionType::StoreSalesDirectUpload => {
+                    "STORE_SALES_DIRECT_UPLOAD"
+                }
                 ConversionActionType::StoreSales => "STORE_SALES",
-                ConversionActionType::FirebaseAndroidFirstOpen => "FIREBASE_ANDROID_FIRST_OPEN",
-                ConversionActionType::FirebaseAndroidInAppPurchase => "FIREBASE_ANDROID_IN_APP_PURCHASE",
+                ConversionActionType::FirebaseAndroidFirstOpen => {
+                    "FIREBASE_ANDROID_FIRST_OPEN"
+                }
+                ConversionActionType::FirebaseAndroidInAppPurchase => {
+                    "FIREBASE_ANDROID_IN_APP_PURCHASE"
+                }
                 ConversionActionType::FirebaseAndroidCustom => "FIREBASE_ANDROID_CUSTOM",
                 ConversionActionType::FirebaseIosFirstOpen => "FIREBASE_IOS_FIRST_OPEN",
-                ConversionActionType::FirebaseIosInAppPurchase => "FIREBASE_IOS_IN_APP_PURCHASE",
+                ConversionActionType::FirebaseIosInAppPurchase => {
+                    "FIREBASE_IOS_IN_APP_PURCHASE"
+                }
                 ConversionActionType::FirebaseIosCustom => "FIREBASE_IOS_CUSTOM",
-                ConversionActionType::ThirdPartyAppAnalyticsAndroidFirstOpen => "THIRD_PARTY_APP_ANALYTICS_ANDROID_FIRST_OPEN",
-                ConversionActionType::ThirdPartyAppAnalyticsAndroidInAppPurchase => "THIRD_PARTY_APP_ANALYTICS_ANDROID_IN_APP_PURCHASE",
-                ConversionActionType::ThirdPartyAppAnalyticsAndroidCustom => "THIRD_PARTY_APP_ANALYTICS_ANDROID_CUSTOM",
-                ConversionActionType::ThirdPartyAppAnalyticsIosFirstOpen => "THIRD_PARTY_APP_ANALYTICS_IOS_FIRST_OPEN",
-                ConversionActionType::ThirdPartyAppAnalyticsIosInAppPurchase => "THIRD_PARTY_APP_ANALYTICS_IOS_IN_APP_PURCHASE",
-                ConversionActionType::ThirdPartyAppAnalyticsIosCustom => "THIRD_PARTY_APP_ANALYTICS_IOS_CUSTOM",
-                ConversionActionType::AndroidAppPreRegistration => "ANDROID_APP_PRE_REGISTRATION",
-                ConversionActionType::AndroidInstallsAllOtherApps => "ANDROID_INSTALLS_ALL_OTHER_APPS",
+                ConversionActionType::ThirdPartyAppAnalyticsAndroidFirstOpen => {
+                    "THIRD_PARTY_APP_ANALYTICS_ANDROID_FIRST_OPEN"
+                }
+                ConversionActionType::ThirdPartyAppAnalyticsAndroidInAppPurchase => {
+                    "THIRD_PARTY_APP_ANALYTICS_ANDROID_IN_APP_PURCHASE"
+                }
+                ConversionActionType::ThirdPartyAppAnalyticsAndroidCustom => {
+                    "THIRD_PARTY_APP_ANALYTICS_ANDROID_CUSTOM"
+                }
+                ConversionActionType::ThirdPartyAppAnalyticsIosFirstOpen => {
+                    "THIRD_PARTY_APP_ANALYTICS_IOS_FIRST_OPEN"
+                }
+                ConversionActionType::ThirdPartyAppAnalyticsIosInAppPurchase => {
+                    "THIRD_PARTY_APP_ANALYTICS_IOS_IN_APP_PURCHASE"
+                }
+                ConversionActionType::ThirdPartyAppAnalyticsIosCustom => {
+                    "THIRD_PARTY_APP_ANALYTICS_IOS_CUSTOM"
+                }
+                ConversionActionType::AndroidAppPreRegistration => {
+                    "ANDROID_APP_PRE_REGISTRATION"
+                }
+                ConversionActionType::AndroidInstallsAllOtherApps => {
+                    "ANDROID_INSTALLS_ALL_OTHER_APPS"
+                }
                 ConversionActionType::FloodlightAction => "FLOODLIGHT_ACTION",
                 ConversionActionType::FloodlightTransaction => "FLOODLIGHT_TRANSACTION",
                 ConversionActionType::GoogleHosted => "GOOGLE_HOSTED",
                 ConversionActionType::LeadFormSubmit => "LEAD_FORM_SUBMIT",
                 ConversionActionType::Salesforce => "SALESFORCE",
                 ConversionActionType::SearchAds360 => "SEARCH_ADS_360",
-                ConversionActionType::SmartCampaignAdClicksToCall => "SMART_CAMPAIGN_AD_CLICKS_TO_CALL",
-                ConversionActionType::SmartCampaignMapClicksToCall => "SMART_CAMPAIGN_MAP_CLICKS_TO_CALL",
-                ConversionActionType::SmartCampaignMapDirections => "SMART_CAMPAIGN_MAP_DIRECTIONS",
-                ConversionActionType::SmartCampaignTrackedCalls => "SMART_CAMPAIGN_TRACKED_CALLS",
+                ConversionActionType::SmartCampaignAdClicksToCall => {
+                    "SMART_CAMPAIGN_AD_CLICKS_TO_CALL"
+                }
+                ConversionActionType::SmartCampaignMapClicksToCall => {
+                    "SMART_CAMPAIGN_MAP_CLICKS_TO_CALL"
+                }
+                ConversionActionType::SmartCampaignMapDirections => {
+                    "SMART_CAMPAIGN_MAP_DIRECTIONS"
+                }
+                ConversionActionType::SmartCampaignTrackedCalls => {
+                    "SMART_CAMPAIGN_TRACKED_CALLS"
+                }
                 ConversionActionType::StoreVisits => "STORE_VISITS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_CALL" => Some(Self::AdCall),
+                "CLICK_TO_CALL" => Some(Self::ClickToCall),
+                "GOOGLE_PLAY_DOWNLOAD" => Some(Self::GooglePlayDownload),
+                "GOOGLE_PLAY_IN_APP_PURCHASE" => Some(Self::GooglePlayInAppPurchase),
+                "UPLOAD_CALLS" => Some(Self::UploadCalls),
+                "UPLOAD_CLICKS" => Some(Self::UploadClicks),
+                "WEBPAGE" => Some(Self::Webpage),
+                "WEBSITE_CALL" => Some(Self::WebsiteCall),
+                "STORE_SALES_DIRECT_UPLOAD" => Some(Self::StoreSalesDirectUpload),
+                "STORE_SALES" => Some(Self::StoreSales),
+                "FIREBASE_ANDROID_FIRST_OPEN" => Some(Self::FirebaseAndroidFirstOpen),
+                "FIREBASE_ANDROID_IN_APP_PURCHASE" => {
+                    Some(Self::FirebaseAndroidInAppPurchase)
+                }
+                "FIREBASE_ANDROID_CUSTOM" => Some(Self::FirebaseAndroidCustom),
+                "FIREBASE_IOS_FIRST_OPEN" => Some(Self::FirebaseIosFirstOpen),
+                "FIREBASE_IOS_IN_APP_PURCHASE" => Some(Self::FirebaseIosInAppPurchase),
+                "FIREBASE_IOS_CUSTOM" => Some(Self::FirebaseIosCustom),
+                "THIRD_PARTY_APP_ANALYTICS_ANDROID_FIRST_OPEN" => {
+                    Some(Self::ThirdPartyAppAnalyticsAndroidFirstOpen)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_ANDROID_IN_APP_PURCHASE" => {
+                    Some(Self::ThirdPartyAppAnalyticsAndroidInAppPurchase)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_ANDROID_CUSTOM" => {
+                    Some(Self::ThirdPartyAppAnalyticsAndroidCustom)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_IOS_FIRST_OPEN" => {
+                    Some(Self::ThirdPartyAppAnalyticsIosFirstOpen)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_IOS_IN_APP_PURCHASE" => {
+                    Some(Self::ThirdPartyAppAnalyticsIosInAppPurchase)
+                }
+                "THIRD_PARTY_APP_ANALYTICS_IOS_CUSTOM" => {
+                    Some(Self::ThirdPartyAppAnalyticsIosCustom)
+                }
+                "ANDROID_APP_PRE_REGISTRATION" => Some(Self::AndroidAppPreRegistration),
+                "ANDROID_INSTALLS_ALL_OTHER_APPS" => {
+                    Some(Self::AndroidInstallsAllOtherApps)
+                }
+                "FLOODLIGHT_ACTION" => Some(Self::FloodlightAction),
+                "FLOODLIGHT_TRANSACTION" => Some(Self::FloodlightTransaction),
+                "GOOGLE_HOSTED" => Some(Self::GoogleHosted),
+                "LEAD_FORM_SUBMIT" => Some(Self::LeadFormSubmit),
+                "SALESFORCE" => Some(Self::Salesforce),
+                "SEARCH_ADS_360" => Some(Self::SearchAds360),
+                "SMART_CAMPAIGN_AD_CLICKS_TO_CALL" => {
+                    Some(Self::SmartCampaignAdClicksToCall)
+                }
+                "SMART_CAMPAIGN_MAP_CLICKS_TO_CALL" => {
+                    Some(Self::SmartCampaignMapClicksToCall)
+                }
+                "SMART_CAMPAIGN_MAP_DIRECTIONS" => Some(Self::SmartCampaignMapDirections),
+                "SMART_CAMPAIGN_TRACKED_CALLS" => Some(Self::SmartCampaignTrackedCalls),
+                "STORE_VISITS" => Some(Self::StoreVisits),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing conversion adjustment type.
-
 /// Container for enum describing conversion adjustment types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionAdjustmentTypeEnum {
-}
+pub struct ConversionAdjustmentTypeEnum {}
 /// Nested message and enum types in `ConversionAdjustmentTypeEnum`.
 pub mod conversion_adjustment_type_enum {
     /// The different actions advertisers can take to adjust the conversions that
     /// they already reported. Retractions negate a conversion. Restatements change
     /// the value of a conversion.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionAdjustmentType {
         /// Not specified.
@@ -8546,19 +12648,38 @@ pub mod conversion_adjustment_type_enum {
                 ConversionAdjustmentType::Enhancement => "ENHANCEMENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "RETRACTION" => Some(Self::Retraction),
+                "RESTATEMENT" => Some(Self::Restatement),
+                "ENHANCEMENT" => Some(Self::Enhancement),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion custom variable status.
-
 /// Container for enum describing possible statuses of a conversion custom
 /// variable.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionCustomVariableStatusEnum {
-}
+pub struct ConversionCustomVariableStatusEnum {}
 /// Nested message and enum types in `ConversionCustomVariableStatusEnum`.
 pub mod conversion_custom_variable_status_enum {
     /// Possible statuses of a conversion custom variable.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionCustomVariableStatus {
         /// Not specified.
@@ -8590,18 +12711,37 @@ pub mod conversion_custom_variable_status_enum {
                 ConversionCustomVariableStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVATION_NEEDED" => Some(Self::ActivationNeeded),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion origin.
-
 /// Container for enum describing possible conversion origins.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionOriginEnum {
-}
+pub struct ConversionOriginEnum {}
 /// Nested message and enum types in `ConversionOriginEnum`.
 pub mod conversion_origin_enum {
     /// The possible places where a conversion can occur.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionOrigin {
         /// The conversion origin has not been specified.
@@ -8643,19 +12783,41 @@ pub mod conversion_origin_enum {
                 ConversionOrigin::YoutubeHosted => "YOUTUBE_HOSTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBSITE" => Some(Self::Website),
+                "GOOGLE_HOSTED" => Some(Self::GoogleHosted),
+                "APP" => Some(Self::App),
+                "CALL_FROM_ADS" => Some(Self::CallFromAds),
+                "STORE" => Some(Self::Store),
+                "YOUTUBE_HOSTED" => Some(Self::YoutubeHosted),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion value rule set status.
-
 /// Container for enum describing possible statuses of a conversion value rule
 /// set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRuleSetStatusEnum {
-}
+pub struct ConversionValueRuleSetStatusEnum {}
 /// Nested message and enum types in `ConversionValueRuleSetStatusEnum`.
 pub mod conversion_value_rule_set_status_enum {
     /// Possible statuses of a conversion value rule set.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionValueRuleSetStatus {
         /// Not specified.
@@ -8684,18 +12846,37 @@ pub mod conversion_value_rule_set_status_enum {
                 ConversionValueRuleSetStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion value rule status.
-
 /// Container for enum describing possible statuses of a conversion value rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRuleStatusEnum {
-}
+pub struct ConversionValueRuleStatusEnum {}
 /// Nested message and enum types in `ConversionValueRuleStatusEnum`.
 pub mod conversion_value_rule_status_enum {
     /// Possible statuses of a conversion value rule.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConversionValueRuleStatus {
         /// Not specified.
@@ -8723,18 +12904,37 @@ pub mod conversion_value_rule_status_enum {
                 ConversionValueRuleStatus::Paused => "PAUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing approval status for the criterion.
-
 /// Container for enum describing possible criterion system serving statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionSystemServingStatusEnum {
-}
+pub struct CriterionSystemServingStatusEnum {}
 /// Nested message and enum types in `CriterionSystemServingStatusEnum`.
 pub mod criterion_system_serving_status_enum {
     /// Enumerates criterion system serving statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CriterionSystemServingStatus {
         /// Not specified.
@@ -8759,18 +12959,36 @@ pub mod criterion_system_serving_status_enum {
                 CriterionSystemServingStatus::RarelyServed => "RARELY_SERVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ELIGIBLE" => Some(Self::Eligible),
+                "RARELY_SERVED" => Some(Self::RarelyServed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing criteria types.
-
 /// The possible types of a criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionTypeEnum {
-}
+pub struct CriterionTypeEnum {}
 /// Nested message and enum types in `CriterionTypeEnum`.
 pub mod criterion_type_enum {
     /// Enum describing possible criterion types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CriterionType {
         /// Not specified.
@@ -8888,18 +13106,67 @@ pub mod criterion_type_enum {
                 CriterionType::KeywordTheme => "KEYWORD_THEME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "PLACEMENT" => Some(Self::Placement),
+                "MOBILE_APP_CATEGORY" => Some(Self::MobileAppCategory),
+                "MOBILE_APPLICATION" => Some(Self::MobileApplication),
+                "DEVICE" => Some(Self::Device),
+                "LOCATION" => Some(Self::Location),
+                "LISTING_GROUP" => Some(Self::ListingGroup),
+                "AD_SCHEDULE" => Some(Self::AdSchedule),
+                "AGE_RANGE" => Some(Self::AgeRange),
+                "GENDER" => Some(Self::Gender),
+                "INCOME_RANGE" => Some(Self::IncomeRange),
+                "PARENTAL_STATUS" => Some(Self::ParentalStatus),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "YOUTUBE_CHANNEL" => Some(Self::YoutubeChannel),
+                "USER_LIST" => Some(Self::UserList),
+                "PROXIMITY" => Some(Self::Proximity),
+                "TOPIC" => Some(Self::Topic),
+                "LISTING_SCOPE" => Some(Self::ListingScope),
+                "LANGUAGE" => Some(Self::Language),
+                "IP_BLOCK" => Some(Self::IpBlock),
+                "CONTENT_LABEL" => Some(Self::ContentLabel),
+                "CARRIER" => Some(Self::Carrier),
+                "USER_INTEREST" => Some(Self::UserInterest),
+                "WEBPAGE" => Some(Self::Webpage),
+                "OPERATING_SYSTEM_VERSION" => Some(Self::OperatingSystemVersion),
+                "APP_PAYMENT_MODEL" => Some(Self::AppPaymentModel),
+                "MOBILE_DEVICE" => Some(Self::MobileDevice),
+                "CUSTOM_AFFINITY" => Some(Self::CustomAffinity),
+                "CUSTOM_INTENT" => Some(Self::CustomIntent),
+                "LOCATION_GROUP" => Some(Self::LocationGroup),
+                "CUSTOM_AUDIENCE" => Some(Self::CustomAudience),
+                "COMBINED_AUDIENCE" => Some(Self::CombinedAudience),
+                "KEYWORD_THEME" => Some(Self::KeywordTheme),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing custom audience member type.
-
 /// The type of custom audience member.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomAudienceMemberTypeEnum {
-}
+pub struct CustomAudienceMemberTypeEnum {}
 /// Nested message and enum types in `CustomAudienceMemberTypeEnum`.
 pub mod custom_audience_member_type_enum {
     /// Enum containing possible custom audience member types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomAudienceMemberType {
         /// Not specified.
@@ -8930,18 +13197,38 @@ pub mod custom_audience_member_type_enum {
                 CustomAudienceMemberType::App => "APP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "URL" => Some(Self::Url),
+                "PLACE_CATEGORY" => Some(Self::PlaceCategory),
+                "APP" => Some(Self::App),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing custom audience status.
-
 /// The status of custom audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomAudienceStatusEnum {
-}
+pub struct CustomAudienceStatusEnum {}
 /// Nested message and enum types in `CustomAudienceStatusEnum`.
 pub mod custom_audience_status_enum {
     /// Enum containing possible custom audience statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomAudienceStatus {
         /// Not specified.
@@ -8967,18 +13254,36 @@ pub mod custom_audience_status_enum {
                 CustomAudienceStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing custom audience type.
-
 /// The types of custom audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomAudienceTypeEnum {
-}
+pub struct CustomAudienceTypeEnum {}
 /// Nested message and enum types in `CustomAudienceTypeEnum`.
 pub mod custom_audience_type_enum {
     /// Enum containing possible custom audience types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomAudienceType {
         /// Not specified.
@@ -9011,18 +13316,38 @@ pub mod custom_audience_type_enum {
                 CustomAudienceType::Search => "SEARCH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AUTO" => Some(Self::Auto),
+                "INTEREST" => Some(Self::Interest),
+                "PURCHASE_INTENT" => Some(Self::PurchaseIntent),
+                "SEARCH" => Some(Self::Search),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing custom conversion goal status.
-
 /// Container for enum describing possible statuses of a custom conversion goal.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomConversionGoalStatusEnum {
-}
+pub struct CustomConversionGoalStatusEnum {}
 /// Nested message and enum types in `CustomConversionGoalStatusEnum`.
 pub mod custom_conversion_goal_status_enum {
     /// The possible statuses of a custom conversion goal.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomConversionGoalStatus {
         /// The status has not been specified.
@@ -9047,18 +13372,36 @@ pub mod custom_conversion_goal_status_enum {
                 CustomConversionGoalStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing custom interest member type.
-
 /// The types of custom interest member, either KEYWORD or URL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomInterestMemberTypeEnum {
-}
+pub struct CustomInterestMemberTypeEnum {}
 /// Nested message and enum types in `CustomInterestMemberTypeEnum`.
 pub mod custom_interest_member_type_enum {
     /// Enum containing possible custom interest member types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomInterestMemberType {
         /// Not specified.
@@ -9083,18 +13426,36 @@ pub mod custom_interest_member_type_enum {
                 CustomInterestMemberType::Url => "URL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD" => Some(Self::Keyword),
+                "URL" => Some(Self::Url),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing custom interest status.
-
 /// The status of custom interest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomInterestStatusEnum {
-}
+pub struct CustomInterestStatusEnum {}
 /// Nested message and enum types in `CustomInterestStatusEnum`.
 pub mod custom_interest_status_enum {
     /// Enum containing possible custom interest types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomInterestStatus {
         /// Not specified.
@@ -9120,18 +13481,36 @@ pub mod custom_interest_status_enum {
                 CustomInterestStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing custom interest type.
-
 /// The types of custom interest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomInterestTypeEnum {
-}
+pub struct CustomInterestTypeEnum {}
 /// Nested message and enum types in `CustomInterestTypeEnum`.
 pub mod custom_interest_type_enum {
     /// Enum containing possible custom interest types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomInterestType {
         /// Not specified.
@@ -9156,20 +13535,38 @@ pub mod custom_interest_type_enum {
                 CustomInterestType::CustomIntent => "CUSTOM_INTENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOM_AFFINITY" => Some(Self::CustomAffinity),
+                "CUSTOM_INTENT" => Some(Self::CustomIntent),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Custom placeholder fields.
-
 /// Values for Custom placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomPlaceholderFieldEnum {
-}
+pub struct CustomPlaceholderFieldEnum {}
 /// Nested message and enum types in `CustomPlaceholderFieldEnum`.
 pub mod custom_placeholder_field_enum {
     /// Possible values for Custom placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomPlaceholderField {
         /// Not specified.
@@ -9271,20 +13668,56 @@ pub mod custom_placeholder_field_enum {
                 CustomPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ID" => Some(Self::Id),
+                "ID2" => Some(Self::Id2),
+                "ITEM_TITLE" => Some(Self::ItemTitle),
+                "ITEM_SUBTITLE" => Some(Self::ItemSubtitle),
+                "ITEM_DESCRIPTION" => Some(Self::ItemDescription),
+                "ITEM_ADDRESS" => Some(Self::ItemAddress),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "ITEM_CATEGORY" => Some(Self::ItemCategory),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_IDS" => Some(Self::SimilarIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing pay per conversion eligibility failure reasons.
-
 /// Container for enum describing reasons why a customer is not eligible to use
 /// PaymentMode.CONVERSIONS.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerPayPerConversionEligibilityFailureReasonEnum {
-}
+pub struct CustomerPayPerConversionEligibilityFailureReasonEnum {}
 /// Nested message and enum types in `CustomerPayPerConversionEligibilityFailureReasonEnum`.
 pub mod customer_pay_per_conversion_eligibility_failure_reason_enum {
     /// Enum describing possible reasons a customer is not eligible to use
     /// PaymentMode.CONVERSIONS.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomerPayPerConversionEligibilityFailureReason {
         /// Not specified.
@@ -9314,29 +13747,68 @@ pub mod customer_pay_per_conversion_eligibility_failure_reason_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerPayPerConversionEligibilityFailureReason::Unspecified => "UNSPECIFIED",
+                CustomerPayPerConversionEligibilityFailureReason::Unspecified => {
+                    "UNSPECIFIED"
+                }
                 CustomerPayPerConversionEligibilityFailureReason::Unknown => "UNKNOWN",
-                CustomerPayPerConversionEligibilityFailureReason::NotEnoughConversions => "NOT_ENOUGH_CONVERSIONS",
-                CustomerPayPerConversionEligibilityFailureReason::ConversionLagTooHigh => "CONVERSION_LAG_TOO_HIGH",
-                CustomerPayPerConversionEligibilityFailureReason::HasCampaignWithSharedBudget => "HAS_CAMPAIGN_WITH_SHARED_BUDGET",
-                CustomerPayPerConversionEligibilityFailureReason::HasUploadClicksConversion => "HAS_UPLOAD_CLICKS_CONVERSION",
-                CustomerPayPerConversionEligibilityFailureReason::AverageDailySpendTooHigh => "AVERAGE_DAILY_SPEND_TOO_HIGH",
-                CustomerPayPerConversionEligibilityFailureReason::AnalysisNotComplete => "ANALYSIS_NOT_COMPLETE",
+                CustomerPayPerConversionEligibilityFailureReason::NotEnoughConversions => {
+                    "NOT_ENOUGH_CONVERSIONS"
+                }
+                CustomerPayPerConversionEligibilityFailureReason::ConversionLagTooHigh => {
+                    "CONVERSION_LAG_TOO_HIGH"
+                }
+                CustomerPayPerConversionEligibilityFailureReason::HasCampaignWithSharedBudget => {
+                    "HAS_CAMPAIGN_WITH_SHARED_BUDGET"
+                }
+                CustomerPayPerConversionEligibilityFailureReason::HasUploadClicksConversion => {
+                    "HAS_UPLOAD_CLICKS_CONVERSION"
+                }
+                CustomerPayPerConversionEligibilityFailureReason::AverageDailySpendTooHigh => {
+                    "AVERAGE_DAILY_SPEND_TOO_HIGH"
+                }
+                CustomerPayPerConversionEligibilityFailureReason::AnalysisNotComplete => {
+                    "ANALYSIS_NOT_COMPLETE"
+                }
                 CustomerPayPerConversionEligibilityFailureReason::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOT_ENOUGH_CONVERSIONS" => Some(Self::NotEnoughConversions),
+                "CONVERSION_LAG_TOO_HIGH" => Some(Self::ConversionLagTooHigh),
+                "HAS_CAMPAIGN_WITH_SHARED_BUDGET" => {
+                    Some(Self::HasCampaignWithSharedBudget)
+                }
+                "HAS_UPLOAD_CLICKS_CONVERSION" => Some(Self::HasUploadClicksConversion),
+                "AVERAGE_DAILY_SPEND_TOO_HIGH" => Some(Self::AverageDailySpendTooHigh),
+                "ANALYSIS_NOT_COMPLETE" => Some(Self::AnalysisNotComplete),
+                "OTHER" => Some(Self::Other),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing customizer attribute status.
-
 /// Container for enum describing possible statuses of a customizer attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomizerAttributeStatusEnum {
-}
+pub struct CustomizerAttributeStatusEnum {}
 /// Nested message and enum types in `CustomizerAttributeStatusEnum`.
 pub mod customizer_attribute_status_enum {
     /// The possible statuses of a customizer attribute.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomizerAttributeStatus {
         /// The status has not been specified.
@@ -9361,18 +13833,36 @@ pub mod customizer_attribute_status_enum {
                 CustomizerAttributeStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing customizer value status.
-
 /// Container for enum describing possible statuses of a customizer value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomizerValueStatusEnum {
-}
+pub struct CustomizerValueStatusEnum {}
 /// Nested message and enum types in `CustomizerValueStatusEnum`.
 pub mod customizer_value_status_enum {
     /// The possible statuses of a customizer value.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CustomizerValueStatus {
         /// The status has not been specified.
@@ -9397,18 +13887,36 @@ pub mod customizer_value_status_enum {
                 CustomizerValueStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing data-driven model status.
-
 /// Container for enum indicating data driven model status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataDrivenModelStatusEnum {
-}
+pub struct DataDrivenModelStatusEnum {}
 /// Nested message and enum types in `DataDrivenModelStatusEnum`.
 pub mod data_driven_model_status_enum {
     /// Enumerates data driven model statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DataDrivenModelStatus {
         /// Not specified.
@@ -9445,20 +13953,40 @@ pub mod data_driven_model_status_enum {
                 DataDrivenModelStatus::NeverGenerated => "NEVER_GENERATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AVAILABLE" => Some(Self::Available),
+                "STALE" => Some(Self::Stale),
+                "EXPIRED" => Some(Self::Expired),
+                "NEVER_GENERATED" => Some(Self::NeverGenerated),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing distance buckets.
-
 /// Container for distance buckets of a user’s distance from an advertiser’s
 /// location extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DistanceBucketEnum {
-}
+pub struct DistanceBucketEnum {}
 /// Nested message and enum types in `DistanceBucketEnum`.
 pub mod distance_bucket_enum {
     /// The distance bucket for a user’s distance from an advertiser’s location
     /// extension.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DistanceBucket {
         /// Not specified.
@@ -9558,18 +14086,61 @@ pub mod distance_bucket_enum {
                 DistanceBucket::Beyond40miles => "BEYOND_40MILES",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WITHIN_700M" => Some(Self::Within700m),
+                "WITHIN_1KM" => Some(Self::Within1km),
+                "WITHIN_5KM" => Some(Self::Within5km),
+                "WITHIN_10KM" => Some(Self::Within10km),
+                "WITHIN_15KM" => Some(Self::Within15km),
+                "WITHIN_20KM" => Some(Self::Within20km),
+                "WITHIN_25KM" => Some(Self::Within25km),
+                "WITHIN_30KM" => Some(Self::Within30km),
+                "WITHIN_35KM" => Some(Self::Within35km),
+                "WITHIN_40KM" => Some(Self::Within40km),
+                "WITHIN_45KM" => Some(Self::Within45km),
+                "WITHIN_50KM" => Some(Self::Within50km),
+                "WITHIN_55KM" => Some(Self::Within55km),
+                "WITHIN_60KM" => Some(Self::Within60km),
+                "WITHIN_65KM" => Some(Self::Within65km),
+                "BEYOND_65KM" => Some(Self::Beyond65km),
+                "WITHIN_0_7MILES" => Some(Self::Within07miles),
+                "WITHIN_1MILE" => Some(Self::Within1mile),
+                "WITHIN_5MILES" => Some(Self::Within5miles),
+                "WITHIN_10MILES" => Some(Self::Within10miles),
+                "WITHIN_15MILES" => Some(Self::Within15miles),
+                "WITHIN_20MILES" => Some(Self::Within20miles),
+                "WITHIN_25MILES" => Some(Self::Within25miles),
+                "WITHIN_30MILES" => Some(Self::Within30miles),
+                "WITHIN_35MILES" => Some(Self::Within35miles),
+                "WITHIN_40MILES" => Some(Self::Within40miles),
+                "BEYOND_40MILES" => Some(Self::Beyond40miles),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Dynamic Search Ad Page Feed criterion fields.
-
 /// Values for Dynamic Search Ad Page Feed criterion fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DsaPageFeedCriterionFieldEnum {
-}
+pub struct DsaPageFeedCriterionFieldEnum {}
 /// Nested message and enum types in `DsaPageFeedCriterionFieldEnum`.
 pub mod dsa_page_feed_criterion_field_enum {
     /// Possible values for Dynamic Search Ad Page Feed criterion fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DsaPageFeedCriterionField {
         /// Not specified.
@@ -9595,20 +14166,38 @@ pub mod dsa_page_feed_criterion_field_enum {
                 DsaPageFeedCriterionField::Label => "LABEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PAGE_URL" => Some(Self::PageUrl),
+                "LABEL" => Some(Self::Label),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Education placeholder fields.
-
 /// Values for Education placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EducationPlaceholderFieldEnum {
-}
+pub struct EducationPlaceholderFieldEnum {}
 /// Nested message and enum types in `EducationPlaceholderFieldEnum`.
 pub mod education_placeholder_field_enum {
     /// Possible values for Education placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum EducationPlaceholderField {
         /// Not specified.
@@ -9681,7 +14270,9 @@ pub mod education_placeholder_field_enum {
                 EducationPlaceholderField::SchoolName => "SCHOOL_NAME",
                 EducationPlaceholderField::Address => "ADDRESS",
                 EducationPlaceholderField::ThumbnailImageUrl => "THUMBNAIL_IMAGE_URL",
-                EducationPlaceholderField::AlternativeThumbnailImageUrl => "ALTERNATIVE_THUMBNAIL_IMAGE_URL",
+                EducationPlaceholderField::AlternativeThumbnailImageUrl => {
+                    "ALTERNATIVE_THUMBNAIL_IMAGE_URL"
+                }
                 EducationPlaceholderField::FinalUrls => "FINAL_URLS",
                 EducationPlaceholderField::FinalMobileUrls => "FINAL_MOBILE_URLS",
                 EducationPlaceholderField::TrackingUrl => "TRACKING_URL",
@@ -9692,18 +14283,53 @@ pub mod education_placeholder_field_enum {
                 EducationPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROGRAM_ID" => Some(Self::ProgramId),
+                "LOCATION_ID" => Some(Self::LocationId),
+                "PROGRAM_NAME" => Some(Self::ProgramName),
+                "AREA_OF_STUDY" => Some(Self::AreaOfStudy),
+                "PROGRAM_DESCRIPTION" => Some(Self::ProgramDescription),
+                "SCHOOL_NAME" => Some(Self::SchoolName),
+                "ADDRESS" => Some(Self::Address),
+                "THUMBNAIL_IMAGE_URL" => Some(Self::ThumbnailImageUrl),
+                "ALTERNATIVE_THUMBNAIL_IMAGE_URL" => {
+                    Some(Self::AlternativeThumbnailImageUrl)
+                }
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_PROGRAM_IDS" => Some(Self::SimilarProgramIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing extension setting device type.
-
 /// Container for enum describing extension setting device types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExtensionSettingDeviceEnum {
-}
+pub struct ExtensionSettingDeviceEnum {}
 /// Nested message and enum types in `ExtensionSettingDeviceEnum`.
 pub mod extension_setting_device_enum {
     /// Possible device types for an extension setting.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ExtensionSettingDevice {
         /// Not specified.
@@ -9730,19 +14356,37 @@ pub mod extension_setting_device_enum {
                 ExtensionSettingDevice::Desktop => "DESKTOP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "DESKTOP" => Some(Self::Desktop),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing extension type.
-
 /// Container for enum describing possible data types for an extension in an
 /// extension setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExtensionTypeEnum {
-}
+pub struct ExtensionTypeEnum {}
 /// Nested message and enum types in `ExtensionTypeEnum`.
 pub mod extension_type_enum {
     /// Possible data types for an extension in an extension setting.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ExtensionType {
         /// Not specified.
@@ -9800,18 +14444,47 @@ pub mod extension_type_enum {
                 ExtensionType::Image => "IMAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NONE" => Some(Self::None),
+                "APP" => Some(Self::App),
+                "CALL" => Some(Self::Call),
+                "CALLOUT" => Some(Self::Callout),
+                "MESSAGE" => Some(Self::Message),
+                "PRICE" => Some(Self::Price),
+                "PROMOTION" => Some(Self::Promotion),
+                "SITELINK" => Some(Self::Sitelink),
+                "STRUCTURED_SNIPPET" => Some(Self::StructuredSnippet),
+                "LOCATION" => Some(Self::Location),
+                "AFFILIATE_LOCATION" => Some(Self::AffiliateLocation),
+                "HOTEL_CALLOUT" => Some(Self::HotelCallout),
+                "IMAGE" => Some(Self::Image),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed attribute type.
-
 /// Container for enum describing possible data types for a feed attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedAttributeTypeEnum {
-}
+pub struct FeedAttributeTypeEnum {}
 /// Nested message and enum types in `FeedAttributeTypeEnum`.
 pub mod feed_attribute_type_enum {
     /// Possible data types for a feed attribute.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedAttributeType {
         /// Not specified.
@@ -9869,19 +14542,48 @@ pub mod feed_attribute_type_enum {
                 FeedAttributeType::Price => "PRICE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INT64" => Some(Self::Int64),
+                "DOUBLE" => Some(Self::Double),
+                "STRING" => Some(Self::String),
+                "BOOLEAN" => Some(Self::Boolean),
+                "URL" => Some(Self::Url),
+                "DATE_TIME" => Some(Self::DateTime),
+                "INT64_LIST" => Some(Self::Int64List),
+                "DOUBLE_LIST" => Some(Self::DoubleList),
+                "STRING_LIST" => Some(Self::StringList),
+                "BOOLEAN_LIST" => Some(Self::BooleanList),
+                "URL_LIST" => Some(Self::UrlList),
+                "DATE_TIME_LIST" => Some(Self::DateTimeList),
+                "PRICE" => Some(Self::Price),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed item quality evaluation approval statuses.
-
 /// Container for enum describing possible quality evaluation approval statuses
 /// of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemQualityApprovalStatusEnum {
-}
+pub struct FeedItemQualityApprovalStatusEnum {}
 /// Nested message and enum types in `FeedItemQualityApprovalStatusEnum`.
 pub mod feed_item_quality_approval_status_enum {
     /// The possible quality evaluation approval statuses of a feed item.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemQualityApprovalStatus {
         /// No value has been specified.
@@ -9907,19 +14609,37 @@ pub mod feed_item_quality_approval_status_enum {
                 FeedItemQualityApprovalStatus::Disapproved => "DISAPPROVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "APPROVED" => Some(Self::Approved),
+                "DISAPPROVED" => Some(Self::Disapproved),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed item quality disapproval reasons.
-
 /// Container for enum describing possible quality evaluation disapproval reasons
 /// of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemQualityDisapprovalReasonEnum {
-}
+pub struct FeedItemQualityDisapprovalReasonEnum {}
 /// Nested message and enum types in `FeedItemQualityDisapprovalReasonEnum`.
 pub mod feed_item_quality_disapproval_reason_enum {
     /// The possible quality evaluation disapproval reasons of a feed item.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemQualityDisapprovalReason {
         /// No value has been specified.
@@ -9972,38 +14692,134 @@ pub mod feed_item_quality_disapproval_reason_enum {
             match self {
                 FeedItemQualityDisapprovalReason::Unspecified => "UNSPECIFIED",
                 FeedItemQualityDisapprovalReason::Unknown => "UNKNOWN",
-                FeedItemQualityDisapprovalReason::PriceTableRepetitiveHeaders => "PRICE_TABLE_REPETITIVE_HEADERS",
-                FeedItemQualityDisapprovalReason::PriceTableRepetitiveDescription => "PRICE_TABLE_REPETITIVE_DESCRIPTION",
-                FeedItemQualityDisapprovalReason::PriceTableInconsistentRows => "PRICE_TABLE_INCONSISTENT_ROWS",
-                FeedItemQualityDisapprovalReason::PriceDescriptionHasPriceQualifiers => "PRICE_DESCRIPTION_HAS_PRICE_QUALIFIERS",
-                FeedItemQualityDisapprovalReason::PriceUnsupportedLanguage => "PRICE_UNSUPPORTED_LANGUAGE",
-                FeedItemQualityDisapprovalReason::PriceTableRowHeaderTableTypeMismatch => "PRICE_TABLE_ROW_HEADER_TABLE_TYPE_MISMATCH",
-                FeedItemQualityDisapprovalReason::PriceTableRowHeaderHasPromotionalText => "PRICE_TABLE_ROW_HEADER_HAS_PROMOTIONAL_TEXT",
-                FeedItemQualityDisapprovalReason::PriceTableRowDescriptionNotRelevant => "PRICE_TABLE_ROW_DESCRIPTION_NOT_RELEVANT",
-                FeedItemQualityDisapprovalReason::PriceTableRowDescriptionHasPromotionalText => "PRICE_TABLE_ROW_DESCRIPTION_HAS_PROMOTIONAL_TEXT",
-                FeedItemQualityDisapprovalReason::PriceTableRowHeaderDescriptionRepetitive => "PRICE_TABLE_ROW_HEADER_DESCRIPTION_REPETITIVE",
-                FeedItemQualityDisapprovalReason::PriceTableRowUnrateable => "PRICE_TABLE_ROW_UNRATEABLE",
-                FeedItemQualityDisapprovalReason::PriceTableRowPriceInvalid => "PRICE_TABLE_ROW_PRICE_INVALID",
-                FeedItemQualityDisapprovalReason::PriceTableRowUrlInvalid => "PRICE_TABLE_ROW_URL_INVALID",
-                FeedItemQualityDisapprovalReason::PriceHeaderOrDescriptionHasPrice => "PRICE_HEADER_OR_DESCRIPTION_HAS_PRICE",
-                FeedItemQualityDisapprovalReason::StructuredSnippetsHeaderPolicyViolated => "STRUCTURED_SNIPPETS_HEADER_POLICY_VIOLATED",
-                FeedItemQualityDisapprovalReason::StructuredSnippetsRepeatedValues => "STRUCTURED_SNIPPETS_REPEATED_VALUES",
-                FeedItemQualityDisapprovalReason::StructuredSnippetsEditorialGuidelines => "STRUCTURED_SNIPPETS_EDITORIAL_GUIDELINES",
-                FeedItemQualityDisapprovalReason::StructuredSnippetsHasPromotionalText => "STRUCTURED_SNIPPETS_HAS_PROMOTIONAL_TEXT",
+                FeedItemQualityDisapprovalReason::PriceTableRepetitiveHeaders => {
+                    "PRICE_TABLE_REPETITIVE_HEADERS"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRepetitiveDescription => {
+                    "PRICE_TABLE_REPETITIVE_DESCRIPTION"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableInconsistentRows => {
+                    "PRICE_TABLE_INCONSISTENT_ROWS"
+                }
+                FeedItemQualityDisapprovalReason::PriceDescriptionHasPriceQualifiers => {
+                    "PRICE_DESCRIPTION_HAS_PRICE_QUALIFIERS"
+                }
+                FeedItemQualityDisapprovalReason::PriceUnsupportedLanguage => {
+                    "PRICE_UNSUPPORTED_LANGUAGE"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowHeaderTableTypeMismatch => {
+                    "PRICE_TABLE_ROW_HEADER_TABLE_TYPE_MISMATCH"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowHeaderHasPromotionalText => {
+                    "PRICE_TABLE_ROW_HEADER_HAS_PROMOTIONAL_TEXT"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowDescriptionNotRelevant => {
+                    "PRICE_TABLE_ROW_DESCRIPTION_NOT_RELEVANT"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowDescriptionHasPromotionalText => {
+                    "PRICE_TABLE_ROW_DESCRIPTION_HAS_PROMOTIONAL_TEXT"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowHeaderDescriptionRepetitive => {
+                    "PRICE_TABLE_ROW_HEADER_DESCRIPTION_REPETITIVE"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowUnrateable => {
+                    "PRICE_TABLE_ROW_UNRATEABLE"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowPriceInvalid => {
+                    "PRICE_TABLE_ROW_PRICE_INVALID"
+                }
+                FeedItemQualityDisapprovalReason::PriceTableRowUrlInvalid => {
+                    "PRICE_TABLE_ROW_URL_INVALID"
+                }
+                FeedItemQualityDisapprovalReason::PriceHeaderOrDescriptionHasPrice => {
+                    "PRICE_HEADER_OR_DESCRIPTION_HAS_PRICE"
+                }
+                FeedItemQualityDisapprovalReason::StructuredSnippetsHeaderPolicyViolated => {
+                    "STRUCTURED_SNIPPETS_HEADER_POLICY_VIOLATED"
+                }
+                FeedItemQualityDisapprovalReason::StructuredSnippetsRepeatedValues => {
+                    "STRUCTURED_SNIPPETS_REPEATED_VALUES"
+                }
+                FeedItemQualityDisapprovalReason::StructuredSnippetsEditorialGuidelines => {
+                    "STRUCTURED_SNIPPETS_EDITORIAL_GUIDELINES"
+                }
+                FeedItemQualityDisapprovalReason::StructuredSnippetsHasPromotionalText => {
+                    "STRUCTURED_SNIPPETS_HAS_PROMOTIONAL_TEXT"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRICE_TABLE_REPETITIVE_HEADERS" => {
+                    Some(Self::PriceTableRepetitiveHeaders)
+                }
+                "PRICE_TABLE_REPETITIVE_DESCRIPTION" => {
+                    Some(Self::PriceTableRepetitiveDescription)
+                }
+                "PRICE_TABLE_INCONSISTENT_ROWS" => Some(Self::PriceTableInconsistentRows),
+                "PRICE_DESCRIPTION_HAS_PRICE_QUALIFIERS" => {
+                    Some(Self::PriceDescriptionHasPriceQualifiers)
+                }
+                "PRICE_UNSUPPORTED_LANGUAGE" => Some(Self::PriceUnsupportedLanguage),
+                "PRICE_TABLE_ROW_HEADER_TABLE_TYPE_MISMATCH" => {
+                    Some(Self::PriceTableRowHeaderTableTypeMismatch)
+                }
+                "PRICE_TABLE_ROW_HEADER_HAS_PROMOTIONAL_TEXT" => {
+                    Some(Self::PriceTableRowHeaderHasPromotionalText)
+                }
+                "PRICE_TABLE_ROW_DESCRIPTION_NOT_RELEVANT" => {
+                    Some(Self::PriceTableRowDescriptionNotRelevant)
+                }
+                "PRICE_TABLE_ROW_DESCRIPTION_HAS_PROMOTIONAL_TEXT" => {
+                    Some(Self::PriceTableRowDescriptionHasPromotionalText)
+                }
+                "PRICE_TABLE_ROW_HEADER_DESCRIPTION_REPETITIVE" => {
+                    Some(Self::PriceTableRowHeaderDescriptionRepetitive)
+                }
+                "PRICE_TABLE_ROW_UNRATEABLE" => Some(Self::PriceTableRowUnrateable),
+                "PRICE_TABLE_ROW_PRICE_INVALID" => Some(Self::PriceTableRowPriceInvalid),
+                "PRICE_TABLE_ROW_URL_INVALID" => Some(Self::PriceTableRowUrlInvalid),
+                "PRICE_HEADER_OR_DESCRIPTION_HAS_PRICE" => {
+                    Some(Self::PriceHeaderOrDescriptionHasPrice)
+                }
+                "STRUCTURED_SNIPPETS_HEADER_POLICY_VIOLATED" => {
+                    Some(Self::StructuredSnippetsHeaderPolicyViolated)
+                }
+                "STRUCTURED_SNIPPETS_REPEATED_VALUES" => {
+                    Some(Self::StructuredSnippetsRepeatedValues)
+                }
+                "STRUCTURED_SNIPPETS_EDITORIAL_GUIDELINES" => {
+                    Some(Self::StructuredSnippetsEditorialGuidelines)
+                }
+                "STRUCTURED_SNIPPETS_HAS_PROMOTIONAL_TEXT" => {
+                    Some(Self::StructuredSnippetsHasPromotionalText)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing feed item set status.
-
 /// Container for enum describing possible statuses of a feed item set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemSetStatusEnum {
-}
+pub struct FeedItemSetStatusEnum {}
 /// Nested message and enum types in `FeedItemSetStatusEnum`.
 pub mod feed_item_set_status_enum {
     /// Possible statuses of a feed item set.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemSetStatus {
         /// Not specified.
@@ -10028,18 +14844,36 @@ pub mod feed_item_set_status_enum {
                 FeedItemSetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed item status.
-
 /// Container for enum describing possible statuses of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemStatusEnum {
-}
+pub struct FeedItemStatusEnum {}
 /// Nested message and enum types in `FeedItemStatusEnum`.
 pub mod feed_item_status_enum {
     /// Possible statuses of a feed item.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemStatus {
         /// Not specified.
@@ -10064,19 +14898,37 @@ pub mod feed_item_status_enum {
                 FeedItemStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed item target device type.
-
 /// Container for enum describing possible data types for a feed item target
 /// device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemTargetDeviceEnum {
-}
+pub struct FeedItemTargetDeviceEnum {}
 /// Nested message and enum types in `FeedItemTargetDeviceEnum`.
 pub mod feed_item_target_device_enum {
     /// Possible data types for a feed item target device.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemTargetDevice {
         /// Not specified.
@@ -10098,18 +14950,35 @@ pub mod feed_item_target_device_enum {
                 FeedItemTargetDevice::Mobile => "MOBILE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed item target status.
-
 /// Container for enum describing possible statuses of a feed item target.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemTargetStatusEnum {
-}
+pub struct FeedItemTargetStatusEnum {}
 /// Nested message and enum types in `FeedItemTargetStatusEnum`.
 pub mod feed_item_target_status_enum {
     /// Possible statuses of a feed item target.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemTargetStatus {
         /// Not specified.
@@ -10134,18 +15003,36 @@ pub mod feed_item_target_status_enum {
                 FeedItemTargetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed item target type status.
-
 /// Container for enum describing possible types of a feed item target.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemTargetTypeEnum {
-}
+pub struct FeedItemTargetTypeEnum {}
 /// Nested message and enum types in `FeedItemTargetTypeEnum`.
 pub mod feed_item_target_type_enum {
     /// Possible type of a feed item target.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemTargetType {
         /// Not specified.
@@ -10173,18 +15060,37 @@ pub mod feed_item_target_type_enum {
                 FeedItemTargetType::Criterion => "CRITERION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "AD_GROUP" => Some(Self::AdGroup),
+                "CRITERION" => Some(Self::Criterion),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed item validation statuses.
-
 /// Container for enum describing possible validation statuses of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemValidationStatusEnum {
-}
+pub struct FeedItemValidationStatusEnum {}
 /// Nested message and enum types in `FeedItemValidationStatusEnum`.
 pub mod feed_item_validation_status_enum {
     /// The possible validation statuses of a feed item.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedItemValidationStatus {
         /// No value has been specified.
@@ -10212,18 +15118,37 @@ pub mod feed_item_validation_status_enum {
                 FeedItemValidationStatus::Valid => "VALID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "INVALID" => Some(Self::Invalid),
+                "VALID" => Some(Self::Valid),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing status of a feed link.
-
 /// Container for an enum describing possible statuses of a feed link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedLinkStatusEnum {
-}
+pub struct FeedLinkStatusEnum {}
 /// Nested message and enum types in `FeedLinkStatusEnum`.
 pub mod feed_link_status_enum {
     /// Possible statuses of a feed link.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedLinkStatus {
         /// Not specified.
@@ -10248,18 +15173,36 @@ pub mod feed_link_status_enum {
                 FeedLinkStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing criterion types for feed mappings.
-
 /// Container for enum describing possible criterion types for a feed mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedMappingCriterionTypeEnum {
-}
+pub struct FeedMappingCriterionTypeEnum {}
 /// Nested message and enum types in `FeedMappingCriterionTypeEnum`.
 pub mod feed_mapping_criterion_type_enum {
     /// Possible placeholder types for a feed mapping.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedMappingCriterionType {
         /// Not specified.
@@ -10280,22 +15223,42 @@ pub mod feed_mapping_criterion_type_enum {
             match self {
                 FeedMappingCriterionType::Unspecified => "UNSPECIFIED",
                 FeedMappingCriterionType::Unknown => "UNKNOWN",
-                FeedMappingCriterionType::LocationExtensionTargeting => "LOCATION_EXTENSION_TARGETING",
+                FeedMappingCriterionType::LocationExtensionTargeting => {
+                    "LOCATION_EXTENSION_TARGETING"
+                }
                 FeedMappingCriterionType::DsaPageFeed => "DSA_PAGE_FEED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOCATION_EXTENSION_TARGETING" => Some(Self::LocationExtensionTargeting),
+                "DSA_PAGE_FEED" => Some(Self::DsaPageFeed),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing feed mapping status.
-
 /// Container for enum describing possible statuses of a feed mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedMappingStatusEnum {
-}
+pub struct FeedMappingStatusEnum {}
 /// Nested message and enum types in `FeedMappingStatusEnum`.
 pub mod feed_mapping_status_enum {
     /// Possible statuses of a feed mapping.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedMappingStatus {
         /// Not specified.
@@ -10320,18 +15283,36 @@ pub mod feed_mapping_status_enum {
                 FeedMappingStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed origin.
-
 /// Container for enum describing possible values for a feed origin.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedOriginEnum {
-}
+pub struct FeedOriginEnum {}
 /// Nested message and enum types in `FeedOriginEnum`.
 pub mod feed_origin_enum {
     /// Possible values for a feed origin.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedOrigin {
         /// Not specified.
@@ -10359,18 +15340,36 @@ pub mod feed_origin_enum {
                 FeedOrigin::Google => "GOOGLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "USER" => Some(Self::User),
+                "GOOGLE" => Some(Self::Google),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing feed status.
-
 /// Container for enum describing possible statuses of a feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedStatusEnum {
-}
+pub struct FeedStatusEnum {}
 /// Nested message and enum types in `FeedStatusEnum`.
 pub mod feed_status_enum {
     /// Possible statuses of a feed.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FeedStatus {
         /// Not specified.
@@ -10395,20 +15394,38 @@ pub mod feed_status_enum {
                 FeedStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Flight placeholder fields.
-
 /// Values for Flight placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FlightPlaceholderFieldEnum {
-}
+pub struct FlightPlaceholderFieldEnum {}
 /// Nested message and enum types in `FlightPlaceholderFieldEnum`.
 pub mod flight_placeholder_field_enum {
     /// Possible values for Flight placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FlightPlaceholderField {
         /// Not specified.
@@ -10494,23 +15511,58 @@ pub mod flight_placeholder_field_enum {
                 FlightPlaceholderField::FinalMobileUrls => "FINAL_MOBILE_URLS",
                 FlightPlaceholderField::TrackingUrl => "TRACKING_URL",
                 FlightPlaceholderField::AndroidAppLink => "ANDROID_APP_LINK",
-                FlightPlaceholderField::SimilarDestinationIds => "SIMILAR_DESTINATION_IDS",
+                FlightPlaceholderField::SimilarDestinationIds => {
+                    "SIMILAR_DESTINATION_IDS"
+                }
                 FlightPlaceholderField::IosAppLink => "IOS_APP_LINK",
                 FlightPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DESTINATION_ID" => Some(Self::DestinationId),
+                "ORIGIN_ID" => Some(Self::OriginId),
+                "FLIGHT_DESCRIPTION" => Some(Self::FlightDescription),
+                "ORIGIN_NAME" => Some(Self::OriginName),
+                "DESTINATION_NAME" => Some(Self::DestinationName),
+                "FLIGHT_PRICE" => Some(Self::FlightPrice),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "FLIGHT_SALE_PRICE" => Some(Self::FlightSalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_DESTINATION_IDS" => Some(Self::SimilarDestinationIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing geo target constant statuses.
-
 /// Container for describing the status of a geo target constant.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeoTargetConstantStatusEnum {
-}
+pub struct GeoTargetConstantStatusEnum {}
 /// Nested message and enum types in `GeoTargetConstantStatusEnum`.
 pub mod geo_target_constant_status_enum {
     /// The possible statuses of a geo target constant.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GeoTargetConstantStatus {
         /// No value has been specified.
@@ -10537,19 +15589,37 @@ pub mod geo_target_constant_status_enum {
                 GeoTargetConstantStatus::RemovalPlanned => "REMOVAL_PLANNED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVAL_PLANNED" => Some(Self::RemovalPlanned),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing GeoTargetingRestriction.
-
 /// Message describing feed item geo targeting restriction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeoTargetingRestrictionEnum {
-}
+pub struct GeoTargetingRestrictionEnum {}
 /// Nested message and enum types in `GeoTargetingRestrictionEnum`.
 pub mod geo_targeting_restriction_enum {
     /// A restriction used to determine if the request context's
     /// geo should be matched.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GeoTargetingRestriction {
         /// Not specified.
@@ -10572,18 +15642,35 @@ pub mod geo_targeting_restriction_enum {
                 GeoTargetingRestriction::LocationOfPresence => "LOCATION_OF_PRESENCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LOCATION_OF_PRESENCE" => Some(Self::LocationOfPresence),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing geo targeting types.
-
 /// Container for enum describing possible geo targeting types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeoTargetingTypeEnum {
-}
+pub struct GeoTargetingTypeEnum {}
 /// Nested message and enum types in `GeoTargetingTypeEnum`.
 pub mod geo_targeting_type_enum {
     /// The possible geo targeting types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GeoTargetingType {
         /// Not specified.
@@ -10608,20 +15695,38 @@ pub mod geo_targeting_type_enum {
                 GeoTargetingType::LocationOfPresence => "LOCATION_OF_PRESENCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AREA_OF_INTEREST" => Some(Self::AreaOfInterest),
+                "LOCATION_OF_PRESENCE" => Some(Self::LocationOfPresence),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing goal config level.
-
 /// Container for enum describing possible goal config levels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoalConfigLevelEnum {
-}
+pub struct GoalConfigLevelEnum {}
 /// Nested message and enum types in `GoalConfigLevelEnum`.
 pub mod goal_config_level_enum {
     /// The possible goal config levels. Campaigns automatically inherit the
     /// effective conversion account's customer goals unless they have been
     /// configured with their own set of campaign goals.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GoalConfigLevel {
         /// The goal config level has not been specified.
@@ -10646,19 +15751,37 @@ pub mod goal_config_level_enum {
                 GoalConfigLevel::Campaign => "CAMPAIGN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOMER" => Some(Self::Customer),
+                "CAMPAIGN" => Some(Self::Campaign),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing GoogleAdsField categories.
-
 /// Container for enum that determines if the described artifact is a resource
 /// or a field, and if it is a field, when it segments search queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleAdsFieldCategoryEnum {
-}
+pub struct GoogleAdsFieldCategoryEnum {}
 /// Nested message and enum types in `GoogleAdsFieldCategoryEnum`.
 pub mod google_ads_field_category_enum {
     /// The category of the artifact.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GoogleAdsFieldCategory {
         /// Unspecified
@@ -10693,18 +15816,38 @@ pub mod google_ads_field_category_enum {
                 GoogleAdsFieldCategory::Metric => "METRIC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "RESOURCE" => Some(Self::Resource),
+                "ATTRIBUTE" => Some(Self::Attribute),
+                "SEGMENT" => Some(Self::Segment),
+                "METRIC" => Some(Self::Metric),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing GoogleAdsField data types.
-
 /// Container holding the various data types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleAdsFieldDataTypeEnum {
-}
+pub struct GoogleAdsFieldDataTypeEnum {}
 /// Nested message and enum types in `GoogleAdsFieldDataTypeEnum`.
 pub mod google_ads_field_data_type_enum {
     /// These are the various types a GoogleAdsService artifact may take on.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GoogleAdsFieldDataType {
         /// Unspecified
@@ -10781,18 +15924,45 @@ pub mod google_ads_field_data_type_enum {
                 GoogleAdsFieldDataType::Uint64 => "UINT64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BOOLEAN" => Some(Self::Boolean),
+                "DATE" => Some(Self::Date),
+                "DOUBLE" => Some(Self::Double),
+                "ENUM" => Some(Self::Enum),
+                "FLOAT" => Some(Self::Float),
+                "INT32" => Some(Self::Int32),
+                "INT64" => Some(Self::Int64),
+                "MESSAGE" => Some(Self::Message),
+                "RESOURCE_NAME" => Some(Self::ResourceName),
+                "STRING" => Some(Self::String),
+                "UINT64" => Some(Self::Uint64),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing google voice call status.
-
 /// Container for enum describing possible statuses of a google voice call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleVoiceCallStatusEnum {
-}
+pub struct GoogleVoiceCallStatusEnum {}
 /// Nested message and enum types in `GoogleVoiceCallStatusEnum`.
 pub mod google_voice_call_status_enum {
     /// Possible statuses of a google voice call.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GoogleVoiceCallStatus {
         /// Not specified.
@@ -10817,20 +15987,38 @@ pub mod google_voice_call_status_enum {
                 GoogleVoiceCallStatus::Received => "RECEIVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MISSED" => Some(Self::Missed),
+                "RECEIVED" => Some(Self::Received),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Hotel placeholder fields.
-
 /// Values for Hotel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelPlaceholderFieldEnum {
-}
+pub struct HotelPlaceholderFieldEnum {}
 /// Nested message and enum types in `HotelPlaceholderFieldEnum`.
 pub mod hotel_placeholder_field_enum {
     /// Possible values for Hotel placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HotelPlaceholderField {
         /// Not specified.
@@ -10927,18 +16115,54 @@ pub mod hotel_placeholder_field_enum {
                 HotelPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROPERTY_ID" => Some(Self::PropertyId),
+                "PROPERTY_NAME" => Some(Self::PropertyName),
+                "DESTINATION_NAME" => Some(Self::DestinationName),
+                "DESCRIPTION" => Some(Self::Description),
+                "ADDRESS" => Some(Self::Address),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "CATEGORY" => Some(Self::Category),
+                "STAR_RATING" => Some(Self::StarRating),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_PROPERTY_IDS" => Some(Self::SimilarPropertyIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing hotel reconciliation row status.
-
 /// Container for HotelReconciliationStatus.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelReconciliationStatusEnum {
-}
+pub struct HotelReconciliationStatusEnum {}
 /// Nested message and enum types in `HotelReconciliationStatusEnum`.
 pub mod hotel_reconciliation_status_enum {
     /// Status of the hotel booking reconciliation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HotelReconciliationStatus {
         /// Not specified.
@@ -10970,23 +16194,45 @@ pub mod hotel_reconciliation_status_enum {
                 HotelReconciliationStatus::Unspecified => "UNSPECIFIED",
                 HotelReconciliationStatus::Unknown => "UNKNOWN",
                 HotelReconciliationStatus::ReservationEnabled => "RESERVATION_ENABLED",
-                HotelReconciliationStatus::ReconciliationNeeded => "RECONCILIATION_NEEDED",
+                HotelReconciliationStatus::ReconciliationNeeded => {
+                    "RECONCILIATION_NEEDED"
+                }
                 HotelReconciliationStatus::Reconciled => "RECONCILED",
                 HotelReconciliationStatus::Canceled => "CANCELED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "RESERVATION_ENABLED" => Some(Self::ReservationEnabled),
+                "RECONCILIATION_NEEDED" => Some(Self::ReconciliationNeeded),
+                "RECONCILED" => Some(Self::Reconciled),
+                "CANCELED" => Some(Self::Canceled),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Advertiser Provided Image placeholder fields.
-
 /// Values for Advertiser Provided Image placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImagePlaceholderFieldEnum {
-}
+pub struct ImagePlaceholderFieldEnum {}
 /// Nested message and enum types in `ImagePlaceholderFieldEnum`.
 pub mod image_placeholder_field_enum {
     /// Possible values for Advertiser Provided Image placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ImagePlaceholderField {
         /// Not specified.
@@ -11008,18 +16254,35 @@ pub mod image_placeholder_field_enum {
                 ImagePlaceholderField::AssetId => "ASSET_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ASSET_ID" => Some(Self::AssetId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing invoice types.
-
 /// Container for enum describing the type of invoices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InvoiceTypeEnum {
-}
+pub struct InvoiceTypeEnum {}
 /// Nested message and enum types in `InvoiceTypeEnum`.
 pub mod invoice_type_enum {
     /// The possible type of invoices.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum InvoiceType {
         /// Not specified.
@@ -11044,20 +16307,38 @@ pub mod invoice_type_enum {
                 InvoiceType::Invoice => "INVOICE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CREDIT_MEMO" => Some(Self::CreditMemo),
+                "INVOICE" => Some(Self::Invoice),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Job placeholder fields.
-
 /// Values for Job placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct JobPlaceholderFieldEnum {
-}
+pub struct JobPlaceholderFieldEnum {}
 /// Nested message and enum types in `JobPlaceholderFieldEnum`.
 pub mod job_placeholder_field_enum {
     /// Possible values for Job placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum JobPlaceholderField {
         /// Not specified.
@@ -11145,18 +16426,51 @@ pub mod job_placeholder_field_enum {
                 JobPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "JOB_ID" => Some(Self::JobId),
+                "LOCATION_ID" => Some(Self::LocationId),
+                "TITLE" => Some(Self::Title),
+                "SUBTITLE" => Some(Self::Subtitle),
+                "DESCRIPTION" => Some(Self::Description),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "CATEGORY" => Some(Self::Category),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "ADDRESS" => Some(Self::Address),
+                "SALARY" => Some(Self::Salary),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_JOB_IDS" => Some(Self::SimilarJobIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing keyword plan forecast intervals.
-
 /// Container for enumeration of forecast intervals.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanForecastIntervalEnum {
-}
+pub struct KeywordPlanForecastIntervalEnum {}
 /// Nested message and enum types in `KeywordPlanForecastIntervalEnum`.
 pub mod keyword_plan_forecast_interval_enum {
     /// Forecast intervals.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum KeywordPlanForecastInterval {
         /// Not specified.
@@ -11187,18 +16501,37 @@ pub mod keyword_plan_forecast_interval_enum {
                 KeywordPlanForecastInterval::NextQuarter => "NEXT_QUARTER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEXT_WEEK" => Some(Self::NextWeek),
+                "NEXT_MONTH" => Some(Self::NextMonth),
+                "NEXT_QUARTER" => Some(Self::NextQuarter),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Keyword Planner Keyword annotation types.
-
 /// Container for enumeration of keyword plan keyword annotations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanKeywordAnnotationEnum {
-}
+pub struct KeywordPlanKeywordAnnotationEnum {}
 /// Nested message and enum types in `KeywordPlanKeywordAnnotationEnum`.
 pub mod keyword_plan_keyword_annotation_enum {
     /// Enumerates keyword plan annotations that can be requested.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum KeywordPlanKeywordAnnotation {
         /// Not specified.
@@ -11220,18 +16553,35 @@ pub mod keyword_plan_keyword_annotation_enum {
                 KeywordPlanKeywordAnnotation::KeywordConcept => "KEYWORD_CONCEPT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "KEYWORD_CONCEPT" => Some(Self::KeywordConcept),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Keyword Planner forecastable network types.
-
 /// Container for enumeration of keyword plan forecastable network types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanNetworkEnum {
-}
+pub struct KeywordPlanNetworkEnum {}
 /// Nested message and enum types in `KeywordPlanNetworkEnum`.
 pub mod keyword_plan_network_enum {
     /// Enumerates keyword plan forecastable network types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum KeywordPlanNetwork {
         /// Not specified.
@@ -11253,19 +16603,41 @@ pub mod keyword_plan_network_enum {
                 KeywordPlanNetwork::Unspecified => "UNSPECIFIED",
                 KeywordPlanNetwork::Unknown => "UNKNOWN",
                 KeywordPlanNetwork::GoogleSearch => "GOOGLE_SEARCH",
-                KeywordPlanNetwork::GoogleSearchAndPartners => "GOOGLE_SEARCH_AND_PARTNERS",
+                KeywordPlanNetwork::GoogleSearchAndPartners => {
+                    "GOOGLE_SEARCH_AND_PARTNERS"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GOOGLE_SEARCH" => Some(Self::GoogleSearch),
+                "GOOGLE_SEARCH_AND_PARTNERS" => Some(Self::GoogleSearchAndPartners),
+                _ => None,
             }
         }
     }
 }
 /// Container for enum describing possible status of a label.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LabelStatusEnum {
-}
+pub struct LabelStatusEnum {}
 /// Nested message and enum types in `LabelStatusEnum`.
 pub mod label_status_enum {
     /// Possible statuses of a label.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LabelStatus {
         /// Not specified.
@@ -11290,17 +16662,37 @@ pub mod label_status_enum {
                 LabelStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing different types of Linked accounts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LinkedAccountTypeEnum {
-}
+pub struct LinkedAccountTypeEnum {}
 /// Nested message and enum types in `LinkedAccountTypeEnum`.
 pub mod linked_account_type_enum {
     /// Describes the possible link types between a Google Ads customer
     /// and another account.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LinkedAccountType {
         /// Not specified.
@@ -11328,19 +16720,38 @@ pub mod linked_account_type_enum {
                 LinkedAccountType::GoogleAds => "GOOGLE_ADS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "THIRD_PARTY_APP_ANALYTICS" => Some(Self::ThirdPartyAppAnalytics),
+                "DATA_PARTNER" => Some(Self::DataPartner),
+                "GOOGLE_ADS" => Some(Self::GoogleAds),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Container for enum describing the levels of bidding category used in
 /// ListingGroupFilterDimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterBiddingCategoryLevelEnum {
-}
+pub struct ListingGroupFilterBiddingCategoryLevelEnum {}
 /// Nested message and enum types in `ListingGroupFilterBiddingCategoryLevelEnum`.
 pub mod listing_group_filter_bidding_category_level_enum {
     /// The level of the listing group filter bidding category.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupFilterBiddingCategoryLevel {
         /// Not specified.
@@ -11374,19 +16785,40 @@ pub mod listing_group_filter_bidding_category_level_enum {
                 ListingGroupFilterBiddingCategoryLevel::Level5 => "LEVEL5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Container for enum describing the indexes of custom attribute used in
 /// ListingGroupFilterDimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterCustomAttributeIndexEnum {
-}
+pub struct ListingGroupFilterCustomAttributeIndexEnum {}
 /// Nested message and enum types in `ListingGroupFilterCustomAttributeIndexEnum`.
 pub mod listing_group_filter_custom_attribute_index_enum {
     /// The index of customer attributes.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupFilterCustomAttributeIndex {
         /// Not specified.
@@ -11420,18 +16852,39 @@ pub mod listing_group_filter_custom_attribute_index_enum {
                 ListingGroupFilterCustomAttributeIndex::Index4 => "INDEX4",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INDEX0" => Some(Self::Index0),
+                "INDEX1" => Some(Self::Index1),
+                "INDEX2" => Some(Self::Index2),
+                "INDEX3" => Some(Self::Index3),
+                "INDEX4" => Some(Self::Index4),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Locality of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterProductChannelEnum {
-}
+pub struct ListingGroupFilterProductChannelEnum {}
 /// Nested message and enum types in `ListingGroupFilterProductChannelEnum`.
 pub mod listing_group_filter_product_channel_enum {
     /// Enum describing the locality of a product offer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupFilterProductChannel {
         /// Not specified.
@@ -11456,18 +16909,36 @@ pub mod listing_group_filter_product_channel_enum {
                 ListingGroupFilterProductChannel::Local => "LOCAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ONLINE" => Some(Self::Online),
+                "LOCAL" => Some(Self::Local),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Condition of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterProductConditionEnum {
-}
+pub struct ListingGroupFilterProductConditionEnum {}
 /// Nested message and enum types in `ListingGroupFilterProductConditionEnum`.
 pub mod listing_group_filter_product_condition_enum {
     /// Enum describing the condition of a product offer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupFilterProductCondition {
         /// Not specified.
@@ -11495,18 +16966,37 @@ pub mod listing_group_filter_product_condition_enum {
                 ListingGroupFilterProductCondition::Used => "USED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW" => Some(Self::New),
+                "REFURBISHED" => Some(Self::Refurbished),
+                "USED" => Some(Self::Used),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Level of the type of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterProductTypeLevelEnum {
-}
+pub struct ListingGroupFilterProductTypeLevelEnum {}
 /// Nested message and enum types in `ListingGroupFilterProductTypeLevelEnum`.
 pub mod listing_group_filter_product_type_level_enum {
     /// Enum describing the level of the type of a product offer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupFilterProductTypeLevel {
         /// Not specified.
@@ -11540,18 +17030,39 @@ pub mod listing_group_filter_product_type_level_enum {
                 ListingGroupFilterProductTypeLevel::Level5 => "LEVEL5",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEVEL1" => Some(Self::Level1),
+                "LEVEL2" => Some(Self::Level2),
+                "LEVEL3" => Some(Self::Level3),
+                "LEVEL4" => Some(Self::Level4),
+                "LEVEL5" => Some(Self::Level5),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Container for enum describing the type of the listing group filter node.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterTypeEnum {
-}
+pub struct ListingGroupFilterTypeEnum {}
 /// Nested message and enum types in `ListingGroupFilterTypeEnum`.
 pub mod listing_group_filter_type_enum {
     /// The type of the listing group filter.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupFilterType {
         /// Not specified.
@@ -11579,19 +17090,38 @@ pub mod listing_group_filter_type_enum {
                 ListingGroupFilterType::UnitExcluded => "UNIT_EXCLUDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SUBDIVISION" => Some(Self::Subdivision),
+                "UNIT_INCLUDED" => Some(Self::UnitIncluded),
+                "UNIT_EXCLUDED" => Some(Self::UnitExcluded),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing listing groups.
-
 /// Container for enum describing the type of the vertical a listing group filter
 /// tree represents.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterVerticalEnum {
-}
+pub struct ListingGroupFilterVerticalEnum {}
 /// Nested message and enum types in `ListingGroupFilterVerticalEnum`.
 pub mod listing_group_filter_vertical_enum {
     /// The type of the listing group filter vertical.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ListingGroupFilterVertical {
         /// Not specified.
@@ -11613,20 +17143,37 @@ pub mod listing_group_filter_vertical_enum {
                 ListingGroupFilterVertical::Shopping => "SHOPPING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SHOPPING" => Some(Self::Shopping),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Local placeholder fields.
-
 /// Values for Local placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocalPlaceholderFieldEnum {
-}
+pub struct LocalPlaceholderFieldEnum {}
 /// Nested message and enum types in `LocalPlaceholderFieldEnum`.
 pub mod local_placeholder_field_enum {
     /// Possible values for Local placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LocalPlaceholderField {
         /// Not specified.
@@ -11718,18 +17265,53 @@ pub mod local_placeholder_field_enum {
                 LocalPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DEAL_ID" => Some(Self::DealId),
+                "DEAL_NAME" => Some(Self::DealName),
+                "SUBTITLE" => Some(Self::Subtitle),
+                "DESCRIPTION" => Some(Self::Description),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "ADDRESS" => Some(Self::Address),
+                "CATEGORY" => Some(Self::Category),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_DEAL_IDS" => Some(Self::SimilarDealIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Location Extension Targeting criterion fields.
-
 /// Values for Location Extension Targeting criterion fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationExtensionTargetingCriterionFieldEnum {
-}
+pub struct LocationExtensionTargetingCriterionFieldEnum {}
 /// Nested message and enum types in `LocationExtensionTargetingCriterionFieldEnum`.
 pub mod location_extension_targeting_criterion_field_enum {
     /// Possible values for Location Extension Targeting criterion fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LocationExtensionTargetingCriterionField {
         /// Not specified.
@@ -11758,26 +17340,52 @@ pub mod location_extension_targeting_criterion_field_enum {
             match self {
                 LocationExtensionTargetingCriterionField::Unspecified => "UNSPECIFIED",
                 LocationExtensionTargetingCriterionField::Unknown => "UNKNOWN",
-                LocationExtensionTargetingCriterionField::AddressLine1 => "ADDRESS_LINE_1",
-                LocationExtensionTargetingCriterionField::AddressLine2 => "ADDRESS_LINE_2",
+                LocationExtensionTargetingCriterionField::AddressLine1 => {
+                    "ADDRESS_LINE_1"
+                }
+                LocationExtensionTargetingCriterionField::AddressLine2 => {
+                    "ADDRESS_LINE_2"
+                }
                 LocationExtensionTargetingCriterionField::City => "CITY",
                 LocationExtensionTargetingCriterionField::Province => "PROVINCE",
                 LocationExtensionTargetingCriterionField::PostalCode => "POSTAL_CODE",
                 LocationExtensionTargetingCriterionField::CountryCode => "COUNTRY_CODE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADDRESS_LINE_1" => Some(Self::AddressLine1),
+                "ADDRESS_LINE_2" => Some(Self::AddressLine2),
+                "CITY" => Some(Self::City),
+                "PROVINCE" => Some(Self::Province),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Location placeholder fields.
-
 /// Values for Location placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationPlaceholderFieldEnum {
-}
+pub struct LocationPlaceholderFieldEnum {}
 /// Nested message and enum types in `LocationPlaceholderFieldEnum`.
 pub mod location_placeholder_field_enum {
     /// Possible values for Location placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LocationPlaceholderField {
         /// Not specified.
@@ -11820,18 +17428,42 @@ pub mod location_placeholder_field_enum {
                 LocationPlaceholderField::PhoneNumber => "PHONE_NUMBER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "ADDRESS_LINE_1" => Some(Self::AddressLine1),
+                "ADDRESS_LINE_2" => Some(Self::AddressLine2),
+                "CITY" => Some(Self::City),
+                "PROVINCE" => Some(Self::Province),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing location source types.
-
 /// Used to distinguish the location source type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationSourceTypeEnum {
-}
+pub struct LocationSourceTypeEnum {}
 /// Nested message and enum types in `LocationSourceTypeEnum`.
 pub mod location_source_type_enum {
     /// The possible types of a location source.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum LocationSourceType {
         /// No value has been specified.
@@ -11856,16 +17488,36 @@ pub mod location_source_type_enum {
                 LocationSourceType::Affiliate => "AFFILIATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GOOGLE_MY_BUSINESS" => Some(Self::GoogleMyBusiness),
+                "AFFILIATE" => Some(Self::Affiliate),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible status of a manager and client link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManagerLinkStatusEnum {
-}
+pub struct ManagerLinkStatusEnum {}
 /// Nested message and enum types in `ManagerLinkStatusEnum`.
 pub mod manager_link_status_enum {
     /// Possible statuses of a link.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ManagerLinkStatus {
         /// Not specified.
@@ -11901,18 +17553,39 @@ pub mod manager_link_status_enum {
                 ManagerLinkStatus::Canceled => "CANCELED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                "PENDING" => Some(Self::Pending),
+                "REFUSED" => Some(Self::Refused),
+                "CANCELED" => Some(Self::Canceled),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing media types.
-
 /// Container for enum describing the types of media.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaTypeEnum {
-}
+pub struct MediaTypeEnum {}
 /// Nested message and enum types in `MediaTypeEnum`.
 pub mod media_type_enum {
     /// The type of media.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MediaType {
         /// The media type has not been specified.
@@ -11951,20 +17624,42 @@ pub mod media_type_enum {
                 MediaType::DynamicImage => "DYNAMIC_IMAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "IMAGE" => Some(Self::Image),
+                "ICON" => Some(Self::Icon),
+                "MEDIA_BUNDLE" => Some(Self::MediaBundle),
+                "AUDIO" => Some(Self::Audio),
+                "VIDEO" => Some(Self::Video),
+                "DYNAMIC_IMAGE" => Some(Self::DynamicImage),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Merchant Center link statuses.
-
 /// Container for enum describing possible statuses of a Google Merchant Center
 /// link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MerchantCenterLinkStatusEnum {
-}
+pub struct MerchantCenterLinkStatusEnum {}
 /// Nested message and enum types in `MerchantCenterLinkStatusEnum`.
 pub mod merchant_center_link_status_enum {
     /// Describes the possible statuses for a link between a Google Ads customer
     /// and a Google Merchant Center account.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MerchantCenterLinkStatus {
         /// Not specified.
@@ -11990,18 +17685,36 @@ pub mod merchant_center_link_status_enum {
                 MerchantCenterLinkStatus::Pending => "PENDING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "PENDING" => Some(Self::Pending),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Message placeholder fields.
-
 /// Values for Message placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MessagePlaceholderFieldEnum {
-}
+pub struct MessagePlaceholderFieldEnum {}
 /// Nested message and enum types in `MessagePlaceholderFieldEnum`.
 pub mod message_placeholder_field_enum {
     /// Possible values for Message placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MessagePlaceholderField {
         /// Not specified.
@@ -12037,18 +17750,39 @@ pub mod message_placeholder_field_enum {
                 MessagePlaceholderField::MessageText => "MESSAGE_TEXT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BUSINESS_NAME" => Some(Self::BusinessName),
+                "COUNTRY_CODE" => Some(Self::CountryCode),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "MESSAGE_EXTENSION_TEXT" => Some(Self::MessageExtensionText),
+                "MESSAGE_TEXT" => Some(Self::MessageText),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing mobile device types.
-
 /// Container for enum describing the types of mobile device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MobileDeviceTypeEnum {
-}
+pub struct MobileDeviceTypeEnum {}
 /// Nested message and enum types in `MobileDeviceTypeEnum`.
 pub mod mobile_device_type_enum {
     /// The type of mobile device.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MobileDeviceType {
         /// Not specified.
@@ -12073,18 +17807,36 @@ pub mod mobile_device_type_enum {
                 MobileDeviceType::Tablet => "TABLET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "TABLET" => Some(Self::Tablet),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing negative geo target types.
-
 /// Container for enum describing possible negative geo target types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NegativeGeoTargetTypeEnum {
-}
+pub struct NegativeGeoTargetTypeEnum {}
 /// Nested message and enum types in `NegativeGeoTargetTypeEnum`.
 pub mod negative_geo_target_type_enum {
     /// The possible negative geo target types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum NegativeGeoTargetType {
         /// Not specified.
@@ -12111,19 +17863,37 @@ pub mod negative_geo_target_type_enum {
                 NegativeGeoTargetType::Presence => "PRESENCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRESENCE_OR_INTEREST" => Some(Self::PresenceOrInterest),
+                "PRESENCE" => Some(Self::Presence),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing offline user data job failure reasons.
-
 /// Container for enum describing reasons why an offline user data job
 /// failed to be processed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobFailureReasonEnum {
-}
+pub struct OfflineUserDataJobFailureReasonEnum {}
 /// Nested message and enum types in `OfflineUserDataJobFailureReasonEnum`.
 pub mod offline_user_data_job_failure_reason_enum {
     /// The failure reason of an offline user data job.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OfflineUserDataJobFailureReason {
         /// Not specified.
@@ -12144,21 +17914,47 @@ pub mod offline_user_data_job_failure_reason_enum {
             match self {
                 OfflineUserDataJobFailureReason::Unspecified => "UNSPECIFIED",
                 OfflineUserDataJobFailureReason::Unknown => "UNKNOWN",
-                OfflineUserDataJobFailureReason::InsufficientMatchedTransactions => "INSUFFICIENT_MATCHED_TRANSACTIONS",
-                OfflineUserDataJobFailureReason::InsufficientTransactions => "INSUFFICIENT_TRANSACTIONS",
+                OfflineUserDataJobFailureReason::InsufficientMatchedTransactions => {
+                    "INSUFFICIENT_MATCHED_TRANSACTIONS"
+                }
+                OfflineUserDataJobFailureReason::InsufficientTransactions => {
+                    "INSUFFICIENT_TRANSACTIONS"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INSUFFICIENT_MATCHED_TRANSACTIONS" => {
+                    Some(Self::InsufficientMatchedTransactions)
+                }
+                "INSUFFICIENT_TRANSACTIONS" => Some(Self::InsufficientTransactions),
+                _ => None,
             }
         }
     }
 }
 /// Container for enum describing reasons match rate ranges for a customer match
 /// list upload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobMatchRateRangeEnum {
-}
+pub struct OfflineUserDataJobMatchRateRangeEnum {}
 /// Nested message and enum types in `OfflineUserDataJobMatchRateRangeEnum`.
 pub mod offline_user_data_job_match_rate_range_enum {
     /// The match rate range of an offline user data job.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OfflineUserDataJobMatchRateRange {
         /// Not specified.
@@ -12194,29 +17990,72 @@ pub mod offline_user_data_job_match_rate_range_enum {
             match self {
                 OfflineUserDataJobMatchRateRange::Unspecified => "UNSPECIFIED",
                 OfflineUserDataJobMatchRateRange::Unknown => "UNKNOWN",
-                OfflineUserDataJobMatchRateRange::MatchRangeLessThan20 => "MATCH_RANGE_LESS_THAN_20",
-                OfflineUserDataJobMatchRateRange::MatchRange20To30 => "MATCH_RANGE_20_TO_30",
-                OfflineUserDataJobMatchRateRange::MatchRange31To40 => "MATCH_RANGE_31_TO_40",
-                OfflineUserDataJobMatchRateRange::MatchRange41To50 => "MATCH_RANGE_41_TO_50",
-                OfflineUserDataJobMatchRateRange::MatchRange51To60 => "MATCH_RANGE_51_TO_60",
-                OfflineUserDataJobMatchRateRange::MatchRange61To70 => "MATCH_RANGE_61_TO_70",
-                OfflineUserDataJobMatchRateRange::MatchRange71To80 => "MATCH_RANGE_71_TO_80",
-                OfflineUserDataJobMatchRateRange::MatchRange81To90 => "MATCH_RANGE_81_TO_90",
-                OfflineUserDataJobMatchRateRange::MatchRange91To100 => "MATCH_RANGE_91_TO_100",
+                OfflineUserDataJobMatchRateRange::MatchRangeLessThan20 => {
+                    "MATCH_RANGE_LESS_THAN_20"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange20To30 => {
+                    "MATCH_RANGE_20_TO_30"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange31To40 => {
+                    "MATCH_RANGE_31_TO_40"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange41To50 => {
+                    "MATCH_RANGE_41_TO_50"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange51To60 => {
+                    "MATCH_RANGE_51_TO_60"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange61To70 => {
+                    "MATCH_RANGE_61_TO_70"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange71To80 => {
+                    "MATCH_RANGE_71_TO_80"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange81To90 => {
+                    "MATCH_RANGE_81_TO_90"
+                }
+                OfflineUserDataJobMatchRateRange::MatchRange91To100 => {
+                    "MATCH_RANGE_91_TO_100"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MATCH_RANGE_LESS_THAN_20" => Some(Self::MatchRangeLessThan20),
+                "MATCH_RANGE_20_TO_30" => Some(Self::MatchRange20To30),
+                "MATCH_RANGE_31_TO_40" => Some(Self::MatchRange31To40),
+                "MATCH_RANGE_41_TO_50" => Some(Self::MatchRange41To50),
+                "MATCH_RANGE_51_TO_60" => Some(Self::MatchRange51To60),
+                "MATCH_RANGE_61_TO_70" => Some(Self::MatchRange61To70),
+                "MATCH_RANGE_71_TO_80" => Some(Self::MatchRange71To80),
+                "MATCH_RANGE_81_TO_90" => Some(Self::MatchRange81To90),
+                "MATCH_RANGE_91_TO_100" => Some(Self::MatchRange91To100),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing offline user data job status.
-
 /// Container for enum describing status of an offline user data job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobStatusEnum {
-}
+pub struct OfflineUserDataJobStatusEnum {}
 /// Nested message and enum types in `OfflineUserDataJobStatusEnum`.
 pub mod offline_user_data_job_status_enum {
     /// The status of an offline user data job.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OfflineUserDataJobStatus {
         /// Not specified.
@@ -12247,18 +18086,38 @@ pub mod offline_user_data_job_status_enum {
                 OfflineUserDataJobStatus::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCESS" => Some(Self::Success),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing offline user data job types.
-
 /// Container for enum describing types of an offline user data job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobTypeEnum {
-}
+pub struct OfflineUserDataJobTypeEnum {}
 /// Nested message and enum types in `OfflineUserDataJobTypeEnum`.
 pub mod offline_user_data_job_type_enum {
     /// The type of an offline user data job.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OfflineUserDataJobType {
         /// Not specified.
@@ -12283,24 +18142,58 @@ pub mod offline_user_data_job_type_enum {
             match self {
                 OfflineUserDataJobType::Unspecified => "UNSPECIFIED",
                 OfflineUserDataJobType::Unknown => "UNKNOWN",
-                OfflineUserDataJobType::StoreSalesUploadFirstParty => "STORE_SALES_UPLOAD_FIRST_PARTY",
-                OfflineUserDataJobType::StoreSalesUploadThirdParty => "STORE_SALES_UPLOAD_THIRD_PARTY",
-                OfflineUserDataJobType::CustomerMatchUserList => "CUSTOMER_MATCH_USER_LIST",
-                OfflineUserDataJobType::CustomerMatchWithAttributes => "CUSTOMER_MATCH_WITH_ATTRIBUTES",
+                OfflineUserDataJobType::StoreSalesUploadFirstParty => {
+                    "STORE_SALES_UPLOAD_FIRST_PARTY"
+                }
+                OfflineUserDataJobType::StoreSalesUploadThirdParty => {
+                    "STORE_SALES_UPLOAD_THIRD_PARTY"
+                }
+                OfflineUserDataJobType::CustomerMatchUserList => {
+                    "CUSTOMER_MATCH_USER_LIST"
+                }
+                OfflineUserDataJobType::CustomerMatchWithAttributes => {
+                    "CUSTOMER_MATCH_WITH_ATTRIBUTES"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STORE_SALES_UPLOAD_FIRST_PARTY" => {
+                    Some(Self::StoreSalesUploadFirstParty)
+                }
+                "STORE_SALES_UPLOAD_THIRD_PARTY" => {
+                    Some(Self::StoreSalesUploadThirdParty)
+                }
+                "CUSTOMER_MATCH_USER_LIST" => Some(Self::CustomerMatchUserList),
+                "CUSTOMER_MATCH_WITH_ATTRIBUTES" => {
+                    Some(Self::CustomerMatchWithAttributes)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing operating system version operator types.
-
 /// Container for enum describing the type of OS operators.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperatingSystemVersionOperatorTypeEnum {
-}
+pub struct OperatingSystemVersionOperatorTypeEnum {}
 /// Nested message and enum types in `OperatingSystemVersionOperatorTypeEnum`.
 pub mod operating_system_version_operator_type_enum {
     /// The type of operating system version.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OperatingSystemVersionOperatorType {
         /// Not specified.
@@ -12322,21 +18215,41 @@ pub mod operating_system_version_operator_type_enum {
                 OperatingSystemVersionOperatorType::Unspecified => "UNSPECIFIED",
                 OperatingSystemVersionOperatorType::Unknown => "UNKNOWN",
                 OperatingSystemVersionOperatorType::EqualsTo => "EQUALS_TO",
-                OperatingSystemVersionOperatorType::GreaterThanEqualsTo => "GREATER_THAN_EQUALS_TO",
+                OperatingSystemVersionOperatorType::GreaterThanEqualsTo => {
+                    "GREATER_THAN_EQUALS_TO"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "EQUALS_TO" => Some(Self::EqualsTo),
+                "GREATER_THAN_EQUALS_TO" => Some(Self::GreaterThanEqualsTo),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing optimization goal type.
-
 /// Container for enum describing the type of optimization goal.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OptimizationGoalTypeEnum {
-}
+pub struct OptimizationGoalTypeEnum {}
 /// Nested message and enum types in `OptimizationGoalTypeEnum`.
 pub mod optimization_goal_type_enum {
     /// The type of optimization goal
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OptimizationGoalType {
         /// Not specified.
@@ -12369,18 +18282,37 @@ pub mod optimization_goal_type_enum {
                 OptimizationGoalType::AppPreRegistration => "APP_PRE_REGISTRATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CALL_CLICKS" => Some(Self::CallClicks),
+                "DRIVING_DIRECTIONS" => Some(Self::DrivingDirections),
+                "APP_PRE_REGISTRATION" => Some(Self::AppPreRegistration),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing payment modes.
-
 /// Container for enum describing possible payment modes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PaymentModeEnum {
-}
+pub struct PaymentModeEnum {}
 /// Nested message and enum types in `PaymentModeEnum`.
 pub mod payment_mode_enum {
     /// Enum describing possible payment modes.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PaymentMode {
         /// Not specified.
@@ -12419,18 +18351,38 @@ pub mod payment_mode_enum {
                 PaymentMode::GuestStay => "GUEST_STAY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CLICKS" => Some(Self::Clicks),
+                "CONVERSION_VALUE" => Some(Self::ConversionValue),
+                "CONVERSIONS" => Some(Self::Conversions),
+                "GUEST_STAY" => Some(Self::GuestStay),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing placement types.
-
 /// Container for enum describing possible placement types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PlacementTypeEnum {
-}
+pub struct PlacementTypeEnum {}
 /// Nested message and enum types in `PlacementTypeEnum`.
 pub mod placement_type_enum {
     /// Possible placement types for a feed mapping.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PlacementType {
         /// Not specified.
@@ -12464,18 +18416,39 @@ pub mod placement_type_enum {
                 PlacementType::YoutubeChannel => "YOUTUBE_CHANNEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "WEBSITE" => Some(Self::Website),
+                "MOBILE_APP_CATEGORY" => Some(Self::MobileAppCategory),
+                "MOBILE_APPLICATION" => Some(Self::MobileApplication),
+                "YOUTUBE_VIDEO" => Some(Self::YoutubeVideo),
+                "YOUTUBE_CHANNEL" => Some(Self::YoutubeChannel),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing positive geo target types.
-
 /// Container for enum describing possible positive geo target types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PositiveGeoTargetTypeEnum {
-}
+pub struct PositiveGeoTargetTypeEnum {}
 /// Nested message and enum types in `PositiveGeoTargetTypeEnum`.
 pub mod positive_geo_target_type_enum {
     /// The possible positive geo target types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PositiveGeoTargetType {
         /// Not specified.
@@ -12508,18 +18481,37 @@ pub mod positive_geo_target_type_enum {
                 PositiveGeoTargetType::Presence => "PRESENCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRESENCE_OR_INTEREST" => Some(Self::PresenceOrInterest),
+                "SEARCH_INTEREST" => Some(Self::SearchInterest),
+                "PRESENCE" => Some(Self::Presence),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Price placeholder fields.
-
 /// Values for Price placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PricePlaceholderFieldEnum {
-}
+pub struct PricePlaceholderFieldEnum {}
 /// Nested message and enum types in `PricePlaceholderFieldEnum`.
 pub mod price_placeholder_field_enum {
     /// Possible values for Price placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PricePlaceholderField {
         /// Not specified.
@@ -12734,18 +18726,87 @@ pub mod price_placeholder_field_enum {
                 PricePlaceholderField::Item8FinalMobileUrls => "ITEM_8_FINAL_MOBILE_URLS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TYPE" => Some(Self::Type),
+                "PRICE_QUALIFIER" => Some(Self::PriceQualifier),
+                "TRACKING_TEMPLATE" => Some(Self::TrackingTemplate),
+                "LANGUAGE" => Some(Self::Language),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                "ITEM_1_HEADER" => Some(Self::Item1Header),
+                "ITEM_1_DESCRIPTION" => Some(Self::Item1Description),
+                "ITEM_1_PRICE" => Some(Self::Item1Price),
+                "ITEM_1_UNIT" => Some(Self::Item1Unit),
+                "ITEM_1_FINAL_URLS" => Some(Self::Item1FinalUrls),
+                "ITEM_1_FINAL_MOBILE_URLS" => Some(Self::Item1FinalMobileUrls),
+                "ITEM_2_HEADER" => Some(Self::Item2Header),
+                "ITEM_2_DESCRIPTION" => Some(Self::Item2Description),
+                "ITEM_2_PRICE" => Some(Self::Item2Price),
+                "ITEM_2_UNIT" => Some(Self::Item2Unit),
+                "ITEM_2_FINAL_URLS" => Some(Self::Item2FinalUrls),
+                "ITEM_2_FINAL_MOBILE_URLS" => Some(Self::Item2FinalMobileUrls),
+                "ITEM_3_HEADER" => Some(Self::Item3Header),
+                "ITEM_3_DESCRIPTION" => Some(Self::Item3Description),
+                "ITEM_3_PRICE" => Some(Self::Item3Price),
+                "ITEM_3_UNIT" => Some(Self::Item3Unit),
+                "ITEM_3_FINAL_URLS" => Some(Self::Item3FinalUrls),
+                "ITEM_3_FINAL_MOBILE_URLS" => Some(Self::Item3FinalMobileUrls),
+                "ITEM_4_HEADER" => Some(Self::Item4Header),
+                "ITEM_4_DESCRIPTION" => Some(Self::Item4Description),
+                "ITEM_4_PRICE" => Some(Self::Item4Price),
+                "ITEM_4_UNIT" => Some(Self::Item4Unit),
+                "ITEM_4_FINAL_URLS" => Some(Self::Item4FinalUrls),
+                "ITEM_4_FINAL_MOBILE_URLS" => Some(Self::Item4FinalMobileUrls),
+                "ITEM_5_HEADER" => Some(Self::Item5Header),
+                "ITEM_5_DESCRIPTION" => Some(Self::Item5Description),
+                "ITEM_5_PRICE" => Some(Self::Item5Price),
+                "ITEM_5_UNIT" => Some(Self::Item5Unit),
+                "ITEM_5_FINAL_URLS" => Some(Self::Item5FinalUrls),
+                "ITEM_5_FINAL_MOBILE_URLS" => Some(Self::Item5FinalMobileUrls),
+                "ITEM_6_HEADER" => Some(Self::Item6Header),
+                "ITEM_6_DESCRIPTION" => Some(Self::Item6Description),
+                "ITEM_6_PRICE" => Some(Self::Item6Price),
+                "ITEM_6_UNIT" => Some(Self::Item6Unit),
+                "ITEM_6_FINAL_URLS" => Some(Self::Item6FinalUrls),
+                "ITEM_6_FINAL_MOBILE_URLS" => Some(Self::Item6FinalMobileUrls),
+                "ITEM_7_HEADER" => Some(Self::Item7Header),
+                "ITEM_7_DESCRIPTION" => Some(Self::Item7Description),
+                "ITEM_7_PRICE" => Some(Self::Item7Price),
+                "ITEM_7_UNIT" => Some(Self::Item7Unit),
+                "ITEM_7_FINAL_URLS" => Some(Self::Item7FinalUrls),
+                "ITEM_7_FINAL_MOBILE_URLS" => Some(Self::Item7FinalMobileUrls),
+                "ITEM_8_HEADER" => Some(Self::Item8Header),
+                "ITEM_8_DESCRIPTION" => Some(Self::Item8Description),
+                "ITEM_8_PRICE" => Some(Self::Item8Price),
+                "ITEM_8_UNIT" => Some(Self::Item8Unit),
+                "ITEM_8_FINAL_URLS" => Some(Self::Item8FinalUrls),
+                "ITEM_8_FINAL_MOBILE_URLS" => Some(Self::Item8FinalMobileUrls),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing bidding schemes.
-
 /// Status of the product bidding category.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductBiddingCategoryStatusEnum {
-}
+pub struct ProductBiddingCategoryStatusEnum {}
 /// Nested message and enum types in `ProductBiddingCategoryStatusEnum`.
 pub mod product_bidding_category_status_enum {
     /// Enum describing the status of the product bidding category.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProductBiddingCategoryStatus {
         /// Not specified.
@@ -12770,18 +18831,36 @@ pub mod product_bidding_category_status_enum {
                 ProductBiddingCategoryStatus::Obsolete => "OBSOLETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVE" => Some(Self::Active),
+                "OBSOLETE" => Some(Self::Obsolete),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Promotion placeholder fields.
-
 /// Values for Promotion placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PromotionPlaceholderFieldEnum {
-}
+pub struct PromotionPlaceholderFieldEnum {}
 /// Nested message and enum types in `PromotionPlaceholderFieldEnum`.
 pub mod promotion_placeholder_field_enum {
     /// Possible values for Promotion placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PromotionPlaceholderField {
         /// Not specified.
@@ -12851,18 +18930,48 @@ pub mod promotion_placeholder_field_enum {
                 PromotionPlaceholderField::FinalUrlSuffix => "FINAL_URL_SUFFIX",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PROMOTION_TARGET" => Some(Self::PromotionTarget),
+                "DISCOUNT_MODIFIER" => Some(Self::DiscountModifier),
+                "PERCENT_OFF" => Some(Self::PercentOff),
+                "MONEY_AMOUNT_OFF" => Some(Self::MoneyAmountOff),
+                "PROMOTION_CODE" => Some(Self::PromotionCode),
+                "ORDERS_OVER_AMOUNT" => Some(Self::OrdersOverAmount),
+                "PROMOTION_START" => Some(Self::PromotionStart),
+                "PROMOTION_END" => Some(Self::PromotionEnd),
+                "OCCASION" => Some(Self::Occasion),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "LANGUAGE" => Some(Self::Language),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing ad lengths of a plannable video ad.
-
 /// Message describing length of a plannable video ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReachPlanAdLengthEnum {
-}
+pub struct ReachPlanAdLengthEnum {}
 /// Nested message and enum types in `ReachPlanAdLengthEnum`.
 pub mod reach_plan_ad_length_enum {
     /// Possible ad length values.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ReachPlanAdLength {
         /// Not specified.
@@ -12890,18 +18999,37 @@ pub mod reach_plan_ad_length_enum {
                 ReachPlanAdLength::TwentySecondsOrMore => "TWENTY_SECONDS_OR_MORE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SIX_SECONDS" => Some(Self::SixSeconds),
+                "FIFTEEN_OR_TWENTY_SECONDS" => Some(Self::FifteenOrTwentySeconds),
+                "TWENTY_SECONDS_OR_MORE" => Some(Self::TwentySecondsOrMore),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing a plannable age range.
-
 /// Message describing plannable age ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReachPlanAgeRangeEnum {
-}
+pub struct ReachPlanAgeRangeEnum {}
 /// Nested message and enum types in `ReachPlanAgeRangeEnum`.
 pub mod reach_plan_age_range_enum {
     /// Possible plannable age range values.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ReachPlanAgeRange {
         /// Not specified.
@@ -12998,18 +19126,60 @@ pub mod reach_plan_age_range_enum {
                 ReachPlanAgeRange::AgeRange65Up => "AGE_RANGE_65_UP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AGE_RANGE_18_24" => Some(Self::AgeRange1824),
+                "AGE_RANGE_18_34" => Some(Self::AgeRange1834),
+                "AGE_RANGE_18_44" => Some(Self::AgeRange1844),
+                "AGE_RANGE_18_49" => Some(Self::AgeRange1849),
+                "AGE_RANGE_18_54" => Some(Self::AgeRange1854),
+                "AGE_RANGE_18_64" => Some(Self::AgeRange1864),
+                "AGE_RANGE_18_65_UP" => Some(Self::AgeRange1865Up),
+                "AGE_RANGE_21_34" => Some(Self::AgeRange2134),
+                "AGE_RANGE_25_34" => Some(Self::AgeRange2534),
+                "AGE_RANGE_25_44" => Some(Self::AgeRange2544),
+                "AGE_RANGE_25_49" => Some(Self::AgeRange2549),
+                "AGE_RANGE_25_54" => Some(Self::AgeRange2554),
+                "AGE_RANGE_25_64" => Some(Self::AgeRange2564),
+                "AGE_RANGE_25_65_UP" => Some(Self::AgeRange2565Up),
+                "AGE_RANGE_35_44" => Some(Self::AgeRange3544),
+                "AGE_RANGE_35_49" => Some(Self::AgeRange3549),
+                "AGE_RANGE_35_54" => Some(Self::AgeRange3554),
+                "AGE_RANGE_35_64" => Some(Self::AgeRange3564),
+                "AGE_RANGE_35_65_UP" => Some(Self::AgeRange3565Up),
+                "AGE_RANGE_45_54" => Some(Self::AgeRange4554),
+                "AGE_RANGE_45_64" => Some(Self::AgeRange4564),
+                "AGE_RANGE_45_65_UP" => Some(Self::AgeRange4565Up),
+                "AGE_RANGE_50_65_UP" => Some(Self::AgeRange5065Up),
+                "AGE_RANGE_55_64" => Some(Self::AgeRange5564),
+                "AGE_RANGE_55_65_UP" => Some(Self::AgeRange5565Up),
+                "AGE_RANGE_65_UP" => Some(Self::AgeRange65Up),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing a plannable network.
-
 /// Container for enum describing plannable networks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReachPlanNetworkEnum {
-}
+pub struct ReachPlanNetworkEnum {}
 /// Nested message and enum types in `ReachPlanNetworkEnum`.
 pub mod reach_plan_network_enum {
     /// Possible plannable network values.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ReachPlanNetwork {
         /// Not specified.
@@ -13035,23 +19205,46 @@ pub mod reach_plan_network_enum {
                 ReachPlanNetwork::Unknown => "UNKNOWN",
                 ReachPlanNetwork::Youtube => "YOUTUBE",
                 ReachPlanNetwork::GoogleVideoPartners => "GOOGLE_VIDEO_PARTNERS",
-                ReachPlanNetwork::YoutubeAndGoogleVideoPartners => "YOUTUBE_AND_GOOGLE_VIDEO_PARTNERS",
+                ReachPlanNetwork::YoutubeAndGoogleVideoPartners => {
+                    "YOUTUBE_AND_GOOGLE_VIDEO_PARTNERS"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "YOUTUBE" => Some(Self::Youtube),
+                "GOOGLE_VIDEO_PARTNERS" => Some(Self::GoogleVideoPartners),
+                "YOUTUBE_AND_GOOGLE_VIDEO_PARTNERS" => {
+                    Some(Self::YoutubeAndGoogleVideoPartners)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing Real Estate placeholder fields.
-
 /// Values for Real Estate placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RealEstatePlaceholderFieldEnum {
-}
+pub struct RealEstatePlaceholderFieldEnum {}
 /// Nested message and enum types in `RealEstatePlaceholderFieldEnum`.
 pub mod real_estate_placeholder_field_enum {
     /// Possible values for Real Estate placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RealEstatePlaceholderField {
         /// Not specified.
@@ -13139,19 +19332,53 @@ pub mod real_estate_placeholder_field_enum {
                 RealEstatePlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LISTING_ID" => Some(Self::ListingId),
+                "LISTING_NAME" => Some(Self::ListingName),
+                "CITY_NAME" => Some(Self::CityName),
+                "DESCRIPTION" => Some(Self::Description),
+                "ADDRESS" => Some(Self::Address),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "PROPERTY_TYPE" => Some(Self::PropertyType),
+                "LISTING_TYPE" => Some(Self::ListingType),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_LISTING_IDS" => Some(Self::SimilarListingIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the resource change operations in change event.
-
 /// Container for enum describing resource change operations
 /// in the ChangeEvent resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceChangeOperationEnum {
-}
+pub struct ResourceChangeOperationEnum {}
 /// Nested message and enum types in `ResourceChangeOperationEnum`.
 pub mod resource_change_operation_enum {
     /// The operation on the changed resource in change_event resource.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ResourceChangeOperation {
         /// No value has been specified.
@@ -13180,16 +19407,37 @@ pub mod resource_change_operation_enum {
                 ResourceChangeOperation::Remove => "REMOVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "REMOVE" => Some(Self::Remove),
+                _ => None,
+            }
+        }
     }
 }
 /// Container for enum describing possible resource limit types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceLimitTypeEnum {
-}
+pub struct ResourceLimitTypeEnum {}
 /// Nested message and enum types in `ResourceLimitTypeEnum`.
 pub mod resource_limit_type_enum {
     /// Resource limit type.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ResourceLimitType {
         /// No value has been specified.
@@ -13459,130 +19707,591 @@ pub mod resource_limit_type_enum {
                 ResourceLimitType::Unspecified => "UNSPECIFIED",
                 ResourceLimitType::Unknown => "UNKNOWN",
                 ResourceLimitType::CampaignsPerCustomer => "CAMPAIGNS_PER_CUSTOMER",
-                ResourceLimitType::BaseCampaignsPerCustomer => "BASE_CAMPAIGNS_PER_CUSTOMER",
-                ResourceLimitType::ExperimentCampaignsPerCustomer => "EXPERIMENT_CAMPAIGNS_PER_CUSTOMER",
-                ResourceLimitType::HotelCampaignsPerCustomer => "HOTEL_CAMPAIGNS_PER_CUSTOMER",
-                ResourceLimitType::SmartShoppingCampaignsPerCustomer => "SMART_SHOPPING_CAMPAIGNS_PER_CUSTOMER",
+                ResourceLimitType::BaseCampaignsPerCustomer => {
+                    "BASE_CAMPAIGNS_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentCampaignsPerCustomer => {
+                    "EXPERIMENT_CAMPAIGNS_PER_CUSTOMER"
+                }
+                ResourceLimitType::HotelCampaignsPerCustomer => {
+                    "HOTEL_CAMPAIGNS_PER_CUSTOMER"
+                }
+                ResourceLimitType::SmartShoppingCampaignsPerCustomer => {
+                    "SMART_SHOPPING_CAMPAIGNS_PER_CUSTOMER"
+                }
                 ResourceLimitType::AdGroupsPerCampaign => "AD_GROUPS_PER_CAMPAIGN",
-                ResourceLimitType::AdGroupsPerShoppingCampaign => "AD_GROUPS_PER_SHOPPING_CAMPAIGN",
-                ResourceLimitType::AdGroupsPerHotelCampaign => "AD_GROUPS_PER_HOTEL_CAMPAIGN",
-                ResourceLimitType::ReportingAdGroupsPerLocalCampaign => "REPORTING_AD_GROUPS_PER_LOCAL_CAMPAIGN",
-                ResourceLimitType::ReportingAdGroupsPerAppCampaign => "REPORTING_AD_GROUPS_PER_APP_CAMPAIGN",
-                ResourceLimitType::ManagedAdGroupsPerSmartCampaign => "MANAGED_AD_GROUPS_PER_SMART_CAMPAIGN",
-                ResourceLimitType::AdGroupCriteriaPerCustomer => "AD_GROUP_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::BaseAdGroupCriteriaPerCustomer => "BASE_AD_GROUP_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::ExperimentAdGroupCriteriaPerCustomer => "EXPERIMENT_AD_GROUP_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::AdGroupCriteriaPerCampaign => "AD_GROUP_CRITERIA_PER_CAMPAIGN",
-                ResourceLimitType::CampaignCriteriaPerCustomer => "CAMPAIGN_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::BaseCampaignCriteriaPerCustomer => "BASE_CAMPAIGN_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::ExperimentCampaignCriteriaPerCustomer => "EXPERIMENT_CAMPAIGN_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::WebpageCriteriaPerCustomer => "WEBPAGE_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::BaseWebpageCriteriaPerCustomer => "BASE_WEBPAGE_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::ExperimentWebpageCriteriaPerCustomer => "EXPERIMENT_WEBPAGE_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::CombinedAudienceCriteriaPerAdGroup => "COMBINED_AUDIENCE_CRITERIA_PER_AD_GROUP",
-                ResourceLimitType::CustomerNegativePlacementCriteriaPerCustomer => "CUSTOMER_NEGATIVE_PLACEMENT_CRITERIA_PER_CUSTOMER",
-                ResourceLimitType::CustomerNegativeYoutubeChannelCriteriaPerCustomer => "CUSTOMER_NEGATIVE_YOUTUBE_CHANNEL_CRITERIA_PER_CUSTOMER",
+                ResourceLimitType::AdGroupsPerShoppingCampaign => {
+                    "AD_GROUPS_PER_SHOPPING_CAMPAIGN"
+                }
+                ResourceLimitType::AdGroupsPerHotelCampaign => {
+                    "AD_GROUPS_PER_HOTEL_CAMPAIGN"
+                }
+                ResourceLimitType::ReportingAdGroupsPerLocalCampaign => {
+                    "REPORTING_AD_GROUPS_PER_LOCAL_CAMPAIGN"
+                }
+                ResourceLimitType::ReportingAdGroupsPerAppCampaign => {
+                    "REPORTING_AD_GROUPS_PER_APP_CAMPAIGN"
+                }
+                ResourceLimitType::ManagedAdGroupsPerSmartCampaign => {
+                    "MANAGED_AD_GROUPS_PER_SMART_CAMPAIGN"
+                }
+                ResourceLimitType::AdGroupCriteriaPerCustomer => {
+                    "AD_GROUP_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::BaseAdGroupCriteriaPerCustomer => {
+                    "BASE_AD_GROUP_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentAdGroupCriteriaPerCustomer => {
+                    "EXPERIMENT_AD_GROUP_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::AdGroupCriteriaPerCampaign => {
+                    "AD_GROUP_CRITERIA_PER_CAMPAIGN"
+                }
+                ResourceLimitType::CampaignCriteriaPerCustomer => {
+                    "CAMPAIGN_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::BaseCampaignCriteriaPerCustomer => {
+                    "BASE_CAMPAIGN_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentCampaignCriteriaPerCustomer => {
+                    "EXPERIMENT_CAMPAIGN_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::WebpageCriteriaPerCustomer => {
+                    "WEBPAGE_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::BaseWebpageCriteriaPerCustomer => {
+                    "BASE_WEBPAGE_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentWebpageCriteriaPerCustomer => {
+                    "EXPERIMENT_WEBPAGE_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::CombinedAudienceCriteriaPerAdGroup => {
+                    "COMBINED_AUDIENCE_CRITERIA_PER_AD_GROUP"
+                }
+                ResourceLimitType::CustomerNegativePlacementCriteriaPerCustomer => {
+                    "CUSTOMER_NEGATIVE_PLACEMENT_CRITERIA_PER_CUSTOMER"
+                }
+                ResourceLimitType::CustomerNegativeYoutubeChannelCriteriaPerCustomer => {
+                    "CUSTOMER_NEGATIVE_YOUTUBE_CHANNEL_CRITERIA_PER_CUSTOMER"
+                }
                 ResourceLimitType::CriteriaPerAdGroup => "CRITERIA_PER_AD_GROUP",
-                ResourceLimitType::ListingGroupsPerAdGroup => "LISTING_GROUPS_PER_AD_GROUP",
-                ResourceLimitType::ExplicitlySharedBudgetsPerCustomer => "EXPLICITLY_SHARED_BUDGETS_PER_CUSTOMER",
-                ResourceLimitType::ImplicitlySharedBudgetsPerCustomer => "IMPLICITLY_SHARED_BUDGETS_PER_CUSTOMER",
-                ResourceLimitType::CombinedAudienceCriteriaPerCampaign => "COMBINED_AUDIENCE_CRITERIA_PER_CAMPAIGN",
-                ResourceLimitType::NegativeKeywordsPerCampaign => "NEGATIVE_KEYWORDS_PER_CAMPAIGN",
-                ResourceLimitType::NegativePlacementsPerCampaign => "NEGATIVE_PLACEMENTS_PER_CAMPAIGN",
+                ResourceLimitType::ListingGroupsPerAdGroup => {
+                    "LISTING_GROUPS_PER_AD_GROUP"
+                }
+                ResourceLimitType::ExplicitlySharedBudgetsPerCustomer => {
+                    "EXPLICITLY_SHARED_BUDGETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::ImplicitlySharedBudgetsPerCustomer => {
+                    "IMPLICITLY_SHARED_BUDGETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::CombinedAudienceCriteriaPerCampaign => {
+                    "COMBINED_AUDIENCE_CRITERIA_PER_CAMPAIGN"
+                }
+                ResourceLimitType::NegativeKeywordsPerCampaign => {
+                    "NEGATIVE_KEYWORDS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::NegativePlacementsPerCampaign => {
+                    "NEGATIVE_PLACEMENTS_PER_CAMPAIGN"
+                }
                 ResourceLimitType::GeoTargetsPerCampaign => "GEO_TARGETS_PER_CAMPAIGN",
-                ResourceLimitType::NegativeIpBlocksPerCampaign => "NEGATIVE_IP_BLOCKS_PER_CAMPAIGN",
+                ResourceLimitType::NegativeIpBlocksPerCampaign => {
+                    "NEGATIVE_IP_BLOCKS_PER_CAMPAIGN"
+                }
                 ResourceLimitType::ProximitiesPerCampaign => "PROXIMITIES_PER_CAMPAIGN",
-                ResourceLimitType::ListingScopesPerShoppingCampaign => "LISTING_SCOPES_PER_SHOPPING_CAMPAIGN",
-                ResourceLimitType::ListingScopesPerNonShoppingCampaign => "LISTING_SCOPES_PER_NON_SHOPPING_CAMPAIGN",
-                ResourceLimitType::NegativeKeywordsPerSharedSet => "NEGATIVE_KEYWORDS_PER_SHARED_SET",
-                ResourceLimitType::NegativePlacementsPerSharedSet => "NEGATIVE_PLACEMENTS_PER_SHARED_SET",
-                ResourceLimitType::SharedSetsPerCustomerForTypeDefault => "SHARED_SETS_PER_CUSTOMER_FOR_TYPE_DEFAULT",
-                ResourceLimitType::SharedSetsPerCustomerForNegativePlacementListLower => "SHARED_SETS_PER_CUSTOMER_FOR_NEGATIVE_PLACEMENT_LIST_LOWER",
-                ResourceLimitType::HotelAdvanceBookingWindowBidModifiersPerAdGroup => "HOTEL_ADVANCE_BOOKING_WINDOW_BID_MODIFIERS_PER_AD_GROUP",
-                ResourceLimitType::BiddingStrategiesPerCustomer => "BIDDING_STRATEGIES_PER_CUSTOMER",
-                ResourceLimitType::BasicUserListsPerCustomer => "BASIC_USER_LISTS_PER_CUSTOMER",
-                ResourceLimitType::LogicalUserListsPerCustomer => "LOGICAL_USER_LISTS_PER_CUSTOMER",
-                ResourceLimitType::BaseAdGroupAdsPerCustomer => "BASE_AD_GROUP_ADS_PER_CUSTOMER",
-                ResourceLimitType::ExperimentAdGroupAdsPerCustomer => "EXPERIMENT_AD_GROUP_ADS_PER_CUSTOMER",
+                ResourceLimitType::ListingScopesPerShoppingCampaign => {
+                    "LISTING_SCOPES_PER_SHOPPING_CAMPAIGN"
+                }
+                ResourceLimitType::ListingScopesPerNonShoppingCampaign => {
+                    "LISTING_SCOPES_PER_NON_SHOPPING_CAMPAIGN"
+                }
+                ResourceLimitType::NegativeKeywordsPerSharedSet => {
+                    "NEGATIVE_KEYWORDS_PER_SHARED_SET"
+                }
+                ResourceLimitType::NegativePlacementsPerSharedSet => {
+                    "NEGATIVE_PLACEMENTS_PER_SHARED_SET"
+                }
+                ResourceLimitType::SharedSetsPerCustomerForTypeDefault => {
+                    "SHARED_SETS_PER_CUSTOMER_FOR_TYPE_DEFAULT"
+                }
+                ResourceLimitType::SharedSetsPerCustomerForNegativePlacementListLower => {
+                    "SHARED_SETS_PER_CUSTOMER_FOR_NEGATIVE_PLACEMENT_LIST_LOWER"
+                }
+                ResourceLimitType::HotelAdvanceBookingWindowBidModifiersPerAdGroup => {
+                    "HOTEL_ADVANCE_BOOKING_WINDOW_BID_MODIFIERS_PER_AD_GROUP"
+                }
+                ResourceLimitType::BiddingStrategiesPerCustomer => {
+                    "BIDDING_STRATEGIES_PER_CUSTOMER"
+                }
+                ResourceLimitType::BasicUserListsPerCustomer => {
+                    "BASIC_USER_LISTS_PER_CUSTOMER"
+                }
+                ResourceLimitType::LogicalUserListsPerCustomer => {
+                    "LOGICAL_USER_LISTS_PER_CUSTOMER"
+                }
+                ResourceLimitType::BaseAdGroupAdsPerCustomer => {
+                    "BASE_AD_GROUP_ADS_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentAdGroupAdsPerCustomer => {
+                    "EXPERIMENT_AD_GROUP_ADS_PER_CUSTOMER"
+                }
                 ResourceLimitType::AdGroupAdsPerCampaign => "AD_GROUP_ADS_PER_CAMPAIGN",
-                ResourceLimitType::TextAndOtherAdsPerAdGroup => "TEXT_AND_OTHER_ADS_PER_AD_GROUP",
+                ResourceLimitType::TextAndOtherAdsPerAdGroup => {
+                    "TEXT_AND_OTHER_ADS_PER_AD_GROUP"
+                }
                 ResourceLimitType::ImageAdsPerAdGroup => "IMAGE_ADS_PER_AD_GROUP",
-                ResourceLimitType::ShoppingSmartAdsPerAdGroup => "SHOPPING_SMART_ADS_PER_AD_GROUP",
-                ResourceLimitType::ResponsiveSearchAdsPerAdGroup => "RESPONSIVE_SEARCH_ADS_PER_AD_GROUP",
+                ResourceLimitType::ShoppingSmartAdsPerAdGroup => {
+                    "SHOPPING_SMART_ADS_PER_AD_GROUP"
+                }
+                ResourceLimitType::ResponsiveSearchAdsPerAdGroup => {
+                    "RESPONSIVE_SEARCH_ADS_PER_AD_GROUP"
+                }
                 ResourceLimitType::AppAdsPerAdGroup => "APP_ADS_PER_AD_GROUP",
-                ResourceLimitType::AppEngagementAdsPerAdGroup => "APP_ENGAGEMENT_ADS_PER_AD_GROUP",
+                ResourceLimitType::AppEngagementAdsPerAdGroup => {
+                    "APP_ENGAGEMENT_ADS_PER_AD_GROUP"
+                }
                 ResourceLimitType::LocalAdsPerAdGroup => "LOCAL_ADS_PER_AD_GROUP",
                 ResourceLimitType::VideoAdsPerAdGroup => "VIDEO_ADS_PER_AD_GROUP",
-                ResourceLimitType::LeadFormCampaignAssetsPerCampaign => "LEAD_FORM_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::PromotionCustomerAssetsPerCustomer => "PROMOTION_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::PromotionCampaignAssetsPerCampaign => "PROMOTION_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::PromotionAdGroupAssetsPerAdGroup => "PROMOTION_AD_GROUP_ASSETS_PER_AD_GROUP",
-                ResourceLimitType::CalloutCustomerAssetsPerCustomer => "CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::CalloutCampaignAssetsPerCampaign => "CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::CalloutAdGroupAssetsPerAdGroup => "CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP",
-                ResourceLimitType::SitelinkCustomerAssetsPerCustomer => "SITELINK_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::SitelinkCampaignAssetsPerCampaign => "SITELINK_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::SitelinkAdGroupAssetsPerAdGroup => "SITELINK_AD_GROUP_ASSETS_PER_AD_GROUP",
-                ResourceLimitType::StructuredSnippetCustomerAssetsPerCustomer => "STRUCTURED_SNIPPET_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::StructuredSnippetCampaignAssetsPerCampaign => "STRUCTURED_SNIPPET_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::StructuredSnippetAdGroupAssetsPerAdGroup => "STRUCTURED_SNIPPET_AD_GROUP_ASSETS_PER_AD_GROUP",
-                ResourceLimitType::MobileAppCustomerAssetsPerCustomer => "MOBILE_APP_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::MobileAppCampaignAssetsPerCampaign => "MOBILE_APP_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::MobileAppAdGroupAssetsPerAdGroup => "MOBILE_APP_AD_GROUP_ASSETS_PER_AD_GROUP",
-                ResourceLimitType::HotelCalloutCustomerAssetsPerCustomer => "HOTEL_CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::HotelCalloutCampaignAssetsPerCampaign => "HOTEL_CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::HotelCalloutAdGroupAssetsPerAdGroup => "HOTEL_CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP",
-                ResourceLimitType::CallCustomerAssetsPerCustomer => "CALL_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::CallCampaignAssetsPerCampaign => "CALL_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::CallAdGroupAssetsPerAdGroup => "CALL_AD_GROUP_ASSETS_PER_AD_GROUP",
-                ResourceLimitType::PriceCustomerAssetsPerCustomer => "PRICE_CUSTOMER_ASSETS_PER_CUSTOMER",
-                ResourceLimitType::PriceCampaignAssetsPerCampaign => "PRICE_CAMPAIGN_ASSETS_PER_CAMPAIGN",
-                ResourceLimitType::PriceAdGroupAssetsPerAdGroup => "PRICE_AD_GROUP_ASSETS_PER_AD_GROUP",
+                ResourceLimitType::LeadFormCampaignAssetsPerCampaign => {
+                    "LEAD_FORM_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::PromotionCustomerAssetsPerCustomer => {
+                    "PROMOTION_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::PromotionCampaignAssetsPerCampaign => {
+                    "PROMOTION_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::PromotionAdGroupAssetsPerAdGroup => {
+                    "PROMOTION_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
+                ResourceLimitType::CalloutCustomerAssetsPerCustomer => {
+                    "CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::CalloutCampaignAssetsPerCampaign => {
+                    "CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::CalloutAdGroupAssetsPerAdGroup => {
+                    "CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
+                ResourceLimitType::SitelinkCustomerAssetsPerCustomer => {
+                    "SITELINK_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::SitelinkCampaignAssetsPerCampaign => {
+                    "SITELINK_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::SitelinkAdGroupAssetsPerAdGroup => {
+                    "SITELINK_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
+                ResourceLimitType::StructuredSnippetCustomerAssetsPerCustomer => {
+                    "STRUCTURED_SNIPPET_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::StructuredSnippetCampaignAssetsPerCampaign => {
+                    "STRUCTURED_SNIPPET_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::StructuredSnippetAdGroupAssetsPerAdGroup => {
+                    "STRUCTURED_SNIPPET_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
+                ResourceLimitType::MobileAppCustomerAssetsPerCustomer => {
+                    "MOBILE_APP_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::MobileAppCampaignAssetsPerCampaign => {
+                    "MOBILE_APP_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::MobileAppAdGroupAssetsPerAdGroup => {
+                    "MOBILE_APP_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
+                ResourceLimitType::HotelCalloutCustomerAssetsPerCustomer => {
+                    "HOTEL_CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::HotelCalloutCampaignAssetsPerCampaign => {
+                    "HOTEL_CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::HotelCalloutAdGroupAssetsPerAdGroup => {
+                    "HOTEL_CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
+                ResourceLimitType::CallCustomerAssetsPerCustomer => {
+                    "CALL_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::CallCampaignAssetsPerCampaign => {
+                    "CALL_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::CallAdGroupAssetsPerAdGroup => {
+                    "CALL_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
+                ResourceLimitType::PriceCustomerAssetsPerCustomer => {
+                    "PRICE_CUSTOMER_ASSETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::PriceCampaignAssetsPerCampaign => {
+                    "PRICE_CAMPAIGN_ASSETS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::PriceAdGroupAssetsPerAdGroup => {
+                    "PRICE_AD_GROUP_ASSETS_PER_AD_GROUP"
+                }
                 ResourceLimitType::VersionsPerAd => "VERSIONS_PER_AD",
                 ResourceLimitType::UserFeedsPerCustomer => "USER_FEEDS_PER_CUSTOMER",
                 ResourceLimitType::SystemFeedsPerCustomer => "SYSTEM_FEEDS_PER_CUSTOMER",
                 ResourceLimitType::FeedAttributesPerFeed => "FEED_ATTRIBUTES_PER_FEED",
                 ResourceLimitType::FeedItemsPerCustomer => "FEED_ITEMS_PER_CUSTOMER",
-                ResourceLimitType::CampaignFeedsPerCustomer => "CAMPAIGN_FEEDS_PER_CUSTOMER",
-                ResourceLimitType::BaseCampaignFeedsPerCustomer => "BASE_CAMPAIGN_FEEDS_PER_CUSTOMER",
-                ResourceLimitType::ExperimentCampaignFeedsPerCustomer => "EXPERIMENT_CAMPAIGN_FEEDS_PER_CUSTOMER",
-                ResourceLimitType::AdGroupFeedsPerCustomer => "AD_GROUP_FEEDS_PER_CUSTOMER",
-                ResourceLimitType::BaseAdGroupFeedsPerCustomer => "BASE_AD_GROUP_FEEDS_PER_CUSTOMER",
-                ResourceLimitType::ExperimentAdGroupFeedsPerCustomer => "EXPERIMENT_AD_GROUP_FEEDS_PER_CUSTOMER",
-                ResourceLimitType::AdGroupFeedsPerCampaign => "AD_GROUP_FEEDS_PER_CAMPAIGN",
-                ResourceLimitType::FeedItemSetsPerCustomer => "FEED_ITEM_SETS_PER_CUSTOMER",
-                ResourceLimitType::FeedItemsPerFeedItemSet => "FEED_ITEMS_PER_FEED_ITEM_SET",
-                ResourceLimitType::CampaignExperimentsPerCustomer => "CAMPAIGN_EXPERIMENTS_PER_CUSTOMER",
-                ResourceLimitType::ExperimentArmsPerVideoExperiment => "EXPERIMENT_ARMS_PER_VIDEO_EXPERIMENT",
+                ResourceLimitType::CampaignFeedsPerCustomer => {
+                    "CAMPAIGN_FEEDS_PER_CUSTOMER"
+                }
+                ResourceLimitType::BaseCampaignFeedsPerCustomer => {
+                    "BASE_CAMPAIGN_FEEDS_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentCampaignFeedsPerCustomer => {
+                    "EXPERIMENT_CAMPAIGN_FEEDS_PER_CUSTOMER"
+                }
+                ResourceLimitType::AdGroupFeedsPerCustomer => {
+                    "AD_GROUP_FEEDS_PER_CUSTOMER"
+                }
+                ResourceLimitType::BaseAdGroupFeedsPerCustomer => {
+                    "BASE_AD_GROUP_FEEDS_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentAdGroupFeedsPerCustomer => {
+                    "EXPERIMENT_AD_GROUP_FEEDS_PER_CUSTOMER"
+                }
+                ResourceLimitType::AdGroupFeedsPerCampaign => {
+                    "AD_GROUP_FEEDS_PER_CAMPAIGN"
+                }
+                ResourceLimitType::FeedItemSetsPerCustomer => {
+                    "FEED_ITEM_SETS_PER_CUSTOMER"
+                }
+                ResourceLimitType::FeedItemsPerFeedItemSet => {
+                    "FEED_ITEMS_PER_FEED_ITEM_SET"
+                }
+                ResourceLimitType::CampaignExperimentsPerCustomer => {
+                    "CAMPAIGN_EXPERIMENTS_PER_CUSTOMER"
+                }
+                ResourceLimitType::ExperimentArmsPerVideoExperiment => {
+                    "EXPERIMENT_ARMS_PER_VIDEO_EXPERIMENT"
+                }
                 ResourceLimitType::OwnedLabelsPerCustomer => "OWNED_LABELS_PER_CUSTOMER",
                 ResourceLimitType::LabelsPerCampaign => "LABELS_PER_CAMPAIGN",
                 ResourceLimitType::LabelsPerAdGroup => "LABELS_PER_AD_GROUP",
                 ResourceLimitType::LabelsPerAdGroupAd => "LABELS_PER_AD_GROUP_AD",
-                ResourceLimitType::LabelsPerAdGroupCriterion => "LABELS_PER_AD_GROUP_CRITERION",
-                ResourceLimitType::TargetCustomersPerLabel => "TARGET_CUSTOMERS_PER_LABEL",
-                ResourceLimitType::KeywordPlansPerUserPerCustomer => "KEYWORD_PLANS_PER_USER_PER_CUSTOMER",
-                ResourceLimitType::KeywordPlanAdGroupKeywordsPerKeywordPlan => "KEYWORD_PLAN_AD_GROUP_KEYWORDS_PER_KEYWORD_PLAN",
-                ResourceLimitType::KeywordPlanAdGroupsPerKeywordPlan => "KEYWORD_PLAN_AD_GROUPS_PER_KEYWORD_PLAN",
-                ResourceLimitType::KeywordPlanNegativeKeywordsPerKeywordPlan => "KEYWORD_PLAN_NEGATIVE_KEYWORDS_PER_KEYWORD_PLAN",
-                ResourceLimitType::KeywordPlanCampaignsPerKeywordPlan => "KEYWORD_PLAN_CAMPAIGNS_PER_KEYWORD_PLAN",
-                ResourceLimitType::ConversionActionsPerCustomer => "CONVERSION_ACTIONS_PER_CUSTOMER",
-                ResourceLimitType::BatchJobOperationsPerJob => "BATCH_JOB_OPERATIONS_PER_JOB",
+                ResourceLimitType::LabelsPerAdGroupCriterion => {
+                    "LABELS_PER_AD_GROUP_CRITERION"
+                }
+                ResourceLimitType::TargetCustomersPerLabel => {
+                    "TARGET_CUSTOMERS_PER_LABEL"
+                }
+                ResourceLimitType::KeywordPlansPerUserPerCustomer => {
+                    "KEYWORD_PLANS_PER_USER_PER_CUSTOMER"
+                }
+                ResourceLimitType::KeywordPlanAdGroupKeywordsPerKeywordPlan => {
+                    "KEYWORD_PLAN_AD_GROUP_KEYWORDS_PER_KEYWORD_PLAN"
+                }
+                ResourceLimitType::KeywordPlanAdGroupsPerKeywordPlan => {
+                    "KEYWORD_PLAN_AD_GROUPS_PER_KEYWORD_PLAN"
+                }
+                ResourceLimitType::KeywordPlanNegativeKeywordsPerKeywordPlan => {
+                    "KEYWORD_PLAN_NEGATIVE_KEYWORDS_PER_KEYWORD_PLAN"
+                }
+                ResourceLimitType::KeywordPlanCampaignsPerKeywordPlan => {
+                    "KEYWORD_PLAN_CAMPAIGNS_PER_KEYWORD_PLAN"
+                }
+                ResourceLimitType::ConversionActionsPerCustomer => {
+                    "CONVERSION_ACTIONS_PER_CUSTOMER"
+                }
+                ResourceLimitType::BatchJobOperationsPerJob => {
+                    "BATCH_JOB_OPERATIONS_PER_JOB"
+                }
                 ResourceLimitType::BatchJobsPerCustomer => "BATCH_JOBS_PER_CUSTOMER",
-                ResourceLimitType::HotelCheckInDateRangeBidModifiersPerAdGroup => "HOTEL_CHECK_IN_DATE_RANGE_BID_MODIFIERS_PER_AD_GROUP",
+                ResourceLimitType::HotelCheckInDateRangeBidModifiersPerAdGroup => {
+                    "HOTEL_CHECK_IN_DATE_RANGE_BID_MODIFIERS_PER_AD_GROUP"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CAMPAIGNS_PER_CUSTOMER" => Some(Self::CampaignsPerCustomer),
+                "BASE_CAMPAIGNS_PER_CUSTOMER" => Some(Self::BaseCampaignsPerCustomer),
+                "EXPERIMENT_CAMPAIGNS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentCampaignsPerCustomer)
+                }
+                "HOTEL_CAMPAIGNS_PER_CUSTOMER" => Some(Self::HotelCampaignsPerCustomer),
+                "SMART_SHOPPING_CAMPAIGNS_PER_CUSTOMER" => {
+                    Some(Self::SmartShoppingCampaignsPerCustomer)
+                }
+                "AD_GROUPS_PER_CAMPAIGN" => Some(Self::AdGroupsPerCampaign),
+                "AD_GROUPS_PER_SHOPPING_CAMPAIGN" => {
+                    Some(Self::AdGroupsPerShoppingCampaign)
+                }
+                "AD_GROUPS_PER_HOTEL_CAMPAIGN" => Some(Self::AdGroupsPerHotelCampaign),
+                "REPORTING_AD_GROUPS_PER_LOCAL_CAMPAIGN" => {
+                    Some(Self::ReportingAdGroupsPerLocalCampaign)
+                }
+                "REPORTING_AD_GROUPS_PER_APP_CAMPAIGN" => {
+                    Some(Self::ReportingAdGroupsPerAppCampaign)
+                }
+                "MANAGED_AD_GROUPS_PER_SMART_CAMPAIGN" => {
+                    Some(Self::ManagedAdGroupsPerSmartCampaign)
+                }
+                "AD_GROUP_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::AdGroupCriteriaPerCustomer)
+                }
+                "BASE_AD_GROUP_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::BaseAdGroupCriteriaPerCustomer)
+                }
+                "EXPERIMENT_AD_GROUP_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::ExperimentAdGroupCriteriaPerCustomer)
+                }
+                "AD_GROUP_CRITERIA_PER_CAMPAIGN" => {
+                    Some(Self::AdGroupCriteriaPerCampaign)
+                }
+                "CAMPAIGN_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::CampaignCriteriaPerCustomer)
+                }
+                "BASE_CAMPAIGN_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::BaseCampaignCriteriaPerCustomer)
+                }
+                "EXPERIMENT_CAMPAIGN_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::ExperimentCampaignCriteriaPerCustomer)
+                }
+                "WEBPAGE_CRITERIA_PER_CUSTOMER" => Some(Self::WebpageCriteriaPerCustomer),
+                "BASE_WEBPAGE_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::BaseWebpageCriteriaPerCustomer)
+                }
+                "EXPERIMENT_WEBPAGE_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::ExperimentWebpageCriteriaPerCustomer)
+                }
+                "COMBINED_AUDIENCE_CRITERIA_PER_AD_GROUP" => {
+                    Some(Self::CombinedAudienceCriteriaPerAdGroup)
+                }
+                "CUSTOMER_NEGATIVE_PLACEMENT_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::CustomerNegativePlacementCriteriaPerCustomer)
+                }
+                "CUSTOMER_NEGATIVE_YOUTUBE_CHANNEL_CRITERIA_PER_CUSTOMER" => {
+                    Some(Self::CustomerNegativeYoutubeChannelCriteriaPerCustomer)
+                }
+                "CRITERIA_PER_AD_GROUP" => Some(Self::CriteriaPerAdGroup),
+                "LISTING_GROUPS_PER_AD_GROUP" => Some(Self::ListingGroupsPerAdGroup),
+                "EXPLICITLY_SHARED_BUDGETS_PER_CUSTOMER" => {
+                    Some(Self::ExplicitlySharedBudgetsPerCustomer)
+                }
+                "IMPLICITLY_SHARED_BUDGETS_PER_CUSTOMER" => {
+                    Some(Self::ImplicitlySharedBudgetsPerCustomer)
+                }
+                "COMBINED_AUDIENCE_CRITERIA_PER_CAMPAIGN" => {
+                    Some(Self::CombinedAudienceCriteriaPerCampaign)
+                }
+                "NEGATIVE_KEYWORDS_PER_CAMPAIGN" => {
+                    Some(Self::NegativeKeywordsPerCampaign)
+                }
+                "NEGATIVE_PLACEMENTS_PER_CAMPAIGN" => {
+                    Some(Self::NegativePlacementsPerCampaign)
+                }
+                "GEO_TARGETS_PER_CAMPAIGN" => Some(Self::GeoTargetsPerCampaign),
+                "NEGATIVE_IP_BLOCKS_PER_CAMPAIGN" => {
+                    Some(Self::NegativeIpBlocksPerCampaign)
+                }
+                "PROXIMITIES_PER_CAMPAIGN" => Some(Self::ProximitiesPerCampaign),
+                "LISTING_SCOPES_PER_SHOPPING_CAMPAIGN" => {
+                    Some(Self::ListingScopesPerShoppingCampaign)
+                }
+                "LISTING_SCOPES_PER_NON_SHOPPING_CAMPAIGN" => {
+                    Some(Self::ListingScopesPerNonShoppingCampaign)
+                }
+                "NEGATIVE_KEYWORDS_PER_SHARED_SET" => {
+                    Some(Self::NegativeKeywordsPerSharedSet)
+                }
+                "NEGATIVE_PLACEMENTS_PER_SHARED_SET" => {
+                    Some(Self::NegativePlacementsPerSharedSet)
+                }
+                "SHARED_SETS_PER_CUSTOMER_FOR_TYPE_DEFAULT" => {
+                    Some(Self::SharedSetsPerCustomerForTypeDefault)
+                }
+                "SHARED_SETS_PER_CUSTOMER_FOR_NEGATIVE_PLACEMENT_LIST_LOWER" => {
+                    Some(Self::SharedSetsPerCustomerForNegativePlacementListLower)
+                }
+                "HOTEL_ADVANCE_BOOKING_WINDOW_BID_MODIFIERS_PER_AD_GROUP" => {
+                    Some(Self::HotelAdvanceBookingWindowBidModifiersPerAdGroup)
+                }
+                "BIDDING_STRATEGIES_PER_CUSTOMER" => {
+                    Some(Self::BiddingStrategiesPerCustomer)
+                }
+                "BASIC_USER_LISTS_PER_CUSTOMER" => Some(Self::BasicUserListsPerCustomer),
+                "LOGICAL_USER_LISTS_PER_CUSTOMER" => {
+                    Some(Self::LogicalUserListsPerCustomer)
+                }
+                "BASE_AD_GROUP_ADS_PER_CUSTOMER" => Some(Self::BaseAdGroupAdsPerCustomer),
+                "EXPERIMENT_AD_GROUP_ADS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentAdGroupAdsPerCustomer)
+                }
+                "AD_GROUP_ADS_PER_CAMPAIGN" => Some(Self::AdGroupAdsPerCampaign),
+                "TEXT_AND_OTHER_ADS_PER_AD_GROUP" => {
+                    Some(Self::TextAndOtherAdsPerAdGroup)
+                }
+                "IMAGE_ADS_PER_AD_GROUP" => Some(Self::ImageAdsPerAdGroup),
+                "SHOPPING_SMART_ADS_PER_AD_GROUP" => {
+                    Some(Self::ShoppingSmartAdsPerAdGroup)
+                }
+                "RESPONSIVE_SEARCH_ADS_PER_AD_GROUP" => {
+                    Some(Self::ResponsiveSearchAdsPerAdGroup)
+                }
+                "APP_ADS_PER_AD_GROUP" => Some(Self::AppAdsPerAdGroup),
+                "APP_ENGAGEMENT_ADS_PER_AD_GROUP" => {
+                    Some(Self::AppEngagementAdsPerAdGroup)
+                }
+                "LOCAL_ADS_PER_AD_GROUP" => Some(Self::LocalAdsPerAdGroup),
+                "VIDEO_ADS_PER_AD_GROUP" => Some(Self::VideoAdsPerAdGroup),
+                "LEAD_FORM_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::LeadFormCampaignAssetsPerCampaign)
+                }
+                "PROMOTION_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::PromotionCustomerAssetsPerCustomer)
+                }
+                "PROMOTION_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::PromotionCampaignAssetsPerCampaign)
+                }
+                "PROMOTION_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::PromotionAdGroupAssetsPerAdGroup)
+                }
+                "CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::CalloutCustomerAssetsPerCustomer)
+                }
+                "CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::CalloutCampaignAssetsPerCampaign)
+                }
+                "CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::CalloutAdGroupAssetsPerAdGroup)
+                }
+                "SITELINK_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::SitelinkCustomerAssetsPerCustomer)
+                }
+                "SITELINK_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::SitelinkCampaignAssetsPerCampaign)
+                }
+                "SITELINK_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::SitelinkAdGroupAssetsPerAdGroup)
+                }
+                "STRUCTURED_SNIPPET_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::StructuredSnippetCustomerAssetsPerCustomer)
+                }
+                "STRUCTURED_SNIPPET_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::StructuredSnippetCampaignAssetsPerCampaign)
+                }
+                "STRUCTURED_SNIPPET_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::StructuredSnippetAdGroupAssetsPerAdGroup)
+                }
+                "MOBILE_APP_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::MobileAppCustomerAssetsPerCustomer)
+                }
+                "MOBILE_APP_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::MobileAppCampaignAssetsPerCampaign)
+                }
+                "MOBILE_APP_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::MobileAppAdGroupAssetsPerAdGroup)
+                }
+                "HOTEL_CALLOUT_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::HotelCalloutCustomerAssetsPerCustomer)
+                }
+                "HOTEL_CALLOUT_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::HotelCalloutCampaignAssetsPerCampaign)
+                }
+                "HOTEL_CALLOUT_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::HotelCalloutAdGroupAssetsPerAdGroup)
+                }
+                "CALL_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::CallCustomerAssetsPerCustomer)
+                }
+                "CALL_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::CallCampaignAssetsPerCampaign)
+                }
+                "CALL_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::CallAdGroupAssetsPerAdGroup)
+                }
+                "PRICE_CUSTOMER_ASSETS_PER_CUSTOMER" => {
+                    Some(Self::PriceCustomerAssetsPerCustomer)
+                }
+                "PRICE_CAMPAIGN_ASSETS_PER_CAMPAIGN" => {
+                    Some(Self::PriceCampaignAssetsPerCampaign)
+                }
+                "PRICE_AD_GROUP_ASSETS_PER_AD_GROUP" => {
+                    Some(Self::PriceAdGroupAssetsPerAdGroup)
+                }
+                "VERSIONS_PER_AD" => Some(Self::VersionsPerAd),
+                "USER_FEEDS_PER_CUSTOMER" => Some(Self::UserFeedsPerCustomer),
+                "SYSTEM_FEEDS_PER_CUSTOMER" => Some(Self::SystemFeedsPerCustomer),
+                "FEED_ATTRIBUTES_PER_FEED" => Some(Self::FeedAttributesPerFeed),
+                "FEED_ITEMS_PER_CUSTOMER" => Some(Self::FeedItemsPerCustomer),
+                "CAMPAIGN_FEEDS_PER_CUSTOMER" => Some(Self::CampaignFeedsPerCustomer),
+                "BASE_CAMPAIGN_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::BaseCampaignFeedsPerCustomer)
+                }
+                "EXPERIMENT_CAMPAIGN_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentCampaignFeedsPerCustomer)
+                }
+                "AD_GROUP_FEEDS_PER_CUSTOMER" => Some(Self::AdGroupFeedsPerCustomer),
+                "BASE_AD_GROUP_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::BaseAdGroupFeedsPerCustomer)
+                }
+                "EXPERIMENT_AD_GROUP_FEEDS_PER_CUSTOMER" => {
+                    Some(Self::ExperimentAdGroupFeedsPerCustomer)
+                }
+                "AD_GROUP_FEEDS_PER_CAMPAIGN" => Some(Self::AdGroupFeedsPerCampaign),
+                "FEED_ITEM_SETS_PER_CUSTOMER" => Some(Self::FeedItemSetsPerCustomer),
+                "FEED_ITEMS_PER_FEED_ITEM_SET" => Some(Self::FeedItemsPerFeedItemSet),
+                "CAMPAIGN_EXPERIMENTS_PER_CUSTOMER" => {
+                    Some(Self::CampaignExperimentsPerCustomer)
+                }
+                "EXPERIMENT_ARMS_PER_VIDEO_EXPERIMENT" => {
+                    Some(Self::ExperimentArmsPerVideoExperiment)
+                }
+                "OWNED_LABELS_PER_CUSTOMER" => Some(Self::OwnedLabelsPerCustomer),
+                "LABELS_PER_CAMPAIGN" => Some(Self::LabelsPerCampaign),
+                "LABELS_PER_AD_GROUP" => Some(Self::LabelsPerAdGroup),
+                "LABELS_PER_AD_GROUP_AD" => Some(Self::LabelsPerAdGroupAd),
+                "LABELS_PER_AD_GROUP_CRITERION" => Some(Self::LabelsPerAdGroupCriterion),
+                "TARGET_CUSTOMERS_PER_LABEL" => Some(Self::TargetCustomersPerLabel),
+                "KEYWORD_PLANS_PER_USER_PER_CUSTOMER" => {
+                    Some(Self::KeywordPlansPerUserPerCustomer)
+                }
+                "KEYWORD_PLAN_AD_GROUP_KEYWORDS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanAdGroupKeywordsPerKeywordPlan)
+                }
+                "KEYWORD_PLAN_AD_GROUPS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanAdGroupsPerKeywordPlan)
+                }
+                "KEYWORD_PLAN_NEGATIVE_KEYWORDS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanNegativeKeywordsPerKeywordPlan)
+                }
+                "KEYWORD_PLAN_CAMPAIGNS_PER_KEYWORD_PLAN" => {
+                    Some(Self::KeywordPlanCampaignsPerKeywordPlan)
+                }
+                "CONVERSION_ACTIONS_PER_CUSTOMER" => {
+                    Some(Self::ConversionActionsPerCustomer)
+                }
+                "BATCH_JOB_OPERATIONS_PER_JOB" => Some(Self::BatchJobOperationsPerJob),
+                "BATCH_JOBS_PER_CUSTOMER" => Some(Self::BatchJobsPerCustomer),
+                "HOTEL_CHECK_IN_DATE_RANGE_BID_MODIFIERS_PER_AD_GROUP" => {
+                    Some(Self::HotelCheckInDateRangeBidModifiersPerAdGroup)
+                }
+                _ => None,
             }
         }
     }
 }
-// Proto file describing the response content types used in mutate operations.
-
 /// Container for possible response content types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResponseContentTypeEnum {
-}
+pub struct ResponseContentTypeEnum {}
 /// Nested message and enum types in `ResponseContentTypeEnum`.
 pub mod response_content_type_enum {
     /// Possible response content types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ResponseContentType {
         /// Not specified. Will return the resource name only in the response.
@@ -13605,20 +20314,37 @@ pub mod response_content_type_enum {
                 ResponseContentType::MutableResource => "MUTABLE_RESOURCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "RESOURCE_NAME_ONLY" => Some(Self::ResourceNameOnly),
+                "MUTABLE_RESOURCE" => Some(Self::MutableResource),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing search term targeting statuses.
-
 /// Container for enum indicating whether a search term is one of your targeted
 /// or excluded keywords.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SearchTermTargetingStatusEnum {
-}
+pub struct SearchTermTargetingStatusEnum {}
 /// Nested message and enum types in `SearchTermTargetingStatusEnum`.
 pub mod search_term_targeting_status_enum {
     /// Indicates whether the search term is one of your targeted or excluded
     /// keywords.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SearchTermTargetingStatus {
         /// Not specified.
@@ -13649,19 +20375,39 @@ pub mod search_term_targeting_status_enum {
                 SearchTermTargetingStatus::None => "NONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADDED" => Some(Self::Added),
+                "EXCLUDED" => Some(Self::Excluded),
+                "ADDED_EXCLUDED" => Some(Self::AddedExcluded),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing seasonality event status.
-
 /// Message describing seasonality event scopes. The two types of seasonality
 /// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SeasonalityEventScopeEnum {
-}
+pub struct SeasonalityEventScopeEnum {}
 /// Nested message and enum types in `SeasonalityEventScopeEnum`.
 pub mod seasonality_event_scope_enum {
     /// The possible scopes of a Seasonality Event.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SeasonalityEventScope {
         /// No value has been specified.
@@ -13694,19 +20440,38 @@ pub mod seasonality_event_scope_enum {
                 SeasonalityEventScope::Channel => "CHANNEL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOMER" => Some(Self::Customer),
+                "CAMPAIGN" => Some(Self::Campaign),
+                "CHANNEL" => Some(Self::Channel),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing seasonality event status.
-
 /// Message describing seasonality event statuses. The two types of seasonality
 /// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SeasonalityEventStatusEnum {
-}
+pub struct SeasonalityEventStatusEnum {}
 /// Nested message and enum types in `SeasonalityEventStatusEnum`.
 pub mod seasonality_event_status_enum {
     /// The possible statuses of a Seasonality Event.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SeasonalityEventStatus {
         /// No value has been specified.
@@ -13733,18 +20498,36 @@ pub mod seasonality_event_status_enum {
                 SeasonalityEventStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing shared set statuses.
-
 /// Container for enum describing types of shared set statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SharedSetStatusEnum {
-}
+pub struct SharedSetStatusEnum {}
 /// Nested message and enum types in `SharedSetStatusEnum`.
 pub mod shared_set_status_enum {
     /// Enum listing the possible shared set statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SharedSetStatus {
         /// Not specified.
@@ -13769,18 +20552,36 @@ pub mod shared_set_status_enum {
                 SharedSetStatus::Removed => "REMOVED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "REMOVED" => Some(Self::Removed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing shared set types.
-
 /// Container for enum describing types of shared sets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SharedSetTypeEnum {
-}
+pub struct SharedSetTypeEnum {}
 /// Nested message and enum types in `SharedSetTypeEnum`.
 pub mod shared_set_type_enum {
     /// Enum listing the possible shared set types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SharedSetType {
         /// Not specified.
@@ -13805,19 +20606,37 @@ pub mod shared_set_type_enum {
                 SharedSetType::NegativePlacements => "NEGATIVE_PLACEMENTS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEGATIVE_KEYWORDS" => Some(Self::NegativeKeywords),
+                "NEGATIVE_PLACEMENTS" => Some(Self::NegativePlacements),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing simulation modification methods.
-
 /// Container for enum describing the method by which a simulation modifies
 /// a field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SimulationModificationMethodEnum {
-}
+pub struct SimulationModificationMethodEnum {}
 /// Nested message and enum types in `SimulationModificationMethodEnum`.
 pub mod simulation_modification_method_enum {
     /// Enum describing the method by which a simulation modifies a field.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SimulationModificationMethod {
         /// Not specified.
@@ -13850,18 +20669,37 @@ pub mod simulation_modification_method_enum {
                 SimulationModificationMethod::Scaling => "SCALING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNIFORM" => Some(Self::Uniform),
+                "DEFAULT" => Some(Self::Default),
+                "SCALING" => Some(Self::Scaling),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing simulation types.
-
 /// Container for enum describing the field a simulation modifies.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SimulationTypeEnum {
-}
+pub struct SimulationTypeEnum {}
 /// Nested message and enum types in `SimulationTypeEnum`.
 pub mod simulation_type_enum {
     /// Enum describing the field a simulation modifies.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SimulationType {
         /// Not specified.
@@ -13904,18 +20742,42 @@ pub mod simulation_type_enum {
                 SimulationType::Budget => "BUDGET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CPC_BID" => Some(Self::CpcBid),
+                "CPV_BID" => Some(Self::CpvBid),
+                "TARGET_CPA" => Some(Self::TargetCpa),
+                "BID_MODIFIER" => Some(Self::BidModifier),
+                "TARGET_ROAS" => Some(Self::TargetRoas),
+                "PERCENT_CPC_BID" => Some(Self::PercentCpcBid),
+                "TARGET_IMPRESSION_SHARE" => Some(Self::TargetImpressionShare),
+                "BUDGET" => Some(Self::Budget),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Sitelink placeholder fields.
-
 /// Values for Sitelink placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SitelinkPlaceholderFieldEnum {
-}
+pub struct SitelinkPlaceholderFieldEnum {}
 /// Nested message and enum types in `SitelinkPlaceholderFieldEnum`.
 pub mod sitelink_placeholder_field_enum {
     /// Possible values for Sitelink placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SitelinkPlaceholderField {
         /// Not specified.
@@ -13959,19 +20821,42 @@ pub mod sitelink_placeholder_field_enum {
                 SitelinkPlaceholderField::FinalUrlSuffix => "FINAL_URL_SUFFIX",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXT" => Some(Self::Text),
+                "LINE_1" => Some(Self::Line1),
+                "LINE_2" => Some(Self::Line2),
+                "FINAL_URLS" => Some(Self::FinalUrls),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "FINAL_URL_SUFFIX" => Some(Self::FinalUrlSuffix),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing SpendingLimit types.
-
 /// Message describing spending limit types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SpendingLimitTypeEnum {
-}
+pub struct SpendingLimitTypeEnum {}
 /// Nested message and enum types in `SpendingLimitTypeEnum`.
 pub mod spending_limit_type_enum {
     /// The possible spending limit types used by certain resources as an
     /// alternative to absolute money values in micros.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SpendingLimitType {
         /// Not specified.
@@ -13993,18 +20878,35 @@ pub mod spending_limit_type_enum {
                 SpendingLimitType::Infinite => "INFINITE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "INFINITE" => Some(Self::Infinite),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Structured Snippet placeholder fields.
-
 /// Values for Structured Snippet placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StructuredSnippetPlaceholderFieldEnum {
-}
+pub struct StructuredSnippetPlaceholderFieldEnum {}
 /// Nested message and enum types in `StructuredSnippetPlaceholderFieldEnum`.
 pub mod structured_snippet_placeholder_field_enum {
     /// Possible values for Structured Snippet placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum StructuredSnippetPlaceholderField {
         /// Not specified.
@@ -14034,18 +20936,36 @@ pub mod structured_snippet_placeholder_field_enum {
                 StructuredSnippetPlaceholderField::Snippets => "SNIPPETS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HEADER" => Some(Self::Header),
+                "SNIPPETS" => Some(Self::Snippets),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing summary row setting.
-
 /// Indicates summary row setting in request parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SummaryRowSettingEnum {
-}
+pub struct SummaryRowSettingEnum {}
 /// Nested message and enum types in `SummaryRowSettingEnum`.
 pub mod summary_row_setting_enum {
     /// Enum describing return summary row settings.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SummaryRowSetting {
         /// Not specified.
@@ -14074,18 +20994,37 @@ pub mod summary_row_setting_enum {
                 SummaryRowSetting::SummaryRowOnly => "SUMMARY_ROW_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NO_SUMMARY_ROW" => Some(Self::NoSummaryRow),
+                "SUMMARY_ROW_WITH_RESULTS" => Some(Self::SummaryRowWithResults),
+                "SUMMARY_ROW_ONLY" => Some(Self::SummaryRowOnly),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing system managed entity sources.
-
 /// Container for enum describing possible system managed entity sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SystemManagedResourceSourceEnum {
-}
+pub struct SystemManagedResourceSourceEnum {}
 /// Nested message and enum types in `SystemManagedResourceSourceEnum`.
 pub mod system_managed_resource_source_enum {
     /// Enum listing the possible system managed entity sources.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SystemManagedResourceSource {
         /// Not specified.
@@ -14107,18 +21046,35 @@ pub mod system_managed_resource_source_enum {
                 SystemManagedResourceSource::AdVariations => "AD_VARIATIONS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AD_VARIATIONS" => Some(Self::AdVariations),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing TargetCpaOptIn recommendation goals.
-
 /// Container for enum describing goals for TargetCpaOptIn recommendation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpaOptInRecommendationGoalEnum {
-}
+pub struct TargetCpaOptInRecommendationGoalEnum {}
 /// Nested message and enum types in `TargetCpaOptInRecommendationGoalEnum`.
 pub mod target_cpa_opt_in_recommendation_goal_enum {
     /// Goal of TargetCpaOptIn recommendation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TargetCpaOptInRecommendationGoal {
         /// Not specified.
@@ -14150,19 +21106,39 @@ pub mod target_cpa_opt_in_recommendation_goal_enum {
                 TargetCpaOptInRecommendationGoal::ClosestCpa => "CLOSEST_CPA",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SAME_COST" => Some(Self::SameCost),
+                "SAME_CONVERSIONS" => Some(Self::SameConversions),
+                "SAME_CPA" => Some(Self::SameCpa),
+                "CLOSEST_CPA" => Some(Self::ClosestCpa),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing TimeType types.
-
 /// Message describing time types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TimeTypeEnum {
-}
+pub struct TimeTypeEnum {}
 /// Nested message and enum types in `TimeTypeEnum`.
 pub mod time_type_enum {
     /// The possible time types used by certain resources as an alternative to
     /// absolute timestamps.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TimeType {
         /// Not specified.
@@ -14187,20 +21163,38 @@ pub mod time_type_enum {
                 TimeType::Forever => "FOREVER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NOW" => Some(Self::Now),
+                "FOREVER" => Some(Self::Forever),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing Travel placeholder fields.
-
 /// Values for Travel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TravelPlaceholderFieldEnum {
-}
+pub struct TravelPlaceholderFieldEnum {}
 /// Nested message and enum types in `TravelPlaceholderFieldEnum`.
 pub mod travel_placeholder_field_enum {
     /// Possible values for Travel placeholder fields.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TravelPlaceholderField {
         /// Not specified.
@@ -14296,23 +21290,61 @@ pub mod travel_placeholder_field_enum {
                 TravelPlaceholderField::FinalMobileUrls => "FINAL_MOBILE_URLS",
                 TravelPlaceholderField::TrackingUrl => "TRACKING_URL",
                 TravelPlaceholderField::AndroidAppLink => "ANDROID_APP_LINK",
-                TravelPlaceholderField::SimilarDestinationIds => "SIMILAR_DESTINATION_IDS",
+                TravelPlaceholderField::SimilarDestinationIds => {
+                    "SIMILAR_DESTINATION_IDS"
+                }
                 TravelPlaceholderField::IosAppLink => "IOS_APP_LINK",
                 TravelPlaceholderField::IosAppStoreId => "IOS_APP_STORE_ID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DESTINATION_ID" => Some(Self::DestinationId),
+                "ORIGIN_ID" => Some(Self::OriginId),
+                "TITLE" => Some(Self::Title),
+                "DESTINATION_NAME" => Some(Self::DestinationName),
+                "ORIGIN_NAME" => Some(Self::OriginName),
+                "PRICE" => Some(Self::Price),
+                "FORMATTED_PRICE" => Some(Self::FormattedPrice),
+                "SALE_PRICE" => Some(Self::SalePrice),
+                "FORMATTED_SALE_PRICE" => Some(Self::FormattedSalePrice),
+                "IMAGE_URL" => Some(Self::ImageUrl),
+                "CATEGORY" => Some(Self::Category),
+                "CONTEXTUAL_KEYWORDS" => Some(Self::ContextualKeywords),
+                "DESTINATION_ADDRESS" => Some(Self::DestinationAddress),
+                "FINAL_URL" => Some(Self::FinalUrl),
+                "FINAL_MOBILE_URLS" => Some(Self::FinalMobileUrls),
+                "TRACKING_URL" => Some(Self::TrackingUrl),
+                "ANDROID_APP_LINK" => Some(Self::AndroidAppLink),
+                "SIMILAR_DESTINATION_IDS" => Some(Self::SimilarDestinationIds),
+                "IOS_APP_LINK" => Some(Self::IosAppLink),
+                "IOS_APP_STORE_ID" => Some(Self::IosAppStoreId),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing the UserInterest taxonomy type
-
 /// Message describing a UserInterestTaxonomyType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserInterestTaxonomyTypeEnum {
-}
+pub struct UserInterestTaxonomyTypeEnum {}
 /// Nested message and enum types in `UserInterestTaxonomyTypeEnum`.
 pub mod user_interest_taxonomy_type_enum {
     /// Enum containing the possible UserInterestTaxonomyTypes.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserInterestTaxonomyType {
         /// Not specified.
@@ -14341,23 +21373,46 @@ pub mod user_interest_taxonomy_type_enum {
                 UserInterestTaxonomyType::Unknown => "UNKNOWN",
                 UserInterestTaxonomyType::Affinity => "AFFINITY",
                 UserInterestTaxonomyType::InMarket => "IN_MARKET",
-                UserInterestTaxonomyType::MobileAppInstallUser => "MOBILE_APP_INSTALL_USER",
+                UserInterestTaxonomyType::MobileAppInstallUser => {
+                    "MOBILE_APP_INSTALL_USER"
+                }
                 UserInterestTaxonomyType::VerticalGeo => "VERTICAL_GEO",
                 UserInterestTaxonomyType::NewSmartPhoneUser => "NEW_SMART_PHONE_USER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "AFFINITY" => Some(Self::Affinity),
+                "IN_MARKET" => Some(Self::InMarket),
+                "MOBILE_APP_INSTALL_USER" => Some(Self::MobileAppInstallUser),
+                "VERTICAL_GEO" => Some(Self::VerticalGeo),
+                "NEW_SMART_PHONE_USER" => Some(Self::NewSmartPhoneUser),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing user list access status.
-
 /// Indicates if this client still has access to the list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListAccessStatusEnum {
-}
+pub struct UserListAccessStatusEnum {}
 /// Nested message and enum types in `UserListAccessStatusEnum`.
 pub mod user_list_access_status_enum {
     /// Enum containing possible user list access statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListAccessStatus {
         /// Not specified.
@@ -14382,19 +21437,37 @@ pub mod user_list_access_status_enum {
                 UserListAccessStatus::Disabled => "DISABLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing user list closing reason.
-
 /// Indicates the reason why the userlist was closed.
 /// This enum is only used when a list is auto-closed by the system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListClosingReasonEnum {
-}
+pub struct UserListClosingReasonEnum {}
 /// Nested message and enum types in `UserListClosingReasonEnum`.
 pub mod user_list_closing_reason_enum {
     /// Enum describing possible user list closing reasons.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListClosingReason {
         /// Not specified.
@@ -14416,20 +21489,37 @@ pub mod user_list_closing_reason_enum {
                 UserListClosingReason::Unused => "UNUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNUSED" => Some(Self::Unused),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing user list membership status.
-
 /// Membership status of this user list. Indicates whether a user list is open
 /// or active. Only open user lists can accumulate more users and can be used for
 /// targeting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListMembershipStatusEnum {
-}
+pub struct UserListMembershipStatusEnum {}
 /// Nested message and enum types in `UserListMembershipStatusEnum`.
 pub mod user_list_membership_status_enum {
     /// Enum containing possible user list membership statuses.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListMembershipStatus {
         /// Not specified.
@@ -14454,18 +21544,36 @@ pub mod user_list_membership_status_enum {
                 UserListMembershipStatus::Closed => "CLOSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OPEN" => Some(Self::Open),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing user list size range.
-
 /// Size range in terms of number of users of a UserList.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListSizeRangeEnum {
-}
+pub struct UserListSizeRangeEnum {}
 /// Nested message and enum types in `UserListSizeRangeEnum`.
 pub mod user_list_size_range_enum {
     /// Enum containing possible user list size ranges.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListSizeRange {
         /// Not specified.
@@ -14516,34 +21624,104 @@ pub mod user_list_size_range_enum {
                 UserListSizeRange::Unknown => "UNKNOWN",
                 UserListSizeRange::LessThanFiveHundred => "LESS_THAN_FIVE_HUNDRED",
                 UserListSizeRange::LessThanOneThousand => "LESS_THAN_ONE_THOUSAND",
-                UserListSizeRange::OneThousandToTenThousand => "ONE_THOUSAND_TO_TEN_THOUSAND",
-                UserListSizeRange::TenThousandToFiftyThousand => "TEN_THOUSAND_TO_FIFTY_THOUSAND",
-                UserListSizeRange::FiftyThousandToOneHundredThousand => "FIFTY_THOUSAND_TO_ONE_HUNDRED_THOUSAND",
-                UserListSizeRange::OneHundredThousandToThreeHundredThousand => "ONE_HUNDRED_THOUSAND_TO_THREE_HUNDRED_THOUSAND",
-                UserListSizeRange::ThreeHundredThousandToFiveHundredThousand => "THREE_HUNDRED_THOUSAND_TO_FIVE_HUNDRED_THOUSAND",
-                UserListSizeRange::FiveHundredThousandToOneMillion => "FIVE_HUNDRED_THOUSAND_TO_ONE_MILLION",
+                UserListSizeRange::OneThousandToTenThousand => {
+                    "ONE_THOUSAND_TO_TEN_THOUSAND"
+                }
+                UserListSizeRange::TenThousandToFiftyThousand => {
+                    "TEN_THOUSAND_TO_FIFTY_THOUSAND"
+                }
+                UserListSizeRange::FiftyThousandToOneHundredThousand => {
+                    "FIFTY_THOUSAND_TO_ONE_HUNDRED_THOUSAND"
+                }
+                UserListSizeRange::OneHundredThousandToThreeHundredThousand => {
+                    "ONE_HUNDRED_THOUSAND_TO_THREE_HUNDRED_THOUSAND"
+                }
+                UserListSizeRange::ThreeHundredThousandToFiveHundredThousand => {
+                    "THREE_HUNDRED_THOUSAND_TO_FIVE_HUNDRED_THOUSAND"
+                }
+                UserListSizeRange::FiveHundredThousandToOneMillion => {
+                    "FIVE_HUNDRED_THOUSAND_TO_ONE_MILLION"
+                }
                 UserListSizeRange::OneMillionToTwoMillion => "ONE_MILLION_TO_TWO_MILLION",
-                UserListSizeRange::TwoMillionToThreeMillion => "TWO_MILLION_TO_THREE_MILLION",
-                UserListSizeRange::ThreeMillionToFiveMillion => "THREE_MILLION_TO_FIVE_MILLION",
-                UserListSizeRange::FiveMillionToTenMillion => "FIVE_MILLION_TO_TEN_MILLION",
-                UserListSizeRange::TenMillionToTwentyMillion => "TEN_MILLION_TO_TWENTY_MILLION",
-                UserListSizeRange::TwentyMillionToThirtyMillion => "TWENTY_MILLION_TO_THIRTY_MILLION",
-                UserListSizeRange::ThirtyMillionToFiftyMillion => "THIRTY_MILLION_TO_FIFTY_MILLION",
+                UserListSizeRange::TwoMillionToThreeMillion => {
+                    "TWO_MILLION_TO_THREE_MILLION"
+                }
+                UserListSizeRange::ThreeMillionToFiveMillion => {
+                    "THREE_MILLION_TO_FIVE_MILLION"
+                }
+                UserListSizeRange::FiveMillionToTenMillion => {
+                    "FIVE_MILLION_TO_TEN_MILLION"
+                }
+                UserListSizeRange::TenMillionToTwentyMillion => {
+                    "TEN_MILLION_TO_TWENTY_MILLION"
+                }
+                UserListSizeRange::TwentyMillionToThirtyMillion => {
+                    "TWENTY_MILLION_TO_THIRTY_MILLION"
+                }
+                UserListSizeRange::ThirtyMillionToFiftyMillion => {
+                    "THIRTY_MILLION_TO_FIFTY_MILLION"
+                }
                 UserListSizeRange::OverFiftyMillion => "OVER_FIFTY_MILLION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "LESS_THAN_FIVE_HUNDRED" => Some(Self::LessThanFiveHundred),
+                "LESS_THAN_ONE_THOUSAND" => Some(Self::LessThanOneThousand),
+                "ONE_THOUSAND_TO_TEN_THOUSAND" => Some(Self::OneThousandToTenThousand),
+                "TEN_THOUSAND_TO_FIFTY_THOUSAND" => {
+                    Some(Self::TenThousandToFiftyThousand)
+                }
+                "FIFTY_THOUSAND_TO_ONE_HUNDRED_THOUSAND" => {
+                    Some(Self::FiftyThousandToOneHundredThousand)
+                }
+                "ONE_HUNDRED_THOUSAND_TO_THREE_HUNDRED_THOUSAND" => {
+                    Some(Self::OneHundredThousandToThreeHundredThousand)
+                }
+                "THREE_HUNDRED_THOUSAND_TO_FIVE_HUNDRED_THOUSAND" => {
+                    Some(Self::ThreeHundredThousandToFiveHundredThousand)
+                }
+                "FIVE_HUNDRED_THOUSAND_TO_ONE_MILLION" => {
+                    Some(Self::FiveHundredThousandToOneMillion)
+                }
+                "ONE_MILLION_TO_TWO_MILLION" => Some(Self::OneMillionToTwoMillion),
+                "TWO_MILLION_TO_THREE_MILLION" => Some(Self::TwoMillionToThreeMillion),
+                "THREE_MILLION_TO_FIVE_MILLION" => Some(Self::ThreeMillionToFiveMillion),
+                "FIVE_MILLION_TO_TEN_MILLION" => Some(Self::FiveMillionToTenMillion),
+                "TEN_MILLION_TO_TWENTY_MILLION" => Some(Self::TenMillionToTwentyMillion),
+                "TWENTY_MILLION_TO_THIRTY_MILLION" => {
+                    Some(Self::TwentyMillionToThirtyMillion)
+                }
+                "THIRTY_MILLION_TO_FIFTY_MILLION" => {
+                    Some(Self::ThirtyMillionToFiftyMillion)
+                }
+                "OVER_FIFTY_MILLION" => Some(Self::OverFiftyMillion),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing user list type.
-
 /// The user list types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListTypeEnum {
-}
+pub struct UserListTypeEnum {}
 /// Nested message and enum types in `UserListTypeEnum`.
 pub mod user_list_type_enum {
     /// Enum containing possible user list types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserListType {
         /// Not specified.
@@ -14581,19 +21759,41 @@ pub mod user_list_type_enum {
                 UserListType::CrmBased => "CRM_BASED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "REMARKETING" => Some(Self::Remarketing),
+                "LOGICAL" => Some(Self::Logical),
+                "EXTERNAL_REMARKETING" => Some(Self::ExternalRemarketing),
+                "RULE_BASED" => Some(Self::RuleBased),
+                "SIMILAR" => Some(Self::Similar),
+                "CRM_BASED" => Some(Self::CrmBased),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion value rule device type.
-
 /// Container for enum describing possible device types used in a conversion
 /// value rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleDeviceTypeEnum {
-}
+pub struct ValueRuleDeviceTypeEnum {}
 /// Nested message and enum types in `ValueRuleDeviceTypeEnum`.
 pub mod value_rule_device_type_enum {
     /// Possible device types used in conversion value rule.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ValueRuleDeviceType {
         /// Not specified.
@@ -14621,19 +21821,38 @@ pub mod value_rule_device_type_enum {
                 ValueRuleDeviceType::Tablet => "TABLET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MOBILE" => Some(Self::Mobile),
+                "DESKTOP" => Some(Self::Desktop),
+                "TABLET" => Some(Self::Tablet),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion value rule geo location match type.
-
 /// Container for enum describing possible geographic location matching types
 /// used in a conversion value rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleGeoLocationMatchTypeEnum {
-}
+pub struct ValueRuleGeoLocationMatchTypeEnum {}
 /// Nested message and enum types in `ValueRuleGeoLocationMatchTypeEnum`.
 pub mod value_rule_geo_location_match_type_enum {
     /// Possible geographic location matching types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ValueRuleGeoLocationMatchType {
         /// Not specified.
@@ -14655,22 +21874,42 @@ pub mod value_rule_geo_location_match_type_enum {
                 ValueRuleGeoLocationMatchType::Unspecified => "UNSPECIFIED",
                 ValueRuleGeoLocationMatchType::Unknown => "UNKNOWN",
                 ValueRuleGeoLocationMatchType::Any => "ANY",
-                ValueRuleGeoLocationMatchType::LocationOfPresence => "LOCATION_OF_PRESENCE",
+                ValueRuleGeoLocationMatchType::LocationOfPresence => {
+                    "LOCATION_OF_PRESENCE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ANY" => Some(Self::Any),
+                "LOCATION_OF_PRESENCE" => Some(Self::LocationOfPresence),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing conversion value rule operation.
-
 /// Container for enum describing possible operations for value rules which are
 /// executed when rules are triggered.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleOperationEnum {
-}
+pub struct ValueRuleOperationEnum {}
 /// Nested message and enum types in `ValueRuleOperationEnum`.
 pub mod value_rule_operation_enum {
     /// Possible operations of the action of a conversion value rule.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ValueRuleOperation {
         /// Not specified.
@@ -14698,18 +21937,37 @@ pub mod value_rule_operation_enum {
                 ValueRuleOperation::Set => "SET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADD" => Some(Self::Add),
+                "MULTIPLY" => Some(Self::Multiply),
+                "SET" => Some(Self::Set),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing where the conversion value rule is attached.
-
 /// Container for enum describing where a value rule set is attached.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleSetAttachmentTypeEnum {
-}
+pub struct ValueRuleSetAttachmentTypeEnum {}
 /// Nested message and enum types in `ValueRuleSetAttachmentTypeEnum`.
 pub mod value_rule_set_attachment_type_enum {
     /// Possible level where a value rule set is attached.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ValueRuleSetAttachmentType {
         /// Not specified.
@@ -14734,19 +21992,37 @@ pub mod value_rule_set_attachment_type_enum {
                 ValueRuleSetAttachmentType::Campaign => "CAMPAIGN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOMER" => Some(Self::Customer),
+                "CAMPAIGN" => Some(Self::Campaign),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing conversion value rule set dimension.
-
 /// Container for enum describing possible dimensions of a conversion value rule
 /// set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleSetDimensionEnum {
-}
+pub struct ValueRuleSetDimensionEnum {}
 /// Nested message and enum types in `ValueRuleSetDimensionEnum`.
 pub mod value_rule_set_dimension_enum {
     /// Possible dimensions of a conversion value rule set.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ValueRuleSetDimension {
         /// Not specified.
@@ -14774,18 +22050,37 @@ pub mod value_rule_set_dimension_enum {
                 ValueRuleSetDimension::Audience => "AUDIENCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "GEO_LOCATION" => Some(Self::GeoLocation),
+                "DEVICE" => Some(Self::Device),
+                "AUDIENCE" => Some(Self::Audience),
+                _ => None,
+            }
+        }
     }
 }
-// Proto file describing vanity pharma display url modes.
-
 /// The display mode for vanity pharma URLs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VanityPharmaDisplayUrlModeEnum {
-}
+pub struct VanityPharmaDisplayUrlModeEnum {}
 /// Nested message and enum types in `VanityPharmaDisplayUrlModeEnum`.
 pub mod vanity_pharma_display_url_mode_enum {
     /// Enum describing possible display modes for vanity pharma URLs.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum VanityPharmaDisplayUrlMode {
         /// Not specified.
@@ -14806,23 +22101,43 @@ pub mod vanity_pharma_display_url_mode_enum {
             match self {
                 VanityPharmaDisplayUrlMode::Unspecified => "UNSPECIFIED",
                 VanityPharmaDisplayUrlMode::Unknown => "UNKNOWN",
-                VanityPharmaDisplayUrlMode::ManufacturerWebsiteUrl => "MANUFACTURER_WEBSITE_URL",
+                VanityPharmaDisplayUrlMode::ManufacturerWebsiteUrl => {
+                    "MANUFACTURER_WEBSITE_URL"
+                }
                 VanityPharmaDisplayUrlMode::WebsiteDescription => "WEBSITE_DESCRIPTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "MANUFACTURER_WEBSITE_URL" => Some(Self::ManufacturerWebsiteUrl),
+                "WEBSITE_DESCRIPTION" => Some(Self::WebsiteDescription),
+                _ => None,
             }
         }
     }
 }
-// Proto file describing vanity pharma texts.
-
 /// The text that will be displayed in display URL of the text ad when website
 /// description is the selected display mode for vanity pharma URLs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VanityPharmaTextEnum {
-}
+pub struct VanityPharmaTextEnum {}
 /// Nested message and enum types in `VanityPharmaTextEnum`.
 pub mod vanity_pharma_text_enum {
     /// Enum describing possible text.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum VanityPharmaText {
         /// Not specified.
@@ -14869,18 +22184,78 @@ pub mod vanity_pharma_text_enum {
             match self {
                 VanityPharmaText::Unspecified => "UNSPECIFIED",
                 VanityPharmaText::Unknown => "UNKNOWN",
-                VanityPharmaText::PrescriptionTreatmentWebsiteEn => "PRESCRIPTION_TREATMENT_WEBSITE_EN",
-                VanityPharmaText::PrescriptionTreatmentWebsiteEs => "PRESCRIPTION_TREATMENT_WEBSITE_ES",
-                VanityPharmaText::PrescriptionDeviceWebsiteEn => "PRESCRIPTION_DEVICE_WEBSITE_EN",
-                VanityPharmaText::PrescriptionDeviceWebsiteEs => "PRESCRIPTION_DEVICE_WEBSITE_ES",
+                VanityPharmaText::PrescriptionTreatmentWebsiteEn => {
+                    "PRESCRIPTION_TREATMENT_WEBSITE_EN"
+                }
+                VanityPharmaText::PrescriptionTreatmentWebsiteEs => {
+                    "PRESCRIPTION_TREATMENT_WEBSITE_ES"
+                }
+                VanityPharmaText::PrescriptionDeviceWebsiteEn => {
+                    "PRESCRIPTION_DEVICE_WEBSITE_EN"
+                }
+                VanityPharmaText::PrescriptionDeviceWebsiteEs => {
+                    "PRESCRIPTION_DEVICE_WEBSITE_ES"
+                }
                 VanityPharmaText::MedicalDeviceWebsiteEn => "MEDICAL_DEVICE_WEBSITE_EN",
                 VanityPharmaText::MedicalDeviceWebsiteEs => "MEDICAL_DEVICE_WEBSITE_ES",
-                VanityPharmaText::PreventativeTreatmentWebsiteEn => "PREVENTATIVE_TREATMENT_WEBSITE_EN",
-                VanityPharmaText::PreventativeTreatmentWebsiteEs => "PREVENTATIVE_TREATMENT_WEBSITE_ES",
-                VanityPharmaText::PrescriptionContraceptionWebsiteEn => "PRESCRIPTION_CONTRACEPTION_WEBSITE_EN",
-                VanityPharmaText::PrescriptionContraceptionWebsiteEs => "PRESCRIPTION_CONTRACEPTION_WEBSITE_ES",
-                VanityPharmaText::PrescriptionVaccineWebsiteEn => "PRESCRIPTION_VACCINE_WEBSITE_EN",
-                VanityPharmaText::PrescriptionVaccineWebsiteEs => "PRESCRIPTION_VACCINE_WEBSITE_ES",
+                VanityPharmaText::PreventativeTreatmentWebsiteEn => {
+                    "PREVENTATIVE_TREATMENT_WEBSITE_EN"
+                }
+                VanityPharmaText::PreventativeTreatmentWebsiteEs => {
+                    "PREVENTATIVE_TREATMENT_WEBSITE_ES"
+                }
+                VanityPharmaText::PrescriptionContraceptionWebsiteEn => {
+                    "PRESCRIPTION_CONTRACEPTION_WEBSITE_EN"
+                }
+                VanityPharmaText::PrescriptionContraceptionWebsiteEs => {
+                    "PRESCRIPTION_CONTRACEPTION_WEBSITE_ES"
+                }
+                VanityPharmaText::PrescriptionVaccineWebsiteEn => {
+                    "PRESCRIPTION_VACCINE_WEBSITE_EN"
+                }
+                VanityPharmaText::PrescriptionVaccineWebsiteEs => {
+                    "PRESCRIPTION_VACCINE_WEBSITE_ES"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PRESCRIPTION_TREATMENT_WEBSITE_EN" => {
+                    Some(Self::PrescriptionTreatmentWebsiteEn)
+                }
+                "PRESCRIPTION_TREATMENT_WEBSITE_ES" => {
+                    Some(Self::PrescriptionTreatmentWebsiteEs)
+                }
+                "PRESCRIPTION_DEVICE_WEBSITE_EN" => {
+                    Some(Self::PrescriptionDeviceWebsiteEn)
+                }
+                "PRESCRIPTION_DEVICE_WEBSITE_ES" => {
+                    Some(Self::PrescriptionDeviceWebsiteEs)
+                }
+                "MEDICAL_DEVICE_WEBSITE_EN" => Some(Self::MedicalDeviceWebsiteEn),
+                "MEDICAL_DEVICE_WEBSITE_ES" => Some(Self::MedicalDeviceWebsiteEs),
+                "PREVENTATIVE_TREATMENT_WEBSITE_EN" => {
+                    Some(Self::PreventativeTreatmentWebsiteEn)
+                }
+                "PREVENTATIVE_TREATMENT_WEBSITE_ES" => {
+                    Some(Self::PreventativeTreatmentWebsiteEs)
+                }
+                "PRESCRIPTION_CONTRACEPTION_WEBSITE_EN" => {
+                    Some(Self::PrescriptionContraceptionWebsiteEn)
+                }
+                "PRESCRIPTION_CONTRACEPTION_WEBSITE_ES" => {
+                    Some(Self::PrescriptionContraceptionWebsiteEs)
+                }
+                "PRESCRIPTION_VACCINE_WEBSITE_EN" => {
+                    Some(Self::PrescriptionVaccineWebsiteEn)
+                }
+                "PRESCRIPTION_VACCINE_WEBSITE_ES" => {
+                    Some(Self::PrescriptionVaccineWebsiteEs)
+                }
+                _ => None,
             }
         }
     }

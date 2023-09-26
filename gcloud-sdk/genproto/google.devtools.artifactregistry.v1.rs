@@ -148,8 +148,8 @@ pub struct ImportAptArtifactsMetadata {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DockerImage {
-    /// Required. registry_location, project_id, repository_name and image id forms
-    /// a unique image
+    /// Required. registry_location, project_id, repository_name and image id forms a unique
+    /// image
     /// name:`projects/<project_id>/locations/<location>/repository/<repository_name>/dockerImages/<docker_image>`.
     /// For example,
     /// "projects/test-project/locations/us-west4/repositories/test-repo/dockerImages/
@@ -189,16 +189,12 @@ pub struct DockerImage {
     /// be easily used with the JavaScript Date constructor.
     #[prost(message, optional, tag = "7")]
     pub build_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the docker image was last updated.
-    #[prost(message, optional, tag = "8")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list docker images.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDockerImagesRequest {
-    /// Required. The name of the parent resource whose docker images will be
-    /// listed.
+    /// Required. The name of the parent resource whose docker images will be listed.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of artifacts to return.
@@ -207,9 +203,6 @@ pub struct ListDockerImagesRequest {
     /// The next_page_token value returned from a previous list request, if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// The field to order the results by.
-    #[prost(string, tag = "4")]
-    pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing docker images.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -228,210 +221,6 @@ pub struct ListDockerImagesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDockerImageRequest {
     /// Required. The name of the docker images.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// MavenArtifact represents a maven artifact.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MavenArtifact {
-    /// Required. registry_location, project_id, repository_name and maven_artifact
-    /// forms a unique artifact For example,
-    /// "projects/test-project/locations/us-west4/repositories/test-repo/mavenArtifacts/
-    /// com.google.guava:guava:31.0-jre",
-    /// where "us-west4" is the registry_location, "test-project" is the
-    /// project_id, "test-repo" is the repository_name and
-    /// "com.google.guava:guava:31.0-jre"
-    /// is the maven artifact.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. URL to access the pom file of the artifact.
-    /// Example:
-    /// us-west4-maven.pkg.dev/test-project/test-repo/com/google/guava/guava/31.0/guava-31.0.pom
-    #[prost(string, tag = "2")]
-    pub pom_uri: ::prost::alloc::string::String,
-    /// Group ID for the artifact.
-    /// Example:
-    /// com.google.guava
-    #[prost(string, tag = "3")]
-    pub group_id: ::prost::alloc::string::String,
-    /// Artifact ID for the artifact.
-    #[prost(string, tag = "4")]
-    pub artifact_id: ::prost::alloc::string::String,
-    /// Version of this artifact.
-    #[prost(string, tag = "5")]
-    pub version: ::prost::alloc::string::String,
-    /// Output only. Time the artifact was created.
-    #[prost(message, optional, tag = "6")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time the artifact was updated.
-    #[prost(message, optional, tag = "7")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// The request to list maven artifacts.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListMavenArtifactsRequest {
-    /// Required. The name of the parent resource whose maven artifacts will be
-    /// listed.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of artifacts to return.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// The response from listing maven artifacts.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListMavenArtifactsResponse {
-    /// The maven artifacts returned.
-    #[prost(message, repeated, tag = "1")]
-    pub maven_artifacts: ::prost::alloc::vec::Vec<MavenArtifact>,
-    /// The token to retrieve the next page of artifacts, or empty if there are no
-    /// more artifacts to return.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// The request to get maven artifacts.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetMavenArtifactRequest {
-    /// Required. The name of the maven artifact.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// NpmPackage represents an npm artifact.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NpmPackage {
-    /// Required. registry_location, project_id, repository_name and npm_package
-    /// forms a unique package For example,
-    /// "projects/test-project/locations/us-west4/repositories/test-repo/npmPackages/
-    /// npm_test:1.0.0",
-    /// where "us-west4" is the registry_location, "test-project" is the
-    /// project_id, "test-repo" is the repository_name and
-    /// npm_test:1.0.0" is the npm package.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Package for the artifact.
-    #[prost(string, tag = "3")]
-    pub package_name: ::prost::alloc::string::String,
-    /// Version of this package.
-    #[prost(string, tag = "4")]
-    pub version: ::prost::alloc::string::String,
-    /// Tags attached to this package.
-    #[prost(string, repeated, tag = "5")]
-    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. Time the package was created.
-    #[prost(message, optional, tag = "6")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time the package was updated.
-    #[prost(message, optional, tag = "7")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// The request to list npm packages.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNpmPackagesRequest {
-    /// Required. The name of the parent resource whose npm packages will be
-    /// listed.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of artifacts to return.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// The response from listing npm packages.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNpmPackagesResponse {
-    /// The npm packages returned.
-    #[prost(message, repeated, tag = "1")]
-    pub npm_packages: ::prost::alloc::vec::Vec<NpmPackage>,
-    /// The token to retrieve the next page of artifacts, or empty if there are no
-    /// more artifacts to return.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// The request to get npm packages.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetNpmPackageRequest {
-    /// Required. The name of the npm package.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// PythonPackage represents a python artifact.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PythonPackage {
-    /// Required. registry_location, project_id, repository_name and python_package
-    /// forms a unique package
-    /// name:`projects/<project_id>/locations/<location>/repository/<repository_name>/pythonPackages/<python_package>`.
-    /// For example,
-    /// "projects/test-project/locations/us-west4/repositories/test-repo/pythonPackages/
-    /// python_package:1.0.0",
-    /// where "us-west4" is the registry_location, "test-project" is the
-    /// project_id, "test-repo" is the repository_name and
-    /// python_package:1.0.0" is the python package.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. URL to access the package.
-    /// Example:
-    /// us-west4-python.pkg.dev/test-project/test-repo/python_package/file-name-1.0.0.tar.gz
-    #[prost(string, tag = "2")]
-    pub uri: ::prost::alloc::string::String,
-    /// Package for the artifact.
-    #[prost(string, tag = "3")]
-    pub package_name: ::prost::alloc::string::String,
-    /// Version of this package.
-    #[prost(string, tag = "4")]
-    pub version: ::prost::alloc::string::String,
-    /// Output only. Time the package was created.
-    #[prost(message, optional, tag = "6")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time the package was updated.
-    #[prost(message, optional, tag = "7")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// The request to list python packages.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListPythonPackagesRequest {
-    /// Required. The name of the parent resource whose python packages will be
-    /// listed.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of artifacts to return.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// The response from listing python packages.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListPythonPackagesResponse {
-    /// The python packages returned.
-    #[prost(message, repeated, tag = "1")]
-    pub python_packages: ::prost::alloc::vec::Vec<PythonPackage>,
-    /// The token to retrieve the next page of artifacts, or empty if there are no
-    /// more artifacts to return.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// The request to get python packages.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetPythonPackageRequest {
-    /// Required. The name of the python package.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -507,26 +296,22 @@ pub struct File {
     /// The hashes of the file content.
     #[prost(message, repeated, tag = "4")]
     pub hashes: ::prost::alloc::vec::Vec<Hash>,
-    /// Output only. The time when the File was created.
+    /// The time when the File was created.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the File was last updated.
+    /// The time when the File was last updated.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The name of the Package or Version that owns this file, if any.
     #[prost(string, tag = "7")]
     pub owner: ::prost::alloc::string::String,
-    /// Output only. The time when the last attempt to refresh the file's data was
-    /// made. Only set when the repository is remote.
-    #[prost(message, optional, tag = "8")]
-    pub fetch_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list files.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFilesRequest {
-    /// Required. The name of the repository whose files will be listed. For
-    /// example: "projects/p1/locations/us-central1/repositories/repo1
+    /// The name of the repository whose files will be listed. For example:
+    /// "projects/p1/locations/us-central1/repositories/repo1
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// An expression for filtering the results of the request. Filter rules are
@@ -569,7 +354,7 @@ pub struct ListFilesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileRequest {
-    /// Required. The name of the file to retrieve.
+    /// The name of the file to retrieve.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1101,9 +886,8 @@ pub struct Version {
     pub related_tags: ::prost::alloc::vec::Vec<Tag>,
     /// Output only. Repository-specific Metadata stored against this version.
     /// The fields returned are defined by the underlying repository-specific
-    /// resource. Currently, the resources could be:
-    /// \[DockerImage][google.devtools.artifactregistry.v1.DockerImage\]
-    /// \[MavenArtifact][google.devtools.artifactregistry.v1.MavenArtifact\]
+    /// resource. Currently, the only resource in use is
+    /// [DockerImage][google.devtools.artifactregistry.v1.DockerImage]
     #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
@@ -1162,14 +946,6 @@ pub struct DeleteVersionRequest {
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
-/// The metadata of an LRO from deleting multiple versions.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchDeleteVersionsMetadata {
-    /// The versions the operation failed to delete.
-    #[prost(string, repeated, tag = "2")]
-    pub failed_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
 /// The view, which determines what version information is returned in a
 /// response.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1204,93 +980,6 @@ impl VersionView {
             _ => None,
         }
     }
-}
-/// The Artifact Registry VPC SC config that apply to a Project.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VpcscConfig {
-    /// The name of the project's VPC SC Config.
-    ///
-    /// Always of the form:
-    /// projects/{projectID}/locations/{location}/vpcscConfig
-    ///
-    /// In update request: never set
-    /// In response: always set
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The project per location VPC SC policy that defines the VPC SC behavior for
-    /// the Remote Repository (Allow/Deny).
-    #[prost(enumeration = "vpcsc_config::VpcscPolicy", tag = "2")]
-    pub vpcsc_policy: i32,
-}
-/// Nested message and enum types in `VPCSCConfig`.
-pub mod vpcsc_config {
-    /// VPCSCPolicy is the VPC SC policy for project and location.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum VpcscPolicy {
-        /// VPCSC_POLICY_UNSPECIFIED - the VPS SC policy is not defined.
-        /// When VPS SC policy is not defined - the Service will use the default
-        /// behavior (VPCSC_DENY).
-        Unspecified = 0,
-        /// VPCSC_DENY - repository will block the requests to the Upstreams for the
-        /// Remote Repositories if the resource is in the perimeter.
-        Deny = 1,
-        /// VPCSC_ALLOW - repository will allow the requests to the Upstreams for the
-        /// Remote Repositories if the resource is in the perimeter.
-        Allow = 2,
-    }
-    impl VpcscPolicy {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                VpcscPolicy::Unspecified => "VPCSC_POLICY_UNSPECIFIED",
-                VpcscPolicy::Deny => "DENY",
-                VpcscPolicy::Allow => "ALLOW",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "VPCSC_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
-                "DENY" => Some(Self::Deny),
-                "ALLOW" => Some(Self::Allow),
-                _ => None,
-            }
-        }
-    }
-}
-/// Gets the VPC SC config for a project.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetVpcscConfigRequest {
-    /// Required. The name of the VPCSCConfig resource.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Sets the VPCSC config of the project.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateVpcscConfigRequest {
-    /// The project config.
-    #[prost(message, optional, tag = "1")]
-    pub vpcsc_config: ::core::option::Option<VpcscConfig>,
-    /// Field mask to support partial updates.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A detailed representation of a Yum artifact.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1582,183 +1271,6 @@ pub mod artifact_registry_client {
                     GrpcMethod::new(
                         "google.devtools.artifactregistry.v1.ArtifactRegistry",
                         "GetDockerImage",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists maven artifacts.
-        pub async fn list_maven_artifacts(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListMavenArtifactsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListMavenArtifactsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ListMavenArtifacts",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "ListMavenArtifacts",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets a maven artifact.
-        pub async fn get_maven_artifact(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetMavenArtifactRequest>,
-        ) -> std::result::Result<tonic::Response<super::MavenArtifact>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetMavenArtifact",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "GetMavenArtifact",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists npm packages.
-        pub async fn list_npm_packages(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListNpmPackagesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListNpmPackagesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ListNpmPackages",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "ListNpmPackages",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets a npm package.
-        pub async fn get_npm_package(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetNpmPackageRequest>,
-        ) -> std::result::Result<tonic::Response<super::NpmPackage>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetNpmPackage",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "GetNpmPackage",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists python packages.
-        pub async fn list_python_packages(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListPythonPackagesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListPythonPackagesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/ListPythonPackages",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "ListPythonPackages",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets a python package.
-        pub async fn get_python_package(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetPythonPackageRequest>,
-        ) -> std::result::Result<tonic::Response<super::PythonPackage>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetPythonPackage",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "GetPythonPackage",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2526,62 +2038,6 @@ pub mod artifact_registry_client {
                     GrpcMethod::new(
                         "google.devtools.artifactregistry.v1.ArtifactRegistry",
                         "UpdateProjectSettings",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves the VPCSC Config for the Project.
-        pub async fn get_vpcsc_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetVpcscConfigRequest>,
-        ) -> std::result::Result<tonic::Response<super::VpcscConfig>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/GetVPCSCConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "GetVPCSCConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates the VPCSC Config for the Project.
-        pub async fn update_vpcsc_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateVpcscConfigRequest>,
-        ) -> std::result::Result<tonic::Response<super::VpcscConfig>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.artifactregistry.v1.ArtifactRegistry/UpdateVPCSCConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.devtools.artifactregistry.v1.ArtifactRegistry",
-                        "UpdateVPCSCConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

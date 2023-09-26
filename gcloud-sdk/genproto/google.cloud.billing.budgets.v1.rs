@@ -25,10 +25,6 @@ pub struct Budget {
     pub amount: ::core::option::Option<BudgetAmount>,
     /// Optional. Rules that trigger alerts (notifications of thresholds
     /// being crossed) when spend exceeds the specified percentages of the budget.
-    ///
-    /// Optional for `pubsubTopic` notifications.
-    ///
-    /// Required if using email notifications.
     #[prost(message, repeated, tag = "5")]
     pub threshold_rules: ::prost::alloc::vec::Vec<ThresholdRule>,
     /// Optional. Rules to apply to notifications sent based on budget spend and
@@ -37,7 +33,7 @@ pub struct Budget {
     pub notifications_rule: ::core::option::Option<NotificationsRule>,
     /// Optional. Etag to validate that the object is unchanged for a
     /// read-modify-write operation.
-    /// An empty etag causes an update to overwrite other changes.
+    /// An empty etag will cause an update to overwrite other changes.
     #[prost(string, tag = "7")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -64,45 +60,32 @@ pub mod budget_amount {
         SpecifiedAmount(super::super::super::super::super::r#type::Money),
         /// Use the last period's actual spend as the budget for the present period.
         /// LastPeriodAmount can only be set when the budget's time period is a
-        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period\].
+        /// [Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period].
         /// It cannot be set in combination with
-        /// \[Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period\].
+        /// [Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period].
         #[prost(message, tag = "2")]
         LastPeriodAmount(super::LastPeriodAmount),
     }
 }
 /// Describes a budget amount targeted to the last
-/// \[Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period\]
+/// [Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period]
 /// spend. At this time, the amount is automatically 100% of the last calendar
 /// period's spend; that is, there are no other options yet.
+/// Future configuration options will be described here (for example, configuring
+/// a percentage of last period's spend).
 /// LastPeriodAmount cannot be set for a budget configured with
 /// a
-/// \[Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period\].
+/// [Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LastPeriodAmount {}
-/// ThresholdRule contains the definition of a threshold. Threshold rules define
-/// the triggering events used to generate a budget notification email. When a
-/// threshold is crossed (spend exceeds the specified percentages of the
-/// budget), budget alert emails are sent to the email recipients you specify
-/// in the
-/// \[NotificationsRule\](#notificationsrule).
-///
-/// Threshold rules also affect the fields included in the
-/// [JSON data
-/// object](<https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format>)
-/// sent to a Pub/Sub topic.
-///
-/// Threshold rules are _required_ if using email notifications.
-///
-/// Threshold rules are _optional_ if only setting a
-/// [`pubsubTopic` NotificationsRule](#NotificationsRule),
-/// unless you want your JSON data object to include data about the thresholds
-/// you set.
-///
-/// For more information, see
-/// [set budget threshold rules and
-/// actions](<https://cloud.google.com/billing/docs/how-to/budgets#budget-actions>).
+/// ThresholdRule contains a definition of a threshold which triggers
+/// an alert (a notification of a threshold being crossed) to be sent when
+/// spend goes above the specified amount.
+/// Alerts are automatically e-mailed to users with the Billing Account
+/// Administrator role or the Billing Account User role.
+/// The thresholds here have no effect on notifications sent to anything
+/// configured under `Budget.all_updates_rule`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThresholdRule {
@@ -139,9 +122,9 @@ pub mod threshold_rule {
         /// Use forecasted spend for the period as the basis for comparison against
         /// the threshold.
         /// FORECASTED_SPEND can only be set when the budget's time period is a
-        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period\].
+        /// [Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period].
         /// It cannot be set in combination with
-        /// \[Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period\].
+        /// [Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period].
         ForecastedSpend = 2,
     }
     impl Basis {
@@ -172,64 +155,35 @@ pub mod threshold_rule {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationsRule {
-    /// Optional. The name of the Pub/Sub topic where budget-related messages are
-    /// published, in the form `projects/{project_id}/topics/{topic_id}`. Updates
-    /// are sent to the topic at regular intervals; the timing of the updates is
-    /// not dependent on the [threshold rules](#thresholdrule) you've set.
-    ///
-    /// Note that if you want your
-    /// [Pub/Sub JSON
-    /// object](<https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format>)
-    /// to contain data for `alertThresholdExceeded`, you need at least one
-    /// [alert threshold rule](#thresholdrule). When you set threshold rules, you
-    /// must also enable at least one of the email notification options, either
-    /// using the default IAM recipients or Cloud Monitoring email notification
-    /// channels.
-    ///
-    /// To use Pub/Sub topics with budgets, you must do the following:
-    ///
-    /// 1. Create the Pub/Sub topic
-    /// before connecting it to your budget. For guidance, see
-    /// [Manage programmatic budget alert
-    /// notifications](<https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications>).
-    ///
-    /// 2. Grant the API caller the `pubsub.topics.setIamPolicy` permission on
-    /// the Pub/Sub topic. If not set, the API call fails with PERMISSION_DENIED.
-    /// For additional details on Pub/Sub roles and permissions, see
-    /// [Permissions required for this
-    /// task](<https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task>).
+    /// Optional. The name of the Pub/Sub topic where budget related messages will
+    /// be published, in the form `projects/{project_id}/topics/{topic_id}`.
+    /// Updates are sent at regular intervals to the topic. The topic needs to be
+    /// created before the budget is created; see
+    /// <https://cloud.google.com/billing/docs/how-to/budgets#manage-notifications>
+    /// for more details.
+    /// Caller is expected to have
+    /// `pubsub.topics.setIamPolicy` permission on the topic when it's set for a
+    /// budget, otherwise, the API call will fail with PERMISSION_DENIED. See
+    /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications>
+    /// for more details on Pub/Sub roles and permissions.
     #[prost(string, tag = "1")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Optional. Required when
-    /// \[NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic\]
+    /// [NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic]
     /// is set. The schema version of the notification sent to
-    /// \[NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic\].
+    /// [NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic].
     /// Only "1.0" is accepted. It represents the JSON schema as defined in
     /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.>
     #[prost(string, tag = "2")]
     pub schema_version: ::prost::alloc::string::String,
-    /// Optional. Email targets to send notifications to when a threshold is
-    /// exceeded. This is in addition to the `DefaultIamRecipients` who receive
-    /// alert emails based on their billing account IAM role. The value is the full
-    /// REST resource name of a Cloud Monitoring email notification channel with
-    /// the form `projects/{project_id}/notificationChannels/{channel_id}`. A
-    /// maximum of 5 email notifications are allowed.
-    ///
-    /// To customize budget alert email recipients with monitoring notification
-    /// channels, you _must create the monitoring notification channels before
-    /// you link them to a budget_. For guidance on setting up notification
-    /// channels to use with budgets, see
-    /// [Customize budget alert email
-    /// recipients](<https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients>).
-    ///
-    /// For Cloud Billing budget alerts, you _must use email notification
-    /// channels_. The other types of notification channels are _not_
-    /// supported, such as Slack, SMS, or PagerDuty. If you want to
-    /// [send budget notifications to
-    /// Slack](<https://cloud.google.com/billing/docs/how-to/notify#send_notifications_to_slack>),
-    /// use a pubsubTopic and configure
-    /// [programmatic
-    /// notifications](<https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications>).
+    /// Optional. Targets to send notifications to when a threshold is exceeded.
+    /// This is in addition to default recipients who have billing account IAM
+    /// roles. The value is the full REST resource name of a monitoring
+    /// notification channel with the form
+    /// `projects/{project_id}/notificationChannels/{channel_id}`. A maximum of 5
+    /// channels are allowed. See
+    /// <https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients>
+    /// for more details.
     #[prost(string, repeated, tag = "3")]
     pub monitoring_notification_channels: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -240,15 +194,6 @@ pub struct NotificationsRule {
     /// account.
     #[prost(bool, tag = "4")]
     pub disable_default_iam_recipients: bool,
-    /// Optional. When set to true, and when the budget has a single project
-    /// configured, notifications will be sent to project level recipients of that
-    /// project. This field will be ignored if the budget has multiple or no
-    /// project configured.
-    ///
-    /// Currently, project level recipients are the users with `Owner` role on a
-    /// cloud project.
-    #[prost(bool, tag = "5")]
-    pub enable_project_level_recipients: bool,
 }
 /// A filter for a budget, limiting the scope of the cost to calculate.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -256,28 +201,20 @@ pub struct NotificationsRule {
 pub struct Filter {
     /// Optional. A set of projects of the form `projects/{project}`,
     /// specifying that usage from only this set of projects should be
-    /// included in the budget. If omitted, the report includes all usage for
+    /// included in the budget. If omitted, the report will include all usage for
     /// the billing account, regardless of which project the usage occurred on.
+    /// Only zero or one project can be specified currently.
     #[prost(string, repeated, tag = "1")]
     pub projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. A set of folder and organization names of the form
-    /// `folders/{folderId}` or `organizations/{organizationId}`, specifying that
-    /// usage from only this set of folders and organizations should be included in
-    /// the budget. If omitted, the budget includes all usage that the billing
-    /// account pays for. If the folder or organization contains projects that are
-    /// paid for by a different Cloud Billing account, the budget *doesn't* apply
-    /// to those projects.
-    #[prost(string, repeated, tag = "2")]
-    pub resource_ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If
-    /// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment\]
+    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment]
     /// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
     /// subtracted from gross cost to determine the spend for threshold
     /// calculations. See [a list of acceptable credit type
     /// values](<https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>).
     ///
     /// If
-    /// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment\]
+    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment]
     /// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty.
     #[prost(string, repeated, tag = "7")]
     pub credit_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -286,7 +223,7 @@ pub struct Filter {
     pub credit_types_treatment: i32,
     /// Optional. A set of services of the form `services/{service_id}`,
     /// specifying that usage from only this set of services should be
-    /// included in the budget. If omitted, the report includes usage for
+    /// included in the budget. If omitted, the report will include usage for
     /// all the services.
     /// The service names are available through the Catalog API:
     /// <https://cloud.google.com/billing/v1/how-tos/catalog-api.>
@@ -295,20 +232,15 @@ pub struct Filter {
     /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
     /// specifying that usage from only this set of subaccounts should be included
     /// in the budget. If a subaccount is set to the name of the parent account,
-    /// usage from the parent account is included. If the field is omitted,
-    /// the report includes usage from the parent account and all subaccounts,
+    /// usage from the parent account will be included. If the field is omitted,
+    /// the report will include usage from the parent account and all subaccounts,
     /// if they exist.
     #[prost(string, repeated, tag = "5")]
     pub subaccounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A single label and value pair specifying that usage from only
-    /// this set of labeled resources should be included in the budget. If omitted,
-    /// the report includes all labeled and unlabeled usage.
-    ///
-    /// An object containing a single `"key": value` pair. Example: `{ "name":
-    /// "wrench" }`.
-    ///
-    ///   _Currently, multiple entries or multiple values per entry are not
-    ///   allowed._
+    /// this set of labeled resources should be included in the budget. Currently,
+    /// multiple entries or multiple values per entry are not allowed. If omitted,
+    /// the report will include all labeled and unlabeled usage.
     #[prost(map = "string, message", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -316,7 +248,7 @@ pub struct Filter {
     >,
     /// Multiple options to choose the budget's time period, specifying that only
     /// usage that occurs during this time period should be included in the budget.
-    /// If not set, the <code>usage_period</code> defaults to CalendarPeriod.MONTH.
+    /// If not set, the `usage_period` defaults to CalendarPeriod.MONTH.
     #[prost(oneof = "filter::UsagePeriod", tags = "8, 9")]
     pub usage_period: ::core::option::Option<filter::UsagePeriod>,
 }
@@ -381,14 +313,14 @@ pub mod filter {
     }
     /// Multiple options to choose the budget's time period, specifying that only
     /// usage that occurs during this time period should be included in the budget.
-    /// If not set, the <code>usage_period</code> defaults to CalendarPeriod.MONTH.
+    /// If not set, the `usage_period` defaults to CalendarPeriod.MONTH.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum UsagePeriod {
         /// Optional. Specifies to track usage for recurring calendar period.
-        /// For example, assume that CalendarPeriod.QUARTER is set. The budget
-        /// tracks usage from April 1 to June 30, when the current calendar month is
-        /// April, May, June. After that, it tracks usage from July 1 to
+        /// For example, assume that CalendarPeriod.QUARTER is set. The budget will
+        /// track usage from April 1 to June 30, when the current calendar month is
+        /// April, May, June. After that, it will track usage from July 1 to
         /// September 30 when the current calendar month is July, August, September,
         /// so on.
         #[prost(enumeration = "super::CalendarPeriod", tag = "8")]
@@ -419,8 +351,6 @@ pub struct CustomPeriod {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CalendarPeriod {
-    /// Calendar period is unset. This is the default if the budget is for a
-    /// custom time period (CustomPeriod).
     Unspecified = 0,
     /// A month. Month starts on the first day of each month, such as January 1,
     /// February 1, March 1, and so on.
@@ -501,14 +431,6 @@ pub struct ListBudgetsRequest {
     /// are of the form `billingAccounts/{billingAccountId}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Set the scope of the budgets to be returned, in the format of the
-    /// resource name. The scope of a budget is the cost that it tracks, such as
-    /// costs for a single project, or the costs for all projects in a folder. Only
-    /// project scope (in the format of "projects/project-id" or "projects/123") is
-    /// supported in this field. When this field is set to a project's resource
-    /// name, the budgets returned are tracking the costs for that project.
-    #[prost(string, tag = "4")]
-    pub scope: ::prost::alloc::string::String,
     /// Optional. The maximum number of budgets to return per page.
     /// The default and maximum value are 100.
     #[prost(int32, tag = "2")]

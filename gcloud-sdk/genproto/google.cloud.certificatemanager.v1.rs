@@ -565,8 +565,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -646,8 +646,8 @@ pub mod certificate {
         /// authorization.
         #[prost(string, repeated, tag = "2")]
         pub dns_authorizations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Immutable. The resource name for a
-        /// \[CertificateIssuanceConfig][google.cloud.certificatemanager.v1.CertificateIssuanceConfig\]
+        /// The resource name for a
+        /// [CertificateIssuanceConfig][google.cloud.certificatemanager.v1.CertificateIssuanceConfig]
         /// used to configure private PKI certificates in the format
         /// `projects/*/locations/*/certificateIssuanceConfigs/*`.
         /// If this field is not set, the certificates will instead be publicly
@@ -688,7 +688,6 @@ pub mod certificate {
         }
         /// Nested message and enum types in `ProvisioningIssue`.
         pub mod provisioning_issue {
-            /// Reason for provisioning failures.
             #[derive(
                 Clone,
                 Copy,
@@ -702,7 +701,6 @@ pub mod certificate {
             )]
             #[repr(i32)]
             pub enum Reason {
-                /// Reason is unspecified.
                 Unspecified = 0,
                 /// Certificate provisioning failed due to an issue with one or more of
                 /// the domains on the certificate.
@@ -762,7 +760,6 @@ pub mod certificate {
         }
         /// Nested message and enum types in `AuthorizationAttemptInfo`.
         pub mod authorization_attempt_info {
-            /// State of the domain for managed certificate issuance.
             #[derive(
                 Clone,
                 Copy,
@@ -776,7 +773,6 @@ pub mod certificate {
             )]
             #[repr(i32)]
             pub enum State {
-                /// State is unspecified.
                 Unspecified = 0,
                 /// Certificate provisioning for this domain is under way. GCP will
                 /// attempt to authorize the domain.
@@ -812,7 +808,6 @@ pub mod certificate {
                     }
                 }
             }
-            /// Reason for failure of the authorization attempt for the domain.
             #[derive(
                 Clone,
                 Copy,
@@ -826,7 +821,6 @@ pub mod certificate {
             )]
             #[repr(i32)]
             pub enum FailureReason {
-                /// FailureReason is unspecified.
                 Unspecified = 0,
                 /// There was a problem with the user's DNS or load balancer
                 /// configuration for this domain.
@@ -863,7 +857,6 @@ pub mod certificate {
                 }
             }
         }
-        /// State of the managed certificate resource.
         #[derive(
             Clone,
             Copy,
@@ -877,7 +870,6 @@ pub mod certificate {
         )]
         #[repr(i32)]
         pub enum State {
-            /// State is unspecified.
             Unspecified = 0,
             /// Certificate Manager attempts to provision or renew the certificate.
             /// If the process takes longer than expected, consult the
@@ -993,7 +985,7 @@ pub struct CertificateMap {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. A list of GCLB targets that use this Certificate Map.
+    /// Output only. A list of GCLB targets which use this Certificate Map.
     /// A Target Proxy is only present on this list if it's attached to a
     /// Forwarding Rule.
     #[prost(message, repeated, tag = "4")]
@@ -1001,7 +993,7 @@ pub struct CertificateMap {
 }
 /// Nested message and enum types in `CertificateMap`.
 pub mod certificate_map {
-    /// Describes a Target Proxy that uses this Certificate Map.
+    /// Describes a Target Proxy which uses this Certificate Map.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GclbTarget {
@@ -1068,7 +1060,7 @@ pub struct CertificateMapEntry {
         ::prost::alloc::string::String,
     >,
     /// A set of Certificates defines for the given `hostname`. There can be
-    /// defined up to four certificates in each Certificate Map Entry. Each
+    /// defined up to fifteen certificates in each Certificate Map Entry. Each
     /// certificate must match pattern `projects/*/locations/*/certificates/*`.
     #[prost(string, repeated, tag = "7")]
     pub certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -1159,7 +1151,7 @@ pub struct DnsAuthorization {
     /// One or more paragraphs of text description of a DnsAuthorization.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Immutable. A domain that is being authorized. A DnsAuthorization
+    /// Required. Immutable. A domain which is being authorized. A DnsAuthorization
     /// resource covers a single domain and its wildcard, e.g. authorization for
     /// `example.com` can be used to issue certificates for `example.com` and
     /// `*.example.com`.
@@ -1244,15 +1236,15 @@ pub mod certificate_manager_client {
     ///
     /// The Certificates Manager service exposes the following resources:
     ///
-    /// * `Certificate` that describes a single TLS certificate.
-    /// * `CertificateMap` that describes a collection of certificates that can be
+    /// * `Certificate` which describes a single TLS certificate.
+    /// * `CertificateMap` which describes a collection of certificates that can be
     /// attached to a target resource.
-    /// * `CertificateMapEntry` that describes a single configuration entry that
+    /// * `CertificateMapEntry` which describes a single configuration entry that
     /// consists of a SNI and a group of certificates. It's a subresource of
     /// CertificateMap.
     ///
     /// Certificate, CertificateMap and CertificateMapEntry IDs
-    /// have to fully match the regexp `[a-z0-9-]{1,63}`. In other words,
+    /// have to match "^[a-z0-9-]{1,63}$" regexp, which means that
     /// - only lower case letters, digits, and hyphen are allowed
     /// - length of the resource ID has to be in [1,63] range.
     ///

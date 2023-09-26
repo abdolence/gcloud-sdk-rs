@@ -160,7 +160,7 @@ pub mod impression {
 /// Life of a query:
 ///
 /// - When a game starts in a new location, your game server issues a
-/// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
+/// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
 /// request. The request specifies the S2 cell, and contains one or more
 /// "criteria" for filtering:
 ///
@@ -193,7 +193,7 @@ pub struct SamplePlayableLocationsRequest {
 }
 ///
 /// Response for the
-/// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
+/// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -209,7 +209,7 @@ pub struct SamplePlayableLocationsResponse {
     /// You can use this value to determine how long to cache the set of playable
     /// locations. After this length of time, your back-end game server should
     /// issue a new
-    /// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
+    /// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
     /// request to get a fresh set of playable locations (because for example, they
     /// might have been removed, a park might have closed for the day, a
     /// business might have closed permanently).
@@ -239,7 +239,7 @@ pub struct LogPlayerReportsRequest {
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
 /// A response for the
-/// \[LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports\]
+/// [LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports]
 /// method.
 ///
 /// This method returns no data upon success.
@@ -269,7 +269,7 @@ pub struct LogImpressionsRequest {
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
 /// A response for the
-/// \[LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions\]
+/// [LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions]
 /// method. This method returns no data upon success.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

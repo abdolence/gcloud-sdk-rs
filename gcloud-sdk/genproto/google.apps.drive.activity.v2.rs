@@ -181,10 +181,6 @@ pub struct Domain {
     pub legacy_id: ::prost::alloc::string::String,
 }
 /// Information about the target of activity.
-///
-/// For more information on how activity history is shared with users, see
-/// [Activity history
-/// visibility](<https://developers.google.com/drive/activity/v2#activityhistory>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
@@ -1346,8 +1342,6 @@ pub mod settings_change {
             ItemDuplication = 3,
             /// When restricted, this prevents use of Drive File Stream.
             DriveFileStream = 4,
-            /// When restricted, this limits sharing of folders to managers only.
-            FileOrganizerCanShareFolders = 5,
         }
         impl Feature {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1361,9 +1355,6 @@ pub mod settings_change {
                     Feature::DirectSharing => "DIRECT_SHARING",
                     Feature::ItemDuplication => "ITEM_DUPLICATION",
                     Feature::DriveFileStream => "DRIVE_FILE_STREAM",
-                    Feature::FileOrganizerCanShareFolders => {
-                        "FILE_ORGANIZER_CAN_SHARE_FOLDERS"
-                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1374,9 +1365,6 @@ pub mod settings_change {
                     "DIRECT_SHARING" => Some(Self::DirectSharing),
                     "ITEM_DUPLICATION" => Some(Self::ItemDuplication),
                     "DRIVE_FILE_STREAM" => Some(Self::DriveFileStream),
-                    "FILE_ORGANIZER_CAN_SHARE_FOLDERS" => {
-                        Some(Self::FileOrganizerCanShareFolders)
-                    }
                     _ => None,
                 }
             }
@@ -1656,18 +1644,18 @@ pub mod applied_label_change {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDriveActivityRequest {
     /// Details on how to consolidate related actions that make up the activity. If
-    /// not set, then related actions aren't consolidated.
+    /// not set, then related actions are not consolidated.
     #[prost(message, optional, tag = "5")]
     pub consolidation_strategy: ::core::option::Option<ConsolidationStrategy>,
-    /// The minimum number of activities desired in the response; the server
-    /// attempts to return at least this quantity. The server may also return fewer
+    /// The miminum number of activities desired in the response; the server will
+    /// attempt to return at least this quanitity. The server may also return fewer
     /// activities if it has a partial response ready before the request times out.
     /// If not set, a default value is used.
     #[prost(int32, tag = "6")]
     pub page_size: i32,
-    /// The token identifies which page of results to return. Set this to the
+    /// The token identifying which page of results to return. Set this to the
     /// next_page_token value returned from a previous query to obtain the
-    /// following page of results. If not set, the first page of results is
+    /// following page of results. If not set, the first page of results will be
     /// returned.
     #[prost(string, tag = "7")]
     pub page_token: ::prost::alloc::string::String,
@@ -1678,32 +1666,30 @@ pub struct QueryDriveActivityRequest {
     /// Supported fields:
     ///
     ///    - `time`: Uses numerical operators on date values either in
-    ///      terms of milliseconds since Jan 1, 1970 or in <a
-    ///      href="<https://www.rfc-editor.org/rfc/rfc3339"> target="_blank">RFC
-    ///      3339</a> format. Examples:
+    ///      terms of milliseconds since Jan 1, 1970 or in RFC 3339 format.
+    ///      Examples:
     ///        - `time > 1452409200000 AND time <= 1492812924310`
     ///        - `time >= "2016-01-10T01:02:03-05:00"`
     ///
     ///    - `detail.action_detail_case`: Uses the "has" operator (:) and
     ///      either a singular value or a list of allowed action types enclosed in
-    ///      parentheses, separated by a space. To exclude a result from the
-    ///      response, prepend a hyphen (`-`) to the beginning of the filter string.
+    ///      parentheses.
     ///      Examples:
-    ///        - `detail.action_detail_case:RENAME`
-    ///        - `detail.action_detail_case:(CREATE RESTORE)`
+    ///        - `detail.action_detail_case: RENAME`
+    ///        - `detail.action_detail_case:(CREATE EDIT)`
     ///        - `-detail.action_detail_case:MOVE`
     ///
     #[prost(string, tag = "8")]
     pub filter: ::prost::alloc::string::String,
     /// The primary criteria in the query. The default is
-    /// ancestorName = `items/root`, if no key is specified.
+    /// ancestor_name = `items/root` if no key is specified.
     #[prost(oneof = "query_drive_activity_request::Key", tags = "1, 2")]
     pub key: ::core::option::Option<query_drive_activity_request::Key>,
 }
 /// Nested message and enum types in `QueryDriveActivityRequest`.
 pub mod query_drive_activity_request {
     /// The primary criteria in the query. The default is
-    /// ancestorName = `items/root`, if no key is specified.
+    /// ancestor_name = `items/root` if no key is specified.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Key {
@@ -1711,17 +1697,17 @@ pub mod query_drive_activity_request {
         /// `items/ITEM_ID`.
         #[prost(string, tag = "1")]
         ItemName(::prost::alloc::string::String),
-        /// Return activities for this Drive folder, plus all children and
-        /// descendants. The format is `items/ITEM_ID`.
+        /// Return activities for this Drive folder and all children and descendants.
+        /// The format is `items/ITEM_ID`.
         #[prost(string, tag = "2")]
         AncestorName(::prost::alloc::string::String),
     }
 }
-/// How the individual activities are consolidated. If a set of activities is
-/// related they can be consolidated into one combined activity, such as one
-/// actor performing the same action on multiple targets, or multiple actors
-/// performing the same action on a single target. The strategy defines the rules
-/// for which activities are related.
+/// How the individual activities are consolidated. A set of activities may be
+/// consolidated into one combined activity if they are related in some way, such
+/// as one actor performing the same action on multiple targets, or multiple
+/// actors performing the same action on a single target. The strategy defines
+/// the rules for which activities are related.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConsolidationStrategy {
@@ -1731,11 +1717,11 @@ pub struct ConsolidationStrategy {
 }
 /// Nested message and enum types in `ConsolidationStrategy`.
 pub mod consolidation_strategy {
-    /// A strategy that does no consolidation of individual activities.
+    /// A strategy which does no consolidation of individual activities.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NoConsolidation {}
-    /// A strategy that consolidates activities using the grouping rules from the
+    /// A strategy which consolidates activities using the grouping rules from the
     /// legacy V1 Activity API. Similar actions occurring within a window of time
     /// can be grouped across multiple targets (such as moving a set of files at
     /// once) or multiple actors (such as several users editing the same item).

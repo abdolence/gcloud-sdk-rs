@@ -120,14 +120,14 @@ impl NoteKind {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Occurrence {
     /// Output only. The name of the occurrence in the form of
-    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
+    /// `projects/\[PROJECT_ID\]/occurrences/\[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The resource for which the occurrence applies.
     #[prost(message, optional, tag = "2")]
     pub resource: ::core::option::Option<Resource>,
     /// Required. Immutable. The analysis note associated with this occurrence, in
-    /// the form of `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`. This field can be
+    /// the form of `projects/\[PROVIDER_ID\]/notes/\[NOTE_ID\]`. This field can be
     /// used as a filter in list requests.
     #[prost(string, tag = "3")]
     pub note_name: ::prost::alloc::string::String,
@@ -201,7 +201,7 @@ pub struct Resource {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Note {
     /// Output only. The name of the note in the form of
-    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
+    /// `projects/\[PROVIDER_ID\]/notes/\[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A one sentence description of this note.
@@ -269,7 +269,7 @@ pub mod note {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
+    /// `projects/\[PROJECT_ID\]/occurrences/\[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -309,7 +309,7 @@ pub struct ListOccurrencesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
+    /// `projects/\[PROJECT_ID\]/occurrences/\[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -330,7 +330,7 @@ pub struct CreateOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
+    /// `projects/\[PROJECT_ID\]/occurrences/\[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated occurrence.
@@ -345,7 +345,7 @@ pub struct UpdateOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNoteRequest {
     /// The name of the note in the form of
-    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
+    /// `projects/\[PROVIDER_ID\]/notes/\[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -354,7 +354,7 @@ pub struct GetNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceNoteRequest {
     /// The name of the occurrence in the form of
-    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
+    /// `projects/\[PROJECT_ID\]/occurrences/\[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -394,7 +394,7 @@ pub struct ListNotesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNoteRequest {
     /// The name of the note in the form of
-    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
+    /// `projects/\[PROVIDER_ID\]/notes/\[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -418,7 +418,7 @@ pub struct CreateNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNoteRequest {
     /// The name of the note in the form of
-    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
+    /// `projects/\[PROVIDER_ID\]/notes/\[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated note.
@@ -433,7 +433,7 @@ pub struct UpdateNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNoteOccurrencesRequest {
     /// The name of the note to list occurrences for in the form of
-    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
+    /// `projects/\[PROVIDER_ID\]/notes/\[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The filter expression.

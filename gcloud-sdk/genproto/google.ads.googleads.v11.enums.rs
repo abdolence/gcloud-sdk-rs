@@ -4964,11 +4964,11 @@ pub mod keyword_plan_competition_level_enum {
         Unspecified = 0,
         /// The value is unknown in this version.
         Unknown = 1,
-        /// Low competition. The Competition Index range for this is [0, 33].
+        /// Low competition. The Competition Index range for this is \[0, 33\].
         Low = 2,
-        /// Medium competition. The Competition Index range for this is [34, 66].
+        /// Medium competition. The Competition Index range for this is \[34, 66\].
         Medium = 3,
-        /// High competition. The Competition Index range for this is [67, 100].
+        /// High competition. The Competition Index range for this is \[67, 100\].
         High = 4,
     }
     impl KeywordPlanCompetitionLevel {

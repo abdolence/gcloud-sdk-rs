@@ -56,7 +56,7 @@ pub struct Position {
 /// Each structural component, starting from Page, may further have their own
 /// properties. Properties describe detected languages, breaks etc.. Please refer
 /// to the
-/// \[TextAnnotation.TextProperty][google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty\]
+/// [TextAnnotation.TextProperty][google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty]
 /// message definition below for more detail.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -79,7 +79,7 @@ pub mod text_annotation {
         /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
         #[prost(string, tag = "1")]
         pub language_code: ::prost::alloc::string::String,
-        /// Confidence of detected language. Range [0, 1].
+        /// Confidence of detected language. Range \[0, 1\].
         #[prost(float, tag = "2")]
         pub confidence: f32,
     }
@@ -183,7 +183,7 @@ pub struct Page {
     /// List of blocks of text, images etc on this page.
     #[prost(message, repeated, tag = "4")]
     pub blocks: ::prost::alloc::vec::Vec<Block>,
-    /// Confidence of the OCR results on the page. Range [0, 1].
+    /// Confidence of the OCR results on the page. Range \[0, 1\].
     #[prost(float, tag = "5")]
     pub confidence: f32,
 }
@@ -222,7 +222,7 @@ pub struct Block {
     /// Detected block type (text, image etc) for this block.
     #[prost(enumeration = "block::BlockType", tag = "4")]
     pub block_type: i32,
-    /// Confidence of the OCR results on the block. Range [0, 1].
+    /// Confidence of the OCR results on the block. Range \[0, 1\].
     #[prost(float, tag = "5")]
     pub confidence: f32,
 }
@@ -311,7 +311,7 @@ pub struct Paragraph {
     /// List of words in this paragraph.
     #[prost(message, repeated, tag = "3")]
     pub words: ::prost::alloc::vec::Vec<Word>,
-    /// Confidence of the OCR results for the paragraph. Range [0, 1].
+    /// Confidence of the OCR results for the paragraph. Range \[0, 1\].
     #[prost(float, tag = "4")]
     pub confidence: f32,
 }
@@ -343,7 +343,7 @@ pub struct Word {
     /// The order of the symbols follows the natural reading order.
     #[prost(message, repeated, tag = "3")]
     pub symbols: ::prost::alloc::vec::Vec<Symbol>,
-    /// Confidence of the OCR results for the word. Range [0, 1].
+    /// Confidence of the OCR results for the word. Range \[0, 1\].
     #[prost(float, tag = "4")]
     pub confidence: f32,
 }
@@ -374,7 +374,7 @@ pub struct Symbol {
     /// The actual UTF-8 representation of the symbol.
     #[prost(string, tag = "3")]
     pub text: ::prost::alloc::string::String,
-    /// Confidence of the OCR results for the symbol. Range [0, 1].
+    /// Confidence of the OCR results for the symbol. Range \[0, 1\].
     #[prost(float, tag = "4")]
     pub confidence: f32,
 }
@@ -658,10 +658,10 @@ pub struct FaceAnnotation {
     /// pointing relative to the image's horizontal plane. Range \[-180,180\].
     #[prost(float, tag = "6")]
     pub tilt_angle: f32,
-    /// Detection confidence. Range [0, 1].
+    /// Detection confidence. Range \[0, 1\].
     #[prost(float, tag = "7")]
     pub detection_confidence: f32,
-    /// Face landmarking confidence. Range [0, 1].
+    /// Face landmarking confidence. Range \[0, 1\].
     #[prost(float, tag = "8")]
     pub landmarking_confidence: f32,
     /// Joy likelihood.
@@ -917,21 +917,21 @@ pub struct EntityAnnotation {
     /// Entity textual description, expressed in its `locale` language.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Overall score of the result. Range [0, 1].
+    /// Overall score of the result. Range \[0, 1\].
     #[prost(float, tag = "4")]
     pub score: f32,
     /// **Deprecated. Use `score` instead.**
     /// The accuracy of the entity detection in an image.
     /// For example, for an image in which the "Eiffel Tower" entity is detected,
     /// this field represents the confidence that there is a tower in the query
-    /// image. Range [0, 1].
+    /// image. Range \[0, 1\].
     #[prost(float, tag = "5")]
     pub confidence: f32,
     /// The relevancy of the ICA (Image Content Annotation) label to the
     /// image. For example, the relevancy of "tower" is likely higher to an image
     /// containing the detected "Eiffel Tower" than to an image containing a
     /// detected distant towering building, even though the confidence that
-    /// there is a tower in each image may be the same. Range [0, 1].
+    /// there is a tower in each image may be the same. Range \[0, 1\].
     #[prost(float, tag = "6")]
     pub topicality: f32,
     /// Image region to which this entity belongs. Not produced
@@ -998,11 +998,11 @@ pub struct ColorInfo {
     /// RGB components of the color.
     #[prost(message, optional, tag = "1")]
     pub color: ::core::option::Option<super::super::super::r#type::Color>,
-    /// Image-specific score for this color. Value in range [0, 1].
+    /// Image-specific score for this color. Value in range \[0, 1\].
     #[prost(float, tag = "2")]
     pub score: f32,
     /// The fraction of pixels the color occupies in the image.
-    /// Value in range [0, 1].
+    /// Value in range \[0, 1\].
     #[prost(float, tag = "3")]
     pub pixel_fraction: f32,
 }
@@ -1030,7 +1030,7 @@ pub struct CropHint {
     /// box are in the original image's scale, as returned in `ImageParams`.
     #[prost(message, optional, tag = "1")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
-    /// Confidence of this being a salient region.  Range [0, 1].
+    /// Confidence of this being a salient region.  Range \[0, 1\].
     #[prost(float, tag = "2")]
     pub confidence: f32,
     /// Fraction of importance of this salient region with respect to the original
@@ -1274,7 +1274,7 @@ pub struct OutputConfig {
     #[prost(message, optional, tag = "1")]
     pub gcs_destination: ::core::option::Option<GcsDestination>,
     /// The max number of response protos to put into each output JSON file on GCS.
-    /// The valid range is [1, 100]. If not specified, the default value is 20.
+    /// The valid range is \[1, 100\]. If not specified, the default value is 20.
     ///
     /// For example, for one pdf file with 100 pages, 100 response protos will
     /// be generated. If `batch_size` = 20, then 5 json files each

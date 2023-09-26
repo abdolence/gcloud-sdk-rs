@@ -1,62 +1,78 @@
-/// GeneratePackagesSummaryRequest is the request body for the
-/// GeneratePackagesSummary API method. It just takes a single name argument,
-/// referring to the resource.
+/// A scan configuration specifies whether Cloud components in a project have a
+/// particular type of analysis being run. For example, it can configure whether
+/// vulnerability scanning is being done on Docker images or not.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeneratePackagesSummaryRequest {
-    /// Required. The name of the resource to get a packages summary for in the
-    /// form of `projects/\[PROJECT_ID]/resources/[RESOURCE_URL\]`.
+pub struct ScanConfig {
+    /// Output only. The name of the scan configuration in the form of
+    /// `projects/\[PROJECT_ID\]/scanConfigs/\[SCAN_CONFIG_ID\]`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. A human-readable description of what the scan configuration
+    /// does.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Whether the scan is enabled.
+    #[prost(bool, tag = "3")]
+    pub enabled: bool,
+    /// Output only. The time this scan config was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time this scan config was last updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request to get a scan configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetScanConfigRequest {
+    /// Required. The name of the scan configuration in the form of
+    /// `projects/\[PROJECT_ID\]/scanConfigs/\[SCAN_CONFIG_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// A summary of the packages found within the given resource.
+/// Request to list scan configurations.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PackagesSummaryResponse {
-    /// The unique URL of the image or the container for which this summary
-    /// applies.
+pub struct ListScanConfigsRequest {
+    /// Required. The name of the project to list scan configurations for in the form of
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
-    pub resource_url: ::prost::alloc::string::String,
-    /// A listing by license name of each of the licenses and their counts.
-    #[prost(message, repeated, tag = "2")]
-    pub licenses_summary: ::prost::alloc::vec::Vec<
-        packages_summary_response::LicensesSummary,
-    >,
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The filter expression.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The number of scan configs to return in the list.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Token to provide to skip to a particular spot in the list.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
 }
-/// Nested message and enum types in `PackagesSummaryResponse`.
-pub mod packages_summary_response {
-    /// Per license count
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct LicensesSummary {
-        /// The license of the package. Note that the format of this value is not
-        /// guaranteed. It may be nil, an empty string, a boolean value (A | B), a
-        /// differently formed boolean value (A OR B), etc...
-        #[prost(string, tag = "1")]
-        pub license: ::prost::alloc::string::String,
-        /// The number of fixable vulnerabilities associated with this resource.
-        #[prost(int64, tag = "2")]
-        pub count: i64,
-    }
-}
-/// The request to a call of ExportSBOM
+/// Response for listing scan configurations.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportSbomRequest {
-    /// Required. The name of the resource in the form of
-    /// `projects/\[PROJECT_ID]/resources/[RESOURCE_URL\]`.
+pub struct ListScanConfigsResponse {
+    /// The scan configurations requested.
+    #[prost(message, repeated, tag = "1")]
+    pub scan_configs: ::prost::alloc::vec::Vec<ScanConfig>,
+    /// The next pagination token in the list response. It should be used as
+    /// `page_token` for the following request. An empty value means no more
+    /// results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A request to update a scan configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateScanConfigRequest {
+    /// Required. The name of the scan configuration in the form of
+    /// `projects/\[PROJECT_ID\]/scanConfigs/\[SCAN_CONFIG_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-}
-/// The response from a call to ExportSBOM
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportSbomResponse {
-    /// The name of the discovery occurrence in the form
-    /// "projects/{project_id}/occurrences/{OCCURRENCE_ID}
-    /// It can be used to track the progression of the SBOM export.
-    #[prost(string, tag = "1")]
-    pub discovery_occurrence_id: ::prost::alloc::string::String,
+    /// Required. The updated scan configuration.
+    #[prost(message, optional, tag = "2")]
+    pub scan_config: ::core::option::Option<ScanConfig>,
 }
 /// Generated client implementations.
 pub mod container_analysis_v1_beta1_client {
@@ -65,7 +81,7 @@ pub mod container_analysis_v1_beta1_client {
     use tonic::codegen::http::Uri;
     /// Retrieves analysis results of Cloud components such as Docker container
     /// images. The Container Analysis API is an implementation of the
-    /// [Grafeas](https://grafeas.io) API.
+    /// [Grafeas](grafeas.io) API.
     ///
     /// Analysis results are stored as a series of occurrences. An `Occurrence`
     /// contains information about a specific analysis instance on a resource. An
@@ -279,14 +295,11 @@ pub mod container_analysis_v1_beta1_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a summary of the packages within a given resource.
-        pub async fn generate_packages_summary(
+        /// Gets the specified scan configuration.
+        pub async fn get_scan_config(
             &mut self,
-            request: impl tonic::IntoRequest<super::GeneratePackagesSummaryRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::PackagesSummaryResponse>,
-            tonic::Status,
-        > {
+            request: impl tonic::IntoRequest<super::GetScanConfigRequest>,
+        ) -> std::result::Result<tonic::Response<super::ScanConfig>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -298,24 +311,24 @@ pub mod container_analysis_v1_beta1_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/GeneratePackagesSummary",
+                "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/GetScanConfig",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
                         "google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1",
-                        "GeneratePackagesSummary",
+                        "GetScanConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Generates an SBOM and other dependency information for the given resource.
-        pub async fn export_sbom(
+        /// Lists scan configurations for the specified project.
+        pub async fn list_scan_configs(
             &mut self,
-            request: impl tonic::IntoRequest<super::ExportSbomRequest>,
+            request: impl tonic::IntoRequest<super::ListScanConfigsRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::ExportSbomResponse>,
+            tonic::Response<super::ListScanConfigsResponse>,
             tonic::Status,
         > {
             self.inner
@@ -329,14 +342,42 @@ pub mod container_analysis_v1_beta1_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/ExportSBOM",
+                "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/ListScanConfigs",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
                         "google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1",
-                        "ExportSBOM",
+                        "ListScanConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the specified scan configuration.
+        pub async fn update_scan_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateScanConfigRequest>,
+        ) -> std::result::Result<tonic::Response<super::ScanConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/UpdateScanConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1",
+                        "UpdateScanConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

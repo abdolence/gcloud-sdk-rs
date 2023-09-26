@@ -47,12 +47,12 @@ pub mod audio_in_config {
     )]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
+        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         /// This encoding includes no header, only the raw audio bytes.
         Linear16 = 1,
-        /// \[`FLAC`\](<https://xiph.org/flac/documentation.html>) (Free Lossless Audio
+        /// [`FLAC`](<https://xiph.org/flac/documentation.html>) (Free Lossless Audio
         /// Codec) is the recommended encoding because it is
         /// lossless--therefore recognition is not compromised--and
         /// requires only about half the bandwidth of `LINEAR16`. This encoding
@@ -119,7 +119,7 @@ pub mod audio_out_config {
     )]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
+        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         Linear16 = 1,
@@ -356,7 +356,7 @@ pub mod converse_response {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConverseResponse {
-        /// *Output-only* If set, returns a \[google.rpc.Status][google.rpc.Status\]
+        /// *Output-only* If set, returns a [google.rpc.Status][google.rpc.Status]
         /// message that specifies the error for the operation. If an error occurs
         /// during processing, this message will be set and there will be no further
         /// messages sent.

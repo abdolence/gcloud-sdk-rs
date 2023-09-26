@@ -19,7 +19,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -123,7 +123,7 @@ pub struct RealmSelector {
 /// starting at the local time specified by cron_spec, and is recurring.
 ///
 /// ```
-/// start_time|-------[cron job]-------[cron job]-------[cron job]---|end_time
+/// start_time|-------\[cron job\]-------\[cron job\]-------\[cron job\]---|end_time
 /// cron job: cron spec start time + duration
 /// ```
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -312,7 +312,7 @@ pub struct ListGameServerClustersRequest {
     /// Optional. The maximum number of items to return.  If unspecified, the
     /// server will pick an appropriate default. The server may return fewer items
     /// than requested. A caller should only rely on response's
-    /// \[next_page_token][google.cloud.gaming.v1beta.ListGameServerClustersResponse.next_page_token\]
+    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerClustersResponse.next_page_token]
     /// to determine if there are more GameServerClusters left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -914,7 +914,7 @@ pub struct ListGameServerConfigsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// \[next_page_token][google.cloud.gaming.v1beta.ListGameServerConfigsResponse.next_page_token\]
+    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerConfigsResponse.next_page_token]
     /// to determine if there are more GameServerConfigs left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1278,7 +1278,7 @@ pub struct ListGameServerDeploymentsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, the
     /// server will pick an appropriate default. The server may return fewer items
     /// than requested. A caller should only rely on response's
-    /// \[next_page_token][google.cloud.gaming.v1beta.ListGameServerDeploymentsResponse.next_page_token\]
+    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerDeploymentsResponse.next_page_token]
     /// to determine if there are more GameServerDeployments left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1958,7 +1958,7 @@ pub struct ListRealmsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// \[next_page_token][google.cloud.gaming.v1beta.ListRealmsResponse.next_page_token\]
+    /// [next_page_token][google.cloud.gaming.v1beta.ListRealmsResponse.next_page_token]
     /// to determine if there are more realms left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,

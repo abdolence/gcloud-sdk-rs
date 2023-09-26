@@ -114,7 +114,7 @@ pub struct TestSpecification {
     #[prost(oneof = "test_specification::Setup", tags = "6, 14")]
     pub setup: ::core::option::Option<test_specification::Setup>,
     /// Required. The type of test to run.
-    #[prost(oneof = "test_specification::Test", tags = "2, 3, 9, 13, 15, 17")]
+    #[prost(oneof = "test_specification::Test", tags = "2, 3, 9, 13, 15")]
     pub test: ::core::option::Option<test_specification::Test>,
 }
 /// Nested message and enum types in `TestSpecification`.
@@ -150,9 +150,6 @@ pub mod test_specification {
         /// An iOS application with a test loop.
         #[prost(message, tag = "15")]
         IosTestLoop(super::IosTestLoop),
-        /// An iOS Robo test.
-        #[prost(message, tag = "17")]
-        IosRoboTest(super::IosRoboTest),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -160,7 +157,6 @@ pub mod test_specification {
 pub struct SystraceSetup {
     /// Systrace duration in seconds.
     /// Should be between 1 and 30 seconds. 0 disables systrace.
-    #[deprecated]
     #[prost(int32, tag = "1")]
     pub duration_seconds: i32,
 }
@@ -199,10 +195,9 @@ pub struct TestSetup {
     #[prost(message, repeated, tag = "6")]
     pub environment_variables: ::prost::alloc::vec::Vec<EnvironmentVariable>,
     /// Systrace configuration for the run.
-    /// Deprecated: Systrace used Python 2 which was sunsetted on 2020-01-01.
-    /// Systrace is no longer supported in the Cloud Testing API, and no Systrace
-    /// file will be provided in the results.
-    #[deprecated]
+    /// If set a systrace will be taken, starting on test start and lasting for the
+    /// configured duration. The systrace file thus obtained is put in the results
+    /// bucket together with the other artifacts from the run.
     #[prost(message, optional, tag = "9")]
     pub systrace: ::core::option::Option<SystraceSetup>,
     /// Whether to prevent all runtime permissions to be granted at app install
@@ -228,9 +223,9 @@ pub struct IosTestSetup {
     /// List of directories on the device to upload to Cloud Storage at the end of
     /// the test.
     ///
-    /// Directories should either be in a shared directory (such as
-    /// /private/var/mobile/Media) or within an accessible directory inside the
-    /// app's filesystem (such as /Documents) by specifying the bundle ID.
+    /// Directories should either be in a shared directory
+    /// (e.g. /private/var/mobile/Media) or within an accessible directory inside
+    /// the app's filesystem (e.g. /Documents) by specifying the bundle id.
     #[prost(message, repeated, tag = "4")]
     pub pull_directories: ::prost::alloc::vec::Vec<IosDeviceFile>,
 }
@@ -486,23 +481,6 @@ pub struct IosTestLoop {
     #[prost(string, tag = "3")]
     pub app_bundle_id: ::prost::alloc::string::String,
 }
-/// A test that explores an iOS application on an iOS device.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IosRoboTest {
-    /// Required. The ipa stored at this file should be used to run the test.
-    #[prost(message, optional, tag = "1")]
-    pub app_ipa: ::core::option::Option<FileReference>,
-    /// The bundle ID for the app-under-test.
-    /// This is determined by examining the application's "Info.plist" file.
-    #[prost(string, tag = "4")]
-    pub app_bundle_id: ::prost::alloc::string::String,
-    /// An optional Roboscript to customize the crawl. See
-    /// <https://firebase.google.com/docs/test-lab/android/robo-scripts-reference>
-    /// for more information about Roboscripts.
-    #[prost(message, optional, tag = "5")]
-    pub robo_script: ::core::option::Option<FileReference>,
-}
 /// A test of an Android application that can control an Android component
 /// independently of its normal lifecycle.
 /// Android instrumentation tests run an application APK and test APK inside the
@@ -510,7 +488,7 @@ pub struct IosRoboTest {
 /// a test runner class, such as com.google.GoogleTestRunner, which can vary
 /// on the specific instrumentation framework chosen.
 ///
-/// See <<https://developer.android.com/training/testing/fundamentals>> for
+/// See <<http://developer.android.com/tools/testing/testing_android.html>> for
 /// more information on types of Android tests.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -532,7 +510,6 @@ pub struct AndroidInstrumentationTest {
     pub test_runner_class: ::prost::alloc::string::String,
     /// Each target must be fully qualified with the package name or class name,
     /// in one of these formats:
-    ///
     ///   - "package package_name"
     ///   - "class package_name.class_name"
     ///   - "class package_name.class_name#method_name"
@@ -542,10 +519,9 @@ pub struct AndroidInstrumentationTest {
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The option of whether running each test within its own invocation of
     /// instrumentation with Android Test Orchestrator or not.
-    /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
+    /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or
     /// higher! **
     /// Orchestrator offers the following benefits:
-    ///
     ///   - No shared state
     ///   - Crashes are isolated
     ///   - Logs are scoped per test
@@ -582,6 +558,7 @@ pub mod android_instrumentation_test {
 }
 /// A test of an android application that explores the application on a virtual
 /// or physical Android Device, finding culprits and crashes as it goes.
+/// Next tag: 30
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidRoboTest {
@@ -608,10 +585,6 @@ pub struct AndroidRoboTest {
     /// password for a test account can be provided.
     #[prost(message, repeated, tag = "11")]
     pub robo_directives: ::prost::alloc::vec::Vec<RoboDirective>,
-    /// The mode in which Robo should run. Most clients should allow the server to
-    /// populate this field automatically.
-    #[prost(enumeration = "RoboMode", tag = "14")]
-    pub robo_mode: i32,
     /// A JSON file with a sequence of actions Robo should perform as a prologue
     /// for the crawl.
     #[prost(message, optional, tag = "13")]
@@ -671,7 +644,7 @@ pub struct RoboStartingIntent {
     #[prost(message, optional, tag = "3")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Required. Intent details to start an activity.
-    #[prost(oneof = "robo_starting_intent::StartingIntent", tags = "1, 2, 4")]
+    #[prost(oneof = "robo_starting_intent::StartingIntent", tags = "1, 2")]
     pub starting_intent: ::core::option::Option<robo_starting_intent::StartingIntent>,
 }
 /// Nested message and enum types in `RoboStartingIntent`.
@@ -686,9 +659,6 @@ pub mod robo_starting_intent {
         /// An intent that starts an activity with specific details.
         #[prost(message, tag = "2")]
         StartActivity(super::StartActivityIntent),
-        /// Skips the starting activity
-        #[prost(message, tag = "4")]
-        NoActivity(super::NoActivityIntent),
     }
 }
 /// Specifies an intent that starts the main launcher activity.
@@ -710,10 +680,6 @@ pub struct StartActivityIntent {
     #[prost(string, repeated, tag = "4")]
     pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Skips the starting activity
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NoActivityIntent {}
 /// The matrix of environments in which the test is to be executed.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1055,7 +1021,7 @@ pub mod invalid_request_detail {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShardingOption {
-    #[prost(oneof = "sharding_option::Option", tags = "1, 2, 3")]
+    #[prost(oneof = "sharding_option::Option", tags = "1, 2")]
     pub option: ::core::option::Option<sharding_option::Option>,
 }
 /// Nested message and enum types in `ShardingOption`.
@@ -1070,28 +1036,19 @@ pub mod sharding_option {
         /// methods.
         #[prost(message, tag = "2")]
         ManualSharding(super::ManualSharding),
-        /// Shards test based on previous test case timing records.
-        #[prost(message, tag = "3")]
-        SmartSharding(super::SmartSharding),
     }
 }
 /// Uniformly shards test cases given a total number of shards.
 ///
-/// For instrumentation tests, it will be translated to "-e numShard" and "-e
+/// For Instrumentation test, it will be translated to "-e numShard" "-e
 /// shardIndex" AndroidJUnitRunner arguments. With uniform sharding enabled,
-/// specifying either of these sharding arguments via `environment_variables` is
-/// invalid.
-///
-/// Based on the sharding mechanism AndroidJUnitRunner uses, there is no
-/// guarantee that test cases will be distributed uniformly across all shards.
+/// specifying these sharding arguments via environment_variables is invalid.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UniformSharding {
-    /// Required. The total number of shards to create. This must always be a
-    /// positive number that is no greater than the total number of test cases.
-    /// When you select one or more physical devices, the number of shards must be
-    /// <= 50. When you select one or more ARM virtual devices, it must be <= 100.
-    /// When you select only x86 virtual devices, it must be <= 500.
+    /// Required. Total number of shards. When any physical devices are selected,
+    /// the number must be >= 1 and <= 50. When no physical devices are selected,
+    /// the number must be >= 1 and <= 500.
     #[prost(int32, tag = "1")]
     pub num_shards: i32,
 }
@@ -1104,11 +1061,9 @@ pub struct UniformSharding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualSharding {
     /// Required. Group of packages, classes, and/or test methods to be run for
-    /// each manually-created shard. You must specify at least one shard if this
-    /// field is present. When you select one or more physical devices, the number
-    /// of repeated test_targets_for_shard must be <= 50. When you select one or
-    /// more ARM virtual devices, it must be <= 100. When you select only x86
-    /// virtual devices, it must be <= 500.
+    /// each shard. When any physical devices are selected,  the number of
+    /// test_targets_for_shard must be >= 1 and <= 50. When no physical devices are
+    /// selected, the number must be >= 1 and <= 500.
     #[prost(message, repeated, tag = "1")]
     pub test_targets_for_shard: ::prost::alloc::vec::Vec<TestTargetsForShard>,
 }
@@ -1120,55 +1075,9 @@ pub struct TestTargetsForShard {
     /// The targets need to be specified in AndroidJUnitRunner argument format. For
     /// example, "package com.my.packages" "class com.my.package.MyClass".
     ///
-    /// The number of test_targets must be greater than 0.
+    /// The number of shard_test_targets must be greater than 0.
     #[prost(string, repeated, tag = "1")]
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Shards test based on previous test case timing records.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SmartSharding {
-    /// The amount of time tests within a shard should take.
-    ///
-    /// Default: 300 seconds (5 minutes).
-    /// The minimum allowed: 120 seconds (2 minutes).
-    ///
-    /// The shard count is dynamically set based on time, up to the maximum shard
-    /// limit (described below). To guarantee at least one test case for each
-    /// shard, the number of shards will not exceed the number of test cases. Shard
-    /// duration will be exceeded if:
-    ///
-    /// - The maximum shard limit is reached and there is more calculated test time
-    /// remaining to allocate into shards.
-    /// - Any individual test is estimated to be longer than the targeted shard
-    /// duration.
-    ///
-    /// Shard duration is not guaranteed because smart sharding uses test case
-    /// history and default durations which may not be accurate. The rules for
-    /// finding the test case timing records are:
-    ///
-    /// - If the service has processed a test case in the last 30 days, the record
-    ///   of the latest successful test case will be used.
-    /// - For new test cases, the average duration of other known test cases will
-    ///   be used.
-    /// - If there are no previous test case timing records available, the default
-    ///   test case duration is 15 seconds.
-    ///
-    /// Because the actual shard duration can exceed the targeted shard duration,
-    /// we recommend that you set the targeted value at least 5 minutes less than
-    /// the maximum allowed test timeout (45 minutes for physical devices and 60
-    /// minutes for virtual), or that you use the custom test timeout value that
-    /// you set. This approach avoids cancelling the shard before all tests can
-    /// finish.
-    ///
-    /// Note that there is a limit for maximum number of shards. When you select
-    /// one or more physical devices, the number of shards must be <= 50. When you
-    /// select one or more ARM virtual devices, it must be <= 100. When you select
-    /// only x86 virtual devices, it must be <= 500. To guarantee at least one test
-    /// case for per shard, the number of shards will not exceed the number of test
-    /// cases. Each shard created counts toward daily test quota.
-    #[prost(message, optional, tag = "1")]
-    pub targeted_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Output only. Details about the shard.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1180,13 +1089,9 @@ pub struct Shard {
     /// Output only. The total number of shards.
     #[prost(int32, tag = "2")]
     pub num_shards: i32,
-    /// Output only. Test targets for each shard. Only set for manual sharding.
+    /// Output only. Test targets for each shard.
     #[prost(message, optional, tag = "3")]
     pub test_targets_for_shard: ::core::option::Option<TestTargetsForShard>,
-    /// Output only. The estimated shard duration based on previous test case
-    /// timing records, if available.
-    #[prost(message, optional, tag = "4")]
-    pub estimated_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request to submit a matrix of tests for execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1250,7 +1155,7 @@ pub enum OrchestratorOption {
     /// offers.
     Unspecified = 0,
     /// Run test using orchestrator.
-    /// ** Only compatible with AndroidJUnitRunner version 1.1 or higher! **
+    /// ** Only compatible with AndroidJUnitRunner version 1.0 or higher! **
     /// Recommended.
     UseOrchestrator = 1,
     /// Run test without using orchestrator.
@@ -1274,40 +1179,6 @@ impl OrchestratorOption {
             "ORCHESTRATOR_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
             "USE_ORCHESTRATOR" => Some(Self::UseOrchestrator),
             "DO_NOT_USE_ORCHESTRATOR" => Some(Self::DoNotUseOrchestrator),
-            _ => None,
-        }
-    }
-}
-/// The mode in which Robo should run.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum RoboMode {
-    /// This means that the server should choose the mode.
-    /// Recommended.
-    Unspecified = 0,
-    /// Runs Robo in UIAutomator-only mode without app resigning
-    RoboVersion1 = 1,
-    /// Runs Robo in standard Espresso with UIAutomator fallback
-    RoboVersion2 = 2,
-}
-impl RoboMode {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            RoboMode::Unspecified => "ROBO_MODE_UNSPECIFIED",
-            RoboMode::RoboVersion1 => "ROBO_VERSION_1",
-            RoboMode::RoboVersion2 => "ROBO_VERSION_2",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "ROBO_MODE_UNSPECIFIED" => Some(Self::Unspecified),
-            "ROBO_VERSION_1" => Some(Self::RoboVersion1),
-            "ROBO_VERSION_2" => Some(Self::RoboVersion2),
             _ => None,
         }
     }
@@ -1379,15 +1250,14 @@ pub enum InvalidMatrixDetails {
     NoSignature = 20,
     /// The test runner class specified by user or in the test APK's manifest file
     /// is not compatible with Android Test Orchestrator.
-    /// Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
+    /// Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or
     /// higher.
     /// Orchestrator can be disabled by using DO_NOT_USE_ORCHESTRATOR
     /// OrchestratorOption.
     InstrumentationOrchestratorIncompatible = 18,
-    /// The test APK does not contain the test runner class specified by the user
-    /// or in the manifest file. This can be caused by one of the following
-    /// reasons:
-    ///
+    /// The test APK does not contain the test runner class specified by user or in
+    /// the manifest file.
+    /// This can be caused by either of the following reasons:
     /// - the user provided a runner class name that's incorrect, or
     /// - the test runner isn't built into the test APK (might be in the app APK
     /// instead).
@@ -1453,16 +1323,6 @@ pub enum InvalidMatrixDetails {
     InvalidInputApk = 27,
     /// APK is built for a preview SDK which is unsupported
     InvalidApkPreviewSdk = 29,
-    /// The matrix expanded to contain too many executions.
-    MatrixTooLarge = 37,
-    /// Not enough test quota to run the executions in this matrix.
-    TestQuotaExceeded = 39,
-    /// A required cloud service api is not activated.
-    /// See:
-    /// <https://firebase.google.com/docs/test-lab/android/continuous#requirements>
-    ServiceNotActivated = 40,
-    /// There was an unknown permission issue running this test.
-    UnknownPermissionError = 41,
 }
 impl InvalidMatrixDetails {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1512,10 +1372,6 @@ impl InvalidMatrixDetails {
             InvalidMatrixDetails::NoCodeApk => "NO_CODE_APK",
             InvalidMatrixDetails::InvalidInputApk => "INVALID_INPUT_APK",
             InvalidMatrixDetails::InvalidApkPreviewSdk => "INVALID_APK_PREVIEW_SDK",
-            InvalidMatrixDetails::MatrixTooLarge => "MATRIX_TOO_LARGE",
-            InvalidMatrixDetails::TestQuotaExceeded => "TEST_QUOTA_EXCEEDED",
-            InvalidMatrixDetails::ServiceNotActivated => "SERVICE_NOT_ACTIVATED",
-            InvalidMatrixDetails::UnknownPermissionError => "UNKNOWN_PERMISSION_ERROR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1560,10 +1416,6 @@ impl InvalidMatrixDetails {
             "NO_CODE_APK" => Some(Self::NoCodeApk),
             "INVALID_INPUT_APK" => Some(Self::InvalidInputApk),
             "INVALID_APK_PREVIEW_SDK" => Some(Self::InvalidApkPreviewSdk),
-            "MATRIX_TOO_LARGE" => Some(Self::MatrixTooLarge),
-            "TEST_QUOTA_EXCEEDED" => Some(Self::TestQuotaExceeded),
-            "SERVICE_NOT_ACTIVATED" => Some(Self::ServiceNotActivated),
-            "UNKNOWN_PERMISSION_ERROR" => Some(Self::UnknownPermissionError),
             _ => None,
         }
     }
@@ -1666,13 +1518,11 @@ pub enum OutcomeSummary {
     /// Do not use. For proto versioning only.
     Unspecified = 0,
     /// The test matrix run was successful, for instance:
-    ///
     /// - All the test cases passed.
     /// - Robo did not detect a crash of the application under test.
     Success = 1,
     /// A run failed, for instance:
-    ///
-    /// - One or more test cases failed.
+    /// - One or more test case failed.
     /// - A test timed out.
     /// - The application under test crashed.
     Failure = 2,
@@ -1681,7 +1531,6 @@ pub enum OutcomeSummary {
     /// test might be successful.
     Inconclusive = 3,
     /// All tests were skipped, for instance:
-    ///
     /// - All device configurations were incompatible.
     Skipped = 4,
 }
@@ -1824,10 +1673,6 @@ pub mod test_execution_service_client {
         /// Unsupported environments will be returned in the state UNSUPPORTED.
         /// A test matrix is limited to use at most 2000 devices in parallel.
         ///
-        /// The returned matrix will not yet contain the executions that will be
-        /// created for this matrix. Execution creation happens later on and will
-        /// require a call to GetTestMatrix.
-        ///
         /// May return any of the following canonical error codes:
         ///
         /// - PERMISSION_DENIED - if the user is not authorized to write to project
@@ -1860,13 +1705,7 @@ pub mod test_execution_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Checks the status of a test matrix and the executions once they
-        /// are created.
-        ///
-        /// The test matrix will contain the list of test executions to run if and only
-        /// if the resultStorage.toolResultsExecution fields have been populated.
-        ///
-        /// Note: Flaky test executions may be added to the matrix at a later stage.
+        /// Checks the status of a test matrix.
         ///
         /// May return any of the following canonical error codes:
         ///
@@ -1975,33 +1814,6 @@ pub struct ApkManifest {
     /// Permissions declared to be used by the application
     #[prost(string, repeated, tag = "7")]
     pub uses_permission: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Version number used internally by the app.
-    #[prost(int64, tag = "8")]
-    pub version_code: i64,
-    /// Version number shown to users.
-    #[prost(string, tag = "9")]
-    pub version_name: ::prost::alloc::string::String,
-    /// Meta-data tags defined in the manifest.
-    #[prost(message, repeated, tag = "10")]
-    pub metadata: ::prost::alloc::vec::Vec<Metadata>,
-    /// Feature usage tags defined in the manifest.
-    #[prost(message, repeated, tag = "11")]
-    pub uses_feature: ::prost::alloc::vec::Vec<UsesFeature>,
-    /// Services contained in the <application> tag.
-    #[prost(message, repeated, tag = "12")]
-    pub services: ::prost::alloc::vec::Vec<Service>,
-}
-/// The <service> section of an <application> tag.
-/// <https://developer.android.com/guide/topics/manifest/service-element>
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Service {
-    /// The android:name value
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Intent filters in the service
-    #[prost(message, repeated, tag = "2")]
-    pub intent_filter: ::prost::alloc::vec::Vec<IntentFilter>,
 }
 /// The <intent-filter> section of an <activity> tag.
 /// <https://developer.android.com/guide/topics/manifest/intent-filter-element.html>
@@ -2017,30 +1829,6 @@ pub struct IntentFilter {
     /// The android:mimeType value of the <data> tag.
     #[prost(string, tag = "3")]
     pub mime_type: ::prost::alloc::string::String,
-}
-/// A <meta-data> tag within a manifest.
-/// <https://developer.android.com/guide/topics/manifest/meta-data-element.html>
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Metadata {
-    /// The android:name value
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The android:value value
-    #[prost(string, tag = "2")]
-    pub value: ::prost::alloc::string::String,
-}
-/// A <uses-feature> tag within a manifest.
-/// <https://developer.android.com/guide/topics/manifest/uses-feature-element.html>
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UsesFeature {
-    /// The android:name value
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The android:required value
-    #[prost(bool, tag = "2")]
-    pub is_required: bool,
 }
 /// A request to get the details of an Android application APK.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2364,9 +2152,6 @@ pub struct AndroidModel {
     /// Whether this device is a phone, tablet, wearable, etc.
     #[prost(enumeration = "DeviceFormFactor", tag = "16")]
     pub form_factor: i32,
-    /// Version-specific information of an Android model.
-    #[prost(message, repeated, tag = "21")]
-    pub per_version_info: ::prost::alloc::vec::Vec<PerAndroidVersionInfo>,
     /// Screen size in the horizontal (X) dimension measured in pixels.
     #[prost(int32, tag = "5")]
     pub screen_x: i32,
@@ -2399,6 +2184,7 @@ pub struct AndroidModel {
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// URL of a thumbnail image (photo) of the device.
+    /// e.g. <https://lh3.googleusercontent.com/90WcauuJiCYABEl8U0lcZeuS5STUbf2yW...>
     #[prost(string, tag = "19")]
     pub thumbnail_url: ::prost::alloc::string::String,
 }
@@ -2432,17 +2218,6 @@ pub struct AndroidVersion {
     /// Examples: "default", "preview", "deprecated".
     #[prost(string, repeated, tag = "7")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// A version-specific information of an Android model.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PerAndroidVersionInfo {
-    /// An Android version.
-    #[prost(string, tag = "1")]
-    pub version_id: ::prost::alloc::string::String,
-    /// The number of online devices for an Android version.
-    #[prost(enumeration = "DeviceCapacity", tag = "2")]
-    pub device_capacity: i32,
 }
 /// Data about the relative number of devices running a
 /// given configuration of the Android platform.
@@ -2521,9 +2296,6 @@ pub struct IosModel {
     /// Whether this device is a phone, tablet, wearable, etc.
     #[prost(enumeration = "DeviceFormFactor", tag = "6")]
     pub form_factor: i32,
-    /// Version-specific information of an iOS model.
-    #[prost(message, repeated, tag = "14")]
-    pub per_version_info: ::prost::alloc::vec::Vec<PerIosVersionInfo>,
 }
 /// An iOS version.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2550,17 +2322,6 @@ pub struct IosVersion {
     pub supported_xcode_version_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
-}
-/// A version-specific information of an iOS model.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PerIosVersionInfo {
-    /// An iOS version.
-    #[prost(string, tag = "1")]
-    pub version_id: ::prost::alloc::string::String,
-    /// The number of online devices for an iOS version.
-    #[prost(enumeration = "DeviceCapacity", tag = "2")]
-    pub device_capacity: i32,
 }
 /// A location/region designation for language.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2656,12 +2417,9 @@ pub struct TrafficRule {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvidedSoftwareCatalog {
-    /// Deprecated: Use AndroidX Test Orchestrator going forward.
-    ///
     /// A string representing the current version of Android Test Orchestrator
     /// that is used in the environment. The package is available at
     /// <https://maven.google.com/web/index.html#com.android.support.test:orchestrator.>
-    #[deprecated]
     #[prost(string, tag = "1")]
     pub orchestrator_version: ::prost::alloc::string::String,
     /// A string representing the current version of AndroidX Test Orchestrator
@@ -2742,78 +2500,6 @@ impl DeviceFormFactor {
             "PHONE" => Some(Self::Phone),
             "TABLET" => Some(Self::Tablet),
             "WEARABLE" => Some(Self::Wearable),
-            _ => None,
-        }
-    }
-}
-/// Capacity based on the number of online devices in the lab.
-///
-/// Important: device capacity does not directly reflect the length of the
-/// queue at a moment in time. It does not take into account current traffic or
-/// the state of the devices.
-///
-/// For physical devices, the number is the average of online devices in the last
-/// 30 days.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum DeviceCapacity {
-    /// The value of device capacity is unknown or unset.
-    Unspecified = 0,
-    /// Devices that are high in capacity (The lab has a large number of these
-    /// devices).
-    ///
-    /// These devices are generally suggested for running a large number of
-    /// simultaneous tests (e.g. more than 100 tests).
-    ///
-    /// Please note that high capacity devices do not guarantee short wait times
-    /// due to several factors:
-    /// 1. Traffic (how heavily they are used at any given moment)
-    /// 2. High capacity devices are prioritized for certain usages, which may
-    /// cause user tests to be slower than selecting other similar device types.
-    High = 1,
-    /// Devices that are medium in capacity (The lab has a decent number of these
-    /// devices, though not as many as high capacity devices).
-    ///
-    /// These devices are suitable for fewer test runs (e.g. fewer than 100 tests)
-    /// and only for low shard counts (e.g. less than 10 shards).
-    Medium = 2,
-    /// Devices that are low in capacity (The lab has a small number of these
-    /// devices).
-    ///
-    /// These devices may be used if users need to test on this specific device
-    /// model and version. Please note that due to low capacity, the tests may take
-    /// much longer to finish, especially if a large number of tests are invoked at
-    /// once. These devices are not suitable for test sharding.
-    Low = 3,
-    /// Devices that are completely missing from the lab.
-    ///
-    /// These devices are unavailable either temporarily or permanently and should
-    /// not be requested. If the device is also marked as deprecated, this state
-    /// is very likely permanent.
-    None = 4,
-}
-impl DeviceCapacity {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            DeviceCapacity::Unspecified => "DEVICE_CAPACITY_UNSPECIFIED",
-            DeviceCapacity::High => "DEVICE_CAPACITY_HIGH",
-            DeviceCapacity::Medium => "DEVICE_CAPACITY_MEDIUM",
-            DeviceCapacity::Low => "DEVICE_CAPACITY_LOW",
-            DeviceCapacity::None => "DEVICE_CAPACITY_NONE",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "DEVICE_CAPACITY_UNSPECIFIED" => Some(Self::Unspecified),
-            "DEVICE_CAPACITY_HIGH" => Some(Self::High),
-            "DEVICE_CAPACITY_MEDIUM" => Some(Self::Medium),
-            "DEVICE_CAPACITY_LOW" => Some(Self::Low),
-            "DEVICE_CAPACITY_NONE" => Some(Self::None),
             _ => None,
         }
     }

@@ -399,7 +399,7 @@ pub struct ListApprovalRequestsMessage {
     /// A filter on the type of approval requests to retrieve. Must be one of the
     /// following values:
     ///
-    ///    * [not set]: Requests that are pending or have active approvals.
+    ///    * \[not set\]: Requests that are pending or have active approvals.
     ///    * ALL: All requests.
     ///    * PENDING: Only pending requests.
     ///    * ACTIVE: Only active (i.e. currently approved) requests.

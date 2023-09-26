@@ -22,9 +22,11 @@ pub struct JobConfigurationTableCopy {
     /// [Optional] The time when the destination table expires. Expired tables will be deleted and their storage reclaimed.
     #[serde(
         rename = "destinationExpirationTime",
+        default,
+        with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub destination_expiration_time: Option<serde_json::Value>,
+    pub destination_expiration_time: Option<Option<serde_json::Value>>,
     #[serde(rename = "destinationTable", skip_serializing_if = "Option::is_none")]
     pub destination_table:
         Option<Box<crate::google_rest_apis::bigquery_v2::models::TableReference>>,

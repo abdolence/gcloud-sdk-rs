@@ -216,7 +216,7 @@ pub mod data_masking_policy {
         /// * DATETIME: 0001-01-01T00:00:00
         /// * GEOGRAPHY: POINT(0 0)
         /// * BIGNUMERIC: 0
-        /// * ARRAY: []
+        /// * ARRAY: \[\]
         /// * STRUCT: NOT_APPLICABLE
         /// * JSON: NULL
         DefaultMaskingValue = 7,

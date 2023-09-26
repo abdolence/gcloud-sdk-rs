@@ -361,7 +361,7 @@ pub struct NotificationConfig {
     #[prost(enumeration = "notification_config::EventType", tag = "3")]
     pub event_type: i32,
     /// The Pub/Sub topic to send notifications to. Its format is
-    /// "projects/\[project_id]/topics/[topic\]".
+    /// "projects/\[project_id\]/topics/\[topic\]".
     #[prost(string, tag = "4")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Output only. The service account that needs "pubsub.topics.publish"
@@ -704,7 +704,7 @@ pub struct Source {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFindingRequest {
     /// Required. Resource name of the new finding's parent. Its format should be
-    /// "organizations/\[organization_id]/sources/[source_id\]".
+    /// "organizations/\[organization_id\]/sources/\[source_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
@@ -751,7 +751,7 @@ pub struct CreateSourceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. Its format is
-    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
+    /// "organizations/\[organization_id\]/notificationConfigs/\[config_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -760,7 +760,7 @@ pub struct DeleteNotificationConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationConfigRequest {
     /// Required. Name of the notification config to get. Its format is
-    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
+    /// "organizations/\[organization_id\]/notificationConfigs/\[config_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -778,7 +778,7 @@ pub struct GetOrganizationSettingsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
-    /// "organizations/\[organization_id]/source/[source_id\]".
+    /// "organizations/\[organization_id\]/source/\[source_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -945,9 +945,9 @@ pub struct GroupAssetsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. Its format is
-    /// "organizations/\[organization_id]/sources/[source_id\]",
-    /// folders/\[folder_id]/sources/[source_id\], or
-    /// projects/\[project_id]/sources/[source_id\]. To groupBy across all sources
+    /// "organizations/\[organization_id\]/sources/\[source_id\]",
+    /// folders/\[folder_id\]/sources/\[source_id\], or
+    /// projects/\[project_id\]/sources/\[source_id\]. To groupBy across all sources
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
     /// or projects/{project_id}/sources/-
@@ -1404,9 +1404,9 @@ pub mod list_assets_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. Its format is
-    /// "organizations/\[organization_id]/sources/[source_id\],
-    /// folders/\[folder_id]/sources/[source_id\], or
-    /// projects/\[project_id]/sources/[source_id\]". To list across all sources
+    /// "organizations/\[organization_id\]/sources/\[source_id\],
+    /// folders/\[folder_id\]/sources/\[source_id\], or
+    /// projects/\[project_id\]/sources/\[source_id\]". To list across all sources
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
     /// projects/{projects_id}/sources/-

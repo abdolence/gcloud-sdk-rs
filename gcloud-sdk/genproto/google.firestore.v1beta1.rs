@@ -2,11 +2,11 @@
 /// Used to restrict a get or update operation on a document to a subset of its
 /// fields.
 /// This is different from standard field masks, as this is always scoped to a
-/// \[Document][google.firestore.v1beta1.Document\], and takes in account the dynamic nature of \[Value][google.firestore.v1beta1.Value\].
+/// [Document][google.firestore.v1beta1.Document], and takes in account the dynamic nature of [Value][google.firestore.v1beta1.Value].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentMask {
-    /// The list of field paths in the mask. See \[Document.fields][google.firestore.v1beta1.Document.fields\] for a field
+    /// The list of field paths in the mask. See [Document.fields][google.firestore.v1beta1.Document.fields] for a field
     /// path syntax reference.
     #[prost(string, repeated, tag = "1")]
     pub field_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -740,7 +740,7 @@ pub mod document_transform {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FieldTransform {
-        /// The path of the field. See \[Document.fields][google.firestore.v1beta1.Document.fields\] for the field path syntax
+        /// The path of the field. See [Document.fields][google.firestore.v1beta1.Document.fields] for the field path syntax
         /// reference.
         #[prost(string, tag = "1")]
         pub field_path: ::prost::alloc::string::String,
@@ -878,22 +878,22 @@ pub struct WriteResult {
     /// previous update_time.
     #[prost(message, optional, tag = "1")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The results of applying each \[DocumentTransform.FieldTransform][google.firestore.v1beta1.DocumentTransform.FieldTransform\], in the
+    /// The results of applying each [DocumentTransform.FieldTransform][google.firestore.v1beta1.DocumentTransform.FieldTransform], in the
     /// same order.
     #[prost(message, repeated, tag = "2")]
     pub transform_results: ::prost::alloc::vec::Vec<Value>,
 }
-/// A \[Document][google.firestore.v1beta1.Document\] has changed.
+/// A [Document][google.firestore.v1beta1.Document] has changed.
 ///
-/// May be the result of multiple \[writes][google.firestore.v1beta1.Write\], including deletes, that
-/// ultimately resulted in a new value for the \[Document][google.firestore.v1beta1.Document\].
+/// May be the result of multiple [writes][google.firestore.v1beta1.Write], including deletes, that
+/// ultimately resulted in a new value for the [Document][google.firestore.v1beta1.Document].
 ///
-/// Multiple \[DocumentChange][google.firestore.v1beta1.DocumentChange\] messages may be returned for the same logical
+/// Multiple [DocumentChange][google.firestore.v1beta1.DocumentChange] messages may be returned for the same logical
 /// change, if multiple targets are affected.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentChange {
-    /// The new state of the \[Document][google.firestore.v1beta1.Document\].
+    /// The new state of the [Document][google.firestore.v1beta1.Document].
     ///
     /// If `mask` is set, contains only fields that were updated or added.
     #[prost(message, optional, tag = "1")]
@@ -905,17 +905,17 @@ pub struct DocumentChange {
     #[prost(int32, repeated, tag = "6")]
     pub removed_target_ids: ::prost::alloc::vec::Vec<i32>,
 }
-/// A \[Document][google.firestore.v1beta1.Document\] has been deleted.
+/// A [Document][google.firestore.v1beta1.Document] has been deleted.
 ///
-/// May be the result of multiple \[writes][google.firestore.v1beta1.Write\], including updates, the
-/// last of which deleted the \[Document][google.firestore.v1beta1.Document\].
+/// May be the result of multiple [writes][google.firestore.v1beta1.Write], including updates, the
+/// last of which deleted the [Document][google.firestore.v1beta1.Document].
 ///
-/// Multiple \[DocumentDelete][google.firestore.v1beta1.DocumentDelete\] messages may be returned for the same logical
+/// Multiple [DocumentDelete][google.firestore.v1beta1.DocumentDelete] messages may be returned for the same logical
 /// delete, if multiple targets are affected.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentDelete {
-    /// The resource name of the \[Document][google.firestore.v1beta1.Document\] that was deleted.
+    /// The resource name of the [Document][google.firestore.v1beta1.Document] that was deleted.
     #[prost(string, tag = "1")]
     pub document: ::prost::alloc::string::String,
     /// A set of target IDs for targets that previously matched this entity.
@@ -927,18 +927,18 @@ pub struct DocumentDelete {
     #[prost(message, optional, tag = "4")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// A \[Document][google.firestore.v1beta1.Document\] has been removed from the view of the targets.
+/// A [Document][google.firestore.v1beta1.Document] has been removed from the view of the targets.
 ///
 /// Sent if the document is no longer relevant to a target and is out of view.
 /// Can be sent instead of a DocumentDelete or a DocumentChange if the server
 /// can not send the new value of the document.
 ///
-/// Multiple \[DocumentRemove][google.firestore.v1beta1.DocumentRemove\] messages may be returned for the same logical
+/// Multiple [DocumentRemove][google.firestore.v1beta1.DocumentRemove] messages may be returned for the same logical
 /// write or delete, if multiple targets are affected.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentRemove {
-    /// The resource name of the \[Document][google.firestore.v1beta1.Document\] that has gone out of view.
+    /// The resource name of the [Document][google.firestore.v1beta1.Document] that has gone out of view.
     #[prost(string, tag = "1")]
     pub document: ::prost::alloc::string::String,
     /// A set of target IDs for targets that previously matched this document.
@@ -957,14 +957,14 @@ pub struct ExistenceFilter {
     /// The target ID to which this filter applies.
     #[prost(int32, tag = "1")]
     pub target_id: i32,
-    /// The total count of documents that match \[target_id][google.firestore.v1beta1.ExistenceFilter.target_id\].
+    /// The total count of documents that match [target_id][google.firestore.v1beta1.ExistenceFilter.target_id].
     ///
     /// If different from the count of documents in the client that match, the
     /// client must manually determine which documents no longer match the target.
     #[prost(int32, tag = "2")]
     pub count: i32,
 }
-/// The request for \[Firestore.GetDocument][google.firestore.v1beta1.Firestore.GetDocument\].
+/// The request for [Firestore.GetDocument][google.firestore.v1beta1.Firestore.GetDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDocumentRequest {
@@ -1001,7 +1001,7 @@ pub mod get_document_request {
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The request for \[Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments\].
+/// The request for [Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsRequest {
@@ -1034,8 +1034,8 @@ pub struct ListDocumentsRequest {
     pub mask: ::core::option::Option<DocumentMask>,
     /// If the list should show missing documents. A missing document is a
     /// document that does not exist but has sub-documents. These documents will
-    /// be returned with a key but will not have fields, \[Document.create_time][google.firestore.v1beta1.Document.create_time\],
-    /// or \[Document.update_time][google.firestore.v1beta1.Document.update_time\] set.
+    /// be returned with a key but will not have fields, [Document.create_time][google.firestore.v1beta1.Document.create_time],
+    /// or [Document.update_time][google.firestore.v1beta1.Document.update_time] set.
     ///
     /// Requests with `show_missing` may not specify `where` or
     /// `order_by`.
@@ -1064,7 +1064,7 @@ pub mod list_documents_request {
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The response for \[Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments\].
+/// The response for [Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsResponse {
@@ -1075,7 +1075,7 @@ pub struct ListDocumentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for \[Firestore.CreateDocument][google.firestore.v1beta1.Firestore.CreateDocument\].
+/// The request for [Firestore.CreateDocument][google.firestore.v1beta1.Firestore.CreateDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
@@ -1102,7 +1102,7 @@ pub struct CreateDocumentRequest {
     #[prost(message, optional, tag = "5")]
     pub mask: ::core::option::Option<DocumentMask>,
 }
-/// The request for \[Firestore.UpdateDocument][google.firestore.v1beta1.Firestore.UpdateDocument\].
+/// The request for [Firestore.UpdateDocument][google.firestore.v1beta1.Firestore.UpdateDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDocumentRequest {
@@ -1130,7 +1130,7 @@ pub struct UpdateDocumentRequest {
     #[prost(message, optional, tag = "4")]
     pub current_document: ::core::option::Option<Precondition>,
 }
-/// The request for \[Firestore.DeleteDocument][google.firestore.v1beta1.Firestore.DeleteDocument\].
+/// The request for [Firestore.DeleteDocument][google.firestore.v1beta1.Firestore.DeleteDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDocumentRequest {
@@ -1143,7 +1143,7 @@ pub struct DeleteDocumentRequest {
     #[prost(message, optional, tag = "2")]
     pub current_document: ::core::option::Option<Precondition>,
 }
-/// The request for \[Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments\].
+/// The request for [Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetDocumentsRequest {
@@ -1195,13 +1195,13 @@ pub mod batch_get_documents_request {
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The streamed response for \[Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments\].
+/// The streamed response for [Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetDocumentsResponse {
     /// The transaction that was started as part of this request.
     /// Will only be set in the first response, and only if
-    /// \[BatchGetDocumentsRequest.new_transaction][google.firestore.v1beta1.BatchGetDocumentsRequest.new_transaction\] was set in the request.
+    /// [BatchGetDocumentsRequest.new_transaction][google.firestore.v1beta1.BatchGetDocumentsRequest.new_transaction] was set in the request.
     #[prost(bytes = "vec", tag = "3")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
     /// The time at which the document was read.
@@ -1231,7 +1231,7 @@ pub mod batch_get_documents_response {
         Missing(::prost::alloc::string::String),
     }
 }
-/// The request for \[Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction\].
+/// The request for [Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionRequest {
@@ -1244,7 +1244,7 @@ pub struct BeginTransactionRequest {
     #[prost(message, optional, tag = "2")]
     pub options: ::core::option::Option<TransactionOptions>,
 }
-/// The response for \[Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction\].
+/// The response for [Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionResponse {
@@ -1252,7 +1252,7 @@ pub struct BeginTransactionResponse {
     #[prost(bytes = "vec", tag = "1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
-/// The request for \[Firestore.Commit][google.firestore.v1beta1.Firestore.Commit\].
+/// The request for [Firestore.Commit][google.firestore.v1beta1.Firestore.Commit].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
@@ -1269,7 +1269,7 @@ pub struct CommitRequest {
     #[prost(bytes = "vec", tag = "3")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
-/// The response for \[Firestore.Commit][google.firestore.v1beta1.Firestore.Commit\].
+/// The response for [Firestore.Commit][google.firestore.v1beta1.Firestore.Commit].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitResponse {
@@ -1284,7 +1284,7 @@ pub struct CommitResponse {
     #[prost(message, optional, tag = "2")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request for \[Firestore.Rollback][google.firestore.v1beta1.Firestore.Rollback\].
+/// The request for [Firestore.Rollback][google.firestore.v1beta1.Firestore.Rollback].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackRequest {
@@ -1296,7 +1296,7 @@ pub struct RollbackRequest {
     #[prost(bytes = "vec", tag = "2")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
-/// The request for \[Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery\].
+/// The request for [Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryRequest {
@@ -1348,13 +1348,13 @@ pub mod run_query_request {
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The response for \[Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery\].
+/// The response for [Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryResponse {
     /// The transaction that was started as part of this request.
     /// Can only be set in the first response, and only if
-    /// \[RunQueryRequest.new_transaction][google.firestore.v1beta1.RunQueryRequest.new_transaction\] was set in the request.
+    /// [RunQueryRequest.new_transaction][google.firestore.v1beta1.RunQueryRequest.new_transaction] was set in the request.
     /// If set, no other fields will be set in this response.
     #[prost(bytes = "vec", tag = "2")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
@@ -1376,7 +1376,7 @@ pub struct RunQueryResponse {
     #[prost(int32, tag = "4")]
     pub skipped_results: i32,
 }
-/// The request for \[Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery\].
+/// The request for [Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionQueryRequest {
@@ -1438,7 +1438,7 @@ pub mod partition_query_request {
         StructuredQuery(super::StructuredQuery),
     }
 }
-/// The response for \[Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery\].
+/// The response for [Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionQueryResponse {
@@ -1467,7 +1467,7 @@ pub struct PartitionQueryResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for \[Firestore.Write][google.firestore.v1beta1.Firestore.Write\].
+/// The request for [Firestore.Write][google.firestore.v1beta1.Firestore.Write].
 ///
 /// The first request creates a stream, or resumes an existing one from a token.
 ///
@@ -1501,7 +1501,7 @@ pub struct WriteRequest {
     /// A stream token that was previously sent by the server.
     ///
     /// The client should set this field to the token from the most recent
-    /// \[WriteResponse][google.firestore.v1beta1.WriteResponse\] it has received. This acknowledges that the client has
+    /// [WriteResponse][google.firestore.v1beta1.WriteResponse] it has received. This acknowledges that the client has
     /// received responses up to this token. After sending this token, earlier
     /// tokens may not be used anymore.
     ///
@@ -1521,7 +1521,7 @@ pub struct WriteRequest {
         ::prost::alloc::string::String,
     >,
 }
-/// The response for \[Firestore.Write][google.firestore.v1beta1.Firestore.Write\].
+/// The response for [Firestore.Write][google.firestore.v1beta1.Firestore.Write].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteResponse {
@@ -1546,7 +1546,7 @@ pub struct WriteResponse {
     #[prost(message, optional, tag = "4")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// A request for \[Firestore.Listen][google.firestore.v1beta1.Firestore.Listen\]
+/// A request for [Firestore.Listen][google.firestore.v1beta1.Firestore.Listen]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListenRequest {
@@ -1578,7 +1578,7 @@ pub mod listen_request {
         RemoveTarget(i32),
     }
 }
-/// The response for \[Firestore.Listen][google.firestore.v1beta1.Firestore.Listen\].
+/// The response for [Firestore.Listen][google.firestore.v1beta1.Firestore.Listen].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListenResponse {
@@ -1595,13 +1595,13 @@ pub mod listen_response {
         /// Targets have changed.
         #[prost(message, tag = "2")]
         TargetChange(super::TargetChange),
-        /// A \[Document][google.firestore.v1beta1.Document\] has changed.
+        /// A [Document][google.firestore.v1beta1.Document] has changed.
         #[prost(message, tag = "3")]
         DocumentChange(super::DocumentChange),
-        /// A \[Document][google.firestore.v1beta1.Document\] has been deleted.
+        /// A [Document][google.firestore.v1beta1.Document] has been deleted.
         #[prost(message, tag = "4")]
         DocumentDelete(super::DocumentDelete),
-        /// A \[Document][google.firestore.v1beta1.Document\] has been removed from a target (because it is no longer
+        /// A [Document][google.firestore.v1beta1.Document] has been removed from a target (because it is no longer
         /// relevant to that target).
         #[prost(message, tag = "6")]
         DocumentRemove(super::DocumentRemove),
@@ -1693,7 +1693,7 @@ pub mod target {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResumeType {
-        /// A resume token from a prior \[TargetChange][google.firestore.v1beta1.TargetChange\] for an identical target.
+        /// A resume token from a prior [TargetChange][google.firestore.v1beta1.TargetChange] for an identical target.
         ///
         /// Using a resume token with a different target is unsupported and may fail.
         #[prost(bytes, tag = "4")]
@@ -1806,7 +1806,7 @@ pub mod target_change {
         }
     }
 }
-/// The request for \[Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds\].
+/// The request for [Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCollectionIdsRequest {
@@ -1820,11 +1820,11 @@ pub struct ListCollectionIdsRequest {
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token. Must be a value from
-    /// \[ListCollectionIdsResponse][google.firestore.v1beta1.ListCollectionIdsResponse\].
+    /// [ListCollectionIdsResponse][google.firestore.v1beta1.ListCollectionIdsResponse].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response from \[Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds\].
+/// The response from [Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCollectionIdsResponse {
@@ -1835,7 +1835,7 @@ pub struct ListCollectionIdsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for \[Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite\].
+/// The request for [Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchWriteRequest {
@@ -1857,7 +1857,7 @@ pub struct BatchWriteRequest {
         ::prost::alloc::string::String,
     >,
 }
-/// The response from \[Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite\].
+/// The response from [Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchWriteResponse {

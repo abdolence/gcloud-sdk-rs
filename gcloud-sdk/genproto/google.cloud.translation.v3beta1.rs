@@ -95,14 +95,14 @@ pub struct TranslateTextRequest {
 pub struct TranslateTextResponse {
     /// Text translation responses with no glossary applied.
     /// This field has the same length as
-    /// \[`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents\].
+    /// [`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents].
     #[prost(message, repeated, tag = "1")]
     pub translations: ::prost::alloc::vec::Vec<Translation>,
     /// Text translation responses if a glossary is provided in the request.
     /// This can be the same as
-    /// \[`translations`][google.cloud.translation.v3beta1.TranslateTextResponse.translations\]
+    /// [`translations`][google.cloud.translation.v3beta1.TranslateTextResponse.translations]
     /// if no terms apply. This field has the same length as
-    /// \[`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents\].
+    /// [`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents].
     #[prost(message, repeated, tag = "3")]
     pub glossary_translations: ::prost::alloc::vec::Vec<Translation>,
 }
@@ -396,10 +396,10 @@ pub mod output_config {
         /// Since index.csv will be keeping updated during the process, please make
         /// sure there is no custom retention policy applied on the output bucket
         /// that may avoid file updating.
-        /// (<https://cloud.google.com/storage/docs/bucket-lock#retention-policy>)
+        /// (<https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy>)
         ///
         /// The format of translations_file (for target language code 'trg') is:
-        /// `gs://translation_test/a_b_c_'trg'_translations.\[extension\]`
+        /// gs://translation_test/a_b_c_'trg'_translations.\[extension\]
         ///
         /// If the input file extension is tsv, the output has the following
         /// columns:
@@ -416,10 +416,10 @@ pub mod output_config {
         /// If input file extension is a txt or html, the translation is directly
         /// written to the output file. If glossary is requested, a separate
         /// glossary_translations_file has format of
-        /// `gs://translation_test/a_b_c_'trg'_glossary_translations.\[extension\]`
+        /// gs://translation_test/a_b_c_'trg'_glossary_translations.\[extension\]
         ///
         /// The format of errors file (for target language code 'trg') is:
-        /// `gs://translation_test/a_b_c_'trg'_errors.\[extension\]`
+        /// gs://translation_test/a_b_c_'trg'_errors.\[extension\]
         ///
         /// If the input file extension is tsv, errors_file contains the following:
         /// Column 1: ID of the request provided in the input, if it's not
@@ -431,7 +431,7 @@ pub mod output_config {
         ///
         /// If the input file extension is txt or html, glossary_error_file will be
         /// generated that contains error details. glossary_error_file has format of
-        /// `gs://translation_test/a_b_c_'trg'_glossary_errors.\[extension\]`
+        /// gs://translation_test/a_b_c_'trg'_glossary_errors.\[extension\]
         #[prost(message, tag = "1")]
         GcsDestination(super::GcsDestination),
     }
@@ -526,7 +526,7 @@ pub mod document_output_config {
         /// already exists in the destination an error will be returned.
         ///
         /// For a DocumentInputConfig.contents provided document, the output file
-        /// will have the name "output_\[trg]_translations.[ext\]", where
+        /// will have the name "output_\[trg\]_translations.\[ext\]", where
         /// - \[trg\] corresponds to the translated file's language code,
         /// - \[ext\] corresponds to the translated file's extension according to its
         /// mime type.
@@ -534,9 +534,9 @@ pub mod document_output_config {
         ///
         /// For a DocumentInputConfig.gcs_uri provided document, the output file will
         /// have a name according to its URI. For example: an input file with URI:
-        /// `gs://a/b/c.\[extension\]` stored in a gcs_destination bucket with name
+        /// "gs://a/b/c.\[extension\]" stored in a gcs_destination bucket with name
         /// "my_bucket" will have an output URI:
-        /// `gs://my_bucket/a_b_c_\[trg]_translations.[ext\]`, where
+        /// "gs://my_bucket/a_b_c_\[trg\]_translations.\[ext\]", where
         /// - \[trg\] corresponds to the translated file's language code,
         /// - \[ext\] corresponds to the translated file's extension according to its
         /// mime type.
@@ -544,7 +544,7 @@ pub mod document_output_config {
         ///
         /// If the document was directly provided through the request, then the
         /// output document will have the format:
-        /// `gs://my_bucket/translated_document_\[trg]_translations.[ext\]`, where
+        /// "gs://my_bucket/translated_document_\[trg\]_translations.\[ext\], where
         /// - \[trg\] corresponds to the translated file's language code,
         /// - \[ext\] corresponds to the translated file's extension according to its
         /// mime type.
@@ -553,7 +553,7 @@ pub mod document_output_config {
         /// translation will be equal to the default output URI but have
         /// `glossary_translations` instead of `translations`. For the previous
         /// example, its glossary URI would be:
-        /// `gs://my_bucket/a_b_c_\[trg]_glossary_translations.[ext\]`.
+        /// "gs://my_bucket/a_b_c_\[trg\]_glossary_translations.\[ext\]".
         ///
         /// Thus the max number of output files will be 2 (Translated document,
         /// Glossary translated document).
@@ -638,26 +638,6 @@ pub struct TranslateDocumentRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. This flag is to support user customized attribution.
-    /// If not provided, the default is `Machine Translated by Google`.
-    /// Customized attribution should follow rules in
-    /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
-    #[prost(string, tag = "10")]
-    pub customized_attribution: ::prost::alloc::string::String,
-    /// Optional. is_translate_native_pdf_only field for external customers.
-    /// If true, the page limit of online native pdf translation is 300 and only
-    /// native pdf pages will be translated.
-    #[prost(bool, tag = "11")]
-    pub is_translate_native_pdf_only: bool,
-    /// Optional. If true, use the text removal server to remove the shadow text on
-    /// background image for native pdf translation.
-    /// Shadow removal feature can only be enabled when
-    /// is_translate_native_pdf_only: false && pdf_native_only: false
-    #[prost(bool, tag = "12")]
-    pub enable_shadow_removal_native_pdf: bool,
-    /// Optional. If true, enable auto rotation correction in DVS.
-    #[prost(bool, tag = "13")]
-    pub enable_rotation_correction: bool,
 }
 /// A translated document message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -864,7 +844,7 @@ pub mod batch_translate_metadata {
     }
 }
 /// Stored in the
-/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
+/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
 /// field returned by BatchTranslateText if at least one sentence is translated
 /// successfully.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -883,7 +863,7 @@ pub struct BatchTranslateResponse {
     #[prost(message, optional, tag = "4")]
     pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the operation is finished and
-    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
+    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
     /// set to true.
     #[prost(message, optional, tag = "5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -921,8 +901,9 @@ pub mod glossary_input_config {
         /// For equivalent term sets glossaries:
         ///
         /// - CSV (`.csv`): Multi-column CSV file defining equivalent glossary terms
-        ///    in multiple languages. See documentation for more information -
-        ///    \[glossaries\](<https://cloud.google.com/translate/docs/advanced/glossary>).
+        ///    in multiple languages. The format is defined for Google Translation
+        ///    Toolkit and documented in [Use a
+        ///    glossary](<https://support.google.com/translatortoolkit/answer/6306379?hl=en>).
         #[prost(message, tag = "1")]
         GcsSource(super::GcsSource),
     }
@@ -1066,7 +1047,7 @@ pub struct ListGlossariesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Stored in the
-/// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]
+/// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]
 /// field returned by CreateGlossary.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1141,7 +1122,7 @@ pub mod create_glossary_metadata {
     }
 }
 /// Stored in the
-/// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]
+/// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]
 /// field returned by DeleteGlossary.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1216,7 +1197,7 @@ pub mod delete_glossary_metadata {
     }
 }
 /// Stored in the
-/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
+/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
 /// field returned by DeleteGlossary.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1228,7 +1209,7 @@ pub struct DeleteGlossaryResponse {
     #[prost(message, optional, tag = "2")]
     pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the glossary deletion is finished and
-    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
+    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
     /// set to true.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -1250,7 +1231,7 @@ pub struct BatchTranslateDocumentRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. The BCP-47 language code of the input document if known, for
     /// example, "en-US" or "sr-Latn". Supported language codes are listed in
-    /// [Language Support](<https://cloud.google.com/translate/docs/languages>).
+    /// Language Support (<https://cloud.google.com/translate/docs/languages>).
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
     /// Required. The BCP-47 language code to use for translation of the input
@@ -1309,21 +1290,6 @@ pub struct BatchTranslateDocumentRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. This flag is to support user customized attribution.
-    /// If not provided, the default is `Machine Translated by Google`.
-    /// Customized attribution should follow rules in
-    /// <https://cloud.google.com/translate/attribution#attribution_and_logos>
-    #[prost(string, tag = "10")]
-    pub customized_attribution: ::prost::alloc::string::String,
-    /// Optional. If true, use the text removal server to remove the shadow text on
-    /// background image for native pdf translation.
-    /// Shadow removal feature can only be enabled when
-    /// is_translate_native_pdf_only: false && pdf_native_only: false
-    #[prost(bool, tag = "11")]
-    pub enable_shadow_removal_native_pdf: bool,
-    /// Optional. If true, enable auto rotation correction in DVS.
-    #[prost(bool, tag = "12")]
-    pub enable_rotation_correction: bool,
 }
 /// Input configuration for BatchTranslateDocument request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1409,26 +1375,26 @@ pub mod batch_document_output_config {
         /// Since index.csv will be keeping updated during the process, please make
         /// sure there is no custom retention policy applied on the output bucket
         /// that may avoid file updating.
-        /// (<https://cloud.google.com/storage/docs/bucket-lock#retention-policy>)
+        /// (<https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy>)
         ///
         /// The naming format of translation output files follows (for target
         /// language code \[trg\]): `translation_output`:
-        /// `gs://translation_output/a_b_c_\[trg]_translation.[extension\]`
+        /// gs://translation_output/a_b_c_\[trg\]_translation.\[extension\]
         /// `glossary_translation_output`:
-        /// `gs://translation_test/a_b_c_\[trg]_glossary_translation.[extension\]`. The
+        /// gs://translation_test/a_b_c_\[trg\]_glossary_translation.\[extension\] The
         /// output document will maintain the same file format as the input document.
         ///
         /// The naming format of error output files follows (for target language code
-        /// \[trg\]): `error_output`: `gs://translation_test/a_b_c_\[trg\]_errors.txt`
+        /// \[trg\]): `error_output`: gs://translation_test/a_b_c_\[trg\]_errors.txt
         /// `glossary_error_output`:
-        /// `gs://translation_test/a_b_c_\[trg\]_glossary_translation.txt` The error
+        /// gs://translation_test/a_b_c_\[trg\]_glossary_translation.txt The error
         /// output is a txt file containing error details.
         #[prost(message, tag = "1")]
         GcsDestination(super::GcsDestination),
     }
 }
 /// Stored in the
-/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
+/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
 /// field returned by BatchTranslateDocument if at least one document is
 /// translated successfully.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1469,7 +1435,7 @@ pub struct BatchTranslateDocumentResponse {
     #[prost(message, optional, tag = "9")]
     pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the operation is finished and
-    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
+    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
     /// set to true.
     #[prost(message, optional, tag = "10")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -1824,7 +1790,7 @@ pub mod translation_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Translates a large volume of document in asynchronous batch mode.
+        /// Translates a large volume of documents in asynchronous batch mode.
         /// This function provides real-time output as the inputs are being processed.
         /// If caller cancels a request, the partial results (for an input file, it's
         /// all or nothing) may still be available on the specified output location.

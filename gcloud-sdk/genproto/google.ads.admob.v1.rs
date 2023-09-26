@@ -31,12 +31,12 @@ pub struct PublisherAccount {
 ///          'start_date': {'year': 2018, 'month': 9, 'day': 1},
 ///          'end_date': {'year': 2018, 'month': 9, 'day': 30}
 ///        },
-///        'dimensions': ['DATE', 'APP', 'COUNTRY'],
-///        'metrics': ['CLICKS', 'ESTIMATED_EARNINGS'],
+///        'dimensions': \['DATE', 'APP', 'COUNTRY'\],
+///        'metrics': \['CLICKS', 'ESTIMATED_EARNINGS'\],
 ///        'dimension_filters': [
 ///          {
 ///            'dimension': 'COUNTRY',
-///            'matches_any': {'values': [{'value': 'US', 'value': 'CN'}]}
+///            'matches_any': {'values': \[{'value': 'US', 'value': 'CN'}\]}
 ///          }
 ///        ],
 ///        'sort_conditions': [
@@ -188,9 +188,9 @@ pub mod network_report_spec {
         /// dimension.
         ///
         /// **Warning:** The dimension is incompatible with
-        /// \[AD_REQUESTS\](#Metric.ENUM_VALUES.AD_REQUESTS),
-        /// \[MATCH_RATE\](#Metric.ENUM_VALUES.MATCH_RATE) and
-        /// \[IMPRESSION_RPM\](#Metric.ENUM_VALUES.IMPRESSION_RPM) metrics.
+        /// [AD_REQUESTS](#Metric.ENUM_VALUES.AD_REQUESTS),
+        /// [MATCH_RATE](#Metric.ENUM_VALUES.MATCH_RATE) and
+        /// [IMPRESSION_RPM](#Metric.ENUM_VALUES.IMPRESSION_RPM) metrics.
         AdType = 6,
         /// CLDR country code of the place where the ad views/clicks occur (for
         /// example, "US" or "FR"). This is a geography dimension.
@@ -259,7 +259,7 @@ pub mod network_report_spec {
         /// The number of ad requests. The value is an integer.
         ///
         /// **Warning:** The metric is incompatible with
-        /// \[AD_TYPE\](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
+        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         AdRequests = 1,
         /// The number of times a user clicks an ad. The value is an integer.
         Clicks = 2,
@@ -277,7 +277,7 @@ pub mod network_report_spec {
         /// micros. For example, $1.03 would be represented as 1030000.
         ///
         /// **Warning:** The metric is incompatible with
-        /// \[AD_TYPE\](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
+        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         ImpressionRpm = 6,
         /// The number of times ads are returned in response to a request. The value
         /// is an integer.
@@ -286,7 +286,7 @@ pub mod network_report_spec {
         /// a double precision (approximate) decimal value.
         ///
         /// **Warning:** The metric is incompatible with
-        /// \[AD_TYPE\](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
+        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         MatchRate = 8,
         /// The ratio of ads that are displayed over ads that are returned, defined
         /// as impressions / matched requests. The value is a double precision
@@ -339,12 +339,12 @@ pub mod network_report_spec {
 ///          "start_date": {"year": 2018, "month": 9, "day": 1},
 ///          "end_date": {"year": 2018, "month": 9, "day": 30}
 ///        },
-///        "dimensions": ["AD_SOURCE", "APP", "COUNTRY"],
+///        "dimensions": \["AD_SOURCE", "APP", "COUNTRY"\],
 ///        "metrics": \["OBSERVED_ECPM"\],
 ///        "dimension_filters": [
 ///          {
 ///            "dimension": "COUNTRY",
-///            "matches_any": {"values": [{"value": "US", "value": "CN"}]}
+///            "matches_any": {"values": \[{"value": "US", "value": "CN"}\]}
 ///          }
 ///        ],
 ///        "sort_conditions": [

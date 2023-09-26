@@ -11,15 +11,10 @@ pub struct Index {
     /// Required. The entity kind to which this index applies.
     #[prost(string, tag = "4")]
     pub kind: ::prost::alloc::string::String,
-    /// Required. The index's ancestor mode.  Must not be
-    /// ANCESTOR_MODE_UNSPECIFIED.
+    /// Required. The index's ancestor mode.  Must not be ANCESTOR_MODE_UNSPECIFIED.
     #[prost(enumeration = "index::AncestorMode", tag = "5")]
     pub ancestor: i32,
     /// Required. An ordered sequence of property names and their index attributes.
-    ///
-    /// Requires:
-    ///
-    /// * A maximum of 100 properties.
     #[prost(message, repeated, tag = "6")]
     pub properties: ::prost::alloc::vec::Vec<index::IndexedProperty>,
     /// Output only. The state of the index.
@@ -35,8 +30,7 @@ pub mod index {
         /// Required. The property name to index.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
-        /// Required. The indexed property's direction.  Must not be
-        /// DIRECTION_UNSPECIFIED.
+        /// Required. The indexed property's direction.  Must not be DIRECTION_UNSPECIFIED.
         #[prost(enumeration = "Direction", tag = "2")]
         pub direction: i32,
     }
@@ -506,7 +500,7 @@ pub struct Progress {
     pub work_estimated: i64,
 }
 /// The request for
-/// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
+/// [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesRequest {
@@ -535,8 +529,8 @@ pub struct ExportEntitiesRequest {
     ///
     /// The resulting files will be nested deeper than the specified URL prefix.
     /// The final output URL will be provided in the
-    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\]
-    /// field. That value should be used for subsequent ImportEntities operations.
+    /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url] field. That
+    /// value should be used for subsequent ImportEntities operations.
     ///
     /// By nesting the data files deeper, the same Cloud Storage bucket can be used
     /// in multiple ExportEntities operations without conflict.
@@ -544,7 +538,7 @@ pub struct ExportEntitiesRequest {
     pub output_url_prefix: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities\].
+/// [google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesRequest {
@@ -557,9 +551,8 @@ pub struct ImportEntitiesRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Required. The full resource URL of the external storage location.
-    /// Currently, only Google Cloud Storage is supported. So input_url should be
-    /// of the form:
+    /// Required. The full resource URL of the external storage location. Currently, only
+    /// Google Cloud Storage is supported. So input_url should be of the form:
     /// `gs://BUCKET_NAME\[/NAMESPACE_PATH\]/OVERALL_EXPORT_METADATA_FILE`, where
     /// `BUCKET_NAME` is the name of the Cloud Storage bucket, `NAMESPACE_PATH` is
     /// an optional Cloud Storage namespace path (this is not a Cloud Datastore
@@ -570,7 +563,7 @@ pub struct ImportEntitiesRequest {
     /// considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
     ///
     /// For more information, see
-    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
+    /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
     #[prost(string, tag = "3")]
     pub input_url: ::prost::alloc::string::String,
     /// Optionally specify which kinds/namespaces are to be imported. If provided,
@@ -581,13 +574,13 @@ pub struct ImportEntitiesRequest {
     pub entity_filter: ::core::option::Option<EntityFilter>,
 }
 /// The response for
-/// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
+/// [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesResponse {
     /// Location of the output metadata file. This can be used to begin an import
     /// into Cloud Datastore (this project or another project). See
-    /// \[google.datastore.admin.v1.ImportEntitiesRequest.input_url][google.datastore.admin.v1.ImportEntitiesRequest.input_url\].
+    /// [google.datastore.admin.v1.ImportEntitiesRequest.input_url][google.datastore.admin.v1.ImportEntitiesRequest.input_url].
     /// Only present if the operation completed successfully.
     #[prost(string, tag = "1")]
     pub output_url: ::prost::alloc::string::String,
@@ -610,9 +603,9 @@ pub struct ExportEntitiesMetadata {
     pub entity_filter: ::core::option::Option<EntityFilter>,
     /// Location for the export metadata and data files. This will be the same
     /// value as the
-    /// \[google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix\]
+    /// [google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix]
     /// field. The final output location is provided in
-    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
+    /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
     #[prost(string, tag = "5")]
     pub output_url_prefix: ::prost::alloc::string::String,
 }
@@ -633,9 +626,7 @@ pub struct ImportEntitiesMetadata {
     #[prost(message, optional, tag = "4")]
     pub entity_filter: ::core::option::Option<EntityFilter>,
     /// The location of the import metadata file. This will be the same value as
-    /// the
-    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\]
-    /// field.
+    /// the [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url] field.
     #[prost(string, tag = "5")]
     pub input_url: ::prost::alloc::string::String,
 }
@@ -645,19 +636,19 @@ pub struct ImportEntitiesMetadata {
 /// Example usage:
 ///
 /// Entire project:
-///    kinds=[], namespace_ids=[]
+///    kinds=\[\], namespace_ids=\[\]
 ///
 /// Kinds Foo and Bar in all namespaces:
-///    kinds=['Foo', 'Bar'], namespace_ids=[]
+///    kinds=\['Foo', 'Bar'\], namespace_ids=\[\]
 ///
 /// Kinds Foo and Bar only in the default namespace:
-///    kinds=['Foo', 'Bar'], namespace_ids=\[''\]
+///    kinds=\['Foo', 'Bar'\], namespace_ids=\[''\]
 ///
 /// Kinds Foo and Bar in both the default and Baz namespaces:
-///    kinds=['Foo', 'Bar'], namespace_ids=['', 'Baz']
+///    kinds=\['Foo', 'Bar'\], namespace_ids=\['', 'Baz'\]
 ///
 /// The entire Baz namespace:
-///    kinds=[], namespace_ids=\['Baz'\]
+///    kinds=\[\], namespace_ids=\['Baz'\]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityFilter {
@@ -675,7 +666,7 @@ pub struct EntityFilter {
     pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for
-/// \[google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex\].
+/// [google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
@@ -688,7 +679,7 @@ pub struct CreateIndexRequest {
     pub index: ::core::option::Option<Index>,
 }
 /// The request for
-/// \[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\].
+/// [google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
@@ -699,8 +690,7 @@ pub struct DeleteIndexRequest {
     #[prost(string, tag = "3")]
     pub index_id: ::prost::alloc::string::String,
 }
-/// The request for
-/// \[google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex\].
+/// The request for [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
@@ -712,7 +702,7 @@ pub struct GetIndexRequest {
     pub index_id: ::prost::alloc::string::String,
 }
 /// The request for
-/// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
+/// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
@@ -730,7 +720,7 @@ pub struct ListIndexesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
+/// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
@@ -823,10 +813,14 @@ pub mod datastore_admin_client {
     use tonic::codegen::http::Uri;
     /// Google Cloud Datastore Admin API
     ///
+    ///
     /// The Datastore Admin API provides several admin services for Cloud Datastore.
     ///
-    /// Concepts: Project, namespace, kind, and entity as defined in the Google Cloud
-    /// Datastore API.
+    /// -----------------------------------------------------------------------------
+    /// ## Concepts
+    ///
+    /// Project, namespace, kind, and entity as defined in the Google Cloud Datastore
+    /// API.
     ///
     /// Operation: An Operation represents work being performed in the background.
     ///
@@ -834,40 +828,50 @@ pub mod datastore_admin_client {
     /// specified as a combination of kinds and namespaces (either or both of which
     /// may be all).
     ///
-    /// Export/Import Service:
+    /// -----------------------------------------------------------------------------
+    /// ## Services
     ///
-    /// - The Export/Import service provides the ability to copy all or a subset of
+    /// # Export/Import
+    ///
+    /// The Export/Import service provides the ability to copy all or a subset of
     /// entities to/from Google Cloud Storage.
-    /// - Exported data may be imported into Cloud Datastore for any Google Cloud
+    ///
+    /// Exported data may be imported into Cloud Datastore for any Google Cloud
     /// Platform project. It is not restricted to the export source project. It is
     /// possible to export from one project and then import into another.
-    /// - Exported data can also be loaded into Google BigQuery for analysis.
-    /// - Exports and imports are performed asynchronously. An Operation resource is
+    ///
+    /// Exported data can also be loaded into Google BigQuery for analysis.
+    ///
+    /// Exports and imports are performed asynchronously. An Operation resource is
     /// created for each export/import. The state (including any errors encountered)
     /// of the export/import may be queried via the Operation resource.
     ///
-    /// Index Service:
+    /// # Index
     ///
-    /// - The index service manages Cloud Datastore composite indexes.
-    /// - Index creation and deletion are performed asynchronously.
+    /// The index service manages Cloud Datastore composite indexes.
+    ///
+    /// Index creation and deletion are performed asynchronously.
     /// An Operation resource is created for each such asynchronous operation.
     /// The state of the operation (including any errors encountered)
     /// may be queried via the Operation resource.
     ///
-    /// Operation Service:
+    /// # Operation
     ///
-    /// - The Operations collection provides a record of actions performed for the
+    /// The Operations collection provides a record of actions performed for the
     /// specified project (including any operations in progress). Operations are not
     /// created directly but through calls on other collections or resources.
-    /// - An operation that is not yet done may be cancelled. The request to cancel
-    /// is asynchronous and the operation may continue to run for some time after the
+    ///
+    /// An operation that is not yet done may be cancelled. The request to cancel is
+    /// asynchronous and the operation may continue to run for some time after the
     /// request to cancel is made.
-    /// - An operation that is done may be deleted so that it is no longer listed as
+    ///
+    /// An operation that is done may be deleted so that it is no longer listed as
     /// part of the Operation collection.
-    /// - ListOperations returns all pending operations, but not completed
-    /// operations.
-    /// - Operations are created by service DatastoreAdmin, but are accessed via
-    /// service google.longrunning.Operations.
+    ///
+    /// ListOperations returns all pending operations, but not completed operations.
+    ///
+    /// Operations are created by service DatastoreAdmin,
+    /// but are accessed via service google.longrunning.Operations.
     #[derive(Debug, Clone)]
     pub struct DatastoreAdminClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1023,9 +1027,9 @@ pub mod datastore_admin_client {
         }
         /// Creates the specified index.
         /// A newly created index's initial state is `CREATING`. On completion of the
-        /// returned [google.longrunning.Operation][google.longrunning.Operation], the
-        /// state will be `READY`. If the index already exists, the call will return an
-        /// `ALREADY_EXISTS` status.
+        /// returned [google.longrunning.Operation][google.longrunning.Operation], the state will be `READY`.
+        /// If the index already exists, the call will return an `ALREADY_EXISTS`
+        /// status.
         ///
         /// During index creation, the process could result in an error, in which
         /// case the index will move to the `ERROR` state. The process can be recovered
@@ -1069,8 +1073,7 @@ pub mod datastore_admin_client {
         /// An index can only be deleted if it is in a `READY` or `ERROR` state. On
         /// successful execution of the request, the index will be in a `DELETING`
         /// [state][google.datastore.admin.v1.Index.State]. And on completion of the
-        /// returned [google.longrunning.Operation][google.longrunning.Operation], the
-        /// index will be removed.
+        /// returned [google.longrunning.Operation][google.longrunning.Operation], the index will be removed.
         ///
         /// During index deletion, the process could result in an error, in which
         /// case the index will move to the `ERROR` state. The process can be recovered

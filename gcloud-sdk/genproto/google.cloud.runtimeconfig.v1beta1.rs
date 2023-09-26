@@ -6,7 +6,7 @@
 pub struct RuntimeConfig {
     /// The resource name of a runtime config. The name must have the format:
     ///
-    ///      projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]
+    ///      projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]
     ///
     /// The `\[PROJECT_ID\]` must be a valid project ID, and `\[CONFIG_NAME\]` is an
     /// arbitrary name that matches RFC 1035 segment specification. The length of
@@ -31,7 +31,7 @@ pub struct RuntimeConfig {
 pub struct Variable {
     /// The name of the variable resource, in the format:
     ///
-    ///      projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME\]
+    ///      projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/variables/\[VARIABLE_NAME\]
     ///
     /// The `\[PROJECT_ID\]` must be a valid project ID, `\[CONFIG_NAME\]` must be a
     /// valid RuntimeConfig reource and `\[VARIABLE_NAME\]` follows Unix file system
@@ -47,10 +47,10 @@ pub struct Variable {
     /// Once you create a variable, you cannot change the variable name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// [Output Only] The time of the last variable update.
+    /// \[Output Only\] The time of the last variable update.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Ouput only] The current state of the variable. The variable state
+    /// \[Ouput only\] The current state of the variable. The variable state
     /// indicates the outcome of the `variables().watch` call and is visible
     /// through the `get` and `list` calls.
     #[prost(enumeration = "VariableState", tag = "4")]
@@ -148,7 +148,7 @@ pub mod end_condition {
 pub struct Waiter {
     /// The name of the Waiter resource, in the format:
     ///
-    ///      projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME\]
+    ///      projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/waiters/\[WAITER_NAME\]
     ///
     /// The `\[PROJECT_ID\]` must be a valid Google Cloud project ID,
     /// the `\[CONFIG_NAME\]` must be a valid RuntimeConfig resource, the
@@ -177,19 +177,19 @@ pub struct Waiter {
     /// are met, a failure will be indicated.
     #[prost(message, optional, tag = "4")]
     pub success: ::core::option::Option<EndCondition>,
-    /// [Output Only] The instant at which this Waiter resource was created. Adding
+    /// \[Output Only\] The instant at which this Waiter resource was created. Adding
     /// the value of `timeout` to this instant yields the timeout deadline for the
     /// waiter.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Output Only] If the value is `false`, it means the waiter is still waiting
+    /// \[Output Only\] If the value is `false`, it means the waiter is still waiting
     /// for one of its conditions to be met.
     ///
     /// If true, the waiter has finished. If the waiter finished due to a timeout
     /// or failure, `error` will be set.
     #[prost(bool, tag = "6")]
     pub done: bool,
-    /// [Output Only] If the waiter ended due to a failure or timeout, this value
+    /// \[Output Only\] If the waiter ended due to a failure or timeout, this value
     /// will be set.
     #[prost(message, optional, tag = "7")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
@@ -270,7 +270,7 @@ pub struct ListConfigsResponse {
 pub struct GetConfigRequest {
     /// The name of the RuntimeConfig resource to retrieve, in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
@@ -305,7 +305,7 @@ pub struct CreateConfigRequest {
 pub struct UpdateConfigRequest {
     /// The name of the RuntimeConfig resource to update, in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The config resource to update.
@@ -318,7 +318,7 @@ pub struct UpdateConfigRequest {
 pub struct DeleteConfigRequest {
     /// The RuntimeConfig resource to delete, in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -330,7 +330,7 @@ pub struct ListVariablesRequest {
     /// variables. The configuration must exist beforehand; the path must by in the
     /// format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Filters variables by matching the specified filter. For example:
@@ -374,7 +374,7 @@ pub struct ListVariablesResponse {
 pub struct WatchVariableRequest {
     /// The name of the variable to watch, in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If specified, checks the current timestamp of the variable and if the
@@ -392,7 +392,7 @@ pub struct WatchVariableRequest {
 pub struct GetVariableRequest {
     /// The name of the variable to return, in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIBLE_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/variables/\[VARIBLE_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -403,7 +403,7 @@ pub struct CreateVariableRequest {
     /// The path to the RutimeConfig resource that this variable should belong to.
     /// The configuration must exist beforehand; the path must by in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The variable to create.
@@ -428,7 +428,7 @@ pub struct CreateVariableRequest {
 pub struct UpdateVariableRequest {
     /// The name of the variable to update, in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/variables/\[VARIABLE_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The variable to update.
@@ -441,7 +441,7 @@ pub struct UpdateVariableRequest {
 pub struct DeleteVariableRequest {
     /// The name of the variable to delete, in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/variables/\[VARIABLE_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Set to `true` to recursively delete multiple variables with the same
@@ -456,7 +456,7 @@ pub struct ListWaitersRequest {
     /// The path to the configuration for which you want to get a list of waiters.
     /// The configuration must exist beforehand; the path must by in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Specifies the number of results to return per page. If there are fewer
@@ -491,7 +491,7 @@ pub struct GetWaiterRequest {
     /// The fully-qualified name of the Waiter resource object to retrieve, in the
     /// format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/waiters/\[WAITER_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -502,7 +502,7 @@ pub struct CreateWaiterRequest {
     /// The path to the configuration that will own the waiter.
     /// The configuration must exist beforehand; the path must by in the format:
     ///
-    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`.
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The Waiter resource to create.
@@ -527,7 +527,7 @@ pub struct CreateWaiterRequest {
 pub struct DeleteWaiterRequest {
     /// The Waiter resource to delete, in the format:
     ///
-    ///   `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME\]`
+    ///   `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/waiters/\[WAITER_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }

@@ -37,7 +37,7 @@ pub struct ModelReference {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlDataType {
     /// Required. The top level type of this field.
-    /// Can be any GoogleSQL data type (e.g., "INT64", "DATE", "ARRAY").
+    /// Can be any standard SQL data type (e.g., "INT64", "DATE", "ARRAY").
     #[prost(enumeration = "standard_sql_data_type::TypeKind", tag = "1")]
     pub type_kind: i32,
     #[prost(oneof = "standard_sql_data_type::SubType", tags = "2, 3")]
@@ -2055,7 +2055,7 @@ pub mod model_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2111,11 +2111,27 @@ pub mod model_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Gets the specified model resource by model ID.
         pub async fn get_model(
             &mut self,
             request: impl tonic::IntoRequest<super::GetModelRequest>,
-        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Model>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2129,7 +2145,12 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.v2.ModelService/GetModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.bigquery.v2.ModelService", "GetModel"),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all models in the specified dataset. Requires the READER dataset
         /// role. After retrieving the list of models, you can get information about a
@@ -2137,7 +2158,10 @@ pub mod model_service_client {
         pub async fn list_models(
             &mut self,
             request: impl tonic::IntoRequest<super::ListModelsRequest>,
-        ) -> Result<tonic::Response<super::ListModelsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListModelsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2151,13 +2175,21 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.v2.ModelService/ListModels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.ModelService",
+                        "ListModels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Patch specific fields in the specified model.
         pub async fn patch_model(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchModelRequest>,
-        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<super::Model>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2171,13 +2203,21 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.v2.ModelService/PatchModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.ModelService",
+                        "PatchModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes the model specified by modelId from the dataset.
         pub async fn delete_model(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteModelRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2191,7 +2231,15 @@ pub mod model_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.v2.ModelService/DeleteModel",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.ModelService",
+                        "DeleteModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

@@ -202,7 +202,7 @@ impl ResolutionStatus {
 pub struct GetGroupRequest {
     /// Required. The group resource name. Written as
     /// `projects/{projectID}/groups/{group_name}`. Call
-    /// \[`groupStats.list`\](<https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list>)
+    /// [`groupStats.list`](<https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list>)
     /// to return a list of groups belonging to this project.
     ///
     /// Example: `projects/my-project-123/groups/my-group`
@@ -642,15 +642,15 @@ pub mod query_time_range {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceContextFilter {
     /// Optional. The exact value to match against
-    /// \[`ServiceContext.service`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
+    /// [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
     #[prost(string, tag = "2")]
     pub service: ::prost::alloc::string::String,
     /// Optional. The exact value to match against
-    /// \[`ServiceContext.version`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
+    /// [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
     #[prost(string, tag = "3")]
     pub version: ::prost::alloc::string::String,
     /// Optional. The exact value to match against
-    /// \[`ServiceContext.resource_type`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type).
+    /// [`ServiceContext.resource_type`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type).
     #[prost(string, tag = "4")]
     pub resource_type: ::prost::alloc::string::String,
 }
@@ -984,21 +984,21 @@ pub struct ReportedErrorEvent {
     /// Supported stack trace formats are:
     ///
     /// * **Java**: Must be the return value of
-    /// \[`Throwable.printStackTrace()`\](<https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29>).
+    /// [`Throwable.printStackTrace()`](<https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29>).
     /// * **Python**: Must be the return value of
-    /// \[`traceback.format_exc()`\](<https://docs.python.org/2/library/traceback.html#traceback.format_exc>).
+    /// [`traceback.format_exc()`](<https://docs.python.org/2/library/traceback.html#traceback.format_exc>).
     /// * **JavaScript**: Must be the value of
-    /// \[`error.stack`\](<https://github.com/v8/v8/wiki/Stack-Trace-API>) as returned
+    /// [`error.stack`](<https://github.com/v8/v8/wiki/Stack-Trace-API>) as returned
     /// by V8.
     /// * **Ruby**: Must contain frames returned by
-    /// \[`Exception.backtrace`\](<https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>).
+    /// [`Exception.backtrace`](<https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>).
     /// * **C#**: Must be the return value of
-    /// \[`Exception.ToString()`\](<https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>).
+    /// [`Exception.ToString()`](<https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>).
     /// * **PHP**: Must start with `PHP (Notice|Parse error|Fatal error|Warning)`
     /// and contain the result of
-    /// \[`(string)$exception`\](<http://php.net/manual/en/exception.tostring.php>).
+    /// [`(string)$exception`](<http://php.net/manual/en/exception.tostring.php>).
     /// * **Go**: Must be the return value of
-    /// \[`runtime.Stack()`\](<https://golang.org/pkg/runtime/debug/#Stack>).
+    /// [`runtime.Stack()`](<https://golang.org/pkg/runtime/debug/#Stack>).
     #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
     /// Optional. A description of the context in which the error occurred.
@@ -1105,6 +1105,9 @@ pub mod report_errors_service_client {
         /// on Cloud Logging and doesn't analyze logs stored
         /// in regional log buckets or logs routed to other Google Cloud projects.
         ///
+        /// For more information, see
+        /// [Using Error Reporting with regionalized
+        /// logs](/error-reporting/docs/regionalization).
         pub async fn report_error_event(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportErrorEventRequest>,

@@ -11,7 +11,7 @@ pub struct Membership {
     ///    2. It must consist of lower case alphanumeric characters or `-`
     ///    3. It must start and end with an alphanumeric character
     ///
-    /// Which can be expressed as the regex: `\[a-z0-9]([-a-z0-9]*[a-z0-9\])?`,
+    /// Which can be expressed as the regex: `[a-z0-9](\[-a-z0-9\]*[a-z0-9])?`,
     /// with a maximum length of 63 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -22,7 +22,7 @@ pub struct Membership {
         ::prost::alloc::string::String,
     >,
     /// Output only. Description of this membership, limited to 63 characters.
-    /// Must match the regex: `\[a-zA-Z0-9\][a-zA-Z0-9_\-\.\ ]*`
+    /// Must match the regex: `[a-zA-Z0-9][a-zA-Z0-9_\-\.\ ]*`
     ///
     /// This field is present for legacy purposes.
     #[prost(string, tag = "3")]
@@ -43,7 +43,7 @@ pub struct Membership {
     /// be modified after creation, but this is not recommended. For GKE clusters,
     /// external_id is managed by the Hub API and updates will be ignored.
     ///
-    /// The ID must match the regex: `\[a-zA-Z0-9][a-zA-Z0-9_\-\.\]*`
+    /// The ID must match the regex: `[a-zA-Z0-9][a-zA-Z0-9_\-\.]*`
     ///
     /// If this Membership represents a Kubernetes cluster, this value should be
     /// set to the UID of the `kube-system` namespace object.
@@ -504,7 +504,7 @@ pub struct CreateMembershipRequest {
     ///    2. It must consist of lower case alphanumeric characters or `-`
     ///    3. It must start and end with an alphanumeric character
     ///
-    /// Which can be expressed as the regex: `\[a-z0-9]([-a-z0-9]*[a-z0-9\])?`,
+    /// Which can be expressed as the regex: `[a-z0-9](\[-a-z0-9\]*[a-z0-9])?`,
     /// with a maximum length of 63 characters.
     #[prost(string, tag = "2")]
     pub membership_id: ::prost::alloc::string::String,
@@ -678,7 +678,7 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,

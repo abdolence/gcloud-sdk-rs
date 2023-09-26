@@ -13,7 +13,7 @@ pub struct Device {
     /// in the device numeric ID.
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
-    /// [Output only] A server-defined unique numeric ID for the device. This is a
+    /// \[Output only\] A server-defined unique numeric ID for the device. This is a
     /// more compact way to identify devices, and it is globally unique.
     #[prost(uint64, tag = "3")]
     pub num_id: u64,
@@ -25,29 +25,29 @@ pub struct Device {
     /// `DeviceRegistry.credentials` field.
     #[prost(message, repeated, tag = "12")]
     pub credentials: ::prost::alloc::vec::Vec<DeviceCredential>,
-    /// [Output only] The last time an MQTT `PINGREQ` was received. This field
+    /// \[Output only\] The last time an MQTT `PINGREQ` was received. This field
     /// applies only to devices connecting through MQTT. MQTT clients usually only
     /// send `PINGREQ` messages if the connection is idle, and no other messages
     /// have been sent. Timestamps are periodically collected and written to
     /// storage; they may be stale by a few minutes.
     #[prost(message, optional, tag = "7")]
     pub last_heartbeat_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Output only] The last time a telemetry event was received. Timestamps are
+    /// \[Output only\] The last time a telemetry event was received. Timestamps are
     /// periodically collected and written to storage; they may be stale by a few
     /// minutes.
     #[prost(message, optional, tag = "8")]
     pub last_event_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Output only] The last time a state event was received. Timestamps are
+    /// \[Output only\] The last time a state event was received. Timestamps are
     /// periodically collected and written to storage; they may be stale by a few
     /// minutes.
     #[prost(message, optional, tag = "20")]
     pub last_state_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Output only] The last time a cloud-to-device config version acknowledgment
+    /// \[Output only\] The last time a cloud-to-device config version acknowledgment
     /// was received from the device. This field is only for configurations
     /// sent through MQTT.
     #[prost(message, optional, tag = "14")]
     pub last_config_ack_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Output only] The last time a cloud-to-device config version was sent to
+    /// \[Output only\] The last time a cloud-to-device config version was sent to
     /// the device.
     #[prost(message, optional, tag = "18")]
     pub last_config_send_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -56,12 +56,12 @@ pub struct Device {
     /// example, the sensor is generating bad data and needs maintenance.
     #[prost(bool, tag = "19")]
     pub blocked: bool,
-    /// [Output only] The time the most recent error occurred, such as a failure to
+    /// \[Output only\] The time the most recent error occurred, such as a failure to
     /// publish to Cloud Pub/Sub. This field is the timestamp of
     /// 'last_error_status'.
     #[prost(message, optional, tag = "10")]
     pub last_error_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Output only] The error message of the most recent error, such as a failure
+    /// \[Output only\] The error message of the most recent error, such as a failure
     /// to publish to Cloud Pub/Sub. 'last_error_time' is the timestamp of this
     /// field. If no errors have occurred, this field has an empty message
     /// and the status code 0 == OK. Otherwise, this field is expected to have a
@@ -75,7 +75,7 @@ pub struct Device {
     /// `DeviceManager.ModifyCloudToDeviceConfig` method.
     #[prost(message, optional, tag = "13")]
     pub config: ::core::option::Option<DeviceConfig>,
-    /// [Output only] The state most recently received from the device. If no state
+    /// \[Output only\] The state most recently received from the device. If no state
     /// has been reported, this field is not present.
     #[prost(message, optional, tag = "16")]
     pub state: ::core::option::Option<DeviceState>,
@@ -89,7 +89,7 @@ pub struct Device {
     /// interpreted or indexed by Cloud IoT Core. It can be used to add contextual
     /// information for the device.
     ///
-    /// Keys must conform to the regular expression \[a-zA-Z][a-zA-Z0-9-_.+~%\]+ and
+    /// Keys must conform to the regular expression [a-zA-Z][a-zA-Z0-9-_.+~%]+ and
     /// be less than 128 bytes in length.
     ///
     /// Values are free-form strings. Each value must be less than or equal to 32
@@ -117,10 +117,10 @@ pub struct GatewayConfig {
     /// gateway.
     #[prost(enumeration = "GatewayAuthMethod", tag = "2")]
     pub gateway_auth_method: i32,
-    /// [Output only] The ID of the gateway the device accessed most recently.
+    /// \[Output only\] The ID of the gateway the device accessed most recently.
     #[prost(string, tag = "3")]
     pub last_accessed_gateway_id: ::prost::alloc::string::String,
-    /// [Output only] The most recent time at which the device accessed the gateway
+    /// \[Output only\] The most recent time at which the device accessed the gateway
     /// specified in `last_accessed_gateway`.
     #[prost(message, optional, tag = "4")]
     pub last_accessed_gateway_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -275,7 +275,7 @@ pub struct PublicKeyCertificate {
     /// The certificate data.
     #[prost(string, tag = "2")]
     pub certificate: ::prost::alloc::string::String,
-    /// [Output only] The certificate details. Used only for X.509 certificates.
+    /// \[Output only\] The certificate details. Used only for X.509 certificates.
     #[prost(message, optional, tag = "3")]
     pub x509_details: ::core::option::Option<X509CertificateDetails>,
 }
@@ -328,17 +328,17 @@ pub struct PublicKeyCredential {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceConfig {
-    /// [Output only] The version of this update. The version number is assigned by
+    /// \[Output only\] The version of this update. The version number is assigned by
     /// the server, and is always greater than 0 after device creation. The
     /// version must be 0 on the `CreateDevice` request if a `config` is
     /// specified; the response of `CreateDevice` will always have a value of 1.
     #[prost(int64, tag = "1")]
     pub version: i64,
-    /// [Output only] The time at which this configuration version was updated in
+    /// \[Output only\] The time at which this configuration version was updated in
     /// Cloud IoT Core. This timestamp is set by the server.
     #[prost(message, optional, tag = "2")]
     pub cloud_update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// [Output only] The time at which Cloud IoT Core received the
+    /// \[Output only\] The time at which Cloud IoT Core received the
     /// acknowledgment from the device, indicating that the device has received
     /// this configuration version. If this field is not present, the device has
     /// not yet acknowledged that it received this version. Note that when
@@ -357,7 +357,7 @@ pub struct DeviceConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceState {
-    /// [Output only] The time at which this state version was updated in Cloud
+    /// \[Output only\] The time at which this state version was updated in Cloud
     /// IoT Core.
     #[prost(message, optional, tag = "1")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -568,7 +568,7 @@ pub enum PublicKeyCertificateFormat {
     /// The format has not been specified. This is an invalid default value and
     /// must not be used.
     UnspecifiedPublicKeyCertificateFormat = 0,
-    /// An X.509v3 certificate (\[RFC5280\](<https://www.ietf.org/rfc/rfc5280.txt>)),
+    /// An X.509v3 certificate ([RFC5280](<https://www.ietf.org/rfc/rfc5280.txt>)),
     /// encoded in base64, and wrapped by `-----BEGIN CERTIFICATE-----` and
     /// `-----END CERTIFICATE-----`.
     X509CertificatePem = 1,
@@ -606,20 +606,20 @@ pub enum PublicKeyFormat {
     UnspecifiedPublicKeyFormat = 0,
     /// An RSA public key encoded in base64, and wrapped by
     /// `-----BEGIN PUBLIC KEY-----` and `-----END PUBLIC KEY-----`. This can be
-    /// used to verify `RS256` signatures in JWT tokens (\[RFC7518\](
+    /// used to verify `RS256` signatures in JWT tokens ([RFC7518](
     /// <https://www.ietf.org/rfc/rfc7518.txt>)).
     RsaPem = 3,
-    /// As RSA_PEM, but wrapped in an X.509v3 certificate (\[RFC5280\](
+    /// As RSA_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
     /// <https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
     /// `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
     RsaX509Pem = 1,
     /// Public key for the ECDSA algorithm using P-256 and SHA-256, encoded in
     /// base64, and wrapped by `-----BEGIN PUBLIC KEY-----` and `-----END
     /// PUBLIC KEY-----`. This can be used to verify JWT tokens with the `ES256`
-    /// algorithm (\[RFC7518\](<https://www.ietf.org/rfc/rfc7518.txt>)). This curve is
-    /// defined in \[OpenSSL\](<https://www.openssl.org/>) as the `prime256v1` curve.
+    /// algorithm ([RFC7518](<https://www.ietf.org/rfc/rfc7518.txt>)). This curve is
+    /// defined in [OpenSSL](<https://www.openssl.org/>) as the `prime256v1` curve.
     Es256Pem = 2,
-    /// As ES256_PEM, but wrapped in an X.509v3 certificate (\[RFC5280\](
+    /// As ES256_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
     /// <https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
     /// `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
     Es256X509Pem = 4,
@@ -803,7 +803,7 @@ pub struct ListDevicesRequest {
     /// IDs: 10,000.
     #[prost(uint64, repeated, tag = "2")]
     pub device_num_ids: ::prost::alloc::vec::Vec<u64>,
-    /// A list of device string IDs. For example, `['device0', 'device12']`.
+    /// A list of device string IDs. For example, `\['device0', 'device12'\]`.
     /// If empty, this field is ignored. Maximum IDs: 10,000
     #[prost(string, repeated, tag = "3")]
     pub device_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,

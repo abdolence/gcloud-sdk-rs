@@ -1,5 +1,5 @@
 /// Defines the errors to be returned in
-/// \[google.api.servicecontrol.v1.CheckResponse.check_errors][google.api.servicecontrol.v1.CheckResponse.check_errors\].
+/// [google.api.servicecontrol.v1.CheckResponse.check_errors][google.api.servicecontrol.v1.CheckResponse.check_errors].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckError {
@@ -42,12 +42,12 @@ pub mod check_error {
         /// This is never used in `CheckResponse`.
         ErrorCodeUnspecified = 0,
         /// The consumer's project id, network container, or resource container was
-        /// not found. Same as \[google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND\].
+        /// not found. Same as [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND].
         NotFound = 5,
         /// The consumer doesn't have access to the specified resource.
-        /// Same as \[google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED\].
+        /// Same as [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
         PermissionDenied = 7,
-        /// Quota check failed. Same as \[google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED\].
+        /// Quota check failed. Same as [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
         ResourceExhausted = 8,
         /// The consumer hasn't activated the service.
         ServiceNotActivated = 104,
@@ -177,7 +177,7 @@ pub struct Distribution {
     #[prost(double, tag = "4")]
     pub maximum: f64,
     /// The sum of squared deviations from the mean:
-    ///    Sum\[i=1..count\]((x_i - mean)^2)
+    ///    Sum[i=1..count]((x_i - mean)^2)
     /// where each x_i is a sample values. If `count` is zero then this field
     /// must be zero, otherwise validation of the request fails.
     #[prost(double, tag = "5")]
@@ -201,7 +201,7 @@ pub struct Distribution {
     /// Defines the buckets in the histogram. `bucket_option` and `bucket_counts`
     /// must be both set, or both unset.
     ///
-    /// Buckets are numbered in the range of [0, N], with a total of N+1 buckets.
+    /// Buckets are numbered in the range of \[0, N\], with a total of N+1 buckets.
     /// There must be at least two buckets (a single-bucket histogram gives
     /// no information that isn't already provided by `count`).
     ///
@@ -294,7 +294,7 @@ pub mod distribution {
     /// Defines the buckets in the histogram. `bucket_option` and `bucket_counts`
     /// must be both set, or both unset.
     ///
-    /// Buckets are numbered in the range of [0, N], with a total of N+1 buckets.
+    /// Buckets are numbered in the range of \[0, N\], with a total of N+1 buckets.
     /// There must be at least two buckets (a single-bucket histogram gives
     /// no information that isn't already provided by `count`).
     ///
@@ -456,7 +456,7 @@ pub mod log_entry {
     pub enum Payload {
         /// The log entry payload, represented as a protocol buffer that is
         /// expressed as a JSON object. The only accepted type currently is
-        /// \[AuditLog][google.cloud.audit.AuditLog\].
+        /// [AuditLog][google.cloud.audit.AuditLog].
         #[prost(message, tag = "2")]
         ProtoPayload(::prost_types::Any),
         /// The log entry payload, represented as a Unicode string (UTF-8).
@@ -516,7 +516,7 @@ pub struct LogEntrySourceLocation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricValue {
     /// The labels describing the metric value.
-    /// See comments on \[google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels\] for
+    /// See comments on [google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels] for
     /// the overriding relationship.
     /// Note that this map must not contain monitored resource labels.
     #[prost(map = "string, string", tag = "1")]
@@ -528,12 +528,12 @@ pub struct MetricValue {
     /// applies. The time period has different semantics for different metric
     /// types (cumulative, delta, and gauge). See the metric definition
     /// documentation in the service configuration for details. If not specified,
-    /// \[google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time\] will be used.
+    /// [google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time] will be used.
     #[prost(message, optional, tag = "2")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end of the time period over which this metric value's measurement
     /// applies.  If not specified,
-    /// \[google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time\] will be used.
+    /// [google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time] will be used.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value. The type of value used in the request must
@@ -617,9 +617,9 @@ pub struct Operation {
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of the operation.
     /// Required when the operation is used in
-    /// \[ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report\],
+    /// [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],
     /// but optional when the operation is used in
-    /// \[ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check\].
+    /// [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].
     #[prost(message, optional, tag = "5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels describing the operation. Only the following labels are allowed:
@@ -717,7 +717,7 @@ pub struct AllocateQuotaRequest {
     /// Name of the service as specified in the service configuration. For example,
     /// `"pubsub.googleapis.com"`.
     ///
-    /// See \[google.api.Service][google.api.Service\] for the definition of a service name.
+    /// See [google.api.Service][google.api.Service] for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Operation that describes the quota allocation.
@@ -896,7 +896,7 @@ pub struct AllocateQuotaResponse {
     #[prost(string, tag = "4")]
     pub service_config_id: ::prost::alloc::string::String,
 }
-/// Represents error information for \[QuotaOperation][google.api.servicecontrol.v1.QuotaOperation\].
+/// Represents error information for [QuotaOperation][google.api.servicecontrol.v1.QuotaOperation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaError {
@@ -939,7 +939,7 @@ pub mod quota_error {
         /// This is never used.
         Unspecified = 0,
         /// Quota allocation failed.
-        /// Same as \[google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED\].
+        /// Same as [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
         ResourceExhausted = 8,
         /// Consumer cannot access the service because the service requires active
         /// billing.
@@ -1120,7 +1120,7 @@ pub struct CheckRequest {
     /// `"pubsub.googleapis.com"`.
     ///
     /// See
-    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
+    /// [google.api.Service](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
@@ -1140,7 +1140,7 @@ pub struct CheckRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
     /// The same operation_id value used in the
-    /// \[CheckRequest][google.api.servicecontrol.v1.CheckRequest\]. Used for logging
+    /// [CheckRequest][google.api.servicecontrol.v1.CheckRequest]. Used for logging
     /// and diagnostics purposes.
     #[prost(string, tag = "1")]
     pub operation_id: ::prost::alloc::string::String,
@@ -1263,7 +1263,7 @@ pub struct ReportRequest {
     /// `"pubsub.googleapis.com"`.
     ///
     /// See
-    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
+    /// [google.api.Service](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
@@ -1276,7 +1276,7 @@ pub struct ReportRequest {
     ///
     /// There is no limit on the number of operations in the same ReportRequest,
     /// however the ReportRequest size should be no larger than 1MB. See
-    /// \[ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors\]
+    /// [ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors]
     /// for partial failure behavior.
     #[prost(message, repeated, tag = "2")]
     pub operations: ::prost::alloc::vec::Vec<Operation>,
@@ -1318,17 +1318,17 @@ pub struct ReportResponse {
 /// Nested message and enum types in `ReportResponse`.
 pub mod report_response {
     /// Represents the processing error of one
-    /// \[Operation][google.api.servicecontrol.v1.Operation\] in the request.
+    /// [Operation][google.api.servicecontrol.v1.Operation] in the request.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReportError {
         /// The
-        /// \[Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id\]
+        /// [Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id]
         /// value from the request.
         #[prost(string, tag = "1")]
         pub operation_id: ::prost::alloc::string::String,
         /// Details of the error when processing the
-        /// \[Operation][google.api.servicecontrol.v1.Operation\].
+        /// [Operation][google.api.servicecontrol.v1.Operation].
         #[prost(message, optional, tag = "2")]
         pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
     }

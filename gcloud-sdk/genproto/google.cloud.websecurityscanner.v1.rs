@@ -407,7 +407,7 @@ pub struct ScanConfig {
     pub display_name: ::prost::alloc::string::String,
     /// The maximum QPS during scanning. A valid value ranges from 5 to 20
     /// inclusively. If the field is unspecified or its value is set 0, server will
-    /// default to 15. Other values outside of [5, 20] range will be rejected with
+    /// default to 15. Other values outside of \[5, 20\] range will be rejected with
     /// INVALID_ARGUMENT error.
     #[prost(int32, tag = "3")]
     pub max_qps: i32,

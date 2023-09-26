@@ -2,8 +2,7 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Alert {
-    /// Output only. The unique identifier of the Google Workspace account of the
-    /// customer.
+    /// Output only. The unique identifier of the Google account of the customer.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Output only. The unique identifier for the alert.
@@ -36,16 +35,13 @@ pub struct Alert {
     /// * Google Operations
     /// * Mobile device management
     /// * Gmail phishing
-    /// * Data Loss Prevention
     /// * Domain wide takeout
     /// * State sponsored attack
     /// * Google identity
-    /// * Apps outage
     #[prost(string, tag = "7")]
     pub source: ::prost::alloc::string::String,
     /// Optional. The data associated with this alert, for example
-    /// \[google.apps.alertcenter.type.DeviceCompromised\]
-    /// \[google.apps.alertcenter.type.DeviceCompromised\].
+    /// \[google.apps.alertcenter.type.DeviceCompromised\] [google.apps.alertcenter.type.DeviceCompromised].
     #[prost(message, optional, tag = "8")]
     pub data: ::core::option::Option<::prost_types::Any>,
     /// Output only. An optional
@@ -62,8 +58,8 @@ pub struct Alert {
     /// Output only. The time this alert was last updated.
     #[prost(message, optional, tag = "13")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. `etag` is used for optimistic concurrency control as a way to
-    /// help prevent simultaneous updates of an alert from overwriting each other.
+    /// Optional. `etag` is used for optimistic concurrency control as a way to help
+    /// prevent simultaneous updates of an alert from overwriting each other.
     /// It is strongly suggested that systems make use of the `etag` in the
     /// read-modify-write cycle to perform alert updates in order to avoid race
     /// conditions: An `etag` is returned in the response which contains alerts,
@@ -79,8 +75,7 @@ pub struct Alert {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlertFeedback {
-    /// Output only. The unique identifier of the Google Workspace account of the
-    /// customer.
+    /// Output only. The unique identifier of the Google account of the customer.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Output only. The alert identifier.
@@ -103,8 +98,7 @@ pub struct AlertFeedback {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlertMetadata {
-    /// Output only. The unique identifier of the Google Workspace account of the
-    /// customer.
+    /// Output only. The unique identifier of the Google account of the customer.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Output only. The alert identifier.
@@ -137,7 +131,7 @@ pub struct AlertMetadata {
     /// Optional. `etag` is used for optimistic concurrency control as a way to
     /// help prevent simultaneous updates of an alert metadata from overwriting
     /// each other. It is strongly suggested that systems make use of the `etag` in
-    /// the read-modify-write cycle to perform metadata updates in order to avoid
+    /// the read-modify-write cycle to perform metatdata updates in order to avoid
     /// race conditions: An `etag` is returned in the response which contains alert
     /// metadata, and systems are expected to put that etag in the request to
     /// update alert metadata to ensure that their change will be applied to the
@@ -240,14 +234,11 @@ pub mod settings {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteAlertsRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alerts are associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alerts are associated with.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
-    /// Required. The list of alert IDs to delete.
+    /// Required. list of alert IDs.
     #[prost(string, repeated, tag = "2")]
     pub alert_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -258,7 +249,7 @@ pub struct BatchDeleteAlertsResponse {
     /// The successful list of alert IDs.
     #[prost(string, repeated, tag = "1")]
     pub success_alert_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The status details for each failed `alert_id`.
+    /// The status details for each failed alert_id.
     #[prost(map = "string, message", tag = "2")]
     pub failed_alert_status: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -269,14 +260,11 @@ pub struct BatchDeleteAlertsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUndeleteAlertsRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alerts are associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alerts are associated with.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
-    /// Required. The list of alert IDs to undelete.
+    /// Required. list of alert IDs.
     #[prost(string, repeated, tag = "2")]
     pub alert_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -287,7 +275,7 @@ pub struct BatchUndeleteAlertsResponse {
     /// The successful list of alert IDs.
     #[prost(string, repeated, tag = "1")]
     pub success_alert_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The status details for each failed `alert_id`.
+    /// The status details for each failed alert_id.
     #[prost(map = "string, message", tag = "2")]
     pub failed_alert_status: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -298,11 +286,9 @@ pub struct BatchUndeleteAlertsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertsRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alerts are associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alerts are associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Optional. The requested page size. Server may return fewer items than
@@ -312,14 +298,13 @@ pub struct ListAlertsRequest {
     /// Optional. A token identifying a page of results the server should return.
     /// If empty, a new iteration is started. To continue an iteration, pass in
     /// the value from the previous ListAlertsResponse's
-    /// \[next_page_token][google.apps.alertcenter.v1beta1.ListAlertsResponse.next_page_token\]
-    /// field.
+    /// [next_page_token][google.apps.alertcenter.v1beta1.ListAlertsResponse.next_page_token] field.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A query string for filtering alert results.
     /// For more details, see [Query
-    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>)
-    /// and [Supported query filter
+    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>) and [Supported
+    /// query filter
     /// fields](<https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.list>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -341,9 +326,8 @@ pub struct ListAlertsResponse {
     pub alerts: ::prost::alloc::vec::Vec<Alert>,
     /// The token for the next page. If not empty, indicates that there may be more
     /// alerts that match the listing request; this value can be used in a
-    /// subsequent
-    /// \[ListAlertsRequest][google.apps.alertcenter.v1beta1.ListAlertsRequest\] to
-    /// get alerts continuing from last result of the current list call.
+    /// subsequent [ListAlertsRequest][google.apps.alertcenter.v1beta1.ListAlertsRequest] to get alerts continuing from last result
+    /// of the current list call.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -351,11 +335,9 @@ pub struct ListAlertsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAlertRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert is associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert is associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The identifier of the alert to retrieve.
@@ -366,11 +348,9 @@ pub struct GetAlertRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAlertRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert is associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert is associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The identifier of the alert to delete.
@@ -381,11 +361,9 @@ pub struct DeleteAlertRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteAlertRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert is associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert is associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The identifier of the alert to undelete.
@@ -396,11 +374,9 @@ pub struct UndeleteAlertRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAlertFeedbackRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert is associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert is associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The identifier of the alert this feedback belongs to.
@@ -414,11 +390,9 @@ pub struct CreateAlertFeedbackRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertFeedbackRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert is associated with. The `customer_id` must have the
-    /// initial "C" stripped (for example, `046psxkn`). Inferred from the caller
-    /// identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert feedback are associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The alert identifier.
@@ -427,8 +401,8 @@ pub struct ListAlertFeedbackRequest {
     pub alert_id: ::prost::alloc::string::String,
     /// Optional. A query string for filtering alert feedback results.
     /// For more details, see [Query
-    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>)
-    /// and [Supported query filter
+    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>) and [Supported
+    /// query filter
     /// fields](<https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list>).
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
@@ -446,11 +420,9 @@ pub struct ListAlertFeedbackResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAlertMetadataRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert metadata is associated with. The `customer_id` must
-    /// have the initial "C" stripped (for example, `046psxkn`). Inferred from the
-    /// caller identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert metadata is associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The identifier of the alert this metadata belongs to.
@@ -461,11 +433,9 @@ pub struct GetAlertMetadataRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSettingsRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert settings are associated with. The `customer_id` must/
-    /// have the initial "C" stripped (for example, `046psxkn`). Inferred from the
-    /// caller identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert settings are associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
 }
@@ -473,11 +443,9 @@ pub struct GetSettingsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingsRequest {
-    /// Optional. The unique identifier of the Google Workspace account of the
-    /// customer the alert settings are associated with. The `customer_id` must
-    /// have the initial "C" stripped (for example, `046psxkn`). Inferred from the
-    /// caller identity if not provided. [Find your customer
-    /// ID](<https://support.google.com/cloudidentity/answer/10070793>).
+    /// Optional. The unique identifier of the Google Workspace organization
+    /// account of the customer the alert settings are associated with.
+    /// Inferred from the caller identity if not provided.
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// The customer settings to update.

@@ -8,6 +8,18 @@ pub mod ccc {
         }
     }
 }
+pub mod cloud {
+    pub mod kubernetes {
+        pub mod security {
+            pub mod containersecurity_logging {
+                #[cfg(
+                    any(feature = "cloud-kubernetes-security-containersecurity_logging")
+                )]
+                include_proto!("cloud.kubernetes.security.containersecurity_logging");
+            }
+        }
+    }
+}
 pub mod google {
     pub mod actions {
         pub mod r#type {
@@ -357,6 +369,7 @@ pub mod google {
                 feature = "google-cloud-dialogflow-cx-v3beta1",
                 feature = "google-cloud-dialogflow-v2",
                 feature = "google-cloud-dialogflow-v2beta1",
+                feature = "google-cloud-discoveryengine-v1beta",
                 feature = "google-cloud-documentai-v1",
                 feature = "google-cloud-documentai-v1beta1",
                 feature = "google-cloud-documentai-v1beta2",
@@ -365,6 +378,7 @@ pub mod google {
                 feature = "google-cloud-domains-v1alpha2",
                 feature = "google-cloud-domains-v1beta1",
                 feature = "google-cloud-edgecontainer-v1",
+                feature = "google-cloud-enterpriseknowledgegraph-v1",
                 feature = "google-cloud-essentialcontacts-v1",
                 feature = "google-cloud-eventarc-publishing-v1",
                 feature = "google-cloud-eventarc-v1",
@@ -1353,6 +1367,12 @@ pub mod google {
                 include_proto!("google.cloud.dialogflow.v2beta1");
             }
         }
+        pub mod discoveryengine {
+            pub mod v1beta {
+                #[cfg(any(feature = "google-cloud-discoveryengine-v1beta"))]
+                include_proto!("google.cloud.discoveryengine.v1beta");
+            }
+        }
         pub mod documentai {
             pub mod v1 {
                 #[cfg(
@@ -1394,6 +1414,12 @@ pub mod google {
             pub mod v1 {
                 #[cfg(any(feature = "google-cloud-edgecontainer-v1"))]
                 include_proto!("google.cloud.edgecontainer.v1");
+            }
+        }
+        pub mod enterpriseknowledgegraph {
+            pub mod v1 {
+                #[cfg(any(feature = "google-cloud-enterpriseknowledgegraph-v1"))]
+                include_proto!("google.cloud.enterpriseknowledgegraph.v1");
             }
         }
         pub mod essentialcontacts {
@@ -2120,7 +2146,12 @@ pub mod google {
                 }
             }
             pub mod v1 {
-                #[cfg(any(feature = "google-cloud-securitycenter-v1"))]
+                #[cfg(
+                    any(
+                        feature = "google-cloud-securitycenter-v1",
+                        feature = "google-cloud-sensitiveaction-logging-v1",
+                    )
+                )]
                 include_proto!("google.cloud.securitycenter.v1");
             }
             pub mod v1beta1 {
@@ -2130,6 +2161,14 @@ pub mod google {
             pub mod v1p1beta1 {
                 #[cfg(any(feature = "google-cloud-securitycenter-v1p1beta1"))]
                 include_proto!("google.cloud.securitycenter.v1p1beta1");
+            }
+        }
+        pub mod sensitiveaction {
+            pub mod logging {
+                pub mod v1 {
+                    #[cfg(any(feature = "google-cloud-sensitiveaction-logging-v1"))]
+                    include_proto!("google.cloud.sensitiveaction.logging.v1");
+                }
             }
         }
         pub mod servicedirectory {
@@ -2810,6 +2849,7 @@ pub mod google {
                 feature = "google-cloud-dialogflow-cx-v3beta1",
                 feature = "google-cloud-dialogflow-v2",
                 feature = "google-cloud-dialogflow-v2beta1",
+                feature = "google-cloud-discoveryengine-v1beta",
                 feature = "google-cloud-documentai-v1",
                 feature = "google-cloud-documentai-v1beta1",
                 feature = "google-cloud-documentai-v1beta2",
@@ -2921,6 +2961,7 @@ pub mod google {
                 feature = "google-spanner-admin-database-v1",
                 feature = "google-spanner-admin-instance-v1",
                 feature = "google-storagetransfer-v1",
+                feature = "google-streetview-publish-v1",
             )
         )]
         include_proto!("google.longrunning");
@@ -3087,6 +3128,7 @@ pub mod google {
                 feature = "google-cloud-dialogflow-cx-v3beta1",
                 feature = "google-cloud-dialogflow-v2",
                 feature = "google-cloud-dialogflow-v2beta1",
+                feature = "google-cloud-discoveryengine-v1beta",
                 feature = "google-cloud-documentai-v1",
                 feature = "google-cloud-documentai-v1beta1",
                 feature = "google-cloud-documentai-v1beta2",
@@ -3261,6 +3303,7 @@ pub mod google {
                 feature = "google-cloud-dialogflow-cx-v3beta1",
                 feature = "google-cloud-dialogflow-v2",
                 feature = "google-cloud-dialogflow-v2beta1",
+                feature = "google-cloud-discoveryengine-v1beta",
                 feature = "google-cloud-documentai-v1",
                 feature = "google-cloud-documentai-v1beta1",
                 feature = "google-cloud-documentai-v1beta2",
@@ -3269,6 +3312,7 @@ pub mod google {
                 feature = "google-cloud-domains-v1alpha2",
                 feature = "google-cloud-domains-v1beta1",
                 feature = "google-cloud-edgecontainer-v1",
+                feature = "google-cloud-enterpriseknowledgegraph-v1",
                 feature = "google-cloud-eventarc-v1",
                 feature = "google-cloud-filestore-v1",
                 feature = "google-cloud-filestore-v1beta1",

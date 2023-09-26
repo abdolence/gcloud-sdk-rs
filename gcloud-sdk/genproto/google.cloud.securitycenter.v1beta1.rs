@@ -403,7 +403,7 @@ pub struct Source {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFindingRequest {
     /// Required. Resource name of the new finding's parent. Its format should be
-    /// "organizations/\[organization_id]/sources/[source_id\]".
+    /// "organizations/\[organization_id\]/sources/\[source_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
@@ -443,7 +443,7 @@ pub struct GetOrganizationSettingsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
-    /// "organizations/\[organization_id]/source/[source_id\]".
+    /// "organizations/\[organization_id\]/source/\[source_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -561,7 +561,7 @@ pub struct GroupAssetsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. Its format is
-    /// "organizations/\[organization_id]/sources/[source_id\]". To groupBy across
+    /// "organizations/\[organization_id\]/sources/\[source_id\]". To groupBy across
     /// all sources provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-
     #[prost(string, tag = "1")]
@@ -874,7 +874,7 @@ pub mod list_assets_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. Its format is
-    /// "organizations/\[organization_id]/sources/[source_id\]". To list across all
+    /// "organizations/\[organization_id\]/sources/\[source_id\]". To list across all
     /// sources provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-
     #[prost(string, tag = "1")]

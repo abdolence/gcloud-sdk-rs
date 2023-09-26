@@ -1,4 +1,4 @@
-/// A \[policy][google.cloud.binaryauthorization.v1.Policy\] for container image binary authorization.
+/// A [policy][google.cloud.binaryauthorization.v1.Policy] for container image binary authorization.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
@@ -113,8 +113,8 @@ pub mod policy {
         }
     }
 }
-/// An [admission allowlist pattern]\[google.cloud.binaryauthorization.v1.AdmissionWhitelistPattern\] exempts images
-/// from checks by [admission rules]\[google.cloud.binaryauthorization.v1.AdmissionRule\].
+/// An [admission allowlist pattern][google.cloud.binaryauthorization.v1.AdmissionWhitelistPattern] exempts images
+/// from checks by [admission rules][google.cloud.binaryauthorization.v1.AdmissionRule].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdmissionWhitelistPattern {
@@ -125,12 +125,12 @@ pub struct AdmissionWhitelistPattern {
     #[prost(string, tag = "1")]
     pub name_pattern: ::prost::alloc::string::String,
 }
-/// An [admission rule]\[google.cloud.binaryauthorization.v1.AdmissionRule\] specifies either that all container images
+/// An [admission rule][google.cloud.binaryauthorization.v1.AdmissionRule] specifies either that all container images
 /// used in a pod creation request must be attested to by one or more
-/// \[attestors][google.cloud.binaryauthorization.v1.Attestor\], that all pod creations will be allowed, or that all
+/// [attestors][google.cloud.binaryauthorization.v1.Attestor], that all pod creations will be allowed, or that all
 /// pod creations will be denied.
 ///
-/// Images matching an [admission allowlist pattern]\[google.cloud.binaryauthorization.v1.AdmissionWhitelistPattern\]
+/// Images matching an [admission allowlist pattern][google.cloud.binaryauthorization.v1.AdmissionWhitelistPattern]
 /// are exempted from admission rules and will never block a pod creation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -252,7 +252,7 @@ pub mod admission_rule {
         }
     }
 }
-/// An \[attestor][google.cloud.binaryauthorization.v1.Attestor\] that attests to container image
+/// An [attestor][google.cloud.binaryauthorization.v1.Attestor] that attests to container image
 /// artifacts. An existing attestor cannot be modified except where
 /// indicated.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -283,7 +283,7 @@ pub mod attestor {
         UserOwnedGrafeasNote(super::UserOwnedGrafeasNote),
     }
 }
-/// An [user owned Grafeas note]\[google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote\] references a Grafeas
+/// An [user owned Grafeas note][google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote] references a Grafeas
 /// Attestation.Authority Note created by the user.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -311,7 +311,7 @@ pub struct UserOwnedGrafeasNote {
     /// Output only. This field will contain the service account email address
     /// that this Attestor will use as the principal when querying Container
     /// Analysis. Attestor administrators must grant this service account the
-    /// IAM role needed to read attestations from the \[note_reference][Note\] in
+    /// IAM role needed to read attestations from the [note_reference][Note] in
     /// Container Analysis (`containeranalysis.notes.occurrences.viewer`).
     ///
     /// This email address is fixed for the lifetime of the Attestor, but callers
@@ -434,7 +434,7 @@ pub mod pkix_public_key {
         }
     }
 }
-/// An [attestor public key]\[google.cloud.binaryauthorization.v1.AttestorPublicKey\] that will be used to verify
+/// An [attestor public key][google.cloud.binaryauthorization.v1.AttestorPublicKey] that will be used to verify
 /// attestations signed by this attestor.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -479,66 +479,66 @@ pub mod attestor_public_key {
         PkixPublicKey(super::PkixPublicKey),
     }
 }
-/// Request message for \[BinauthzManagementService.GetPolicy][\].
+/// Request message for [BinauthzManagementService.GetPolicy][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyRequest {
-    /// Required. The resource name of the \[policy][google.cloud.binaryauthorization.v1.Policy\] to retrieve,
+    /// Required. The resource name of the [policy][google.cloud.binaryauthorization.v1.Policy] to retrieve,
     /// in the format `projects/*/policy`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[BinauthzManagementService.UpdatePolicy][\].
+/// Request message for [BinauthzManagementService.UpdatePolicy][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyRequest {
-    /// Required. A new or updated \[policy][google.cloud.binaryauthorization.v1.Policy\] value. The service will
-    /// overwrite the [policy name]\[google.cloud.binaryauthorization.v1.Policy.name\] field with the resource name in
+    /// Required. A new or updated [policy][google.cloud.binaryauthorization.v1.Policy] value. The service will
+    /// overwrite the [policy name][google.cloud.binaryauthorization.v1.Policy.name] field with the resource name in
     /// the request URL, in the format `projects/*/policy`.
     #[prost(message, optional, tag = "1")]
     pub policy: ::core::option::Option<Policy>,
 }
-/// Request message for \[BinauthzManagementService.CreateAttestor][\].
+/// Request message for [BinauthzManagementService.CreateAttestor][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAttestorRequest {
-    /// Required. The parent of this \[attestor][google.cloud.binaryauthorization.v1.Attestor\].
+    /// Required. The parent of this [attestor][google.cloud.binaryauthorization.v1.Attestor].
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The \[attestors][google.cloud.binaryauthorization.v1.Attestor\] ID.
+    /// Required. The [attestors][google.cloud.binaryauthorization.v1.Attestor] ID.
     #[prost(string, tag = "2")]
     pub attestor_id: ::prost::alloc::string::String,
-    /// Required. The initial \[attestor][google.cloud.binaryauthorization.v1.Attestor\] value. The service will
-    /// overwrite the [attestor name]\[google.cloud.binaryauthorization.v1.Attestor.name\] field with the resource name,
+    /// Required. The initial [attestor][google.cloud.binaryauthorization.v1.Attestor] value. The service will
+    /// overwrite the [attestor name][google.cloud.binaryauthorization.v1.Attestor.name] field with the resource name,
     /// in the format `projects/*/attestors/*`.
     #[prost(message, optional, tag = "3")]
     pub attestor: ::core::option::Option<Attestor>,
 }
-/// Request message for \[BinauthzManagementService.GetAttestor][\].
+/// Request message for [BinauthzManagementService.GetAttestor][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAttestorRequest {
-    /// Required. The name of the \[attestor][google.cloud.binaryauthorization.v1.Attestor\] to retrieve, in the format
+    /// Required. The name of the [attestor][google.cloud.binaryauthorization.v1.Attestor] to retrieve, in the format
     /// `projects/*/attestors/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[BinauthzManagementService.UpdateAttestor][\].
+/// Request message for [BinauthzManagementService.UpdateAttestor][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAttestorRequest {
-    /// Required. The updated \[attestor][google.cloud.binaryauthorization.v1.Attestor\] value. The service will
-    /// overwrite the [attestor name]\[google.cloud.binaryauthorization.v1.Attestor.name\] field with the resource name
+    /// Required. The updated [attestor][google.cloud.binaryauthorization.v1.Attestor] value. The service will
+    /// overwrite the [attestor name][google.cloud.binaryauthorization.v1.Attestor.name] field with the resource name
     /// in the request URL, in the format `projects/*/attestors/*`.
     #[prost(message, optional, tag = "1")]
     pub attestor: ::core::option::Option<Attestor>,
 }
-/// Request message for \[BinauthzManagementService.ListAttestors][\].
+/// Request message for [BinauthzManagementService.ListAttestors][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttestorsRequest {
     /// Required. The resource name of the project associated with the
-    /// \[attestors][google.cloud.binaryauthorization.v1.Attestor\], in the format `projects/*`.
+    /// [attestors][google.cloud.binaryauthorization.v1.Attestor], in the format `projects/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. The server may return fewer results than requested. If
@@ -546,29 +546,29 @@ pub struct ListAttestorsRequest {
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return. Typically,
-    /// this is the value of \[ListAttestorsResponse.next_page_token][google.cloud.binaryauthorization.v1.ListAttestorsResponse.next_page_token\] returned
+    /// this is the value of [ListAttestorsResponse.next_page_token][google.cloud.binaryauthorization.v1.ListAttestorsResponse.next_page_token] returned
     /// from the previous call to the `ListAttestors` method.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[BinauthzManagementService.ListAttestors][\].
+/// Response message for [BinauthzManagementService.ListAttestors][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttestorsResponse {
-    /// The list of \[attestors][google.cloud.binaryauthorization.v1.Attestor\].
+    /// The list of [attestors][google.cloud.binaryauthorization.v1.Attestor].
     #[prost(message, repeated, tag = "1")]
     pub attestors: ::prost::alloc::vec::Vec<Attestor>,
     /// A token to retrieve the next page of results. Pass this value in the
-    /// \[ListAttestorsRequest.page_token][google.cloud.binaryauthorization.v1.ListAttestorsRequest.page_token\] field in the subsequent call to the
+    /// [ListAttestorsRequest.page_token][google.cloud.binaryauthorization.v1.ListAttestorsRequest.page_token] field in the subsequent call to the
     /// `ListAttestors` method to retrieve the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for \[BinauthzManagementService.DeleteAttestor][\].
+/// Request message for [BinauthzManagementService.DeleteAttestor][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAttestorRequest {
-    /// Required. The name of the \[attestors][google.cloud.binaryauthorization.v1.Attestor\] to delete, in the format
+    /// Required. The name of the [attestors][google.cloud.binaryauthorization.v1.Attestor] to delete, in the format
     /// `projects/*/attestors/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -583,16 +583,16 @@ pub struct GetSystemPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[ValidationHelperV1.ValidateAttestationOccurrence][google.cloud.binaryauthorization.v1.ValidationHelperV1.ValidateAttestationOccurrence\].
+/// [ValidationHelperV1.ValidateAttestationOccurrence][google.cloud.binaryauthorization.v1.ValidationHelperV1.ValidateAttestationOccurrence].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateAttestationOccurrenceRequest {
-    /// Required. The resource name of the \[Attestor][google.cloud.binaryauthorization.v1.Attestor\] of the
-    /// \[occurrence][grafeas.v1.Occurrence\], in the format
+    /// Required. The resource name of the [Attestor][google.cloud.binaryauthorization.v1.Attestor] of the
+    /// [occurrence][grafeas.v1.Occurrence], in the format
     /// `projects/*/attestors/*`.
     #[prost(string, tag = "1")]
     pub attestor: ::prost::alloc::string::String,
-    /// Required. An \[AttestationOccurrence][grafeas.v1.AttestationOccurrence\] to
+    /// Required. An [AttestationOccurrence][grafeas.v1.AttestationOccurrence] to
     /// be checked that it can be verified by the Attestor. It does not have to be
     /// an existing entity in Container Analysis. It must otherwise be a valid
     /// AttestationOccurrence.
@@ -600,17 +600,17 @@ pub struct ValidateAttestationOccurrenceRequest {
     pub attestation: ::core::option::Option<
         super::super::super::super::grafeas::v1::AttestationOccurrence,
     >,
-    /// Required. The resource name of the \[Note][grafeas.v1.Note\] to which the
-    /// containing \[Occurrence][grafeas.v1.Occurrence\] is associated.
+    /// Required. The resource name of the [Note][grafeas.v1.Note] to which the
+    /// containing [Occurrence][grafeas.v1.Occurrence] is associated.
     #[prost(string, tag = "3")]
     pub occurrence_note: ::prost::alloc::string::String,
     /// Required. The URI of the artifact (e.g. container image) that is the
-    /// subject of the containing \[Occurrence][grafeas.v1.Occurrence\].
+    /// subject of the containing [Occurrence][grafeas.v1.Occurrence].
     #[prost(string, tag = "4")]
     pub occurrence_resource_uri: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ValidationHelperV1.ValidateAttestationOccurrence][google.cloud.binaryauthorization.v1.ValidationHelperV1.ValidateAttestationOccurrence\].
+/// [ValidationHelperV1.ValidateAttestationOccurrence][google.cloud.binaryauthorization.v1.ValidationHelperV1.ValidateAttestationOccurrence].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateAttestationOccurrenceResponse {

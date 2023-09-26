@@ -511,7 +511,7 @@ impl FlexResourceSchedulingGoal {
     }
 }
 /// Specifies what happens to a resource when a Cloud Dataflow
-/// \[google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job\] has completed.
+/// [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job] has completed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TeardownPolicy {
@@ -1042,7 +1042,7 @@ pub struct Job {
     /// existing Job.
     ///
     /// The name must match the regular expression
-    /// `\[a-z]([-a-z0-9]{0,1022}[a-z0-9\])?`
+    /// `[a-z](\[-a-z0-9\]{0,1022}\[a-z0-9\])?`
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
     /// The type of Cloud Dataflow job.
@@ -1139,7 +1139,7 @@ pub struct Job {
     /// The labels map can contain no more than 64 entries.  Entries of the labels
     /// map are UTF8 strings that comply with the following restrictions:
     ///
-    /// * Keys must conform to regexp:  \[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-\]{0,62}
+    /// * Keys must conform to regexp:  [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
     /// * Values must conform to regexp:  \[\p{Ll}\p{Lo}\p{N}_-\]{0,63}
     /// * Both keys and values are additionally constrained to be <= 128 bytes in
     /// size.
@@ -1148,7 +1148,7 @@ pub struct Job {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "18")]
@@ -1614,7 +1614,7 @@ pub struct JobExecutionInfo {
     >,
 }
 /// Contains information about how a particular
-/// \[google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step\] will be executed.
+/// [google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step] will be executed.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobExecutionStageInfo {
@@ -1640,7 +1640,7 @@ pub struct CreateJobRequest {
     /// Deprecated. This field is now in the Job message.
     #[prost(string, tag = "4")]
     pub replace_job_id: ::prost::alloc::string::String,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "5")]
@@ -1659,7 +1659,7 @@ pub struct GetJobRequest {
     /// The level of information requested in response.
     #[prost(enumeration = "JobView", tag = "3")]
     pub view: i32,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "4")]
@@ -1679,7 +1679,7 @@ pub struct UpdateJobRequest {
     /// Only the job state is updatable; other fields will be ignored.
     #[prost(message, optional, tag = "3")]
     pub job: ::core::option::Option<Job>,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "4")]
@@ -1709,7 +1709,7 @@ pub struct ListJobsRequest {
     /// to request additional results in a long list.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "17")]
@@ -1771,13 +1771,13 @@ pub mod list_jobs_request {
         }
     }
 }
-/// Indicates which [regional endpoint]
+/// Indicates which \[regional endpoint\]
 /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) failed
 /// to respond to a request for data.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailedLocation {
-    /// The name of the [regional endpoint]
+    /// The name of the \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// failed to respond.
     #[prost(string, tag = "1")]
@@ -1797,7 +1797,7 @@ pub struct ListJobsResponse {
     /// Set if there may be more results than fit in this response.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Zero or more messages describing the [regional endpoints]
+    /// Zero or more messages describing the \[regional endpoints\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// failed to respond.
     #[prost(message, repeated, tag = "3")]
@@ -1899,7 +1899,7 @@ impl KindType {
         }
     }
 }
-/// Describes the overall state of a \[google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job\].
+/// Describes the overall state of a [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum JobState {
@@ -2527,7 +2527,7 @@ pub struct ListJobMessagesRequest {
     /// (i.e. return up to the latest messages available).
     #[prost(message, optional, tag = "7")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "8")]
@@ -2835,7 +2835,7 @@ pub struct GetJobMetricsRequest {
     /// Default is to return all information about all metrics for the job.
     #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "4")]
@@ -2868,7 +2868,7 @@ pub struct GetJobExecutionDetailsRequest {
     /// The job to get execution details for.
     #[prost(string, tag = "2")]
     pub job_id: ::prost::alloc::string::String,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "3")]
@@ -2962,7 +2962,7 @@ pub struct GetStageExecutionDetailsRequest {
     /// The job to get execution details for.
     #[prost(string, tag = "2")]
     pub job_id: ::prost::alloc::string::String,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "3")]
@@ -3729,7 +3729,7 @@ pub struct LaunchFlexTemplateRequest {
     /// Required. Parameter to launch a job form Flex Template.
     #[prost(message, optional, tag = "2")]
     pub launch_parameter: ::core::option::Option<LaunchFlexTemplateParameter>,
-    /// Required. The [regional endpoint]
+    /// Required. The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request. E.g., us-central1, us-west1.
     #[prost(string, tag = "3")]
@@ -3956,7 +3956,7 @@ pub struct CreateJobFromTemplateRequest {
     /// The runtime environment for the job.
     #[prost(message, optional, tag = "5")]
     pub environment: ::core::option::Option<RuntimeEnvironment>,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request.
     #[prost(string, tag = "6")]
@@ -3988,7 +3988,7 @@ pub struct GetTemplateRequest {
     /// The view to retrieve. Defaults to METADATA_ONLY.
     #[prost(enumeration = "get_template_request::TemplateView", tag = "3")]
     pub view: i32,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request.
     #[prost(string, tag = "4")]
@@ -4154,7 +4154,7 @@ pub struct LaunchTemplateRequest {
     /// body of the POST request.
     #[prost(message, optional, tag = "4")]
     pub launch_parameters: ::core::option::Option<LaunchTemplateParameters>,
-    /// The [regional endpoint]
+    /// The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request.
     #[prost(string, tag = "5")]

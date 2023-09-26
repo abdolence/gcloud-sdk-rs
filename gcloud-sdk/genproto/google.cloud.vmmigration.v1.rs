@@ -3,148 +3,13 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationCycle {
-    /// The identifier of the ReplicationCycle.
-    #[prost(string, tag = "13")]
-    pub name: ::prost::alloc::string::String,
-    /// The cycle's ordinal number.
-    #[prost(int32, tag = "10")]
-    pub cycle_number: i32,
     /// The time the replication cycle has started.
     #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the replication cycle has ended.
-    #[prost(message, optional, tag = "6")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The accumulated duration the replication cycle was paused.
-    #[prost(message, optional, tag = "7")]
-    pub total_pause_duration: ::core::option::Option<::prost_types::Duration>,
     /// The current progress in percentage of this cycle.
-    /// Was replaced by 'steps' field, which breaks down the cycle progression more
-    /// accurately.
-    #[deprecated]
     #[prost(int32, tag = "5")]
     pub progress_percent: i32,
-    /// The cycle's steps list representing its progress.
-    #[prost(message, repeated, tag = "9")]
-    pub steps: ::prost::alloc::vec::Vec<CycleStep>,
-    /// State of the ReplicationCycle.
-    #[prost(enumeration = "replication_cycle::State", tag = "11")]
-    pub state: i32,
-    /// Provides details on the state of the cycle in case of an error.
-    #[prost(message, optional, tag = "12")]
-    pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
-/// Nested message and enum types in `ReplicationCycle`.
-pub mod replication_cycle {
-    /// Possible states of a replication cycle.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// The state is unknown. This is used for API compatibility only and is not
-        /// used by the system.
-        Unspecified = 0,
-        /// The replication cycle is running.
-        Running = 1,
-        /// The replication cycle is paused.
-        Paused = 2,
-        /// The replication cycle finished with errors.
-        Failed = 3,
-        /// The replication cycle finished successfully.
-        Succeeded = 4,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Paused => "PAUSED",
-                State::Failed => "FAILED",
-                State::Succeeded => "SUCCEEDED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "RUNNING" => Some(Self::Running),
-                "PAUSED" => Some(Self::Paused),
-                "FAILED" => Some(Self::Failed),
-                "SUCCEEDED" => Some(Self::Succeeded),
-                _ => None,
-            }
-        }
-    }
-}
-/// CycleStep holds information about a step progress.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CycleStep {
-    /// The time the cycle step has started.
-    #[prost(message, optional, tag = "1")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the cycle step has ended.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(oneof = "cycle_step::Step", tags = "3, 4, 5")]
-    pub step: ::core::option::Option<cycle_step::Step>,
-}
-/// Nested message and enum types in `CycleStep`.
-pub mod cycle_step {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Step {
-        /// Initializing replication step.
-        #[prost(message, tag = "3")]
-        InitializingReplication(super::InitializingReplicationStep),
-        /// Replicating step.
-        #[prost(message, tag = "4")]
-        Replicating(super::ReplicatingStep),
-        /// Post processing step.
-        #[prost(message, tag = "5")]
-        PostProcessing(super::PostProcessingStep),
-    }
-}
-/// InitializingReplicationStep contains specific step details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InitializingReplicationStep {}
-/// ReplicatingStep contains specific step details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReplicatingStep {
-    /// Total bytes to be handled in the step.
-    #[prost(int64, tag = "1")]
-    pub total_bytes: i64,
-    /// Replicated bytes in the step.
-    #[prost(int64, tag = "2")]
-    pub replicated_bytes: i64,
-    /// The source disks replication rate for the last 2 minutes in bytes per
-    /// second.
-    #[prost(int64, tag = "3")]
-    pub last_two_minutes_average_bytes_per_second: i64,
-    /// The source disks replication rate for the last 30 minutes in bytes per
-    /// second.
-    #[prost(int64, tag = "4")]
-    pub last_thirty_minutes_average_bytes_per_second: i64,
-}
-/// PostProcessingStep contains specific step details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PostProcessingStep {}
 /// ReplicationSync contain information about the last replica sync to the cloud.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -199,7 +64,7 @@ pub struct MigratingVm {
     pub current_sync_info: ::core::option::Option<ReplicationCycle>,
     /// Output only. The group this migrating vm is included in, if any. The group
     /// is represented by the full path of the appropriate
-    /// \[Group][google.cloud.vmmigration.v1.Group\] resource.
+    /// [Group][google.cloud.vmmigration.v1.Group] resource.
     #[prost(string, tag = "15")]
     pub group: ::prost::alloc::string::String,
     /// The labels of the migrating VM.
@@ -208,7 +73,7 @@ pub struct MigratingVm {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. The recent [clone jobs]\[google.cloud.vmmigration.v1.CloneJob\]
+    /// Output only. The recent [clone jobs][google.cloud.vmmigration.v1.CloneJob]
     /// performed on the migrating VM. This field holds the vm's last completed
     /// clone job and the vm's running clone job, if one exists.
     /// Note: To have this field populated you need to explicitly request it via
@@ -226,13 +91,10 @@ pub struct MigratingVm {
     /// the "view" parameter of the Get/List request.
     #[prost(message, repeated, tag = "20")]
     pub recent_cutover_jobs: ::prost::alloc::vec::Vec<CutoverJob>,
-    /// The default configuration of the target VM that will be created in Google
-    /// Cloud as a result of the migration.
+    /// The default configuration of the target VM that will be created in GCP as a
+    /// result of the migration.
     #[prost(oneof = "migrating_vm::TargetVmDefaults", tags = "26")]
     pub target_vm_defaults: ::core::option::Option<migrating_vm::TargetVmDefaults>,
-    /// Details about the source VM.
-    #[prost(oneof = "migrating_vm::SourceVmDetails", tags = "29")]
-    pub source_vm_details: ::core::option::Option<migrating_vm::SourceVmDetails>,
 }
 /// Nested message and enum types in `MigratingVm`.
 pub mod migrating_vm {
@@ -321,8 +183,8 @@ pub mod migrating_vm {
             }
         }
     }
-    /// The default configuration of the target VM that will be created in Google
-    /// Cloud as a result of the migration.
+    /// The default configuration of the target VM that will be created in GCP as a
+    /// result of the migration.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetVmDefaults {
@@ -330,17 +192,9 @@ pub mod migrating_vm {
         #[prost(message, tag = "26")]
         ComputeEngineTargetDefaults(super::ComputeEngineTargetDefaults),
     }
-    /// Details about the source VM.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum SourceVmDetails {
-        /// Output only. Details of the VM from an AWS source.
-        #[prost(message, tag = "29")]
-        AwsSourceVmDetails(super::AwsSourceVmDetails),
-    }
 }
 /// CloneJob describes the process of creating a clone of a
-/// \[MigratingVM][google.cloud.vmmigration.v1.MigratingVm\] to the
+/// [MigratingVM][google.cloud.vmmigration.v1.MigratingVm] to the
 /// requested target based on the latest successful uploaded snapshots.
 /// While the migration cycles of a MigratingVm take place, it is possible to
 /// verify the uploaded VM can be started in the cloud, by creating a clone. The
@@ -372,9 +226,6 @@ pub struct CloneJob {
     /// state.
     #[prost(message, optional, tag = "17")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    /// Output only. The clone steps list representing its progress.
-    #[prost(message, repeated, tag = "23")]
-    pub steps: ::prost::alloc::vec::Vec<CloneStep>,
     /// Details of the VM to create as the target of this clone job.
     #[prost(oneof = "clone_job::TargetVmDetails", tags = "20")]
     pub target_vm_details: ::core::option::Option<clone_job::TargetVmDetails>,
@@ -454,47 +305,6 @@ pub mod clone_job {
         ComputeEngineTargetDetails(super::ComputeEngineTargetDetails),
     }
 }
-/// CloneStep holds information about the clone step progress.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CloneStep {
-    /// The time the step has started.
-    #[prost(message, optional, tag = "1")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the step has ended.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(oneof = "clone_step::Step", tags = "3, 4, 5")]
-    pub step: ::core::option::Option<clone_step::Step>,
-}
-/// Nested message and enum types in `CloneStep`.
-pub mod clone_step {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Step {
-        /// Adapting OS step.
-        #[prost(message, tag = "3")]
-        AdaptingOs(super::AdaptingOsStep),
-        /// Preparing VM disks step.
-        #[prost(message, tag = "4")]
-        PreparingVmDisks(super::PreparingVmDisksStep),
-        /// Instantiating migrated VM step.
-        #[prost(message, tag = "5")]
-        InstantiatingMigratedVm(super::InstantiatingMigratedVmStep),
-    }
-}
-/// AdaptingOSStep contains specific step details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdaptingOsStep {}
-/// PreparingVMDisksStep contains specific step details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PreparingVmDisksStep {}
-/// InstantiatingMigratedVMStep contains specific step details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InstantiatingMigratedVmStep {}
 /// CutoverJob message describes a cutover of a migrating VM. The CutoverJob is
 /// the operation of shutting down the VM, creating a snapshot and
 /// clonning the VM using the replicated snapshot.
@@ -528,9 +338,6 @@ pub struct CutoverJob {
     /// state.
     #[prost(string, tag = "10")]
     pub state_message: ::prost::alloc::string::String,
-    /// Output only. The cutover steps list representing its progress.
-    #[prost(message, repeated, tag = "17")]
-    pub steps: ::prost::alloc::vec::Vec<CutoverStep>,
     /// Details of the VM to create as the target of this cutover job.
     #[prost(oneof = "cutover_job::TargetVmDetails", tags = "14")]
     pub target_vm_details: ::core::option::Option<cutover_job::TargetVmDetails>,
@@ -610,45 +417,6 @@ pub mod cutover_job {
         ComputeEngineTargetDetails(super::ComputeEngineTargetDetails),
     }
 }
-/// CutoverStep holds information about the cutover step progress.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CutoverStep {
-    /// The time the step has started.
-    #[prost(message, optional, tag = "1")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the step has ended.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(oneof = "cutover_step::Step", tags = "3, 4, 5, 6, 7")]
-    pub step: ::core::option::Option<cutover_step::Step>,
-}
-/// Nested message and enum types in `CutoverStep`.
-pub mod cutover_step {
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Step {
-        /// A replication cycle prior cutover step.
-        #[prost(message, tag = "3")]
-        PreviousReplicationCycle(super::ReplicationCycle),
-        /// Shutting down VM step.
-        #[prost(message, tag = "4")]
-        ShuttingDownSourceVm(super::ShuttingDownSourceVmStep),
-        /// Final sync step.
-        #[prost(message, tag = "5")]
-        FinalSync(super::ReplicationCycle),
-        /// Preparing VM disks step.
-        #[prost(message, tag = "6")]
-        PreparingVmDisks(super::PreparingVmDisksStep),
-        /// Instantiating migrated VM step.
-        #[prost(message, tag = "7")]
-        InstantiatingMigratedVm(super::InstantiatingMigratedVmStep),
-    }
-}
-/// ShuttingDownSourceVMStep contains specific step details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ShuttingDownSourceVmStep {}
 /// Request message for 'CreateCloneJob' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -763,7 +531,7 @@ pub struct Source {
     /// User-provided description of the source.
     #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
-    #[prost(oneof = "source::SourceDetails", tags = "10, 12")]
+    #[prost(oneof = "source::SourceDetails", tags = "10")]
     pub source_details: ::core::option::Option<source::SourceDetails>,
 }
 /// Nested message and enum types in `Source`.
@@ -774,9 +542,6 @@ pub mod source {
         /// Vmware type source details.
         #[prost(message, tag = "10")]
         Vmware(super::VmwareSourceDetails),
-        /// AWS type source details.
-        #[prost(message, tag = "12")]
-        Aws(super::AwsSourceDetails),
     }
 }
 /// VmwareSourceDetails message describes a specific source details for the
@@ -798,132 +563,9 @@ pub struct VmwareSourceDetails {
     #[prost(string, tag = "4")]
     pub thumbprint: ::prost::alloc::string::String,
 }
-/// AwsSourceDetails message describes a specific source details for the
-/// AWS source type.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AwsSourceDetails {
-    /// Immutable. The AWS region that the source VMs will be migrated from.
-    #[prost(string, tag = "3")]
-    pub aws_region: ::prost::alloc::string::String,
-    /// Output only. State of the source as determined by the health check.
-    #[prost(enumeration = "aws_source_details::State", tag = "4")]
-    pub state: i32,
-    /// Output only. Provides details on the state of the Source in case of an
-    /// error.
-    #[prost(message, optional, tag = "5")]
-    pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    /// AWS resource tags to limit the scope of the source inventory.
-    #[prost(message, repeated, tag = "10")]
-    pub inventory_tag_list: ::prost::alloc::vec::Vec<aws_source_details::Tag>,
-    /// AWS security group names to limit the scope of the source
-    /// inventory.
-    #[prost(string, repeated, tag = "7")]
-    pub inventory_security_group_names: ::prost::alloc::vec::Vec<
-        ::prost::alloc::string::String,
-    >,
-    /// User specified tags to add to every M2VM generated resource in AWS.
-    /// These tags will be set in addition to the default tags that are set as part
-    /// of the migration process. The tags must not begin with the reserved prefix
-    /// `m2vm`.
-    #[prost(map = "string, string", tag = "8")]
-    pub migration_resources_user_tags: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Output only. The source's public IP. All communication initiated by this
-    /// source will originate from this IP.
-    #[prost(string, tag = "9")]
-    pub public_ip: ::prost::alloc::string::String,
-    #[prost(oneof = "aws_source_details::CredentialsType", tags = "11")]
-    pub credentials_type: ::core::option::Option<aws_source_details::CredentialsType>,
-}
-/// Nested message and enum types in `AwsSourceDetails`.
-pub mod aws_source_details {
-    /// Message describing AWS Credentials using access key id and secret.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct AccessKeyCredentials {
-        /// AWS access key ID.
-        #[prost(string, tag = "1")]
-        pub access_key_id: ::prost::alloc::string::String,
-        /// Input only. AWS secret access key.
-        #[prost(string, tag = "2")]
-        pub secret_access_key: ::prost::alloc::string::String,
-    }
-    /// Tag is an AWS tag representation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Tag {
-        /// Key of tag.
-        #[prost(string, tag = "1")]
-        pub key: ::prost::alloc::string::String,
-        /// Value of tag.
-        #[prost(string, tag = "2")]
-        pub value: ::prost::alloc::string::String,
-    }
-    /// The possible values of the state.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// The state is unknown. This is used for API compatibility only and is not
-        /// used by the system.
-        Unspecified = 0,
-        /// The state was not sampled by the health checks yet.
-        Pending = 1,
-        /// The source is available but might not be usable yet due to invalid
-        /// credentials or another reason.
-        /// The error message will contain further details.
-        Failed = 2,
-        /// The source exists and its credentials were verified.
-        Active = 3,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Failed => "FAILED",
-                State::Active => "ACTIVE",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "PENDING" => Some(Self::Pending),
-                "FAILED" => Some(Self::Failed),
-                "ACTIVE" => Some(Self::Active),
-                _ => None,
-            }
-        }
-    }
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum CredentialsType {
-        /// AWS Credentials using access key id and secret.
-        #[prost(message, tag = "11")]
-        AccessKeyCreds(AccessKeyCredentials),
-    }
-}
-/// DatacenterConnector message describes a connector between the Source and
-/// Google Cloud, which is installed on a vmware datacenter (an OVA vm installed
-/// by the user) to connect the Datacenter to Google Cloud and support vm
-/// migration data transfer.
+/// DatacenterConnector message describes a connector between the Source and GCP,
+/// which is installed on a vmware datacenter (an OVA vm installed by the user)
+/// to connect the Datacenter to GCP and support vm migration data transfer.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatacenterConnector {
@@ -951,7 +593,7 @@ pub struct DatacenterConnector {
     #[prost(string, tag = "6")]
     pub version: ::prost::alloc::string::String,
     /// Output only. The communication channel between the datacenter connector and
-    /// Google Cloud.
+    /// GCP.
     #[prost(string, tag = "10")]
     pub bucket: ::prost::alloc::string::String,
     /// Output only. State of the DatacenterConnector, as determined by the health
@@ -1274,7 +916,7 @@ pub struct DeleteSourceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
+/// [fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchInventoryRequest {
@@ -1423,271 +1065,6 @@ pub mod vmware_vm_details {
         }
     }
 }
-/// AwsVmDetails describes a VM in AWS.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AwsVmDetails {
-    /// The VM ID in AWS.
-    #[prost(string, tag = "1")]
-    pub vm_id: ::prost::alloc::string::String,
-    /// The display name of the VM. Note that this value is not necessarily unique.
-    #[prost(string, tag = "2")]
-    pub display_name: ::prost::alloc::string::String,
-    /// The id of the AWS's source this VM is connected to.
-    #[prost(string, tag = "3")]
-    pub source_id: ::prost::alloc::string::String,
-    /// The descriptive name of the AWS's source this VM is connected to.
-    #[prost(string, tag = "4")]
-    pub source_description: ::prost::alloc::string::String,
-    /// Output only. The power state of the VM at the moment list was taken.
-    #[prost(enumeration = "aws_vm_details::PowerState", tag = "5")]
-    pub power_state: i32,
-    /// The number of cpus the VM has.
-    #[prost(int32, tag = "6")]
-    pub cpu_count: i32,
-    /// The memory size of the VM in MB.
-    #[prost(int32, tag = "7")]
-    pub memory_mb: i32,
-    /// The number of disks the VM has.
-    #[prost(int32, tag = "8")]
-    pub disk_count: i32,
-    /// The total size of the storage allocated to the VM in MB.
-    #[prost(int64, tag = "9")]
-    pub committed_storage_mb: i64,
-    /// The VM's OS.
-    #[prost(string, tag = "10")]
-    pub os_description: ::prost::alloc::string::String,
-    /// The VM Boot Option.
-    #[prost(enumeration = "aws_vm_details::BootOption", tag = "11")]
-    pub boot_option: i32,
-    /// The instance type of the VM.
-    #[prost(string, tag = "12")]
-    pub instance_type: ::prost::alloc::string::String,
-    /// The VPC ID the VM belongs to.
-    #[prost(string, tag = "13")]
-    pub vpc_id: ::prost::alloc::string::String,
-    /// The security groups the VM belongs to.
-    #[prost(message, repeated, tag = "14")]
-    pub security_groups: ::prost::alloc::vec::Vec<AwsSecurityGroup>,
-    /// The tags of the VM.
-    #[prost(map = "string, string", tag = "15")]
-    pub tags: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// The AWS zone of the VM.
-    #[prost(string, tag = "16")]
-    pub zone: ::prost::alloc::string::String,
-    /// The virtualization type.
-    #[prost(enumeration = "aws_vm_details::VmVirtualizationType", tag = "17")]
-    pub virtualization_type: i32,
-    /// The CPU architecture.
-    #[prost(enumeration = "aws_vm_details::VmArchitecture", tag = "18")]
-    pub architecture: i32,
-}
-/// Nested message and enum types in `AwsVmDetails`.
-pub mod aws_vm_details {
-    /// Possible values for the power state of the VM.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum PowerState {
-        /// Power state is not specified.
-        Unspecified = 0,
-        /// The VM is turned on.
-        On = 1,
-        /// The VM is turned off.
-        Off = 2,
-        /// The VM is suspended. This is similar to hibernation or sleep
-        /// mode.
-        Suspended = 3,
-        /// The VM is starting.
-        Pending = 4,
-    }
-    impl PowerState {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                PowerState::Unspecified => "POWER_STATE_UNSPECIFIED",
-                PowerState::On => "ON",
-                PowerState::Off => "OFF",
-                PowerState::Suspended => "SUSPENDED",
-                PowerState::Pending => "PENDING",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "POWER_STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "ON" => Some(Self::On),
-                "OFF" => Some(Self::Off),
-                "SUSPENDED" => Some(Self::Suspended),
-                "PENDING" => Some(Self::Pending),
-                _ => None,
-            }
-        }
-    }
-    /// The possible values for the vm boot option.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum BootOption {
-        /// The boot option is unknown.
-        Unspecified = 0,
-        /// The boot option is UEFI.
-        Efi = 1,
-        /// The boot option is LEGACY-BIOS.
-        Bios = 2,
-    }
-    impl BootOption {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                BootOption::Unspecified => "BOOT_OPTION_UNSPECIFIED",
-                BootOption::Efi => "EFI",
-                BootOption::Bios => "BIOS",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "BOOT_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
-                "EFI" => Some(Self::Efi),
-                "BIOS" => Some(Self::Bios),
-                _ => None,
-            }
-        }
-    }
-    /// Possible values for the virtualization types of the VM.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum VmVirtualizationType {
-        /// The virtualization type is unknown.
-        Unspecified = 0,
-        /// The virtualziation type is HVM.
-        Hvm = 1,
-        /// The virtualziation type is PARAVIRTUAL.
-        Paravirtual = 2,
-    }
-    impl VmVirtualizationType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                VmVirtualizationType::Unspecified => "VM_VIRTUALIZATION_TYPE_UNSPECIFIED",
-                VmVirtualizationType::Hvm => "HVM",
-                VmVirtualizationType::Paravirtual => "PARAVIRTUAL",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "VM_VIRTUALIZATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "HVM" => Some(Self::Hvm),
-                "PARAVIRTUAL" => Some(Self::Paravirtual),
-                _ => None,
-            }
-        }
-    }
-    /// Possible values for the architectures of the VM.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum VmArchitecture {
-        /// The architecture is unknown.
-        Unspecified = 0,
-        /// The architecture is I386.
-        I386 = 1,
-        /// The architecture is X86_64.
-        X8664 = 2,
-        /// The architecture is ARM64.
-        Arm64 = 3,
-        /// The architecture is X86_64_MAC.
-        X8664Mac = 4,
-    }
-    impl VmArchitecture {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                VmArchitecture::Unspecified => "VM_ARCHITECTURE_UNSPECIFIED",
-                VmArchitecture::I386 => "I386",
-                VmArchitecture::X8664 => "X86_64",
-                VmArchitecture::Arm64 => "ARM64",
-                VmArchitecture::X8664Mac => "X86_64_MAC",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "VM_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
-                "I386" => Some(Self::I386),
-                "X86_64" => Some(Self::X8664),
-                "ARM64" => Some(Self::Arm64),
-                "X86_64_MAC" => Some(Self::X8664Mac),
-                _ => None,
-            }
-        }
-    }
-}
-/// AwsSecurityGroup describes a security group of an AWS VM.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AwsSecurityGroup {
-    /// The AWS security group id.
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-    /// The AWS security group name.
-    #[prost(string, tag = "2")]
-    pub name: ::prost::alloc::string::String,
-}
 /// VmwareVmsDetails describes VMs in vCenter.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1696,16 +1073,8 @@ pub struct VmwareVmsDetails {
     #[prost(message, repeated, tag = "1")]
     pub details: ::prost::alloc::vec::Vec<VmwareVmDetails>,
 }
-/// AWSVmsDetails describes VMs in AWS.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AwsVmsDetails {
-    /// The details of the AWS VMs.
-    #[prost(message, repeated, tag = "1")]
-    pub details: ::prost::alloc::vec::Vec<AwsVmDetails>,
-}
 /// Response message for
-/// \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
+/// [fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchInventoryResponse {
@@ -1713,7 +1082,7 @@ pub struct FetchInventoryResponse {
     /// is from the cache).
     #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(oneof = "fetch_inventory_response::SourceVms", tags = "1, 3")]
+    #[prost(oneof = "fetch_inventory_response::SourceVms", tags = "1")]
     pub source_vms: ::core::option::Option<fetch_inventory_response::SourceVms>,
 }
 /// Nested message and enum types in `FetchInventoryResponse`.
@@ -1724,9 +1093,6 @@ pub mod fetch_inventory_response {
         /// The description of the VMs in a Source of type Vmware.
         #[prost(message, tag = "1")]
         VmwareVms(super::VmwareVmsDetails),
-        /// The description of the VMs in a Source of type AWS.
-        #[prost(message, tag = "3")]
-        AwsVms(super::AwsVmsDetails),
     }
 }
 /// Utilization report details the utilization (CPU, memory, etc.) of selected
@@ -1996,7 +1362,7 @@ pub struct CreateUtilizationReportRequest {
     /// component of the reports's resource name.
     ///
     /// This value maximum length is 63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/. It must start with an english letter and must not
+    /// are /[a-z][0-9]-/. It must start with an english letter and must not
     /// end with a hyphen.
     #[prost(string, tag = "3")]
     pub utilization_report_id: ::prost::alloc::string::String,
@@ -2248,7 +1614,7 @@ pub struct ComputeEngineTargetDetails {
     /// The name of the VM to create.
     #[prost(string, tag = "1")]
     pub vm_name: ::prost::alloc::string::String,
-    /// The Google Cloud target project ID or project name.
+    /// The GCP target project ID or project name.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
     /// The zone in which to create the VM.
@@ -2359,7 +1725,7 @@ pub mod applied_license {
         None = 1,
         /// The license type is Pay As You Go license type.
         Payg = 2,
-        /// The license type is Bring Your Own License type.
+        /// The license type is is Bring Your Own License type.
         Byol = 3,
     }
     impl Type {
@@ -3202,8 +2568,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -3311,113 +2677,6 @@ pub mod migration_error {
             }
         }
     }
-}
-/// Represent the source AWS VM details.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AwsSourceVmDetails {
-    /// The firmware type of the source VM.
-    #[prost(enumeration = "aws_source_vm_details::Firmware", tag = "1")]
-    pub firmware: i32,
-    /// The total size of the disks being migrated in bytes.
-    #[prost(int64, tag = "2")]
-    pub committed_storage_bytes: i64,
-}
-/// Nested message and enum types in `AwsSourceVmDetails`.
-pub mod aws_source_vm_details {
-    /// Possible values for AWS VM firmware.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Firmware {
-        /// The firmware is unknown.
-        Unspecified = 0,
-        /// The firmware is EFI.
-        Efi = 1,
-        /// The firmware is BIOS.
-        Bios = 2,
-    }
-    impl Firmware {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Firmware::Unspecified => "FIRMWARE_UNSPECIFIED",
-                Firmware::Efi => "EFI",
-                Firmware::Bios => "BIOS",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "FIRMWARE_UNSPECIFIED" => Some(Self::Unspecified),
-                "EFI" => Some(Self::Efi),
-                "BIOS" => Some(Self::Bios),
-                _ => None,
-            }
-        }
-    }
-}
-/// Request message for 'LisReplicationCyclesRequest' request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListReplicationCyclesRequest {
-    /// Required. The parent, which owns this collection of ReplicationCycles.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of replication cycles to return. The service
-    /// may return fewer than this value. If unspecified, at most 100 migrating VMs
-    /// will be returned. The maximum value is 100; values above 100 will be
-    /// coerced to 100.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Required. A page token, received from a previous `ListReplicationCycles`
-    /// call. Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to `ListReplicationCycles`
-    /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter request.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. the order by fields for the result.
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// Response message for 'ListReplicationCycles' request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListReplicationCyclesResponse {
-    /// Output only. The list of replication cycles response.
-    #[prost(message, repeated, tag = "1")]
-    pub replication_cycles: ::prost::alloc::vec::Vec<ReplicationCycle>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the
-    /// next page. If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Output only. Locations that could not be reached.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Request message for 'GetReplicationCycle' request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetReplicationCycleRequest {
-    /// Required. The name of the ReplicationCycle.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
 }
 /// Controls the level of details of a Utilization Report.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -5053,68 +4312,6 @@ pub mod vm_migration_client {
                     GrpcMethod::new(
                         "google.cloud.vmmigration.v1.VmMigration",
                         "DeleteTargetProject",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists ReplicationCycles in a given MigratingVM.
-        pub async fn list_replication_cycles(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListReplicationCyclesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListReplicationCyclesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.vmmigration.v1.VmMigration/ListReplicationCycles",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.vmmigration.v1.VmMigration",
-                        "ListReplicationCycles",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets details of a single ReplicationCycle.
-        pub async fn get_replication_cycle(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetReplicationCycleRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ReplicationCycle>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.vmmigration.v1.VmMigration/GetReplicationCycle",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.vmmigration.v1.VmMigration",
-                        "GetReplicationCycle",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -14,15 +14,15 @@ pub struct Bucket {
     #[prost(message, optional, tag = "3")]
     pub lifecycle: ::core::option::Option<bucket::Lifecycle>,
     /// The creation time of the bucket in
-    /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
+    /// [<https://tools.ietf.org/html/rfc3339][RFC> 3339] format.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(message, optional, tag = "4")]
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
     /// The ID of the bucket. For buckets, the `id` and `name` properties are the
     /// same.
     /// Attempting to update this field after the bucket is created will result in
-    /// a \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// a [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(string, tag = "5")]
     pub id: ::prost::alloc::string::String,
     /// The name of the bucket.
@@ -32,21 +32,21 @@ pub struct Bucket {
     pub name: ::prost::alloc::string::String,
     /// The project number of the project the bucket belongs to.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(int64, tag = "7")]
     pub project_number: i64,
     /// The metadata generation of this bucket.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(int64, tag = "8")]
     pub metageneration: i64,
-    /// The bucket's \[<https://www.w3.org/TR/cors/\][Cross-Origin> Resource Sharing]
+    /// The bucket's [<https://www.w3.org/TR/cors/][Cross-Origin> Resource Sharing]
     /// (CORS) configuration.
     #[prost(message, repeated, tag = "9")]
     pub cors: ::prost::alloc::vec::Vec<bucket::Cors>,
     /// The location of the bucket. Object data for objects in the bucket resides
     /// in physical storage within this region.  Defaults to `US`. See the
-    /// \[<https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"\][developer's>
+    /// [<https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"][developer's>
     /// guide] for the authoritative list. Attempting to update this field after
     /// the bucket is created will result in an error.
     #[prost(string, tag = "10")]
@@ -62,12 +62,12 @@ pub struct Bucket {
     /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3"\]Entity> tag]
     /// for the bucket.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(string, tag = "12")]
     pub etag: ::prost::alloc::string::String,
     /// The modification time of the bucket.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(message, optional, tag = "13")]
     pub updated: ::core::option::Option<::prost_types::Timestamp>,
     /// The default value for event-based hold on newly created objects in this
@@ -93,7 +93,7 @@ pub struct Bucket {
     >,
     /// The bucket's website configuration, controlling how the service behaves
     /// when accessing bucket contents as a web site. See the
-    /// \[<https://cloud.google.com/storage/docs/static-website\][Static> Website
+    /// [<https://cloud.google.com/storage/docs/static-website][Static> Website
     /// Examples] for more information.
     #[prost(message, optional, tag = "16")]
     pub website: ::core::option::Option<bucket::Website>,
@@ -164,7 +164,7 @@ pub mod bucket {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Cors {
         /// The list of Origins eligible to receive CORS response headers. See
-        /// \[<https://tools.ietf.org/html/rfc6454\][RFC> 6454] for more on origins.
+        /// [<https://tools.ietf.org/html/rfc6454][RFC> 6454] for more on origins.
         /// Note: "*" is permitted in the list of origins, and means "any Origin".
         #[prost(string, repeated, tag = "1")]
         pub origin: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -174,12 +174,12 @@ pub mod bucket {
         #[prost(string, repeated, tag = "2")]
         pub method: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The list of HTTP headers other than the
-        /// \[<https://www.w3.org/TR/cors/#simple-response-header\][simple> response
+        /// [<https://www.w3.org/TR/cors/#simple-response-header][simple> response
         /// headers] to give permission for the user-agent to share across domains.
         #[prost(string, repeated, tag = "3")]
         pub response_header: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The value, in seconds, to return in the
-        /// \[<https://www.w3.org/TR/cors/#access-control-max-age-response-header\][Access-Control-Max-Age>
+        /// [<https://www.w3.org/TR/cors/#access-control-max-age-response-header][Access-Control-Max-Age>
         /// header] used in preflight responses.
         #[prost(int32, tag = "4")]
         pub max_age_seconds: i32,
@@ -215,7 +215,7 @@ pub mod bucket {
             pub enabled: bool,
             /// The deadline time for changing
             /// <code>iamConfiguration.uniformBucketLevelAccess.enabled</code> from
-            /// true to false in \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339]. After
+            /// true to false in [<https://tools.ietf.org/html/rfc3339][RFC> 3339]. After
             /// the deadline is passed the field is immutable.
             #[prost(message, optional, tag = "2")]
             pub locked_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -316,7 +316,7 @@ pub mod bucket {
                 /// object reaches the specified age.
                 #[prost(int32, tag = "1")]
                 pub age: i32,
-                /// A date in [RFC 3339]\[1\] format with only the date part (for
+                /// A date in [RFC 3339][1] format with only the date part (for
                 /// instance, "2013-01-15"). This condition is satisfied when an
                 /// object is created before midnight of the specified date in UTC.
                 /// \[1\]: <https://tools.ietf.org/html/rfc3339>
@@ -402,7 +402,7 @@ pub mod bucket {
     pub struct RetentionPolicy {
         /// Server-determined value that indicates the time from which policy was
         /// enforced and effective. This value is in
-        /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
+        /// [<https://tools.ietf.org/html/rfc3339][RFC> 3339] format.
         #[prost(message, optional, tag = "1")]
         pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Once locked, an object retention policy cannot be modified.
@@ -440,7 +440,7 @@ pub mod bucket {
         /// If the requested object path is missing, and any
         /// `mainPageSuffix` object is missing, if applicable, the service
         /// will return the named object from this bucket as the content for a
-        /// \[<https://tools.ietf.org/html/rfc7231#section-6.5.4\][404> Not Found]
+        /// [<https://tools.ietf.org/html/rfc7231#section-6.5.4][404> Not Found]
         /// result.
         #[prost(string, tag = "2")]
         pub not_found_page: ::prost::alloc::string::String,
@@ -464,7 +464,7 @@ pub struct BucketAccessControl {
     /// The access permission for the entity.
     #[prost(string, tag = "1")]
     pub role: ::prost::alloc::string::String,
-    /// HTTP 1.1 \["<https://tools.ietf.org/html/rfc7232#section-2.3\][Entity> tag]
+    /// HTTP 1.1 ["<https://tools.ietf.org/html/rfc7232#section-2.3][Entity> tag]
     /// for the access-control entry.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
@@ -868,7 +868,7 @@ pub struct Notification {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3\][Entity> tag]
+    /// HTTP 1.1 [<https://tools.ietf.org/html/rfc7232#section-2.3][Entity> tag]
     /// for this subscription notification.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
@@ -896,15 +896,15 @@ pub struct ListNotificationsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Object {
     /// Content-Encoding of the object data, matching
-    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.2.2\][RFC> 7231 §3.1.2.2]
+    /// [<https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC> 7231 §3.1.2.2]
     #[prost(string, tag = "1")]
     pub content_encoding: ::prost::alloc::string::String,
     /// Content-Disposition of the object data, matching
-    /// \[<https://tools.ietf.org/html/rfc6266\][RFC> 6266].
+    /// [<https://tools.ietf.org/html/rfc6266][RFC> 6266].
     #[prost(string, tag = "2")]
     pub content_disposition: ::prost::alloc::string::String,
     /// Cache-Control directive for the object data, matching
-    /// \[<https://tools.ietf.org/html/rfc7234#section-5.2"\][RFC> 7234 §5.2].
+    /// [<https://tools.ietf.org/html/rfc7234#section-5.2"][RFC> 7234 §5.2].
     /// If omitted, and the object is accessible to all anonymous users, the
     /// default will be `public, max-age=3600`.
     #[prost(string, tag = "3")]
@@ -913,7 +913,7 @@ pub struct Object {
     #[prost(message, repeated, tag = "4")]
     pub acl: ::prost::alloc::vec::Vec<ObjectAccessControl>,
     /// Content-Language of the object data, matching
-    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.3.2\][RFC> 7231 §3.1.3.2].
+    /// [<https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC> 7231 §3.1.3.2].
     #[prost(string, tag = "5")]
     pub content_language: ::prost::alloc::string::String,
     /// The version of the metadata for this object at this generation. Used for
@@ -921,35 +921,35 @@ pub struct Object {
     /// number is only meaningful in the context of a particular generation of a
     /// particular object.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(int64, tag = "6")]
     pub metageneration: i64,
     /// The deletion time of the object. Will be returned if and only if this
     /// version of the object has been deleted.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(message, optional, tag = "7")]
     pub time_deleted: ::core::option::Option<::prost_types::Timestamp>,
     /// Content-Type of the object data, matching
-    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.1.5\][RFC> 7231 §3.1.1.5].
+    /// [<https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC> 7231 §3.1.1.5].
     /// If an object is stored without a Content-Type, it is served as
     /// `application/octet-stream`.
     #[prost(string, tag = "8")]
     pub content_type: ::prost::alloc::string::String,
     /// Content-Length of the object data in bytes, matching
-    /// \[<https://tools.ietf.org/html/rfc7230#section-3.3.2\][RFC> 7230 §3.3.2].
+    /// [<https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC> 7230 §3.3.2].
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(int64, tag = "9")]
     pub size: i64,
     /// The creation time of the object.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(message, optional, tag = "10")]
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
     /// CRC32c checksum. For more information about using the CRC32c
     /// checksum, see
-    /// \[<https://cloud.google.com/storage/docs/hashes-etags#json-api\][Hashes> and
+    /// [<https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes> and
     /// ETags: Best Practices]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
@@ -959,13 +959,13 @@ pub struct Object {
     /// Number of underlying components that make up this object. Components are
     /// accumulated by compose operations.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(int32, tag = "12")]
     pub component_count: i32,
     /// MD5 hash of the data; encoded using base64 as per
-    /// \[<https://tools.ietf.org/html/rfc4648#section-4\][RFC> 4648 §4]. For more
+    /// [<https://tools.ietf.org/html/rfc4648#section-4][RFC> 4648 §4]. For more
     /// information about using the MD5 hash, see
-    /// \[<https://cloud.google.com/storage/docs/hashes-etags#json-api\][Hashes> and
+    /// [<https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes> and
     /// ETags: Best Practices]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
@@ -973,14 +973,14 @@ pub struct Object {
     #[prost(string, tag = "13")]
     pub md5_hash: ::prost::alloc::string::String,
     /// HTTP 1.1 Entity tag for the object. See
-    /// \[<https://tools.ietf.org/html/rfc7232#section-2.3\][RFC> 7232 §2.3].
+    /// [<https://tools.ietf.org/html/rfc7232#section-2.3][RFC> 7232 §2.3].
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(string, tag = "14")]
     pub etag: ::prost::alloc::string::String,
     /// The modification time of the object metadata.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(message, optional, tag = "15")]
     pub updated: ::core::option::Option<::prost_types::Timestamp>,
     /// Storage class of the object.
@@ -993,7 +993,7 @@ pub struct Object {
     /// The time at which the object's storage class was last changed. When the
     /// object is initially created, it will be set to time_created.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(message, optional, tag = "18")]
     pub time_storage_class_updated: ::core::option::Option<::prost_types::Timestamp>,
     /// Whether an object is under temporary hold. While this flag is set to true,
@@ -1005,7 +1005,7 @@ pub struct Object {
     pub temporary_hold: bool,
     /// A server-determined value that specifies the earliest time that the
     /// object's retention period expires. This value is in
-    /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
+    /// [<https://tools.ietf.org/html/rfc3339][RFC> 3339] format.
     /// Note 1: This field is not provided for objects with an active event-based
     /// hold, since retention expiration is unknown until the hold is removed.
     /// Note 2: This value can be provided even when temporary hold is set (so that
@@ -1050,12 +1050,12 @@ pub struct Object {
     pub bucket: ::prost::alloc::string::String,
     /// The content generation of this object. Used for object versioning.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(int64, tag = "26")]
     pub generation: i64,
     /// The owner of the object. This will always be the uploader of the object.
     /// Attempting to set or update this field will result in a
-    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
+    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
     #[prost(message, optional, tag = "27")]
     pub owner: ::core::option::Option<Owner>,
     /// Metadata of customer-supplied encryption key, if the object is encrypted by
@@ -1088,7 +1088,7 @@ pub struct ObjectAccessControl {
     #[prost(string, tag = "1")]
     pub role: ::prost::alloc::string::String,
     /// HTTP 1.1 Entity tag for the access-control entry.
-    /// See \[<https://tools.ietf.org/html/rfc7232#section-2.3\][RFC> 7232 §2.3].
+    /// See [<https://tools.ietf.org/html/rfc7232#section-2.3][RFC> 7232 §2.3].
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
     /// The ID of the access-control entry.

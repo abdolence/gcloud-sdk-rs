@@ -280,7 +280,7 @@ pub struct TableDataListRequest {
     pub max_results: u32,
 }
 /// Describes a BigQuery table.
-/// See the \[Table\](/bigquery/docs/reference/v2/tables) API resource
+/// See the [Table](/bigquery/docs/reference/v2/tables) API resource
 /// for more details on individual fields.
 /// Note: `Table.schema` has been deprecated in favor of `Table.schemaJson`.
 /// `Table.schema` may continue to be present in your logs during this
@@ -346,7 +346,7 @@ pub struct TableViewDefinition {
     pub query: ::prost::alloc::string::String,
 }
 /// BigQuery dataset information.
-/// See the \[Dataset\](/bigquery/docs/reference/v2/datasets) API resource
+/// See the [Dataset](/bigquery/docs/reference/v2/datasets) API resource
 /// for more details on individual fields.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -444,7 +444,7 @@ pub struct Job {
     pub job_statistics: ::core::option::Option<JobStatistics>,
 }
 /// Job configuration information.
-/// See the \[Jobs\](/bigquery/docs/reference/v2/jobs) API resource
+/// See the [Jobs](/bigquery/docs/reference/v2/jobs) API resource
 /// for more details on individual fields.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -635,11 +635,7 @@ pub struct JobStatistics {
     /// The total number of slot-ms consumed by the query job.
     #[prost(int64, tag = "8")]
     pub total_slot_ms: i64,
-    /// Reservation usage. This field reported misleading information and will
-    /// no longer be populated. Aggregate usage of all jobs submitted to a
-    /// reservation should provide a more reliable indicator of reservation
-    /// imbalance.
-    #[deprecated]
+    /// Reservation usage.
     #[prost(message, repeated, tag = "14")]
     pub reservation_usage: ::prost::alloc::vec::Vec<
         job_statistics::ReservationResourceUsage,

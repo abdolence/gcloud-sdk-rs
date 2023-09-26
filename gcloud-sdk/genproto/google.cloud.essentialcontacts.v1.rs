@@ -105,20 +105,20 @@ impl ValidationState {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Contact {
-    /// Output only. The identifier for the contact.
+    /// The identifier for the contact.
     /// Format: {resource_type}/{resource_id}/contacts/{contact_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The email address to send notifications to. The email address
-    /// does not need to be a Google Account.
+    /// Required. The email address to send notifications to. This does not need to
+    /// be a Google account.
     #[prost(string, tag = "2")]
     pub email: ::prost::alloc::string::String,
-    /// Required. The categories of notifications that the contact will receive
+    /// The categories of notifications that the contact will receive
     /// communications for.
-    #[prost(enumeration = "NotificationCategory", repeated, packed = "false", tag = "3")]
+    #[prost(enumeration = "NotificationCategory", repeated, tag = "3")]
     pub notification_category_subscriptions: ::prost::alloc::vec::Vec<i32>,
-    /// Required. The preferred language for notifications, as a ISO 639-1 language
-    /// code. See [Supported
+    /// The preferred language for notifications, as a ISO 639-1 language code. See
+    /// [Supported
     /// languages](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages>)
     /// for a list of supported languages.
     #[prost(string, tag = "4")]

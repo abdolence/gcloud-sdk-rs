@@ -1,14 +1,14 @@
-/// Information about the principal, resource, and permission to check.
+/// Information about the member, resource, and permission to check.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessTuple {
-    /// Required. The principal whose access you want to check, in the form of
-    /// the email address that represents that principal. For example,
+    /// Required. The member, or principal, whose access you want to check, in the form of
+    /// the email address that represents that member. For example,
     /// `alice@example.com` or
     /// `my-service-account@my-project.iam.gserviceaccount.com`.
     ///
-    /// The principal must be a Google Account or a service account. Other types of
-    /// principals are not supported.
+    /// The member must be a Google Account or a service account. Other types of
+    /// members are not supported.
     #[prost(string, tag = "1")]
     pub principal: ::prost::alloc::string::String,
     /// Required. The full resource name that identifies the resource. For example,
@@ -18,8 +18,7 @@ pub struct AccessTuple {
     /// <https://cloud.google.com/iam/help/troubleshooter/full-resource-names.>
     #[prost(string, tag = "2")]
     pub full_resource_name: ::prost::alloc::string::String,
-    /// Required. The IAM permission to check for the specified principal and
-    /// resource.
+    /// Required. The IAM permission to check for the specified member and resource.
     ///
     /// For a complete list of IAM permissions, see
     /// <https://cloud.google.com/iam/help/permissions/reference.>
@@ -29,19 +28,19 @@ pub struct AccessTuple {
     #[prost(string, tag = "3")]
     pub permission: ::prost::alloc::string::String,
 }
-/// Details about how a specific IAM \[Policy][google.iam.v1.Policy\] contributed
+/// Details about how a specific IAM [Policy][google.iam.v1.Policy] contributed
 /// to the access check.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplainedPolicy {
     /// Indicates whether _this policy_ provides the specified permission to the
-    /// specified principal for the specified resource.
+    /// specified member for the specified resource.
     ///
-    /// This field does _not_ indicate whether the principal actually has the
+    /// This field does _not_ indicate whether the member actually has the
     /// permission for the resource. There might be another policy that overrides
-    /// this policy. To determine whether the principal actually has the
-    /// permission, use the `access` field in the
-    /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
+    /// this policy. To determine whether the member actually has the permission,
+    /// use the `access` field in the
+    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
     #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The full resource name that identifies the resource. For example,
@@ -60,34 +59,34 @@ pub struct ExplainedPolicy {
     /// is empty.
     #[prost(message, optional, tag = "3")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
-    /// Details about how each binding in the policy affects the principal's
-    /// ability, or inability, to use the permission for the resource.
+    /// Details about how each binding in the policy affects the member's ability,
+    /// or inability, to use the permission for the resource.
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is omitted.
     #[prost(message, repeated, tag = "4")]
     pub binding_explanations: ::prost::alloc::vec::Vec<BindingExplanation>,
     /// The relevance of this policy to the overall determination in the
-    /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
+    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is omitted.
     #[prost(enumeration = "HeuristicRelevance", tag = "5")]
     pub relevance: i32,
 }
-/// Details about how a binding in a policy affects a principal's ability to use
-/// a permission.
+/// Details about how a binding in a policy affects a member's ability to use a
+/// permission.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BindingExplanation {
-    /// Required. Indicates whether _this binding_ provides the specified
-    /// permission to the specified principal for the specified resource.
+    /// Required. Indicates whether _this binding_ provides the specified permission to the
+    /// specified member for the specified resource.
     ///
-    /// This field does _not_ indicate whether the principal actually has the
+    /// This field does _not_ indicate whether the member actually has the
     /// permission for the resource. There might be another binding that overrides
-    /// this binding. To determine whether the principal actually has the
-    /// permission, use the `access` field in the
-    /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
+    /// this binding. To determine whether the member actually has the permission,
+    /// use the `access` field in the
+    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
     #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The role that this binding grants. For example,
@@ -105,24 +104,24 @@ pub struct BindingExplanation {
     /// to the overall determination for the entire policy.
     #[prost(enumeration = "HeuristicRelevance", tag = "4")]
     pub role_permission_relevance: i32,
-    /// Indicates whether each principal in the binding includes the principal
-    /// specified in the request, either directly or indirectly. Each key
-    /// identifies a principal in the binding, and each value indicates whether the
-    /// principal in the binding includes the principal in the request.
+    /// Indicates whether each member in the binding includes the member specified
+    /// in the request, either directly or indirectly. Each key identifies a member
+    /// in the binding, and each value indicates whether the member in the binding
+    /// includes the member in the request.
     ///
-    /// For example, suppose that a binding includes the following principals:
+    /// For example, suppose that a binding includes the following members:
     ///
     /// * `user:alice@example.com`
     /// * `group:product-eng@example.com`
     ///
     /// You want to troubleshoot access for `user:bob@example.com`. This user is a
-    /// principal of the group `group:product-eng@example.com`.
+    /// member of the group `group:product-eng@example.com`.
     ///
-    /// For the first principal in the binding, the key is
-    /// `user:alice@example.com`, and the `membership` field in the value is set to
+    /// For the first member in the binding, the key is `user:alice@example.com`,
+    /// and the `membership` field in the value is set to
     /// `MEMBERSHIP_NOT_INCLUDED`.
     ///
-    /// For the second principal in the binding, the key is
+    /// For the second member in the binding, the key is
     /// `group:product-eng@example.com`, and the `membership` field in the value is
     /// set to `MEMBERSHIP_INCLUDED`.
     #[prost(map = "string, message", tag = "5")]
@@ -134,25 +133,25 @@ pub struct BindingExplanation {
     /// policy.
     #[prost(enumeration = "HeuristicRelevance", tag = "6")]
     pub relevance: i32,
-    /// A condition expression that prevents this binding from granting access
-    /// unless the expression evaluates to `true`.
+    /// A condition expression that prevents access unless the expression evaluates
+    /// to `true`.
     ///
     /// To learn about IAM Conditions, see
-    /// <https://cloud.google.com/iam/help/conditions/overview.>
+    /// <http://cloud.google.com/iam/help/conditions/overview.>
     #[prost(message, optional, tag = "7")]
     pub condition: ::core::option::Option<super::super::super::r#type::Expr>,
 }
 /// Nested message and enum types in `BindingExplanation`.
 pub mod binding_explanation {
-    /// Details about whether the binding includes the principal.
+    /// Details about whether the binding includes the member.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnnotatedMembership {
-        /// Indicates whether the binding includes the principal.
+        /// Indicates whether the binding includes the member.
         #[prost(enumeration = "Membership", tag = "1")]
         pub membership: i32,
-        /// The relevance of the principal's status to the overall determination for
-        /// the binding.
+        /// The relevance of the member's status to the overall determination for the
+        /// binding.
         #[prost(enumeration = "super::HeuristicRelevance", tag = "2")]
         pub relevance: i32,
     }
@@ -170,7 +169,7 @@ pub mod binding_explanation {
     )]
     #[repr(i32)]
     pub enum RolePermission {
-        /// Default value. This value is unused.
+        /// Reserved for future use.
         Unspecified = 0,
         /// The permission is included in the role.
         Included = 1,
@@ -205,7 +204,7 @@ pub mod binding_explanation {
             }
         }
     }
-    /// Whether the binding includes the principal.
+    /// Whether the binding includes the member.
     #[derive(
         Clone,
         Copy,
@@ -219,21 +218,20 @@ pub mod binding_explanation {
     )]
     #[repr(i32)]
     pub enum Membership {
-        /// Default value. This value is unused.
+        /// Reserved for future use.
         Unspecified = 0,
-        /// The binding includes the principal. The principal can be included
-        /// directly or indirectly. For example:
+        /// The binding includes the member. The member can be included directly
+        /// or indirectly. For example:
         ///
-        /// * A principal is included directly if that principal is listed in the
-        ///    binding.
-        /// * A principal is included indirectly if that principal is in a Google
-        ///    group or Google Workspace domain that is listed in the binding.
+        /// * A member is included directly if that member is listed in the binding.
+        /// * A member is included indirectly if that member is in a Google group or
+        ///    G Suite domain that is listed in the binding.
         Included = 1,
-        /// The binding does not include the principal.
+        /// The binding does not include the member.
         NotIncluded = 2,
         /// The sender of the request is not allowed to access the binding.
         UnknownInfoDenied = 3,
-        /// The principal is an unsupported type. Only Google Accounts and service
+        /// The member is an unsupported type. Only Google Accounts and service
         /// accounts are supported.
         UnknownUnsupported = 4,
     }
@@ -264,18 +262,18 @@ pub mod binding_explanation {
         }
     }
 }
-/// Whether a principal has a permission for a resource.
+/// Whether a member has a permission for a resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AccessState {
-    /// Default value. This value is unused.
+    /// Reserved for future use.
     Unspecified = 0,
-    /// The principal has the permission.
+    /// The member has the permission.
     Granted = 1,
-    /// The principal does not have the permission.
+    /// The member does not have the permission.
     NotGranted = 2,
-    /// The principal has the permission only if a condition expression evaluates
-    /// to `true`.
+    /// The member has the permission only if a condition expression evaluates to
+    /// `true`.
     UnknownConditional = 3,
     /// The sender of the request does not have access to all of the policies that
     /// Policy Troubleshooter needs to evaluate.
@@ -307,13 +305,12 @@ impl AccessState {
         }
     }
 }
-/// The extent to which a single data point, such as the existence of a binding
-/// or whether a binding includes a specific principal, contributes to an overall
+/// The extent to which a single data point contributes to an overall
 /// determination.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum HeuristicRelevance {
-    /// Default value. This value is unused.
+    /// Reserved for future use.
     Unspecified = 0,
     /// The data point has a limited effect on the result. Changing the data point
     /// is unlikely to affect the overall determination.
@@ -344,28 +341,26 @@ impl HeuristicRelevance {
         }
     }
 }
-/// Request for
-/// \[TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy\].
+/// Request for [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TroubleshootIamPolicyRequest {
-    /// The information to use for checking whether a principal has a permission
-    /// for a resource.
+    /// The information to use for checking whether a member has a permission for a
+    /// resource.
     #[prost(message, optional, tag = "1")]
     pub access_tuple: ::core::option::Option<AccessTuple>,
 }
-/// Response for
-/// \[TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy\].
+/// Response for [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TroubleshootIamPolicyResponse {
-    /// Indicates whether the principal has the specified permission for the
-    /// specified resource, based on evaluating all of the applicable IAM policies.
+    /// Indicates whether the member has the specified permission for the specified
+    /// resource, based on evaluating all of the applicable IAM policies.
     #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
-    /// List of IAM policies that were evaluated to check the principal's
-    /// permissions, with annotations to indicate how each policy contributed to
-    /// the final result.
+    /// List of IAM policies that were evaluated to check the member's permissions,
+    /// with annotations to indicate how each policy contributed to the final
+    /// result.
     ///
     /// The list of policies can include the policy for the resource itself. It can
     /// also include policies that are inherited from higher levels of the resource
@@ -375,9 +370,6 @@ pub struct TroubleshootIamPolicyResponse {
     /// <https://cloud.google.com/iam/help/resource-hierarchy.>
     #[prost(message, repeated, tag = "2")]
     pub explained_policies: ::prost::alloc::vec::Vec<ExplainedPolicy>,
-    /// The general errors contained in the troubleshooting response.
-    #[prost(message, repeated, tag = "3")]
-    pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// Generated client implementations.
 pub mod iam_checker_client {
@@ -467,9 +459,8 @@ pub mod iam_checker_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Checks whether a principal has a specific permission for a specific
-        /// resource, and explains why the principal does or does not have that
-        /// permission.
+        /// Checks whether a member has a specific permission for a specific resource,
+        /// and explains why the member does or does not have that permission.
         pub async fn troubleshoot_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::TroubleshootIamPolicyRequest>,

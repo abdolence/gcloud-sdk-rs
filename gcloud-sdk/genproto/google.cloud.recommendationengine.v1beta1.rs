@@ -10,8 +10,8 @@ pub struct FeatureMap {
     ///
     /// Feature names and values must be UTF-8 encoded strings.
     ///
-    /// For example: `{ "colors": {"value": ["yellow", "green"]},
-    ///                  "sizes": {"value":["S", "M"]}`
+    /// For example: `{ "colors": {"value": \["yellow", "green"\]},
+    ///                  "sizes": {"value":\["S", "M"\]}`
     #[prost(map = "string, message", tag = "1")]
     pub categorical_features: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -22,8 +22,8 @@ pub struct FeatureMap {
     ///
     /// Feature names must be UTF-8 encoded strings.
     ///
-    /// For example: `{ "lengths_cm": {"value":[2.3, 15.4]},
-    ///                  "heights_cm": {"value":[8.1, 6.4]} }`
+    /// For example: `{ "lengths_cm": {"value":\[2.3, 15.4\]},
+    ///                  "heights_cm": {"value":\[8.1, 6.4\]} }`
     #[prost(map = "string, message", tag = "2")]
     pub numerical_features: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -65,13 +65,13 @@ pub struct CatalogItem {
     /// one catalog item belonging to several parallel category hierarchies.
     ///
     /// For example, if a shoes product belongs to both
-    /// ["Shoes & Accessories" -> "Shoes"] and
-    /// ["Sports & Fitness" -> "Athletic Clothing" -> "Shoes"], it could be
+    /// \["Shoes & Accessories" -> "Shoes"\] and
+    /// \["Sports & Fitness" -> "Athletic Clothing" -> "Shoes"\], it could be
     /// represented as:
     ///
     ///       "categoryHierarchies": [
-    ///         { "categories": ["Shoes & Accessories", "Shoes"]},
-    ///         { "categories": ["Sports & Fitness", "Athletic Clothing", "Shoes"] }
+    ///         { "categories": \["Shoes & Accessories", "Shoes"\]},
+    ///         { "categories": \["Sports & Fitness", "Athletic Clothing", "Shoes"\] }
     ///       ]
     #[prost(message, repeated, tag = "2")]
     pub category_hierarchies: ::prost::alloc::vec::Vec<catalog_item::CategoryHierarchy>,
@@ -500,7 +500,7 @@ pub struct ProductEventDetail {
     /// The categories associated with a category page.
     /// Category pages include special pages such as sales or promotions. For
     /// instance, a special sale page may have the category hierarchy:
-    /// categories : ["Sales", "2017 Black Friday Deals"].
+    /// categories : \["Sales", "2017 Black Friday Deals"\].
     #[prost(message, repeated, tag = "2")]
     pub page_categories: ::prost::alloc::vec::Vec<catalog_item::CategoryHierarchy>,
     /// The main product details related to the event.
@@ -873,7 +873,7 @@ pub struct ListCatalogItemsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCatalogItemRequest {
     /// Required. Full resource name of catalog item, such as
-    /// `projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id`.
+    /// "projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The catalog item to update/create. The 'catalog_item_id' field

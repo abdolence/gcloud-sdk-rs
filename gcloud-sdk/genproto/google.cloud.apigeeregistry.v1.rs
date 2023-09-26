@@ -52,7 +52,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancellation_requested: bool,
@@ -96,7 +96,7 @@ pub mod instance {
         pub location: ::prost::alloc::string::String,
         /// Required. The Customer Managed Encryption Key (CMEK) used for data encryption.
         /// The CMEK name should follow the format of
-        /// `projects/(\[^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/\]+)`,
+        /// `projects/(\[^/\]+)/locations/(\[^/\]+)/keyRings/(\[^/\]+)/cryptoKeys/(\[^/\]+)`,
         /// where the `location` must match InstanceConfig.location.
         #[prost(string, tag = "2")]
         pub cmek_key_name: ::prost::alloc::string::String,
@@ -730,7 +730,7 @@ pub struct CreateApiRequest {
     /// the API's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     ///
     /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag = "3")]
@@ -832,7 +832,7 @@ pub struct CreateApiVersionRequest {
     /// the version's resource name.
     ///
     /// This value should be 1-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     ///
     /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag = "3")]
@@ -943,7 +943,7 @@ pub struct CreateApiSpecRequest {
     /// the spec's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     ///
     /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag = "3")]
@@ -991,7 +991,7 @@ pub struct TagApiSpecRevisionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The tag to apply.
-    /// The tag should be at most 40 characters, and match `\[a-z][a-z0-9-\]{3,39}`.
+    /// The tag should be at most 40 characters, and match `[a-z][a-z0-9-]{3,39}`.
     #[prost(string, tag = "2")]
     pub tag: ::prost::alloc::string::String,
 }
@@ -1110,7 +1110,7 @@ pub struct CreateApiDeploymentRequest {
     /// the deployment's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     ///
     /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag = "3")]
@@ -1158,7 +1158,7 @@ pub struct TagApiDeploymentRevisionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The tag to apply.
-    /// The tag should be at most 40 characters, and match `\[a-z][a-z0-9-\]{3,39}`.
+    /// The tag should be at most 40 characters, and match `[a-z][a-z0-9-]{3,39}`.
     #[prost(string, tag = "2")]
     pub tag: ::prost::alloc::string::String,
 }
@@ -1286,7 +1286,7 @@ pub struct CreateArtifactRequest {
     /// the artifact's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     ///
     /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag = "3")]
