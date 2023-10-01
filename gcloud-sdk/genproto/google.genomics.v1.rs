@@ -25,7 +25,7 @@ pub struct AnnotationSet {
     #[prost(enumeration = "AnnotationType", tag = "6")]
     pub r#type: i32,
     /// A map of additional read alignment information. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "17")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -73,7 +73,7 @@ pub struct Annotation {
     #[prost(enumeration = "AnnotationType", tag = "9")]
     pub r#type: i32,
     /// A map of additional read alignment information. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "12")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -170,7 +170,7 @@ pub mod variant_annotation {
         Unspecified = 0,
         /// `TYPE_OTHER` should be used when no other Type will suffice.
         /// Further explanation of the variant type may be included in the
-        /// \[info][google.genomics.v1.Annotation.info\] field.
+        /// [info][google.genomics.v1.Annotation.info] field.
         Other = 1,
         /// `INSERTION` indicates an insertion.
         Insertion = 2,
@@ -391,7 +391,7 @@ pub struct Transcript {
     ///
     /// Exonic sequences do not necessarily code for a translational product
     /// (amino acids). Only the regions of exons bounded by the
-    /// \[codingSequence][google.genomics.v1.Transcript.coding_sequence\] correspond
+    /// [codingSequence][google.genomics.v1.Transcript.coding_sequence] correspond
     /// to coding DNA sequence.
     ///
     /// Exons are ordered by start position and may not overlap.
@@ -399,15 +399,15 @@ pub struct Transcript {
     pub exons: ::prost::alloc::vec::Vec<transcript::Exon>,
     /// The range of the coding sequence for this transcript, if any. To determine
     /// the exact ranges of coding sequence, intersect this range with those of the
-    /// \[exons][google.genomics.v1.Transcript.exons\], if any. If there are any
-    /// \[exons][google.genomics.v1.Transcript.exons\], the
-    /// \[codingSequence][google.genomics.v1.Transcript.coding_sequence\] must start
+    /// [exons][google.genomics.v1.Transcript.exons], if any. If there are any
+    /// [exons][google.genomics.v1.Transcript.exons], the
+    /// [codingSequence][google.genomics.v1.Transcript.coding_sequence] must start
     /// and end within them.
     ///
     /// Note that in some cases, the reference genome will not exactly match the
     /// observed mRNA transcript e.g. due to variance in the source genome from
     /// reference. In these cases,
-    /// \[exon.frame][google.genomics.v1.Transcript.Exon.frame\] will not necessarily
+    /// [exon.frame][google.genomics.v1.Transcript.Exon.frame] will not necessarily
     /// match the expected reference reading frame and coding exon reference bases
     /// cannot necessarily be concatenated to produce the original transcript mRNA.
     #[prost(message, optional, tag = "3")]
@@ -432,11 +432,11 @@ pub mod transcript {
         /// the offset of the first coding base of the exon within the reading frame
         /// of the coding DNA sequence, if any. This field is dependent on the
         /// strandedness of this annotation (see
-        /// \[Annotation.reverse_strand][google.genomics.v1.Annotation.reverse_strand\]).
+        /// [Annotation.reverse_strand][google.genomics.v1.Annotation.reverse_strand]).
         /// For forward stranded annotations, this offset is relative to the
-        /// \[exon.start][google.genomics.v1.Transcript.Exon.start\]. For reverse
+        /// [exon.start][google.genomics.v1.Transcript.Exon.start]. For reverse
         /// strand annotations, this offset is relative to the
-        /// \[exon.end][google.genomics.v1.Transcript.Exon.end\] `- 1`.
+        /// [exon.end][google.genomics.v1.Transcript.Exon.end] `- 1`.
         ///
         /// Unset if this exon does not intersect the coding sequence. Upon creation
         /// of a transcript, the frame must be populated for all or none of the
@@ -493,9 +493,9 @@ pub struct UpdateAnnotationSetRequest {
     #[prost(message, optional, tag = "2")]
     pub annotation_set: ::core::option::Option<AnnotationSet>,
     /// An optional mask specifying which fields to update. Mutable fields are
-    /// \[name][google.genomics.v1.AnnotationSet.name\],
-    /// \[source_uri][google.genomics.v1.AnnotationSet.source_uri\], and
-    /// \[info][google.genomics.v1.AnnotationSet.info\]. If unspecified, all
+    /// [name][google.genomics.v1.AnnotationSet.name],
+    /// [source_uri][google.genomics.v1.AnnotationSet.source_uri], and
+    /// [info][google.genomics.v1.AnnotationSet.info]. If unspecified, all
     /// mutable fields will be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -610,10 +610,10 @@ pub struct UpdateAnnotationRequest {
     #[prost(message, optional, tag = "2")]
     pub annotation: ::core::option::Option<Annotation>,
     /// An optional mask specifying which fields to update. Mutable fields are
-    /// \[name][google.genomics.v1.Annotation.name\],
-    /// \[variant][google.genomics.v1.Annotation.variant\],
-    /// \[transcript][google.genomics.v1.Annotation.transcript\], and
-    /// \[info][google.genomics.v1.Annotation.info\]. If unspecified, all mutable
+    /// [name][google.genomics.v1.Annotation.name],
+    /// [variant][google.genomics.v1.Annotation.variant],
+    /// [transcript][google.genomics.v1.Annotation.transcript], and
+    /// [info][google.genomics.v1.Annotation.info]. If unspecified, all mutable
     /// fields will be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -635,14 +635,14 @@ pub struct SearchAnnotationsRequest {
     pub annotation_set_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The start position of the range on the reference, 0-based inclusive. If
     /// specified,
-    /// \[referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id\] or
-    /// \[referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name\]
+    /// [referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id] or
+    /// [referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name]
     /// must be specified. Defaults to 0.
     #[prost(int64, tag = "4")]
     pub start: i64,
     /// The end position of the range on the reference, 0-based exclusive. If
-    /// \[referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id\] or
-    /// \[referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name\]
+    /// [referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id] or
+    /// [referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name]
     /// must be specified, Defaults to the length of the reference.
     #[prost(int64, tag = "5")]
     pub end: i64,
@@ -686,8 +686,8 @@ pub struct SearchAnnotationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// When an \[Annotation][google.genomics.v1.Annotation\] or
-/// \[AnnotationSet][google.genomics.v1.AnnotationSet\] is created, if `type` is
+/// When an [Annotation][google.genomics.v1.Annotation] or
+/// [AnnotationSet][google.genomics.v1.AnnotationSet] is created, if `type` is
 /// not specified it will be set to `GENERIC`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1383,7 +1383,7 @@ pub struct UpdateDatasetRequest {
     #[prost(message, optional, tag = "2")]
     pub dataset: ::core::option::Option<Dataset>,
     /// An optional mask specifying which fields to update. At this time, the only
-    /// mutable field is \[name][google.genomics.v1.Dataset.name\]. The only
+    /// mutable field is [name][google.genomics.v1.Dataset.name]. The only
     /// acceptable value is "name". If unspecified, all mutable fields will be
     /// updated.
     #[prost(message, optional, tag = "3")]
@@ -1820,7 +1820,7 @@ pub mod dataset_service_v1_client {
         }
     }
 }
-/// Metadata describing an \[Operation][google.longrunning.Operation\].
+/// Metadata describing an [Operation][google.longrunning.Operation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
@@ -1861,7 +1861,7 @@ pub struct OperationMetadata {
         ::prost::alloc::string::String,
     >,
 }
-/// An event that occurred during an \[Operation][google.longrunning.Operation\].
+/// An event that occurred during an [Operation][google.longrunning.Operation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationEvent {
@@ -1930,11 +1930,11 @@ pub struct LinearAlignment {
     pub cigar: ::prost::alloc::vec::Vec<CigarUnit>,
 }
 /// A read alignment describes a linear alignment of a string of DNA to a
-/// [reference sequence]\[google.genomics.v1.Reference\], in addition to metadata
+/// [reference sequence][google.genomics.v1.Reference], in addition to metadata
 /// about the fragment (the molecule of DNA sequenced) and the read (the bases
 /// which were read by the sequencer). A read is equivalent to a line in a SAM
 /// file. A read belongs to exactly one read group and exactly one
-/// [read group set]\[google.genomics.v1.ReadGroupSet\].
+/// [read group set][google.genomics.v1.ReadGroupSet].
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
@@ -2021,7 +2021,7 @@ pub struct Read {
     /// The ID of the read group this read belongs to. A read belongs to exactly
     /// one read group. This is a server-generated ID which is distinct from SAM's
     /// RG tag (for that value, see
-    /// \[ReadGroup.name][google.genomics.v1.ReadGroup.name\]).
+    /// [ReadGroup.name][google.genomics.v1.ReadGroup.name]).
     #[prost(string, tag = "2")]
     pub read_group_id: ::prost::alloc::string::String,
     /// The ID of the read group set this read belongs to. A read belongs to
@@ -2101,7 +2101,7 @@ pub struct Read {
     #[prost(message, optional, tag = "16")]
     pub next_mate_position: ::core::option::Option<Position>,
     /// A map of additional read alignment information. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "17")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2114,7 +2114,7 @@ pub struct Read {
 pub struct ReadGroup {
     /// The server-generated read group ID, unique for all read groups.
     /// Note: This is different than the @RG ID field in the SAM spec. For that
-    /// value, see \[name][google.genomics.v1.ReadGroup.name\].
+    /// value, see [name][google.genomics.v1.ReadGroup.name].
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// The dataset to which this read group belongs.
@@ -2146,7 +2146,7 @@ pub struct ReadGroup {
     #[prost(string, tag = "11")]
     pub reference_set_id: ::prost::alloc::string::String,
     /// A map of additional read group information. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "12")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2406,8 +2406,8 @@ pub struct UpdateReadGroupSetRequest {
     pub read_group_set: ::core::option::Option<ReadGroupSet>,
     /// An optional mask specifying which fields to update. Supported fields:
     ///
-    /// * \[name][google.genomics.v1.ReadGroupSet.name\].
-    /// * \[referenceSetId][google.genomics.v1.ReadGroupSet.reference_set_id\].
+    /// * [name][google.genomics.v1.ReadGroupSet.name].
+    /// * [referenceSetId][google.genomics.v1.ReadGroupSet.reference_set_id].
     ///
     /// Leaving `updateMask` unset is equivalent to specifying all mutable
     /// fields.
@@ -3221,11 +3221,11 @@ pub struct ReferenceSet {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReferenceSetsRequest {
     /// If present, return reference sets for which the
-    /// \[md5checksum][google.genomics.v1.ReferenceSet.md5checksum\] matches exactly.
+    /// [md5checksum][google.genomics.v1.ReferenceSet.md5checksum] matches exactly.
     #[prost(string, repeated, tag = "1")]
     pub md5checksums: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If present, return reference sets for which a prefix of any of
-    /// \[sourceAccessions][google.genomics.v1.ReferenceSet.source_accessions\]
+    /// [sourceAccessions][google.genomics.v1.ReferenceSet.source_accessions]
     /// match any of these strings. Accession numbers typically have a main number
     /// and a version, for example `NC_000001.11`.
     #[prost(string, repeated, tag = "2")]
@@ -3267,11 +3267,11 @@ pub struct GetReferenceSetRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReferencesRequest {
     /// If present, return references for which the
-    /// \[md5checksum][google.genomics.v1.Reference.md5checksum\] matches exactly.
+    /// [md5checksum][google.genomics.v1.Reference.md5checksum] matches exactly.
     #[prost(string, repeated, tag = "1")]
     pub md5checksums: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If present, return references for which a prefix of any of
-    /// \[sourceAccessions][google.genomics.v1.Reference.source_accessions\] match
+    /// [sourceAccessions][google.genomics.v1.Reference.source_accessions] match
     /// any of these strings. Accession numbers typically have a main number and a
     /// version, for example `GCF_000001405.26`.
     #[prost(string, repeated, tag = "2")]
@@ -3647,7 +3647,7 @@ pub struct VariantSetMetadata {
     #[prost(string, tag = "7")]
     pub description: ::prost::alloc::string::String,
     /// Remaining structured metadata key-value pairs. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "3")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3802,7 +3802,7 @@ pub struct Variant {
     #[prost(string, repeated, tag = "9")]
     pub filter: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A map of additional variant information. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "10")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3830,10 +3830,10 @@ pub struct VariantCall {
     /// of the `referenceBases` field or a 1-based index into
     /// `alternateBases`. If a variant had a `referenceBases`
     /// value of `T` and an `alternateBases`
-    /// value of `["A", "C"]`, and the `genotype` was
-    /// `[2, 1]`, that would mean the call
+    /// value of `\["A", "C"\]`, and the `genotype` was
+    /// `\[2, 1\]`, that would mean the call
     /// represented the heterozygous value `CA` for this variant.
-    /// If the `genotype` was instead `[0, 1]`, the
+    /// If the `genotype` was instead `\[0, 1\]`, the
     /// represented value would be `TA`. Ordering of the
     /// genotype values is important if the `phaseset` is present.
     /// If a genotype is not called (that is, a `.` is present in the
@@ -3856,7 +3856,7 @@ pub struct VariantCall {
     #[prost(double, repeated, tag = "6")]
     pub genotype_likelihood: ::prost::alloc::vec::Vec<f64>,
     /// A map of additional variant call information. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "2")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3891,7 +3891,7 @@ pub struct CallSet {
     #[prost(int64, tag = "5")]
     pub created: i64,
     /// A map of additional call set information. This must be of the form
-    /// map<string, string[]> (string key mapping to a list of string values).
+    /// map<string, string\[\]> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "4")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -4138,9 +4138,9 @@ pub struct UpdateVariantSetRequest {
     pub variant_set: ::core::option::Option<VariantSet>,
     /// An optional mask specifying which fields to update. Supported fields:
     ///
-    /// * \[metadata][google.genomics.v1.VariantSet.metadata\].
-    /// * \[name][google.genomics.v1.VariantSet.name\].
-    /// * \[description][google.genomics.v1.VariantSet.description\].
+    /// * [metadata][google.genomics.v1.VariantSet.metadata].
+    /// * [name][google.genomics.v1.VariantSet.name].
+    /// * [description][google.genomics.v1.VariantSet.description].
     ///
     /// Leaving `updateMask` unset is equivalent to specifying all mutable
     /// fields.
@@ -4221,8 +4221,8 @@ pub struct UpdateVariantRequest {
     #[prost(message, optional, tag = "2")]
     pub variant: ::core::option::Option<Variant>,
     /// An optional mask specifying which fields to update. At this time, mutable
-    /// fields are \[names][google.genomics.v1.Variant.names\] and
-    /// \[info][google.genomics.v1.Variant.info\]. Acceptable values are "names" and
+    /// fields are [names][google.genomics.v1.Variant.names] and
+    /// [info][google.genomics.v1.Variant.info]. Acceptable values are "names" and
     /// "info". If unspecified, all mutable fields will be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -4310,7 +4310,7 @@ pub struct UpdateCallSetRequest {
     #[prost(message, optional, tag = "2")]
     pub call_set: ::core::option::Option<CallSet>,
     /// An optional mask specifying which fields to update. At this time, the only
-    /// mutable field is \[name][google.genomics.v1.CallSet.name\]. The only
+    /// mutable field is [name][google.genomics.v1.CallSet.name]. The only
     /// acceptable value is "name". If unspecified, all mutable fields will be
     /// updated.
     #[prost(message, optional, tag = "3")]

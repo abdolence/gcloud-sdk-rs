@@ -30,7 +30,7 @@ pub struct TranslateSpeechConfig {
     ///
     /// - `ogg-opus`
     ///
-    ///    Opus encoded audio frames in \[Ogg\](<https://wikipedia.org/wiki/Ogg>)
+    ///    Opus encoded audio frames in [Ogg](<https://wikipedia.org/wiki/Ogg>)
     ///    container. `sample_rate_hertz` must be one of 8000, 12000, 16000, 24000,
     ///    or 48000.
     ///
@@ -164,7 +164,7 @@ pub mod streaming_translate_speech_result {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechResponse {
-    /// Output only. If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
+    /// Output only. If set, returns a [google.rpc.Status][google.rpc.Status] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,

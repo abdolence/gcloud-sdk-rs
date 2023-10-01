@@ -5,14 +5,13 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Channel {
-    /// Required. The resource name of the channel. Must be unique within the
-    /// location on the project and must be in
+    /// Required. The resource name of the channel. Must be unique within the location
+    /// on the project and must be in
     /// `projects/{project}/locations/{location}/channels/{channel_id}` format.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Server assigned unique identifier for the channel. The value
-    /// is a UUID4 string and guaranteed to remain unchanged until the resource is
-    /// deleted.
+    /// Output only. Server assigned unique identifier for the channel. The value is a UUID4
+    /// string and guaranteed to remain unchanged until the resource is deleted.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. The creation time.
@@ -21,7 +20,7 @@ pub struct Channel {
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The name of the event provider (e.g. Eventarc SaaS partner) associated
+    /// Required. The name of the event provider (e.g. Eventarc SaaS partner) associated
     /// with the channel. This provider will be granted permissions to publish
     /// events to the channel. Format:
     /// `projects/{project}/locations/{location}/providers/{provider_id}`.
@@ -30,17 +29,10 @@ pub struct Channel {
     /// Output only. The state of a Channel.
     #[prost(enumeration = "channel::State", tag = "9")]
     pub state: i32,
-    /// Output only. The activation token for the channel. The token must be used
-    /// by the provider to register the channel for publishing.
+    /// Output only. The activation token for the channel. The token must be used by the
+    /// provider to register the channel for publishing.
     #[prost(string, tag = "10")]
     pub activation_token: ::prost::alloc::string::String,
-    /// Optional. Resource name of a KMS crypto key (managed by the user) used to
-    /// encrypt/decrypt their event data.
-    ///
-    /// It must match the pattern
-    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-    #[prost(string, tag = "11")]
-    pub crypto_key_name: ::prost::alloc::string::String,
     #[prost(oneof = "channel::Transport", tags = "8")]
     pub transport: ::core::option::Option<channel::Transport>,
 }
@@ -71,13 +63,11 @@ pub mod channel {
         /// An ACTIVE Channel is ready to receive and route events from the
         /// event provider.
         Active = 2,
-        /// The INACTIVE state indicates that the Channel cannot receive events
+        /// The INACTIVE state means that the Channel cannot receive events
         /// permanently. There are two possible cases this state can happen:
-        ///
         /// 1. The SaaS provider disconnected from this Channel.
         /// 2. The Channel activation token has expired but the SaaS provider
         ///     wasn't connected.
-        ///
         /// To re-establish a Connection with a provider, the subscriber
         /// should create a new Channel and give it to the provider.
         Inactive = 3,
@@ -109,8 +99,8 @@ pub mod channel {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transport {
-        /// Output only. The name of the Pub/Sub topic created and managed by
-        /// Eventarc system as a transport for the event delivery. Format:
+        /// Output only. The name of the Pub/Sub topic created and managed by Eventarc system as
+        /// a transport for the event delivery. Format:
         /// `projects/{project}/topics/{topic_id}`.
         #[prost(string, tag = "8")]
         PubsubTopic(::prost::alloc::string::String),
@@ -208,29 +198,6 @@ pub struct FilteringAttribute {
     #[prost(bool, tag = "4")]
     pub path_pattern_supported: bool,
 }
-/// A GoogleChannelConfig is a resource that stores the custom settings
-/// respected by Eventarc first-party triggers in the matching region.
-/// Once configured, first-party event data will be protected
-/// using the specified custom managed encryption key instead of Google-managed
-/// encryption keys.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleChannelConfig {
-    /// Required. The resource name of the config. Must be in the format of,
-    /// `projects/{project}/locations/{location}/googleChannelConfig`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Output only. The last-modified time.
-    #[prost(message, optional, tag = "6")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. Resource name of a KMS crypto key (managed by the user) used to
-    /// encrypt/decrypt their event data.
-    ///
-    /// It must match the pattern
-    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-    #[prost(string, tag = "7")]
-    pub crypto_key_name: ::prost::alloc::string::String,
-}
 /// A representation of the trigger resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -250,7 +217,7 @@ pub struct Trigger {
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Unordered list. The list of filters that applies to event attributes. Only events that
+    /// Required. null The list of filters that applies to event attributes. Only events that
     /// match all the provided filters are sent to the destination.
     #[prost(message, repeated, tag = "8")]
     pub event_filters: ::prost::alloc::vec::Vec<EventFilter>,
@@ -290,12 +257,6 @@ pub struct Trigger {
     /// You must provide a channel to receive events from Eventarc SaaS partners.
     #[prost(string, tag = "13")]
     pub channel: ::prost::alloc::string::String,
-    /// Output only. The reason(s) why a trigger is in FAILED state.
-    #[prost(map = "string, message", tag = "15")]
-    pub conditions: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        StateCondition,
-    >,
     /// Output only. This checksum is computed by the server based on the value of other
     /// fields, and might be sent only on create requests to ensure that the
     /// client has an up-to-date value before proceeding.
@@ -322,22 +283,11 @@ pub struct EventFilter {
     #[prost(string, tag = "3")]
     pub operator: ::prost::alloc::string::String,
 }
-/// A condition that is part of the trigger state computation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StateCondition {
-    /// The canonical code of the condition.
-    #[prost(enumeration = "super::super::super::rpc::Code", tag = "1")]
-    pub code: i32,
-    /// Human-readable message.
-    #[prost(string, tag = "2")]
-    pub message: ::prost::alloc::string::String,
-}
 /// Represents a target of an invocation over HTTP.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Destination {
-    #[prost(oneof = "destination::Descriptor", tags = "1, 2, 3, 4")]
+    #[prost(oneof = "destination::Descriptor", tags = "1, 2, 3")]
     pub descriptor: ::core::option::Option<destination::Descriptor>,
 }
 /// Nested message and enum types in `Destination`.
@@ -357,12 +307,6 @@ pub mod destination {
         /// in the same project as the trigger.
         #[prost(message, tag = "3")]
         Gke(super::Gke),
-        /// The resource name of the Workflow whose Executions are triggered by
-        /// the events. The Workflow resource should be deployed in the same project
-        /// as the trigger.
-        /// Format: `projects/{project}/locations/{location}/workflows/{workflow}`
-        #[prost(string, tag = "4")]
-        Workflow(::prost::alloc::string::String),
     }
 }
 /// Represents the transport intermediaries created for the trigger to
@@ -466,7 +410,6 @@ pub struct ListTriggersRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of triggers to return on each page.
-    ///
     /// Note: The service may send fewer.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -483,11 +426,6 @@ pub struct ListTriggersRequest {
     /// `name desc, trigger_id`.
     #[prost(string, tag = "4")]
     pub order_by: ::prost::alloc::string::String,
-    /// Filter field. Used to filter the Triggers to be listed. Possible filters
-    /// are described in <https://google.aip.dev/160.> For example, using
-    /// "?filter=destination:gke" would list only Triggers with a gke destination.
-    #[prost(string, tag = "5")]
-    pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListTriggers` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -496,7 +434,7 @@ pub struct ListTriggersResponse {
     /// The requested triggers, up to the number specified in `page_size`.
     #[prost(message, repeated, tag = "1")]
     pub triggers: ::prost::alloc::vec::Vec<Trigger>,
-    /// A page token that can be sent to `ListTriggers` to request the next page.
+    /// A page token that can be sent to ListTriggers to request the next page.
     /// If this is empty, then there are no more pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -579,7 +517,6 @@ pub struct ListChannelsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of channels to return on each page.
-    ///
     /// Note: The service may send fewer.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -604,7 +541,7 @@ pub struct ListChannelsResponse {
     /// The requested channels, up to the number specified in `page_size`.
     #[prost(message, repeated, tag = "1")]
     pub channels: ::prost::alloc::vec::Vec<Channel>,
-    /// A page token that can be sent to `ListChannels` to request the next page.
+    /// A page token that can be sent to ListChannels to request the next page.
     /// If this is empty, then there are no more pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -701,7 +638,7 @@ pub struct ListProvidersResponse {
     /// The requested providers, up to the number specified in `page_size`.
     #[prost(message, repeated, tag = "1")]
     pub providers: ::prost::alloc::vec::Vec<Provider>,
-    /// A page token that can be sent to `ListProviders` to request the next page.
+    /// A page token that can be sent to ListProviders to request the next page.
     /// If this is empty, then there are no more pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -725,7 +662,6 @@ pub struct ListChannelConnectionsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of channel connections to return on each page.
-    ///
     /// Note: The service may send fewer responses.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -745,7 +681,7 @@ pub struct ListChannelConnectionsResponse {
     /// `page_size`.
     #[prost(message, repeated, tag = "1")]
     pub channel_connections: ::prost::alloc::vec::Vec<ChannelConnection>,
-    /// A page token that can be sent to `ListChannelConnections` to request the
+    /// A page token that can be sent to ListChannelConnections to request the
     /// next page.
     /// If this is empty, then there are no more pages.
     #[prost(string, tag = "2")]
@@ -776,27 +712,6 @@ pub struct DeleteChannelConnectionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for the UpdateGoogleChannelConfig method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateGoogleChannelConfigRequest {
-    /// Required. The config to be updated.
-    #[prost(message, optional, tag = "1")]
-    pub google_channel_config: ::core::option::Option<GoogleChannelConfig>,
-    /// The fields to be updated; only fields explicitly provided are updated.
-    /// If no field mask is provided, all provided fields in the request are
-    /// updated. To update all fields, provide a field mask of "*".
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// The request message for the GetGoogleChannelConfig method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetGoogleChannelConfigRequest {
-    /// Required. The name of the config to get.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
 /// Represents the metadata of the long-running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -818,7 +733,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1360,68 +1275,6 @@ pub mod eventarc_client {
                     GrpcMethod::new(
                         "google.cloud.eventarc.v1.Eventarc",
                         "DeleteChannelConnection",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Get a GoogleChannelConfig
-        pub async fn get_google_channel_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetGoogleChannelConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GoogleChannelConfig>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.eventarc.v1.Eventarc/GetGoogleChannelConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.eventarc.v1.Eventarc",
-                        "GetGoogleChannelConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Update a single GoogleChannelConfig
-        pub async fn update_google_channel_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateGoogleChannelConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GoogleChannelConfig>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.eventarc.v1.Eventarc",
-                        "UpdateGoogleChannelConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

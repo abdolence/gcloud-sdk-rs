@@ -676,7 +676,7 @@ pub mod execution_info {
 }
 /// BigQuery job information. This can be used to query the BigQuery API and
 /// retrieve the current job's status (using
-/// \[jobs.get\](<https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get>)).
+/// [jobs.get](<https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get>)).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryJob {
@@ -698,7 +698,7 @@ pub struct Interpretation {
     #[prost(string, repeated, tag = "1")]
     pub data_sources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The level of confidence that one of the interpretations is correct. This is
-    /// a value in the range [0, 1] where a value of 0.5 or below is to be
+    /// a value in the range \[0, 1\] where a value of 0.5 or below is to be
     /// considered a low confidence.
     #[prost(double, tag = "2")]
     pub confidence: f64,
@@ -802,7 +802,7 @@ pub mod interpretation_structure {
         /// chart](<https://developers.google.com/chart/interactive/docs/gallery/columnchart>).
         ColumnChart = 3,
         /// Show a
-        /// \[timeline\](<https://developers.google.com/chart/interactive/docs/gallery/timeline>).
+        /// [timeline](<https://developers.google.com/chart/interactive/docs/gallery/timeline>).
         Timeline = 4,
         /// Show a [scatter
         /// plot](<https://developers.google.com/chart/interactive/docs/gallery/scatterchart>).
@@ -820,7 +820,7 @@ pub mod interpretation_structure {
         /// chart](<https://developers.google.com/chart/interactive/docs/gallery/combochart>).
         ComboChart = 9,
         /// Show a
-        /// \[histogram\](<https://developers.google.com/chart/interactive/docs/gallery/histogram>).
+        /// [histogram](<https://developers.google.com/chart/interactive/docs/gallery/histogram>).
         Histogram = 10,
         /// This denotes queries when the user has not specified the particular type
         /// of chart and has mentioned only a generic chart name such as "Chart",

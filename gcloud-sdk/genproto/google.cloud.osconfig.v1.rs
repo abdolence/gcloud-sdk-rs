@@ -2904,7 +2904,7 @@ pub struct ExecStepConfig {
     pub allowed_success_codes: ::prost::alloc::vec::Vec<i32>,
     /// The script interpreter to use to run the script. If no interpreter is
     /// specified the script will be executed directly, which will likely
-    /// only succeed for scripts with [shebang lines]
+    /// only succeed for scripts with \[shebang lines\]
     /// (<https://en.wikipedia.org/wiki/Shebang_\(Unix\>)).
     #[prost(enumeration = "exec_step_config::Interpreter", tag = "4")]
     pub interpreter: i32,
@@ -3008,9 +3008,9 @@ pub struct PatchInstanceFilter {
     #[prost(string, repeated, tag = "3")]
     pub zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Targets any of the VM instances specified. Instances are specified by their
-    /// URI in the form `zones/\[ZONE]/instances/[INSTANCE_NAME\]`,
-    /// `projects/\[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME\]`, or
-    /// `<https://www.googleapis.com/compute/v1/projects/\[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME\]`>
+    /// URI in the form `zones/\[ZONE\]/instances/\[INSTANCE_NAME\]`,
+    /// `projects/\[PROJECT_ID\]/zones/\[ZONE\]/instances/\[INSTANCE_NAME\]`, or
+    /// `<https://www.googleapis.com/compute/v1/projects/\[PROJECT_ID\]/zones/\[ZONE\]/instances/\[INSTANCE_NAME\]`>
     #[prost(string, repeated, tag = "4")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Targets VMs whose name starts with one of these prefixes. Similar to
@@ -3155,15 +3155,15 @@ pub struct PatchDeployment {
     #[prost(message, optional, tag = "5")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Output only. Time the patch deployment was created. Timestamp is in
-    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
+    /// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the patch deployment was last updated. Timestamp is in
-    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
+    /// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last time a patch job was started by this deployment.
-    /// Timestamp is in \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text
+    /// Timestamp is in [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text
     /// format.
     #[prost(message, optional, tag = "10")]
     pub last_execute_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -3236,7 +3236,7 @@ pub mod patch_deployment {
     }
 }
 /// Sets the time for a one time patch deployment. Timestamp is in
-/// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
+/// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OneTimeSchedule {
@@ -3393,7 +3393,7 @@ pub struct WeekDayOfMonth {
     /// month and this `day_offset` value is set to `3`, the patch deployment takes
     /// place three days after the second Tuesday of the month. If this value is
     /// negative, for example -5, the patches are deployed five days before before
-    /// the second Tuesday of the month. Allowed values are in range [-30, 30].
+    /// the second Tuesday of the month. Allowed values are in range \[-30, 30\].
     #[prost(int32, tag = "3")]
     pub day_offset: i32,
 }

@@ -128,7 +128,7 @@ pub struct NodePool {
     pub node_count: i32,
     /// Only machines matching this filter will be allowed to join the node pool.
     /// The filtering language accepts strings like "name=<name>", and is
-    /// documented in more detail in \[AIP-160\](<https://google.aip.dev/160>).
+    /// documented in more detail in [AIP-160](<https://google.aip.dev/160>).
     #[prost(string, tag = "7")]
     pub machine_filter: ::prost::alloc::string::String,
     /// Optional. Local disk encryption options. This field is only used when enabling CMEK
@@ -392,7 +392,7 @@ pub mod vpn_connection {
         }
     }
 }
-/// Metadata for a given \[google.cloud.location.Location][google.cloud.location.Location\].
+/// Metadata for a given [google.cloud.location.Location][google.cloud.location.Location].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
@@ -522,8 +522,8 @@ pub struct OperationMetadata {
     #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation of the operation.
-    /// Operations that have successfully been cancelled have \[Operation.error][\]
-    /// value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// Operations that have successfully been cancelled have [Operation.error][]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,

@@ -1,4 +1,4 @@
-/// The request for \[ListConnections][Management.ListConnections\].
+/// The request for [ListConnections][Management.ListConnections].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsRequest {
@@ -20,7 +20,7 @@ pub struct ListConnectionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// \[ListConnections][Management.ListConnections\].
+/// [ListConnections][Management.ListConnections].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
@@ -286,7 +286,7 @@ pub struct HttpRequest {
 /// The proto definition of url.
 /// A url represents a URL and the general form represented is:
 ///
-///   `\[scheme://][google.cloud.apigeeconnect.v1.Url.host][path\]`
+///   `[scheme://][google.cloud.apigeeconnect.v1.Url.host][path]`
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Url {

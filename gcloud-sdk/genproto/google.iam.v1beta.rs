@@ -43,7 +43,7 @@ pub mod workload_identity_pool {
         Active = 1,
         /// The pool is soft-deleted. Soft-deleted pools are permanently deleted
         /// after approximately 30 days. You can restore a soft-deleted pool using
-        /// \[UndeleteWorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPool\].
+        /// [UndeleteWorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPool].
         ///
         /// You cannot reuse the ID of a soft-deleted pool until it is permanently
         /// deleted.
@@ -132,7 +132,7 @@ pub struct WorkloadIdentityPoolProvider {
     /// * `attribute.{custom_attribute}`:
     /// `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/attribute.{custom_attribute}/{value}`
     ///
-    /// Each value must be a [Common Expression Language]
+    /// Each value must be a \[Common Expression Language\]
     /// (<https://opensource.google/projects/cel>) function that maps an
     /// identity provider credential to the normalized attribute specified by the
     /// corresponding map key.
@@ -269,7 +269,7 @@ pub mod workload_identity_pool_provider {
         /// The provider is soft-deleted. Soft-deleted providers are permanently
         /// deleted after approximately 30 days. You can restore a soft-deleted
         /// provider using
-        /// \[UndeleteWorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPoolProvider\].
+        /// [UndeleteWorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPoolProvider].
         ///
         /// You cannot reuse the ID of a soft-deleted provider until it is
         /// permanently deleted.

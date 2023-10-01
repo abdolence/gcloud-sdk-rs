@@ -137,11 +137,7 @@ pub struct MapValue {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredQuery {
-    /// Optional sub-set of the fields to return.
-    ///
-    /// This acts as a \[DocumentMask][google.firestore.v1.DocumentMask\] over the
-    /// documents returned from a query. When not set, assumes that the caller
-    /// wants all fields returned.
+    /// The projection to return.
     #[prost(message, optional, tag = "1")]
     pub select: ::core::option::Option<structured_query::Projection>,
     /// The collections to query.
@@ -312,8 +308,6 @@ pub mod structured_query {
             Unspecified = 0,
             /// Documents are required to satisfy all of the combined filters.
             And = 1,
-            /// Documents are required to satisfy at least one of the combined filters.
-            Or = 2,
         }
         impl Operator {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -324,7 +318,6 @@ pub mod structured_query {
                 match self {
                     Operator::Unspecified => "OPERATOR_UNSPECIFIED",
                     Operator::And => "AND",
-                    Operator::Or => "OR",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -332,7 +325,6 @@ pub mod structured_query {
                 match value {
                     "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
                     "AND" => Some(Self::And),
-                    "OR" => Some(Self::Or),
                     _ => None,
                 }
             }
@@ -409,26 +401,23 @@ pub mod structured_query {
             ///
             /// Requires:
             ///
-            /// * That `value` is a non-empty `ArrayValue`, subject to disjunction
-            ///    limits.
-            /// * No `NOT_IN` filters in the same query.
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
             In = 8,
             /// The given `field` is an array that contains any of the values in the
             /// given array.
             ///
             /// Requires:
             ///
-            /// * That `value` is a non-empty `ArrayValue`, subject to disjunction
-            ///    limits.
-            /// * No other `ARRAY_CONTAINS_ANY` filters within the same disjunction.
-            /// * No `NOT_IN` filters in the same query.
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
             ArrayContainsAny = 9,
             /// The value of the `field` is not in the given array.
             ///
             /// Requires:
             ///
             /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `OR`, `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
+            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
             ///    `IS_NOT_NULL`, or `IS_NOT_NAN`.
             /// * That `field` comes first in the `order_by`.
             NotIn = 10,
@@ -574,8 +563,7 @@ pub mod structured_query {
         ///
         /// Requires:
         ///
-        /// * Conform to [document field name]\[google.firestore.v1.Document.fields\]
-        /// limitations.
+        /// * Conform to [document field name][google.firestore.v1.Document.fields] limitations.
         #[prost(string, tag = "2")]
         pub field_path: ::prost::alloc::string::String,
     }
@@ -634,13 +622,11 @@ pub mod structured_query {
         }
     }
 }
-/// Firestore query for running an aggregation over a
-/// \[StructuredQuery][google.firestore.v1.StructuredQuery\].
+/// Firestore query for running an aggregation over a [StructuredQuery][google.firestore.v1.StructuredQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredAggregationQuery {
-    /// Optional. Series of aggregations to apply over the results of the
-    /// `structured_query`.
+    /// Optional. Series of aggregations to apply over the results of the `structured_query`.
     ///
     /// Requires:
     ///
@@ -655,12 +641,11 @@ pub struct StructuredAggregationQuery {
 }
 /// Nested message and enum types in `StructuredAggregationQuery`.
 pub mod structured_aggregation_query {
-    /// Defines an aggregation that produces a single result.
+    /// Defines a aggregation that produces a single result.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aggregation {
-        /// Optional. Optional name of the field to store the result of the
-        /// aggregation into.
+        /// Optional. Optional name of the field to store the result of the aggregation into.
         ///
         /// If not provided, Firestore will pick a default name following the format
         /// `field_<incremental_id++>`. For example:
@@ -670,7 +655,7 @@ pub mod structured_aggregation_query {
         ///    COUNT_UP_TO(1) AS count_up_to_1,
         ///    COUNT_UP_TO(2),
         ///    COUNT_UP_TO(3) AS count_up_to_3,
-        ///    COUNT(*)
+        ///    COUNT_UP_TO(4)
         /// OVER (
         ///    ...
         /// );
@@ -683,7 +668,7 @@ pub mod structured_aggregation_query {
         ///    COUNT_UP_TO(1) AS count_up_to_1,
         ///    COUNT_UP_TO(2) AS field_1,
         ///    COUNT_UP_TO(3) AS count_up_to_3,
-        ///    COUNT(*) AS field_2
+        ///    COUNT_UP_TO(4) AS field_2
         /// OVER (
         ///    ...
         /// );
@@ -692,12 +677,11 @@ pub mod structured_aggregation_query {
         /// Requires:
         ///
         /// * Must be unique across all aggregation aliases.
-        /// * Conform to [document field name]\[google.firestore.v1.Document.fields\]
-        /// limitations.
+        /// * Conform to [document field name][google.firestore.v1.Document.fields] limitations.
         #[prost(string, tag = "7")]
         pub alias: ::prost::alloc::string::String,
         /// The type of aggregation to perform, required.
-        #[prost(oneof = "aggregation::Operator", tags = "1, 2, 3")]
+        #[prost(oneof = "aggregation::Operator", tags = "1")]
         pub operator: ::core::option::Option<aggregation::Operator>,
     }
     /// Nested message and enum types in `Aggregation`.
@@ -709,11 +693,10 @@ pub mod structured_aggregation_query {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Count {
-            /// Optional. Optional constraint on the maximum number of documents to
-            /// count.
+            /// Optional. Optional constraint on the maximum number of documents to count.
             ///
             /// This provides a way to set an upper bound on the number of documents
-            /// to scan, limiting latency, and cost.
+            /// to scan, limiting latency and cost.
             ///
             /// Unspecified is interpreted as no bound.
             ///
@@ -729,56 +712,6 @@ pub mod structured_aggregation_query {
             #[prost(message, optional, tag = "1")]
             pub up_to: ::core::option::Option<i64>,
         }
-        /// Sum of the values of the requested field.
-        ///
-        /// * Only numeric values will be aggregated. All non-numeric values
-        /// including `NULL` are skipped.
-        ///
-        /// * If the aggregated values contain `NaN`, returns `NaN`. Infinity math
-        /// follows IEEE-754 standards.
-        ///
-        /// * If the aggregated value set is empty, returns 0.
-        ///
-        /// * Returns a 64-bit integer if all aggregated numbers are integers and the
-        /// sum result does not overflow. Otherwise, the result is returned as a
-        /// double. Note that even if all the aggregated values are integers, the
-        /// result is returned as a double if it cannot fit within a 64-bit signed
-        /// integer. When this occurs, the returned value will lose precision.
-        ///
-        /// * When underflow occurs, floating-point aggregation is non-deterministic.
-        /// This means that running the same query repeatedly without any changes to
-        /// the underlying values could produce slightly different results each
-        /// time. In those cases, values should be stored as integers over
-        /// floating-point numbers.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct Sum {
-            /// The field to aggregate on.
-            #[prost(message, optional, tag = "1")]
-            pub field: ::core::option::Option<
-                super::super::structured_query::FieldReference,
-            >,
-        }
-        /// Average of the values of the requested field.
-        ///
-        /// * Only numeric values will be aggregated. All non-numeric values
-        /// including `NULL` are skipped.
-        ///
-        /// * If the aggregated values contain `NaN`, returns `NaN`. Infinity math
-        /// follows IEEE-754 standards.
-        ///
-        /// * If the aggregated value set is empty, returns `NULL`.
-        ///
-        /// * Always returns the result as a double.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct Avg {
-            /// The field to aggregate on.
-            #[prost(message, optional, tag = "1")]
-            pub field: ::core::option::Option<
-                super::super::structured_query::FieldReference,
-            >,
-        }
         /// The type of aggregation to perform, required.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -786,12 +719,6 @@ pub mod structured_aggregation_query {
             /// Count aggregator.
             #[prost(message, tag = "1")]
             Count(Count),
-            /// Sum aggregator.
-            #[prost(message, tag = "2")]
-            Sum(Sum),
-            /// Average aggregator.
-            #[prost(message, tag = "3")]
-            Avg(Avg),
         }
     }
     /// The base query to aggregate over.
@@ -828,8 +755,7 @@ pub struct Cursor {
 pub struct AggregationResult {
     /// The result of the aggregation functions, ex: `COUNT(*) AS total_docs`.
     ///
-    /// The key is the
-    /// \[alias][google.firestore.v1.StructuredAggregationQuery.Aggregation.alias\]
+    /// The key is the [alias][google.firestore.v1.StructuredAggregationQuery.Aggregation.alias]
     /// assigned to the aggregation function on input and the size of this map
     /// equals the number of aggregation functions in the query.
     #[prost(map = "string, message", tag = "2")]
@@ -838,69 +764,16 @@ pub struct AggregationResult {
         Value,
     >,
 }
-/// A sequence of bits, encoded in a byte array.
-///
-/// Each byte in the `bitmap` byte array stores 8 bits of the sequence. The only
-/// exception is the last byte, which may store 8 _or fewer_ bits. The `padding`
-/// defines the number of bits of the last byte to be ignored as "padding". The
-/// values of these "padding" bits are unspecified and must be ignored.
-///
-/// To retrieve the first bit, bit 0, calculate: `(bitmap\[0\] & 0x01) != 0`.
-/// To retrieve the second bit, bit 1, calculate: `(bitmap\[0\] & 0x02) != 0`.
-/// To retrieve the third bit, bit 2, calculate: `(bitmap\[0\] & 0x04) != 0`.
-/// To retrieve the fourth bit, bit 3, calculate: `(bitmap\[0\] & 0x08) != 0`.
-/// To retrieve bit n, calculate: `(bitmap[n / 8] & (0x01 << (n % 8))) != 0`.
-///
-/// The "size" of a `BitSequence` (the number of bits it contains) is calculated
-/// by this formula: `(bitmap.length * 8) - padding`.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BitSequence {
-    /// The bytes that encode the bit sequence.
-    /// May have a length of zero.
-    #[prost(bytes = "vec", tag = "1")]
-    pub bitmap: ::prost::alloc::vec::Vec<u8>,
-    /// The number of bits of the last byte in `bitmap` to ignore as "padding".
-    /// If the length of `bitmap` is zero, then this value must be `0`.
-    /// Otherwise, this value must be between 0 and 7, inclusive.
-    #[prost(int32, tag = "2")]
-    pub padding: i32,
-}
-/// A bloom filter (<https://en.wikipedia.org/wiki/Bloom_filter>).
-///
-/// The bloom filter hashes the entries with MD5 and treats the resulting 128-bit
-/// hash as 2 distinct 64-bit hash values, interpreted as unsigned integers
-/// using 2's complement encoding.
-///
-/// These two hash values, named `h1` and `h2`, are then used to compute the
-/// `hash_count` hash values using the formula, starting at `i=0`:
-///
-///      h(i) = h1 + (i * h2)
-///
-/// These resulting values are then taken modulo the number of bits in the bloom
-/// filter to get the bits of the bloom filter to test for the given entry.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BloomFilter {
-    /// The bloom filter data.
-    #[prost(message, optional, tag = "1")]
-    pub bits: ::core::option::Option<BitSequence>,
-    /// The number of hashes used by the algorithm.
-    #[prost(int32, tag = "2")]
-    pub hash_count: i32,
-}
 /// A set of field paths on a document.
 /// Used to restrict a get or update operation on a document to a subset of its
 /// fields.
 /// This is different from standard field masks, as this is always scoped to a
-/// \[Document][google.firestore.v1.Document\], and takes in account the dynamic
-/// nature of \[Value][google.firestore.v1.Value\].
+/// [Document][google.firestore.v1.Document], and takes in account the dynamic nature of [Value][google.firestore.v1.Value].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentMask {
-    /// The list of field paths in the mask. See
-    /// \[Document.fields][google.firestore.v1.Document.fields\] for a field path
-    /// syntax reference.
+    /// The list of field paths in the mask. See [Document.fields][google.firestore.v1.Document.fields] for a field
+    /// path syntax reference.
     #[prost(string, repeated, tag = "1")]
     pub field_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -939,9 +812,6 @@ pub struct TransactionOptions {
 /// Nested message and enum types in `TransactionOptions`.
 pub mod transaction_options {
     /// Options for a transaction that can be used to read and write documents.
-    ///
-    /// Firestore does not allow 3rd party auth requests to create read-write.
-    /// transactions.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadWrite {
@@ -966,10 +836,7 @@ pub mod transaction_options {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ConsistencySelector {
             /// Reads documents at the given time.
-            ///
-            /// This must be a microsecond precision timestamp within the past one
-            /// hour, or if Point-in-Time Recovery is enabled, can additionally be a
-            /// whole minute timestamp within the past 7 days.
+            /// This may not be older than 60 seconds.
             #[prost(message, tag = "2")]
             ReadTime(::prost_types::Timestamp),
         }
@@ -1055,9 +922,8 @@ pub mod document_transform {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FieldTransform {
-        /// The path of the field. See
-        /// \[Document.fields][google.firestore.v1.Document.fields\] for the field path
-        /// syntax reference.
+        /// The path of the field. See [Document.fields][google.firestore.v1.Document.fields] for the field path syntax
+        /// reference.
         #[prost(string, tag = "1")]
         pub field_path: ::prost::alloc::string::String,
         /// The transformation to apply on the field.
@@ -1194,24 +1060,22 @@ pub struct WriteResult {
     /// previous update_time.
     #[prost(message, optional, tag = "1")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The results of applying each
-    /// \[DocumentTransform.FieldTransform][google.firestore.v1.DocumentTransform.FieldTransform\],
-    /// in the same order.
+    /// The results of applying each [DocumentTransform.FieldTransform][google.firestore.v1.DocumentTransform.FieldTransform], in the
+    /// same order.
     #[prost(message, repeated, tag = "2")]
     pub transform_results: ::prost::alloc::vec::Vec<Value>,
 }
-/// A \[Document][google.firestore.v1.Document\] has changed.
+/// A [Document][google.firestore.v1.Document] has changed.
 ///
-/// May be the result of multiple \[writes][google.firestore.v1.Write\], including
-/// deletes, that ultimately resulted in a new value for the
-/// \[Document][google.firestore.v1.Document\].
+/// May be the result of multiple [writes][google.firestore.v1.Write], including deletes, that
+/// ultimately resulted in a new value for the [Document][google.firestore.v1.Document].
 ///
-/// Multiple \[DocumentChange][google.firestore.v1.DocumentChange\] messages may be
-/// returned for the same logical change, if multiple targets are affected.
+/// Multiple [DocumentChange][google.firestore.v1.DocumentChange] messages may be returned for the same logical
+/// change, if multiple targets are affected.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentChange {
-    /// The new state of the \[Document][google.firestore.v1.Document\].
+    /// The new state of the [Document][google.firestore.v1.Document].
     ///
     /// If `mask` is set, contains only fields that were updated or added.
     #[prost(message, optional, tag = "1")]
@@ -1223,19 +1087,17 @@ pub struct DocumentChange {
     #[prost(int32, repeated, tag = "6")]
     pub removed_target_ids: ::prost::alloc::vec::Vec<i32>,
 }
-/// A \[Document][google.firestore.v1.Document\] has been deleted.
+/// A [Document][google.firestore.v1.Document] has been deleted.
 ///
-/// May be the result of multiple \[writes][google.firestore.v1.Write\], including
-/// updates, the last of which deleted the
-/// \[Document][google.firestore.v1.Document\].
+/// May be the result of multiple [writes][google.firestore.v1.Write], including updates, the
+/// last of which deleted the [Document][google.firestore.v1.Document].
 ///
-/// Multiple \[DocumentDelete][google.firestore.v1.DocumentDelete\] messages may be
-/// returned for the same logical delete, if multiple targets are affected.
+/// Multiple [DocumentDelete][google.firestore.v1.DocumentDelete] messages may be returned for the same logical
+/// delete, if multiple targets are affected.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentDelete {
-    /// The resource name of the \[Document][google.firestore.v1.Document\] that was
-    /// deleted.
+    /// The resource name of the [Document][google.firestore.v1.Document] that was deleted.
     #[prost(string, tag = "1")]
     pub document: ::prost::alloc::string::String,
     /// A set of target IDs for targets that previously matched this entity.
@@ -1247,21 +1109,18 @@ pub struct DocumentDelete {
     #[prost(message, optional, tag = "4")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// A \[Document][google.firestore.v1.Document\] has been removed from the view of
-/// the targets.
+/// A [Document][google.firestore.v1.Document] has been removed from the view of the targets.
 ///
 /// Sent if the document is no longer relevant to a target and is out of view.
 /// Can be sent instead of a DocumentDelete or a DocumentChange if the server
 /// can not send the new value of the document.
 ///
-/// Multiple \[DocumentRemove][google.firestore.v1.DocumentRemove\] messages may be
-/// returned for the same logical write or delete, if multiple targets are
-/// affected.
+/// Multiple [DocumentRemove][google.firestore.v1.DocumentRemove] messages may be returned for the same logical
+/// write or delete, if multiple targets are affected.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentRemove {
-    /// The resource name of the \[Document][google.firestore.v1.Document\] that has
-    /// gone out of view.
+    /// The resource name of the [Document][google.firestore.v1.Document] that has gone out of view.
     #[prost(string, tag = "1")]
     pub document: ::prost::alloc::string::String,
     /// A set of target IDs for targets that previously matched this document.
@@ -1280,34 +1139,14 @@ pub struct ExistenceFilter {
     /// The target ID to which this filter applies.
     #[prost(int32, tag = "1")]
     pub target_id: i32,
-    /// The total count of documents that match
-    /// \[target_id][google.firestore.v1.ExistenceFilter.target_id\].
+    /// The total count of documents that match [target_id][google.firestore.v1.ExistenceFilter.target_id].
     ///
     /// If different from the count of documents in the client that match, the
     /// client must manually determine which documents no longer match the target.
-    ///
-    /// The client can use the `unchanged_names` bloom filter to assist with
-    /// this determination by testing ALL the document names against the filter;
-    /// if the document name is NOT in the filter, it means the document no
-    /// longer matches the target.
     #[prost(int32, tag = "2")]
     pub count: i32,
-    /// A bloom filter that, despite its name, contains the UTF-8 byte encodings of
-    /// the resource names of ALL the documents that match
-    /// \[target_id][google.firestore.v1.ExistenceFilter.target_id\], in the form
-    /// `projects/{project_id}/databases/{database_id}/documents/{document_path}`.
-    ///
-    /// This bloom filter may be omitted at the server's discretion, such as if it
-    /// is deemed that the client will not make use of it or if it is too
-    /// computationally expensive to calculate or transmit. Clients must gracefully
-    /// handle this field being absent by falling back to the logic used before
-    /// this field existed; that is, re-add the target without a resume token to
-    /// figure out which documents in the client's cache are out of sync.
-    #[prost(message, optional, tag = "3")]
-    pub unchanged_names: ::core::option::Option<BloomFilter>,
 }
-/// The request for
-/// \[Firestore.GetDocument][google.firestore.v1.Firestore.GetDocument\].
+/// The request for [Firestore.GetDocument][google.firestore.v1.Firestore.GetDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDocumentRequest {
@@ -1339,72 +1178,49 @@ pub mod get_document_request {
         #[prost(bytes, tag = "3")]
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Reads the version of the document at the given time.
-        ///
-        /// This must be a microsecond precision timestamp within the past one hour,
-        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
-        /// minute timestamp within the past 7 days.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "5")]
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The request for
-/// \[Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments\].
+/// The request for [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsRequest {
     /// Required. The parent resource name. In the format:
     /// `projects/{project_id}/databases/{database_id}/documents` or
     /// `projects/{project_id}/databases/{database_id}/documents/{document_path}`.
-    ///
     /// For example:
     /// `projects/my-project/databases/my-database/documents` or
     /// `projects/my-project/databases/my-database/documents/chatrooms/my-chatroom`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The collection ID, relative to `parent`, to list.
-    ///
-    /// For example: `chatrooms` or `messages`.
-    ///
-    /// This is optional, and when not provided, Firestore will list documents
-    /// from all collections under the provided `parent`.
+    /// Required. The collection ID, relative to `parent`, to list. For example: `chatrooms`
+    /// or `messages`.
     #[prost(string, tag = "2")]
     pub collection_id: ::prost::alloc::string::String,
-    /// Optional. The maximum number of documents to return in a single response.
-    ///
-    /// Firestore may return fewer than this value.
+    /// The maximum number of documents to return.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous `ListDocuments` response.
-    ///
-    /// Provide this to retrieve the subsequent page. When paginating, all other
-    /// parameters (with the exception of `page_size`) must match the values set
-    /// in the request that generated the page token.
+    /// The `next_page_token` value returned from a previous List request, if any.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The optional ordering of the documents to return.
-    ///
-    /// For example: `priority desc, __name__ desc`.
-    ///
-    /// This mirrors the [`ORDER BY`]\[google.firestore.v1.StructuredQuery.order_by\]
-    /// used in Firestore queries but in a string representation. When absent,
-    /// documents are ordered based on `__name__ ASC`.
+    /// The order to sort results by. For example: `priority desc, name`.
     #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
-    /// Optional. The fields to return. If not set, returns all fields.
+    /// The fields to return. If not set, returns all fields.
     ///
     /// If a document has a field that is not present in this mask, that field
     /// will not be returned in the response.
     #[prost(message, optional, tag = "7")]
     pub mask: ::core::option::Option<DocumentMask>,
-    /// If the list should show missing documents.
+    /// If the list should show missing documents. A missing document is a
+    /// document that does not exist but has sub-documents. These documents will
+    /// be returned with a key but will not have fields, [Document.create_time][google.firestore.v1.Document.create_time],
+    /// or [Document.update_time][google.firestore.v1.Document.update_time] set.
     ///
-    /// A document is missing if it does not exist, but there are sub-documents
-    /// nested underneath it. When true, such missing documents will be returned
-    /// with a key but will not have fields,
-    /// \[`create_time`][google.firestore.v1.Document.create_time\], or
-    /// \[`update_time`][google.firestore.v1.Document.update_time\] set.
-    ///
-    /// Requests with `show_missing` may not specify `where` or `order_by`.
+    /// Requests with `show_missing` may not specify `where` or
+    /// `order_by`.
     #[prost(bool, tag = "12")]
     pub show_missing: bool,
     /// The consistency mode for this transaction.
@@ -1421,34 +1237,27 @@ pub mod list_documents_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
-        /// Perform the read as part of an already active transaction.
+        /// Reads documents in a transaction.
         #[prost(bytes, tag = "8")]
         Transaction(::prost::alloc::vec::Vec<u8>),
-        /// Perform the read at the provided time.
-        ///
-        /// This must be a microsecond precision timestamp within the past one hour,
-        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
-        /// minute timestamp within the past 7 days.
+        /// Reads documents as they were at the given time.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "10")]
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The response for
-/// \[Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments\].
+/// The response for [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsResponse {
     /// The Documents found.
     #[prost(message, repeated, tag = "1")]
     pub documents: ::prost::alloc::vec::Vec<Document>,
-    /// A token to retrieve the next page of documents.
-    ///
-    /// If this field is omitted, there are no subsequent pages.
+    /// The next page token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for
-/// \[Firestore.CreateDocument][google.firestore.v1.Firestore.CreateDocument\].
+/// The request for [Firestore.CreateDocument][google.firestore.v1.Firestore.CreateDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
@@ -1457,8 +1266,7 @@ pub struct CreateDocumentRequest {
     /// `projects/{project_id}/databases/{database_id}/documents/chatrooms/{chatroom_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The collection ID, relative to `parent`, to list. For example:
-    /// `chatrooms`.
+    /// Required. The collection ID, relative to `parent`, to list. For example: `chatrooms`.
     #[prost(string, tag = "2")]
     pub collection_id: ::prost::alloc::string::String,
     /// The client-assigned document ID to use for this document.
@@ -1476,8 +1284,7 @@ pub struct CreateDocumentRequest {
     #[prost(message, optional, tag = "5")]
     pub mask: ::core::option::Option<DocumentMask>,
 }
-/// The request for
-/// \[Firestore.UpdateDocument][google.firestore.v1.Firestore.UpdateDocument\].
+/// The request for [Firestore.UpdateDocument][google.firestore.v1.Firestore.UpdateDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDocumentRequest {
@@ -1505,8 +1312,7 @@ pub struct UpdateDocumentRequest {
     #[prost(message, optional, tag = "4")]
     pub current_document: ::core::option::Option<Precondition>,
 }
-/// The request for
-/// \[Firestore.DeleteDocument][google.firestore.v1.Firestore.DeleteDocument\].
+/// The request for [Firestore.DeleteDocument][google.firestore.v1.Firestore.DeleteDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDocumentRequest {
@@ -1519,8 +1325,7 @@ pub struct DeleteDocumentRequest {
     #[prost(message, optional, tag = "2")]
     pub current_document: ::core::option::Option<Precondition>,
 }
-/// The request for
-/// \[Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments\].
+/// The request for [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetDocumentsRequest {
@@ -1567,23 +1372,18 @@ pub mod batch_get_documents_request {
         #[prost(message, tag = "5")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        ///
-        /// This must be a microsecond precision timestamp within the past one hour,
-        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
-        /// minute timestamp within the past 7 days.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The streamed response for
-/// \[Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments\].
+/// The streamed response for [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetDocumentsResponse {
     /// The transaction that was started as part of this request.
     /// Will only be set in the first response, and only if
-    /// \[BatchGetDocumentsRequest.new_transaction][google.firestore.v1.BatchGetDocumentsRequest.new_transaction\]
-    /// was set in the request.
+    /// [BatchGetDocumentsRequest.new_transaction][google.firestore.v1.BatchGetDocumentsRequest.new_transaction] was set in the request.
     #[prost(bytes = "vec", tag = "3")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
     /// The time at which the document was read.
@@ -1613,8 +1413,7 @@ pub mod batch_get_documents_response {
         Missing(::prost::alloc::string::String),
     }
 }
-/// The request for
-/// \[Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction\].
+/// The request for [Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionRequest {
@@ -1627,8 +1426,7 @@ pub struct BeginTransactionRequest {
     #[prost(message, optional, tag = "2")]
     pub options: ::core::option::Option<TransactionOptions>,
 }
-/// The response for
-/// \[Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction\].
+/// The response for [Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionResponse {
@@ -1636,7 +1434,7 @@ pub struct BeginTransactionResponse {
     #[prost(bytes = "vec", tag = "1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
-/// The request for \[Firestore.Commit][google.firestore.v1.Firestore.Commit\].
+/// The request for [Firestore.Commit][google.firestore.v1.Firestore.Commit].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
@@ -1653,7 +1451,7 @@ pub struct CommitRequest {
     #[prost(bytes = "vec", tag = "3")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
-/// The response for \[Firestore.Commit][google.firestore.v1.Firestore.Commit\].
+/// The response for [Firestore.Commit][google.firestore.v1.Firestore.Commit].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitResponse {
@@ -1668,7 +1466,7 @@ pub struct CommitResponse {
     #[prost(message, optional, tag = "2")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request for \[Firestore.Rollback][google.firestore.v1.Firestore.Rollback\].
+/// The request for [Firestore.Rollback][google.firestore.v1.Firestore.Rollback].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackRequest {
@@ -1680,7 +1478,7 @@ pub struct RollbackRequest {
     #[prost(bytes = "vec", tag = "2")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
-/// The request for \[Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery\].
+/// The request for [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryRequest {
@@ -1729,24 +1527,19 @@ pub mod run_query_request {
         #[prost(message, tag = "6")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        ///
-        /// This must be a microsecond precision timestamp within the past one hour,
-        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
-        /// minute timestamp within the past 7 days.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The response for
-/// \[Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery\].
+/// The response for [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryResponse {
     /// The transaction that was started as part of this request.
     /// Can only be set in the first response, and only if
-    /// \[RunQueryRequest.new_transaction][google.firestore.v1.RunQueryRequest.new_transaction\]
-    /// was set in the request. If set, no other fields will be set in this
-    /// response.
+    /// [RunQueryRequest.new_transaction][google.firestore.v1.RunQueryRequest.new_transaction] was set in the request.
+    /// If set, no other fields will be set in this response.
     #[prost(bytes = "vec", tag = "2")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
     /// A query result, not set when reporting partial progress.
@@ -1787,8 +1580,7 @@ pub mod run_query_response {
         Done(bool),
     }
 }
-/// The request for
-/// \[Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery\].
+/// The request for [Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAggregationQueryRequest {
@@ -1839,15 +1631,14 @@ pub mod run_aggregation_query_request {
         NewTransaction(super::TransactionOptions),
         /// Executes the query at the given timestamp.
         ///
-        /// This must be a microsecond precision timestamp within the past one hour,
-        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
-        /// minute timestamp within the past 7 days.
+        /// Requires:
+        ///
+        /// * Cannot be more than 270 seconds in the past.
         #[prost(message, tag = "6")]
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The response for
-/// \[Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery\].
+/// The response for [Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAggregationQueryResponse {
@@ -1862,19 +1653,11 @@ pub struct RunAggregationQueryResponse {
     /// a new transaction.
     #[prost(bytes = "vec", tag = "2")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
-    /// The time at which the aggregate result was computed. This is always
-    /// monotonically increasing; in this case, the previous AggregationResult in
-    /// the result stream are guaranteed not to have changed between their
-    /// `read_time` and this one.
-    ///
-    /// If the query returns no results, a response with `read_time` and no
-    /// `result` will be sent, and this represents the time at which the query
-    /// was run.
+    /// The time at which the aggregate value is valid for.
     #[prost(message, optional, tag = "3")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request for
-/// \[Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery\].
+/// The request for [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionQueryRequest {
@@ -1947,16 +1730,12 @@ pub mod partition_query_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
         /// Reads documents as they were at the given time.
-        ///
-        /// This must be a microsecond precision timestamp within the past one hour,
-        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
-        /// minute timestamp within the past 7 days.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "6")]
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The response for
-/// \[Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery\].
+/// The response for [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionQueryResponse {
@@ -1985,7 +1764,7 @@ pub struct PartitionQueryResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for \[Firestore.Write][google.firestore.v1.Firestore.Write\].
+/// The request for [Firestore.Write][google.firestore.v1.Firestore.Write].
 ///
 /// The first request creates a stream, or resumes an existing one from a token.
 ///
@@ -2019,9 +1798,9 @@ pub struct WriteRequest {
     /// A stream token that was previously sent by the server.
     ///
     /// The client should set this field to the token from the most recent
-    /// \[WriteResponse][google.firestore.v1.WriteResponse\] it has received. This
-    /// acknowledges that the client has received responses up to this token. After
-    /// sending this token, earlier tokens may not be used anymore.
+    /// [WriteResponse][google.firestore.v1.WriteResponse] it has received. This acknowledges that the client has
+    /// received responses up to this token. After sending this token, earlier
+    /// tokens may not be used anymore.
     ///
     /// The server may close the stream if there are too many unacknowledged
     /// responses.
@@ -2039,7 +1818,7 @@ pub struct WriteRequest {
         ::prost::alloc::string::String,
     >,
 }
-/// The response for \[Firestore.Write][google.firestore.v1.Firestore.Write\].
+/// The response for [Firestore.Write][google.firestore.v1.Firestore.Write].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteResponse {
@@ -2064,7 +1843,7 @@ pub struct WriteResponse {
     #[prost(message, optional, tag = "4")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// A request for \[Firestore.Listen][google.firestore.v1.Firestore.Listen\]
+/// A request for [Firestore.Listen][google.firestore.v1.Firestore.Listen]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListenRequest {
@@ -2096,7 +1875,7 @@ pub mod listen_request {
         RemoveTarget(i32),
     }
 }
-/// The response for \[Firestore.Listen][google.firestore.v1.Firestore.Listen\].
+/// The response for [Firestore.Listen][google.firestore.v1.Firestore.Listen].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListenResponse {
@@ -2113,14 +1892,14 @@ pub mod listen_response {
         /// Targets have changed.
         #[prost(message, tag = "2")]
         TargetChange(super::TargetChange),
-        /// A \[Document][google.firestore.v1.Document\] has changed.
+        /// A [Document][google.firestore.v1.Document] has changed.
         #[prost(message, tag = "3")]
         DocumentChange(super::DocumentChange),
-        /// A \[Document][google.firestore.v1.Document\] has been deleted.
+        /// A [Document][google.firestore.v1.Document] has been deleted.
         #[prost(message, tag = "4")]
         DocumentDelete(super::DocumentDelete),
-        /// A \[Document][google.firestore.v1.Document\] has been removed from a target
-        /// (because it is no longer relevant to that target).
+        /// A [Document][google.firestore.v1.Document] has been removed from a target (because it is no longer
+        /// relevant to that target).
         #[prost(message, tag = "6")]
         DocumentRemove(super::DocumentRemove),
         /// A filter to apply to the set of documents previously returned for the
@@ -2143,22 +1922,13 @@ pub struct Target {
     /// If the target should be removed once it is current and consistent.
     #[prost(bool, tag = "6")]
     pub once: bool,
-    /// The number of documents that last matched the query at the resume token or
-    /// read time.
-    ///
-    /// This value is only relevant when a `resume_type` is provided. This value
-    /// being present and greater than zero signals that the client wants
-    /// `ExistenceFilter.unchanged_names` to be included in the response.
-    #[prost(message, optional, tag = "12")]
-    pub expected_count: ::core::option::Option<i32>,
     /// The type of target to listen to.
     #[prost(oneof = "target::TargetType", tags = "2, 3")]
     pub target_type: ::core::option::Option<target::TargetType>,
     /// When to start listening.
     ///
-    /// If specified, only the matching Documents that have been updated AFTER the
-    /// `resume_token` or `read_time` will be returned. Otherwise, all matching
-    /// Documents are returned before any subsequent changes.
+    /// If not specified, all matching Documents are returned before any
+    /// subsequent changes.
     #[prost(oneof = "target::ResumeType", tags = "4, 11")]
     pub resume_type: ::core::option::Option<target::ResumeType>,
 }
@@ -2215,14 +1985,12 @@ pub mod target {
     }
     /// When to start listening.
     ///
-    /// If specified, only the matching Documents that have been updated AFTER the
-    /// `resume_token` or `read_time` will be returned. Otherwise, all matching
-    /// Documents are returned before any subsequent changes.
+    /// If not specified, all matching Documents are returned before any
+    /// subsequent changes.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResumeType {
-        /// A resume token from a prior
-        /// \[TargetChange][google.firestore.v1.TargetChange\] for an identical target.
+        /// A resume token from a prior [TargetChange][google.firestore.v1.TargetChange] for an identical target.
         ///
         /// Using a resume token with a different target is unsupported and may fail.
         #[prost(bytes, tag = "4")]
@@ -2335,8 +2103,7 @@ pub mod target_change {
         }
     }
 }
-/// The request for
-/// \[Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds\].
+/// The request for [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCollectionIdsRequest {
@@ -2350,7 +2117,7 @@ pub struct ListCollectionIdsRequest {
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token. Must be a value from
-    /// \[ListCollectionIdsResponse][google.firestore.v1.ListCollectionIdsResponse\].
+    /// [ListCollectionIdsResponse][google.firestore.v1.ListCollectionIdsResponse].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The consistency mode for this request.
@@ -2368,16 +2135,12 @@ pub mod list_collection_ids_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
         /// Reads documents as they were at the given time.
-        ///
-        /// This must be a microsecond precision timestamp within the past one hour,
-        /// or if Point-in-Time Recovery is enabled, can additionally be a whole
-        /// minute timestamp within the past 7 days.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "4")]
         ReadTime(::prost_types::Timestamp),
     }
 }
-/// The response from
-/// \[Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds\].
+/// The response from [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCollectionIdsResponse {
@@ -2388,8 +2151,7 @@ pub struct ListCollectionIdsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for
-/// \[Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite\].
+/// The request for [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchWriteRequest {
@@ -2411,8 +2173,7 @@ pub struct BatchWriteRequest {
         ::prost::alloc::string::String,
     >,
 }
-/// The response from
-/// \[Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite\].
+/// The response from [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchWriteResponse {
@@ -2440,8 +2201,8 @@ pub mod firestore_client {
     /// document database that simplifies storing, syncing, and querying data for
     /// your mobile, web, and IoT apps at global scale. Its client libraries provide
     /// live synchronization and offline support, while its security features and
-    /// integrations with Firebase and Google Cloud Platform accelerate building
-    /// truly serverless apps.
+    /// integrations with Firebase and Google Cloud Platform (GCP) accelerate
+    /// building truly serverless apps.
     #[derive(Debug, Clone)]
     pub struct FirestoreClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -2756,9 +2517,8 @@ pub mod firestore_client {
         }
         /// Runs an aggregation query.
         ///
-        /// Rather than producing [Document][google.firestore.v1.Document] results like
-        /// [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery], this API
-        /// allows running an aggregation to produce a series of
+        /// Rather than producing [Document][google.firestore.v1.Document] results like [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery],
+        /// this API allows running an aggregation to produce a series of
         /// [AggregationResult][google.firestore.v1.AggregationResult] server-side.
         ///
         /// High-Level Example:
@@ -2827,8 +2587,7 @@ pub mod firestore_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Streams batches of document updates and deletes, in order. This method is
-        /// only available via gRPC or WebChannel (not REST).
+        /// Streams batches of document updates and deletes, in order.
         pub async fn write(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::WriteRequest>,
@@ -2854,8 +2613,7 @@ pub mod firestore_client {
                 .insert(GrpcMethod::new("google.firestore.v1.Firestore", "Write"));
             self.inner.streaming(req, path, codec).await
         }
-        /// Listens to changes. This method is only available via gRPC or WebChannel
-        /// (not REST).
+        /// Listens to changes.
         pub async fn listen(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::ListenRequest>,
@@ -2914,8 +2672,7 @@ pub mod firestore_client {
         /// The BatchWrite method does not apply the write operations atomically
         /// and can apply them out of order. Method does not allow more than one write
         /// per document. Each write succeeds or fails independently. See the
-        /// [BatchWriteResponse][google.firestore.v1.BatchWriteResponse] for the
-        /// success status of each write.
+        /// [BatchWriteResponse][google.firestore.v1.BatchWriteResponse] for the success status of each write.
         ///
         /// If you require an atomically applied set of writes, use
         /// [Commit][google.firestore.v1.Firestore.Commit] instead.

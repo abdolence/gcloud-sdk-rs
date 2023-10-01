@@ -799,7 +799,7 @@ pub struct Version {
     /// Output only. Repository-specific Metadata stored against this version.
     /// The fields returned are defined by the underlying repository-specific
     /// resource. Currently, the only resource in use is
-    /// \[DockerImage][google.devtools.artifactregistry.v1.DockerImage\]
+    /// [DockerImage][google.devtools.artifactregistry.v1.DockerImage]
     #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<::prost_types::Struct>,
 }

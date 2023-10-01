@@ -19,7 +19,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -113,7 +113,7 @@ pub struct Spoke {
     #[prost(enumeration = "State", tag = "15")]
     pub state: i32,
 }
-/// Request for \[HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs\] method.
+/// Request for [HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsRequest {
@@ -133,7 +133,7 @@ pub struct ListHubsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for \[HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs\] method.
+/// Response for [HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsResponse {
@@ -148,7 +148,7 @@ pub struct ListHubsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for \[HubService.GetHub][google.cloud.networkconnectivity.v1alpha1.HubService.GetHub\] method.
+/// Request for [HubService.GetHub][google.cloud.networkconnectivity.v1alpha1.HubService.GetHub] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHubRequest {
@@ -156,7 +156,7 @@ pub struct GetHubRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for \[HubService.CreateHub][google.cloud.networkconnectivity.v1alpha1.HubService.CreateHub\] method.
+/// Request for [HubService.CreateHub][google.cloud.networkconnectivity.v1alpha1.HubService.CreateHub] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHubRequest {
@@ -185,7 +185,7 @@ pub struct CreateHubRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for \[HubService.UpdateHub][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateHub\] method.
+/// Request for [HubService.UpdateHub][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateHub] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHubRequest {
@@ -215,7 +215,7 @@ pub struct UpdateHubRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for \[HubService.DeleteHub][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteHub\].
+/// The request for [HubService.DeleteHub][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteHub].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHubRequest {
@@ -238,7 +238,7 @@ pub struct DeleteHubRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for \[HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes\].
+/// The request for [HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesRequest {
@@ -258,7 +258,7 @@ pub struct ListSpokesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// The response for \[HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes\].
+/// The response for [HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesResponse {
@@ -273,7 +273,7 @@ pub struct ListSpokesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// The request for \[HubService.GetSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.GetSpoke\].
+/// The request for [HubService.GetSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.GetSpoke].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpokeRequest {
@@ -281,7 +281,7 @@ pub struct GetSpokeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for \[HubService.CreateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.CreateSpoke\].
+/// The request for [HubService.CreateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.CreateSpoke].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpokeRequest {
@@ -310,7 +310,7 @@ pub struct CreateSpokeRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for \[HubService.UpdateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateSpoke\] method.
+/// Request for [HubService.UpdateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateSpoke] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpokeRequest {
@@ -340,7 +340,7 @@ pub struct UpdateSpokeRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for \[HubService.DeleteSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteSpoke\].
+/// The request for [HubService.DeleteSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteSpoke].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSpokeRequest {

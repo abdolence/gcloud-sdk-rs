@@ -215,10 +215,10 @@ pub struct EntityResult {
     /// increases with changes to the entity.
     ///
     /// This field is set for
-    /// \[`FULL`][google.datastore.v1beta3.EntityResult.ResultType.FULL\] entity
+    /// [`FULL`][google.datastore.v1beta3.EntityResult.ResultType.FULL] entity
     /// results.
     ///
-    /// For \[missing][google.datastore.v1beta3.LookupResponse.missing\] entities in
+    /// For [missing][google.datastore.v1beta3.LookupResponse.missing] entities in
     /// `LookupResponse`, this is the version of the snapshot that was used to look
     /// up the entity, and it is always set except for eventually consistent reads.
     #[prost(int64, tag = "4")]
@@ -567,7 +567,7 @@ pub mod property_filter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GqlQuery {
     /// A string of the format described
-    /// \[here\](<https://cloud.google.com/datastore/docs/apis/gql/gql_reference>).
+    /// [here](<https://cloud.google.com/datastore/docs/apis/gql/gql_reference>).
     #[prost(string, tag = "1")]
     pub query_string: ::prost::alloc::string::String,
     /// When false, the query string must not contain any literals and instead must
@@ -579,7 +579,7 @@ pub struct GqlQuery {
     /// For each non-reserved named binding site in the query string, there must be
     /// a named parameter with that name, but not necessarily the inverse.
     ///
-    /// Key must match regex `\[A-Za-z_$][A-Za-z_$0-9\]*`, must not match regex
+    /// Key must match regex `[A-Za-z_$][A-Za-z_$0-9]*`, must not match regex
     /// `__.*__`, and must not be `""`.
     #[prost(map = "string, message", tag = "5")]
     pub named_bindings: ::std::collections::HashMap<
@@ -708,7 +708,7 @@ pub mod query_result_batch {
     }
 }
 /// The request for
-/// \[Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup\].
+/// [Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupRequest {
@@ -723,7 +723,7 @@ pub struct LookupRequest {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for
-/// \[Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup\].
+/// [Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupResponse {
@@ -744,7 +744,7 @@ pub struct LookupResponse {
     pub deferred: ::prost::alloc::vec::Vec<Key>,
 }
 /// The request for
-/// \[Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery\].
+/// [Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryRequest {
@@ -779,7 +779,7 @@ pub mod run_query_request {
     }
 }
 /// The response for
-/// \[Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery\].
+/// [Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryResponse {
@@ -791,7 +791,7 @@ pub struct RunQueryResponse {
     pub query: ::core::option::Option<Query>,
 }
 /// The request for
-/// \[Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction\].
+/// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionRequest {
@@ -803,7 +803,7 @@ pub struct BeginTransactionRequest {
     pub transaction_options: ::core::option::Option<TransactionOptions>,
 }
 /// The response for
-/// \[Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction\].
+/// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionResponse {
@@ -812,7 +812,7 @@ pub struct BeginTransactionResponse {
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request for
-/// \[Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback\].
+/// [Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackRequest {
@@ -820,18 +820,18 @@ pub struct RollbackRequest {
     #[prost(string, tag = "8")]
     pub project_id: ::prost::alloc::string::String,
     /// The transaction identifier, returned by a call to
-    /// \[Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction\].
+    /// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
     #[prost(bytes = "vec", tag = "1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The response for
-/// \[Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback\]. (an empty
+/// [Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback]. (an empty
 /// message).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackResponse {}
 /// The request for
-/// \[Datastore.Commit][google.datastore.v1beta3.Datastore.Commit\].
+/// [Datastore.Commit][google.datastore.v1beta3.Datastore.Commit].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
@@ -882,7 +882,7 @@ pub mod commit_request {
         Unspecified = 0,
         /// Transactional: The mutations are either all applied, or none are applied.
         /// Learn about transactions
-        /// \[here\](<https://cloud.google.com/datastore/docs/concepts/transactions>).
+        /// [here](<https://cloud.google.com/datastore/docs/concepts/transactions>).
         Transactional = 1,
         /// Non-transactional: The mutations may not apply as all or none.
         NonTransactional = 2,
@@ -915,13 +915,13 @@ pub mod commit_request {
     pub enum TransactionSelector {
         /// The identifier of the transaction associated with the commit. A
         /// transaction identifier is returned by a call to
-        /// \[Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction\].
+        /// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
         #[prost(bytes, tag = "1")]
         Transaction(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// The response for
-/// \[Datastore.Commit][google.datastore.v1beta3.Datastore.Commit\].
+/// [Datastore.Commit][google.datastore.v1beta3.Datastore.Commit].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitResponse {
@@ -935,7 +935,7 @@ pub struct CommitResponse {
     pub index_updates: i32,
 }
 /// The request for
-/// \[Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds\].
+/// [Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocateIdsRequest {
@@ -948,7 +948,7 @@ pub struct AllocateIdsRequest {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for
-/// \[Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds\].
+/// [Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocateIdsResponse {
@@ -958,7 +958,7 @@ pub struct AllocateIdsResponse {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The request for
-/// \[Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds\].
+/// [Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReserveIdsRequest {
@@ -974,7 +974,7 @@ pub struct ReserveIdsRequest {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for
-/// \[Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds\].
+/// [Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReserveIdsResponse {}
@@ -1129,7 +1129,7 @@ pub mod read_options {
         ReadConsistency(i32),
         /// The identifier of the transaction in which to read. A
         /// transaction identifier is returned by a call to
-        /// \[Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction\].
+        /// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
         #[prost(bytes, tag = "2")]
         Transaction(::prost::alloc::vec::Vec<u8>),
     }
@@ -1137,9 +1137,9 @@ pub mod read_options {
 /// Options for beginning a new transaction.
 ///
 /// Transactions can be created explicitly with calls to
-/// \[Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction\]
+/// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction]
 /// or implicitly by setting
-/// \[ReadOptions.new_transaction][google.datastore.v1beta3.ReadOptions.new_transaction\]
+/// [ReadOptions.new_transaction][google.datastore.v1beta3.ReadOptions.new_transaction]
 /// in read requests.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

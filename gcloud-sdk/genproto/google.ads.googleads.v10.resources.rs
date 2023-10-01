@@ -9015,7 +9015,7 @@ pub mod smart_campaign_setting {
         /// The location ID can be fetched by Business Profile API with its form:
         /// accounts/{accountId}/locations/{locationId}. The last {locationId}
         /// component from the Business Profile API represents the
-        /// business_location_id. See the [Business Profile API]
+        /// business_location_id. See the \[Business Profile API\]
         /// (<https://developers.google.com/my-business/reference/rest/v4/accounts.locations>)
         #[prost(int64, tag = "6")]
         BusinessLocationId(i64),

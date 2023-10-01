@@ -61,13 +61,13 @@ pub struct ParsedExpr {
 /// operators with the exception of the '.' operator are modelled as function
 /// calls. This makes it easy to represent new operators into the existing AST.
 ///
-/// All references within expressions must resolve to a \[Decl][google.api.expr.v1beta1.Decl\] provided at
+/// All references within expressions must resolve to a [Decl][google.api.expr.v1beta1.Decl] provided at
 /// type-check for an expression to be valid. A reference may either be a bare
 /// identifier `name` or a qualified identifier `google.api.name`. References
 /// may either refer to a value or a function declaration.
 ///
 /// For example, the expression `google.api.name.startsWith('expr')` references
-/// the declaration `google.api.name` within a \[Expr.Select][google.api.expr.v1beta1.Expr.Select\] expression, and
+/// the declaration `google.api.name` within a [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression, and
 /// the function declaration `startsWith`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -90,7 +90,7 @@ pub mod expr {
         /// Required. Holds a single, unqualified identifier, possibly preceded by a
         /// '.'.
         ///
-        /// Qualified names are represented by the \[Expr.Select][google.api.expr.v1beta1.Expr.Select\] expression.
+        /// Qualified names are represented by the [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
     }
@@ -135,8 +135,8 @@ pub mod expr {
     }
     /// A list creation expression.
     ///
-    /// Lists may either be homogenous, e.g. `[1, 2, 3]`, or heterogenous, e.g.
-    /// `dyn([1, 'hello', 2.0])`
+    /// Lists may either be homogenous, e.g. `\[1, 2, 3\]`, or heterogenous, e.g.
+    /// `dyn(\[1, 'hello', 2.0\])`
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CreateList {
@@ -212,7 +212,7 @@ pub mod expr {
     ///     the subset of elements which satisfy the predicate:
     ///     `payments.filter(p, p > 1000)`.
     /// *  `map` - apply an expression to all elements in the input and return the
-    ///     output aggregate type: `[1, 2, 3].map(i, i * i)`.
+    ///     output aggregate type: `\[1, 2, 3\].map(i, i * i)`.
     ///
     /// The `has(m.x)` macro tests whether the property `x` is present in struct
     /// `m`. The semantics of this macro depend on the type of `m`. For proto2
@@ -287,7 +287,7 @@ pub mod expr {
 /// primitives.
 ///
 /// Lists and structs are not included as constants as these aggregate types may
-/// contain \[Expr][google.api.expr.v1beta1.Expr\] elements which require evaluation and are thus not constant.
+/// contain [Expr][google.api.expr.v1beta1.Expr] elements which require evaluation and are thus not constant.
 ///
 /// Examples of literals include: `"hello"`, `b'bytes'`, `1u`, `4.2`, `-2`,
 /// `true`, `null`.

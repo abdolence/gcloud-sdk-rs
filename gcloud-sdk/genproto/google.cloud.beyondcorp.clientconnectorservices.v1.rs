@@ -5,10 +5,10 @@ pub struct ClientConnectorService {
     /// Required. Name of resource. The name is ignored during creation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. [Output only] Create time stamp.
+    /// Output only. \[Output only\] Create time stamp.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. [Output only] Update time stamp.
+    /// Output only. \[Output only\] Update time stamp.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. User-provided name.
@@ -258,7 +258,7 @@ pub struct CreateClientConnectorServiceRequest {
     pub parent: ::prost::alloc::string::String,
     /// Optional. User-settable client connector service resource ID.
     ///   * Must start with a letter.
-    ///   * Must contain between 4-63 characters from `/\[a-z][0-9\]-/`.
+    ///   * Must contain between 4-63 characters from `/[a-z][0-9]-/`.
     ///   * Must end with a number or a letter.
     ///
     /// A random system generated name will be assigned
@@ -375,8 +375,8 @@ pub struct ClientConnectorServiceOperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -389,12 +389,12 @@ pub mod client_connector_services_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// API Overview:
+    /// ## API Overview
     ///
     /// The `beyondcorp.googleapis.com` service implements the Google Cloud
     /// BeyondCorp API.
     ///
-    /// Data Model:
+    /// ## Data Model
     ///
     /// The ClientConnectorServicesService exposes the following resources:
     ///

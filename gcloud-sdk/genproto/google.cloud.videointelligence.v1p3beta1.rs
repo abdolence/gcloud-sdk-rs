@@ -6,7 +6,7 @@ pub struct AnnotateVideoRequest {
     /// [Cloud Storage](<https://cloud.google.com/storage/>) URIs are
     /// supported. URIs must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For
+    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
     /// more information, see [Request
     /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>). To identify
     /// multiple videos, a video URI may include wildcards in the `object-id`.
@@ -30,7 +30,7 @@ pub struct AnnotateVideoRequest {
     /// Currently, only [Cloud Storage](<https://cloud.google.com/storage/>)
     /// URIs are supported. These must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For
+    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
     /// more information, see [Request
     /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     #[prost(string, tag = "4")]
@@ -99,7 +99,7 @@ pub struct LabelDetectionConfig {
     pub model: ::prost::alloc::string::String,
     /// The confidence threshold we perform filtering on the labels from
     /// frame-level detection. If not set, it is set to 0.4 by default. The valid
-    /// range for this threshold is [0.1, 0.9]. Any value set outside of this
+    /// range for this threshold is \[0.1, 0.9\]. Any value set outside of this
     /// range will be clipped.
     /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
@@ -107,7 +107,7 @@ pub struct LabelDetectionConfig {
     pub frame_confidence_threshold: f32,
     /// The confidence threshold we perform filtering on the labels from
     /// video-level and shot-level detections. If not set, it's set to 0.3 by
-    /// default. The valid range for this threshold is [0.1, 0.9]. Any value set
+    /// default. The valid range for this threshold is \[0.1, 0.9\]. Any value set
     /// outside of this range will be clipped.
     /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
@@ -217,7 +217,7 @@ pub struct LabelSegment {
     /// Video segment where a label was detected.
     #[prost(message, optional, tag = "1")]
     pub segment: ::core::option::Option<VideoSegment>,
-    /// Confidence that the label is accurate. Range: [0, 1].
+    /// Confidence that the label is accurate. Range: \[0, 1\].
     #[prost(float, tag = "2")]
     pub confidence: f32,
 }
@@ -229,7 +229,7 @@ pub struct LabelFrame {
     /// video frame for this location.
     #[prost(message, optional, tag = "1")]
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
-    /// Confidence that the label is accurate. Range: [0, 1].
+    /// Confidence that the label is accurate. Range: \[0, 1\].
     #[prost(float, tag = "2")]
     pub confidence: f32,
 }
@@ -293,7 +293,7 @@ pub struct ExplicitContentAnnotation {
 }
 /// Normalized bounding box.
 /// The normalized vertex coordinates are relative to the original image.
-/// Range: [0, 1].
+/// Range: \[0, 1\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingBox {
@@ -355,7 +355,7 @@ pub struct DetectedAttribute {
     /// A full list of supported type names will be provided in the document.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Detected attribute confidence. Range [0, 1].
+    /// Detected attribute confidence. Range \[0, 1\].
     #[prost(float, tag = "2")]
     pub confidence: f32,
     /// Text value of the detection result. For example, the value for "HairColor"
@@ -402,7 +402,7 @@ pub mod celebrity_track {
         /// The recognized celebrity.
         #[prost(message, optional, tag = "1")]
         pub celebrity: ::core::option::Option<super::Celebrity>,
-        /// Recognition confidence. Range [0, 1].
+        /// Recognition confidence. Range \[0, 1\].
         #[prost(float, tag = "2")]
         pub confidence: f32,
     }
@@ -428,7 +428,7 @@ pub struct DetectedLandmark {
     /// coordindate system. The normalized coordinates have the range from 0 to 1.
     #[prost(message, optional, tag = "2")]
     pub point: ::core::option::Option<NormalizedVertex>,
-    /// The confidence score of the detected landmark. Range [0, 1].
+    /// The confidence score of the detected landmark. Range \[0, 1\].
     #[prost(float, tag = "3")]
     pub confidence: f32,
 }
@@ -581,7 +581,7 @@ pub struct AnnotateVideoProgress {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechTranscriptionConfig {
     /// Required. *Required* The language of the supplied audio as a
-    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
+    /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     /// Example: "en-US".
     /// See [Language Support](<https://cloud.google.com/speech/docs/languages>)
     /// for a list of the currently supported language codes.
@@ -659,7 +659,7 @@ pub struct SpeechTranscription {
     /// ranked by the recognizer.
     #[prost(message, repeated, tag = "1")]
     pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
-    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
+    /// Output only. The [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
     /// language tag of the language in this result. This language code was
     /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "2")]
@@ -963,7 +963,7 @@ pub mod streaming_video_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingAnnotateVideoResponse {
-    /// If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
+    /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,

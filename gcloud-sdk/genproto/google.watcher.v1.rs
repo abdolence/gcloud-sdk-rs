@@ -82,7 +82,7 @@ pub struct Change {
     pub state: i32,
     /// The actual change data. This field is present only when `state() == EXISTS`
     /// or `state() == ERROR`. Please see
-    /// \[google.protobuf.Any][google.protobuf.Any\] about how to use the Any type.
+    /// [google.protobuf.Any][google.protobuf.Any] about how to use the Any type.
     #[prost(message, optional, tag = "6")]
     pub data: ::core::option::Option<::prost_types::Any>,
     /// If present, provides a compact representation of all the messages that have
@@ -123,7 +123,7 @@ pub mod change {
         InitialStateSkipped = 2,
         /// The element may exist, but some error has occurred. More information is
         /// available in the data field - the value is a serialized Status
-        /// proto (from \[google.rpc.Status][\])
+        /// proto (from [google.rpc.Status][])
         Error = 3,
     }
     impl State {

@@ -6,7 +6,7 @@ pub struct CheckRequest {
     /// `"pubsub.googleapis.com"`.
     ///
     /// See
-    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
+    /// [google.api.Service](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
@@ -62,7 +62,7 @@ pub struct ResourceInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
     /// Operation is allowed when this field is not set. Any non-'OK' status
-    /// indicates a denial; \[google.rpc.Status.details][google.rpc.Status.details\]
+    /// indicates a denial; [google.rpc.Status.details][google.rpc.Status.details]
     /// would contain additional details about the denial.
     #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
@@ -81,7 +81,7 @@ pub struct ReportRequest {
     /// `"pubsub.googleapis.com"`.
     ///
     /// See
-    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
+    /// [google.api.Service](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
@@ -103,14 +103,6 @@ pub struct ReportRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportResponse {}
-/// Message containing resource details in a batch mode.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceInfoList {
-    /// The resource details.
-    #[prost(message, repeated, tag = "1")]
-    pub resources: ::prost::alloc::vec::Vec<ResourceInfo>,
-}
 /// Generated client implementations.
 pub mod service_controller_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]

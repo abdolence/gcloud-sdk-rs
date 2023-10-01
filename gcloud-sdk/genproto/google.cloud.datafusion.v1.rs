@@ -553,7 +553,7 @@ pub struct ListAvailableVersionsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Whether or not to return the latest patch of every available minor version.
     /// If true, only the latest patch will be returned. Ex. if allowed versions is
-    /// [6.1.1, 6.1.2, 6.2.0] then response will be [6.1.2, 6.2.0]
+    /// \[6.1.1, 6.1.2, 6.2.0\] then response will be \[6.1.2, 6.2.0\]
     #[prost(bool, tag = "4")]
     pub latest_patch_only: bool,
 }
@@ -652,7 +652,7 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,

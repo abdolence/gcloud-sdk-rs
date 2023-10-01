@@ -19,7 +19,7 @@ pub mod upload_ref {
         UploadUrl(::prost::alloc::string::String),
     }
 }
-/// Identifier for a \[Photo][google.streetview.publish.v1.Photo\].
+/// Identifier for a [Photo][google.streetview.publish.v1.Photo].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhotoId {
@@ -48,7 +48,7 @@ pub struct Level {
 pub struct Pose {
     /// Latitude and longitude pair of the pose, as explained here:
     /// <https://cloud.google.com/datastore/docs/reference/rest/Shared.Types/LatLng>
-    /// When creating a \[Photo][google.streetview.publish.v1.Photo\], if the
+    /// When creating a [Photo][google.streetview.publish.v1.Photo], if the
     /// latitude and longitude pair are not provided, the geolocation from the
     /// exif header is used. A latitude and longitude pair not provided in the
     /// photo or exif header causes the photo process to fail.
@@ -170,9 +170,9 @@ pub struct Photo {
     pub upload_reference: ::core::option::Option<UploadRef>,
     /// Output only. The download URL for the photo bytes. This field is set only
     /// when
-    /// \[GetPhotoRequest.view][google.streetview.publish.v1.GetPhotoRequest.view\]
+    /// [GetPhotoRequest.view][google.streetview.publish.v1.GetPhotoRequest.view]
     /// is set to
-    /// \[PhotoView.INCLUDE_DOWNLOAD_URL][google.streetview.publish.v1.PhotoView.INCLUDE_DOWNLOAD_URL\].
+    /// [PhotoView.INCLUDE_DOWNLOAD_URL][google.streetview.publish.v1.PhotoView.INCLUDE_DOWNLOAD_URL].
     #[prost(string, tag = "3")]
     pub download_url: ::prost::alloc::string::String,
     /// Output only. The thumbnail URL for showing a preview of the given photo.
@@ -709,7 +709,7 @@ impl ProcessingFailureReason {
         }
     }
 }
-/// Request to create a \[Photo][google.streetview.publish.v1.Photo\].
+/// Request to create a [Photo][google.streetview.publish.v1.Photo].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhotoRequest {
@@ -717,7 +717,7 @@ pub struct CreatePhotoRequest {
     #[prost(message, optional, tag = "1")]
     pub photo: ::core::option::Option<Photo>,
 }
-/// Request to get a \[Photo][google.streetview.publish.v1.Photo\].
+/// Request to get a [Photo][google.streetview.publish.v1.Photo].
 ///
 /// By default
 ///
@@ -729,11 +729,11 @@ pub struct CreatePhotoRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhotoRequest {
-    /// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].
+    /// Required. ID of the [Photo][google.streetview.publish.v1.Photo].
     #[prost(string, tag = "1")]
     pub photo_id: ::prost::alloc::string::String,
     /// Required. Specifies if a download URL for the photo bytes should be returned in the
-    /// \[Photo][google.streetview.publish.v1.Photo\] response.
+    /// [Photo][google.streetview.publish.v1.Photo] response.
     #[prost(enumeration = "PhotoView", tag = "2")]
     pub view: i32,
     /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
@@ -744,7 +744,7 @@ pub struct GetPhotoRequest {
     #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
-/// Request to get one or more \[Photos][google.streetview.publish.v1.Photo\].
+/// Request to get one or more [Photos][google.streetview.publish.v1.Photo].
 /// By default
 ///
 /// * does not return the download URL for the photo bytes.
@@ -755,7 +755,7 @@ pub struct GetPhotoRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetPhotosRequest {
-    /// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. For HTTP
+    /// Required. IDs of the [Photos][google.streetview.publish.v1.Photo]. For HTTP
     /// GET requests, the URL query parameter should be
     /// `photoIds=<id1>&photoIds=<id2>&...`.
     #[prost(string, repeated, tag = "1")]
@@ -772,23 +772,23 @@ pub struct BatchGetPhotosRequest {
     #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
-/// Response to batch get of \[Photos][google.streetview.publish.v1.Photo\].
+/// Response to batch get of [Photos][google.streetview.publish.v1.Photo].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetPhotosResponse {
     /// List of results for each individual
-    /// \[Photo][google.streetview.publish.v1.Photo\] requested, in the same order as
+    /// [Photo][google.streetview.publish.v1.Photo] requested, in the same order as
     /// the requests in
-    /// \[BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos\].
+    /// [BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos].
     #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<PhotoResponse>,
 }
 /// Response payload for a single
-/// \[Photo][google.streetview.publish.v1.Photo\]
+/// [Photo][google.streetview.publish.v1.Photo]
 /// in batch operations including
-/// \[BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos\]
+/// [BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos]
 /// and
-/// \[BatchUpdatePhotos][google.streetview.publish.v1.StreetViewPublishService.BatchUpdatePhotos\].
+/// [BatchUpdatePhotos][google.streetview.publish.v1.StreetViewPublishService.BatchUpdatePhotos].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhotoResponse {
@@ -796,7 +796,7 @@ pub struct PhotoResponse {
     /// request.
     #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
-    /// The \[Photo][google.streetview.publish.v1.Photo\] resource, if the request
+    /// The [Photo][google.streetview.publish.v1.Photo] resource, if the request
     /// was successful.
     #[prost(message, optional, tag = "2")]
     pub photo: ::core::option::Option<Photo>,
@@ -812,7 +812,7 @@ pub struct PhotoResponse {
 /// * `view` controls if the download URL for the photo bytes is returned.
 /// * `pageSize` determines the maximum number of photos to return.
 /// * `pageToken` is the next page token value returned from a previous
-/// \[ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos\]
+/// [ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos]
 ///      request, if any.
 /// * `filter` allows filtering by a given parameter. 'placeId' is the only
 /// parameter supported at the moment.
@@ -831,9 +831,9 @@ pub struct ListPhotosRequest {
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The
-    /// \[nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token\]
+    /// [nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token]
     /// value returned from a previous
-    /// \[ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos\]
+    /// [ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos]
     /// request, if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -857,7 +857,7 @@ pub struct ListPhotosRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhotosResponse {
     /// List of photos. The
-    /// \[pageSize][google.streetview.publish.v1.ListPhotosRequest.page_size\] field
+    /// [pageSize][google.streetview.publish.v1.ListPhotosRequest.page_size] field
     /// in the request determines the number of items returned.
     #[prost(message, repeated, tag = "1")]
     pub photos: ::prost::alloc::vec::Vec<Photo>,
@@ -867,19 +867,19 @@ pub struct ListPhotosResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to update the metadata of a
-/// \[Photo][google.streetview.publish.v1.Photo\]. Updating the pixels of a photo
+/// [Photo][google.streetview.publish.v1.Photo]. Updating the pixels of a photo
 /// is not supported.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePhotoRequest {
-    /// Required. \[Photo][google.streetview.publish.v1.Photo\] object containing the
+    /// Required. [Photo][google.streetview.publish.v1.Photo] object containing the
     /// new metadata.
     #[prost(message, optional, tag = "1")]
     pub photo: ::core::option::Option<Photo>,
     /// Required. Mask that identifies fields on the photo metadata to update.
-    /// If not present, the old \[Photo][google.streetview.publish.v1.Photo\]
+    /// If not present, the old [Photo][google.streetview.publish.v1.Photo]
     /// metadata is entirely replaced with the
-    /// new \[Photo][google.streetview.publish.v1.Photo\] metadata in this request.
+    /// new [Photo][google.streetview.publish.v1.Photo] metadata in this request.
     /// The update fails if invalid fields are specified. Multiple fields can be
     /// specified in a comma-delimited list.
     ///
@@ -896,10 +896,10 @@ pub struct UpdatePhotoRequest {
     ///
     ///
     /// > Note: When
-    /// \[updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask\]
+    /// [updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask]
     /// contains repeated fields, the entire set of repeated values get replaced
     /// with the new contents. For example, if
-    /// \[updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask\]
+    /// [updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask]
     /// contains `connections` and `UpdatePhotoRequest.photo.connections` is empty,
     /// all connections are removed.
     #[prost(message, optional, tag = "2")]
@@ -911,56 +911,56 @@ pub struct UpdatePhotoRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdatePhotosRequest {
     /// Required. List of
-    /// \[UpdatePhotoRequests][google.streetview.publish.v1.UpdatePhotoRequest\].
+    /// [UpdatePhotoRequests][google.streetview.publish.v1.UpdatePhotoRequest].
     #[prost(message, repeated, tag = "1")]
     pub update_photo_requests: ::prost::alloc::vec::Vec<UpdatePhotoRequest>,
 }
 /// Response to batch update of metadata of one or more
-/// \[Photos][google.streetview.publish.v1.Photo\].
+/// [Photos][google.streetview.publish.v1.Photo].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdatePhotosResponse {
     /// List of results for each individual
-    /// \[Photo][google.streetview.publish.v1.Photo\] updated, in the same order as
+    /// [Photo][google.streetview.publish.v1.Photo] updated, in the same order as
     /// the request.
     #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<PhotoResponse>,
 }
-/// Request to delete a \[Photo][google.streetview.publish.v1.Photo\].
+/// Request to delete a [Photo][google.streetview.publish.v1.Photo].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhotoRequest {
-    /// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].
+    /// Required. ID of the [Photo][google.streetview.publish.v1.Photo].
     #[prost(string, tag = "1")]
     pub photo_id: ::prost::alloc::string::String,
 }
-/// Request to delete multiple \[Photos][google.streetview.publish.v1.Photo\].
+/// Request to delete multiple [Photos][google.streetview.publish.v1.Photo].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeletePhotosRequest {
-    /// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. HTTP
+    /// Required. IDs of the [Photos][google.streetview.publish.v1.Photo]. HTTP
     /// GET requests require the following syntax for the URL query parameter:
     /// `photoIds=<id1>&photoIds=<id2>&...`.
     #[prost(string, repeated, tag = "1")]
     pub photo_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request to create a
-/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] from a video.
+/// [PhotoSequence][google.streetview.publish.v1.PhotoSequence] from a video.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhotoSequenceRequest {
-    /// Required. \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] to
+    /// Required. [PhotoSequence][google.streetview.publish.v1.PhotoSequence] to
     /// create.
     #[prost(message, optional, tag = "1")]
     pub photo_sequence: ::core::option::Option<PhotoSequence>,
     /// Required. The input form of
-    /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+    /// [PhotoSequence][google.streetview.publish.v1.PhotoSequence].
     #[prost(enumeration = "create_photo_sequence_request::InputType", tag = "2")]
     pub input_type: i32,
 }
 /// Nested message and enum types in `CreatePhotoSequenceRequest`.
 pub mod create_photo_sequence_request {
-    /// Input forms of \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+    /// Input forms of [PhotoSequence][google.streetview.publish.v1.PhotoSequence].
     #[derive(
         Clone,
         Copy,
@@ -974,7 +974,7 @@ pub mod create_photo_sequence_request {
     )]
     #[repr(i32)]
     pub enum InputType {
-        /// Not specified. Server will return \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\].
+        /// Not specified. Server will return [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
         Unspecified = 0,
         /// 360 Video.
         Video = 1,
@@ -1004,17 +1004,17 @@ pub mod create_photo_sequence_request {
         }
     }
 }
-/// Request to get a \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+/// Request to get a [PhotoSequence][google.streetview.publish.v1.PhotoSequence].
 ///
 /// By default
 ///
 /// * does not return the download URL for the
-/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+/// [PhotoSequence][google.streetview.publish.v1.PhotoSequence].
 ///
 /// Parameters:
 ///
 /// * `view` controls if the download URL for the
-/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] is
+/// [PhotoSequence][google.streetview.publish.v1.PhotoSequence] is
 ///    returned.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1024,7 +1024,7 @@ pub struct GetPhotoSequenceRequest {
     pub sequence_id: ::prost::alloc::string::String,
     /// Specifies if a download URL for the photo sequence should be returned in
     /// `download_url` of individual photos in the
-    /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] response.
+    /// [PhotoSequence][google.streetview.publish.v1.PhotoSequence] response.
     /// > Note: Currently not implemented.
     #[deprecated]
     #[prost(enumeration = "PhotoView", tag = "2")]
@@ -1037,22 +1037,22 @@ pub struct GetPhotoSequenceRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Request to delete a
-/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+/// [PhotoSequence][google.streetview.publish.v1.PhotoSequence].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhotoSequenceRequest {
     /// Required. ID of the
-    /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+    /// [PhotoSequence][google.streetview.publish.v1.PhotoSequence].
     #[prost(string, tag = "1")]
     pub sequence_id: ::prost::alloc::string::String,
 }
 /// Response to batch delete of one or more
-/// \[Photos][google.streetview.publish.v1.Photo\].
+/// [Photos][google.streetview.publish.v1.Photo].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeletePhotosResponse {
     /// The status for the operation to delete a single
-    /// \[Photo][google.streetview.publish.v1.Photo\] in the batch request.
+    /// [Photo][google.streetview.publish.v1.Photo] in the batch request.
     #[prost(message, repeated, tag = "1")]
     pub status: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
@@ -1063,7 +1063,7 @@ pub struct BatchDeletePhotosResponse {
 ///
 /// * `pageSize` determines the maximum number of photo sequences to return.
 /// * `pageToken` is the next page token value returned from a previous
-/// \[ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences\]
+/// [ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences]
 ///    request, if any.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1077,9 +1077,9 @@ pub struct ListPhotoSequencesRequest {
     #[prost(int32, tag = "1")]
     pub page_size: i32,
     /// Optional. The
-    /// \[nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token\]
+    /// [nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token]
     /// value returned from a previous
-    /// \[ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences\]
+    /// [ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences]
     /// request, if any.
     #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
@@ -1098,24 +1098,24 @@ pub struct ListPhotoSequencesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhotoSequencesResponse {
-    /// List of photo sequences via \[Operation][google.longrunning.Operation\]
+    /// List of photo sequences via [Operation][google.longrunning.Operation]
     /// interface.
     ///
     /// The maximum number of items returned is based on the
-    /// \[pageSize][google.streetview.publish.v1.ListPhotoSequencesRequest.page_size\]
+    /// [pageSize][google.streetview.publish.v1.ListPhotoSequencesRequest.page_size]
     /// field in the request.
     ///
     /// Each item in the list can have three possible states,
     ///
     /// * `Operation.done` = false, if the processing of
-    ///    \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] is not
+    ///    [PhotoSequence][google.streetview.publish.v1.PhotoSequence] is not
     ///    finished yet.
     /// * `Operation.done` = true and `Operation.error` is populated, if there was
     ///    an error in processing.
     /// * `Operation.done` = true and `Operation.response` contains a
-    ///    \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] message,
+    ///    [PhotoSequence][google.streetview.publish.v1.PhotoSequence] message,
     ///    In each sequence, only
-    ///    \[Id][google.streetview.publish.v1.PhotoSequence.id\] is populated.
+    ///    [Id][google.streetview.publish.v1.PhotoSequence.id] is populated.
     #[prost(message, repeated, tag = "1")]
     pub photo_sequences: ::prost::alloc::vec::Vec<
         super::super::super::longrunning::Operation,
@@ -1125,7 +1125,7 @@ pub struct ListPhotoSequencesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Specifies which view of the \[Photo][google.streetview.publish.v1.Photo\]
+/// Specifies which view of the [Photo][google.streetview.publish.v1.Photo]
 /// to include in the response.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]

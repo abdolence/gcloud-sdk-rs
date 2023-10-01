@@ -6,7 +6,7 @@ pub struct AnnotateVideoRequest {
     /// [Google Cloud Storage](<https://cloud.google.com/storage/>) URIs are
     /// supported, which must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see
+    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see
     /// [Request URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     /// A video URI may include wildcards in `object-id`, and thus identify
     /// multiple videos. Supported wildcards: '*' to match 0 or more characters;
@@ -29,7 +29,7 @@ pub struct AnnotateVideoRequest {
     /// Currently, only [Google Cloud Storage](<https://cloud.google.com/storage/>)
     /// URIs are supported, which must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see
+    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see
     /// [Request URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     #[prost(string, tag = "4")]
     pub output_uri: ::prost::alloc::string::String,
@@ -135,7 +135,7 @@ pub struct LabelSegment {
     /// Video segment where a label was detected.
     #[prost(message, optional, tag = "1")]
     pub segment: ::core::option::Option<VideoSegment>,
-    /// Confidence that the label is accurate. Range: [0, 1].
+    /// Confidence that the label is accurate. Range: \[0, 1\].
     #[prost(float, tag = "2")]
     pub confidence: f32,
 }
@@ -147,7 +147,7 @@ pub struct LabelFrame {
     /// video frame for this location.
     #[prost(message, optional, tag = "1")]
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
-    /// Confidence that the label is accurate. Range: [0, 1].
+    /// Confidence that the label is accurate. Range: \[0, 1\].
     #[prost(float, tag = "2")]
     pub confidence: f32,
 }
@@ -211,7 +211,7 @@ pub struct ExplicitContentAnnotation {
 }
 /// Normalized bounding box.
 /// The normalized vertex coordinates are relative to the original image.
-/// Range: [0, 1].
+/// Range: \[0, 1\].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingBox {

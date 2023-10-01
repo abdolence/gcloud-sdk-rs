@@ -4,7 +4,7 @@
 pub struct AlertChart {
     /// Required. The resource name of the alert policy. The format is:
     ///
-    ///      projects/\[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID\]
+    ///      projects/\[PROJECT_ID_OR_NUMBER\]/alertPolicies/\[ALERT_POLICY_ID\]
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -48,7 +48,7 @@ pub struct CollapsibleGroup {
 pub struct Aggregation {
     /// The `alignment_period` specifies a time interval, in seconds, that is used
     /// to divide the data in all the
-    /// [time series]\[google.monitoring.v3.TimeSeries\] into consistent blocks of
+    /// [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
     /// time. This will be done before the per-series aligner can be applied to
     /// the data.
     ///
@@ -143,11 +143,11 @@ pub mod aggregation {
         /// `value_type` of the input.
         AlignNone = 0,
         /// Align and convert to
-        /// \[DELTA][google.api.MetricDescriptor.MetricKind.DELTA\].
+        /// [DELTA][google.api.MetricDescriptor.MetricKind.DELTA].
         /// The output is `delta = y1 - y0`.
         ///
         /// This alignment is valid for
-        /// \[CUMULATIVE][google.api.MetricDescriptor.MetricKind.CUMULATIVE\] and
+        /// [CUMULATIVE][google.api.MetricDescriptor.MetricKind.CUMULATIVE] and
         /// `DELTA` metrics. If the selected alignment period results in periods
         /// with no data, then the aligned value for such a period is created by
         /// interpolation. The `value_type`  of the aligned result is the same as
@@ -217,7 +217,7 @@ pub mod aggregation {
         /// Align the time series by returning the ratio of the number of `True`
         /// values to the total number of values in each alignment period. This
         /// aligner is valid for `GAUGE` metrics with Boolean values. The output
-        /// value is in the range [0.0, 1.0] and has `value_type` `DOUBLE`.
+        /// value is in the range \[0.0, 1.0\] and has `value_type` `DOUBLE`.
         AlignFractionTrue = 17,
         /// Align the time series by using [percentile
         /// aggregation](<https://en.wikipedia.org/wiki/Percentile>). The resulting
@@ -341,10 +341,10 @@ pub mod aggregation {
         ReduceNone = 0,
         /// Reduce by computing the mean value across time series for each
         /// alignment period. This reducer is valid for
-        /// \[DELTA][google.api.MetricDescriptor.MetricKind.DELTA\] and
-        /// \[GAUGE][google.api.MetricDescriptor.MetricKind.GAUGE\] metrics with
+        /// [DELTA][google.api.MetricDescriptor.MetricKind.DELTA] and
+        /// [GAUGE][google.api.MetricDescriptor.MetricKind.GAUGE] metrics with
         /// numeric or distribution values. The `value_type` of the output is
-        /// \[DOUBLE][google.api.MetricDescriptor.ValueType.DOUBLE\].
+        /// [DOUBLE][google.api.MetricDescriptor.ValueType.DOUBLE].
         ReduceMean = 1,
         /// Reduce by computing the minimum value across time series for each
         /// alignment period. This reducer is valid for `DELTA` and `GAUGE` metrics
@@ -384,7 +384,7 @@ pub mod aggregation {
         /// Reduce by computing the ratio of the number of `True`-valued data points
         /// to the total number of data points for each alignment period. This
         /// reducer is valid for `DELTA` and `GAUGE` metrics of Boolean `value_type`.
-        /// The output value is in the range [0.0, 1.0] and has `value_type`
+        /// The output value is in the range \[0.0, 1.0\] and has `value_type`
         /// `DOUBLE`.
         ReduceFractionTrue = 8,
         /// Reduce by computing the [99th
@@ -749,12 +749,12 @@ pub struct TimeSeriesQuery {
     /// The unit of data contained in fetched time series. If non-empty, this
     /// unit will override any unit that accompanies fetched data. The format is
     /// the same as the
-    /// \[`unit`\](<https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors>)
+    /// [`unit`](<https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors>)
     /// field in `MetricDescriptor`.
     #[prost(string, tag = "5")]
     pub unit_override: ::prost::alloc::string::String,
     /// Parameters needed to obtain data for the chart.
-    #[prost(oneof = "time_series_query::Source", tags = "1, 2, 3, 6")]
+    #[prost(oneof = "time_series_query::Source", tags = "1, 2, 3")]
     pub source: ::core::option::Option<time_series_query::Source>,
 }
 /// Nested message and enum types in `TimeSeriesQuery`.
@@ -769,24 +769,20 @@ pub mod time_series_query {
         /// Parameters to fetch a ratio between two time series filters.
         #[prost(message, tag = "2")]
         TimeSeriesFilterRatio(super::TimeSeriesFilterRatio),
-        /// A query used to fetch time series with MQL.
+        /// A query used to fetch time series.
         #[prost(string, tag = "3")]
         TimeSeriesQueryLanguage(::prost::alloc::string::String),
-        /// A query used to fetch time series with PromQL.
-        #[prost(string, tag = "6")]
-        PrometheusQuery(::prost::alloc::string::String),
     }
 }
 /// A filter that defines a subset of time series data that is displayed in a
 /// widget. Time series data is fetched using the
-/// \[`ListTimeSeries`\](<https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>)
+/// [`ListTimeSeries`](<https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>)
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesFilter {
-    /// Required. The [monitoring
-    /// filter](<https://cloud.google.com/monitoring/api/v3/filters>) that identifies
-    /// the metric types, resources, and projects to query.
+    /// Required. The [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
+    /// that identifies the metric types, resources, and projects to query.
     #[prost(string, tag = "1")]
     pub filter: ::prost::alloc::string::String,
     /// By default, the raw time series data is returned.
@@ -1079,8 +1075,6 @@ pub struct Scorecard {
     /// it in a danger state. (Danger trumps warning.)
     ///
     /// As an example, consider a scorecard with the following four thresholds:
-    ///
-    /// ```
     /// {
     ///    value: 90,
     ///    category: 'DANGER',
@@ -1101,7 +1095,6 @@ pub struct Scorecard {
     ///    category: 'WARNING',
     ///    trigger: 'BELOW',
     /// }
-    /// ```
     ///
     /// Then: values less than or equal to 10 would put the scorecard in a DANGER
     /// state, values greater than 10 but less than or equal to 20 a WARNING state,
@@ -1167,9 +1160,8 @@ pub mod scorecard {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDisplayOptions {
-    /// Optional. This field is unused and has been replaced by
-    /// TimeSeriesTable.column_settings
-    #[deprecated]
+    /// Optional. Columns to display in the table. Leave empty to display all available
+    /// columns. Note: This field is for future features and is not currently used.
     #[prost(string, repeated, tag = "1")]
     pub shown_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1180,12 +1172,6 @@ pub struct TimeSeriesTable {
     /// Required. The data displayed in this table.
     #[prost(message, repeated, tag = "1")]
     pub data_sets: ::prost::alloc::vec::Vec<time_series_table::TableDataSet>,
-    /// Optional. Store rendering strategy
-    #[prost(enumeration = "time_series_table::MetricVisualization", tag = "2")]
-    pub metric_visualization: i32,
-    /// Optional. The list of the persistent column settings for the table.
-    #[prost(message, repeated, tag = "4")]
-    pub column_settings: ::prost::alloc::vec::Vec<time_series_table::ColumnSettings>,
 }
 /// Nested message and enum types in `TimeSeriesTable`.
 pub mod time_series_table {
@@ -1197,77 +1183,22 @@ pub mod time_series_table {
         /// Stackdriver metrics API.
         #[prost(message, optional, tag = "1")]
         pub time_series_query: ::core::option::Option<super::TimeSeriesQuery>,
-        /// Optional. A template string for naming `TimeSeries` in the resulting data
-        /// set. This should be a string with interpolations of the form
-        /// `${label_name}`, which will resolve to the label's value i.e.
+        /// Optional. A template string for naming `TimeSeries` in the resulting data set.
+        /// This should be a string with interpolations of the form `${label_name}`,
+        /// which will resolve to the label's value i.e.
         /// "${resource.labels.project_id}."
         #[prost(string, tag = "2")]
         pub table_template: ::prost::alloc::string::String,
-        /// Optional. The lower bound on data point frequency for this data set,
-        /// implemented by specifying the minimum alignment period to use in a time
-        /// series query For example, if the data is published once every 10 minutes,
-        /// the `min_alignment_period` should be at least 10 minutes. It would not
+        /// Optional. The lower bound on data point frequency for this data set, implemented by
+        /// specifying the minimum alignment period to use in a time series query
+        /// For example, if the data is published once every 10 minutes, the
+        /// `min_alignment_period` should be at least 10 minutes. It would not
         /// make sense to fetch and align data at one minute intervals.
         #[prost(message, optional, tag = "3")]
         pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
-        /// Optional. Table display options for configuring how the table is
-        /// rendered.
+        /// Optional. Table display options for configuring how the table is rendered.
         #[prost(message, optional, tag = "4")]
         pub table_display_options: ::core::option::Option<super::TableDisplayOptions>,
-    }
-    /// The persistent settings for a table's columns.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ColumnSettings {
-        /// Required. The id of the column.
-        #[prost(string, tag = "1")]
-        pub column: ::prost::alloc::string::String,
-        /// Required. Whether the column should be visible on page load.
-        #[prost(bool, tag = "2")]
-        pub visible: bool,
-    }
-    /// Enum for metric metric_visualization
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum MetricVisualization {
-        /// Unspecified state
-        Unspecified = 0,
-        /// Default text rendering
-        Number = 1,
-        /// Horizontal bar rendering
-        Bar = 2,
-    }
-    impl MetricVisualization {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                MetricVisualization::Unspecified => "METRIC_VISUALIZATION_UNSPECIFIED",
-                MetricVisualization::Number => "NUMBER",
-                MetricVisualization::Bar => "BAR",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "METRIC_VISUALIZATION_UNSPECIFIED" => Some(Self::Unspecified),
-                "NUMBER" => Some(Self::Number),
-                "BAR" => Some(Self::Bar),
-                _ => None,
-            }
-        }
     }
 }
 /// A widget that displays textual content.
@@ -1375,10 +1306,10 @@ pub mod xy_chart {
         /// which will resolve to the label's value.
         #[prost(string, tag = "3")]
         pub legend_template: ::prost::alloc::string::String,
-        /// Optional. The lower bound on data point frequency for this data set,
-        /// implemented by specifying the minimum alignment period to use in a time
-        /// series query For example, if the data is published once every 10 minutes,
-        /// the `min_alignment_period` should be at least 10 minutes. It would not
+        /// Optional. The lower bound on data point frequency for this data set, implemented by
+        /// specifying the minimum alignment period to use in a time series query
+        /// For example, if the data is published once every 10 minutes, the
+        /// `min_alignment_period` should be at least 10 minutes. It would not
         /// make sense to fetch and align data at one minute intervals.
         #[prost(message, optional, tag = "4")]
         pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
@@ -1879,7 +1810,7 @@ pub struct GetDashboardRequest {
     /// Required. The resource name of the Dashboard. The format is one of:
     ///
     ///   -  `dashboards/\[DASHBOARD_ID\]` (for system dashboards)
-    ///   -  `projects/\[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID\]`
+    ///   -  `projects/\[PROJECT_ID_OR_NUMBER\]/dashboards/\[DASHBOARD_ID\]`
     ///        (for custom dashboards).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1890,7 +1821,7 @@ pub struct GetDashboardRequest {
 pub struct DeleteDashboardRequest {
     /// Required. The resource name of the Dashboard. The format is:
     ///
-    ///      projects/\[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID\]
+    ///      projects/\[PROJECT_ID_OR_NUMBER\]/dashboards/\[DASHBOARD_ID\]
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1993,12 +1924,8 @@ pub mod dashboards_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Creates a new custom dashboard. For examples on how you can use this API to
-        /// create dashboards, see [Managing dashboards by
-        /// API](https://cloud.google.com/monitoring/dashboards/api-dashboard). This
-        /// method requires the `monitoring.dashboards.create` permission on the
-        /// specified project. For more information about permissions, see [Cloud
-        /// Identity and Access Management](https://cloud.google.com/iam).
+        /// Creates a new custom dashboard. For examples on how you can use this API to create dashboards, see [Managing dashboards by API](https://cloud.google.com/monitoring/dashboards/api-dashboard).
+        /// This method requires the `monitoring.dashboards.create` permission on the specified project. For more information about permissions, see [Cloud Identity and Access Management](https://cloud.google.com/iam).
         pub async fn create_dashboard(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDashboardRequest>,

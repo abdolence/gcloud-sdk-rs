@@ -26,23 +26,23 @@ pub struct Address {
     /// Check the AddressType enum for the list of possible values.
     #[prost(string, optional, tag = "264307877")]
     pub address_type: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Creation timestamp in RFC3339 text format.
+    /// \[Output Only\] Creation timestamp in RFC3339 text format.
     #[prost(string, optional, tag = "30525366")]
     pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
     /// An optional description of this resource. Provide this field when you create the resource.
     #[prost(string, optional, tag = "422937596")]
     pub description: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+    /// \[Output Only\] The unique identifier for the resource. This identifier is defined by the server.
     #[prost(uint64, optional, tag = "3355")]
     pub id: ::core::option::Option<u64>,
     /// The IP version that will be used by this address. Valid options are IPV4 or IPV6. This can only be specified for a global address.
     /// Check the IpVersion enum for the list of possible values.
     #[prost(string, optional, tag = "294959552")]
     pub ip_version: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Type of the resource. Always compute#address for addresses.
+    /// \[Output Only\] Type of the resource. Always compute#address for addresses.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?`. The first character must be a lowercase letter, and all following characters (except for the last character) must be a dash, lowercase letter, or digit. The last character must be a lowercase letter or digit.
+    /// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z](\[-a-z0-9\]*[a-z0-9])?`. The first character must be a lowercase letter, and all following characters (except for the last character) must be a dash, lowercase letter, or digit. The last character must be a lowercase letter or digit.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     /// The URL of the network in which to reserve the address. This field can only be used with INTERNAL type with the VPC_PEERING purpose.
@@ -65,20 +65,20 @@ pub struct Address {
     /// Check the Purpose enum for the list of possible values.
     #[prost(string, optional, tag = "316407070")]
     pub purpose: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The URL of the region where the regional address resides. This field is not applicable to global addresses. You must specify this field as part of the HTTP request URL.
+    /// \[Output Only\] The URL of the region where the regional address resides. This field is not applicable to global addresses. You must specify this field as part of the HTTP request URL.
     #[prost(string, optional, tag = "138946292")]
     pub region: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Server-defined URL for the resource.
+    /// \[Output Only\] Server-defined URL for the resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The status of the address, which can be one of RESERVING, RESERVED, or IN_USE. An address that is RESERVING is currently in the process of being reserved. A RESERVED address is currently reserved and available to use. An IN_USE address is currently being used by another resource and is not available.
+    /// \[Output Only\] The status of the address, which can be one of RESERVING, RESERVED, or IN_USE. An address that is RESERVING is currently in the process of being reserved. A RESERVED address is currently reserved and available to use. An IN_USE address is currently being used by another resource and is not available.
     /// Check the Status enum for the list of possible values.
     #[prost(string, optional, tag = "181260274")]
     pub status: ::core::option::Option<::prost::alloc::string::String>,
     /// The URL of the subnetwork in which to reserve the address. If an IP address is specified, it must be within the subnetwork's IP range. This field can only be used with INTERNAL type with a GCE_ENDPOINT or DNS_RESOLVER purpose.
     #[prost(string, optional, tag = "307827694")]
     pub subnetwork: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The URLs of the resources that are using this address.
+    /// \[Output Only\] The URLs of the resources that are using this address.
     #[prost(string, repeated, tag = "111578632")]
     pub users: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -266,7 +266,7 @@ pub mod address {
             }
         }
     }
-    /// [Output Only] The status of the address, which can be one of RESERVING, RESERVED, or IN_USE. An address that is RESERVING is currently in the process of being reserved. A RESERVED address is currently reserved and available to use. An IN_USE address is currently being used by another resource and is not available.
+    /// \[Output Only\] The status of the address, which can be one of RESERVING, RESERVED, or IN_USE. An address that is RESERVING is currently in the process of being reserved. A RESERVED address is currently reserved and available to use. An IN_USE address is currently being used by another resource and is not available.
     #[derive(
         Clone,
         Copy,
@@ -315,7 +315,7 @@ pub mod address {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressAggregatedList {
-    /// [Output Only] Unique identifier for the resource; defined by the server.
+    /// \[Output Only\] Unique identifier for the resource; defined by the server.
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of AddressesScopedList resources.
@@ -324,16 +324,16 @@ pub struct AddressAggregatedList {
         ::prost::alloc::string::String,
         AddressesScopedList,
     >,
-    /// [Output Only] Type of resource. Always compute#addressAggregatedList for aggregated lists of addresses.
+    /// \[Output Only\] Type of resource. Always compute#addressAggregatedList for aggregated lists of addresses.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] This token allows you to get the next page of results for list requests. If the number of results is larger than maxResults, use the nextPageToken as a value for the query parameter pageToken in the next list request. Subsequent list requests will have their own nextPageToken to continue paging through the results.
+    /// \[Output Only\] This token allows you to get the next page of results for list requests. If the number of results is larger than maxResults, use the nextPageToken as a value for the query parameter pageToken in the next list request. Subsequent list requests will have their own nextPageToken to continue paging through the results.
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Server-defined URL for this resource.
+    /// \[Output Only\] Server-defined URL for this resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Informational warning message.
+    /// \[Output Only\] Informational warning message.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -341,22 +341,22 @@ pub struct AddressAggregatedList {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressList {
-    /// [Output Only] Unique identifier for the resource; defined by the server.
+    /// \[Output Only\] Unique identifier for the resource; defined by the server.
     #[prost(string, optional, tag = "3355")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of Address resources.
     #[prost(message, repeated, tag = "100526016")]
     pub items: ::prost::alloc::vec::Vec<Address>,
-    /// [Output Only] Type of resource. Always compute#addressList for lists of addresses.
+    /// \[Output Only\] Type of resource. Always compute#addressList for lists of addresses.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] This token allows you to get the next page of results for list requests. If the number of results is larger than maxResults, use the nextPageToken as a value for the query parameter pageToken in the next list request. Subsequent list requests will have their own nextPageToken to continue paging through the results.
+    /// \[Output Only\] This token allows you to get the next page of results for list requests. If the number of results is larger than maxResults, use the nextPageToken as a value for the query parameter pageToken in the next list request. Subsequent list requests will have their own nextPageToken to continue paging through the results.
     #[prost(string, optional, tag = "79797525")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Server-defined URL for this resource.
+    /// \[Output Only\] Server-defined URL for this resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Informational warning message.
+    /// \[Output Only\] Informational warning message.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -364,10 +364,10 @@ pub struct AddressList {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressesScopedList {
-    /// [Output Only] A list of addresses contained in this scope.
+    /// \[Output Only\] A list of addresses contained in this scope.
     #[prost(message, repeated, tag = "337673122")]
     pub addresses: ::prost::alloc::vec::Vec<Address>,
-    /// [Output Only] Informational warning which replaces the list of addresses when the list is empty.
+    /// \[Output Only\] Informational warning which replaces the list of addresses when the list is empty.
     #[prost(message, optional, tag = "50704284")]
     pub warning: ::core::option::Option<Warning>,
 }
@@ -408,10 +408,10 @@ pub struct AggregatedListAddressesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Data {
-    /// [Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).
+    /// \[Output Only\] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).
     #[prost(string, optional, tag = "106079")]
     pub key: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] A warning data value corresponding to the key.
+    /// \[Output Only\] A warning data value corresponding to the key.
     #[prost(string, optional, tag = "111972721")]
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -436,11 +436,11 @@ pub struct DeleteAddressRequest {
     #[prost(string, optional, tag = "37109963")]
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
-/// [Output Only] If errors are generated during processing of the operation, this field will be populated.
+/// \[Output Only\] If errors are generated during processing of the operation, this field will be populated.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Error {
-    /// [Output Only] The array of errors encountered while processing this operation.
+    /// \[Output Only\] The array of errors encountered while processing this operation.
     #[prost(message, repeated, tag = "315977579")]
     pub errors: ::prost::alloc::vec::Vec<Errors>,
 }
@@ -448,13 +448,13 @@ pub struct Error {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Errors {
-    /// [Output Only] The error type identifier for this error.
+    /// \[Output Only\] The error type identifier for this error.
     #[prost(string, optional, tag = "3059181")]
     pub code: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Indicates the field in the request that caused the error. This property is optional.
+    /// \[Output Only\] Indicates the field in the request that caused the error. This property is optional.
     #[prost(string, optional, tag = "290430901")]
     pub location: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] An optional, human-readable error message.
+    /// \[Output Only\] An optional, human-readable error message.
     #[prost(string, optional, tag = "418054151")]
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -530,7 +530,7 @@ pub struct ListAddressesRequest {
 ///
 /// Google Compute Engine has three Operation resources:
 ///
-/// * \[Global\](/compute/docs/reference/rest/{$api_version}/globalOperations) * \[Regional\](/compute/docs/reference/rest/{$api_version}/regionOperations) * \[Zonal\](/compute/docs/reference/rest/{$api_version}/zoneOperations)
+/// * [Global](/compute/docs/reference/rest/{$api_version}/globalOperations) * [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations) * [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
 ///
 /// You can use an operation resource to manage asynchronous API requests. For more information, read Handling API responses.
 ///
@@ -543,79 +543,79 @@ pub struct ListAddressesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
-    /// [Output Only] The value of `requestId` if you provided it in the request. Not present otherwise.
+    /// \[Output Only\] The value of `requestId` if you provided it in the request. Not present otherwise.
     #[prost(string, optional, tag = "297240295")]
     pub client_operation_id: ::core::option::Option<::prost::alloc::string::String>,
     /// \[Deprecated\] This field is deprecated.
     #[prost(string, optional, tag = "30525366")]
     pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] A textual description of the operation, which is set when the operation is created.
+    /// \[Output Only\] A textual description of the operation, which is set when the operation is created.
     #[prost(string, optional, tag = "422937596")]
     pub description: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The time that this operation was completed. This value is in RFC3339 text format.
+    /// \[Output Only\] The time that this operation was completed. This value is in RFC3339 text format.
     #[prost(string, optional, tag = "114938801")]
     pub end_time: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] If errors are generated during processing of the operation, this field will be populated.
+    /// \[Output Only\] If errors are generated during processing of the operation, this field will be populated.
     #[prost(message, optional, tag = "96784904")]
     pub error: ::core::option::Option<Error>,
-    /// [Output Only] If the operation fails, this field contains the HTTP error message that was returned, such as NOT FOUND.
+    /// \[Output Only\] If the operation fails, this field contains the HTTP error message that was returned, such as NOT FOUND.
     #[prost(string, optional, tag = "202521945")]
     pub http_error_message: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] If the operation fails, this field contains the HTTP error status code that was returned. For example, a 404 means the resource was not found.
+    /// \[Output Only\] If the operation fails, this field contains the HTTP error status code that was returned. For example, a 404 means the resource was not found.
     #[prost(int32, optional, tag = "312345196")]
     pub http_error_status_code: ::core::option::Option<i32>,
-    /// [Output Only] The unique identifier for the operation. This identifier is defined by the server.
+    /// \[Output Only\] The unique identifier for the operation. This identifier is defined by the server.
     #[prost(uint64, optional, tag = "3355")]
     pub id: ::core::option::Option<u64>,
-    /// [Output Only] The time that this operation was requested. This value is in RFC3339 text format.
+    /// \[Output Only\] The time that this operation was requested. This value is in RFC3339 text format.
     #[prost(string, optional, tag = "433722515")]
     pub insert_time: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Type of the resource. Always compute#operation for Operation resources.
+    /// \[Output Only\] Type of the resource. Always compute#operation for Operation resources.
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Name of the operation.
+    /// \[Output Only\] Name of the operation.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The type of operation, such as insert, update, or delete, and so on.
+    /// \[Output Only\] The type of operation, such as insert, update, or delete, and so on.
     #[prost(string, optional, tag = "177650450")]
     pub operation_type: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] An optional progress indicator that ranges from 0 to 100. There is no requirement that this be linear or support any granularity of operations. This should not be used to guess when the operation will be complete. This number should monotonically increase as the operation progresses.
+    /// \[Output Only\] An optional progress indicator that ranges from 0 to 100. There is no requirement that this be linear or support any granularity of operations. This should not be used to guess when the operation will be complete. This number should monotonically increase as the operation progresses.
     #[prost(int32, optional, tag = "72663597")]
     pub progress: ::core::option::Option<i32>,
-    /// [Output Only] The URL of the region where the operation resides. Only applicable when performing regional operations.
+    /// \[Output Only\] The URL of the region where the operation resides. Only applicable when performing regional operations.
     #[prost(string, optional, tag = "138946292")]
     pub region: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Server-defined URL for the resource.
+    /// \[Output Only\] Server-defined URL for the resource.
     #[prost(string, optional, tag = "456214797")]
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The time that this operation was started by the server. This value is in RFC3339 text format.
+    /// \[Output Only\] The time that this operation was started by the server. This value is in RFC3339 text format.
     #[prost(string, optional, tag = "37467274")]
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The status of the operation, which can be one of the following: PENDING, RUNNING, or DONE.
+    /// \[Output Only\] The status of the operation, which can be one of the following: PENDING, RUNNING, or DONE.
     #[prost(enumeration = "operation::Status", optional, tag = "181260274")]
     pub status: ::core::option::Option<i32>,
-    /// [Output Only] An optional textual description of the current status of the operation.
+    /// \[Output Only\] An optional textual description of the current status of the operation.
     #[prost(string, optional, tag = "297428154")]
     pub status_message: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] The unique target ID, which identifies a specific incarnation of the target resource.
+    /// \[Output Only\] The unique target ID, which identifies a specific incarnation of the target resource.
     #[prost(uint64, optional, tag = "258165385")]
     pub target_id: ::core::option::Option<u64>,
-    /// [Output Only] The URL of the resource that the operation modifies. For operations related to creating a snapshot, this points to the persistent disk that the snapshot was created from.
+    /// \[Output Only\] The URL of the resource that the operation modifies. For operations related to creating a snapshot, this points to the persistent disk that the snapshot was created from.
     #[prost(string, optional, tag = "62671336")]
     pub target_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] User who requested the operation, for example: user@example.com.
+    /// \[Output Only\] User who requested the operation, for example: user@example.com.
     #[prost(string, optional, tag = "3599307")]
     pub user: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] If warning messages are generated during processing of the operation, this field will be populated.
+    /// \[Output Only\] If warning messages are generated during processing of the operation, this field will be populated.
     #[prost(message, repeated, tag = "498091095")]
     pub warnings: ::prost::alloc::vec::Vec<Warnings>,
-    /// [Output Only] The URL of the zone where the operation resides. Only applicable when performing per-zone operations.
+    /// \[Output Only\] The URL of the zone where the operation resides. Only applicable when performing per-zone operations.
     #[prost(string, optional, tag = "3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Operation`.
 pub mod operation {
-    /// [Output Only] The status of the operation, which can be one of the following: PENDING, RUNNING, or DONE.
+    /// \[Output Only\] The status of the operation, which can be one of the following: PENDING, RUNNING, or DONE.
     #[derive(
         Clone,
         Copy,
@@ -674,25 +674,25 @@ pub struct WaitRegionOperationRequest {
     #[prost(string, tag = "138946292")]
     pub region: ::prost::alloc::string::String,
 }
-/// [Output Only] Informational warning message.
+/// \[Output Only\] Informational warning message.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warning {
-    /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
+    /// \[Output Only\] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
     /// Check the Code enum for the list of possible values.
     #[prost(string, optional, tag = "3059181")]
     pub code: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Metadata about this warning in key: value format. For example:
+    /// \[Output Only\] Metadata about this warning in key: value format. For example:
     /// "data": [ { "key": "scope", "value": "zones/us-east1-d" }
     #[prost(message, repeated, tag = "3076010")]
     pub data: ::prost::alloc::vec::Vec<Data>,
-    /// [Output Only] A human-readable description of the warning code.
+    /// \[Output Only\] A human-readable description of the warning code.
     #[prost(string, optional, tag = "418054151")]
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Warning`.
 pub mod warning {
-    /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
+    /// \[Output Only\] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
     #[derive(
         Clone,
         Copy,
@@ -813,21 +813,21 @@ pub mod warning {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warnings {
-    /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
+    /// \[Output Only\] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
     /// Check the Code enum for the list of possible values.
     #[prost(string, optional, tag = "3059181")]
     pub code: ::core::option::Option<::prost::alloc::string::String>,
-    /// [Output Only] Metadata about this warning in key: value format. For example:
+    /// \[Output Only\] Metadata about this warning in key: value format. For example:
     /// "data": [ { "key": "scope", "value": "zones/us-east1-d" }
     #[prost(message, repeated, tag = "3076010")]
     pub data: ::prost::alloc::vec::Vec<Data>,
-    /// [Output Only] A human-readable description of the warning code.
+    /// \[Output Only\] A human-readable description of the warning code.
     #[prost(string, optional, tag = "418054151")]
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Warnings`.
 pub mod warnings {
-    /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
+    /// \[Output Only\] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
     #[derive(
         Clone,
         Copy,

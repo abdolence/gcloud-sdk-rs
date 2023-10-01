@@ -66,7 +66,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ),
         offset: None,
         trace_id: "test".to_string(),
-        missing_value_interpretations: Default::default(),
         rows: Some(append_rows_request::Rows::ProtoRows(ProtoData {
             writer_schema: Some(rows_schema),
             rows: Some(ProtoRows {
@@ -84,7 +83,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ],
             }),
         })),
-        ..Default::default()
     }]);
 
     let response = client.get().append_rows(rows_stream).await?;

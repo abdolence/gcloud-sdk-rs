@@ -90,8 +90,8 @@ pub struct Sentence {
     /// The sentence text.
     #[prost(message, optional, tag = "1")]
     pub text: ::core::option::Option<TextSpan>,
-    /// For calls to \[AnalyzeSentiment][\] or if
-    /// \[AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment\]
+    /// For calls to [AnalyzeSentiment][] or if
+    /// [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment]
     /// is set to true, this field will contain the sentiment for the sentence.
     #[prost(message, optional, tag = "2")]
     pub sentiment: ::core::option::Option<Sentiment>,
@@ -117,7 +117,7 @@ pub struct Entity {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// The salience score associated with the entity in the [0, 1.0] range.
+    /// The salience score associated with the entity in the \[0, 1.0\] range.
     ///
     /// The salience score for an entity provides information about the
     /// importance or centrality of that entity to the entire document text.
@@ -209,7 +209,7 @@ pub struct Token {
     /// Dependency tree parse for this token.
     #[prost(message, optional, tag = "3")]
     pub dependency_edge: ::core::option::Option<DependencyEdge>,
-    /// \[Lemma\](<https://en.wikipedia.org/wiki/Lemma_%28morphology%29>) of the token.
+    /// [Lemma](<https://en.wikipedia.org/wiki/Lemma_%28morphology%29>) of the token.
     #[prost(string, tag = "4")]
     pub lemma: ::prost::alloc::string::String,
 }
@@ -1408,7 +1408,7 @@ pub struct TextSpan {
     pub content: ::prost::alloc::string::String,
     /// The API calculates the beginning offset of the content in the original
     /// document according to the
-    /// \[EncodingType][google.cloud.language.v1beta1.EncodingType\] specified in the
+    /// [EncodingType][google.cloud.language.v1beta1.EncodingType] specified in the
     /// API request.
     #[prost(int32, tag = "2")]
     pub begin_offset: i32,
@@ -1434,7 +1434,7 @@ pub struct AnalyzeSentimentResponse {
     pub document_sentiment: ::core::option::Option<Sentiment>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See \[Document.language][google.cloud.language.v1beta1.Document.language\]
+    /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "2")]
     pub language: ::prost::alloc::string::String,
@@ -1462,7 +1462,7 @@ pub struct AnalyzeEntitiesResponse {
     pub entities: ::prost::alloc::vec::Vec<Entity>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See \[Document.language][google.cloud.language.v1beta1.Document.language\]
+    /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "2")]
     pub language: ::prost::alloc::string::String,
@@ -1490,7 +1490,7 @@ pub struct AnalyzeSyntaxResponse {
     pub tokens: ::prost::alloc::vec::Vec<Token>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See \[Document.language][google.cloud.language.v1beta1.Document.language\]
+    /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "3")]
     pub language: ::prost::alloc::string::String,
@@ -1533,26 +1533,26 @@ pub mod annotate_text_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateTextResponse {
     /// Sentences in the input document. Populated if the user enables
-    /// \[AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax\].
+    /// [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax].
     #[prost(message, repeated, tag = "1")]
     pub sentences: ::prost::alloc::vec::Vec<Sentence>,
     /// Tokens, along with their syntactic information, in the input document.
     /// Populated if the user enables
-    /// \[AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax\].
+    /// [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax].
     #[prost(message, repeated, tag = "2")]
     pub tokens: ::prost::alloc::vec::Vec<Token>,
     /// Entities, along with their semantic information, in the input document.
     /// Populated if the user enables
-    /// \[AnnotateTextRequest.Features.extract_entities][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_entities\].
+    /// [AnnotateTextRequest.Features.extract_entities][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_entities].
     #[prost(message, repeated, tag = "3")]
     pub entities: ::prost::alloc::vec::Vec<Entity>,
     /// The overall sentiment for the document. Populated if the user enables
-    /// \[AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment\].
+    /// [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment].
     #[prost(message, optional, tag = "4")]
     pub document_sentiment: ::core::option::Option<Sentiment>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See \[Document.language][google.cloud.language.v1beta1.Document.language\]
+    /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "5")]
     pub language: ::prost::alloc::string::String,

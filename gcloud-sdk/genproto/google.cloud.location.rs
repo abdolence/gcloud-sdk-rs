@@ -1,4 +1,4 @@
-/// The request message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
+/// The request message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsRequest {
@@ -15,7 +15,7 @@ pub struct ListLocationsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
+/// The response message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsResponse {
@@ -26,7 +26,7 @@ pub struct ListLocationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for \[Locations.GetLocation][google.cloud.location.Locations.GetLocation\].
+/// The request message for [Locations.GetLocation][google.cloud.location.Locations.GetLocation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLocationRequest {

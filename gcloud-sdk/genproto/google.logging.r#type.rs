@@ -113,7 +113,7 @@ pub struct HttpRequest {
     pub server_ip: ::prost::alloc::string::String,
     /// The referer URL of the request, as defined in
     /// [HTTP/1.1 Header Field
-    /// Definitions](<https://datatracker.ietf.org/doc/html/rfc2616#section-14.36>).
+    /// Definitions](<http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>).
     #[prost(string, tag = "8")]
     pub referer: ::prost::alloc::string::String,
     /// The request processing latency on the server, from the time the request was

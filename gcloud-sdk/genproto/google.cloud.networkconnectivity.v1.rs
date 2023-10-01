@@ -19,7 +19,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -27,11 +27,11 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// A Network Connectivity Center hub is a collection of spokes. A single hub
-/// can contain spokes from multiple regions. However, if any of a hub's spokes
-/// use the data transfer feature, the resources associated with those spokes
-/// must all reside in the same VPC network. Spokes that do not use data
-/// transfer can be associated with any VPC network in your project.
+/// A hub is a collection of spokes. A single hub can contain spokes from
+/// multiple regions. However, if any of a hub's spokes use the data transfer
+/// feature, the resources associated with those spokes must all reside in the
+/// same VPC network. Spokes that do not use data transfer can be associated
+/// with any VPC network in your project.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hub {
@@ -57,9 +57,9 @@ pub struct Hub {
     /// An optional description of the hub.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The Google-generated UUID for the hub. This value is unique
-    /// across all hub resources. If a hub is deleted and another with the same
-    /// name is created, the new hub is assigned a different unique_id.
+    /// Output only. The Google-generated UUID for the hub. This value is unique across all hub
+    /// resources. If a hub is deleted and another with the same name is created,
+    /// the new hub is assigned a different unique_id.
     #[prost(string, tag = "8")]
     pub unique_id: ::prost::alloc::string::String,
     /// Output only. The current lifecycle state of this hub.
@@ -72,24 +72,24 @@ pub struct Hub {
     #[prost(message, repeated, tag = "10")]
     pub routing_vpcs: ::prost::alloc::vec::Vec<RoutingVpc>,
 }
-/// RoutingVPC contains information about the VPC networks associated
-/// with the spokes of a Network Connectivity Center hub.
+/// RoutingVPC contains information about the VPC networks that are associated
+/// with a hub's spokes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutingVpc {
     /// The URI of the VPC network.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
-    /// Output only. If true, indicates that this VPC network is currently
-    /// associated with spokes that use the data transfer feature (spokes where the
+    /// Output only. If true, indicates that this VPC network is currently associated with
+    /// spokes that use the data transfer feature (spokes where the
     /// site_to_site_data_transfer field is set to true). If you create new spokes
     /// that use data transfer, they must be associated with this VPC network. At
     /// most, one VPC network will have this field set to true.
     #[prost(bool, tag = "2")]
     pub required_for_new_site_to_site_data_transfer_spokes: bool,
 }
-/// A Network Connectivity Center spoke represents a connection between your
-/// Google Cloud network resources and a non-Google-Cloud network.
+/// A spoke represents a connection between your Google Cloud network resources
+/// and a non-Google-Cloud network.
 ///
 /// When you create a spoke, you associate it with a hub. You must also identify
 /// a value for exactly one of the following fields:
@@ -138,18 +138,16 @@ pub struct Spoke {
     pub linked_router_appliance_instances: ::core::option::Option<
         LinkedRouterApplianceInstances,
     >,
-    /// Output only. The Google-generated UUID for the spoke. This value is unique
-    /// across all spoke resources. If a spoke is deleted and another with the same
-    /// name is created, the new spoke is assigned a different unique_id.
+    /// Output only. The Google-generated UUID for the spoke. This value is unique across all
+    /// spoke resources. If a spoke is deleted and another with the same name is
+    /// created, the new spoke is assigned a different unique_id.
     #[prost(string, tag = "11")]
     pub unique_id: ::prost::alloc::string::String,
     /// Output only. The current lifecycle state of this spoke.
     #[prost(enumeration = "State", tag = "15")]
     pub state: i32,
 }
-/// Request for
-/// \[HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs\]
-/// method.
+/// Request for [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsRequest {
@@ -169,9 +167,7 @@ pub struct ListHubsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for
-/// \[HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs\]
-/// method.
+/// Response for [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsResponse {
@@ -186,9 +182,7 @@ pub struct ListHubsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for
-/// \[HubService.GetHub][google.cloud.networkconnectivity.v1.HubService.GetHub\]
-/// method.
+/// Request for [HubService.GetHub][google.cloud.networkconnectivity.v1.HubService.GetHub] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHubRequest {
@@ -196,9 +190,7 @@ pub struct GetHubRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for
-/// \[HubService.CreateHub][google.cloud.networkconnectivity.v1.HubService.CreateHub\]
-/// method.
+/// Request for [HubService.CreateHub][google.cloud.networkconnectivity.v1.HubService.CreateHub] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHubRequest {
@@ -211,11 +203,11 @@ pub struct CreateHubRequest {
     /// Required. The initial values for a new hub.
     #[prost(message, optional, tag = "3")]
     pub hub: ::core::option::Option<Hub>,
-    /// Optional. A unique request ID (optional). If you specify this ID, you can
-    /// use it in cases when you need to retry your request. When you need to
-    /// retry, this ID lets the server know that it can ignore the request if it
-    /// has already been completed. The server guarantees that for at least 60
-    /// minutes after the first request.
+    /// Optional. A unique request ID (optional). If you specify this ID, you can use it
+    /// in cases when you need to retry your request. When you need to retry, this
+    /// ID lets the server know that it can ignore the request if it has already
+    /// been completed. The server guarantees that for at least 60 minutes after
+    /// the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
@@ -228,27 +220,25 @@ pub struct CreateHubRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for
-/// \[HubService.UpdateHub][google.cloud.networkconnectivity.v1.HubService.UpdateHub\]
-/// method.
+/// Request for [HubService.UpdateHub][google.cloud.networkconnectivity.v1.HubService.UpdateHub] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHubRequest {
-    /// Optional. In the case of an update to an existing hub, field mask is used
-    /// to specify the fields to be overwritten. The fields specified in the
-    /// update_mask are relative to the resource, not the full request. A field is
-    /// overwritten if it is in the mask. If the user does not provide a mask, then
-    /// all fields are overwritten.
+    /// Optional. In the case of an update to an existing hub, field mask is used to specify
+    /// the fields to be overwritten. The fields specified in the update_mask are
+    /// relative to the resource, not the full request. A field is overwritten if
+    /// it is in the mask. If the user does not provide a mask, then all fields are
+    /// overwritten.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The state that the hub should be in after the update.
     #[prost(message, optional, tag = "2")]
     pub hub: ::core::option::Option<Hub>,
-    /// Optional. A unique request ID (optional). If you specify this ID, you can
-    /// use it in cases when you need to retry your request. When you need to
-    /// retry, this ID lets the server know that it can ignore the request if it
-    /// has already been completed. The server guarantees that for at least 60
-    /// minutes after the first request.
+    /// Optional. A unique request ID (optional). If you specify this ID, you can use it
+    /// in cases when you need to retry your request. When you need to retry, this
+    /// ID lets the server know that it can ignore the request if it has already
+    /// been completed. The server guarantees that for at least 60 minutes after
+    /// the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
@@ -261,19 +251,18 @@ pub struct UpdateHubRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for
-/// \[HubService.DeleteHub][google.cloud.networkconnectivity.v1.HubService.DeleteHub\].
+/// The request for [HubService.DeleteHub][google.cloud.networkconnectivity.v1.HubService.DeleteHub].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHubRequest {
     /// Required. The name of the hub to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. A unique request ID (optional). If you specify this ID, you can
-    /// use it in cases when you need to retry your request. When you need to
-    /// retry, this ID lets the server know that it can ignore the request if it
-    /// has already been completed. The server guarantees that for at least 60
-    /// minutes after the first request.
+    /// Optional. A unique request ID (optional). If you specify this ID, you can use it
+    /// in cases when you need to retry your request. When you need to retry, this
+    /// ID lets the server know that it can ignore the request if it has already
+    /// been completed. The server guarantees that for at least 60 minutes after
+    /// the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
@@ -286,8 +275,7 @@ pub struct DeleteHubRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for
-/// \[HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes\].
+/// The request for [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesRequest {
@@ -307,8 +295,7 @@ pub struct ListSpokesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// The response for
-/// \[HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes\].
+/// The response for [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesResponse {
@@ -323,8 +310,7 @@ pub struct ListSpokesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// The request for
-/// \[HubService.GetSpoke][google.cloud.networkconnectivity.v1.HubService.GetSpoke\].
+/// The request for [HubService.GetSpoke][google.cloud.networkconnectivity.v1.HubService.GetSpoke].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpokeRequest {
@@ -332,8 +318,7 @@ pub struct GetSpokeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for
-/// \[HubService.CreateSpoke][google.cloud.networkconnectivity.v1.HubService.CreateSpoke\].
+/// The request for [HubService.CreateSpoke][google.cloud.networkconnectivity.v1.HubService.CreateSpoke].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpokeRequest {
@@ -346,11 +331,11 @@ pub struct CreateSpokeRequest {
     /// Required. The initial values for a new spoke.
     #[prost(message, optional, tag = "3")]
     pub spoke: ::core::option::Option<Spoke>,
-    /// Optional. A unique request ID (optional). If you specify this ID, you can
-    /// use it in cases when you need to retry your request. When you need to
-    /// retry, this ID lets the server know that it can ignore the request if it
-    /// has already been completed. The server guarantees that for at least 60
-    /// minutes after the first request.
+    /// Optional. A unique request ID (optional). If you specify this ID, you can use it
+    /// in cases when you need to retry your request. When you need to retry, this
+    /// ID lets the server know that it can ignore the request if it has already
+    /// been completed. The server guarantees that for at least 60 minutes after
+    /// the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
@@ -363,14 +348,12 @@ pub struct CreateSpokeRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for
-/// \[HubService.UpdateSpoke][google.cloud.networkconnectivity.v1.HubService.UpdateSpoke\]
-/// method.
+/// Request for [HubService.UpdateSpoke][google.cloud.networkconnectivity.v1.HubService.UpdateSpoke] method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpokeRequest {
-    /// Optional. In the case of an update to an existing spoke, field mask is used
-    /// to specify the fields to be overwritten. The fields specified in the
+    /// Optional. In the case of an update to an existing spoke, field mask is used to
+    /// specify the fields to be overwritten. The fields specified in the
     /// update_mask are relative to the resource, not the full request. A field is
     /// overwritten if it is in the mask. If the user does not provide a mask, then
     /// all fields are overwritten.
@@ -379,11 +362,11 @@ pub struct UpdateSpokeRequest {
     /// Required. The state that the spoke should be in after the update.
     #[prost(message, optional, tag = "2")]
     pub spoke: ::core::option::Option<Spoke>,
-    /// Optional. A unique request ID (optional). If you specify this ID, you can
-    /// use it in cases when you need to retry your request. When you need to
-    /// retry, this ID lets the server know that it can ignore the request if it
-    /// has already been completed. The server guarantees that for at least 60
-    /// minutes after the first request.
+    /// Optional. A unique request ID (optional). If you specify this ID, you can use it
+    /// in cases when you need to retry your request. When you need to retry, this
+    /// ID lets the server know that it can ignore the request if it has already
+    /// been completed. The server guarantees that for at least 60 minutes after
+    /// the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
@@ -396,19 +379,18 @@ pub struct UpdateSpokeRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for
-/// \[HubService.DeleteSpoke][google.cloud.networkconnectivity.v1.HubService.DeleteSpoke\].
+/// The request for [HubService.DeleteSpoke][google.cloud.networkconnectivity.v1.HubService.DeleteSpoke].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSpokeRequest {
     /// Required. The name of the spoke to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. A unique request ID (optional). If you specify this ID, you can
-    /// use it in cases when you need to retry your request. When you need to
-    /// retry, this ID lets the server know that it can ignore the request if it
-    /// has already been completed. The server guarantees that for at least 60
-    /// minutes after the first request.
+    /// Optional. A unique request ID (optional). If you specify this ID, you can use it
+    /// in cases when you need to retry your request. When you need to retry, this
+    /// ID lets the server know that it can ignore the request if it has already
+    /// been completed. The server guarantees that for at least 60 minutes after
+    /// the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
@@ -436,9 +418,6 @@ pub struct LinkedVpnTunnels {
     /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
     #[prost(bool, tag = "2")]
     pub site_to_site_data_transfer: bool,
-    /// Output only. The VPC network where these VPN tunnels are located.
-    #[prost(string, tag = "3")]
-    pub vpc_network: ::prost::alloc::string::String,
 }
 /// A collection of VLAN attachment resources. These resources should
 /// be redundant attachments that all advertise the same prefixes to Google
@@ -455,9 +434,6 @@ pub struct LinkedInterconnectAttachments {
     /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
     #[prost(bool, tag = "2")]
     pub site_to_site_data_transfer: bool,
-    /// Output only. The VPC network where these VLAN attachments are located.
-    #[prost(string, tag = "3")]
-    pub vpc_network: ::prost::alloc::string::String,
 }
 /// A collection of router appliance instances. If you configure multiple router
 /// appliance instances to receive data from the same set of sites outside of
@@ -474,10 +450,6 @@ pub struct LinkedRouterApplianceInstances {
     /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
     #[prost(bool, tag = "2")]
     pub site_to_site_data_transfer: bool,
-    /// Output only. The VPC network where these router appliance instances are
-    /// located.
-    #[prost(string, tag = "3")]
-    pub vpc_network: ::prost::alloc::string::String,
 }
 /// A router appliance instance is a Compute Engine virtual machine (VM) instance
 /// that acts as a BGP speaker. A router appliance instance is specified by the
@@ -500,6 +472,44 @@ pub struct LocationMetadata {
     /// List of supported features
     #[prost(enumeration = "LocationFeature", repeated, tag = "1")]
     pub location_features: ::prost::alloc::vec::Vec<i32>,
+}
+/// The State enum represents the lifecycle stage of a Network Connectivity
+/// Center resource.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum State {
+    /// No state information available
+    Unspecified = 0,
+    /// The resource's create operation is in progress
+    Creating = 1,
+    /// The resource is active
+    Active = 2,
+    /// The resource's Delete operation is in progress
+    Deleting = 3,
+}
+impl State {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            State::Unspecified => "STATE_UNSPECIFIED",
+            State::Creating => "CREATING",
+            State::Active => "ACTIVE",
+            State::Deleting => "DELETING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CREATING" => Some(Self::Creating),
+            "ACTIVE" => Some(Self::Active),
+            "DELETING" => Some(Self::Deleting),
+            _ => None,
+        }
+    }
 }
 /// Supported features for a location
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -530,48 +540,6 @@ impl LocationFeature {
             "LOCATION_FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
             "SITE_TO_CLOUD_SPOKES" => Some(Self::SiteToCloudSpokes),
             "SITE_TO_SITE_SPOKES" => Some(Self::SiteToSiteSpokes),
-            _ => None,
-        }
-    }
-}
-/// The State enum represents the lifecycle stage of a Network Connectivity
-/// Center resource.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum State {
-    /// No state information available
-    Unspecified = 0,
-    /// The resource's create operation is in progress
-    Creating = 1,
-    /// The resource is active
-    Active = 2,
-    /// The resource's Delete operation is in progress
-    Deleting = 3,
-    /// The resource's Update operation is in progress
-    Updating = 6,
-}
-impl State {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            State::Unspecified => "STATE_UNSPECIFIED",
-            State::Creating => "CREATING",
-            State::Active => "ACTIVE",
-            State::Deleting => "DELETING",
-            State::Updating => "UPDATING",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-            "CREATING" => Some(Self::Creating),
-            "ACTIVE" => Some(Self::Active),
-            "DELETING" => Some(Self::Deleting),
-            "UPDATING" => Some(Self::Updating),
             _ => None,
         }
     }
@@ -664,7 +632,7 @@ pub mod hub_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lists the Network Connectivity Center hubs associated with a given project.
+        /// Lists hubs in a given project.
         pub async fn list_hubs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListHubsRequest>,
@@ -695,7 +663,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details about a Network Connectivity Center hub.
+        /// Gets details about the specified hub.
         pub async fn get_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::GetHubRequest>,
@@ -723,7 +691,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a new Network Connectivity Center hub in the specified project.
+        /// Creates a new hub in the specified project.
         pub async fn create_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateHubRequest>,
@@ -754,8 +722,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates the description and/or labels of a Network Connectivity Center
-        /// hub.
+        /// Updates the description and/or labels of the specified hub.
         pub async fn update_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateHubRequest>,
@@ -786,7 +753,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a Network Connectivity Center hub.
+        /// Deletes the specified hub.
         pub async fn delete_hub(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteHubRequest>,
@@ -817,8 +784,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists the Network Connectivity Center spokes in a specified project and
-        /// location.
+        /// Lists the spokes in the specified project and location.
         pub async fn list_spokes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSpokesRequest>,
@@ -849,7 +815,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details about a Network Connectivity Center spoke.
+        /// Gets details about the specified spoke.
         pub async fn get_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSpokeRequest>,
@@ -877,7 +843,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a Network Connectivity Center spoke.
+        /// Creates a spoke in the specified project and location.
         pub async fn create_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSpokeRequest>,
@@ -908,7 +874,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates the parameters of a Network Connectivity Center spoke.
+        /// Updates the parameters of the specified spoke.
         pub async fn update_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSpokeRequest>,
@@ -939,7 +905,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a Network Connectivity Center spoke.
+        /// Deletes the specified spoke.
         pub async fn delete_spoke(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSpokeRequest>,

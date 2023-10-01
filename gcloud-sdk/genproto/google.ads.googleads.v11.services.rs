@@ -1,5 +1,5 @@
 /// Request message for
-/// \[AccountBudgetProposalService.MutateAccountBudgetProposal][google.ads.googleads.v11.services.AccountBudgetProposalService.MutateAccountBudgetProposal\].
+/// [AccountBudgetProposalService.MutateAccountBudgetProposal][google.ads.googleads.v11.services.AccountBudgetProposalService.MutateAccountBudgetProposal].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountBudgetProposalRequest {
@@ -90,7 +90,7 @@ pub mod account_budget_proposal_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -148,6 +148,22 @@ pub mod account_budget_proposal_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes account budget proposals.  Operation statuses
         /// are returned.
         ///
@@ -168,7 +184,7 @@ pub mod account_budget_proposal_service_client {
         pub async fn mutate_account_budget_proposal(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAccountBudgetProposalRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAccountBudgetProposalResponse>,
             tonic::Status,
         > {
@@ -185,12 +201,20 @@ pub mod account_budget_proposal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AccountBudgetProposalService/MutateAccountBudgetProposal",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AccountBudgetProposalService",
+                        "MutateAccountBudgetProposal",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[AccountLinkService.CreateAccountLink][google.ads.googleads.v11.services.AccountLinkService.CreateAccountLink\].
+/// [AccountLinkService.CreateAccountLink][google.ads.googleads.v11.services.AccountLinkService.CreateAccountLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAccountLinkRequest {
@@ -202,7 +226,7 @@ pub struct CreateAccountLinkRequest {
     pub account_link: ::core::option::Option<super::resources::AccountLink>,
 }
 /// Response message for
-/// \[AccountLinkService.CreateAccountLink][google.ads.googleads.v11.services.AccountLinkService.CreateAccountLink\].
+/// [AccountLinkService.CreateAccountLink][google.ads.googleads.v11.services.AccountLinkService.CreateAccountLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAccountLinkResponse {
@@ -210,7 +234,7 @@ pub struct CreateAccountLinkResponse {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[AccountLinkService.MutateAccountLink][google.ads.googleads.v11.services.AccountLinkService.MutateAccountLink\].
+/// Request message for [AccountLinkService.MutateAccountLink][google.ads.googleads.v11.services.AccountLinkService.MutateAccountLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountLinkRequest {
@@ -299,7 +323,7 @@ pub mod account_link_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -355,6 +379,22 @@ pub mod account_link_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates an account link.
         ///
         /// List of thrown errors:
@@ -371,7 +411,10 @@ pub mod account_link_service_client {
         pub async fn create_account_link(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAccountLinkRequest>,
-        ) -> Result<tonic::Response<super::CreateAccountLinkResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::CreateAccountLinkResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -385,7 +428,15 @@ pub mod account_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AccountLinkService/CreateAccountLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AccountLinkService",
+                        "CreateAccountLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates or removes an account link.
         /// From V5, create is not supported through
@@ -405,7 +456,10 @@ pub mod account_link_service_client {
         pub async fn mutate_account_link(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAccountLinkRequest>,
-        ) -> Result<tonic::Response<super::MutateAccountLinkResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAccountLinkResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -419,11 +473,19 @@ pub mod account_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AccountLinkService/MutateAccountLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AccountLinkService",
+                        "MutateAccountLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupAdLabelService.MutateAdGroupAdLabels][google.ads.googleads.v11.services.AdGroupAdLabelService.MutateAdGroupAdLabels\].
+/// Request message for [AdGroupAdLabelService.MutateAdGroupAdLabels][google.ads.googleads.v11.services.AdGroupAdLabelService.MutateAdGroupAdLabels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdLabelsRequest {
@@ -508,7 +570,7 @@ pub mod ad_group_ad_label_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -564,6 +626,22 @@ pub mod ad_group_ad_label_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates and removes ad group ad labels.
         /// Operation statuses are returned.
         ///
@@ -581,7 +659,7 @@ pub mod ad_group_ad_label_service_client {
         pub async fn mutate_ad_group_ad_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupAdLabelsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAdGroupAdLabelsResponse>,
             tonic::Status,
         > {
@@ -598,11 +676,19 @@ pub mod ad_group_ad_label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupAdLabelService/MutateAdGroupAdLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupAdLabelService",
+                        "MutateAdGroupAdLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupAdService.MutateAdGroupAds][google.ads.googleads.v11.services.AdGroupAdService.MutateAdGroupAds\].
+/// Request message for [AdGroupAdService.MutateAdGroupAds][google.ads.googleads.v11.services.AdGroupAdService.MutateAdGroupAds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdsRequest {
@@ -709,7 +795,7 @@ pub mod ad_group_ad_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -765,6 +851,22 @@ pub mod ad_group_ad_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes ads. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -814,7 +916,10 @@ pub mod ad_group_ad_service_client {
         pub async fn mutate_ad_group_ads(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupAdsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupAdsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAdGroupAdsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -828,11 +933,19 @@ pub mod ad_group_ad_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupAdService/MutateAdGroupAds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupAdService",
+                        "MutateAdGroupAds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupAssetService.MutateAdGroupAssets][google.ads.googleads.v11.services.AdGroupAssetService.MutateAdGroupAssets\].
+/// Request message for [AdGroupAssetService.MutateAdGroupAssets][google.ads.googleads.v11.services.AdGroupAssetService.MutateAdGroupAssets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAssetsRequest {
@@ -936,7 +1049,7 @@ pub mod ad_group_asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -992,6 +1105,22 @@ pub mod ad_group_asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes ad group assets. Operation statuses are
         /// returned.
         ///
@@ -1010,7 +1139,10 @@ pub mod ad_group_asset_service_client {
         pub async fn mutate_ad_group_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupAssetsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupAssetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAdGroupAssetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -1024,11 +1156,19 @@ pub mod ad_group_asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupAssetService/MutateAdGroupAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupAssetService",
+                        "MutateAdGroupAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupBidModifierService.MutateAdGroupBidModifiers][google.ads.googleads.v11.services.AdGroupBidModifierService.MutateAdGroupBidModifiers\].
+/// Request message for [AdGroupBidModifierService.MutateAdGroupBidModifiers][google.ads.googleads.v11.services.AdGroupBidModifierService.MutateAdGroupBidModifiers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupBidModifiersRequest {
@@ -1134,7 +1274,7 @@ pub mod ad_group_bid_modifier_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1192,6 +1332,22 @@ pub mod ad_group_bid_modifier_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes ad group bid modifiers.
         /// Operation statuses are returned.
         ///
@@ -1222,7 +1378,7 @@ pub mod ad_group_bid_modifier_service_client {
         pub async fn mutate_ad_group_bid_modifiers(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupBidModifiersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAdGroupBidModifiersResponse>,
             tonic::Status,
         > {
@@ -1239,12 +1395,20 @@ pub mod ad_group_bid_modifier_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupBidModifierService/MutateAdGroupBidModifiers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupBidModifierService",
+                        "MutateAdGroupBidModifiers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers][google.ads.googleads.v11.services.AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers\].
+/// [AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers][google.ads.googleads.v11.services.AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionCustomizersRequest {
@@ -1347,7 +1511,7 @@ pub mod ad_group_criterion_customizer_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1405,6 +1569,22 @@ pub mod ad_group_criterion_customizer_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes ad group criterion customizers. Operation
         /// statuses are returned.
         pub async fn mutate_ad_group_criterion_customizers(
@@ -1412,7 +1592,7 @@ pub mod ad_group_criterion_customizer_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateAdGroupCriterionCustomizersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAdGroupCriterionCustomizersResponse>,
             tonic::Status,
         > {
@@ -1429,12 +1609,20 @@ pub mod ad_group_criterion_customizer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupCriterionCustomizerService/MutateAdGroupCriterionCustomizers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupCriterionCustomizerService",
+                        "MutateAdGroupCriterionCustomizers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[AdGroupCriterionLabelService.MutateAdGroupCriterionLabels][google.ads.googleads.v11.services.AdGroupCriterionLabelService.MutateAdGroupCriterionLabels\].
+/// [AdGroupCriterionLabelService.MutateAdGroupCriterionLabels][google.ads.googleads.v11.services.AdGroupCriterionLabelService.MutateAdGroupCriterionLabels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionLabelsRequest {
@@ -1519,7 +1707,7 @@ pub mod ad_group_criterion_label_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1577,6 +1765,22 @@ pub mod ad_group_criterion_label_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates and removes ad group criterion labels.
         /// Operation statuses are returned.
         ///
@@ -1592,7 +1796,7 @@ pub mod ad_group_criterion_label_service_client {
         pub async fn mutate_ad_group_criterion_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupCriterionLabelsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAdGroupCriterionLabelsResponse>,
             tonic::Status,
         > {
@@ -1609,11 +1813,19 @@ pub mod ad_group_criterion_label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupCriterionLabelService/MutateAdGroupCriterionLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupCriterionLabelService",
+                        "MutateAdGroupCriterionLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupCriterionService.MutateAdGroupCriteria][google.ads.googleads.v11.services.AdGroupCriterionService.MutateAdGroupCriteria\].
+/// Request message for [AdGroupCriterionService.MutateAdGroupCriteria][google.ads.googleads.v11.services.AdGroupCriterionService.MutateAdGroupCriteria].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriteriaRequest {
@@ -1729,7 +1941,7 @@ pub mod ad_group_criterion_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -1787,6 +1999,22 @@ pub mod ad_group_criterion_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes criteria. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -1826,7 +2054,7 @@ pub mod ad_group_criterion_service_client {
         pub async fn mutate_ad_group_criteria(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupCriteriaRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAdGroupCriteriaResponse>,
             tonic::Status,
         > {
@@ -1843,12 +2071,20 @@ pub mod ad_group_criterion_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupCriterionService/MutateAdGroupCriteria",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupCriterionService",
+                        "MutateAdGroupCriteria",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[AdGroupCustomizerService.MutateAdGroupCustomizers][google.ads.googleads.v11.services.AdGroupCustomizerService.MutateAdGroupCustomizers\].
+/// [AdGroupCustomizerService.MutateAdGroupCustomizers][google.ads.googleads.v11.services.AdGroupCustomizerService.MutateAdGroupCustomizers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCustomizersRequest {
@@ -1944,7 +2180,7 @@ pub mod ad_group_customizer_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2002,12 +2238,28 @@ pub mod ad_group_customizer_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes ad group customizers. Operation statuses are
         /// returned.
         pub async fn mutate_ad_group_customizers(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupCustomizersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAdGroupCustomizersResponse>,
             tonic::Status,
         > {
@@ -2024,12 +2276,20 @@ pub mod ad_group_customizer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupCustomizerService/MutateAdGroupCustomizers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupCustomizerService",
+                        "MutateAdGroupCustomizers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[AdGroupExtensionSettingService.MutateAdGroupExtensionSettings][google.ads.googleads.v11.services.AdGroupExtensionSettingService.MutateAdGroupExtensionSettings\].
+/// [AdGroupExtensionSettingService.MutateAdGroupExtensionSettings][google.ads.googleads.v11.services.AdGroupExtensionSettingService.MutateAdGroupExtensionSettings].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupExtensionSettingsRequest {
@@ -2139,7 +2399,7 @@ pub mod ad_group_extension_setting_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2197,6 +2457,22 @@ pub mod ad_group_extension_setting_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes ad group extension settings. Operation
         /// statuses are returned.
         ///
@@ -2234,7 +2510,7 @@ pub mod ad_group_extension_setting_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateAdGroupExtensionSettingsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAdGroupExtensionSettingsResponse>,
             tonic::Status,
         > {
@@ -2251,11 +2527,19 @@ pub mod ad_group_extension_setting_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupExtensionSettingService/MutateAdGroupExtensionSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupExtensionSettingService",
+                        "MutateAdGroupExtensionSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupFeedService.MutateAdGroupFeeds][google.ads.googleads.v11.services.AdGroupFeedService.MutateAdGroupFeeds\].
+/// Request message for [AdGroupFeedService.MutateAdGroupFeeds][google.ads.googleads.v11.services.AdGroupFeedService.MutateAdGroupFeeds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupFeedsRequest {
@@ -2358,7 +2642,7 @@ pub mod ad_group_feed_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2414,6 +2698,22 @@ pub mod ad_group_feed_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes ad group feeds. Operation statuses are
         /// returned.
         ///
@@ -2443,7 +2743,10 @@ pub mod ad_group_feed_service_client {
         pub async fn mutate_ad_group_feeds(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupFeedsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupFeedsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAdGroupFeedsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2457,11 +2760,19 @@ pub mod ad_group_feed_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupFeedService/MutateAdGroupFeeds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupFeedService",
+                        "MutateAdGroupFeeds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupLabelService.MutateAdGroupLabels][google.ads.googleads.v11.services.AdGroupLabelService.MutateAdGroupLabels\].
+/// Request message for [AdGroupLabelService.MutateAdGroupLabels][google.ads.googleads.v11.services.AdGroupLabelService.MutateAdGroupLabels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupLabelsRequest {
@@ -2546,7 +2857,7 @@ pub mod ad_group_label_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2602,6 +2913,22 @@ pub mod ad_group_label_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates and removes ad group labels.
         /// Operation statuses are returned.
         ///
@@ -2620,7 +2947,10 @@ pub mod ad_group_label_service_client {
         pub async fn mutate_ad_group_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupLabelsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupLabelsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAdGroupLabelsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2634,11 +2964,19 @@ pub mod ad_group_label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupLabelService/MutateAdGroupLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupLabelService",
+                        "MutateAdGroupLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdGroupService.MutateAdGroups][google.ads.googleads.v11.services.AdGroupService.MutateAdGroups\].
+/// Request message for [AdGroupService.MutateAdGroups][google.ads.googleads.v11.services.AdGroupService.MutateAdGroups].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupsRequest {
@@ -2739,7 +3077,7 @@ pub mod ad_group_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -2795,6 +3133,22 @@ pub mod ad_group_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes ad groups. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -2832,7 +3186,10 @@ pub mod ad_group_service_client {
         pub async fn mutate_ad_groups(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdGroupsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAdGroupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -2846,11 +3203,19 @@ pub mod ad_group_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdGroupService/MutateAdGroups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdGroupService",
+                        "MutateAdGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdParameterService.MutateAdParameters][google.ads.googleads.v11.services.AdParameterService.MutateAdParameters\]
+/// Request message for [AdParameterService.MutateAdParameters][google.ads.googleads.v11.services.AdParameterService.MutateAdParameters]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdParametersRequest {
@@ -2953,7 +3318,7 @@ pub mod ad_parameter_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3009,6 +3374,22 @@ pub mod ad_parameter_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes ad parameters. Operation statuses are
         /// returned.
         ///
@@ -3028,7 +3409,10 @@ pub mod ad_parameter_service_client {
         pub async fn mutate_ad_parameters(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdParametersRequest>,
-        ) -> Result<tonic::Response<super::MutateAdParametersResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAdParametersResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3042,11 +3426,19 @@ pub mod ad_parameter_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdParameterService/MutateAdParameters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdParameterService",
+                        "MutateAdParameters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AdService.GetAd][google.ads.googleads.v11.services.AdService.GetAd\].
+/// Request message for [AdService.GetAd][google.ads.googleads.v11.services.AdService.GetAd].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdRequest {
@@ -3054,7 +3446,7 @@ pub struct GetAdRequest {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[AdService.MutateAds][google.ads.googleads.v11.services.AdService.MutateAds\].
+/// Request message for [AdService.MutateAds][google.ads.googleads.v11.services.AdService.MutateAds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdsRequest {
@@ -3154,7 +3546,7 @@ pub mod ad_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3210,6 +3602,22 @@ pub mod ad_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the requested ad in full detail.
         ///
         /// List of thrown errors:
@@ -3222,7 +3630,10 @@ pub mod ad_service_client {
         pub async fn get_ad(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAdRequest>,
-        ) -> Result<tonic::Response<super::super::resources::Ad>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::resources::Ad>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3236,7 +3647,15 @@ pub mod ad_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdService/GetAd",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdService",
+                        "GetAd",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates ads. Operation statuses are returned. Updating ads is not supported
         /// for TextAd, ExpandedDynamicSearchAd, GmailAd and ImageAd.
@@ -3283,7 +3702,10 @@ pub mod ad_service_client {
         pub async fn mutate_ads(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAdsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAdsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3297,11 +3719,19 @@ pub mod ad_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AdService/MutateAds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AdService",
+                        "MutateAds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AssetGroupAssetService.MutateAssetGroupAssets][google.ads.googleads.v11.services.AssetGroupAssetService.MutateAssetGroupAssets\].
+/// Request message for [AssetGroupAssetService.MutateAssetGroupAssets][google.ads.googleads.v11.services.AssetGroupAssetService.MutateAssetGroupAssets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupAssetsRequest {
@@ -3392,7 +3822,7 @@ pub mod asset_group_asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3450,12 +3880,28 @@ pub mod asset_group_asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes asset group assets. Operation statuses are
         /// returned.
         pub async fn mutate_asset_group_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAssetGroupAssetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAssetGroupAssetsResponse>,
             tonic::Status,
         > {
@@ -3472,12 +3918,20 @@ pub mod asset_group_asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AssetGroupAssetService/MutateAssetGroupAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AssetGroupAssetService",
+                        "MutateAssetGroupAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters][google.ads.googleads.v11.services.AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters\].
+/// [AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters][google.ads.googleads.v11.services.AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters].
 /// partial_failure is not supported because the tree needs to be validated
 /// together.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3580,7 +4034,7 @@ pub mod asset_group_listing_group_filter_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3638,6 +4092,22 @@ pub mod asset_group_listing_group_filter_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes asset group listing group filters. Operation
         /// statuses are returned.
         pub async fn mutate_asset_group_listing_group_filters(
@@ -3645,7 +4115,7 @@ pub mod asset_group_listing_group_filter_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateAssetGroupListingGroupFiltersRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAssetGroupListingGroupFiltersResponse>,
             tonic::Status,
         > {
@@ -3662,11 +4132,19 @@ pub mod asset_group_listing_group_filter_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AssetGroupListingGroupFilterService/MutateAssetGroupListingGroupFilters",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AssetGroupListingGroupFilterService",
+                        "MutateAssetGroupListingGroupFilters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AssetGroupService.MutateAssetGroups][google.ads.googleads.v11.services.AssetGroupService.MutateAssetGroups\].
+/// Request message for [AssetGroupService.MutateAssetGroups][google.ads.googleads.v11.services.AssetGroupService.MutateAssetGroups].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupsRequest {
@@ -3750,7 +4228,7 @@ pub mod asset_group_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3806,12 +4284,31 @@ pub mod asset_group_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes asset groups. Operation statuses are
         /// returned.
         pub async fn mutate_asset_groups(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAssetGroupsRequest>,
-        ) -> Result<tonic::Response<super::MutateAssetGroupsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAssetGroupsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -3825,12 +4322,20 @@ pub mod asset_group_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AssetGroupService/MutateAssetGroups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AssetGroupService",
+                        "MutateAssetGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[AssetGroupSignalService.MutateAssetGroupSignals][google.ads.googleads.v11.services.AssetGroupSignalService.MutateAssetGroupSignals\].
+/// [AssetGroupSignalService.MutateAssetGroupSignals][google.ads.googleads.v11.services.AssetGroupSignalService.MutateAssetGroupSignals].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupSignalsRequest {
@@ -3925,7 +4430,7 @@ pub mod asset_group_signal_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -3983,12 +4488,28 @@ pub mod asset_group_signal_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or removes asset group signals. Operation statuses are
         /// returned.
         pub async fn mutate_asset_group_signals(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAssetGroupSignalsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAssetGroupSignalsResponse>,
             tonic::Status,
         > {
@@ -4005,11 +4526,19 @@ pub mod asset_group_signal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AssetGroupSignalService/MutateAssetGroupSignals",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AssetGroupSignalService",
+                        "MutateAssetGroupSignals",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AssetService.MutateAssets][google.ads.googleads.v11.services.AssetService.MutateAssets\]
+/// Request message for [AssetService.MutateAssets][google.ads.googleads.v11.services.AssetService.MutateAssets]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetsRequest {
@@ -4111,7 +4640,7 @@ pub mod asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4167,6 +4696,22 @@ pub mod asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates assets. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -4200,7 +4745,10 @@ pub mod asset_service_client {
         pub async fn mutate_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAssetsRequest>,
-        ) -> Result<tonic::Response<super::MutateAssetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAssetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4214,11 +4762,19 @@ pub mod asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AssetService/MutateAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AssetService",
+                        "MutateAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AssetSetAssetService.MutateAssetSetAssets][google.ads.googleads.v11.services.AssetSetAssetService.MutateAssetSetAssets\].
+/// Request message for [AssetSetAssetService.MutateAssetSetAssets][google.ads.googleads.v11.services.AssetSetAssetService.MutateAssetSetAssets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetAssetsRequest {
@@ -4314,7 +4870,7 @@ pub mod asset_set_asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4370,12 +4926,28 @@ pub mod asset_set_asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes asset set assets. Operation statuses are
         /// returned.
         pub async fn mutate_asset_set_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAssetSetAssetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateAssetSetAssetsResponse>,
             tonic::Status,
         > {
@@ -4392,11 +4964,19 @@ pub mod asset_set_asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AssetSetAssetService/MutateAssetSetAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AssetSetAssetService",
+                        "MutateAssetSetAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AssetSetService.MutateAssetSets][google.ads.googleads.v11.services.AssetSetService.MutateAssetSets\].
+/// Request message for [AssetSetService.MutateAssetSets][google.ads.googleads.v11.services.AssetSetService.MutateAssetSets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetsRequest {
@@ -4497,7 +5077,7 @@ pub mod asset_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -4553,12 +5133,31 @@ pub mod asset_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes asset sets. Operation statuses are
         /// returned.
         pub async fn mutate_asset_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAssetSetsRequest>,
-        ) -> Result<tonic::Response<super::MutateAssetSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAssetSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -4572,11 +5171,19 @@ pub mod asset_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AssetSetService/MutateAssetSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AssetSetService",
+                        "MutateAssetSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AudienceInsightsService.GenerateInsightsFinderReport][google.ads.googleads.v11.services.AudienceInsightsService.GenerateInsightsFinderReport\].
+/// Request message for [AudienceInsightsService.GenerateInsightsFinderReport][google.ads.googleads.v11.services.AudienceInsightsService.GenerateInsightsFinderReport].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateInsightsFinderReportRequest {
@@ -4596,7 +5203,7 @@ pub struct GenerateInsightsFinderReportRequest {
     pub customer_insights_group: ::prost::alloc::string::String,
 }
 /// The response message for
-/// \[AudienceInsightsService.GenerateInsightsFinderReport][google.ads.googleads.v11.services.AudienceInsightsService.GenerateInsightsFinderReport\], containing the
+/// [AudienceInsightsService.GenerateInsightsFinderReport][google.ads.googleads.v11.services.AudienceInsightsService.GenerateInsightsFinderReport], containing the
 /// shareable URL for the report.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4607,7 +5214,7 @@ pub struct GenerateInsightsFinderReportResponse {
     pub saved_report_url: ::prost::alloc::string::String,
 }
 /// Request message for
-/// \[AudienceInsightsService.GenerateAudienceCompositionInsights][google.ads.googleads.v11.services.AudienceInsightsService.GenerateAudienceCompositionInsights\].
+/// [AudienceInsightsService.GenerateAudienceCompositionInsights][google.ads.googleads.v11.services.AudienceInsightsService.GenerateAudienceCompositionInsights].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAudienceCompositionInsightsRequest {
@@ -4635,7 +5242,7 @@ pub struct GenerateAudienceCompositionInsightsRequest {
     pub customer_insights_group: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[AudienceInsightsService.GenerateAudienceCompositionInsights][google.ads.googleads.v11.services.AudienceInsightsService.GenerateAudienceCompositionInsights\].
+/// [AudienceInsightsService.GenerateAudienceCompositionInsights][google.ads.googleads.v11.services.AudienceInsightsService.GenerateAudienceCompositionInsights].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAudienceCompositionInsightsResponse {
@@ -4646,7 +5253,7 @@ pub struct GenerateAudienceCompositionInsightsResponse {
     pub sections: ::prost::alloc::vec::Vec<AudienceCompositionSection>,
 }
 /// Request message for
-/// \[AudienceInsightsService.ListAudienceInsightsAttributes][google.ads.googleads.v11.services.AudienceInsightsService.ListAudienceInsightsAttributes\].
+/// [AudienceInsightsService.ListAudienceInsightsAttributes][google.ads.googleads.v11.services.AudienceInsightsService.ListAudienceInsightsAttributes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAudienceInsightsAttributesRequest {
@@ -4670,7 +5277,7 @@ pub struct ListAudienceInsightsAttributesRequest {
     pub customer_insights_group: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[AudienceInsightsService.ListAudienceInsightsAttributes][google.ads.googleads.v11.services.AudienceInsightsService.ListAudienceInsightsAttributes\].
+/// [AudienceInsightsService.ListAudienceInsightsAttributes][google.ads.googleads.v11.services.AudienceInsightsService.ListAudienceInsightsAttributes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAudienceInsightsAttributesResponse {
@@ -5022,7 +5629,7 @@ pub mod audience_insights_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5080,6 +5687,22 @@ pub mod audience_insights_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a saved report that can be viewed in the Insights Finder tool.
         ///
         /// List of thrown errors:
@@ -5094,7 +5717,7 @@ pub mod audience_insights_service_client {
         pub async fn generate_insights_finder_report(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateInsightsFinderReportRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateInsightsFinderReportResponse>,
             tonic::Status,
         > {
@@ -5111,7 +5734,15 @@ pub mod audience_insights_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AudienceInsightsService/GenerateInsightsFinderReport",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AudienceInsightsService",
+                        "GenerateInsightsFinderReport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Searches for audience attributes that can be used to generate insights.
         ///
@@ -5129,7 +5760,7 @@ pub mod audience_insights_service_client {
             request: impl tonic::IntoRequest<
                 super::ListAudienceInsightsAttributesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListAudienceInsightsAttributesResponse>,
             tonic::Status,
         > {
@@ -5146,7 +5777,15 @@ pub mod audience_insights_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AudienceInsightsService/ListAudienceInsightsAttributes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AudienceInsightsService",
+                        "ListAudienceInsightsAttributes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a collection of attributes that are represented in an audience of
         /// interest, with metrics that compare each attribute's share of the audience
@@ -5167,7 +5806,7 @@ pub mod audience_insights_service_client {
             request: impl tonic::IntoRequest<
                 super::GenerateAudienceCompositionInsightsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateAudienceCompositionInsightsResponse>,
             tonic::Status,
         > {
@@ -5184,11 +5823,19 @@ pub mod audience_insights_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AudienceInsightsService/GenerateAudienceCompositionInsights",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AudienceInsightsService",
+                        "GenerateAudienceCompositionInsights",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[AudienceService.MutateAudiences][google.ads.googleads.v11.services.AudienceService.MutateAudiences\].
+/// Request message for [AudienceService.MutateAudiences][google.ads.googleads.v11.services.AudienceService.MutateAudiences].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAudiencesRequest {
@@ -5284,7 +5931,7 @@ pub mod audience_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5340,6 +5987,22 @@ pub mod audience_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates audiences. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -5347,7 +6010,10 @@ pub mod audience_service_client {
         pub async fn mutate_audiences(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAudiencesRequest>,
-        ) -> Result<tonic::Response<super::MutateAudiencesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateAudiencesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -5361,12 +6027,20 @@ pub mod audience_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.AudienceService/MutateAudiences",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.AudienceService",
+                        "MutateAudiences",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[BiddingDataExclusionService.MutateBiddingDataExclusions][google.ads.googleads.v11.services.BiddingDataExclusionService.MutateBiddingDataExclusions\].
+/// [BiddingDataExclusionService.MutateBiddingDataExclusions][google.ads.googleads.v11.services.BiddingDataExclusionService.MutateBiddingDataExclusions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingDataExclusionsRequest {
@@ -5472,7 +6146,7 @@ pub mod bidding_data_exclusion_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5530,12 +6204,28 @@ pub mod bidding_data_exclusion_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes data exclusions.
         /// Operation statuses are returned.
         pub async fn mutate_bidding_data_exclusions(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateBiddingDataExclusionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateBiddingDataExclusionsResponse>,
             tonic::Status,
         > {
@@ -5552,12 +6242,20 @@ pub mod bidding_data_exclusion_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BiddingDataExclusionService/MutateBiddingDataExclusions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BiddingDataExclusionService",
+                        "MutateBiddingDataExclusions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments][google.ads.googleads.v11.services.BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments\].
+/// [BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments][google.ads.googleads.v11.services.BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingSeasonalityAdjustmentsRequest {
@@ -5668,7 +6366,7 @@ pub mod bidding_seasonality_adjustment_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5726,6 +6424,22 @@ pub mod bidding_seasonality_adjustment_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes seasonality adjustments.
         /// Operation statuses are returned.
         pub async fn mutate_bidding_seasonality_adjustments(
@@ -5733,7 +6447,7 @@ pub mod bidding_seasonality_adjustment_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateBiddingSeasonalityAdjustmentsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateBiddingSeasonalityAdjustmentsResponse>,
             tonic::Status,
         > {
@@ -5750,11 +6464,19 @@ pub mod bidding_seasonality_adjustment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BiddingSeasonalityAdjustmentService/MutateBiddingSeasonalityAdjustments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BiddingSeasonalityAdjustmentService",
+                        "MutateBiddingSeasonalityAdjustments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[BiddingStrategyService.MutateBiddingStrategies][google.ads.googleads.v11.services.BiddingStrategyService.MutateBiddingStrategies\].
+/// Request message for [BiddingStrategyService.MutateBiddingStrategies][google.ads.googleads.v11.services.BiddingStrategyService.MutateBiddingStrategies].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingStrategiesRequest {
@@ -5858,7 +6580,7 @@ pub mod bidding_strategy_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -5916,6 +6638,22 @@ pub mod bidding_strategy_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes bidding strategies. Operation statuses are
         /// returned.
         ///
@@ -5949,7 +6687,7 @@ pub mod bidding_strategy_service_client {
         pub async fn mutate_bidding_strategies(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateBiddingStrategiesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateBiddingStrategiesResponse>,
             tonic::Status,
         > {
@@ -5966,11 +6704,19 @@ pub mod bidding_strategy_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BiddingStrategyService/MutateBiddingStrategies",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BiddingStrategyService",
+                        "MutateBiddingStrategies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignAssetService.MutateCampaignAssets][google.ads.googleads.v11.services.CampaignAssetService.MutateCampaignAssets\].
+/// Request message for [CampaignAssetService.MutateCampaignAssets][google.ads.googleads.v11.services.CampaignAssetService.MutateCampaignAssets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetsRequest {
@@ -6074,7 +6820,7 @@ pub mod campaign_asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6130,6 +6876,22 @@ pub mod campaign_asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaign assets. Operation statuses are
         /// returned.
         ///
@@ -6149,7 +6911,7 @@ pub mod campaign_asset_service_client {
         pub async fn mutate_campaign_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignAssetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignAssetsResponse>,
             tonic::Status,
         > {
@@ -6166,11 +6928,19 @@ pub mod campaign_asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignAssetService/MutateCampaignAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignAssetService",
+                        "MutateCampaignAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignAssetSetService.MutateCampaignAssetSets][google.ads.googleads.v11.services.CampaignAssetSetService.MutateCampaignAssetSets\].
+/// Request message for [CampaignAssetSetService.MutateCampaignAssetSets][google.ads.googleads.v11.services.CampaignAssetSetService.MutateCampaignAssetSets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetSetsRequest {
@@ -6266,7 +7036,7 @@ pub mod campaign_asset_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6324,12 +7094,28 @@ pub mod campaign_asset_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes campaign asset sets. Operation statuses are
         /// returned.
         pub async fn mutate_campaign_asset_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignAssetSetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignAssetSetsResponse>,
             tonic::Status,
         > {
@@ -6346,12 +7132,20 @@ pub mod campaign_asset_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignAssetSetService/MutateCampaignAssetSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignAssetSetService",
+                        "MutateCampaignAssetSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CampaignBidModifierService.MutateCampaignBidModifiers][google.ads.googleads.v11.services.CampaignBidModifierService.MutateCampaignBidModifiers\].
+/// [CampaignBidModifierService.MutateCampaignBidModifiers][google.ads.googleads.v11.services.CampaignBidModifierService.MutateCampaignBidModifiers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBidModifiersRequest {
@@ -6457,7 +7251,7 @@ pub mod campaign_bid_modifier_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6515,6 +7309,22 @@ pub mod campaign_bid_modifier_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaign bid modifiers.
         /// Operation statuses are returned.
         ///
@@ -6544,7 +7354,7 @@ pub mod campaign_bid_modifier_service_client {
         pub async fn mutate_campaign_bid_modifiers(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignBidModifiersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignBidModifiersResponse>,
             tonic::Status,
         > {
@@ -6561,11 +7371,19 @@ pub mod campaign_bid_modifier_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignBidModifierService/MutateCampaignBidModifiers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignBidModifierService",
+                        "MutateCampaignBidModifiers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignBudgetService.MutateCampaignBudgets][google.ads.googleads.v11.services.CampaignBudgetService.MutateCampaignBudgets\].
+/// Request message for [CampaignBudgetService.MutateCampaignBudgets][google.ads.googleads.v11.services.CampaignBudgetService.MutateCampaignBudgets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBudgetsRequest {
@@ -6668,7 +7486,7 @@ pub mod campaign_budget_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6724,6 +7542,22 @@ pub mod campaign_budget_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaign budgets. Operation statuses are
         /// returned.
         ///
@@ -6748,7 +7582,7 @@ pub mod campaign_budget_service_client {
         pub async fn mutate_campaign_budgets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignBudgetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignBudgetsResponse>,
             tonic::Status,
         > {
@@ -6765,12 +7599,20 @@ pub mod campaign_budget_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignBudgetService/MutateCampaignBudgets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignBudgetService",
+                        "MutateCampaignBudgets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CampaignConversionGoalService.MutateCampaignConversionGoals][google.ads.googleads.v11.services.CampaignConversionGoalService.MutateCampaignConversionGoals\].
+/// [CampaignConversionGoalService.MutateCampaignConversionGoals][google.ads.googleads.v11.services.CampaignConversionGoalService.MutateCampaignConversionGoals].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignConversionGoalsRequest {
@@ -6838,7 +7680,7 @@ pub mod campaign_conversion_goal_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -6896,12 +7738,28 @@ pub mod campaign_conversion_goal_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes campaign conversion goals. Operation statuses
         /// are returned.
         pub async fn mutate_campaign_conversion_goals(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignConversionGoalsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignConversionGoalsResponse>,
             tonic::Status,
         > {
@@ -6918,11 +7776,19 @@ pub mod campaign_conversion_goal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignConversionGoalService/MutateCampaignConversionGoals",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignConversionGoalService",
+                        "MutateCampaignConversionGoals",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignCriterionService.MutateCampaignCriteria][google.ads.googleads.v11.services.CampaignCriterionService.MutateCampaignCriteria\].
+/// Request message for [CampaignCriterionService.MutateCampaignCriteria][google.ads.googleads.v11.services.CampaignCriterionService.MutateCampaignCriteria].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCriteriaRequest {
@@ -7025,7 +7891,7 @@ pub mod campaign_criterion_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -7083,6 +7949,22 @@ pub mod campaign_criterion_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes criteria. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -7118,7 +8000,7 @@ pub mod campaign_criterion_service_client {
         pub async fn mutate_campaign_criteria(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignCriteriaRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignCriteriaResponse>,
             tonic::Status,
         > {
@@ -7135,12 +8017,20 @@ pub mod campaign_criterion_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignCriterionService/MutateCampaignCriteria",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignCriterionService",
+                        "MutateCampaignCriteria",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CampaignCustomizerService.MutateCampaignCustomizers][google.ads.googleads.v11.services.CampaignCustomizerService.MutateCampaignCustomizers\].
+/// [CampaignCustomizerService.MutateCampaignCustomizers][google.ads.googleads.v11.services.CampaignCustomizerService.MutateCampaignCustomizers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCustomizersRequest {
@@ -7238,7 +8128,7 @@ pub mod campaign_customizer_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -7296,12 +8186,28 @@ pub mod campaign_customizer_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes campaign customizers. Operation statuses are
         /// returned.
         pub async fn mutate_campaign_customizers(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignCustomizersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignCustomizersResponse>,
             tonic::Status,
         > {
@@ -7318,11 +8224,19 @@ pub mod campaign_customizer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignCustomizerService/MutateCampaignCustomizers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignCustomizerService",
+                        "MutateCampaignCustomizers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignDraftService.MutateCampaignDrafts][google.ads.googleads.v11.services.CampaignDraftService.MutateCampaignDrafts\].
+/// Request message for [CampaignDraftService.MutateCampaignDrafts][google.ads.googleads.v11.services.CampaignDraftService.MutateCampaignDrafts].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignDraftsRequest {
@@ -7350,7 +8264,7 @@ pub struct MutateCampaignDraftsRequest {
     )]
     pub response_content_type: i32,
 }
-/// Request message for \[CampaignDraftService.PromoteCampaignDraft][google.ads.googleads.v11.services.CampaignDraftService.PromoteCampaignDraft\].
+/// Request message for [CampaignDraftService.PromoteCampaignDraft][google.ads.googleads.v11.services.CampaignDraftService.PromoteCampaignDraft].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromoteCampaignDraftRequest {
@@ -7424,7 +8338,7 @@ pub struct MutateCampaignDraftResult {
     #[prost(message, optional, tag = "2")]
     pub campaign_draft: ::core::option::Option<super::resources::CampaignDraft>,
 }
-/// Request message for \[CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v11.services.CampaignDraftService.ListCampaignDraftAsyncErrors\].
+/// Request message for [CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v11.services.CampaignDraftService.ListCampaignDraftAsyncErrors].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignDraftAsyncErrorsRequest {
@@ -7443,7 +8357,7 @@ pub struct ListCampaignDraftAsyncErrorsRequest {
     #[prost(int32, tag = "3")]
     pub page_size: i32,
 }
-/// Response message for \[CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v11.services.CampaignDraftService.ListCampaignDraftAsyncErrors\].
+/// Response message for [CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v11.services.CampaignDraftService.ListCampaignDraftAsyncErrors].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignDraftAsyncErrorsResponse {
@@ -7471,7 +8385,7 @@ pub mod campaign_draft_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -7527,6 +8441,22 @@ pub mod campaign_draft_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaign drafts. Operation statuses are
         /// returned.
         ///
@@ -7544,7 +8474,7 @@ pub mod campaign_draft_service_client {
         pub async fn mutate_campaign_drafts(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignDraftsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignDraftsResponse>,
             tonic::Status,
         > {
@@ -7561,7 +8491,15 @@ pub mod campaign_draft_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignDraftService/MutateCampaignDrafts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignDraftService",
+                        "MutateCampaignDrafts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Promotes the changes in a draft back to the base campaign.
         ///
@@ -7584,7 +8522,7 @@ pub mod campaign_draft_service_client {
         pub async fn promote_campaign_draft(
             &mut self,
             request: impl tonic::IntoRequest<super::PromoteCampaignDraftRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7601,7 +8539,15 @@ pub mod campaign_draft_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignDraftService/PromoteCampaignDraft",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignDraftService",
+                        "PromoteCampaignDraft",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all errors that occurred during CampaignDraft promote. Throws an
         /// error if called before campaign draft is promoted.
@@ -7617,7 +8563,7 @@ pub mod campaign_draft_service_client {
         pub async fn list_campaign_draft_async_errors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCampaignDraftAsyncErrorsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListCampaignDraftAsyncErrorsResponse>,
             tonic::Status,
         > {
@@ -7634,11 +8580,19 @@ pub mod campaign_draft_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignDraftService/ListCampaignDraftAsyncErrors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignDraftService",
+                        "ListCampaignDraftAsyncErrors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignExperimentService.MutateCampaignExperiments][google.ads.googleads.v11.services.CampaignExperimentService.MutateCampaignExperiments\].
+/// Request message for [CampaignExperimentService.MutateCampaignExperiments][google.ads.googleads.v11.services.CampaignExperimentService.MutateCampaignExperiments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExperimentsRequest {
@@ -7726,7 +8680,7 @@ pub struct MutateCampaignExperimentResult {
         super::resources::CampaignExperiment,
     >,
 }
-/// Request message for \[CampaignExperimentService.CreateCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.CreateCampaignExperiment\].
+/// Request message for [CampaignExperimentService.CreateCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.CreateCampaignExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCampaignExperimentRequest {
@@ -7752,7 +8706,7 @@ pub struct CreateCampaignExperimentMetadata {
     #[prost(string, tag = "1")]
     pub campaign_experiment: ::prost::alloc::string::String,
 }
-/// Request message for \[CampaignExperimentService.GraduateCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.GraduateCampaignExperiment\].
+/// Request message for [CampaignExperimentService.GraduateCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.GraduateCampaignExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GraduateCampaignExperimentRequest {
@@ -7777,7 +8731,7 @@ pub struct GraduateCampaignExperimentResponse {
     #[prost(string, tag = "1")]
     pub graduated_campaign: ::prost::alloc::string::String,
 }
-/// Request message for \[CampaignExperimentService.PromoteCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.PromoteCampaignExperiment\].
+/// Request message for [CampaignExperimentService.PromoteCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.PromoteCampaignExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromoteCampaignExperimentRequest {
@@ -7789,7 +8743,7 @@ pub struct PromoteCampaignExperimentRequest {
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
 }
-/// Request message for \[CampaignExperimentService.EndCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.EndCampaignExperiment\].
+/// Request message for [CampaignExperimentService.EndCampaignExperiment][google.ads.googleads.v11.services.CampaignExperimentService.EndCampaignExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndCampaignExperimentRequest {
@@ -7802,7 +8756,7 @@ pub struct EndCampaignExperimentRequest {
     pub validate_only: bool,
 }
 /// Request message for
-/// \[CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v11.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors\].
+/// [CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v11.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignExperimentAsyncErrorsRequest {
@@ -7823,7 +8777,7 @@ pub struct ListCampaignExperimentAsyncErrorsRequest {
     pub page_size: i32,
 }
 /// Response message for
-/// \[CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v11.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors\].
+/// [CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v11.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignExperimentAsyncErrorsResponse {
@@ -7860,7 +8814,7 @@ pub mod campaign_experiment_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -7918,6 +8872,22 @@ pub mod campaign_experiment_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a campaign experiment based on a campaign draft. The draft campaign
         /// will be forked into a real campaign (called the experiment campaign) that
         /// will begin serving ads if successfully created.
@@ -7945,7 +8915,7 @@ pub mod campaign_experiment_service_client {
         pub async fn create_campaign_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCampaignExperimentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -7962,7 +8932,15 @@ pub mod campaign_experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignExperimentService/CreateCampaignExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignExperimentService",
+                        "CreateCampaignExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates campaign experiments. Operation statuses are returned.
         ///
@@ -7977,7 +8955,7 @@ pub mod campaign_experiment_service_client {
         pub async fn mutate_campaign_experiments(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignExperimentsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignExperimentsResponse>,
             tonic::Status,
         > {
@@ -7994,7 +8972,15 @@ pub mod campaign_experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignExperimentService/MutateCampaignExperiments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignExperimentService",
+                        "MutateCampaignExperiments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Graduates a campaign experiment to a full campaign. The base and experiment
         /// campaigns will start running independently with their own budgets.
@@ -8011,7 +8997,7 @@ pub mod campaign_experiment_service_client {
         pub async fn graduate_campaign_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::GraduateCampaignExperimentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GraduateCampaignExperimentResponse>,
             tonic::Status,
         > {
@@ -8028,7 +9014,15 @@ pub mod campaign_experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignExperimentService/GraduateCampaignExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignExperimentService",
+                        "GraduateCampaignExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Promotes the changes in a experiment campaign back to the base campaign.
         ///
@@ -8047,7 +9041,7 @@ pub mod campaign_experiment_service_client {
         pub async fn promote_campaign_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::PromoteCampaignExperimentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -8064,7 +9058,15 @@ pub mod campaign_experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignExperimentService/PromoteCampaignExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignExperimentService",
+                        "PromoteCampaignExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Immediately ends a campaign experiment, changing the experiment's scheduled
         /// end date and without waiting for end of day. End date is updated to be the
@@ -8081,7 +9083,7 @@ pub mod campaign_experiment_service_client {
         pub async fn end_campaign_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::EndCampaignExperimentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -8095,7 +9097,15 @@ pub mod campaign_experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignExperimentService/EndCampaignExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignExperimentService",
+                        "EndCampaignExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all errors that occurred during CampaignExperiment create or
         /// promote (whichever occurred last).
@@ -8113,7 +9123,7 @@ pub mod campaign_experiment_service_client {
             request: impl tonic::IntoRequest<
                 super::ListCampaignExperimentAsyncErrorsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListCampaignExperimentAsyncErrorsResponse>,
             tonic::Status,
         > {
@@ -8130,12 +9140,20 @@ pub mod campaign_experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignExperimentService/ListCampaignExperimentAsyncErrors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignExperimentService",
+                        "ListCampaignExperimentAsyncErrors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CampaignExtensionSettingService.MutateCampaignExtensionSettings][google.ads.googleads.v11.services.CampaignExtensionSettingService.MutateCampaignExtensionSettings\].
+/// [CampaignExtensionSettingService.MutateCampaignExtensionSettings][google.ads.googleads.v11.services.CampaignExtensionSettingService.MutateCampaignExtensionSettings].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExtensionSettingsRequest {
@@ -8245,7 +9263,7 @@ pub mod campaign_extension_setting_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -8303,6 +9321,22 @@ pub mod campaign_extension_setting_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaign extension settings. Operation
         /// statuses are returned.
         ///
@@ -8339,7 +9373,7 @@ pub mod campaign_extension_setting_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateCampaignExtensionSettingsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignExtensionSettingsResponse>,
             tonic::Status,
         > {
@@ -8356,11 +9390,19 @@ pub mod campaign_extension_setting_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignExtensionSettingService/MutateCampaignExtensionSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignExtensionSettingService",
+                        "MutateCampaignExtensionSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignFeedService.MutateCampaignFeeds][google.ads.googleads.v11.services.CampaignFeedService.MutateCampaignFeeds\].
+/// Request message for [CampaignFeedService.MutateCampaignFeeds][google.ads.googleads.v11.services.CampaignFeedService.MutateCampaignFeeds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignFeedsRequest {
@@ -8463,7 +9505,7 @@ pub mod campaign_feed_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -8519,6 +9561,22 @@ pub mod campaign_feed_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaign feeds. Operation statuses are
         /// returned.
         ///
@@ -8549,7 +9607,10 @@ pub mod campaign_feed_service_client {
         pub async fn mutate_campaign_feeds(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignFeedsRequest>,
-        ) -> Result<tonic::Response<super::MutateCampaignFeedsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateCampaignFeedsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -8563,11 +9624,19 @@ pub mod campaign_feed_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignFeedService/MutateCampaignFeeds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignFeedService",
+                        "MutateCampaignFeeds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignGroupService.MutateCampaignGroups][google.ads.googleads.v11.services.CampaignGroupService.MutateCampaignGroups\].
+/// Request message for [CampaignGroupService.MutateCampaignGroups][google.ads.googleads.v11.services.CampaignGroupService.MutateCampaignGroups].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignGroupsRequest {
@@ -8671,7 +9740,7 @@ pub mod campaign_group_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -8727,12 +9796,28 @@ pub mod campaign_group_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaign groups. Operation statuses are
         /// returned.
         pub async fn mutate_campaign_groups(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignGroupsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignGroupsResponse>,
             tonic::Status,
         > {
@@ -8749,11 +9834,19 @@ pub mod campaign_group_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignGroupService/MutateCampaignGroups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignGroupService",
+                        "MutateCampaignGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignLabelService.MutateCampaignLabels][google.ads.googleads.v11.services.CampaignLabelService.MutateCampaignLabels\].
+/// Request message for [CampaignLabelService.MutateCampaignLabels][google.ads.googleads.v11.services.CampaignLabelService.MutateCampaignLabels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignLabelsRequest {
@@ -8838,7 +9931,7 @@ pub mod campaign_label_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -8894,6 +9987,22 @@ pub mod campaign_label_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates and removes campaign-label relationships.
         /// Operation statuses are returned.
         ///
@@ -8912,7 +10021,7 @@ pub mod campaign_label_service_client {
         pub async fn mutate_campaign_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignLabelsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignLabelsResponse>,
             tonic::Status,
         > {
@@ -8929,11 +10038,19 @@ pub mod campaign_label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignLabelService/MutateCampaignLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignLabelService",
+                        "MutateCampaignLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignService.MutateCampaigns][google.ads.googleads.v11.services.CampaignService.MutateCampaigns\].
+/// Request message for [CampaignService.MutateCampaigns][google.ads.googleads.v11.services.CampaignService.MutateCampaigns].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignsRequest {
@@ -9035,7 +10152,7 @@ pub mod campaign_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -9091,6 +10208,22 @@ pub mod campaign_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes campaigns. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -9132,7 +10265,10 @@ pub mod campaign_service_client {
         pub async fn mutate_campaigns(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignsRequest>,
-        ) -> Result<tonic::Response<super::MutateCampaignsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateCampaignsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -9146,11 +10282,19 @@ pub mod campaign_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignService/MutateCampaigns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignService",
+                        "MutateCampaigns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CampaignSharedSetService.MutateCampaignSharedSets][google.ads.googleads.v11.services.CampaignSharedSetService.MutateCampaignSharedSets\].
+/// Request message for [CampaignSharedSetService.MutateCampaignSharedSets][google.ads.googleads.v11.services.CampaignSharedSetService.MutateCampaignSharedSets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignSharedSetsRequest {
@@ -9247,7 +10391,7 @@ pub mod campaign_shared_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -9305,6 +10449,22 @@ pub mod campaign_shared_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or removes campaign shared sets. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -9333,7 +10493,7 @@ pub mod campaign_shared_set_service_client {
         pub async fn mutate_campaign_shared_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCampaignSharedSetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCampaignSharedSetsResponse>,
             tonic::Status,
         > {
@@ -9350,11 +10510,19 @@ pub mod campaign_shared_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CampaignSharedSetService/MutateCampaignSharedSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CampaignSharedSetService",
+                        "MutateCampaignSharedSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[ConversionActionService.MutateConversionActions][google.ads.googleads.v11.services.ConversionActionService.MutateConversionActions\].
+/// Request message for [ConversionActionService.MutateConversionActions][google.ads.googleads.v11.services.ConversionActionService.MutateConversionActions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionActionsRequest {
@@ -9415,7 +10583,7 @@ pub mod conversion_action_operation {
         Remove(::prost::alloc::string::String),
     }
 }
-/// Response message for \[ConversionActionService.MutateConversionActions][google.ads.googleads.v11.services.ConversionActionService.MutateConversionActions\].
+/// Response message for [ConversionActionService.MutateConversionActions][google.ads.googleads.v11.services.ConversionActionService.MutateConversionActions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionActionsResponse {
@@ -9458,7 +10626,7 @@ pub mod conversion_action_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -9516,6 +10684,22 @@ pub mod conversion_action_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes conversion actions. Operation statuses are
         /// returned.
         ///
@@ -9539,7 +10723,7 @@ pub mod conversion_action_service_client {
         pub async fn mutate_conversion_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateConversionActionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateConversionActionsResponse>,
             tonic::Status,
         > {
@@ -9556,12 +10740,20 @@ pub mod conversion_action_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionActionService/MutateConversionActions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionActionService",
+                        "MutateConversionActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v11.services.ConversionCustomVariableService.MutateConversionCustomVariables\].
+/// [ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v11.services.ConversionCustomVariableService.MutateConversionCustomVariables].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionCustomVariablesRequest {
@@ -9621,7 +10813,7 @@ pub mod conversion_custom_variable_operation {
     }
 }
 /// Response message for
-/// \[ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v11.services.ConversionCustomVariableService.MutateConversionCustomVariables\].
+/// [ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v11.services.ConversionCustomVariableService.MutateConversionCustomVariables].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionCustomVariablesResponse {
@@ -9666,7 +10858,7 @@ pub mod conversion_custom_variable_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -9724,6 +10916,22 @@ pub mod conversion_custom_variable_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or updates conversion custom variables. Operation statuses are
         /// returned.
         ///
@@ -9741,7 +10949,7 @@ pub mod conversion_custom_variable_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateConversionCustomVariablesRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateConversionCustomVariablesResponse>,
             tonic::Status,
         > {
@@ -9758,12 +10966,20 @@ pub mod conversion_custom_variable_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionCustomVariableService/MutateConversionCustomVariables",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionCustomVariableService",
+                        "MutateConversionCustomVariables",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[ConversionGoalCampaignConfigService.MutateConversionGoalCampaignConfig][\].
+/// [ConversionGoalCampaignConfigService.MutateConversionGoalCampaignConfig][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionGoalCampaignConfigsRequest {
@@ -9848,7 +11064,7 @@ pub mod conversion_goal_campaign_config_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -9906,6 +11122,22 @@ pub mod conversion_goal_campaign_config_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes conversion goal campaign config. Operation
         /// statuses are returned.
         pub async fn mutate_conversion_goal_campaign_configs(
@@ -9913,7 +11145,7 @@ pub mod conversion_goal_campaign_config_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateConversionGoalCampaignConfigsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateConversionGoalCampaignConfigsResponse>,
             tonic::Status,
         > {
@@ -9930,12 +11162,20 @@ pub mod conversion_goal_campaign_config_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionGoalCampaignConfigService/MutateConversionGoalCampaignConfigs",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionGoalCampaignConfigService",
+                        "MutateConversionGoalCampaignConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v11.services.ConversionValueRuleService.MutateConversionValueRules\].
+/// [ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v11.services.ConversionValueRuleService.MutateConversionValueRules].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRulesRequest {
@@ -9997,7 +11237,7 @@ pub mod conversion_value_rule_operation {
     }
 }
 /// Response message for
-/// \[ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v11.services.ConversionValueRuleService.MutateConversionValueRules\].
+/// [ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v11.services.ConversionValueRuleService.MutateConversionValueRules].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRulesResponse {
@@ -10042,7 +11282,7 @@ pub mod conversion_value_rule_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -10100,12 +11340,28 @@ pub mod conversion_value_rule_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes conversion value rules. Operation statuses are
         /// returned.
         pub async fn mutate_conversion_value_rules(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateConversionValueRulesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateConversionValueRulesResponse>,
             tonic::Status,
         > {
@@ -10122,12 +11378,20 @@ pub mod conversion_value_rule_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionValueRuleService/MutateConversionValueRules",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionValueRuleService",
+                        "MutateConversionValueRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v11.services.ConversionValueRuleSetService.MutateConversionValueRuleSets\].
+/// [ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v11.services.ConversionValueRuleSetService.MutateConversionValueRuleSets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRuleSetsRequest {
@@ -10191,7 +11455,7 @@ pub mod conversion_value_rule_set_operation {
     }
 }
 /// Response message for
-/// \[ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v11.services.ConversionValueRuleSetService.MutateConversionValueRuleSets\].
+/// [ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v11.services.ConversionValueRuleSetService.MutateConversionValueRuleSets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRuleSetsResponse {
@@ -10236,7 +11500,7 @@ pub mod conversion_value_rule_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -10294,12 +11558,28 @@ pub mod conversion_value_rule_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes conversion value rule sets. Operation statuses
         /// are returned.
         pub async fn mutate_conversion_value_rule_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateConversionValueRuleSetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateConversionValueRuleSetsResponse>,
             tonic::Status,
         > {
@@ -10316,12 +11596,20 @@ pub mod conversion_value_rule_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionValueRuleSetService/MutateConversionValueRuleSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionValueRuleSetService",
+                        "MutateConversionValueRuleSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CustomConversionGoalService.MutateCustomConversionGoals][google.ads.googleads.v11.services.CustomConversionGoalService.MutateCustomConversionGoals\].
+/// [CustomConversionGoalService.MutateCustomConversionGoals][google.ads.googleads.v11.services.CustomConversionGoalService.MutateCustomConversionGoals].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomConversionGoalsRequest {
@@ -10413,7 +11701,7 @@ pub mod custom_conversion_goal_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -10471,12 +11759,28 @@ pub mod custom_conversion_goal_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes custom conversion goals. Operation statuses
         /// are returned.
         pub async fn mutate_custom_conversion_goals(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomConversionGoalsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomConversionGoalsResponse>,
             tonic::Status,
         > {
@@ -10493,11 +11797,19 @@ pub mod custom_conversion_goal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomConversionGoalService/MutateCustomConversionGoals",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomConversionGoalService",
+                        "MutateCustomConversionGoals",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomerAssetService.MutateCustomerAssets][google.ads.googleads.v11.services.CustomerAssetService.MutateCustomerAssets\].
+/// Request message for [CustomerAssetService.MutateCustomerAssets][google.ads.googleads.v11.services.CustomerAssetService.MutateCustomerAssets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerAssetsRequest {
@@ -10601,7 +11913,7 @@ pub mod customer_asset_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -10657,6 +11969,22 @@ pub mod customer_asset_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes customer assets. Operation statuses are
         /// returned.
         ///
@@ -10673,7 +12001,7 @@ pub mod customer_asset_service_client {
         pub async fn mutate_customer_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerAssetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerAssetsResponse>,
             tonic::Status,
         > {
@@ -10690,12 +12018,20 @@ pub mod customer_asset_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerAssetService/MutateCustomerAssets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerAssetService",
+                        "MutateCustomerAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CustomerConversionGoalService.MutateCustomerConversionGoals][google.ads.googleads.v11.services.CustomerConversionGoalService.MutateCustomerConversionGoals\].
+/// [CustomerConversionGoalService.MutateCustomerConversionGoals][google.ads.googleads.v11.services.CustomerConversionGoalService.MutateCustomerConversionGoals].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerConversionGoalsRequest {
@@ -10763,7 +12099,7 @@ pub mod customer_conversion_goal_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -10821,12 +12157,28 @@ pub mod customer_conversion_goal_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes customer conversion goals. Operation statuses
         /// are returned.
         pub async fn mutate_customer_conversion_goals(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerConversionGoalsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerConversionGoalsResponse>,
             tonic::Status,
         > {
@@ -10843,12 +12195,20 @@ pub mod customer_conversion_goal_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerConversionGoalService/MutateCustomerConversionGoals",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerConversionGoalService",
+                        "MutateCustomerConversionGoals",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CustomerCustomizerService.MutateCustomerCustomizers][google.ads.googleads.v11.services.CustomerCustomizerService.MutateCustomerCustomizers\].
+/// [CustomerCustomizerService.MutateCustomerCustomizers][google.ads.googleads.v11.services.CustomerCustomizerService.MutateCustomerCustomizers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerCustomizersRequest {
@@ -10946,7 +12306,7 @@ pub mod customer_customizer_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -11004,12 +12364,28 @@ pub mod customer_customizer_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes customer customizers. Operation statuses are
         /// returned.
         pub async fn mutate_customer_customizers(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerCustomizersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerCustomizersResponse>,
             tonic::Status,
         > {
@@ -11026,12 +12402,20 @@ pub mod customer_customizer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerCustomizerService/MutateCustomerCustomizers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerCustomizerService",
+                        "MutateCustomerCustomizers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CustomerExtensionSettingService.MutateCustomerExtensionSettings][google.ads.googleads.v11.services.CustomerExtensionSettingService.MutateCustomerExtensionSettings\].
+/// [CustomerExtensionSettingService.MutateCustomerExtensionSettings][google.ads.googleads.v11.services.CustomerExtensionSettingService.MutateCustomerExtensionSettings].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerExtensionSettingsRequest {
@@ -11141,7 +12525,7 @@ pub mod customer_extension_setting_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -11199,6 +12583,22 @@ pub mod customer_extension_setting_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes customer extension settings. Operation
         /// statuses are returned.
         ///
@@ -11233,7 +12633,7 @@ pub mod customer_extension_setting_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateCustomerExtensionSettingsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerExtensionSettingsResponse>,
             tonic::Status,
         > {
@@ -11250,11 +12650,19 @@ pub mod customer_extension_setting_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerExtensionSettingService/MutateCustomerExtensionSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerExtensionSettingService",
+                        "MutateCustomerExtensionSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomerFeedService.MutateCustomerFeeds][google.ads.googleads.v11.services.CustomerFeedService.MutateCustomerFeeds\].
+/// Request message for [CustomerFeedService.MutateCustomerFeeds][google.ads.googleads.v11.services.CustomerFeedService.MutateCustomerFeeds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerFeedsRequest {
@@ -11357,7 +12765,7 @@ pub mod customer_feed_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -11413,6 +12821,22 @@ pub mod customer_feed_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes customer feeds. Operation statuses are
         /// returned.
         ///
@@ -11442,7 +12866,10 @@ pub mod customer_feed_service_client {
         pub async fn mutate_customer_feeds(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerFeedsRequest>,
-        ) -> Result<tonic::Response<super::MutateCustomerFeedsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateCustomerFeedsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -11456,11 +12883,19 @@ pub mod customer_feed_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerFeedService/MutateCustomerFeeds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerFeedService",
+                        "MutateCustomerFeeds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomerLabelService.MutateCustomerLabels][google.ads.googleads.v11.services.CustomerLabelService.MutateCustomerLabels\].
+/// Request message for [CustomerLabelService.MutateCustomerLabels][google.ads.googleads.v11.services.CustomerLabelService.MutateCustomerLabels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerLabelsRequest {
@@ -11545,7 +12980,7 @@ pub mod customer_label_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -11601,6 +13036,22 @@ pub mod customer_label_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates and removes customer-label relationships.
         /// Operation statuses are returned.
         ///
@@ -11617,7 +13068,7 @@ pub mod customer_label_service_client {
         pub async fn mutate_customer_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerLabelsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerLabelsResponse>,
             tonic::Status,
         > {
@@ -11634,12 +13085,20 @@ pub mod customer_label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerLabelService/MutateCustomerLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerLabelService",
+                        "MutateCustomerLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CustomerNegativeCriterionService.MutateCustomerNegativeCriteria][google.ads.googleads.v11.services.CustomerNegativeCriterionService.MutateCustomerNegativeCriteria\].
+/// [CustomerNegativeCriterionService.MutateCustomerNegativeCriteria][google.ads.googleads.v11.services.CustomerNegativeCriterionService.MutateCustomerNegativeCriteria].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerNegativeCriteriaRequest {
@@ -11738,7 +13197,7 @@ pub mod customer_negative_criterion_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -11796,6 +13255,22 @@ pub mod customer_negative_criterion_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or removes criteria. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -11814,7 +13289,7 @@ pub mod customer_negative_criterion_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateCustomerNegativeCriteriaRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerNegativeCriteriaResponse>,
             tonic::Status,
         > {
@@ -11831,11 +13306,19 @@ pub mod customer_negative_criterion_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerNegativeCriterionService/MutateCustomerNegativeCriteria",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerNegativeCriterionService",
+                        "MutateCustomerNegativeCriteria",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomerService.MutateCustomer][google.ads.googleads.v11.services.CustomerService.MutateCustomer\].
+/// Request message for [CustomerService.MutateCustomer][google.ads.googleads.v11.services.CustomerService.MutateCustomer].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerRequest {
@@ -11857,7 +13340,7 @@ pub struct MutateCustomerRequest {
     )]
     pub response_content_type: i32,
 }
-/// Request message for \[CustomerService.CreateCustomerClient][google.ads.googleads.v11.services.CustomerService.CreateCustomerClient\].
+/// Request message for [CustomerService.CreateCustomerClient][google.ads.googleads.v11.services.CustomerService.CreateCustomerClient].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomerClientRequest {
@@ -11925,11 +13408,11 @@ pub struct MutateCustomerResult {
     #[prost(message, optional, tag = "2")]
     pub customer: ::core::option::Option<super::resources::Customer>,
 }
-/// Request message for \[CustomerService.ListAccessibleCustomers][google.ads.googleads.v11.services.CustomerService.ListAccessibleCustomers\].
+/// Request message for [CustomerService.ListAccessibleCustomers][google.ads.googleads.v11.services.CustomerService.ListAccessibleCustomers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccessibleCustomersRequest {}
-/// Response message for \[CustomerService.ListAccessibleCustomers][google.ads.googleads.v11.services.CustomerService.ListAccessibleCustomers\].
+/// Response message for [CustomerService.ListAccessibleCustomers][google.ads.googleads.v11.services.CustomerService.ListAccessibleCustomers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccessibleCustomersResponse {
@@ -11952,7 +13435,7 @@ pub mod customer_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -12008,6 +13491,22 @@ pub mod customer_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Updates a customer. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -12023,7 +13522,10 @@ pub mod customer_service_client {
         pub async fn mutate_customer(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerRequest>,
-        ) -> Result<tonic::Response<super::MutateCustomerResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateCustomerResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -12037,7 +13539,15 @@ pub mod customer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerService/MutateCustomer",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerService",
+                        "MutateCustomer",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns resource names of customers directly accessible by the
         /// user authenticating the call.
@@ -12052,7 +13562,7 @@ pub mod customer_service_client {
         pub async fn list_accessible_customers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAccessibleCustomersRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListAccessibleCustomersResponse>,
             tonic::Status,
         > {
@@ -12069,7 +13579,15 @@ pub mod customer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerService/ListAccessibleCustomers",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerService",
+                        "ListAccessibleCustomers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new client under manager. The new client customer is returned.
         ///
@@ -12088,7 +13606,7 @@ pub mod customer_service_client {
         pub async fn create_customer_client(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCustomerClientRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::CreateCustomerClientResponse>,
             tonic::Status,
         > {
@@ -12105,12 +13623,20 @@ pub mod customer_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerService/CreateCustomerClient",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerService",
+                        "CreateCustomerClient",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CustomizerAttributeService.MutateCustomizerAttributes][google.ads.googleads.v11.services.CustomizerAttributeService.MutateCustomizerAttributes\].
+/// [CustomizerAttributeService.MutateCustomizerAttributes][google.ads.googleads.v11.services.CustomizerAttributeService.MutateCustomizerAttributes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomizerAttributesRequest {
@@ -12211,7 +13737,7 @@ pub mod customizer_attribute_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -12269,12 +13795,28 @@ pub mod customizer_attribute_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes customizer attributes. Operation statuses are
         /// returned.
         pub async fn mutate_customizer_attributes(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomizerAttributesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomizerAttributesResponse>,
             tonic::Status,
         > {
@@ -12291,11 +13833,19 @@ pub mod customizer_attribute_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomizerAttributeService/MutateCustomizerAttributes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomizerAttributeService",
+                        "MutateCustomizerAttributes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[ExperimentArmService.MutateExperimentArms][google.ads.googleads.v11.services.ExperimentArmService.MutateExperimentArms\].
+/// Request message for [ExperimentArmService.MutateExperimentArms][google.ads.googleads.v11.services.ExperimentArmService.MutateExperimentArms].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateExperimentArmsRequest {
@@ -12398,7 +13948,7 @@ pub mod experiment_arm_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -12454,6 +14004,22 @@ pub mod experiment_arm_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes experiment arms. Operation statuses are
         /// returned.
         ///
@@ -12468,7 +14034,7 @@ pub mod experiment_arm_service_client {
         pub async fn mutate_experiment_arms(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateExperimentArmsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateExperimentArmsResponse>,
             tonic::Status,
         > {
@@ -12485,11 +14051,19 @@ pub mod experiment_arm_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExperimentArmService/MutateExperimentArms",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExperimentArmService",
+                        "MutateExperimentArms",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[ExperimentService.MutateExperiments][google.ads.googleads.v11.services.ExperimentService.MutateExperiments\].
+/// Request message for [ExperimentService.MutateExperiments][google.ads.googleads.v11.services.ExperimentService.MutateExperiments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateExperimentsRequest {
@@ -12566,7 +14140,7 @@ pub struct MutateExperimentResult {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[ExperimentService.EndExperiment][google.ads.googleads.v11.services.ExperimentService.EndExperiment\].
+/// Request message for [ExperimentService.EndExperiment][google.ads.googleads.v11.services.ExperimentService.EndExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndExperimentRequest {
@@ -12579,7 +14153,7 @@ pub struct EndExperimentRequest {
     pub validate_only: bool,
 }
 /// Request message for
-/// \[ExperimentService.ListExperimentAsyncErrors][google.ads.googleads.v11.services.ExperimentService.ListExperimentAsyncErrors\].
+/// [ExperimentService.ListExperimentAsyncErrors][google.ads.googleads.v11.services.ExperimentService.ListExperimentAsyncErrors].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExperimentAsyncErrorsRequest {
@@ -12601,7 +14175,7 @@ pub struct ListExperimentAsyncErrorsRequest {
     pub page_size: i32,
 }
 /// Response message for
-/// \[ExperimentService.ListExperimentAsyncErrors][google.ads.googleads.v11.services.ExperimentService.ListExperimentAsyncErrors\].
+/// [ExperimentService.ListExperimentAsyncErrors][google.ads.googleads.v11.services.ExperimentService.ListExperimentAsyncErrors].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExperimentAsyncErrorsResponse {
@@ -12615,7 +14189,7 @@ pub struct ListExperimentAsyncErrorsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for \[ExperimentService.GraduateExperiment][google.ads.googleads.v11.services.ExperimentService.GraduateExperiment\].
+/// Request message for [ExperimentService.GraduateExperiment][google.ads.googleads.v11.services.ExperimentService.GraduateExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GraduateExperimentRequest {
@@ -12643,7 +14217,7 @@ pub struct CampaignBudgetMapping {
     #[prost(string, tag = "2")]
     pub campaign_budget: ::prost::alloc::string::String,
 }
-/// Request message for \[ExperimentService.ScheduleExperiment][google.ads.googleads.v11.services.ExperimentService.ScheduleExperiment\].
+/// Request message for [ExperimentService.ScheduleExperiment][google.ads.googleads.v11.services.ExperimentService.ScheduleExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScheduleExperimentRequest {
@@ -12663,7 +14237,7 @@ pub struct ScheduleExperimentMetadata {
     #[prost(string, tag = "1")]
     pub experiment: ::prost::alloc::string::String,
 }
-/// Request message for \[ExperimentService.PromoteExperiment][google.ads.googleads.v11.services.ExperimentService.PromoteExperiment\].
+/// Request message for [ExperimentService.PromoteExperiment][google.ads.googleads.v11.services.ExperimentService.PromoteExperiment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromoteExperimentRequest {
@@ -12697,7 +14271,7 @@ pub mod experiment_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -12753,6 +14327,22 @@ pub mod experiment_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes experiments. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -12766,7 +14356,10 @@ pub mod experiment_service_client {
         pub async fn mutate_experiments(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateExperimentsRequest>,
-        ) -> Result<tonic::Response<super::MutateExperimentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateExperimentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -12780,7 +14373,15 @@ pub mod experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExperimentService/MutateExperiments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExperimentService",
+                        "MutateExperiments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Immediately ends an experiment, changing the experiment's scheduled
         /// end date and without waiting for end of day. End date is updated to be the
@@ -12797,7 +14398,7 @@ pub mod experiment_service_client {
         pub async fn end_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::EndExperimentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -12811,7 +14412,15 @@ pub mod experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExperimentService/EndExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExperimentService",
+                        "EndExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all errors that occurred during the last Experiment update (either
         /// scheduling or promotion).
@@ -12827,7 +14436,7 @@ pub mod experiment_service_client {
         pub async fn list_experiment_async_errors(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExperimentAsyncErrorsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListExperimentAsyncErrorsResponse>,
             tonic::Status,
         > {
@@ -12844,7 +14453,15 @@ pub mod experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExperimentService/ListExperimentAsyncErrors",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExperimentService",
+                        "ListExperimentAsyncErrors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Graduates an experiment to a full campaign.
         ///
@@ -12860,7 +14477,7 @@ pub mod experiment_service_client {
         pub async fn graduate_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::GraduateExperimentRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -12874,7 +14491,15 @@ pub mod experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExperimentService/GraduateExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExperimentService",
+                        "GraduateExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Schedule an experiment. The in design campaign
         /// will be converted into a real campaign (called the experiment campaign)
@@ -12903,7 +14528,7 @@ pub mod experiment_service_client {
         pub async fn schedule_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::ScheduleExperimentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -12920,7 +14545,15 @@ pub mod experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExperimentService/ScheduleExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExperimentService",
+                        "ScheduleExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Promotes the trial campaign thus applying changes in the trial campaign
         /// to the base campaign.
@@ -12941,7 +14574,7 @@ pub mod experiment_service_client {
         pub async fn promote_experiment(
             &mut self,
             request: impl tonic::IntoRequest<super::PromoteExperimentRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -12958,11 +14591,19 @@ pub mod experiment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExperimentService/PromoteExperiment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExperimentService",
+                        "PromoteExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[ExtensionFeedItemService.MutateExtensionFeedItems][google.ads.googleads.v11.services.ExtensionFeedItemService.MutateExtensionFeedItems\].
+/// Request message for [ExtensionFeedItemService.MutateExtensionFeedItems][google.ads.googleads.v11.services.ExtensionFeedItemService.MutateExtensionFeedItems].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateExtensionFeedItemsRequest {
@@ -13067,7 +14708,7 @@ pub mod extension_feed_item_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -13125,6 +14766,22 @@ pub mod extension_feed_item_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes extension feed items. Operation
         /// statuses are returned.
         ///
@@ -13155,7 +14812,7 @@ pub mod extension_feed_item_service_client {
         pub async fn mutate_extension_feed_items(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateExtensionFeedItemsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateExtensionFeedItemsResponse>,
             tonic::Status,
         > {
@@ -13172,11 +14829,19 @@ pub mod extension_feed_item_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ExtensionFeedItemService/MutateExtensionFeedItems",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ExtensionFeedItemService",
+                        "MutateExtensionFeedItems",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[FeedItemService.MutateFeedItems][google.ads.googleads.v11.services.FeedItemService.MutateFeedItems\].
+/// Request message for [FeedItemService.MutateFeedItems][google.ads.googleads.v11.services.FeedItemService.MutateFeedItems].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemsRequest {
@@ -13278,7 +14943,7 @@ pub mod feed_item_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -13334,6 +14999,22 @@ pub mod feed_item_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes feed items. Operation statuses are
         /// returned.
         ///
@@ -13366,7 +15047,10 @@ pub mod feed_item_service_client {
         pub async fn mutate_feed_items(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateFeedItemsRequest>,
-        ) -> Result<tonic::Response<super::MutateFeedItemsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateFeedItemsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -13380,11 +15064,19 @@ pub mod feed_item_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.FeedItemService/MutateFeedItems",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.FeedItemService",
+                        "MutateFeedItems",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[FeedItemSetLinkService.MutateFeedItemSetLinks][google.ads.googleads.v11.services.FeedItemSetLinkService.MutateFeedItemSetLinks\].
+/// Request message for [FeedItemSetLinkService.MutateFeedItemSetLinks][google.ads.googleads.v11.services.FeedItemSetLinkService.MutateFeedItemSetLinks].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetLinksRequest {
@@ -13469,7 +15161,7 @@ pub mod feed_item_set_link_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -13527,6 +15219,22 @@ pub mod feed_item_set_link_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes feed item set links.
         ///
         /// List of thrown errors:
@@ -13539,7 +15247,7 @@ pub mod feed_item_set_link_service_client {
         pub async fn mutate_feed_item_set_links(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateFeedItemSetLinksRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateFeedItemSetLinksResponse>,
             tonic::Status,
         > {
@@ -13556,11 +15264,19 @@ pub mod feed_item_set_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.FeedItemSetLinkService/MutateFeedItemSetLinks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.FeedItemSetLinkService",
+                        "MutateFeedItemSetLinks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[FeedItemSetService.MutateFeedItemSets][google.ads.googleads.v11.services.FeedItemSetService.MutateFeedItemSets\].
+/// Request message for [FeedItemSetService.MutateFeedItemSets][google.ads.googleads.v11.services.FeedItemSetService.MutateFeedItemSets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetsRequest {
@@ -13650,7 +15366,7 @@ pub mod feed_item_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -13706,6 +15422,22 @@ pub mod feed_item_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates or removes feed item sets. Operation statuses are
         /// returned.
         ///
@@ -13720,7 +15452,10 @@ pub mod feed_item_set_service_client {
         pub async fn mutate_feed_item_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateFeedItemSetsRequest>,
-        ) -> Result<tonic::Response<super::MutateFeedItemSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateFeedItemSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -13734,11 +15469,19 @@ pub mod feed_item_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.FeedItemSetService/MutateFeedItemSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.FeedItemSetService",
+                        "MutateFeedItemSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[FeedItemTargetService.MutateFeedItemTargets][google.ads.googleads.v11.services.FeedItemTargetService.MutateFeedItemTargets\].
+/// Request message for [FeedItemTargetService.MutateFeedItemTargets][google.ads.googleads.v11.services.FeedItemTargetService.MutateFeedItemTargets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemTargetsRequest {
@@ -13835,7 +15578,7 @@ pub mod feed_item_target_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -13891,6 +15634,22 @@ pub mod feed_item_target_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or removes feed item targets. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -13916,7 +15675,7 @@ pub mod feed_item_target_service_client {
         pub async fn mutate_feed_item_targets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateFeedItemTargetsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateFeedItemTargetsResponse>,
             tonic::Status,
         > {
@@ -13933,11 +15692,19 @@ pub mod feed_item_target_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.FeedItemTargetService/MutateFeedItemTargets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.FeedItemTargetService",
+                        "MutateFeedItemTargets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[FeedMappingService.MutateFeedMappings][google.ads.googleads.v11.services.FeedMappingService.MutateFeedMappings\].
+/// Request message for [FeedMappingService.MutateFeedMappings][google.ads.googleads.v11.services.FeedMappingService.MutateFeedMappings].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedMappingsRequest {
@@ -14033,7 +15800,7 @@ pub mod feed_mapping_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -14089,6 +15856,22 @@ pub mod feed_mapping_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or removes feed mappings. Operation statuses are
         /// returned.
         ///
@@ -14115,7 +15898,10 @@ pub mod feed_mapping_service_client {
         pub async fn mutate_feed_mappings(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateFeedMappingsRequest>,
-        ) -> Result<tonic::Response<super::MutateFeedMappingsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateFeedMappingsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -14129,11 +15915,19 @@ pub mod feed_mapping_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.FeedMappingService/MutateFeedMappings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.FeedMappingService",
+                        "MutateFeedMappings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[FeedService.MutateFeeds][google.ads.googleads.v11.services.FeedService.MutateFeeds\].
+/// Request message for [FeedService.MutateFeeds][google.ads.googleads.v11.services.FeedService.MutateFeeds].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedsRequest {
@@ -14235,7 +16029,7 @@ pub mod feed_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -14291,6 +16085,22 @@ pub mod feed_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes feeds. Operation statuses are
         /// returned.
         ///
@@ -14322,7 +16132,10 @@ pub mod feed_service_client {
         pub async fn mutate_feeds(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateFeedsRequest>,
-        ) -> Result<tonic::Response<super::MutateFeedsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateFeedsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -14336,12 +16149,20 @@ pub mod feed_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.FeedService/MutateFeeds",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.FeedService",
+                        "MutateFeeds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords][google.ads.googleads.v11.services.KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords\].
+/// [KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords][google.ads.googleads.v11.services.KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupKeywordsRequest {
@@ -14446,7 +16267,7 @@ pub mod keyword_plan_ad_group_keyword_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -14504,6 +16325,22 @@ pub mod keyword_plan_ad_group_keyword_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes Keyword Plan ad group keywords. Operation
         /// statuses are returned.
         ///
@@ -14525,7 +16362,7 @@ pub mod keyword_plan_ad_group_keyword_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateKeywordPlanAdGroupKeywordsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateKeywordPlanAdGroupKeywordsResponse>,
             tonic::Status,
         > {
@@ -14542,11 +16379,19 @@ pub mod keyword_plan_ad_group_keyword_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanAdGroupKeywordService/MutateKeywordPlanAdGroupKeywords",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanAdGroupKeywordService",
+                        "MutateKeywordPlanAdGroupKeywords",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[KeywordPlanAdGroupService.MutateKeywordPlanAdGroups][google.ads.googleads.v11.services.KeywordPlanAdGroupService.MutateKeywordPlanAdGroups\].
+/// Request message for [KeywordPlanAdGroupService.MutateKeywordPlanAdGroups][google.ads.googleads.v11.services.KeywordPlanAdGroupService.MutateKeywordPlanAdGroups].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupsRequest {
@@ -14640,7 +16485,7 @@ pub mod keyword_plan_ad_group_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -14698,6 +16543,22 @@ pub mod keyword_plan_ad_group_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes Keyword Plan ad groups. Operation statuses are
         /// returned.
         ///
@@ -14719,7 +16580,7 @@ pub mod keyword_plan_ad_group_service_client {
         pub async fn mutate_keyword_plan_ad_groups(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateKeywordPlanAdGroupsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateKeywordPlanAdGroupsResponse>,
             tonic::Status,
         > {
@@ -14736,12 +16597,20 @@ pub mod keyword_plan_ad_group_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanAdGroupService/MutateKeywordPlanAdGroups",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanAdGroupService",
+                        "MutateKeywordPlanAdGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords][google.ads.googleads.v11.services.KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords\].
+/// [KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords][google.ads.googleads.v11.services.KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignKeywordsRequest {
@@ -14844,7 +16713,7 @@ pub mod keyword_plan_campaign_keyword_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -14902,6 +16771,22 @@ pub mod keyword_plan_campaign_keyword_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes Keyword Plan campaign keywords. Operation
         /// statuses are returned.
         ///
@@ -14922,7 +16807,7 @@ pub mod keyword_plan_campaign_keyword_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateKeywordPlanCampaignKeywordsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateKeywordPlanCampaignKeywordsResponse>,
             tonic::Status,
         > {
@@ -14939,12 +16824,20 @@ pub mod keyword_plan_campaign_keyword_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanCampaignKeywordService/MutateKeywordPlanCampaignKeywords",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanCampaignKeywordService",
+                        "MutateKeywordPlanCampaignKeywords",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[KeywordPlanCampaignService.MutateKeywordPlanCampaigns][google.ads.googleads.v11.services.KeywordPlanCampaignService.MutateKeywordPlanCampaigns\].
+/// [KeywordPlanCampaignService.MutateKeywordPlanCampaigns][google.ads.googleads.v11.services.KeywordPlanCampaignService.MutateKeywordPlanCampaigns].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignsRequest {
@@ -15037,7 +16930,7 @@ pub mod keyword_plan_campaign_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -15095,6 +16988,22 @@ pub mod keyword_plan_campaign_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes Keyword Plan campaigns. Operation statuses are
         /// returned.
         ///
@@ -15117,7 +17026,7 @@ pub mod keyword_plan_campaign_service_client {
         pub async fn mutate_keyword_plan_campaigns(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateKeywordPlanCampaignsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateKeywordPlanCampaignsResponse>,
             tonic::Status,
         > {
@@ -15134,11 +17043,19 @@ pub mod keyword_plan_campaign_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanCampaignService/MutateKeywordPlanCampaigns",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanCampaignService",
+                        "MutateKeywordPlanCampaigns",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[KeywordPlanService.MutateKeywordPlans][google.ads.googleads.v11.services.KeywordPlanService.MutateKeywordPlans\].
+/// Request message for [KeywordPlanService.MutateKeywordPlans][google.ads.googleads.v11.services.KeywordPlanService.MutateKeywordPlans].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlansRequest {
@@ -15216,7 +17133,7 @@ pub struct MutateKeywordPlansResult {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastCurve\].
+/// Request message for [KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastCurve].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastCurveRequest {
@@ -15224,7 +17141,7 @@ pub struct GenerateForecastCurveRequest {
     #[prost(string, tag = "1")]
     pub keyword_plan: ::prost::alloc::string::String,
 }
-/// Response message for \[KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastCurve\].
+/// Response message for [KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastCurve].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastCurveResponse {
@@ -15235,7 +17152,7 @@ pub struct GenerateForecastCurveResponse {
         KeywordPlanCampaignForecastCurve,
     >,
 }
-/// Request message for \[KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastTimeSeries\].
+/// Request message for [KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastTimeSeries].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastTimeSeriesRequest {
@@ -15243,7 +17160,7 @@ pub struct GenerateForecastTimeSeriesRequest {
     #[prost(string, tag = "1")]
     pub keyword_plan: ::prost::alloc::string::String,
 }
-/// Response message for \[KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastTimeSeries\].
+/// Response message for [KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastTimeSeries].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastTimeSeriesResponse {
@@ -15254,7 +17171,7 @@ pub struct GenerateForecastTimeSeriesResponse {
         KeywordPlanWeeklyTimeSeriesForecast,
     >,
 }
-/// Request message for \[KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastMetrics\].
+/// Request message for [KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastMetrics].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastMetricsRequest {
@@ -15262,7 +17179,7 @@ pub struct GenerateForecastMetricsRequest {
     #[prost(string, tag = "1")]
     pub keyword_plan: ::prost::alloc::string::String,
 }
-/// Response message for \[KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastMetrics\].
+/// Response message for [KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateForecastMetrics].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastMetricsResponse {
@@ -15396,7 +17313,7 @@ pub struct ForecastMetrics {
     #[prost(int64, optional, tag = "11")]
     pub cost_micros: ::core::option::Option<i64>,
 }
-/// Request message for \[KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateHistoricalMetrics\].
+/// Request message for [KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateHistoricalMetrics].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateHistoricalMetricsRequest {
@@ -15415,7 +17332,7 @@ pub struct GenerateHistoricalMetricsRequest {
         super::common::HistoricalMetricsOptions,
     >,
 }
-/// Response message for \[KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateHistoricalMetrics\].
+/// Response message for [KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanService.GenerateHistoricalMetrics].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateHistoricalMetricsResponse {
@@ -15468,7 +17385,7 @@ pub mod keyword_plan_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -15524,6 +17441,22 @@ pub mod keyword_plan_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes keyword plans. Operation statuses are
         /// returned.
         ///
@@ -15544,7 +17477,10 @@ pub mod keyword_plan_service_client {
         pub async fn mutate_keyword_plans(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateKeywordPlansRequest>,
-        ) -> Result<tonic::Response<super::MutateKeywordPlansResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateKeywordPlansResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -15558,7 +17494,15 @@ pub mod keyword_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanService/MutateKeywordPlans",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanService",
+                        "MutateKeywordPlans",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the requested Keyword Plan forecast curve.
         /// Only the bidding strategy is considered for generating forecast curve.
@@ -15578,7 +17522,7 @@ pub mod keyword_plan_service_client {
         pub async fn generate_forecast_curve(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateForecastCurveRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateForecastCurveResponse>,
             tonic::Status,
         > {
@@ -15595,7 +17539,15 @@ pub mod keyword_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanService/GenerateForecastCurve",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanService",
+                        "GenerateForecastCurve",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a forecast in the form of a time series for the Keyword Plan over
         /// the next 52 weeks.
@@ -15616,7 +17568,7 @@ pub mod keyword_plan_service_client {
         pub async fn generate_forecast_time_series(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateForecastTimeSeriesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateForecastTimeSeriesResponse>,
             tonic::Status,
         > {
@@ -15633,7 +17585,15 @@ pub mod keyword_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanService/GenerateForecastTimeSeries",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanService",
+                        "GenerateForecastTimeSeries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the requested Keyword Plan forecasts.
         ///
@@ -15648,7 +17608,7 @@ pub mod keyword_plan_service_client {
         pub async fn generate_forecast_metrics(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateForecastMetricsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateForecastMetricsResponse>,
             tonic::Status,
         > {
@@ -15665,7 +17625,15 @@ pub mod keyword_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanService/GenerateForecastMetrics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanService",
+                        "GenerateForecastMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the requested Keyword Plan historical metrics.
         ///
@@ -15680,7 +17648,7 @@ pub mod keyword_plan_service_client {
         pub async fn generate_historical_metrics(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateHistoricalMetricsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateHistoricalMetricsResponse>,
             tonic::Status,
         > {
@@ -15697,11 +17665,19 @@ pub mod keyword_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanService/GenerateHistoricalMetrics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanService",
+                        "GenerateHistoricalMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[LabelService.MutateLabels][google.ads.googleads.v11.services.LabelService.MutateLabels\].
+/// Request message for [LabelService.MutateLabels][google.ads.googleads.v11.services.LabelService.MutateLabels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateLabelsRequest {
@@ -15802,7 +17778,7 @@ pub mod label_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -15858,6 +17834,22 @@ pub mod label_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes labels. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -15887,7 +17879,10 @@ pub mod label_service_client {
         pub async fn mutate_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateLabelsRequest>,
-        ) -> Result<tonic::Response<super::MutateLabelsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateLabelsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -15901,11 +17896,19 @@ pub mod label_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.LabelService/MutateLabels",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.LabelService",
+                        "MutateLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[MediaFileService.MutateMediaFiles][google.ads.googleads.v11.services.MediaFileService.MutateMediaFiles\]
+/// Request message for [MediaFileService.MutateMediaFiles][google.ads.googleads.v11.services.MediaFileService.MutateMediaFiles]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMediaFilesRequest {
@@ -15995,7 +17998,7 @@ pub mod media_file_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -16051,6 +18054,22 @@ pub mod media_file_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates media files. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -16078,7 +18097,10 @@ pub mod media_file_service_client {
         pub async fn mutate_media_files(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateMediaFilesRequest>,
-        ) -> Result<tonic::Response<super::MutateMediaFilesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateMediaFilesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -16092,11 +18114,19 @@ pub mod media_file_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.MediaFileService/MutateMediaFiles",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.MediaFileService",
+                        "MutateMediaFiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[RemarketingActionService.MutateRemarketingActions][google.ads.googleads.v11.services.RemarketingActionService.MutateRemarketingActions\].
+/// Request message for [RemarketingActionService.MutateRemarketingActions][google.ads.googleads.v11.services.RemarketingActionService.MutateRemarketingActions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRemarketingActionsRequest {
@@ -16182,7 +18212,7 @@ pub mod remarketing_action_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -16240,6 +18270,22 @@ pub mod remarketing_action_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or updates remarketing actions. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -16253,7 +18299,7 @@ pub mod remarketing_action_service_client {
         pub async fn mutate_remarketing_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateRemarketingActionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateRemarketingActionsResponse>,
             tonic::Status,
         > {
@@ -16270,11 +18316,19 @@ pub mod remarketing_action_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.RemarketingActionService/MutateRemarketingActions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.RemarketingActionService",
+                        "MutateRemarketingActions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[SharedCriterionService.MutateSharedCriteria][google.ads.googleads.v11.services.SharedCriterionService.MutateSharedCriteria\].
+/// Request message for [SharedCriterionService.MutateSharedCriteria][google.ads.googleads.v11.services.SharedCriterionService.MutateSharedCriteria].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedCriteriaRequest {
@@ -16371,7 +18425,7 @@ pub mod shared_criterion_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -16429,6 +18483,22 @@ pub mod shared_criterion_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or removes shared criteria. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -16455,7 +18525,7 @@ pub mod shared_criterion_service_client {
         pub async fn mutate_shared_criteria(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateSharedCriteriaRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateSharedCriteriaResponse>,
             tonic::Status,
         > {
@@ -16472,11 +18542,19 @@ pub mod shared_criterion_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.SharedCriterionService/MutateSharedCriteria",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.SharedCriterionService",
+                        "MutateSharedCriteria",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[SharedSetService.MutateSharedSets][google.ads.googleads.v11.services.SharedSetService.MutateSharedSets\].
+/// Request message for [SharedSetService.MutateSharedSets][google.ads.googleads.v11.services.SharedSetService.MutateSharedSets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedSetsRequest {
@@ -16579,7 +18657,7 @@ pub mod shared_set_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -16635,6 +18713,22 @@ pub mod shared_set_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates, updates, or removes shared sets. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -16664,7 +18758,10 @@ pub mod shared_set_service_client {
         pub async fn mutate_shared_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateSharedSetsRequest>,
-        ) -> Result<tonic::Response<super::MutateSharedSetsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateSharedSetsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -16678,12 +18775,20 @@ pub mod shared_set_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.SharedSetService/MutateSharedSets",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.SharedSetService",
+                        "MutateSharedSets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[SmartCampaignSettingService.MutateSmartCampaignSetting][\].
+/// [SmartCampaignSettingService.MutateSmartCampaignSetting][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSmartCampaignSettingsRequest {
@@ -16768,7 +18873,7 @@ pub mod smart_campaign_setting_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -16826,11 +18931,27 @@ pub mod smart_campaign_setting_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Updates Smart campaign settings for campaigns.
         pub async fn mutate_smart_campaign_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateSmartCampaignSettingsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateSmartCampaignSettingsResponse>,
             tonic::Status,
         > {
@@ -16847,11 +18968,19 @@ pub mod smart_campaign_setting_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.SmartCampaignSettingService/MutateSmartCampaignSettings",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.SmartCampaignSettingService",
+                        "MutateSmartCampaignSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[UserListService.MutateUserLists][google.ads.googleads.v11.services.UserListService.MutateUserLists\].
+/// Request message for [UserListService.MutateUserLists][google.ads.googleads.v11.services.UserListService.MutateUserLists].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateUserListsRequest {
@@ -16942,7 +19071,7 @@ pub mod user_list_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -16998,6 +19127,22 @@ pub mod user_list_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or updates user lists. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -17024,7 +19169,10 @@ pub mod user_list_service_client {
         pub async fn mutate_user_lists(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateUserListsRequest>,
-        ) -> Result<tonic::Response<super::MutateUserListsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateUserListsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -17038,11 +19186,19 @@ pub mod user_list_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.UserListService/MutateUserLists",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.UserListService",
+                        "MutateUserLists",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[GoogleAdsService.Search][google.ads.googleads.v11.services.GoogleAdsService.Search\].
+/// Request message for [GoogleAdsService.Search][google.ads.googleads.v11.services.GoogleAdsService.Search].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsRequest {
@@ -17080,7 +19236,7 @@ pub struct SearchGoogleAdsRequest {
     )]
     pub summary_row_setting: i32,
 }
-/// Response message for \[GoogleAdsService.Search][google.ads.googleads.v11.services.GoogleAdsService.Search\].
+/// Response message for [GoogleAdsService.Search][google.ads.googleads.v11.services.GoogleAdsService.Search].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsResponse {
@@ -17106,7 +19262,7 @@ pub struct SearchGoogleAdsResponse {
     #[prost(message, optional, tag = "6")]
     pub summary_row: ::core::option::Option<GoogleAdsRow>,
 }
-/// Request message for \[GoogleAdsService.SearchStream][google.ads.googleads.v11.services.GoogleAdsService.SearchStream\].
+/// Request message for [GoogleAdsService.SearchStream][google.ads.googleads.v11.services.GoogleAdsService.SearchStream].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsStreamRequest {
@@ -17125,7 +19281,7 @@ pub struct SearchGoogleAdsStreamRequest {
     )]
     pub summary_row_setting: i32,
 }
-/// Response message for \[GoogleAdsService.SearchStream][google.ads.googleads.v11.services.GoogleAdsService.SearchStream\].
+/// Response message for [GoogleAdsService.SearchStream][google.ads.googleads.v11.services.GoogleAdsService.SearchStream].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsStreamResponse {
@@ -17738,7 +19894,7 @@ pub struct GoogleAdsRow {
     #[prost(message, optional, tag = "102")]
     pub segments: ::core::option::Option<super::common::Segments>,
 }
-/// Request message for \[GoogleAdsService.Mutate][google.ads.googleads.v11.services.GoogleAdsService.Mutate\].
+/// Request message for [GoogleAdsService.Mutate][google.ads.googleads.v11.services.GoogleAdsService.Mutate].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateGoogleAdsRequest {
@@ -17768,7 +19924,7 @@ pub struct MutateGoogleAdsRequest {
     )]
     pub response_content_type: i32,
 }
-/// Response message for \[GoogleAdsService.Mutate][google.ads.googleads.v11.services.GoogleAdsService.Mutate\].
+/// Response message for [GoogleAdsService.Mutate][google.ads.googleads.v11.services.GoogleAdsService.Mutate].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateGoogleAdsResponse {
@@ -18304,7 +20460,7 @@ pub mod google_ads_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -18360,6 +20516,22 @@ pub mod google_ads_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns all rows that match the search query.
         ///
         /// List of thrown errors:
@@ -18376,7 +20548,10 @@ pub mod google_ads_service_client {
         pub async fn search(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchGoogleAdsRequest>,
-        ) -> Result<tonic::Response<super::SearchGoogleAdsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::SearchGoogleAdsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -18390,7 +20565,15 @@ pub mod google_ads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.GoogleAdsService/Search",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.GoogleAdsService",
+                        "Search",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all rows that match the search stream query.
         ///
@@ -18408,7 +20591,7 @@ pub mod google_ads_service_client {
         pub async fn search_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchGoogleAdsStreamRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<
                 tonic::codec::Streaming<super::SearchGoogleAdsStreamResponse>,
             >,
@@ -18427,7 +20610,15 @@ pub mod google_ads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.GoogleAdsService/SearchStream",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.GoogleAdsService",
+                        "SearchStream",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Creates, updates, or removes resources. This method supports atomic
         /// transactions with multiple types of resources. For example, you can
@@ -18544,7 +20735,10 @@ pub mod google_ads_service_client {
         pub async fn mutate(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateGoogleAdsRequest>,
-        ) -> Result<tonic::Response<super::MutateGoogleAdsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateGoogleAdsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -18558,11 +20752,19 @@ pub mod google_ads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.GoogleAdsService/Mutate",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.GoogleAdsService",
+                        "Mutate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[BatchJobService.MutateBatchJob][google.ads.googleads.v11.services.BatchJobService.MutateBatchJob\].
+/// Request message for [BatchJobService.MutateBatchJob][google.ads.googleads.v11.services.BatchJobService.MutateBatchJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobRequest {
@@ -18598,7 +20800,7 @@ pub mod batch_job_operation {
         Remove(::prost::alloc::string::String),
     }
 }
-/// Response message for \[BatchJobService.MutateBatchJob][google.ads.googleads.v11.services.BatchJobService.MutateBatchJob\].
+/// Response message for [BatchJobService.MutateBatchJob][google.ads.googleads.v11.services.BatchJobService.MutateBatchJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobResponse {
@@ -18614,7 +20816,7 @@ pub struct MutateBatchJobResult {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[BatchJobService.RunBatchJob][google.ads.googleads.v11.services.BatchJobService.RunBatchJob\].
+/// Request message for [BatchJobService.RunBatchJob][google.ads.googleads.v11.services.BatchJobService.RunBatchJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunBatchJobRequest {
@@ -18622,7 +20824,7 @@ pub struct RunBatchJobRequest {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[BatchJobService.AddBatchJobOperations][google.ads.googleads.v11.services.BatchJobService.AddBatchJobOperations\].
+/// Request message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v11.services.BatchJobService.AddBatchJobOperations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddBatchJobOperationsRequest {
@@ -18649,7 +20851,7 @@ pub struct AddBatchJobOperationsRequest {
     #[prost(message, repeated, tag = "3")]
     pub mutate_operations: ::prost::alloc::vec::Vec<MutateOperation>,
 }
-/// Response message for \[BatchJobService.AddBatchJobOperations][google.ads.googleads.v11.services.BatchJobService.AddBatchJobOperations\].
+/// Response message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v11.services.BatchJobService.AddBatchJobOperations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddBatchJobOperationsResponse {
@@ -18662,7 +20864,7 @@ pub struct AddBatchJobOperationsResponse {
     #[prost(string, tag = "2")]
     pub next_sequence_token: ::prost::alloc::string::String,
 }
-/// Request message for \[BatchJobService.ListBatchJobResults][google.ads.googleads.v11.services.BatchJobService.ListBatchJobResults\].
+/// Request message for [BatchJobService.ListBatchJobResults][google.ads.googleads.v11.services.BatchJobService.ListBatchJobResults].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchJobResultsRequest {
@@ -18688,7 +20890,7 @@ pub struct ListBatchJobResultsRequest {
     )]
     pub response_content_type: i32,
 }
-/// Response message for \[BatchJobService.ListBatchJobResults][google.ads.googleads.v11.services.BatchJobService.ListBatchJobResults\].
+/// Response message for [BatchJobService.ListBatchJobResults][google.ads.googleads.v11.services.BatchJobService.ListBatchJobResults].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchJobResultsResponse {
@@ -18731,7 +20933,7 @@ pub mod batch_job_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -18787,6 +20989,22 @@ pub mod batch_job_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Mutates a batch job.
         ///
         /// List of thrown errors:
@@ -18800,7 +21018,10 @@ pub mod batch_job_service_client {
         pub async fn mutate_batch_job(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateBatchJobRequest>,
-        ) -> Result<tonic::Response<super::MutateBatchJobResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateBatchJobResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -18814,7 +21035,15 @@ pub mod batch_job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BatchJobService/MutateBatchJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BatchJobService",
+                        "MutateBatchJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the results of the batch job. The job must be done.
         /// Supports standard list paging.
@@ -18830,7 +21059,10 @@ pub mod batch_job_service_client {
         pub async fn list_batch_job_results(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBatchJobResultsRequest>,
-        ) -> Result<tonic::Response<super::ListBatchJobResultsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListBatchJobResultsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -18844,7 +21076,15 @@ pub mod batch_job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BatchJobService/ListBatchJobResults",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BatchJobService",
+                        "ListBatchJobResults",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Runs the batch job.
         ///
@@ -18863,7 +21103,7 @@ pub mod batch_job_service_client {
         pub async fn run_batch_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RunBatchJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -18880,7 +21120,15 @@ pub mod batch_job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BatchJobService/RunBatchJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BatchJobService",
+                        "RunBatchJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Add operations to the batch job.
         ///
@@ -18896,7 +21144,7 @@ pub mod batch_job_service_client {
         pub async fn add_batch_job_operations(
             &mut self,
             request: impl tonic::IntoRequest<super::AddBatchJobOperationsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::AddBatchJobOperationsResponse>,
             tonic::Status,
         > {
@@ -18913,7 +21161,15 @@ pub mod batch_job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BatchJobService/AddBatchJobOperations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BatchJobService",
+                        "AddBatchJobOperations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -18995,7 +21251,7 @@ pub mod billing_setup_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -19051,6 +21307,22 @@ pub mod billing_setup_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates a billing setup, or cancels an existing billing setup.
         ///
         /// List of thrown errors:
@@ -19067,7 +21339,10 @@ pub mod billing_setup_service_client {
         pub async fn mutate_billing_setup(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateBillingSetupRequest>,
-        ) -> Result<tonic::Response<super::MutateBillingSetupResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MutateBillingSetupResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -19081,12 +21356,20 @@ pub mod billing_setup_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.BillingSetupService/MutateBillingSetup",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.BillingSetupService",
+                        "MutateBillingSetup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v11.services.ConversionAdjustmentUploadService.UploadConversionAdjustments\].
+/// [ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v11.services.ConversionAdjustmentUploadService.UploadConversionAdjustments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadConversionAdjustmentsRequest {
@@ -19111,7 +21394,7 @@ pub struct UploadConversionAdjustmentsRequest {
     pub validate_only: bool,
 }
 /// Response message for
-/// \[ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v11.services.ConversionAdjustmentUploadService.UploadConversionAdjustments\].
+/// [ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v11.services.ConversionAdjustmentUploadService.UploadConversionAdjustments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadConversionAdjustmentsResponse {
@@ -19261,7 +21544,7 @@ pub mod conversion_adjustment_upload_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -19319,6 +21602,22 @@ pub mod conversion_adjustment_upload_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Processes the given conversion adjustments.
         ///
         /// List of thrown errors:
@@ -19332,7 +21631,7 @@ pub mod conversion_adjustment_upload_service_client {
         pub async fn upload_conversion_adjustments(
             &mut self,
             request: impl tonic::IntoRequest<super::UploadConversionAdjustmentsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::UploadConversionAdjustmentsResponse>,
             tonic::Status,
         > {
@@ -19349,11 +21648,19 @@ pub mod conversion_adjustment_upload_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionAdjustmentUploadService/UploadConversionAdjustments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionAdjustmentUploadService",
+                        "UploadConversionAdjustments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[ConversionUploadService.UploadClickConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadClickConversions\].
+/// Request message for [ConversionUploadService.UploadClickConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadClickConversions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadClickConversionsRequest {
@@ -19377,7 +21684,7 @@ pub struct UploadClickConversionsRequest {
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
-/// Response message for \[ConversionUploadService.UploadClickConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadClickConversions\].
+/// Response message for [ConversionUploadService.UploadClickConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadClickConversions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadClickConversionsResponse {
@@ -19397,7 +21704,7 @@ pub struct UploadClickConversionsResponse {
     #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<ClickConversionResult>,
 }
-/// Request message for \[ConversionUploadService.UploadCallConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadCallConversions\].
+/// Request message for [ConversionUploadService.UploadCallConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadCallConversions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadCallConversionsRequest {
@@ -19421,7 +21728,7 @@ pub struct UploadCallConversionsRequest {
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
-/// Response message for \[ConversionUploadService.UploadCallConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadCallConversions\].
+/// Response message for [ConversionUploadService.UploadCallConversions][google.ads.googleads.v11.services.ConversionUploadService.UploadCallConversions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadCallConversionsResponse {
@@ -19671,7 +21978,7 @@ pub mod conversion_upload_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -19729,6 +22036,22 @@ pub mod conversion_upload_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Processes the given click conversions.
         ///
         /// List of thrown errors:
@@ -19743,7 +22066,7 @@ pub mod conversion_upload_service_client {
         pub async fn upload_click_conversions(
             &mut self,
             request: impl tonic::IntoRequest<super::UploadClickConversionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::UploadClickConversionsResponse>,
             tonic::Status,
         > {
@@ -19760,7 +22083,15 @@ pub mod conversion_upload_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionUploadService/UploadClickConversions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionUploadService",
+                        "UploadClickConversions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Processes the given call conversions.
         ///
@@ -19775,7 +22106,7 @@ pub mod conversion_upload_service_client {
         pub async fn upload_call_conversions(
             &mut self,
             request: impl tonic::IntoRequest<super::UploadCallConversionsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::UploadCallConversionsResponse>,
             tonic::Status,
         > {
@@ -19792,11 +22123,19 @@ pub mod conversion_upload_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ConversionUploadService/UploadCallConversions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ConversionUploadService",
+                        "UploadCallConversions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomAudienceService.MutateCustomAudiences][google.ads.googleads.v11.services.CustomAudienceService.MutateCustomAudiences\].
+/// Request message for [CustomAudienceService.MutateCustomAudiences][google.ads.googleads.v11.services.CustomAudienceService.MutateCustomAudiences].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomAudiencesRequest {
@@ -19874,7 +22213,7 @@ pub mod custom_audience_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -19930,6 +22269,22 @@ pub mod custom_audience_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or updates custom audiences. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -19949,7 +22304,7 @@ pub mod custom_audience_service_client {
         pub async fn mutate_custom_audiences(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomAudiencesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomAudiencesResponse>,
             tonic::Status,
         > {
@@ -19966,11 +22321,19 @@ pub mod custom_audience_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomAudienceService/MutateCustomAudiences",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomAudienceService",
+                        "MutateCustomAudiences",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomInterestService.MutateCustomInterests][google.ads.googleads.v11.services.CustomInterestService.MutateCustomInterests\].
+/// Request message for [CustomInterestService.MutateCustomInterests][google.ads.googleads.v11.services.CustomInterestService.MutateCustomInterests].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomInterestsRequest {
@@ -20042,7 +22405,7 @@ pub mod custom_interest_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -20098,6 +22461,22 @@ pub mod custom_interest_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or updates custom interests. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -20115,7 +22494,7 @@ pub mod custom_interest_service_client {
         pub async fn mutate_custom_interests(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomInterestsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomInterestsResponse>,
             tonic::Status,
         > {
@@ -20132,11 +22511,19 @@ pub mod custom_interest_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomInterestService/MutateCustomInterests",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomInterestService",
+                        "MutateCustomInterests",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomerClientLinkService.MutateCustomerClientLink][google.ads.googleads.v11.services.CustomerClientLinkService.MutateCustomerClientLink\].
+/// Request message for [CustomerClientLinkService.MutateCustomerClientLink][google.ads.googleads.v11.services.CustomerClientLinkService.MutateCustomerClientLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerClientLinkRequest {
@@ -20206,7 +22593,7 @@ pub mod customer_client_link_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -20264,6 +22651,22 @@ pub mod customer_client_link_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or updates a customer client link. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -20282,7 +22685,7 @@ pub mod customer_client_link_service_client {
         pub async fn mutate_customer_client_link(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerClientLinkRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerClientLinkResponse>,
             tonic::Status,
         > {
@@ -20299,11 +22702,19 @@ pub mod customer_client_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerClientLinkService/MutateCustomerClientLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerClientLinkService",
+                        "MutateCustomerClientLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[CustomerManagerLinkService.MutateCustomerManagerLink][google.ads.googleads.v11.services.CustomerManagerLinkService.MutateCustomerManagerLink\].
+/// Request message for [CustomerManagerLinkService.MutateCustomerManagerLink][google.ads.googleads.v11.services.CustomerManagerLinkService.MutateCustomerManagerLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerManagerLinkRequest {
@@ -20318,7 +22729,7 @@ pub struct MutateCustomerManagerLinkRequest {
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Request message for \[CustomerManagerLinkService.MoveManagerLink][google.ads.googleads.v11.services.CustomerManagerLinkService.MoveManagerLink\].
+/// Request message for [CustomerManagerLinkService.MoveManagerLink][google.ads.googleads.v11.services.CustomerManagerLinkService.MoveManagerLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveManagerLinkRequest {
@@ -20405,7 +22816,7 @@ pub mod customer_manager_link_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -20463,6 +22874,22 @@ pub mod customer_manager_link_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Updates customer manager links. Operation statuses are returned.
         ///
         /// List of thrown errors:
@@ -20480,7 +22907,7 @@ pub mod customer_manager_link_service_client {
         pub async fn mutate_customer_manager_link(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerManagerLinkRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerManagerLinkResponse>,
             tonic::Status,
         > {
@@ -20497,7 +22924,15 @@ pub mod customer_manager_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerManagerLinkService/MutateCustomerManagerLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerManagerLinkService",
+                        "MutateCustomerManagerLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Moves a client customer to a new manager customer.
         /// This simplifies the complex request that requires two operations to move
@@ -20518,7 +22953,10 @@ pub mod customer_manager_link_service_client {
         pub async fn move_manager_link(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveManagerLinkRequest>,
-        ) -> Result<tonic::Response<super::MoveManagerLinkResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::MoveManagerLinkResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -20532,12 +22970,20 @@ pub mod customer_manager_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerManagerLinkService/MoveManagerLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerManagerLinkService",
+                        "MoveManagerLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[CustomerUserAccessInvitation.MutateCustomerUserAccessInvitation][\]
+/// [CustomerUserAccessInvitation.MutateCustomerUserAccessInvitation][]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessInvitationRequest {
@@ -20610,7 +23056,7 @@ pub mod customer_user_access_invitation_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -20668,6 +23114,22 @@ pub mod customer_user_access_invitation_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates or removes an access invitation.
         ///
         /// List of thrown errors:
@@ -20683,7 +23145,7 @@ pub mod customer_user_access_invitation_service_client {
             request: impl tonic::IntoRequest<
                 super::MutateCustomerUserAccessInvitationRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerUserAccessInvitationResponse>,
             tonic::Status,
         > {
@@ -20700,12 +23162,20 @@ pub mod customer_user_access_invitation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerUserAccessInvitationService/MutateCustomerUserAccessInvitation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerUserAccessInvitationService",
+                        "MutateCustomerUserAccessInvitation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Mutate Request for
-/// \[CustomerUserAccessService.MutateCustomerUserAccess][google.ads.googleads.v11.services.CustomerUserAccessService.MutateCustomerUserAccess\].
+/// [CustomerUserAccessService.MutateCustomerUserAccess][google.ads.googleads.v11.services.CustomerUserAccessService.MutateCustomerUserAccess].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessRequest {
@@ -20775,7 +23245,7 @@ pub mod customer_user_access_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -20833,6 +23303,22 @@ pub mod customer_user_access_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Updates, removes permission of a user on a given customer. Operation
         /// statuses are returned.
         ///
@@ -20849,7 +23335,7 @@ pub mod customer_user_access_service_client {
         pub async fn mutate_customer_user_access(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateCustomerUserAccessRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateCustomerUserAccessResponse>,
             tonic::Status,
         > {
@@ -20866,12 +23352,20 @@ pub mod customer_user_access_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.CustomerUserAccessService/MutateCustomerUserAccess",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.CustomerUserAccessService",
+                        "MutateCustomerUserAccess",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v11.services.GeoTargetConstantService.SuggestGeoTargetConstants\].
+/// [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v11.services.GeoTargetConstantService.SuggestGeoTargetConstants].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsRequest {
@@ -20919,7 +23413,7 @@ pub mod suggest_geo_target_constants_request {
         GeoTargets(GeoTargets),
     }
 }
-/// Response message for \[GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v11.services.GeoTargetConstantService.SuggestGeoTargetConstants\].
+/// Response message for [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v11.services.GeoTargetConstantService.SuggestGeoTargetConstants].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsResponse {
@@ -20970,7 +23464,7 @@ pub mod geo_target_constant_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -21028,6 +23522,22 @@ pub mod geo_target_constant_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns GeoTargetConstant suggestions by location name or by resource name.
         ///
         /// List of thrown errors:
@@ -21041,7 +23551,7 @@ pub mod geo_target_constant_service_client {
         pub async fn suggest_geo_target_constants(
             &mut self,
             request: impl tonic::IntoRequest<super::SuggestGeoTargetConstantsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SuggestGeoTargetConstantsResponse>,
             tonic::Status,
         > {
@@ -21058,11 +23568,19 @@ pub mod geo_target_constant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.GeoTargetConstantService/SuggestGeoTargetConstants",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.GeoTargetConstantService",
+                        "SuggestGeoTargetConstants",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[GoogleAdsFieldService.GetGoogleAdsField][google.ads.googleads.v11.services.GoogleAdsFieldService.GetGoogleAdsField\].
+/// Request message for [GoogleAdsFieldService.GetGoogleAdsField][google.ads.googleads.v11.services.GoogleAdsFieldService.GetGoogleAdsField].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGoogleAdsFieldRequest {
@@ -21070,7 +23588,7 @@ pub struct GetGoogleAdsFieldRequest {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v11.services.GoogleAdsFieldService.SearchGoogleAdsFields\].
+/// Request message for [GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v11.services.GoogleAdsFieldService.SearchGoogleAdsFields].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsFieldsRequest {
@@ -21088,7 +23606,7 @@ pub struct SearchGoogleAdsFieldsRequest {
     #[prost(int32, tag = "3")]
     pub page_size: i32,
 }
-/// Response message for \[GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v11.services.GoogleAdsFieldService.SearchGoogleAdsFields\].
+/// Response message for [GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v11.services.GoogleAdsFieldService.SearchGoogleAdsFields].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsFieldsResponse {
@@ -21118,7 +23636,7 @@ pub mod google_ads_field_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -21174,6 +23692,22 @@ pub mod google_ads_field_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns just the requested field.
         ///
         /// List of thrown errors:
@@ -21186,7 +23720,7 @@ pub mod google_ads_field_service_client {
         pub async fn get_google_ads_field(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGoogleAdsFieldRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::resources::GoogleAdsField>,
             tonic::Status,
         > {
@@ -21203,7 +23737,15 @@ pub mod google_ads_field_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.GoogleAdsFieldService/GetGoogleAdsField",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.GoogleAdsFieldService",
+                        "GetGoogleAdsField",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns all fields that match the search query.
         ///
@@ -21218,7 +23760,7 @@ pub mod google_ads_field_service_client {
         pub async fn search_google_ads_fields(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchGoogleAdsFieldsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SearchGoogleAdsFieldsResponse>,
             tonic::Status,
         > {
@@ -21235,7 +23777,15 @@ pub mod google_ads_field_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.GoogleAdsFieldService/SearchGoogleAdsFields",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.GoogleAdsFieldService",
+                        "SearchGoogleAdsFields",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -21260,7 +23810,7 @@ pub struct ListInvoicesRequest {
     #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "4")]
     pub issue_month: i32,
 }
-/// Response message for \[InvoiceService.ListInvoices][google.ads.googleads.v11.services.InvoiceService.ListInvoices\].
+/// Response message for [InvoiceService.ListInvoices][google.ads.googleads.v11.services.InvoiceService.ListInvoices].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInvoicesResponse {
@@ -21282,7 +23832,7 @@ pub mod invoice_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -21338,6 +23888,22 @@ pub mod invoice_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns all invoices associated with a billing setup, for a given month.
         ///
         /// List of thrown errors:
@@ -21352,7 +23918,10 @@ pub mod invoice_service_client {
         pub async fn list_invoices(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInvoicesRequest>,
-        ) -> Result<tonic::Response<super::ListInvoicesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListInvoicesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -21366,11 +23935,19 @@ pub mod invoice_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.InvoiceService/ListInvoices",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.InvoiceService",
+                        "ListInvoices",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordIdeas\].
+/// Request message for [KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordIdeas].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeasRequest {
@@ -21491,7 +24068,7 @@ pub struct UrlSeed {
     #[prost(string, optional, tag = "2")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
-/// Response message for \[KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordIdeas\].
+/// Response message for [KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordIdeas].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeaResponse {
@@ -21540,7 +24117,7 @@ pub struct GenerateKeywordIdeaResult {
     pub close_variants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// \[KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics\].
+/// [KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordHistoricalMetricsRequest {
@@ -21587,7 +24164,7 @@ pub struct GenerateKeywordHistoricalMetricsRequest {
     >,
 }
 /// Response message for
-/// \[KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics\].
+/// [KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateKeywordHistoricalMetrics].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordHistoricalMetricsResponse {
@@ -21623,7 +24200,7 @@ pub struct GenerateKeywordHistoricalMetricsResult {
     >,
 }
 /// Request message for
-/// \[KeywordPlanIdeaService.GenerateAdGroupThemes][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateAdGroupThemes\].
+/// [KeywordPlanIdeaService.GenerateAdGroupThemes][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateAdGroupThemes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAdGroupThemesRequest {
@@ -21639,7 +24216,7 @@ pub struct GenerateAdGroupThemesRequest {
     pub ad_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for
-/// \[KeywordPlanIdeaService.GenerateAdGroupThemes][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateAdGroupThemes\].
+/// [KeywordPlanIdeaService.GenerateAdGroupThemes][google.ads.googleads.v11.services.KeywordPlanIdeaService.GenerateAdGroupThemes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAdGroupThemesResponse {
@@ -21706,7 +24283,7 @@ pub mod keyword_plan_idea_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -21764,6 +24341,22 @@ pub mod keyword_plan_idea_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns a list of keyword ideas.
         ///
         /// List of thrown errors:
@@ -21778,7 +24371,10 @@ pub mod keyword_plan_idea_service_client {
         pub async fn generate_keyword_ideas(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateKeywordIdeasRequest>,
-        ) -> Result<tonic::Response<super::GenerateKeywordIdeaResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateKeywordIdeaResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -21792,7 +24388,15 @@ pub mod keyword_plan_idea_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanIdeaService/GenerateKeywordIdeas",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanIdeaService",
+                        "GenerateKeywordIdeas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a list of keyword historical metrics.
         ///
@@ -21809,7 +24413,7 @@ pub mod keyword_plan_idea_service_client {
             request: impl tonic::IntoRequest<
                 super::GenerateKeywordHistoricalMetricsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateKeywordHistoricalMetricsResponse>,
             tonic::Status,
         > {
@@ -21826,7 +24430,15 @@ pub mod keyword_plan_idea_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanIdeaService/GenerateKeywordHistoricalMetrics",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanIdeaService",
+                        "GenerateKeywordHistoricalMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns a list of suggested AdGroups and suggested modifications
         /// (text, match type) for the given keywords.
@@ -21842,7 +24454,7 @@ pub mod keyword_plan_idea_service_client {
         pub async fn generate_ad_group_themes(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateAdGroupThemesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateAdGroupThemesResponse>,
             tonic::Status,
         > {
@@ -21859,12 +24471,20 @@ pub mod keyword_plan_idea_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordPlanIdeaService/GenerateAdGroupThemes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordPlanIdeaService",
+                        "GenerateAdGroupThemes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v11.services.KeywordThemeConstantService.SuggestKeywordThemeConstants\].
+/// [KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v11.services.KeywordThemeConstantService.SuggestKeywordThemeConstants].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemeConstantsRequest {
@@ -21882,7 +24502,7 @@ pub struct SuggestKeywordThemeConstantsRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v11.services.KeywordThemeConstantService.SuggestKeywordThemeConstants\].
+/// [KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v11.services.KeywordThemeConstantService.SuggestKeywordThemeConstants].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemeConstantsResponse {
@@ -21906,7 +24526,7 @@ pub mod keyword_theme_constant_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -21964,6 +24584,22 @@ pub mod keyword_theme_constant_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns KeywordThemeConstant suggestions by keyword themes.
         ///
         /// List of thrown errors:
@@ -21976,7 +24612,7 @@ pub mod keyword_theme_constant_service_client {
         pub async fn suggest_keyword_theme_constants(
             &mut self,
             request: impl tonic::IntoRequest<super::SuggestKeywordThemeConstantsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SuggestKeywordThemeConstantsResponse>,
             tonic::Status,
         > {
@@ -21993,11 +24629,19 @@ pub mod keyword_theme_constant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.KeywordThemeConstantService/SuggestKeywordThemeConstants",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.KeywordThemeConstantService",
+                        "SuggestKeywordThemeConstants",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v11.services.MerchantCenterLinkService.ListMerchantCenterLinks\].
+/// Request message for [MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v11.services.MerchantCenterLinkService.ListMerchantCenterLinks].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMerchantCenterLinksRequest {
@@ -22006,7 +24650,7 @@ pub struct ListMerchantCenterLinksRequest {
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
 }
-/// Response message for \[MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v11.services.MerchantCenterLinkService.ListMerchantCenterLinks\].
+/// Response message for [MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v11.services.MerchantCenterLinkService.ListMerchantCenterLinks].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMerchantCenterLinksResponse {
@@ -22016,7 +24660,7 @@ pub struct ListMerchantCenterLinksResponse {
         super::resources::MerchantCenterLink,
     >,
 }
-/// Request message for \[MerchantCenterLinkService.GetMerchantCenterLink][google.ads.googleads.v11.services.MerchantCenterLinkService.GetMerchantCenterLink\].
+/// Request message for [MerchantCenterLinkService.GetMerchantCenterLink][google.ads.googleads.v11.services.MerchantCenterLinkService.GetMerchantCenterLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMerchantCenterLinkRequest {
@@ -22024,7 +24668,7 @@ pub struct GetMerchantCenterLinkRequest {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[MerchantCenterLinkService.MutateMerchantCenterLink][google.ads.googleads.v11.services.MerchantCenterLinkService.MutateMerchantCenterLink\].
+/// Request message for [MerchantCenterLinkService.MutateMerchantCenterLink][google.ads.googleads.v11.services.MerchantCenterLinkService.MutateMerchantCenterLink].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMerchantCenterLinkRequest {
@@ -22099,7 +24743,7 @@ pub mod merchant_center_link_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -22157,6 +24801,22 @@ pub mod merchant_center_link_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns Merchant Center links available for this customer.
         ///
         /// List of thrown errors:
@@ -22169,7 +24829,7 @@ pub mod merchant_center_link_service_client {
         pub async fn list_merchant_center_links(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMerchantCenterLinksRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListMerchantCenterLinksResponse>,
             tonic::Status,
         > {
@@ -22186,7 +24846,15 @@ pub mod merchant_center_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.MerchantCenterLinkService/ListMerchantCenterLinks",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.MerchantCenterLinkService",
+                        "ListMerchantCenterLinks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the Merchant Center link in full detail.
         ///
@@ -22200,7 +24868,7 @@ pub mod merchant_center_link_service_client {
         pub async fn get_merchant_center_link(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMerchantCenterLinkRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::resources::MerchantCenterLink>,
             tonic::Status,
         > {
@@ -22217,7 +24885,15 @@ pub mod merchant_center_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.MerchantCenterLinkService/GetMerchantCenterLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.MerchantCenterLinkService",
+                        "GetMerchantCenterLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates status or removes a Merchant Center link.
         ///
@@ -22232,7 +24908,7 @@ pub mod merchant_center_link_service_client {
         pub async fn mutate_merchant_center_link(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateMerchantCenterLinkRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::MutateMerchantCenterLinkResponse>,
             tonic::Status,
         > {
@@ -22249,12 +24925,20 @@ pub mod merchant_center_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.MerchantCenterLinkService/MutateMerchantCenterLink",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.MerchantCenterLinkService",
+                        "MutateMerchantCenterLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v11.services.OfflineUserDataJobService.CreateOfflineUserDataJob\].
+/// [OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v11.services.OfflineUserDataJobService.CreateOfflineUserDataJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineUserDataJobRequest {
@@ -22274,7 +24958,7 @@ pub struct CreateOfflineUserDataJobRequest {
     pub enable_match_rate_range_preview: bool,
 }
 /// Response message for
-/// \[OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v11.services.OfflineUserDataJobService.CreateOfflineUserDataJob\].
+/// [OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v11.services.OfflineUserDataJobService.CreateOfflineUserDataJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineUserDataJobResponse {
@@ -22282,7 +24966,7 @@ pub struct CreateOfflineUserDataJobResponse {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[OfflineUserDataJobService.RunOfflineUserDataJob][google.ads.googleads.v11.services.OfflineUserDataJobService.RunOfflineUserDataJob\].
+/// Request message for [OfflineUserDataJobService.RunOfflineUserDataJob][google.ads.googleads.v11.services.OfflineUserDataJobService.RunOfflineUserDataJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunOfflineUserDataJobRequest {
@@ -22295,7 +24979,7 @@ pub struct RunOfflineUserDataJobRequest {
     pub validate_only: bool,
 }
 /// Request message for
-/// \[OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v11.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations\].
+/// [OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v11.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOfflineUserDataJobOperationsRequest {
@@ -22347,7 +25031,7 @@ pub mod offline_user_data_job_operation {
     }
 }
 /// Response message for
-/// \[OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v11.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations\].
+/// [OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v11.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOfflineUserDataJobOperationsResponse {
@@ -22378,7 +25062,7 @@ pub mod offline_user_data_job_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -22436,6 +25120,22 @@ pub mod offline_user_data_job_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Creates an offline user data job.
         ///
         /// List of thrown errors:
@@ -22452,7 +25152,7 @@ pub mod offline_user_data_job_service_client {
         pub async fn create_offline_user_data_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateOfflineUserDataJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::CreateOfflineUserDataJobResponse>,
             tonic::Status,
         > {
@@ -22469,7 +25169,15 @@ pub mod offline_user_data_job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.OfflineUserDataJobService/CreateOfflineUserDataJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.OfflineUserDataJobService",
+                        "CreateOfflineUserDataJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds operations to the offline user data job.
         ///
@@ -22489,7 +25197,7 @@ pub mod offline_user_data_job_service_client {
             request: impl tonic::IntoRequest<
                 super::AddOfflineUserDataJobOperationsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::AddOfflineUserDataJobOperationsResponse>,
             tonic::Status,
         > {
@@ -22506,7 +25214,15 @@ pub mod offline_user_data_job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.OfflineUserDataJobService/AddOfflineUserDataJobOperations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.OfflineUserDataJobService",
+                        "AddOfflineUserDataJobOperations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Runs the offline user data job.
         ///
@@ -22525,7 +25241,7 @@ pub mod offline_user_data_job_service_client {
         pub async fn run_offline_user_data_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RunOfflineUserDataJobRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
@@ -22542,7 +25258,15 @@ pub mod offline_user_data_job_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.OfflineUserDataJobService/RunOfflineUserDataJob",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.OfflineUserDataJobService",
+                        "RunOfflineUserDataJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -22554,7 +25278,7 @@ pub struct ListPaymentsAccountsRequest {
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
 }
-/// Response message for \[PaymentsAccountService.ListPaymentsAccounts][google.ads.googleads.v11.services.PaymentsAccountService.ListPaymentsAccounts\].
+/// Response message for [PaymentsAccountService.ListPaymentsAccounts][google.ads.googleads.v11.services.PaymentsAccountService.ListPaymentsAccounts].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPaymentsAccountsResponse {
@@ -22577,7 +25301,7 @@ pub mod payments_account_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -22635,6 +25359,22 @@ pub mod payments_account_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns all payments accounts associated with all managers
         /// between the login customer ID and specified serving customer in the
         /// hierarchy, inclusive.
@@ -22650,7 +25390,7 @@ pub mod payments_account_service_client {
         pub async fn list_payments_accounts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPaymentsAccountsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPaymentsAccountsResponse>,
             tonic::Status,
         > {
@@ -22667,11 +25407,19 @@ pub mod payments_account_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.PaymentsAccountService/ListPaymentsAccounts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.PaymentsAccountService",
+                        "ListPaymentsAccounts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations\].
+/// Request message for [ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableLocationsRequest {}
@@ -22699,15 +25447,15 @@ pub struct PlannableLocation {
     /// The parent country (not present if location is a country).
     /// If present, will always be a GeoTargetConstant ID. Additional information
     /// such as country name is provided by
-    /// \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations\] or
-    /// \[GoogleAdsService.Search/SearchStream][\].
+    /// [ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations] or
+    /// [GoogleAdsService.Search/SearchStream][].
     #[prost(int64, optional, tag = "6")]
     pub parent_country_id: ::core::option::Option<i64>,
     /// The ISO-3166-1 alpha-2 country code that is associated with the location.
     #[prost(string, optional, tag = "7")]
     pub country_code: ::core::option::Option<::prost::alloc::string::String>,
     /// The location's type. Location types correspond to target_type returned by
-    /// searching location type in \[GoogleAdsService.Search/SearchStream][\].
+    /// searching location type in [GoogleAdsService.Search/SearchStream][].
     #[prost(string, optional, tag = "8")]
     pub location_type: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -22716,7 +25464,7 @@ pub struct PlannableLocation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableProductsRequest {
     /// Required. The ID of the selected location for planning. To list the available
-    /// plannable location IDs use \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations\].
+    /// plannable location IDs use [ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations].
     #[prost(string, tag = "2")]
     pub plannable_location_id: ::prost::alloc::string::String,
 }
@@ -22735,7 +25483,7 @@ pub struct ProductMetadata {
     /// The code associated with the ad product (for example: BUMPER,
     /// TRUEVIEW_IN_STREAM).
     /// To list the available plannable product codes use
-    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts\].
+    /// [ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts].
     #[prost(string, optional, tag = "4")]
     pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
     /// The name associated with the ad product.
@@ -22778,7 +25526,7 @@ pub struct PlannableTargeting {
     #[prost(message, repeated, tag = "5")]
     pub youtube_select_lineups: ::prost::alloc::vec::Vec<YouTubeSelectLineUp>,
 }
-/// Request message for \[ReachPlanService.GenerateProductMixIdeas][google.ads.googleads.v11.services.ReachPlanService.GenerateProductMixIdeas\].
+/// Request message for [ReachPlanService.GenerateProductMixIdeas][google.ads.googleads.v11.services.ReachPlanService.GenerateProductMixIdeas].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateProductMixIdeasRequest {
@@ -22786,7 +25534,7 @@ pub struct GenerateProductMixIdeasRequest {
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The ID of the location, this is one of the IDs returned by
-    /// \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations\].
+    /// [ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations].
     #[prost(string, tag = "6")]
     pub plannable_location_id: ::prost::alloc::string::String,
     /// Required. Currency code.
@@ -22854,7 +25602,7 @@ pub struct ProductAllocation {
     #[prost(int64, optional, tag = "4")]
     pub budget_micros: ::core::option::Option<i64>,
 }
-/// Request message for \[ReachPlanService.GenerateReachForecast][google.ads.googleads.v11.services.ReachPlanService.GenerateReachForecast\].
+/// Request message for [ReachPlanService.GenerateReachForecast][google.ads.googleads.v11.services.ReachPlanService.GenerateReachForecast].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateReachForecastRequest {
@@ -22957,7 +25705,7 @@ pub struct FrequencyCap {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Targeting {
     /// Required. The ID of the selected location. Plannable location IDs can be
-    /// obtained from \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations\].
+    /// obtained from [ReachPlanService.ListPlannableLocations][google.ads.googleads.v11.services.ReachPlanService.ListPlannableLocations].
     #[prost(string, optional, tag = "6")]
     pub plannable_location_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Targeted age range.
@@ -22974,13 +25722,13 @@ pub struct Targeting {
     /// Targeted devices.
     /// If not specified, targets all applicable devices. Applicable devices vary
     /// by product and region and can be obtained from
-    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts\].
+    /// [ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts].
     #[prost(message, repeated, tag = "4")]
     pub devices: ::prost::alloc::vec::Vec<super::common::DeviceInfo>,
     /// Targetable network for the ad product.
     /// If not specified, targets all applicable networks. Applicable networks vary
     /// by product and region and can be obtained from
-    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts\].
+    /// [ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts].
     #[prost(
         enumeration = "super::enums::reach_plan_network_enum::ReachPlanNetwork",
         tag = "5"
@@ -23016,7 +25764,7 @@ pub struct PlannedProduct {
     /// Required. Selected product for planning.
     /// The code associated with the ad product (for example: Trueview, Bumper).
     /// To list the available plannable product codes use
-    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts\].
+    /// [ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts].
     #[prost(string, optional, tag = "3")]
     pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. Maximum budget allocation in micros for the selected product.
@@ -23026,7 +25774,7 @@ pub struct PlannedProduct {
     pub budget_micros: ::core::option::Option<i64>,
     /// Targeting settings for the selected product.
     /// To list the available targeting for each product use
-    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts\].
+    /// [ReachPlanService.ListPlannableProducts][google.ads.googleads.v11.services.ReachPlanService.ListPlannableProducts].
     #[prost(message, optional, tag = "5")]
     pub advanced_product_targeting: ::core::option::Option<AdvancedProductTargeting>,
 }
@@ -23323,7 +26071,7 @@ pub mod reach_plan_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -23379,6 +26127,22 @@ pub mod reach_plan_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns the list of plannable locations (for example, countries).
         ///
         /// List of thrown errors:
@@ -23391,7 +26155,7 @@ pub mod reach_plan_service_client {
         pub async fn list_plannable_locations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPlannableLocationsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPlannableLocationsResponse>,
             tonic::Status,
         > {
@@ -23408,7 +26172,15 @@ pub mod reach_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ReachPlanService/ListPlannableLocations",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ReachPlanService",
+                        "ListPlannableLocations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Returns the list of per-location plannable YouTube ad formats with allowed
         /// targeting.
@@ -23423,7 +26195,7 @@ pub mod reach_plan_service_client {
         pub async fn list_plannable_products(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPlannableProductsRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::ListPlannableProductsResponse>,
             tonic::Status,
         > {
@@ -23440,7 +26212,15 @@ pub mod reach_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ReachPlanService/ListPlannableProducts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ReachPlanService",
+                        "ListPlannableProducts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates a product mix ideas given a set of preferences. This method
         /// helps the advertiser to obtain a good mix of ad formats and budget
@@ -23457,7 +26237,7 @@ pub mod reach_plan_service_client {
         pub async fn generate_product_mix_ideas(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateProductMixIdeasRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateProductMixIdeasResponse>,
             tonic::Status,
         > {
@@ -23474,7 +26254,15 @@ pub mod reach_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ReachPlanService/GenerateProductMixIdeas",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ReachPlanService",
+                        "GenerateProductMixIdeas",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Generates a reach forecast for a given targeting / product mix.
         ///
@@ -23491,7 +26279,7 @@ pub mod reach_plan_service_client {
         pub async fn generate_reach_forecast(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateReachForecastRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::GenerateReachForecastResponse>,
             tonic::Status,
         > {
@@ -23508,11 +26296,19 @@ pub mod reach_plan_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ReachPlanService/GenerateReachForecast",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ReachPlanService",
+                        "GenerateReachForecast",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[RecommendationService.ApplyRecommendation][google.ads.googleads.v11.services.RecommendationService.ApplyRecommendation\].
+/// Request message for [RecommendationService.ApplyRecommendation][google.ads.googleads.v11.services.RecommendationService.ApplyRecommendation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationRequest {
@@ -23736,7 +26532,7 @@ pub mod apply_recommendation_operation {
         ),
     }
 }
-/// Response message for \[RecommendationService.ApplyRecommendation][google.ads.googleads.v11.services.RecommendationService.ApplyRecommendation\].
+/// Response message for [RecommendationService.ApplyRecommendation][google.ads.googleads.v11.services.RecommendationService.ApplyRecommendation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationResponse {
@@ -23760,7 +26556,7 @@ pub struct ApplyRecommendationResult {
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-/// Request message for \[RecommendationService.DismissRecommendation][google.ads.googleads.v11.services.RecommendationService.DismissRecommendation\].
+/// Request message for [RecommendationService.DismissRecommendation][google.ads.googleads.v11.services.RecommendationService.DismissRecommendation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissRecommendationRequest {
@@ -23792,7 +26588,7 @@ pub mod dismiss_recommendation_request {
         pub resource_name: ::prost::alloc::string::String,
     }
 }
-/// Response message for \[RecommendationService.DismissRecommendation][google.ads.googleads.v11.services.RecommendationService.DismissRecommendation\].
+/// Response message for [RecommendationService.DismissRecommendation][google.ads.googleads.v11.services.RecommendationService.DismissRecommendation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissRecommendationResponse {
@@ -23835,7 +26631,7 @@ pub mod recommendation_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -23891,6 +26687,22 @@ pub mod recommendation_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Applies given recommendations with corresponding apply parameters.
         ///
         /// List of thrown errors:
@@ -23908,7 +26720,10 @@ pub mod recommendation_service_client {
         pub async fn apply_recommendation(
             &mut self,
             request: impl tonic::IntoRequest<super::ApplyRecommendationRequest>,
-        ) -> Result<tonic::Response<super::ApplyRecommendationResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ApplyRecommendationResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -23922,7 +26737,15 @@ pub mod recommendation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.RecommendationService/ApplyRecommendation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.RecommendationService",
+                        "ApplyRecommendation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Dismisses given recommendations.
         ///
@@ -23937,7 +26760,7 @@ pub mod recommendation_service_client {
         pub async fn dismiss_recommendation(
             &mut self,
             request: impl tonic::IntoRequest<super::DismissRecommendationRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::DismissRecommendationResponse>,
             tonic::Status,
         > {
@@ -23954,12 +26777,20 @@ pub mod recommendation_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.RecommendationService/DismissRecommendation",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.RecommendationService",
+                        "DismissRecommendation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[SmartCampaignSuggestService.SuggestSmartCampaignBudgets][\].
+/// [SmartCampaignSuggestService.SuggestSmartCampaignBudgets][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignBudgetOptionsRequest {
@@ -24056,7 +26887,7 @@ pub mod smart_campaign_suggestion_info {
         /// Business Profile API and adhere to the following format:
         /// `locations/{locationId}`.
         ///
-        /// See the [Business Profile API]
+        /// See the \[Business Profile API\]
         /// (<https://developers.google.com/my-business/reference/businessinformation/rest/v1/accounts.locations>)
         /// for additional details.
         #[prost(string, tag = "9")]
@@ -24076,7 +26907,7 @@ pub mod smart_campaign_suggestion_info {
     }
 }
 /// Response message for
-/// \[SmartCampaignSuggestService.SuggestSmartCampaignBudgets][\]. Depending on
+/// [SmartCampaignSuggestService.SuggestSmartCampaignBudgets][]. Depending on
 /// whether the system could suggest the options, either all of the options or
 /// none of them might be returned.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -24127,7 +26958,7 @@ pub mod suggest_smart_campaign_budget_options_response {
     }
 }
 /// Request message for
-/// \[SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestSmartCampaignAd\].
+/// [SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestSmartCampaignAd].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignAdRequest {
@@ -24142,7 +26973,7 @@ pub struct SuggestSmartCampaignAdRequest {
     pub suggestion_info: ::core::option::Option<SmartCampaignSuggestionInfo>,
 }
 /// Response message for
-/// \[SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestSmartCampaignAd\].
+/// [SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestSmartCampaignAd].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignAdResponse {
@@ -24151,7 +26982,7 @@ pub struct SuggestSmartCampaignAdResponse {
     pub ad_info: ::core::option::Option<super::common::SmartCampaignAdInfo>,
 }
 /// Request message for
-/// \[SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestKeywordThemes\].
+/// [SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestKeywordThemes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemesRequest {
@@ -24170,7 +27001,7 @@ pub struct SuggestKeywordThemesRequest {
     pub suggestion_info: ::core::option::Option<SmartCampaignSuggestionInfo>,
 }
 /// Response message for
-/// \[SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestKeywordThemes\].
+/// [SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v11.services.SmartCampaignSuggestService.SuggestKeywordThemes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemesResponse {
@@ -24192,7 +27023,7 @@ pub mod smart_campaign_suggest_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -24250,13 +27081,29 @@ pub mod smart_campaign_suggest_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Returns BudgetOption suggestions.
         pub async fn suggest_smart_campaign_budget_options(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::SuggestSmartCampaignBudgetOptionsRequest,
             >,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SuggestSmartCampaignBudgetOptionsResponse>,
             tonic::Status,
         > {
@@ -24273,14 +27120,22 @@ pub mod smart_campaign_suggest_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.SmartCampaignSuggestService/SuggestSmartCampaignBudgetOptions",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.SmartCampaignSuggestService",
+                        "SuggestSmartCampaignBudgetOptions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Suggests a Smart campaign ad compatible with the Ad family of resources,
         /// based on data points such as targeting and the business to advertise.
         pub async fn suggest_smart_campaign_ad(
             &mut self,
             request: impl tonic::IntoRequest<super::SuggestSmartCampaignAdRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SuggestSmartCampaignAdResponse>,
             tonic::Status,
         > {
@@ -24297,13 +27152,21 @@ pub mod smart_campaign_suggest_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.SmartCampaignSuggestService/SuggestSmartCampaignAd",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.SmartCampaignSuggestService",
+                        "SuggestSmartCampaignAd",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Suggests keyword themes to advertise on.
         pub async fn suggest_keyword_themes(
             &mut self,
             request: impl tonic::IntoRequest<super::SuggestKeywordThemesRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::SuggestKeywordThemesResponse>,
             tonic::Status,
         > {
@@ -24320,12 +27183,20 @@ pub mod smart_campaign_suggest_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.SmartCampaignSuggestService/SuggestKeywordThemes",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.SmartCampaignSuggestService",
+                        "SuggestKeywordThemes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
 /// Request message for
-/// \[ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v11.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId\].
+/// [ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v11.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegenerateShareableLinkIdRequest {
@@ -24334,7 +27205,7 @@ pub struct RegenerateShareableLinkIdRequest {
     pub resource_name: ::prost::alloc::string::String,
 }
 /// Response message for
-/// \[ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v11.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId\].
+/// [ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v11.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegenerateShareableLinkIdResponse {}
@@ -24353,7 +27224,7 @@ pub mod third_party_app_analytics_link_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -24411,6 +27282,22 @@ pub mod third_party_app_analytics_link_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Regenerate ThirdPartyAppAnalyticsLink.shareable_link_id that should be
         /// provided to the third party when setting up app analytics.
         ///
@@ -24424,7 +27311,7 @@ pub mod third_party_app_analytics_link_service_client {
         pub async fn regenerate_shareable_link_id(
             &mut self,
             request: impl tonic::IntoRequest<super::RegenerateShareableLinkIdRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::RegenerateShareableLinkIdResponse>,
             tonic::Status,
         > {
@@ -24441,11 +27328,19 @@ pub mod third_party_app_analytics_link_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.ThirdPartyAppAnalyticsLinkService/RegenerateShareableLinkId",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.ThirdPartyAppAnalyticsLinkService",
+                        "RegenerateShareableLinkId",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
-/// Request message for \[UserDataService.UploadUserData][google.ads.googleads.v11.services.UserDataService.UploadUserData\]
+/// Request message for [UserDataService.UploadUserData][google.ads.googleads.v11.services.UserDataService.UploadUserData]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadUserDataRequest {
@@ -24494,7 +27389,7 @@ pub mod user_data_operation {
         Remove(super::super::common::UserData),
     }
 }
-/// Response message for \[UserDataService.UploadUserData][google.ads.googleads.v11.services.UserDataService.UploadUserData\]
+/// Response message for [UserDataService.UploadUserData][google.ads.googleads.v11.services.UserDataService.UploadUserData]
 /// Uploads made through this service will not be visible under the 'Segment
 /// members' section for the Customer Match List in the Google Ads UI.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -24527,7 +27422,7 @@ pub mod user_data_service_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -24583,6 +27478,22 @@ pub mod user_data_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Uploads the given user data.
         ///
         /// List of thrown errors:
@@ -24600,7 +27511,10 @@ pub mod user_data_service_client {
         pub async fn upload_user_data(
             &mut self,
             request: impl tonic::IntoRequest<super::UploadUserDataRequest>,
-        ) -> Result<tonic::Response<super::UploadUserDataResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::UploadUserDataResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -24614,7 +27528,15 @@ pub mod user_data_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v11.services.UserDataService/UploadUserData",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ads.googleads.v11.services.UserDataService",
+                        "UploadUserData",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

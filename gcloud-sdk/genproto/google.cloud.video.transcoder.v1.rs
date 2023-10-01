@@ -6,18 +6,18 @@ pub struct Job {
     /// Format: `projects/{project_number}/locations/{location}/jobs/{job}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Input only. Specify the `input_uri` to populate empty `uri` fields in each
-    /// element of `Job.config.inputs` or `JobTemplate.config.inputs` when using
-    /// template. URI of the media. Input files must be at least 5 seconds in
-    /// duration and stored in Cloud Storage (for example,
-    /// `gs://bucket/inputs/file.mp4`). See [Supported input and output
+    /// Input only. Specify the `input_uri` to populate empty `uri` fields in each element of
+    /// `Job.config.inputs` or `JobTemplate.config.inputs` when using template.
+    /// URI of the media. Input files must be at least 5 seconds in duration and
+    /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`). See
+    /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "2")]
     pub input_uri: ::prost::alloc::string::String,
-    /// Input only. Specify the `output_uri` to populate an empty
-    /// `Job.config.output.uri` or `JobTemplate.config.output.uri` when using
-    /// template. URI for the output file(s). For example,
-    /// `gs://my-bucket/outputs/`. See [Supported input and output
+    /// Input only. Specify the `output_uri` to populate an empty `Job.config.output.uri` or
+    /// `JobTemplate.config.output.uri` when using template.
+    /// URI for the output file(s). For example, `gs://my-bucket/outputs/`. See
+    /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "3")]
     pub output_uri: ::prost::alloc::string::String,
@@ -49,20 +49,6 @@ pub struct Job {
     /// This property is always present when `state` is `FAILED`.
     #[prost(message, optional, tag = "17")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    /// The processing mode of the job.
-    /// The default is `PROCESSING_MODE_INTERACTIVE`.
-    #[prost(enumeration = "job::ProcessingMode", tag = "20")]
-    pub mode: i32,
-    /// The processing priority of a batch job.
-    /// This field can only be set for batch mode jobs. The default value is 0.
-    /// This value cannot be negative. Higher values correspond to higher
-    /// priorities for the job.
-    #[prost(int32, tag = "21")]
-    pub batch_mode_priority: i32,
-    /// Optional. The optimization strategy of the job. The default is
-    /// `AUTODETECT`.
-    #[prost(enumeration = "job::OptimizationStrategy", tag = "22")]
-    pub optimization: i32,
     /// Specify the `job_config` for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
@@ -124,95 +110,6 @@ pub mod job {
             }
         }
     }
-    /// The processing mode of the job.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum ProcessingMode {
-        /// The job processing mode is not specified.
-        Unspecified = 0,
-        /// The job processing mode is interactive mode.
-        /// Interactive job will either be ran or rejected if quota does not allow
-        /// for it.
-        Interactive = 1,
-        /// The job processing mode is batch mode.
-        /// Batch mode allows queuing of jobs.
-        Batch = 2,
-    }
-    impl ProcessingMode {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                ProcessingMode::Unspecified => "PROCESSING_MODE_UNSPECIFIED",
-                ProcessingMode::Interactive => "PROCESSING_MODE_INTERACTIVE",
-                ProcessingMode::Batch => "PROCESSING_MODE_BATCH",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "PROCESSING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
-                "PROCESSING_MODE_INTERACTIVE" => Some(Self::Interactive),
-                "PROCESSING_MODE_BATCH" => Some(Self::Batch),
-                _ => None,
-            }
-        }
-    }
-    /// The optimization strategy of the job. The default is `AUTODETECT`.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum OptimizationStrategy {
-        /// The optimization strategy is not specified.
-        Unspecified = 0,
-        /// Prioritize job processing speed.
-        Autodetect = 1,
-        /// Disable all optimizations.
-        Disabled = 2,
-    }
-    impl OptimizationStrategy {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                OptimizationStrategy::Unspecified => "OPTIMIZATION_STRATEGY_UNSPECIFIED",
-                OptimizationStrategy::Autodetect => "AUTODETECT",
-                OptimizationStrategy::Disabled => "DISABLED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "OPTIMIZATION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
-                "AUTODETECT" => Some(Self::Autodetect),
-                "DISABLED" => Some(Self::Disabled),
-                _ => None,
-            }
-        }
-    }
     /// Specify the `job_config` for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
@@ -220,10 +117,14 @@ pub mod job {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum JobConfig {
-        /// Input only. Specify the `template_id` to use for populating `Job.config`.
-        /// The default is `preset/web-hd`, which is the only supported preset.
+        /// Input only. Specify the `template_id` to use for populating `Job.config`. The default
+        /// is `preset/web-hd`.
         ///
-        /// User defined JobTemplate: `{job_template_id}`
+        /// Preset Transcoder templates:
+        /// - `preset/{preset_id}`
+        ///
+        /// - User defined JobTemplate:
+        ///    `{job_template_id}`
         #[prost(string, tag = "4")]
         TemplateId(::prost::alloc::string::String),
         /// The configuration for this job.
@@ -288,12 +189,6 @@ pub struct JobConfig {
     /// List of overlays on the output video, in descending Z-order.
     #[prost(message, repeated, tag = "10")]
     pub overlays: ::prost::alloc::vec::Vec<Overlay>,
-    /// List of encryption configurations for the content.
-    /// Each configuration has an ID. Specify this ID in the
-    /// \[MuxStream.encryption_id][google.cloud.video.transcoder.v1.MuxStream.encryption_id\]
-    /// field to indicate the configuration to use for that `MuxStream` output.
-    #[prost(message, repeated, tag = "11")]
-    pub encryptions: ::prost::alloc::vec::Vec<Encryption>,
 }
 /// Input asset.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -421,10 +316,6 @@ pub struct MuxStream {
     /// Segment settings for `ts`, `fmp4` and `vtt`.
     #[prost(message, optional, tag = "5")]
     pub segment_settings: ::core::option::Option<SegmentSettings>,
-    /// Identifier of the encryption configuration to use. If omitted, output will
-    /// be unencrypted.
-    #[prost(string, tag = "7")]
-    pub encryption_id: ::prost::alloc::string::String,
 }
 /// Manifest configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -434,83 +325,20 @@ pub struct Manifest {
     /// extension suffix corresponding to the `Manifest.type`.
     #[prost(string, tag = "1")]
     pub file_name: ::prost::alloc::string::String,
-    /// Required. Type of the manifest.
+    /// Required. Type of the manifest, can be `HLS` or `DASH`.
     #[prost(enumeration = "manifest::ManifestType", tag = "2")]
     pub r#type: i32,
-    /// Required. List of user given `MuxStream.key`s that should appear in this
-    /// manifest.
+    /// Required. List of user given `MuxStream.key`s that should appear in this manifest.
     ///
     /// When `Manifest.type` is `HLS`, a media manifest with name `MuxStream.key`
     /// and `.m3u8` extension is generated for each element of the
     /// `Manifest.mux_streams`.
     #[prost(string, repeated, tag = "3")]
     pub mux_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Specifies the manifest configuration.
-    #[prost(oneof = "manifest::ManifestConfig", tags = "4")]
-    pub manifest_config: ::core::option::Option<manifest::ManifestConfig>,
 }
 /// Nested message and enum types in `Manifest`.
 pub mod manifest {
-    /// `DASH` manifest configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DashConfig {
-        /// The segment reference scheme for a `DASH` manifest. The default is
-        /// `SEGMENT_LIST`.
-        #[prost(enumeration = "dash_config::SegmentReferenceScheme", tag = "1")]
-        pub segment_reference_scheme: i32,
-    }
-    /// Nested message and enum types in `DashConfig`.
-    pub mod dash_config {
-        /// The segment reference scheme for a `DASH` manifest.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum SegmentReferenceScheme {
-            /// The segment reference scheme is not specified.
-            Unspecified = 0,
-            /// Lists the URLs of media files for each segment.
-            SegmentList = 1,
-            /// Lists each segment from a template with $Number$ variable.
-            SegmentTemplateNumber = 2,
-        }
-        impl SegmentReferenceScheme {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    SegmentReferenceScheme::Unspecified => {
-                        "SEGMENT_REFERENCE_SCHEME_UNSPECIFIED"
-                    }
-                    SegmentReferenceScheme::SegmentList => "SEGMENT_LIST",
-                    SegmentReferenceScheme::SegmentTemplateNumber => {
-                        "SEGMENT_TEMPLATE_NUMBER"
-                    }
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "SEGMENT_REFERENCE_SCHEME_UNSPECIFIED" => Some(Self::Unspecified),
-                    "SEGMENT_LIST" => Some(Self::SegmentList),
-                    "SEGMENT_TEMPLATE_NUMBER" => Some(Self::SegmentTemplateNumber),
-                    _ => None,
-                }
-            }
-        }
-    }
-    /// The manifest type, which corresponds to the adaptive streaming format used.
+    /// The manifest type can be either `HLS` or `DASH`.
     #[derive(
         Clone,
         Copy,
@@ -526,9 +354,9 @@ pub mod manifest {
     pub enum ManifestType {
         /// The manifest type is not specified.
         Unspecified = 0,
-        /// Create an HLS manifest. The corresponding file extension is `.m3u8`.
+        /// Create `HLS` manifest. The corresponding file extension is `.m3u8`.
         Hls = 1,
-        /// Create an MPEG-DASH manifest. The corresponding file extension is `.mpd`.
+        /// Create `DASH` manifest. The corresponding file extension is `.mpd`.
         Dash = 2,
     }
     impl ManifestType {
@@ -552,14 +380,6 @@ pub mod manifest {
                 _ => None,
             }
         }
-    }
-    /// Specifies the manifest configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum ManifestConfig {
-        /// `DASH` manifest configuration.
-        #[prost(message, tag = "4")]
-        Dash(DashConfig),
     }
 }
 /// A Pub/Sub destination.
@@ -588,32 +408,16 @@ pub struct SpriteSheet {
     /// from 0 before the extension, such as `sprite_sheet0000000123.jpeg`.
     #[prost(string, tag = "2")]
     pub file_prefix: ::prost::alloc::string::String,
-    /// Required. The width of sprite in pixels. Must be an even integer. To
-    /// preserve the source aspect ratio, set the
-    /// \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\]
-    /// field or the
-    /// \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\]
-    /// field, but not both (the API will automatically calculate the missing
-    /// field).
-    ///
-    /// For portrait videos that contain horizontal ASR and rotation metadata,
-    /// provide the width, in pixels, per the horizontal ASR. The API calculates
-    /// the height per the horizontal ASR. The API detects any rotation metadata
-    /// and swaps the requested height and width for the output.
+    /// Required. The width of sprite in pixels. Must be an even integer. To preserve the
+    /// source aspect ratio, set the [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels] field or
+    /// the [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels] field, but not both (the API will
+    /// automatically calculate the missing field).
     #[prost(int32, tag = "3")]
     pub sprite_width_pixels: i32,
-    /// Required. The height of sprite in pixels. Must be an even integer. To
-    /// preserve the source aspect ratio, set the
-    /// \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\]
-    /// field or the
-    /// \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\]
-    /// field, but not both (the API will automatically calculate the missing
-    /// field).
-    ///
-    /// For portrait videos that contain horizontal ASR and rotation metadata,
-    /// provide the height, in pixels, per the horizontal ASR. The API calculates
-    /// the width per the horizontal ASR. The API detects any rotation metadata
-    /// and swaps the requested height and width for the output.
+    /// Required. The height of sprite in pixels. Must be an even integer. To preserve the
+    /// source aspect ratio, set the [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels] field or
+    /// the [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels] field, but not both (the API will
+    /// automatically calculate the missing field).
     #[prost(int32, tag = "4")]
     pub sprite_height_pixels: i32,
     /// The maximum number of sprites per row in a sprite sheet. The default is 0,
@@ -686,12 +490,12 @@ pub mod overlay {
         #[prost(double, tag = "2")]
         pub y: f64,
     }
-    /// Overlaid image.
+    /// Overlaid jpeg image.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Image {
-        /// Required. URI of the image in Cloud Storage. For example,
-        /// `gs://bucket/inputs/image.png`. Only PNG and JPEG images are supported.
+        /// Required. URI of the JPEG image in Cloud Storage. For example,
+        /// `gs://bucket/inputs/image.jpeg`. JPEG is the only supported image type.
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
         /// Normalized image resolution, based on output video resolution. Valid
@@ -843,9 +647,6 @@ pub struct PreprocessingConfig {
     /// Specify the video pad filter configuration.
     #[prost(message, optional, tag = "6")]
     pub pad: ::core::option::Option<preprocessing_config::Pad>,
-    /// Specify the video deinterlace configuration.
-    #[prost(message, optional, tag = "7")]
-    pub deinterlace: ::core::option::Option<preprocessing_config::Deinterlace>,
 }
 /// Nested message and enum types in `PreprocessingConfig`.
 pub mod preprocessing_config {
@@ -969,86 +770,6 @@ pub mod preprocessing_config {
         #[prost(int32, tag = "4")]
         pub right_pixels: i32,
     }
-    /// Deinterlace configuration for input video.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Deinterlace {
-        /// Specify the video deinterlacing filter. The default is `yadif`.
-        #[prost(oneof = "deinterlace::DeinterlacingFilter", tags = "1, 2")]
-        pub deinterlacing_filter: ::core::option::Option<
-            deinterlace::DeinterlacingFilter,
-        >,
-    }
-    /// Nested message and enum types in `Deinterlace`.
-    pub mod deinterlace {
-        /// Yet Another Deinterlacing Filter Configuration.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct YadifConfig {
-            /// Specifies the deinterlacing mode to adopt.
-            /// The default is `send_frame`.
-            /// Supported values:
-            ///
-            /// - `send_frame`: Output one frame for each frame
-            /// - `send_field`: Output one frame for each field
-            #[prost(string, tag = "1")]
-            pub mode: ::prost::alloc::string::String,
-            /// Disable spacial interlacing.
-            /// The default is `false`.
-            #[prost(bool, tag = "2")]
-            pub disable_spatial_interlacing: bool,
-            /// The picture field parity assumed for the input interlaced video.
-            /// The default is `auto`.
-            /// Supported values:
-            ///
-            /// - `tff`: Assume the top field is first
-            /// - `bff`: Assume the bottom field is first
-            /// - `auto`: Enable automatic detection of field parity
-            #[prost(string, tag = "3")]
-            pub parity: ::prost::alloc::string::String,
-            /// Deinterlace all frames rather than just the frames identified as
-            /// interlaced. The default is `false`.
-            #[prost(bool, tag = "4")]
-            pub deinterlace_all_frames: bool,
-        }
-        /// Bob Weaver Deinterlacing Filter Configuration.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct BwdifConfig {
-            /// Specifies the deinterlacing mode to adopt.
-            /// The default is `send_frame`.
-            /// Supported values:
-            ///
-            /// - `send_frame`: Output one frame for each frame
-            /// - `send_field`: Output one frame for each field
-            #[prost(string, tag = "1")]
-            pub mode: ::prost::alloc::string::String,
-            /// The picture field parity assumed for the input interlaced video.
-            /// The default is `auto`.
-            /// Supported values:
-            ///
-            /// - `tff`: Assume the top field is first
-            /// - `bff`: Assume the bottom field is first
-            /// - `auto`: Enable automatic detection of field parity
-            #[prost(string, tag = "2")]
-            pub parity: ::prost::alloc::string::String,
-            /// Deinterlace all frames rather than just the frames identified as
-            /// interlaced. The default is `false`.
-            #[prost(bool, tag = "3")]
-            pub deinterlace_all_frames: bool,
-        }
-        /// Specify the video deinterlacing filter. The default is `yadif`.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum DeinterlacingFilter {
-            /// Specifies the Yet Another Deinterlacing Filter Configuration.
-            #[prost(message, tag = "1")]
-            Yadif(YadifConfig),
-            /// Specifies the Bob Weaver Deinterlacing Filter Configuration.
-            #[prost(message, tag = "2")]
-            Bwdif(BwdifConfig),
-        }
-    }
 }
 /// Video stream resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1067,34 +788,24 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
-        ///
-        /// For portrait videos that contain horizontal ASR and rotation metadata,
-        /// provide the width, in pixels, per the horizontal ASR. The API calculates
-        /// the height per the horizontal ASR. The API detects any rotation metadata
-        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
-        ///
-        /// For portrait videos that contain horizontal ASR and rotation metadata,
-        /// provide the height, in pixels, per the horizontal ASR. The API calculates
-        /// the width per the horizontal ASR. The API detects any rotation metadata
-        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
-        /// Required. The target video frame rate in frames per second (FPS). Must be
-        /// less than or equal to 120. Will default to the input frame rate if larger
-        /// than the input frame rate. The API will generate an output FPS that is
-        /// divisible by the input FPS, and smaller or equal to the target FPS. See
+        /// Required. The target video frame rate in frames per second (FPS). Must be less than
+        /// or equal to 120. Will default to the input frame rate if larger than the
+        /// input frame rate. The API will generate an output FPS that is divisible
+        /// by the input FPS, and smaller or equal to the target FPS. See
         /// [Calculating frame
         /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
-        /// Required. The video bitrate in bits per second. The minimum value is
-        /// 1,000. The maximum value is 800,000,000.
+        /// Required. The video bitrate in bits per second. The minimum value is 1,000.
+        /// The maximum value is 800,000,000.
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
         /// Pixel format to use. The default is `yuv420p`.
@@ -1171,14 +882,14 @@ pub mod video_stream {
         /// *   `high` (default)
         ///
         /// The available options are
-        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>).
+        /// [FFmpeg-compatible](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
         #[prost(string, tag = "18")]
         pub profile: ::prost::alloc::string::String,
         /// Enforces the specified codec tune. The available options are
-        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>).
+        /// [FFmpeg-compatible](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
@@ -1186,7 +897,7 @@ pub mod video_stream {
         pub tune: ::prost::alloc::string::String,
         /// Enforces the specified codec preset. The default is `veryfast`. The
         /// available options are
-        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.264#Preset>).
+        /// [FFmpeg-compatible](<https://trac.ffmpeg.org/wiki/Encode/H.264#Preset>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
@@ -1208,8 +919,8 @@ pub mod video_stream {
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
             /// `3s`. Note that `gopDuration` must be less than or equal to
-            /// \[`segmentDuration`\](#SegmentSettings), and
-            /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
+            /// [`segmentDuration`](#SegmentSettings), and
+            /// [`segmentDuration`](#SegmentSettings) must be divisible by
             /// `gopDuration`.
             #[prost(message, tag = "10")]
             GopDuration(::prost_types::Duration),
@@ -1222,34 +933,24 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
-        ///
-        /// For portrait videos that contain horizontal ASR and rotation metadata,
-        /// provide the width, in pixels, per the horizontal ASR. The API calculates
-        /// the height per the horizontal ASR. The API detects any rotation metadata
-        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
-        ///
-        /// For portrait videos that contain horizontal ASR and rotation metadata,
-        /// provide the height, in pixels, per the horizontal ASR. The API calculates
-        /// the width per the horizontal ASR. The API detects any rotation metadata
-        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
-        /// Required. The target video frame rate in frames per second (FPS). Must be
-        /// less than or equal to 120. Will default to the input frame rate if larger
-        /// than the input frame rate. The API will generate an output FPS that is
-        /// divisible by the input FPS, and smaller or equal to the target FPS. See
+        /// Required. The target video frame rate in frames per second (FPS). Must be less than
+        /// or equal to 120. Will default to the input frame rate if larger than the
+        /// input frame rate. The API will generate an output FPS that is divisible
+        /// by the input FPS, and smaller or equal to the target FPS. See
         /// [Calculating frame
         /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
-        /// Required. The video bitrate in bits per second. The minimum value is
-        /// 1,000. The maximum value is 800,000,000.
+        /// Required. The video bitrate in bits per second. The minimum value is 1,000.
+        /// The maximum value is 800,000,000.
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
         /// Pixel format to use. The default is `yuv420p`.
@@ -1333,14 +1034,14 @@ pub mod video_stream {
         ///      *   `main444-12-intra`
         ///
         /// The available options are
-        /// \[FFmpeg-compatible\](<https://x265.readthedocs.io/>).
+        /// [FFmpeg-compatible](<https://x265.readthedocs.io/>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
         #[prost(string, tag = "17")]
         pub profile: ::prost::alloc::string::String,
         /// Enforces the specified codec tune. The available options are
-        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.265>).
+        /// [FFmpeg-compatible](<https://trac.ffmpeg.org/wiki/Encode/H.265>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
@@ -1348,7 +1049,7 @@ pub mod video_stream {
         pub tune: ::prost::alloc::string::String,
         /// Enforces the specified codec preset. The default is `veryfast`. The
         /// available options are
-        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.265>).
+        /// [FFmpeg-compatible](<https://trac.ffmpeg.org/wiki/Encode/H.265>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
@@ -1370,8 +1071,8 @@ pub mod video_stream {
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
             /// `3s`. Note that `gopDuration` must be less than or equal to
-            /// \[`segmentDuration`\](#SegmentSettings), and
-            /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
+            /// [`segmentDuration`](#SegmentSettings), and
+            /// [`segmentDuration`](#SegmentSettings) must be divisible by
             /// `gopDuration`.
             #[prost(message, tag = "10")]
             GopDuration(::prost_types::Duration),
@@ -1384,34 +1085,24 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
-        ///
-        /// For portrait videos that contain horizontal ASR and rotation metadata,
-        /// provide the width, in pixels, per the horizontal ASR. The API calculates
-        /// the height per the horizontal ASR. The API detects any rotation metadata
-        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
-        ///
-        /// For portrait videos that contain horizontal ASR and rotation metadata,
-        /// provide the height, in pixels, per the horizontal ASR. The API calculates
-        /// the width per the horizontal ASR. The API detects any rotation metadata
-        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
-        /// Required. The target video frame rate in frames per second (FPS). Must be
-        /// less than or equal to 120. Will default to the input frame rate if larger
-        /// than the input frame rate. The API will generate an output FPS that is
-        /// divisible by the input FPS, and smaller or equal to the target FPS. See
+        /// Required. The target video frame rate in frames per second (FPS). Must be less than
+        /// or equal to 120. Will default to the input frame rate if larger than the
+        /// input frame rate. The API will generate an output FPS that is divisible
+        /// by the input FPS, and smaller or equal to the target FPS. See
         /// [Calculating frame
         /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
-        /// Required. The video bitrate in bits per second. The minimum value is
-        /// 1,000. The maximum value is 480,000,000.
+        /// Required. The video bitrate in bits per second. The minimum value is 1,000.
+        /// The maximum value is 480,000,000.
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
         /// Pixel format to use. The default is `yuv420p`.
@@ -1451,7 +1142,7 @@ pub mod video_stream {
         /// *   `profile3`
         ///
         /// The available options are
-        /// \[WebM-compatible\](<https://www.webmproject.org/vp9/profiles/>).
+        /// [WebM-compatible](<https://www.webmproject.org/vp9/profiles/>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `Vp9CodecSettings`
         /// message.
@@ -1473,8 +1164,8 @@ pub mod video_stream {
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
             /// `3s`. Note that `gopDuration` must be less than or equal to
-            /// \[`segmentDuration`\](#SegmentSettings), and
-            /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
+            /// [`segmentDuration`](#SegmentSettings), and
+            /// [`segmentDuration`](#SegmentSettings) must be divisible by
             /// `gopDuration`.
             #[prost(message, tag = "9")]
             GopDuration(::prost_types::Duration),
@@ -1511,8 +1202,7 @@ pub struct AudioStream {
     /// - `eac3`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
-    /// Required. Audio bitrate in bits per second. Must be between 1 and
-    /// 10,000,000.
+    /// Required. Audio bitrate in bits per second. Must be between 1 and 10,000,000.
     #[prost(int32, tag = "2")]
     pub bitrate_bps: i32,
     /// Number of audio channels. Must be between 1 and 6. The default is 2.
@@ -1520,7 +1210,7 @@ pub struct AudioStream {
     pub channel_count: i32,
     /// A list of channel names specifying layout of the audio channels.
     /// This only affects the metadata embedded in the container headers, if
-    /// supported by the specified format. The default is `["fl", "fr"]`.
+    /// supported by the specified format. The default is `\["fl", "fr"\]`.
     ///
     /// Supported channel names:
     ///
@@ -1538,16 +1228,6 @@ pub struct AudioStream {
     /// The audio sample rate in Hertz. The default is 48000 Hertz.
     #[prost(int32, tag = "6")]
     pub sample_rate_hertz: i32,
-    /// The BCP-47 language code, such as `en-US` or `sr-Latn`. For more
-    /// information, see
-    /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.> Not
-    /// supported in MP4 files.
-    #[prost(string, tag = "7")]
-    pub language_code: ::prost::alloc::string::String,
-    /// The name for this particular audio stream that
-    /// will be added to the HLS/DASH manifest. Not supported in MP4 files.
-    #[prost(string, tag = "8")]
-    pub display_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AudioStream`.
 pub mod audio_stream {
@@ -1555,8 +1235,8 @@ pub mod audio_stream {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioMapping {
-        /// Required. The `EditAtom.key` that references the atom with audio inputs
-        /// in the `Job.edit_list`.
+        /// Required. The `EditAtom.key` that references the atom with audio inputs in the
+        /// `Job.edit_list`.
         #[prost(string, tag = "1")]
         pub atom_key: ::prost::alloc::string::String,
         /// Required. The `Input.key` that identifies the input file.
@@ -1592,19 +1272,9 @@ pub struct TextStream {
     /// - `webvtt`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
-    /// The BCP-47 language code, such as `en-US` or `sr-Latn`. For more
-    /// information, see
-    /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.> Not
-    /// supported in MP4 files.
-    #[prost(string, tag = "2")]
-    pub language_code: ::prost::alloc::string::String,
     /// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.
     #[prost(message, repeated, tag = "3")]
     pub mapping: ::prost::alloc::vec::Vec<text_stream::TextMapping>,
-    /// The name for this particular text stream that
-    /// will be added to the HLS/DASH manifest. Not supported in MP4 files.
-    #[prost(string, tag = "4")]
-    pub display_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TextStream`.
 pub mod text_stream {
@@ -1630,123 +1300,13 @@ pub mod text_stream {
 pub struct SegmentSettings {
     /// Duration of the segments in seconds. The default is `6.0s`. Note that
     /// `segmentDuration` must be greater than or equal to
-    /// \[`gopDuration`\](#videostream), and `segmentDuration` must be divisible by
-    /// \[`gopDuration`\](#videostream).
+    /// [`gopDuration`](#videostream), and `segmentDuration` must be divisible by
+    /// [`gopDuration`](#videostream).
     #[prost(message, optional, tag = "1")]
     pub segment_duration: ::core::option::Option<::prost_types::Duration>,
     /// Required. Create an individual segment file. The default is `false`.
     #[prost(bool, tag = "3")]
     pub individual_segments: bool,
-}
-/// Encryption settings.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Encryption {
-    /// Required. Identifier for this set of encryption options.
-    #[prost(string, tag = "6")]
-    pub id: ::prost::alloc::string::String,
-    /// Required. DRM system(s) to use; at least one must be specified. If a
-    /// DRM system is omitted, it is considered disabled.
-    #[prost(message, optional, tag = "8")]
-    pub drm_systems: ::core::option::Option<encryption::DrmSystems>,
-    /// Encryption mode can be either `aes` or `cenc`.
-    #[prost(oneof = "encryption::EncryptionMode", tags = "3, 4, 5")]
-    pub encryption_mode: ::core::option::Option<encryption::EncryptionMode>,
-    /// Defines where content keys are stored.
-    #[prost(oneof = "encryption::SecretSource", tags = "7")]
-    pub secret_source: ::core::option::Option<encryption::SecretSource>,
-}
-/// Nested message and enum types in `Encryption`.
-pub mod encryption {
-    /// Configuration for AES-128 encryption.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Aes128Encryption {}
-    /// Configuration for SAMPLE-AES encryption.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SampleAesEncryption {}
-    /// Configuration for MPEG Common Encryption (MPEG-CENC).
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct MpegCommonEncryption {
-        /// Required. Specify the encryption scheme.
-        ///
-        /// Supported encryption schemes:
-        ///
-        /// - `cenc`
-        /// - `cbcs`
-        #[prost(string, tag = "2")]
-        pub scheme: ::prost::alloc::string::String,
-    }
-    /// Configuration for secrets stored in Google Secret Manager.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SecretManagerSource {
-        /// Required. The name of the Secret Version containing the encryption key in
-        /// the following format:
-        /// `projects/{project}/secrets/{secret_id}/versions/{version_number}`
-        ///
-        /// Note that only numbered versions are supported. Aliases like "latest" are
-        /// not supported.
-        #[prost(string, tag = "1")]
-        pub secret_version: ::prost::alloc::string::String,
-    }
-    /// Widevine configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Widevine {}
-    /// Fairplay configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Fairplay {}
-    /// Playready configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Playready {}
-    /// Clearkey configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Clearkey {}
-    /// Defines configuration for DRM systems in use.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DrmSystems {
-        /// Widevine configuration.
-        #[prost(message, optional, tag = "1")]
-        pub widevine: ::core::option::Option<Widevine>,
-        /// Fairplay configuration.
-        #[prost(message, optional, tag = "2")]
-        pub fairplay: ::core::option::Option<Fairplay>,
-        /// Playready configuration.
-        #[prost(message, optional, tag = "3")]
-        pub playready: ::core::option::Option<Playready>,
-        /// Clearkey configuration.
-        #[prost(message, optional, tag = "4")]
-        pub clearkey: ::core::option::Option<Clearkey>,
-    }
-    /// Encryption mode can be either `aes` or `cenc`.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum EncryptionMode {
-        /// Configuration for AES-128 encryption.
-        #[prost(message, tag = "3")]
-        Aes128(Aes128Encryption),
-        /// Configuration for SAMPLE-AES encryption.
-        #[prost(message, tag = "4")]
-        SampleAes(SampleAesEncryption),
-        /// Configuration for MPEG Common Encryption (MPEG-CENC).
-        #[prost(message, tag = "5")]
-        MpegCenc(MpegCommonEncryption),
-    }
-    /// Defines where content keys are stored.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum SecretSource {
-        /// Keys are stored in Google Secret Manager.
-        #[prost(message, tag = "7")]
-        SecretManagerKeySource(SecretManagerSource),
-    }
 }
 /// Request message for `TranscoderService.CreateJob`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1831,11 +1391,11 @@ pub struct CreateJobTemplateRequest {
     /// Required. Parameters for creating job template.
     #[prost(message, optional, tag = "2")]
     pub job_template: ::core::option::Option<JobTemplate>,
-    /// Required. The ID to use for the job template, which will become the final
-    /// component of the job template's resource name.
+    /// Required. The ID to use for the job template, which will become the final component
+    /// of the job template's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters must match the
-    /// regular expression `\[a-zA-Z][a-zA-Z0-9_-\]*`.
+    /// regular expression `[a-zA-Z][a-zA-Z0-9_-]*`.
     #[prost(string, tag = "3")]
     pub job_template_id: ::prost::alloc::string::String,
 }
@@ -1843,8 +1403,8 @@ pub struct CreateJobTemplateRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTemplatesRequest {
-    /// Required. The parent location from which to retrieve the collection of job
-    /// templates. Format: `projects/{project}/locations/{location}`
+    /// Required. The parent location from which to retrieve the collection of job templates.
+    /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.

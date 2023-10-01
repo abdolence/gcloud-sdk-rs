@@ -169,8 +169,7 @@ pub struct TableFieldSchema {
     /// Optional. The field mode. The default value is NULLABLE.
     #[prost(enumeration = "table_field_schema::Mode", tag = "3")]
     pub mode: i32,
-    /// Optional. Describes the nested schema fields if the type property is set to
-    /// STRUCT.
+    /// Optional. Describes the nested schema fields if the type property is set to STRUCT.
     #[prost(message, repeated, tag = "4")]
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
     /// Optional. The field description. The maximum length is 1,024 characters.
@@ -203,10 +202,10 @@ pub struct TableFieldSchema {
     /// Values of this NUMERIC or BIGNUMERIC field must be in this range when:
     ///
     /// * Precision (P) and scale (S) are specified:
-    ///    [-10^(P-S) + 10^(-S), 10^(P-S) - 10^(-S)]
+    ///    \[-10^(P-S) + 10^(-S), 10^(P-S) - 10^(-S)\]
     /// * Precision (P) is specified but not scale (and thus scale is
     ///    interpreted to be equal to zero):
-    ///    [-10^P + 1, 10^P - 1].
+    ///    \[-10^P + 1, 10^P - 1\].
     ///
     /// Acceptable values for precision and scale if both are specified:
     ///
@@ -227,10 +226,6 @@ pub struct TableFieldSchema {
     /// Optional. See documentation for precision.
     #[prost(int64, tag = "9")]
     pub scale: i64,
-    /// Optional. A SQL expression to specify the [default value]
-    /// (<https://cloud.google.com/bigquery/docs/default-values>) for this field.
-    #[prost(string, tag = "10")]
-    pub default_value_expression: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TableFieldSchema`.
 pub mod table_field_schema {
@@ -380,22 +375,19 @@ pub struct ReadSession {
     /// `projects/{project_id}/locations/{location}/sessions/{session_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Time at which the session becomes invalid. After this time,
-    /// subsequent requests to read this Session will return errors. The
-    /// expire_time is automatically assigned and currently cannot be specified or
-    /// updated.
+    /// Output only. Time at which the session becomes invalid. After this time, subsequent
+    /// requests to read this Session will return errors. The expire_time is
+    /// automatically assigned and currently cannot be specified or updated.
     #[prost(message, optional, tag = "2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Immutable. Data format of the output data. DATA_FORMAT_UNSPECIFIED not
-    /// supported.
+    /// Immutable. Data format of the output data. DATA_FORMAT_UNSPECIFIED not supported.
     #[prost(enumeration = "DataFormat", tag = "3")]
     pub data_format: i32,
     /// Immutable. Table that this ReadSession is reading from, in the form
     /// `projects/{project_id}/datasets/{dataset_id}/tables/{table_id}`
     #[prost(string, tag = "6")]
     pub table: ::prost::alloc::string::String,
-    /// Optional. Any modifiers which are applied when reading from the specified
-    /// table.
+    /// Optional. Any modifiers which are applied when reading from the specified table.
     #[prost(message, optional, tag = "7")]
     pub table_modifiers: ::core::option::Option<read_session::TableModifiers>,
     /// Optional. Read options for this session (e.g. column selection, filters).
@@ -414,20 +406,8 @@ pub struct ReadSession {
     /// metadata from the table which might be incomplete or stale.
     #[prost(int64, tag = "12")]
     pub estimated_total_bytes_scanned: i64,
-    /// Output only. A pre-projected estimate of the total physical size of files
-    /// (in bytes) that this session will scan when all streams are consumed. This
-    /// estimate is independent of the selected columns and can be based on
-    /// incomplete or stale metadata from the table.  This field is only set for
-    /// BigLake tables.
-    #[prost(int64, tag = "15")]
-    pub estimated_total_physical_file_size: i64,
-    /// Output only. An estimate on the number of rows present in this session's
-    /// streams. This estimate is based on metadata from the table which might be
-    /// incomplete or stale.
-    #[prost(int64, tag = "14")]
-    pub estimated_row_count: i64,
-    /// Optional. ID set by client to annotate a session identity.  This does not
-    /// need to be strictly unique, but instead the same ID should be used to group
+    /// Optional. ID set by client to annotate a session identity.  This does not need
+    /// to be strictly unique, but instead the same ID should be used to group
     /// logically connected sessions (e.g. All using the same ID for all sessions
     /// needed to complete a Spark SQL query is reasonable).
     ///
@@ -515,14 +495,6 @@ pub mod read_session {
         /// Restricted to a maximum length for 1 MB.
         #[prost(string, tag = "2")]
         pub row_restriction: ::prost::alloc::string::String,
-        /// Optional. Specifies a table sampling percentage. Specifically, the query
-        /// planner will use TABLESAMPLE SYSTEM (sample_percentage PERCENT). The
-        /// sampling percentage is applied at the data block granularity. It will
-        /// randomly choose for each data block whether to read the rows in that data
-        /// block. For more details, see
-        /// <https://cloud.google.com/bigquery/docs/table-sampling>)
-        #[prost(double, optional, tag = "5")]
-        pub sample_percentage: ::core::option::Option<f64>,
         #[prost(
             oneof = "table_read_options::OutputFormatSerializationOptions",
             tags = "3, 4"
@@ -580,8 +552,8 @@ pub struct WriteStream {
     /// Immutable. Type of the stream.
     #[prost(enumeration = "write_stream::Type", tag = "2")]
     pub r#type: i32,
-    /// Output only. Create time of the stream. For the _default stream, this is
-    /// the creation_time of the table.
+    /// Output only. Create time of the stream. For the _default stream, this is the
+    /// creation_time of the table.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Commit time of the stream.
@@ -958,24 +930,19 @@ pub struct CreateWriteStreamRequest {
 }
 /// Request message for `AppendRows`.
 ///
-/// Because AppendRows is a bidirectional streaming RPC, certain parts of the
-/// AppendRowsRequest need only be specified for the first request before
-/// switching table destinations. You can also switch table destinations within
-/// the same connection for the default stream.
+/// Due to the nature of AppendRows being a bidirectional streaming RPC, certain
+/// parts of the AppendRowsRequest need only be specified for the first request
+/// sent each time the gRPC network connection is opened/reopened.
 ///
 /// The size of a single AppendRowsRequest must be less than 10 MB in size.
 /// Requests larger than this return an error, typically `INVALID_ARGUMENT`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsRequest {
-    /// Required. The write_stream identifies the append operation. It must be
-    /// provided in the following scenarios:
-    ///
-    /// * In the first request to an AppendRows connection.
-    ///
-    /// * In all subsequent requests to an AppendRows connection, if you use the
-    /// same connection to write to multiple tables or change the input schema for
-    /// default streams.
+    /// Required. The write_stream identifies the target of the append operation, and only
+    /// needs to be specified as part of the first request on the gRPC connection.
+    /// If provided for subsequent requests, it must match the value of the first
+    /// request.
     ///
     /// For explicitly created write streams, the format is:
     ///
@@ -984,22 +951,6 @@ pub struct AppendRowsRequest {
     /// For the special default stream, the format is:
     ///
     /// * `projects/{project}/datasets/{dataset}/tables/{table}/streams/_default`.
-    ///
-    /// An example of a possible sequence of requests with write_stream fields
-    /// within a single connection:
-    ///
-    /// * r1: {write_stream: stream_name_1}
-    ///
-    /// * r2: {write_stream: /*omit*/}
-    ///
-    /// * r3: {write_stream: /*omit*/}
-    ///
-    /// * r4: {write_stream: stream_name_2}
-    ///
-    /// * r5: {write_stream: stream_name_2}
-    ///
-    /// The destination changed in request_4, so the write_stream field must be
-    /// populated in all subsequent requests in this stream.
     #[prost(string, tag = "1")]
     pub write_stream: ::prost::alloc::string::String,
     /// If present, the write is only performed if the next append offset is same
@@ -1012,43 +963,6 @@ pub struct AppendRowsRequest {
     /// respected.
     #[prost(string, tag = "6")]
     pub trace_id: ::prost::alloc::string::String,
-    /// A map to indicate how to interpret missing value for some fields. Missing
-    /// values are fields present in user schema but missing in rows. The key is
-    /// the field name. The value is the interpretation of missing values for the
-    /// field.
-    ///
-    /// For example, a map {'foo': NULL_VALUE, 'bar': DEFAULT_VALUE} means all
-    /// missing values in field foo are interpreted as NULL, all missing values in
-    /// field bar are interpreted as the default value of field bar in table
-    /// schema.
-    ///
-    /// If a field is not in this map and has missing values, the missing values
-    /// in this field are interpreted as NULL.
-    ///
-    /// This field only applies to the current request, it won't affect other
-    /// requests on the connection.
-    ///
-    /// Currently, field name can only be top-level column name, can't be a struct
-    /// field path like 'foo.bar'.
-    #[prost(
-        map = "string, enumeration(append_rows_request::MissingValueInterpretation)",
-        tag = "7"
-    )]
-    pub missing_value_interpretations: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        i32,
-    >,
-    /// Optional. Default missing value interpretation for all columns in the
-    /// table. When a value is specified on an `AppendRowsRequest`, it is applied
-    /// to all requests on the connection from that point forward, until a
-    /// subsequent `AppendRowsRequest` sets it to a different value.
-    /// `missing_value_interpretation` can override
-    /// `default_missing_value_interpretation`. For example, if you want to write
-    /// `NULL` instead of using default values for some columns, you can set
-    /// `default_missing_value_interpretation` to `DEFAULT_VALUE` and at the same
-    /// time, set `missing_value_interpretations` to `NULL_VALUE` on those columns.
-    #[prost(enumeration = "append_rows_request::MissingValueInterpretation", tag = "8")]
-    pub default_missing_value_interpretation: i32,
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
     /// requests. Following requests must have data in the same format as the
@@ -1063,14 +977,9 @@ pub mod append_rows_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProtoData {
-        /// The protocol buffer schema used to serialize the data. Provide this value
-        /// whenever:
-        ///
-        /// * You send the first request of an RPC connection.
-        ///
-        /// * You change the input schema.
-        ///
-        /// * You specify a new destination table.
+        /// Proto schema used to serialize the data.  This value only needs to be
+        /// provided as part of the first request on a gRPC network connection,
+        /// and will be ignored for subsequent requests on the connection.
         #[prost(message, optional, tag = "1")]
         pub writer_schema: ::core::option::Option<super::ProtoSchema>,
         /// Serialized row data in protobuf message format.
@@ -1079,55 +988,6 @@ pub mod append_rows_request {
         /// how default values are encoded.
         #[prost(message, optional, tag = "2")]
         pub rows: ::core::option::Option<super::ProtoRows>,
-    }
-    /// An enum to indicate how to interpret missing values of fields that are
-    /// present in user schema but missing in rows. A missing value can represent a
-    /// NULL or a column default value defined in BigQuery table schema.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum MissingValueInterpretation {
-        /// Invalid missing value interpretation. Requests with this value will be
-        /// rejected.
-        Unspecified = 0,
-        /// Missing value is interpreted as NULL.
-        NullValue = 1,
-        /// Missing value is interpreted as column default value if declared in the
-        /// table schema, NULL otherwise.
-        DefaultValue = 2,
-    }
-    impl MissingValueInterpretation {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                MissingValueInterpretation::Unspecified => {
-                    "MISSING_VALUE_INTERPRETATION_UNSPECIFIED"
-                }
-                MissingValueInterpretation::NullValue => "NULL_VALUE",
-                MissingValueInterpretation::DefaultValue => "DEFAULT_VALUE",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "MISSING_VALUE_INTERPRETATION_UNSPECIFIED" => Some(Self::Unspecified),
-                "NULL_VALUE" => Some(Self::NullValue),
-                "DEFAULT_VALUE" => Some(Self::DefaultValue),
-                _ => None,
-            }
-        }
     }
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
@@ -1220,8 +1080,8 @@ pub struct GetWriteStreamRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCommitWriteStreamsRequest {
-    /// Required. Parent table that all the streams should belong to, in the form
-    /// of `projects/{project}/datasets/{dataset}/tables/{table}`.
+    /// Required. Parent table that all the streams should belong to, in the form of
+    /// `projects/{project}/datasets/{dataset}/tables/{table}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The group of streams that will be committed atomically.
@@ -1339,18 +1199,6 @@ pub mod storage_error {
         OffsetAlreadyExists = 8,
         /// Offset out of range.
         OffsetOutOfRange = 9,
-        /// Customer-managed encryption key (CMEK) not provided for CMEK-enabled
-        /// data.
-        CmekNotProvided = 10,
-        /// Customer-managed encryption key (CMEK) was incorrectly provided.
-        InvalidCmekProvided = 11,
-        /// There is an encryption error while using customer-managed encryption key.
-        CmekEncryptionError = 12,
-        /// Key Management Service (KMS) service returned an error, which can be
-        /// retried.
-        KmsServiceError = 13,
-        /// Permission denied while using customer-managed encryption key.
-        KmsPermissionDenied = 14,
     }
     impl StorageErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1371,11 +1219,6 @@ pub mod storage_error {
                 }
                 StorageErrorCode::OffsetAlreadyExists => "OFFSET_ALREADY_EXISTS",
                 StorageErrorCode::OffsetOutOfRange => "OFFSET_OUT_OF_RANGE",
-                StorageErrorCode::CmekNotProvided => "CMEK_NOT_PROVIDED",
-                StorageErrorCode::InvalidCmekProvided => "INVALID_CMEK_PROVIDED",
-                StorageErrorCode::CmekEncryptionError => "CMEK_ENCRYPTION_ERROR",
-                StorageErrorCode::KmsServiceError => "KMS_SERVICE_ERROR",
-                StorageErrorCode::KmsPermissionDenied => "KMS_PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1391,11 +1234,6 @@ pub mod storage_error {
                 "SCHEMA_MISMATCH_EXTRA_FIELDS" => Some(Self::SchemaMismatchExtraFields),
                 "OFFSET_ALREADY_EXISTS" => Some(Self::OffsetAlreadyExists),
                 "OFFSET_OUT_OF_RANGE" => Some(Self::OffsetOutOfRange),
-                "CMEK_NOT_PROVIDED" => Some(Self::CmekNotProvided),
-                "INVALID_CMEK_PROVIDED" => Some(Self::InvalidCmekProvided),
-                "CMEK_ENCRYPTION_ERROR" => Some(Self::CmekEncryptionError),
-                "KMS_SERVICE_ERROR" => Some(Self::KmsServiceError),
-                "KMS_PERMISSION_DENIED" => Some(Self::KmsPermissionDenied),
                 _ => None,
             }
         }
@@ -1827,6 +1665,13 @@ pub mod big_query_write_client {
         /// * For PENDING streams, data is not made visible until the stream itself is
         /// finalized (via the `FinalizeWriteStream` rpc), and the stream is explicitly
         /// committed via the `BatchCommitWriteStreams` rpc.
+        ///
+        /// Note: For users coding against the gRPC api directly, it may be
+        /// necessary to supply the x-goog-request-params system parameter
+        /// with `write_stream=<full_write_stream_name>`.
+        ///
+        /// More information about system parameters:
+        /// https://cloud.google.com/apis/docs/system-parameters
         pub async fn append_rows(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::AppendRowsRequest>,

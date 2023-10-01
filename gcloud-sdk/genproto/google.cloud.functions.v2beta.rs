@@ -7,6 +7,9 @@ pub struct Function {
     /// globally and match pattern `projects/*/locations/*/functions/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Describe whether the function is gen1 or gen2.
+    #[prost(enumeration = "Environment", tag = "10")]
+    pub environment: i32,
     /// User-provided description of a function.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
@@ -37,19 +40,6 @@ pub struct Function {
     /// Output only. State Messages for this Cloud Function.
     #[prost(message, repeated, tag = "9")]
     pub state_messages: ::prost::alloc::vec::Vec<StateMessage>,
-    /// Describe whether the function is 1st Gen or 2nd Gen.
-    #[prost(enumeration = "Environment", tag = "10")]
-    pub environment: i32,
-    /// Output only. The deployed url for the function.
-    #[prost(string, tag = "14")]
-    pub url: ::prost::alloc::string::String,
-    /// \[Preview\] Resource name of a KMS crypto key (managed by the user) used to
-    /// encrypt/decrypt function resources.
-    ///
-    /// It must match the pattern
-    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
-    #[prost(string, tag = "25")]
-    pub kms_key_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Function`.
 pub mod function {
@@ -289,8 +279,8 @@ pub struct SourceProvenance {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildConfig {
-    /// Output only. The Cloud Build name of the latest successful deployment of
-    /// the function.
+    /// Output only. The Cloud Build name of the latest successful deployment of the
+    /// function.
     #[prost(string, tag = "1")]
     pub build: ::prost::alloc::string::String,
     /// The runtime in which to run the function. Required when deploying a new
@@ -334,18 +324,8 @@ pub struct BuildConfig {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Docker Registry to use for this deployment. This configuration is only
-    /// applicable to 1st Gen functions, 2nd Gen functions can only use Artifact
-    /// Registry.
-    ///
-    /// If `docker_repository` field is specified, this field will be automatically
-    /// set as `ARTIFACT_REGISTRY`.
-    /// If unspecified, it currently defaults to `CONTAINER_REGISTRY`.
-    /// This field may be overridden by the backend for eligible deployments.
-    #[prost(enumeration = "build_config::DockerRegistry", tag = "10")]
-    pub docker_registry: i32,
-    /// User managed repository created in Artifact Registry optionally
-    /// with a customer managed encryption key. This is the repository to which the
+    /// Optional. User managed repository created in Artifact Registry optionally with a
+    /// customer managed encryption key. This is the repository to which the
     /// function docker image will be pushed after it is built by Cloud Build.
     /// If unspecified, GCF will create and use a repository named 'gcf-artifacts'
     /// for every deployed region.
@@ -358,57 +338,6 @@ pub struct BuildConfig {
     /// Repository format must be 'DOCKER'.
     #[prost(string, tag = "7")]
     pub docker_repository: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `BuildConfig`.
-pub mod build_config {
-    /// Docker Registry to use for storing function Docker images.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum DockerRegistry {
-        /// Unspecified.
-        Unspecified = 0,
-        /// Docker images will be stored in multi-regional Container Registry
-        /// repositories named `gcf`.
-        ContainerRegistry = 1,
-        /// Docker images will be stored in regional Artifact Registry repositories.
-        /// By default, GCF will create and use repositories named `gcf-artifacts`
-        /// in every region in which a function is deployed. But the repository to
-        /// use can also be specified by the user using the `docker_repository`
-        /// field.
-        ArtifactRegistry = 2,
-    }
-    impl DockerRegistry {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                DockerRegistry::Unspecified => "DOCKER_REGISTRY_UNSPECIFIED",
-                DockerRegistry::ContainerRegistry => "CONTAINER_REGISTRY",
-                DockerRegistry::ArtifactRegistry => "ARTIFACT_REGISTRY",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "DOCKER_REGISTRY_UNSPECIFIED" => Some(Self::Unspecified),
-                "CONTAINER_REGISTRY" => Some(Self::ContainerRegistry),
-                "ARTIFACT_REGISTRY" => Some(Self::ArtifactRegistry),
-                _ => None,
-            }
-        }
-    }
 }
 /// Describes the Service being deployed.
 /// Currently Supported : Cloud Run (fully managed).
@@ -433,13 +362,6 @@ pub struct ServiceConfig {
     /// a full description.
     #[prost(string, tag = "13")]
     pub available_memory: ::prost::alloc::string::String,
-    /// \[Preview\] The number of CPUs used in a single container instance.
-    /// Default value is calculated from available memory.
-    /// Supports the same values as Cloud Run, see
-    /// <https://cloud.google.com/run/docs/reference/rest/v1/Container#resourcerequirements>
-    /// Example: "1" indicates 1 vCPU
-    #[prost(string, tag = "22")]
-    pub available_cpu: ::prost::alloc::string::String,
     /// Environment variables that shall be available during function execution.
     #[prost(map = "string, string", tag = "4")]
     pub environment_variables: ::std::collections::HashMap<
@@ -506,16 +428,6 @@ pub struct ServiceConfig {
     /// Output only. The name of service revision.
     #[prost(string, tag = "18")]
     pub revision: ::prost::alloc::string::String,
-    /// \[Preview\] Sets the maximum number of concurrent requests that each instance
-    /// can receive. Defaults to 1.
-    #[prost(int32, tag = "20")]
-    pub max_instance_request_concurrency: i32,
-    /// Security level configure whether the function only accepts https.
-    /// This configuration is only applicable to 1st Gen functions with Http
-    /// trigger. By default https is optional for 1st Gen functions; 2nd Gen
-    /// functions are https ONLY.
-    #[prost(enumeration = "service_config::SecurityLevel", tag = "21")]
-    pub security_level: i32,
 }
 /// Nested message and enum types in `ServiceConfig`.
 pub mod service_config {
@@ -619,58 +531,6 @@ pub mod service_config {
             }
         }
     }
-    /// Available security level settings.
-    ///
-    /// This enforces security protocol on function URL.
-    ///
-    /// Security level is only configurable for 1st Gen functions, If unspecified,
-    /// SECURE_OPTIONAL will be used. 2nd Gen functions are SECURE_ALWAYS ONLY.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum SecurityLevel {
-        /// Unspecified.
-        Unspecified = 0,
-        /// Requests for a URL that match this handler that do not use HTTPS are
-        /// automatically redirected to the HTTPS URL with the same path. Query
-        /// parameters are reserved for the redirect.
-        SecureAlways = 1,
-        /// Both HTTP and HTTPS requests with URLs that match the handler succeed
-        /// without redirects. The application can examine the request to determine
-        /// which protocol was used and respond accordingly.
-        SecureOptional = 2,
-    }
-    impl SecurityLevel {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                SecurityLevel::Unspecified => "SECURITY_LEVEL_UNSPECIFIED",
-                SecurityLevel::SecureAlways => "SECURE_ALWAYS",
-                SecurityLevel::SecureOptional => "SECURE_OPTIONAL",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "SECURITY_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
-                "SECURE_ALWAYS" => Some(Self::SecureAlways),
-                "SECURE_OPTIONAL" => Some(Self::SecureOptional),
-                _ => None,
-            }
-        }
-    }
 }
 /// Configuration for a secret environment variable. It has the information
 /// necessary to fetch the secret value from secret manager and expose it as an
@@ -747,8 +607,8 @@ pub mod secret_volume {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventTrigger {
-    /// Output only. The resource name of the Eventarc trigger. The format of this
-    /// field is `projects/{project}/locations/{region}/triggers/{trigger}`.
+    /// Output only. The resource name of the Eventarc trigger. The format of this field is
+    /// `projects/{project}/locations/{region}/triggers/{trigger}`.
     #[prost(string, tag = "1")]
     pub trigger: ::prost::alloc::string::String,
     /// The region that the trigger will be in. The trigger will only receive
@@ -774,15 +634,14 @@ pub struct EventTrigger {
     /// will not be deleted at function deletion.
     #[prost(string, tag = "5")]
     pub pubsub_topic: ::prost::alloc::string::String,
-    /// Optional. The email of the trigger's service account. The service account
-    /// must have permission to invoke Cloud Run services, the permission is
+    /// Optional. The email of the trigger's service account. The service account must have
+    /// permission to invoke Cloud Run services, the permission is
     /// `run.routes.invoke`.
     /// If empty, defaults to the Compute Engine default service account:
     /// `{project_number}-compute@developer.gserviceaccount.com`.
     #[prost(string, tag = "6")]
     pub service_account_email: ::prost::alloc::string::String,
-    /// Optional. If unset, then defaults to ignoring failures (i.e. not retrying
-    /// them).
+    /// Optional. If unset, then defaults to ignoring failures (i.e. not retrying them).
     #[prost(enumeration = "event_trigger::RetryPolicy", tag = "7")]
     pub retry_policy: i32,
     /// Optional. The name of the channel associated with the trigger in
@@ -868,18 +727,15 @@ pub struct GetFunctionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFunctionsRequest {
-    /// Required. The project and location from which the function should be
-    /// listed, specified in the format `projects/*/locations/*` If you want to
-    /// list functions in all locations, use "-" in place of a location. When
-    /// listing functions in all locations, if one or more location(s) are
-    /// unreachable, the response will contain functions from all reachable
-    /// locations along with the names of any unreachable locations.
+    /// Required. The project and location from which the function should be listed,
+    /// specified in the format `projects/*/locations/*`
+    /// If you want to list functions in all locations, use "-" in place of a
+    /// location. When listing functions in all locations, if one or more
+    /// location(s) are unreachable, the response will contain functions from all
+    /// reachable locations along with the names of any unreachable locations.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Maximum number of functions to return per call. The largest allowed
-    /// page_size is 1,000, if the page_size is omitted or specified as greater
-    /// than 1,000 then it will be replaced as 1,000. The size of the list
-    /// response can be less than specified when used with filters.
+    /// Maximum number of functions to return per call.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The value returned by the last
@@ -918,8 +774,8 @@ pub struct ListFunctionsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFunctionRequest {
-    /// Required. The project and location in which the function should be created,
-    /// specified in the format `projects/*/locations/*`
+    /// Required. The project and location in which the function should be created, specified
+    /// in the format `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Function to be created.
@@ -929,7 +785,7 @@ pub struct CreateFunctionRequest {
     /// the function's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// are /[a-z][0-9]-/.
     #[prost(string, tag = "3")]
     pub function_id: ::prost::alloc::string::String,
 }
@@ -958,27 +814,10 @@ pub struct DeleteFunctionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateUploadUrlRequest {
-    /// Required. The project and location in which the Google Cloud Storage signed
-    /// URL should be generated, specified in the format `projects/*/locations/*`.
+    /// Required. The project and location in which the Google Cloud Storage signed URL
+    /// should be generated, specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// \[Preview\] Resource name of a KMS crypto key (managed by the user) used to
-    /// encrypt/decrypt function source code objects in intermediate Cloud Storage
-    /// buckets. When you generate an upload url and upload your source code, it
-    /// gets copied to an intermediate Cloud Storage bucket. The source code is
-    /// then copied to a versioned directory in the sources bucket in the consumer
-    /// project during the function deployment.
-    ///
-    /// It must match the pattern
-    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
-    ///
-    /// The Google Cloud Functions service account
-    /// (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com) must be
-    /// granted the role 'Cloud KMS CryptoKey Encrypter/Decrypter
-    /// (roles/cloudkms.cryptoKeyEncrypterDecrypter)' on the
-    /// Key/KeyRing/Project/Organization (least access preferred).
-    #[prost(string, tag = "2")]
-    pub kms_key_name: ::prost::alloc::string::String,
 }
 /// Response of `GenerateSourceUploadUrl` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1004,8 +843,8 @@ pub struct GenerateUploadUrlResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateDownloadUrlRequest {
-    /// Required. The name of function for which source code Google Cloud Storage
-    /// signed URL should be generated.
+    /// Required. The name of function for which source code Google Cloud Storage signed
+    /// URL should be generated.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1022,8 +861,8 @@ pub struct GenerateDownloadUrlResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuntimesRequest {
-    /// Required. The project and location from which the runtimes should be
-    /// listed, specified in the format `projects/*/locations/*`
+    /// Required. The project and location from which the runtimes should be listed,
+    /// specified in the format `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter for Runtimes that match the filter expression,
@@ -1143,9 +982,8 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
     /// API version used to start the operation.
@@ -1157,14 +995,6 @@ pub struct OperationMetadata {
     /// Mechanism for reporting in-progress stages
     #[prost(message, repeated, tag = "9")]
     pub stages: ::prost::alloc::vec::Vec<Stage>,
-}
-/// Extra GCF specific location information.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationMetadata {
-    /// The Cloud Function environments this location supports.
-    #[prost(enumeration = "Environment", repeated, tag = "1")]
-    pub environments: ::prost::alloc::vec::Vec<i32>,
 }
 /// Each Stage of the deployment process
 #[allow(clippy::derive_partial_eq_without_eq)]

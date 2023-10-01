@@ -157,7 +157,7 @@ pub mod assist_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Specifies how to process the subsequent incoming audio. Required if
-        /// \[AssistRequest.audio_in][google.assistant.embedded.v1alpha2.AssistRequest.audio_in\]
+        /// [AssistRequest.audio_in][google.assistant.embedded.v1alpha2.AssistRequest.audio_in]
         /// bytes will be provided in subsequent requests.
         #[prost(message, tag = "1")]
         AudioInConfig(super::AudioInConfig),
@@ -202,12 +202,12 @@ pub mod audio_in_config {
     )]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
+        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         /// This encoding includes no header, only the raw audio bytes.
         Linear16 = 1,
-        /// \[`FLAC`\](<https://xiph.org/flac/documentation.html>) (Free Lossless Audio
+        /// [`FLAC`](<https://xiph.org/flac/documentation.html>) (Free Lossless Audio
         /// Codec) is the recommended encoding because it is
         /// lossless--therefore recognition is not compromised--and
         /// requires only about half the bandwidth of `LINEAR16`. This encoding
@@ -274,7 +274,7 @@ pub mod audio_out_config {
     )]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
+        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         Linear16 = 1,
@@ -375,7 +375,7 @@ pub mod screen_out_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DialogStateIn {
     /// *Required* This field must always be set to the
-    /// \[DialogStateOut.conversation_state][google.assistant.embedded.v1alpha2.DialogStateOut.conversation_state\]
+    /// [DialogStateOut.conversation_state][google.assistant.embedded.v1alpha2.DialogStateOut.conversation_state]
     /// value that was returned in the prior `Assist` RPC. It should only be
     /// omitted (field not set) if there was no prior `Assist` RPC because this is
     /// the first `Assist` RPC made by this device after it was first setup and/or
@@ -388,7 +388,7 @@ pub struct DialogStateIn {
     /// Support](<https://developers.google.com/assistant/sdk/reference/rpc/languages>)
     /// for more information. If you have selected a language for this `device_id`
     /// using the
-    /// \[Settings\](<https://developers.google.com/assistant/sdk/reference/assistant-app/assistant-settings>)
+    /// [Settings](<https://developers.google.com/assistant/sdk/reference/assistant-app/assistant-settings>)
     /// menu in your phone's Google Assistant app, that selection will override
     /// this value.
     #[prost(string, tag = "2")]
@@ -510,7 +510,7 @@ pub struct DeviceAction {
     /// JSON containing the device command response generated from the triggered
     /// Device Action grammar. The format is given by the
     /// `action.devices.EXECUTE` intent for a given
-    /// \[trait\](<https://developers.google.com/assistant/sdk/reference/traits/>).
+    /// [trait](<https://developers.google.com/assistant/sdk/reference/traits/>).
     #[prost(string, tag = "1")]
     pub device_request_json: ::prost::alloc::string::String,
 }
@@ -541,7 +541,7 @@ pub struct DialogStateOut {
     pub supplemental_display_text: ::prost::alloc::string::String,
     /// *Output-only* State information for the subsequent `Assist` RPC. This
     /// value should be saved in the client and returned in the
-    /// \[`DialogStateIn.conversation_state`\](#dialogstatein) field with the next
+    /// [`DialogStateIn.conversation_state`](#dialogstatein) field with the next
     /// `Assist` RPC. (The client does not need to interpret or otherwise use this
     /// value.) This information should be saved across device reboots. However,
     /// this value should be cleared (not saved in the client) during a

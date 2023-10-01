@@ -36,8 +36,7 @@ pub struct Conversation {
     /// Output only. The conversation transcript.
     #[prost(message, optional, tag = "8")]
     pub transcript: ::core::option::Option<conversation::Transcript>,
-    /// Immutable. The conversation medium, if unspecified will default to
-    /// PHONE_CALL.
+    /// Immutable. The conversation medium, if unspecified will default to PHONE_CALL.
     #[prost(enumeration = "conversation::Medium", tag = "9")]
     pub medium: i32,
     /// Output only. The duration of the conversation.
@@ -49,15 +48,12 @@ pub struct Conversation {
     /// Output only. The conversation's latest analysis, if one exists.
     #[prost(message, optional, tag = "12")]
     pub latest_analysis: ::core::option::Option<Analysis>,
-    /// Output only. Latest summary of the conversation.
-    #[prost(message, optional, tag = "20")]
-    pub latest_summary: ::core::option::Option<ConversationSummarizationSuggestionData>,
-    /// Output only. The annotations that were generated during the customer and
-    /// agent interaction.
+    /// Output only. The annotations that were generated during the customer and agent
+    /// interaction.
     #[prost(message, repeated, tag = "13")]
     pub runtime_annotations: ::prost::alloc::vec::Vec<RuntimeAnnotation>,
-    /// Output only. All the matched Dialogflow intents in the call. The key
-    /// corresponds to a Dialogflow intent, format:
+    /// Output only. All the matched Dialogflow intents in the call. The key corresponds to a
+    /// Dialogflow intent, format:
     /// projects/{project}/agent/{agent}/intents/{intent}
     #[prost(map = "string, message", tag = "18")]
     pub dialogflow_intents: ::std::collections::HashMap<
@@ -118,7 +114,7 @@ pub mod conversation {
             #[prost(message, repeated, tag = "3")]
             pub words: ::prost::alloc::vec::Vec<transcript_segment::WordInfo>,
             /// The language code of this segment as a
-            /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
+            /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
             /// Example: "en-US".
             #[prost(string, tag = "4")]
             pub language_code: ::prost::alloc::string::String,
@@ -255,18 +251,14 @@ pub struct Analysis {
     /// Output only. The time at which the analysis was requested.
     #[prost(message, optional, tag = "2")]
     pub request_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which the analysis was created, which occurs when
-    /// the long-running operation completes.
+    /// Output only. The time at which the analysis was created, which occurs when the
+    /// long-running operation completes.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The result of the analysis, which is populated when the
-    /// analysis finishes.
+    /// Output only. The result of the analysis, which is populated when the analysis
+    /// finishes.
     #[prost(message, optional, tag = "7")]
     pub analysis_result: ::core::option::Option<AnalysisResult>,
-    /// To select the annotators to run and the phrase matchers to use
-    /// (if any). If not specified, all annotators will be run.
-    #[prost(message, optional, tag = "8")]
-    pub annotator_selector: ::core::option::Option<AnnotatorSelector>,
 }
 /// The conversation source, which is a combination of transcript and audio.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -298,8 +290,8 @@ pub struct GcsSource {
     /// audio.
     #[prost(string, tag = "1")]
     pub audio_uri: ::prost::alloc::string::String,
-    /// Immutable. Cloud Storage URI that points to a file that contains the
-    /// conversation transcript.
+    /// Immutable. Cloud Storage URI that points to a file that contains the conversation
+    /// transcript.
     #[prost(string, tag = "2")]
     pub transcript_uri: ::prost::alloc::string::String,
 }
@@ -405,8 +397,8 @@ pub struct IssueAssignment {
     /// currently bounded on \[0,1\].
     #[prost(double, tag = "2")]
     pub score: f64,
-    /// Immutable. Display name of the assigned issue. This field is set at time of
-    /// analyis and immutable since then.
+    /// Immutable. Display name of the assigned issue. This field is set at time of analyis
+    /// and immutable since then.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
 }
@@ -425,7 +417,7 @@ pub struct CallAnnotation {
     #[prost(message, optional, tag = "5")]
     pub annotation_end_boundary: ::core::option::Option<AnnotationBoundary>,
     /// The data in the annotation.
-    #[prost(oneof = "call_annotation::Data", tags = "10, 11, 12, 13, 15, 16, 17, 18")]
+    #[prost(oneof = "call_annotation::Data", tags = "10, 11, 12, 13, 15, 16, 17")]
     pub data: ::core::option::Option<call_annotation::Data>,
 }
 /// Nested message and enum types in `CallAnnotation`.
@@ -455,9 +447,6 @@ pub mod call_annotation {
         /// Data specifying a phrase match.
         #[prost(message, tag = "17")]
         PhraseMatchData(super::PhraseMatchData),
-        /// Data specifying an issue match.
-        #[prost(message, tag = "18")]
-        IssueMatchData(super::IssueMatchData),
     }
 }
 /// A point in a conversation that marks the start or the end of an annotation.
@@ -506,7 +495,7 @@ pub struct Entity {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// The salience score associated with the entity in the [0, 1.0] range.
+    /// The salience score associated with the entity in the \[0, 1.0\] range.
     ///
     /// The salience score for an entity provides information about the
     /// importance or centrality of that entity to the entire document text.
@@ -772,14 +761,6 @@ pub struct SentimentData {
     #[prost(float, tag = "2")]
     pub score: f32,
 }
-/// The data for an issue match annotation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IssueMatchData {
-    /// Information about the issue's assignment.
-    #[prost(message, optional, tag = "1")]
-    pub issue_assignment: ::core::option::Option<IssueAssignment>,
-}
 /// The issue model resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -798,25 +779,15 @@ pub struct IssueModel {
     /// Output only. The most recent time at which the issue model was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Number of issues in this issue model.
-    #[prost(int64, tag = "8")]
-    pub issue_count: i64,
     /// Output only. State of the model.
     #[prost(enumeration = "issue_model::State", tag = "5")]
     pub state: i32,
     /// Configs for the input data that used to create the issue model.
     #[prost(message, optional, tag = "6")]
     pub input_data_config: ::core::option::Option<issue_model::InputDataConfig>,
-    /// Output only. Immutable. The issue model's label statistics on its training
-    /// data.
+    /// Output only. Immutable. The issue model's label statistics on its training data.
     #[prost(message, optional, tag = "7")]
     pub training_stats: ::core::option::Option<IssueModelLabelStats>,
-    /// Type of the model.
-    #[prost(enumeration = "issue_model::ModelType", tag = "9")]
-    pub model_type: i32,
-    /// Language of the model.
-    #[prost(string, tag = "10")]
-    pub language_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `IssueModel`.
 pub mod issue_model {
@@ -894,49 +865,6 @@ pub mod issue_model {
             }
         }
     }
-    /// Type of the model.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum ModelType {
-        /// Unspecified model type.
-        Unspecified = 0,
-        /// Type V1.
-        TypeV1 = 1,
-        /// Type V2.
-        TypeV2 = 2,
-    }
-    impl ModelType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-                ModelType::TypeV1 => "TYPE_V1",
-                ModelType::TypeV2 => "TYPE_V2",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "TYPE_V1" => Some(Self::TypeV1),
-                "TYPE_V2" => Some(Self::TypeV2),
-                _ => None,
-            }
-        }
-    }
 }
 /// The issue resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -956,10 +884,6 @@ pub struct Issue {
     /// Output only. The most recent time that this issue was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Resource names of the sample representative utterances that
-    /// match to this issue.
-    #[prost(string, repeated, tag = "6")]
-    pub sample_utterances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Aggregated statistics about an issue model.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1017,8 +941,8 @@ pub struct PhraseMatcher {
     /// it will default to `revision_id`.
     #[prost(string, tag = "3")]
     pub version_tag: ::prost::alloc::string::String,
-    /// Output only. The timestamp of when the revision was created. It is also the
-    /// create time when a new matcher is added.
+    /// Output only. The timestamp of when the revision was created. It is also the create time
+    /// when a new matcher is added.
     #[prost(message, optional, tag = "4")]
     pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The human-readable name of the phrase matcher.
@@ -1033,8 +957,7 @@ pub struct PhraseMatcher {
     /// A list of phase match rule groups that are included in this matcher.
     #[prost(message, repeated, tag = "8")]
     pub phrase_match_rule_groups: ::prost::alloc::vec::Vec<PhraseMatchRuleGroup>,
-    /// Output only. The most recent time at which the activation status was
-    /// updated.
+    /// Output only. The most recent time at which the activation status was updated.
     #[prost(message, optional, tag = "9")]
     pub activation_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The role whose utterances the phrase matcher should be matched
@@ -1103,7 +1026,7 @@ pub struct PhraseMatchRuleGroup {
         tag = "1"
     )]
     pub r#type: i32,
-    /// A list of phrase match rules that are included in this group.
+    /// A list of phase match rules that are included in this group.
     #[prost(message, repeated, tag = "2")]
     pub phrase_match_rules: ::prost::alloc::vec::Vec<PhraseMatchRule>,
 }
@@ -1248,10 +1171,6 @@ pub struct Settings {
     /// Default analysis settings.
     #[prost(message, optional, tag = "7")]
     pub analysis_config: ::core::option::Option<settings::AnalysisConfig>,
-    /// Default DLP redaction resources to be applied while ingesting
-    /// conversations.
-    #[prost(message, optional, tag = "10")]
-    pub redaction_config: ::core::option::Option<RedactionConfig>,
 }
 /// Nested message and enum types in `Settings`.
 pub mod settings {
@@ -1260,33 +1179,10 @@ pub mod settings {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnalysisConfig {
         /// Percentage of conversations created using Dialogflow runtime integration
-        /// to analyze automatically, between [0, 100].
+        /// to analyze automatically, between \[0, 100\].
         #[prost(double, tag = "1")]
         pub runtime_integration_analysis_percentage: f64,
-        /// Percentage of conversations created using the UploadConversation endpoint
-        /// to analyze automatically, between [0, 100].
-        #[prost(double, tag = "6")]
-        pub upload_conversation_analysis_percentage: f64,
-        /// To select the annotators to run and the phrase matchers to use
-        /// (if any). If not specified, all annotators will be run.
-        #[prost(message, optional, tag = "5")]
-        pub annotator_selector: ::core::option::Option<super::AnnotatorSelector>,
     }
-}
-/// DLP resources used for redaction while ingesting conversations.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RedactionConfig {
-    /// The fully-qualified DLP deidentify template resource name.
-    /// Format:
-    /// `projects/{project}/deidentifyTemplates/{template}`
-    #[prost(string, tag = "1")]
-    pub deidentify_template: ::prost::alloc::string::String,
-    /// The fully-qualified DLP inspect template resource name.
-    /// Format:
-    /// `projects/{project}/locations/{location}/inspectTemplates/{template}`
-    #[prost(string, tag = "2")]
-    pub inspect_template: ::prost::alloc::string::String,
 }
 /// An annotation that was generated during the customer and agent interaction.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1310,7 +1206,7 @@ pub struct RuntimeAnnotation {
     #[prost(message, optional, tag = "5")]
     pub answer_feedback: ::core::option::Option<AnswerFeedback>,
     /// The data in the annotation.
-    #[prost(oneof = "runtime_annotation::Data", tags = "6, 7, 8, 9, 10, 12")]
+    #[prost(oneof = "runtime_annotation::Data", tags = "6, 7, 8, 9, 10")]
     pub data: ::core::option::Option<runtime_annotation::Data>,
 }
 /// Nested message and enum types in `RuntimeAnnotation`.
@@ -1334,11 +1230,6 @@ pub mod runtime_annotation {
         /// Dialogflow interaction data.
         #[prost(message, tag = "10")]
         DialogflowInteraction(super::DialogflowInteractionData),
-        /// Conversation summarization suggestion data.
-        #[prost(message, tag = "12")]
-        ConversationSummarizationSuggestion(
-            super::ConversationSummarizationSuggestionData,
-        ),
     }
 }
 /// The feedback that the customer has about a certain answer in the
@@ -1536,42 +1427,6 @@ pub struct DialogflowInteractionData {
     #[prost(float, tag = "2")]
     pub confidence: f32,
 }
-/// Conversation summarization suggestion data.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversationSummarizationSuggestionData {
-    /// The summarization content that is concatenated into one string.
-    #[prost(string, tag = "1")]
-    pub text: ::prost::alloc::string::String,
-    /// The summarization content that is divided into sections. The key is the
-    /// section's name and the value is the section's content. There is no
-    /// specific format for the key or value.
-    #[prost(map = "string, string", tag = "5")]
-    pub text_sections: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// The confidence score of the summarization.
-    #[prost(float, tag = "2")]
-    pub confidence: f32,
-    /// A map that contains metadata about the summarization and the document
-    /// from which it originates.
-    #[prost(map = "string, string", tag = "3")]
-    pub metadata: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// The name of the answer record.
-    /// Format:
-    /// projects/{project}/locations/{location}/answerRecords/{answer_record}
-    #[prost(string, tag = "4")]
-    pub answer_record: ::prost::alloc::string::String,
-    /// The name of the model that generates this summary.
-    /// Format:
-    /// projects/{project}/locations/{location}/conversationModels/{conversation_model}
-    #[prost(string, tag = "6")]
-    pub conversation_model: ::prost::alloc::string::String,
-}
 /// The call participant speaking for a given utterance.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1674,126 +1529,9 @@ pub struct View {
     /// Output only. The most recent time at which the view was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// String with specific view properties, must be non-empty.
+    /// String with specific view properties.
     #[prost(string, tag = "5")]
     pub value: ::prost::alloc::string::String,
-}
-/// Selector of all available annotators and phrase matchers to run.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AnnotatorSelector {
-    /// Whether to run the interruption annotator.
-    #[prost(bool, tag = "1")]
-    pub run_interruption_annotator: bool,
-    /// Whether to run the silence annotator.
-    #[prost(bool, tag = "2")]
-    pub run_silence_annotator: bool,
-    /// Whether to run the active phrase matcher annotator(s).
-    #[prost(bool, tag = "3")]
-    pub run_phrase_matcher_annotator: bool,
-    /// The list of phrase matchers to run. If not provided, all active phrase
-    /// matchers will be used. If inactive phrase matchers are provided, they will
-    /// not be used. Phrase matchers will be run only if
-    /// run_phrase_matcher_annotator is set to true. Format:
-    /// projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}
-    #[prost(string, repeated, tag = "4")]
-    pub phrase_matchers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Whether to run the sentiment annotator.
-    #[prost(bool, tag = "5")]
-    pub run_sentiment_annotator: bool,
-    /// Whether to run the entity annotator.
-    #[prost(bool, tag = "6")]
-    pub run_entity_annotator: bool,
-    /// Whether to run the intent annotator.
-    #[prost(bool, tag = "7")]
-    pub run_intent_annotator: bool,
-    /// Whether to run the issue model annotator. A model should have already been
-    /// deployed for this to take effect.
-    #[prost(bool, tag = "8")]
-    pub run_issue_model_annotator: bool,
-    /// The issue model to run. If not provided, the most recently deployed topic
-    /// model will be used. The provided issue model will only be used for
-    /// inference if the issue model is deployed and if run_issue_model_annotator
-    /// is set to true. If more than one issue model is provided, only the first
-    /// provided issue model will be used for inference.
-    #[prost(string, repeated, tag = "10")]
-    pub issue_models: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Whether to run the summarization annotator.
-    #[prost(bool, tag = "9")]
-    pub run_summarization_annotator: bool,
-    /// Configuration for the summarization annotator.
-    #[prost(message, optional, tag = "11")]
-    pub summarization_config: ::core::option::Option<
-        annotator_selector::SummarizationConfig,
-    >,
-}
-/// Nested message and enum types in `AnnotatorSelector`.
-pub mod annotator_selector {
-    /// Configuration for summarization.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SummarizationConfig {
-        /// Summarization must use either a preexisting conversation profile or one
-        /// of the supported default models.
-        #[prost(oneof = "summarization_config::ModelSource", tags = "1, 2")]
-        pub model_source: ::core::option::Option<summarization_config::ModelSource>,
-    }
-    /// Nested message and enum types in `SummarizationConfig`.
-    pub mod summarization_config {
-        /// Summarization model to use, if `conversation_profile` is not used.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum SummarizationModel {
-            /// Unspecified summarization model.
-            Unspecified = 0,
-            /// The Insights baseline model.
-            BaselineModel = 1,
-        }
-        impl SummarizationModel {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    SummarizationModel::Unspecified => "SUMMARIZATION_MODEL_UNSPECIFIED",
-                    SummarizationModel::BaselineModel => "BASELINE_MODEL",
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "SUMMARIZATION_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
-                    "BASELINE_MODEL" => Some(Self::BaselineModel),
-                    _ => None,
-                }
-            }
-        }
-        /// Summarization must use either a preexisting conversation profile or one
-        /// of the supported default models.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum ModelSource {
-            /// Resource name of the Dialogflow conversation profile.
-            /// Format:
-            /// projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}
-            #[prost(string, tag = "1")]
-            ConversationProfile(::prost::alloc::string::String),
-            /// Default summarization model to be used.
-            #[prost(enumeration = "SummarizationModel", tag = "2")]
-            SummarizationModel(i32),
-        }
-    }
 }
 /// The request for calculating conversation statistics.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1899,9 +1637,6 @@ pub struct CreateAnalysisOperationMetadata {
     /// Output only. The Conversation that this Analysis Operation belongs to.
     #[prost(string, tag = "3")]
     pub conversation: ::prost::alloc::string::String,
-    /// Output only. The annotator selector used for the analysis (if any).
-    #[prost(message, optional, tag = "4")]
-    pub annotator_selector: ::core::option::Option<AnnotatorSelector>,
 }
 /// Request to create a conversation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1918,53 +1653,9 @@ pub struct CreateConversationRequest {
     /// server-generated ID will be used.
     ///
     /// This value should be 4-64 characters and must match the regular
-    /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `\[a-z][0-9\]-`
+    /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `[a-z][0-9]-`
     #[prost(string, tag = "3")]
     pub conversation_id: ::prost::alloc::string::String,
-}
-/// Request to upload a conversation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UploadConversationRequest {
-    /// Required. The parent resource of the conversation.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The conversation resource to create.
-    #[prost(message, optional, tag = "2")]
-    pub conversation: ::core::option::Option<Conversation>,
-    /// Optional. A unique ID for the new conversation. This ID will become the
-    /// final component of the conversation's resource name. If no ID is specified,
-    /// a server-generated ID will be used.
-    ///
-    /// This value should be 4-64 characters and must match the regular
-    /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `\[a-z][0-9\]-`
-    #[prost(string, tag = "3")]
-    pub conversation_id: ::prost::alloc::string::String,
-    /// Optional. DLP settings for transcript redaction. Optional, will default to
-    /// the config specified in Settings.
-    #[prost(message, optional, tag = "4")]
-    pub redaction_config: ::core::option::Option<RedactionConfig>,
-}
-/// The metadata for an UploadConversation operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UploadConversationMetadata {
-    /// Output only. The time the operation was created.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The original request.
-    #[prost(message, optional, tag = "3")]
-    pub request: ::core::option::Option<UploadConversationRequest>,
-    /// Output only. The operation name for a successfully created analysis
-    /// operation, if any.
-    #[prost(string, tag = "4")]
-    pub analysis_operation: ::prost::alloc::string::String,
-    /// Output only. The redaction config applied to the uploaded conversation.
-    #[prost(message, optional, tag = "5")]
-    pub applied_redaction_config: ::core::option::Option<RedactionConfig>,
 }
 /// Request to list conversations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2040,123 +1731,6 @@ pub struct DeleteConversationRequest {
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
-/// The request to ingest conversations.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IngestConversationsRequest {
-    /// Required. The parent resource for new conversations.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Configuration that applies to all conversations.
-    #[prost(message, optional, tag = "4")]
-    pub conversation_config: ::core::option::Option<
-        ingest_conversations_request::ConversationConfig,
-    >,
-    /// Configuration for an external data store containing objects that will
-    /// be converted to conversations.
-    #[prost(oneof = "ingest_conversations_request::Source", tags = "2")]
-    pub source: ::core::option::Option<ingest_conversations_request::Source>,
-    /// Configuration for converting individual `source` objects to conversations.
-    #[prost(oneof = "ingest_conversations_request::ObjectConfig", tags = "3")]
-    pub object_config: ::core::option::Option<
-        ingest_conversations_request::ObjectConfig,
-    >,
-}
-/// Nested message and enum types in `IngestConversationsRequest`.
-pub mod ingest_conversations_request {
-    /// Configuration for Cloud Storage bucket sources.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct GcsSource {
-        /// Required. The Cloud Storage bucket containing source objects.
-        #[prost(string, tag = "1")]
-        pub bucket_uri: ::prost::alloc::string::String,
-    }
-    /// Configuration for processing transcript objects.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct TranscriptObjectConfig {
-        /// Required. The medium transcript objects represent.
-        #[prost(enumeration = "super::conversation::Medium", tag = "1")]
-        pub medium: i32,
-    }
-    /// Configuration that applies to all conversations.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ConversationConfig {
-        /// An opaque, user-specified string representing the human agent who handled
-        /// the conversations.
-        #[prost(string, tag = "1")]
-        pub agent_id: ::prost::alloc::string::String,
-    }
-    /// Configuration for an external data store containing objects that will
-    /// be converted to conversations.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Source {
-        /// A cloud storage bucket source.
-        #[prost(message, tag = "2")]
-        GcsSource(GcsSource),
-    }
-    /// Configuration for converting individual `source` objects to conversations.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum ObjectConfig {
-        /// Configuration for when `source` contains conversation transcripts.
-        #[prost(message, tag = "3")]
-        TranscriptObjectConfig(TranscriptObjectConfig),
-    }
-}
-/// The metadata for an IngestConversations operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IngestConversationsMetadata {
-    /// Output only. The time the operation was created.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The original request for ingest.
-    #[prost(message, optional, tag = "3")]
-    pub request: ::core::option::Option<IngestConversationsRequest>,
-    /// Output only. Partial errors during ingest operation that might cause the
-    /// operation output to be incomplete.
-    #[prost(message, repeated, tag = "4")]
-    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
-    /// Output only. Statistics for IngestConversations operation.
-    #[prost(message, optional, tag = "5")]
-    pub ingest_conversations_stats: ::core::option::Option<
-        ingest_conversations_metadata::IngestConversationsStats,
-    >,
-}
-/// Nested message and enum types in `IngestConversationsMetadata`.
-pub mod ingest_conversations_metadata {
-    /// Statistics for IngestConversations operation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct IngestConversationsStats {
-        /// Output only. The number of objects processed during the ingest operation.
-        #[prost(int32, tag = "1")]
-        pub processed_object_count: i32,
-        /// Output only. The number of objects skipped because another conversation
-        /// with the same transcript uri had already been ingested.
-        #[prost(int32, tag = "2")]
-        pub duplicates_skipped_count: i32,
-        /// Output only. The number of new conversations added during this ingest
-        /// operation.
-        #[prost(int32, tag = "3")]
-        pub successful_ingest_count: i32,
-        /// Output only. The number of objects which were unable to be ingested due
-        /// to errors. The errors are populated in the partial_errors field.
-        #[prost(int32, tag = "4")]
-        pub failed_ingest_count: i32,
-    }
-}
-/// The response to an IngestConversations operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IngestConversationsResponse {}
 /// The request to create an analysis.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2219,60 +1793,6 @@ pub struct DeleteAnalysisRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request to analyze conversations in bulk.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BulkAnalyzeConversationsRequest {
-    /// Required. The parent resource to create analyses in.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Filter used to select the subset of conversations to analyze.
-    #[prost(string, tag = "2")]
-    pub filter: ::prost::alloc::string::String,
-    /// Required. Percentage of selected conversation to analyze, between
-    /// [0, 100].
-    #[prost(float, tag = "3")]
-    pub analysis_percentage: f32,
-    /// To select the annotators to run and the phrase matchers to use
-    /// (if any). If not specified, all annotators will be run.
-    #[prost(message, optional, tag = "8")]
-    pub annotator_selector: ::core::option::Option<AnnotatorSelector>,
-}
-/// The metadata for a bulk analyze conversations operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BulkAnalyzeConversationsMetadata {
-    /// The time the operation was created.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The original request for bulk analyze.
-    #[prost(message, optional, tag = "3")]
-    pub request: ::core::option::Option<BulkAnalyzeConversationsRequest>,
-    /// The number of requested analyses that have completed successfully so far.
-    #[prost(int32, tag = "4")]
-    pub completed_analyses_count: i32,
-    /// The number of requested analyses that have failed so far.
-    #[prost(int32, tag = "5")]
-    pub failed_analyses_count: i32,
-    /// Total number of analyses requested. Computed by the number of conversations
-    /// returned by `filter` multiplied by `analysis_percentage` in the request.
-    #[prost(int32, tag = "6")]
-    pub total_requested_analyses_count: i32,
-}
-/// The response for a bulk analyze conversations operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BulkAnalyzeConversationsResponse {
-    /// Count of successful analyses.
-    #[prost(int32, tag = "1")]
-    pub successful_analysis_count: i32,
-    /// Count of failed analyses.
-    #[prost(int32, tag = "2")]
-    pub failed_analysis_count: i32,
-}
 /// The request to export insights.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2307,9 +1827,9 @@ pub mod export_insights_data_request {
         /// the resource project will be used.
         #[prost(string, tag = "3")]
         pub project_id: ::prost::alloc::string::String,
-        /// Required. The name of the BigQuery dataset that the snapshot result
-        /// should be exported to. If this dataset does not exist, the export call
-        /// returns an INVALID_ARGUMENT error.
+        /// Required. The name of the BigQuery dataset that the snapshot result should be
+        /// exported to. If this dataset does not exist, the export call returns an
+        /// INVALID_ARGUMENT error.
         #[prost(string, tag = "1")]
         pub dataset: ::prost::alloc::string::String,
         /// The BigQuery table name to which the insights data should be written.
@@ -2562,14 +2082,6 @@ pub struct UpdateIssueRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request to delete an issue.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteIssueRequest {
-    /// Required. The name of the issue to delete.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
 /// Request to get statistics of an issue model.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2591,10 +2103,10 @@ pub struct CalculateIssueModelStatsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhraseMatcherRequest {
-    /// Required. The parent resource of the phrase matcher. Required. The location
-    /// to create a phrase matcher for. Format: `projects/<Project
-    /// ID>/locations/<Location ID>` or `projects/<Project
-    /// Number>/locations/<Location ID>`
+    /// Required. The parent resource of the phrase matcher. Required. The location to create
+    /// a phrase matcher for.
+    /// Format: `projects/<Project ID>/locations/<Location ID>` or
+    /// `projects/<Project Number>/locations/<Location ID>`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The phrase matcher resource to create.
@@ -2904,39 +2416,6 @@ pub mod contact_center_insights_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Create a longrunning conversation upload operation. This method differs
-        /// from CreateConversation by allowing audio transcription and optional DLP
-        /// redaction.
-        pub async fn upload_conversation(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UploadConversationRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UploadConversation",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
-                        "UploadConversation",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Updates a conversation.
         pub async fn update_conversation(
             &mut self,
@@ -3167,69 +2646,6 @@ pub mod contact_center_insights_client {
                     GrpcMethod::new(
                         "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
                         "DeleteAnalysis",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Analyzes multiple conversations in a single request.
-        pub async fn bulk_analyze_conversations(
-            &mut self,
-            request: impl tonic::IntoRequest<super::BulkAnalyzeConversationsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkAnalyzeConversations",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
-                        "BulkAnalyzeConversations",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Imports conversations and processes them according to the user's
-        /// configuration.
-        pub async fn ingest_conversations(
-            &mut self,
-            request: impl tonic::IntoRequest<super::IngestConversationsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/IngestConversations",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
-                        "IngestConversations",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -3561,34 +2977,6 @@ pub mod contact_center_insights_client {
                     GrpcMethod::new(
                         "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
                         "UpdateIssue",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes an issue.
-        pub async fn delete_issue(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteIssueRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteIssue",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
-                        "DeleteIssue",
                     ),
                 );
             self.inner.unary(req, path, codec).await

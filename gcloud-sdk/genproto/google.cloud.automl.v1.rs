@@ -93,7 +93,7 @@ pub mod classification_evaluation_metrics {
         /// for each example.
         #[prost(float, tag = "9")]
         pub false_positive_rate_at1: f32,
-        /// Output only. The harmonic mean of \[recall_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1\] and \[precision_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1\].
+        /// Output only. The harmonic mean of [recall_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1] and [precision_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1].
         #[prost(float, tag = "7")]
         pub f1_score_at1: f32,
         /// Output only. The number of model created labels that match a ground truth
@@ -119,21 +119,21 @@ pub mod classification_evaluation_metrics {
     pub struct ConfusionMatrix {
         /// Output only. IDs of the annotation specs used in the confusion matrix.
         /// For Tables CLASSIFICATION
-        /// \[prediction_type][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\]
-        /// only list of \[annotation_spec_display_name-s][\] is populated.
+        /// [prediction_type][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]
+        /// only list of [annotation_spec_display_name-s][] is populated.
         #[prost(string, repeated, tag = "1")]
         pub annotation_spec_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Output only. Display name of the annotation specs used in the confusion
         /// matrix, as they were at the moment of the evaluation. For Tables
         /// CLASSIFICATION
-        /// \[prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\],
+        /// [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type],
         /// distinct values of the target column at the moment of the model
         /// evaluation are populated here.
         #[prost(string, repeated, tag = "3")]
         pub display_name: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Output only. Rows in the confusion matrix. The number of rows is equal to
         /// the size of `annotation_spec_id`.
-        /// `row\[i].example_count[j\]` is the number of examples that have ground
+        /// `row\[i\].example_count\[j\]` is the number of examples that have ground
         /// truth of the `annotation_spec_id\[i\]` and are predicted as
         /// `annotation_spec_id\[j\]` by the model being evaluated.
         #[prost(message, repeated, tag = "2")]
@@ -148,7 +148,7 @@ pub mod classification_evaluation_metrics {
             /// Output only. Value of the specific cell in the confusion matrix.
             /// The number of values each row has (i.e. the length of the row) is equal
             /// to the length of the `annotation_spec_id` field or, if that one is not
-            /// populated, length of the \[display_name][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name\] field.
+            /// populated, length of the [display_name][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name] field.
             #[prost(int32, repeated, tag = "1")]
             pub example_count: ::prost::alloc::vec::Vec<i32>,
         }
@@ -220,7 +220,7 @@ pub struct ImageObjectDetectionAnnotation {
     #[prost(message, optional, tag = "1")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
     /// Output only. The confidence that this annotation is positive for the parent example,
-    /// value in [0, 1], higher means higher positivity confidence.
+    /// value in \[0, 1\], higher means higher positivity confidence.
     #[prost(float, tag = "2")]
     pub score: f32,
 }
@@ -368,7 +368,7 @@ pub mod text_extraction_evaluation_metrics {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentAnnotation {
     /// Output only. The sentiment with the semantic, as given to the
-    /// \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\] when populating the dataset from which the model used
+    /// [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData] when populating the dataset from which the model used
     /// for the prediction had been trained.
     /// The sentiment values are between 0 and
     /// Dataset.text_sentiment_dataset_metadata.sentiment_max (inclusive),
@@ -419,11 +419,11 @@ pub struct TextSentimentEvaluationMetrics {
         classification_evaluation_metrics::ConfusionMatrix,
     >,
 }
-/// Input configuration for \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\] action.
+/// Input configuration for [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData] action.
 ///
 /// The format of input depends on dataset_metadata the Dataset into which
 /// the import is happening has. As input source the
-/// \[gcs_source][google.cloud.automl.v1.InputConfig.gcs_source\]
+/// [gcs_source][google.cloud.automl.v1.InputConfig.gcs_source]
 /// is expected, unless specified otherwise. Additionally any input .CSV file
 /// by itself must be 100MB or smaller, unless specified otherwise.
 /// If an "example" file (that is, image, video etc.) with identical content
@@ -657,8 +657,8 @@ pub struct TextSentimentEvaluationMetrics {
 /// **In-line JSONL files**
 ///
 /// In-line .JSONL files contain, per line, a JSON document that wraps a
-/// \[`text_snippet`][google.cloud.automl.v1.TextSnippet\] field followed by
-/// one or more \[`annotations`][google.cloud.automl.v1.AnnotationPayload\]
+/// [`text_snippet`][google.cloud.automl.v1.TextSnippet] field followed by
+/// one or more [`annotations`][google.cloud.automl.v1.AnnotationPayload]
 /// fields, which have `display_name` and `text_extraction` fields to describe
 /// the entity from the text snippet. Multiple JSON documents can be separated
 /// using line breaks (\n).
@@ -725,7 +725,7 @@ pub struct TextSentimentEvaluationMetrics {
 ///      {
 ///        "document": {
 ///          "input_config": {
-///            "gcs_source": { "input_uris": [ "gs://folder/document1.pdf" ]
+///            "gcs_source": { "input_uris": \[ "gs://folder/document1.pdf" \]
 ///            }
 ///          }
 ///        }
@@ -733,7 +733,7 @@ pub struct TextSentimentEvaluationMetrics {
 ///      {
 ///        "document": {
 ///          "input_config": {
-///            "gcs_source": { "input_uris": [ "gs://folder/document2.tif" ]
+///            "gcs_source": { "input_uris": \[ "gs://folder/document2.tif" \]
 ///            }
 ///          }
 ///        }
@@ -921,11 +921,11 @@ pub struct TextSentimentEvaluationMetrics {
 /// information.
 ///
 /// You can use either
-/// \[gcs_source][google.cloud.automl.v1.InputConfig.gcs_source\] or
-/// \[bigquery_source][google.cloud.automl.v1.InputConfig.bigquery_source\].
+/// [gcs_source][google.cloud.automl.v1.InputConfig.gcs_source] or
+/// [bigquery_source][google.cloud.automl.v1.InputConfig.bigquery_source].
 /// All input is concatenated into a
 /// single
-/// \[primary_table_spec_id][google.cloud.automl.v1.TablesDatasetMetadata.primary_table_spec_id\]
+/// [primary_table_spec_id][google.cloud.automl.v1.TablesDatasetMetadata.primary_table_spec_id]
 ///
 /// **For gcs_source:**
 ///
@@ -1061,8 +1061,8 @@ pub mod input_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Google Cloud Storage location for the input content.
-        /// For \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\], `gcs_source` points to a CSV file with
-        /// a structure described in \[InputConfig][google.cloud.automl.v1.InputConfig\].
+        /// For [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData], `gcs_source` points to a CSV file with
+        /// a structure described in [InputConfig][google.cloud.automl.v1.InputConfig].
         #[prost(message, tag = "1")]
         GcsSource(super::GcsSource),
     }
@@ -1071,7 +1071,7 @@ pub mod input_config {
 ///
 /// The format of input depends on the ML problem of the model used for
 /// prediction. As input source the
-/// \[gcs_source][google.cloud.automl.v1.InputConfig.gcs_source\]
+/// [gcs_source][google.cloud.automl.v1.InputConfig.gcs_source]
 /// is expected, unless specified otherwise.
 ///
 /// The formats are represented in EBNF with commas being literal and with
@@ -1245,7 +1245,7 @@ pub mod input_config {
 ///       {
 ///         "document": {
 ///           "input_config": {
-///             "gcs_source": { "input_uris": [ "gs://folder/document1.pdf" ]
+///             "gcs_source": { "input_uris": \[ "gs://folder/document1.pdf" \]
 ///             }
 ///           }
 ///         }
@@ -1253,7 +1253,7 @@ pub mod input_config {
 ///       {
 ///         "document": {
 ///           "input_config": {
-///             "gcs_source": { "input_uris": [ "gs://folder/document2.tif" ]
+///             "gcs_source": { "input_uris": \[ "gs://folder/document2.tif" \]
 ///             }
 ///           }
 ///         }
@@ -1269,9 +1269,9 @@ pub mod input_config {
 /// information.
 ///
 /// You can use either
-/// \[gcs_source][google.cloud.automl.v1.BatchPredictInputConfig.gcs_source\]
+/// [gcs_source][google.cloud.automl.v1.BatchPredictInputConfig.gcs_source]
 /// or
-/// \[bigquery_source][BatchPredictInputConfig.bigquery_source\].
+/// [bigquery_source][BatchPredictInputConfig.bigquery_source].
 ///
 /// **For gcs_source:**
 ///
@@ -1282,8 +1282,8 @@ pub mod input_config {
 /// contain values for the corresponding columns.
 ///
 /// The column names must contain the model's
-/// \[input_feature_column_specs'][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs\]
-/// \[display_name-s][google.cloud.automl.v1.ColumnSpec.display_name\]
+/// [input_feature_column_specs'][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs]
+/// [display_name-s][google.cloud.automl.v1.ColumnSpec.display_name]
 /// (order doesn't matter). The columns corresponding to the model's
 /// input feature column specs must contain values compatible with the
 /// column spec's data types. Prediction on all the rows, i.e. the CSV
@@ -1302,8 +1302,8 @@ pub mod input_config {
 /// table must be 100GB or smaller.
 ///
 /// The column names must contain the model's
-/// \[input_feature_column_specs'][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs\]
-/// \[display_name-s][google.cloud.automl.v1.ColumnSpec.display_name\]
+/// [input_feature_column_specs'][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs]
+/// [display_name-s][google.cloud.automl.v1.ColumnSpec.display_name]
 /// (order doesn't matter). The columns corresponding to the model's
 /// input feature column specs must contain values compatible with the
 /// column spec's data types. Prediction on all the rows of the table
@@ -1359,7 +1359,7 @@ pub mod batch_predict_input_config {
         GcsSource(super::GcsSource),
     }
 }
-/// Input configuration of a \[Document][google.cloud.automl.v1.Document\].
+/// Input configuration of a [Document][google.cloud.automl.v1.Document].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentInputConfig {
@@ -1384,13 +1384,13 @@ pub struct DocumentInputConfig {
 ///          Output depends on whether the dataset was imported from Google Cloud
 ///          Storage or BigQuery.
 ///          Google Cloud Storage case:
-///            \[gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination\]
+///            [gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination]
 ///            must be set. Exported are CSV file(s) `tables_1.csv`,
 ///            `tables_2.csv`,...,`tables_N.csv` with each having as header line
 ///            the table's column names, and all other lines contain values for
 ///            the header columns.
 ///          BigQuery case:
-///            \[bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination\]
+///            [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
 ///            pointing to a BigQuery project must be set. In the given project a
 ///            new dataset will be created with name
 ///            `export_data_<automl-dataset-display-name>_<timestamp-of-export-call>`
@@ -1426,7 +1426,7 @@ pub mod output_config {
 /// Output configuration for BatchPredict Action.
 ///
 /// As destination the
-/// \[gcs_destination][google.cloud.automl.v1.BatchPredictOutputConfig.gcs_destination\]
+/// [gcs_destination][google.cloud.automl.v1.BatchPredictOutputConfig.gcs_destination]
 /// must be set unless specified otherwise for a domain. If gcs_destination is
 /// set then in the given directory a new directory is created. Its name
 /// will be
@@ -1451,7 +1451,7 @@ pub mod output_config {
 ///          predictions). These files will have a JSON representation of a proto
 ///          that wraps the same "ID" : "<id_value>" but here followed by
 ///          exactly one
-///          \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
+///          [`google.rpc.Status`](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///          containing only `code` and `message`fields.
 ///
 ///   *  For Image Object Detection:
@@ -1471,7 +1471,7 @@ pub mod output_config {
 ///          predictions). These files will have a JSON representation of a proto
 ///          that wraps the same "ID" : "<id_value>" but here followed by
 ///          exactly one
-///          \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
+///          [`google.rpc.Status`](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///          containing only `code` and `message`fields.
 ///   *  For Video Classification:
 ///          In the created directory a video_classification.csv file, and a .JSON
@@ -1497,7 +1497,7 @@ pub mod output_config {
 ///          video_classification field set, and will be sorted by
 ///          video_classification.type field (note that the returned types are
 ///          governed by `classifaction_types` parameter in
-///          \[PredictService.BatchPredictRequest.params][\]).
+///          [PredictService.BatchPredictRequest.params][]).
 ///
 ///   *  For Video Object Tracking:
 ///          In the created directory a video_object_tracking.csv file will be
@@ -1542,7 +1542,7 @@ pub mod output_config {
 ///          `errors_N.jsonl` files will be created (N depends on total number of
 ///          failed predictions). These files will have a JSON representation of a
 ///          proto that wraps input file followed by exactly one
-///          \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
+///          [`google.rpc.Status`](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///          containing only `code` and `message`.
 ///
 ///   *  For Text Sentiment:
@@ -1564,7 +1564,7 @@ pub mod output_config {
 ///          `errors_N.jsonl` files will be created (N depends on total number of
 ///          failed predictions). These files will have a JSON representation of a
 ///          proto that wraps input file followed by exactly one
-///          \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
+///          [`google.rpc.Status`](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///          containing only `code` and `message`.
 ///
 ///    *  For Text Extraction:
@@ -1598,40 +1598,40 @@ pub mod output_config {
 ///          proto that wraps either the "id" : "<id_value>" (in case of inline)
 ///          or the document proto (in case of document) but here followed by
 ///          exactly one
-///          \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
+///          [`google.rpc.Status`](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///          containing only `code` and `message`.
 ///
 ///   *  For Tables:
 ///          Output depends on whether
-///          \[gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination\]
+///          [gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination]
 ///          or
-///          \[bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination\]
+///          [bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination]
 ///          is set (either is allowed).
 ///          Google Cloud Storage case:
 ///            In the created directory files `tables_1.csv`, `tables_2.csv`,...,
 ///            `tables_N.csv` will be created, where N may be 1, and depends on
 ///            the total number of the successfully predicted rows.
 ///            For all CLASSIFICATION
-///            \[prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\]:
+///            [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
 ///              Each .csv file will contain a header, listing all columns'
-///              \[display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]
+///              [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
 ///              given on input followed by M target column names in the format of
-///              "<\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]
-///              \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]>_<target
+///              "<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+///              [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>_<target
 ///              value>_score" where M is the number of distinct target values,
 ///              i.e. number of distinct values in the target column of the table
 ///              used to train the model. Subsequent lines will contain the
 ///              respective values of successfully predicted rows, with the last,
 ///              i.e. the target, columns having the corresponding prediction
-///              \[scores][google.cloud.automl.v1p1beta.TablesAnnotation.score\].
+///              [scores][google.cloud.automl.v1p1beta.TablesAnnotation.score].
 ///            For REGRESSION and FORECASTING
-///            \[prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\]:
+///            [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
 ///              Each .csv file will contain a header, listing all columns'
-///              \[display_name-s][google.cloud.automl.v1p1beta.display_name\]
+///              [display_name-s][google.cloud.automl.v1p1beta.display_name]
 ///              given on input followed by the predicted target column with name
 ///              in the format of
-///              "predicted_<\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]
-///              \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]>"
+///              "predicted_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+///              [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
 ///              Subsequent lines will contain the respective values of
 ///              successfully predicted rows, with the last, i.e. the target,
 ///              column having the predicted target value.
@@ -1640,11 +1640,11 @@ pub mod output_config {
 ///              created (N depends on total number of failed rows). These files
 ///              will have analogous format as `tables_*.csv`, but always with a
 ///              single target column having
-///              \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
+///              [`google.rpc.Status`](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///              represented as a JSON string, and containing only `code` and
 ///              `message`.
 ///          BigQuery case:
-///            \[bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination\]
+///            [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
 ///            pointing to a BigQuery project must be set. In the given project a
 ///            new dataset will be created with name
 ///            `prediction_<model-display-name>_<timestamp-of-prediction-call>`
@@ -1654,23 +1654,23 @@ pub mod output_config {
 ///            YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In the dataset
 ///            two tables will be created, `predictions`, and `errors`.
 ///            The `predictions` table's column names will be the input columns'
-///            \[display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]
+///            [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
 ///            followed by the target column with name in the format of
-///            "predicted_<\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]
-///            \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]>"
+///            "predicted_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+///            [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
 ///            The input feature columns will contain the respective values of
 ///            successfully predicted rows, with the target column having an
 ///            ARRAY of
-///            \[AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload\],
+///            [AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload],
 ///            represented as STRUCT-s, containing
-///            \[TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation\].
+///            [TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation].
 ///            The `errors` table contains rows for which the prediction has
 ///            failed, it has analogous input columns while the target column name
 ///            is in the format of
-///            "errors_<\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]
-///            \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]>",
+///            "errors_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+///            [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>",
 ///            and as a value has
-///            \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
+///            [`google.rpc.Status`](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///            represented as a STRUCT, and containing only `code` and `message`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1718,7 +1718,7 @@ pub struct ModelExportOutputConfig {
     /// * edgetpu_tflite - Used for [Edge TPU](<https://cloud.google.com/edge-tpu/>)
     ///                     devices.
     /// * tf_saved_model - A tensorflow model in SavedModel format.
-    /// * tf_js - A \[TensorFlow.js\](<https://www.tensorflow.org/js>) model that can
+    /// * tf_js - A [TensorFlow.js](<https://www.tensorflow.org/js>) model that can
     ///            be used in the browser and in Node.js using JavaScript.
     /// * docker - Used for Docker containers. Use the params field to customize
     ///             the container. The container is verified to work correctly on
@@ -1795,14 +1795,14 @@ pub struct Image {
     #[prost(string, tag = "4")]
     pub thumbnail_uri: ::prost::alloc::string::String,
     /// Input only. The data representing the image.
-    /// For Predict calls \[image_bytes][google.cloud.automl.v1.Image.image_bytes\] must be set .
+    /// For Predict calls [image_bytes][google.cloud.automl.v1.Image.image_bytes] must be set .
     #[prost(oneof = "image::Data", tags = "1")]
     pub data: ::core::option::Option<image::Data>,
 }
 /// Nested message and enum types in `Image`.
 pub mod image {
     /// Input only. The data representing the image.
-    /// For Predict calls \[image_bytes][google.cloud.automl.v1.Image.image_bytes\] must be set .
+    /// For Predict calls [image_bytes][google.cloud.automl.v1.Image.image_bytes] must be set .
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
@@ -1821,9 +1821,9 @@ pub struct TextSnippet {
     /// characters long.
     #[prost(string, tag = "1")]
     pub content: ::prost::alloc::string::String,
-    /// Optional. The format of \[content][google.cloud.automl.v1.TextSnippet.content\]. Currently the only two allowed
+    /// Optional. The format of [content][google.cloud.automl.v1.TextSnippet.content]. Currently the only two allowed
     /// values are "text/html" and "text/plain". If left blank, the format is
-    /// automatically determined from the type of the uploaded \[content][google.cloud.automl.v1.TextSnippet.content\].
+    /// automatically determined from the type of the uploaded [content][google.cloud.automl.v1.TextSnippet.content].
     #[prost(string, tag = "2")]
     pub mime_type: ::prost::alloc::string::String,
     /// Output only. HTTP URI where you can download the content.
@@ -1907,7 +1907,7 @@ pub struct Document {
     #[prost(message, optional, tag = "2")]
     pub document_text: ::core::option::Option<TextSnippet>,
     /// Describes the layout of the document.
-    /// Sorted by \[page_number][\].
+    /// Sorted by [page_number][].
     #[prost(message, repeated, tag = "3")]
     pub layout: ::prost::alloc::vec::Vec<document::Layout>,
     /// The dimensions of the page in the document.
@@ -1919,29 +1919,29 @@ pub struct Document {
 }
 /// Nested message and enum types in `Document`.
 pub mod document {
-    /// Describes the layout information of a \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in the document.
+    /// Describes the layout information of a [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in the document.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Layout {
         /// Text Segment that represents a segment in
-        /// \[document_text][google.cloud.automl.v1p1beta.Document.document_text\].
+        /// [document_text][google.cloud.automl.v1p1beta.Document.document_text].
         #[prost(message, optional, tag = "1")]
         pub text_segment: ::core::option::Option<super::TextSegment>,
-        /// Page number of the \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in the original document, starts
+        /// Page number of the [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in the original document, starts
         /// from 1.
         #[prost(int32, tag = "2")]
         pub page_number: i32,
-        /// The position of the \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in the page.
+        /// The position of the [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in the page.
         /// Contains exactly 4
-        /// \[normalized_vertices][google.cloud.automl.v1p1beta.BoundingPoly.normalized_vertices\]
+        /// [normalized_vertices][google.cloud.automl.v1p1beta.BoundingPoly.normalized_vertices]
         /// and they are connected by edges in the order provided, which will
         /// represent a rectangle parallel to the frame. The
-        /// \[NormalizedVertex-s][google.cloud.automl.v1p1beta.NormalizedVertex\] are
+        /// [NormalizedVertex-s][google.cloud.automl.v1p1beta.NormalizedVertex] are
         /// relative to the page.
         /// Coordinates are based on top-left as point (0,0).
         #[prost(message, optional, tag = "3")]
         pub bounding_poly: ::core::option::Option<super::BoundingPoly>,
-        /// The type of the \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in document.
+        /// The type of the [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in document.
         #[prost(enumeration = "layout::TextSegmentType", tag = "4")]
         pub text_segment_type: i32,
     }
@@ -2114,7 +2114,7 @@ pub struct AnnotationPayload {
     #[prost(string, tag = "1")]
     pub annotation_spec_id: ::prost::alloc::string::String,
     /// Output only. The value of
-    /// \[display_name][google.cloud.automl.v1.AnnotationSpec.display_name\]
+    /// [display_name][google.cloud.automl.v1.AnnotationSpec.display_name]
     /// when the model was trained. Because this field returns a value at model
     /// training time, for different models trained using the same dataset, the
     /// returned value could be different as model owner could update the
@@ -2221,31 +2221,31 @@ pub struct ImageClassificationModelMetadata {
     ///                This is the default value.
     /// *   `mobile-low-latency-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
     ///                with TensorFlow afterwards. Expected to have low latency, but
     ///                may have lower prediction quality than other models.
     /// *   `mobile-versatile-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
     ///                with TensorFlow afterwards.
     /// *   `mobile-high-accuracy-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
     ///                with TensorFlow afterwards.  Expected to have a higher
     ///                latency, but should also have a higher prediction quality
     ///                than other models.
     /// *   `mobile-core-ml-low-latency-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile device with Core
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core
     ///                ML afterwards. Expected to have low latency, but may have
     ///                lower prediction quality than other models.
     /// *   `mobile-core-ml-versatile-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile device with Core
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core
     ///                ML afterwards.
     /// *   `mobile-core-ml-high-accuracy-1` - A model that, in addition to
     ///                providing prediction via AutoML API, can also be exported
-    ///                (see \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile device with
+    ///                (see [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with
     ///                Core ML afterwards.  Expected to have a higher latency, but
     ///                should also have a higher prediction quality than other
     ///                models.
@@ -2275,16 +2275,16 @@ pub struct ImageObjectDetectionModelMetadata {
     ///                have lower prediction quality than other models.
     /// *   `mobile-low-latency-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
     ///                with TensorFlow afterwards. Expected to have low latency, but
     ///                may have lower prediction quality than other models.
     /// *   `mobile-versatile-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
     ///                with TensorFlow afterwards.
     /// *   `mobile-high-accuracy-1` - A model that, in addition to providing
     ///                prediction via AutoML API, can also be exported (see
-    ///                \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device
+    ///                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
     ///                with TensorFlow afterwards.  Expected to have a higher
     ///                latency, but should also have a higher prediction quality
     ///                than other models.
@@ -2333,7 +2333,7 @@ pub struct ImageClassificationModelDeploymentMetadata {
     /// Input only. The number of nodes to deploy the model on. A node is an
     /// abstraction of a machine resource, which can handle online prediction QPS
     /// as given in the model's
-    /// \[node_qps][google.cloud.automl.v1.ImageClassificationModelMetadata.node_qps\].
+    /// [node_qps][google.cloud.automl.v1.ImageClassificationModelMetadata.node_qps].
     /// Must be between 1 and 100, inclusive on both ends.
     #[prost(int64, tag = "1")]
     pub node_count: i64,
@@ -2345,7 +2345,7 @@ pub struct ImageObjectDetectionModelDeploymentMetadata {
     /// Input only. The number of nodes to deploy the model on. A node is an
     /// abstraction of a machine resource, which can handle online prediction QPS
     /// as given in the model's
-    /// \[qps_per_node][google.cloud.automl.v1.ImageObjectDetectionModelMetadata.qps_per_node\].
+    /// [qps_per_node][google.cloud.automl.v1.ImageObjectDetectionModelMetadata.qps_per_node].
     /// Must be between 1 and 100, inclusive on both ends.
     #[prost(int64, tag = "1")]
     pub node_count: i64,
@@ -2600,19 +2600,19 @@ pub struct ModelEvaluation {
     /// The ID is empty for the overall model evaluation.
     /// For Tables annotation specs in the dataset do not exist and this ID is
     /// always not set, but for CLASSIFICATION
-    /// \[prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type\]
+    /// [prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type]
     /// the
-    /// \[display_name][google.cloud.automl.v1.ModelEvaluation.display_name\]
+    /// [display_name][google.cloud.automl.v1.ModelEvaluation.display_name]
     /// field is used.
     #[prost(string, tag = "2")]
     pub annotation_spec_id: ::prost::alloc::string::String,
     /// Output only. The value of
-    /// \[display_name][google.cloud.automl.v1.AnnotationSpec.display_name\]
+    /// [display_name][google.cloud.automl.v1.AnnotationSpec.display_name]
     /// at the moment when the model was trained. Because this field returns a
     /// value at model training time, for different models trained from the same
     /// dataset, the values may differ, since display names could had been changed
     /// between the two model's trainings. For Tables CLASSIFICATION
-    /// \[prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type\]
+    /// [prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type]
     /// distinct values of the target column at the moment of the model evaluation
     /// are populated here.
     /// The display_name is empty for the overall model evaluation.
@@ -2628,7 +2628,7 @@ pub struct ModelEvaluation {
     /// the total number of all examples used for evaluation.
     /// Otherwise, this is the count of examples that according to the ground
     /// truth were annotated by the
-    /// \[annotation_spec_id][google.cloud.automl.v1.ModelEvaluation.annotation_spec_id\].
+    /// [annotation_spec_id][google.cloud.automl.v1.ModelEvaluation.annotation_spec_id].
     #[prost(int32, tag = "6")]
     pub evaluated_example_count: i32,
     /// Output only. Problem type specific evaluation metrics.
@@ -2667,7 +2667,7 @@ pub mod model_evaluation {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
-    /// Output only. Progress of operation. Range: [0, 100].
+    /// Output only. Progress of operation. Range: \[0, 100\].
     /// Not used currently.
     #[prost(int32, tag = "13")]
     pub progress_percent: i32,
@@ -2765,7 +2765,7 @@ pub struct ExportDataOperationMetadata {
 pub mod export_data_operation_metadata {
     /// Further describes this export data's output.
     /// Supplements
-    /// \[OutputConfig][google.cloud.automl.v1.OutputConfig\].
+    /// [OutputConfig][google.cloud.automl.v1.OutputConfig].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportDataOutputInfo {
@@ -2806,7 +2806,7 @@ pub struct BatchPredictOperationMetadata {
 pub mod batch_predict_operation_metadata {
     /// Further describes this batch predict's output.
     /// Supplements
-    /// \[BatchPredictOutputConfig][google.cloud.automl.v1.BatchPredictOutputConfig\].
+    /// [BatchPredictOutputConfig][google.cloud.automl.v1.BatchPredictOutputConfig].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BatchPredictOutputInfo {
@@ -2844,7 +2844,7 @@ pub struct ExportModelOperationMetadata {
 pub mod export_model_operation_metadata {
     /// Further describes the output of model export.
     /// Supplements
-    /// \[ModelExportOutputConfig][google.cloud.automl.v1.ModelExportOutputConfig\].
+    /// [ModelExportOutputConfig][google.cloud.automl.v1.ModelExportOutputConfig].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportModelOutputInfo {
@@ -2854,7 +2854,7 @@ pub mod export_model_operation_metadata {
         pub gcs_output_directory: ::prost::alloc::string::String,
     }
 }
-/// Request message for \[PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict\].
+/// Request message for [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictRequest {
@@ -2891,9 +2891,9 @@ pub struct PredictRequest {
     ///
     /// `feature_importance`
     /// : (boolean) Whether
-    /// \[feature_importance][google.cloud.automl.v1.TablesModelColumnInfo.feature_importance\]
+    /// [feature_importance][google.cloud.automl.v1.TablesModelColumnInfo.feature_importance]
     ///    is populated in the returned list of
-    ///    \[TablesAnnotation][google.cloud.automl.v1.TablesAnnotation\]
+    ///    [TablesAnnotation][google.cloud.automl.v1.TablesAnnotation]
     ///    objects. The default is false.
     #[prost(map = "string, string", tag = "3")]
     pub params: ::std::collections::HashMap<
@@ -2901,7 +2901,7 @@ pub struct PredictRequest {
         ::prost::alloc::string::String,
     >,
 }
-/// Response message for \[PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict\].
+/// Response message for [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictResponse {
@@ -2916,7 +2916,7 @@ pub struct PredictResponse {
     /// For AutoML Natural Language (Classification, Entity Extraction, and
     /// Sentiment Analysis), if the input is a document, the recognized text is
     /// returned in the
-    /// \[document_text][google.cloud.automl.v1.Document.document_text\]
+    /// [document_text][google.cloud.automl.v1.Document.document_text]
     /// property.
     #[prost(message, optional, tag = "3")]
     pub preprocessed_input: ::core::option::Option<ExamplePayload>,
@@ -2944,7 +2944,7 @@ pub struct PredictResponse {
         ::prost::alloc::string::String,
     >,
 }
-/// Request message for \[PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict\].
+/// Request message for [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictRequest {
@@ -3049,8 +3049,8 @@ pub struct BatchPredictRequest {
     >,
 }
 /// Result of the Batch Predict. This message is returned in
-/// \[response][google.longrunning.Operation.response\] of the operation returned
-/// by the \[PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict\].
+/// [response][google.longrunning.Operation.response] of the operation returned
+/// by the [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictResult {
@@ -3273,7 +3273,7 @@ pub mod prediction_service_client {
         }
     }
 }
-/// Request message for \[AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset\].
+/// Request message for [AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
@@ -3284,7 +3284,7 @@ pub struct CreateDatasetRequest {
     #[prost(message, optional, tag = "2")]
     pub dataset: ::core::option::Option<Dataset>,
 }
-/// Request message for \[AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset\].
+/// Request message for [AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
@@ -3292,7 +3292,7 @@ pub struct GetDatasetRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\].
+/// Request message for [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
@@ -3314,12 +3314,12 @@ pub struct ListDatasetsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return
     /// Typically obtained via
-    /// \[ListDatasetsResponse.next_page_token][google.cloud.automl.v1.ListDatasetsResponse.next_page_token\] of the previous
-    /// \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\] call.
+    /// [ListDatasetsResponse.next_page_token][google.cloud.automl.v1.ListDatasetsResponse.next_page_token] of the previous
+    /// [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\].
+/// Response message for [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
@@ -3327,11 +3327,11 @@ pub struct ListDatasetsResponse {
     #[prost(message, repeated, tag = "1")]
     pub datasets: ::prost::alloc::vec::Vec<Dataset>,
     /// A token to retrieve next page of results.
-    /// Pass to \[ListDatasetsRequest.page_token][google.cloud.automl.v1.ListDatasetsRequest.page_token\] to obtain that page.
+    /// Pass to [ListDatasetsRequest.page_token][google.cloud.automl.v1.ListDatasetsRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset\]
+/// Request message for [AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetRequest {
@@ -3342,7 +3342,7 @@ pub struct UpdateDatasetRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for \[AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset\].
+/// Request message for [AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
@@ -3350,7 +3350,7 @@ pub struct DeleteDatasetRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\].
+/// Request message for [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataRequest {
@@ -3363,7 +3363,7 @@ pub struct ImportDataRequest {
     #[prost(message, optional, tag = "3")]
     pub input_config: ::core::option::Option<InputConfig>,
 }
-/// Request message for \[AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData\].
+/// Request message for [AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataRequest {
@@ -3374,7 +3374,7 @@ pub struct ExportDataRequest {
     #[prost(message, optional, tag = "3")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
-/// Request message for \[AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec\].
+/// Request message for [AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotationSpecRequest {
@@ -3382,7 +3382,7 @@ pub struct GetAnnotationSpecRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel\].
+/// Request message for [AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateModelRequest {
@@ -3393,7 +3393,7 @@ pub struct CreateModelRequest {
     #[prost(message, optional, tag = "4")]
     pub model: ::core::option::Option<Model>,
 }
-/// Request message for \[AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel\].
+/// Request message for [AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelRequest {
@@ -3401,7 +3401,7 @@ pub struct GetModelRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\].
+/// Request message for [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsRequest {
@@ -3424,12 +3424,12 @@ pub struct ListModelsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return
     /// Typically obtained via
-    /// \[ListModelsResponse.next_page_token][google.cloud.automl.v1.ListModelsResponse.next_page_token\] of the previous
-    /// \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\] call.
+    /// [ListModelsResponse.next_page_token][google.cloud.automl.v1.ListModelsResponse.next_page_token] of the previous
+    /// [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\].
+/// Response message for [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
@@ -3437,11 +3437,11 @@ pub struct ListModelsResponse {
     #[prost(message, repeated, tag = "1")]
     pub model: ::prost::alloc::vec::Vec<Model>,
     /// A token to retrieve next page of results.
-    /// Pass to \[ListModelsRequest.page_token][google.cloud.automl.v1.ListModelsRequest.page_token\] to obtain that page.
+    /// Pass to [ListModelsRequest.page_token][google.cloud.automl.v1.ListModelsRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel\].
+/// Request message for [AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteModelRequest {
@@ -3449,7 +3449,7 @@ pub struct DeleteModelRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel\]
+/// Request message for [AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateModelRequest {
@@ -3460,7 +3460,7 @@ pub struct UpdateModelRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for \[AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel\].
+/// Request message for [AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelRequest {
@@ -3491,7 +3491,7 @@ pub mod deploy_model_request {
         ),
     }
 }
-/// Request message for \[AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel\].
+/// Request message for [AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployModelRequest {
@@ -3499,7 +3499,7 @@ pub struct UndeployModelRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\].
+/// Request message for [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel].
 /// Models need to be enabled for exporting, otherwise an error code will be
 /// returned.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3512,7 +3512,7 @@ pub struct ExportModelRequest {
     #[prost(message, optional, tag = "3")]
     pub output_config: ::core::option::Option<ModelExportOutputConfig>,
 }
-/// Request message for \[AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation\].
+/// Request message for [AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelEvaluationRequest {
@@ -3520,7 +3520,7 @@ pub struct GetModelEvaluationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\].
+/// Request message for [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsRequest {
@@ -3547,12 +3547,12 @@ pub struct ListModelEvaluationsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return.
     /// Typically obtained via
-    /// \[ListModelEvaluationsResponse.next_page_token][google.cloud.automl.v1.ListModelEvaluationsResponse.next_page_token\] of the previous
-    /// \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\] call.
+    /// [ListModelEvaluationsResponse.next_page_token][google.cloud.automl.v1.ListModelEvaluationsResponse.next_page_token] of the previous
+    /// [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\].
+/// Response message for [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsResponse {
@@ -3560,8 +3560,8 @@ pub struct ListModelEvaluationsResponse {
     #[prost(message, repeated, tag = "1")]
     pub model_evaluation: ::prost::alloc::vec::Vec<ModelEvaluation>,
     /// A token to retrieve next page of results.
-    /// Pass to the \[ListModelEvaluationsRequest.page_token][google.cloud.automl.v1.ListModelEvaluationsRequest.page_token\] field of a new
-    /// \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\] request to obtain that page.
+    /// Pass to the [ListModelEvaluationsRequest.page_token][google.cloud.automl.v1.ListModelEvaluationsRequest.page_token] field of a new
+    /// [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations] request to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }

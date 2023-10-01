@@ -906,7 +906,7 @@ pub struct FileMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectoryMetadata {
     /// The path of the directory, as in
-    /// \[FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path\].
+    /// [FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path].
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     /// A pointer to the contents of the directory, in the form of a marshalled
@@ -926,7 +926,7 @@ pub struct DirectoryMetadata {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
-    /// A string-encoded hash (eg "1a2b3c", not the byte array [0x1a, 0x2b, 0x3c])
+    /// A string-encoded hash (eg "1a2b3c", not the byte array \[0x1a, 0x2b, 0x3c\])
     /// using an implementation-defined hash algorithm (eg SHA-256).
     #[prost(string, tag = "1")]
     pub hash: ::prost::alloc::string::String,

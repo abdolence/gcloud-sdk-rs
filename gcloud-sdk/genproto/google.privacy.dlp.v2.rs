@@ -6,7 +6,7 @@ pub struct InfoType {
     /// creating a CustomInfoType, or one of the names listed
     /// at <https://cloud.google.com/dlp/docs/infotypes-reference> when specifying
     /// a built-in type.  When sending Cloud DLP results to Data Catalog, infoType
-    /// names should conform to the pattern `\[A-Za-z0-9$_-\]{1,64}`.
+    /// names should conform to the pattern `\[A-Za-z0-9$-_\]{1,64}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional version name for this InfoType.
@@ -145,7 +145,7 @@ pub mod custom_info_type {
     /// Dictionary words containing a large number of characters that are not
     /// letters or digits may result in unexpected findings because such characters
     /// are treated as whitespace. The
-    /// \[limits\](<https://cloud.google.com/dlp/limits>) page contains details about
+    /// [limits](<https://cloud.google.com/dlp/limits>) page contains details about
     /// the size limits of dictionaries. For dictionaries that do not fit within
     /// these constraints, consider using `LargeCustomDictionaryConfig` in the
     /// `StoredInfoType` API.
@@ -195,7 +195,7 @@ pub mod custom_info_type {
     }
     /// Message for detecting output from deidentification transformations
     /// such as
-    /// \[`CryptoReplaceFfxFpeConfig`\](<https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>).
+    /// [`CryptoReplaceFfxFpeConfig`](<https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>).
     /// These types of transformations are
     /// those that perform pseudonymization, thereby producing a "surrogate" as
     /// output. This should be used in conjunction with a field on the
@@ -224,7 +224,7 @@ pub mod custom_info_type {
             /// Number of characters before the finding to consider. For tabular data,
             /// if you want to modify the likelihood of an entire column of findngs,
             /// set this to 1. For more information, see
-            /// [Hotword example: Set the match likelihood of a table column]
+            /// \[Hotword example: Set the match likelihood of a table column\]
             /// (<https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(int32, tag = "1")]
             pub window_before: i32,
@@ -279,7 +279,7 @@ pub mod custom_info_type {
             ///
             /// For tabular data, if you want to modify the likelihood of an entire
             /// column of findngs, see
-            /// [Hotword example: Set the match likelihood of a table column]
+            /// \[Hotword example: Set the match likelihood of a table column\]
             /// (<https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(message, optional, tag = "2")]
             pub proximity: ::core::option::Option<Proximity>,
@@ -426,7 +426,7 @@ pub struct DatastoreOptions {
 ///
 /// * `{bucket_name: "mybucket", exclude_regex: \[".*\.pdf"\]}` will include all
 /// files in `mybucket` except for .pdf files
-/// * `{bucket_name: "mybucket", include_regex: \["directory/[^/]+"\]}` will
+/// * `{bucket_name: "mybucket", include_regex: \["directory/[^/\]+"]}` will
 /// include all files directly under `gs://mybucket/directory/`, without matching
 /// across `/`
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -442,7 +442,7 @@ pub struct CloudStorageRegexFileSet {
     /// (this is equivalent to including `.*` in the list).
     ///
     /// Regular expressions use RE2
-    /// \[syntax\](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
+    /// [syntax](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
     /// under the google/re2 repository on GitHub.
     #[prost(string, repeated, tag = "2")]
     pub include_regex: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -451,7 +451,7 @@ pub struct CloudStorageRegexFileSet {
     /// excluded from the scan.
     ///
     /// Regular expressions use RE2
-    /// \[syntax\](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
+    /// [syntax](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
     /// under the google/re2 repository on GitHub.
     #[prost(string, repeated, tag = "3")]
     pub exclude_regex: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -766,7 +766,7 @@ pub struct HybridOptions {
     /// these will be rejected.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
+    /// to the following regular expression: `[a-z](\[-a-z0-9\]*[a-z0-9])?`.
     ///
     /// No more than 10 keys can be required.
     #[prost(string, repeated, tag = "2")]
@@ -776,10 +776,10 @@ pub struct HybridOptions {
     /// To organize findings, these labels will be added to each finding.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
+    /// to the following regular expression: `[a-z](\[-a-z0-9\]*[a-z0-9])?`.
     ///
     /// Label values must be between 0 and 63 characters long and must conform
-    /// to the regular expression `(\[a-z]([-a-z0-9]*[a-z0-9\])?)?`.
+    /// to the regular expression `([a-z](\[-a-z0-9\]*[a-z0-9])?)?`.
     ///
     /// No more than 10 labels can be associated with a given finding.
     ///
@@ -1106,22 +1106,6 @@ pub struct ExcludeInfoTypes {
     #[prost(message, repeated, tag = "1")]
     pub info_types: ::prost::alloc::vec::Vec<InfoType>,
 }
-/// The rule to exclude findings based on a hotword. For record inspection of
-/// tables, column names are considered hotwords. An example of this is to
-/// exclude a finding if a BigQuery column matches a specific pattern.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExcludeByHotword {
-    /// Regular expression pattern defining what qualifies as a hotword.
-    #[prost(message, optional, tag = "1")]
-    pub hotword_regex: ::core::option::Option<custom_info_type::Regex>,
-    /// Range of characters within which the entire hotword must reside.
-    /// The total length of the window cannot exceed 1000 characters.
-    /// The windowBefore property in proximity should be set to 1 if the hotword
-    /// needs to be included in a column header.
-    #[prost(message, optional, tag = "2")]
-    pub proximity: ::core::option::Option<custom_info_type::detection_rule::Proximity>,
-}
 /// The rule that specifies conditions when findings of infoTypes specified in
 /// `InspectionRuleSet` are removed from results.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1131,7 +1115,7 @@ pub struct ExclusionRule {
     #[prost(enumeration = "MatchingType", tag = "4")]
     pub matching_type: i32,
     /// Exclusion rule types.
-    #[prost(oneof = "exclusion_rule::Type", tags = "1, 2, 3, 5")]
+    #[prost(oneof = "exclusion_rule::Type", tags = "1, 2, 3")]
     pub r#type: ::core::option::Option<exclusion_rule::Type>,
 }
 /// Nested message and enum types in `ExclusionRule`.
@@ -1149,10 +1133,6 @@ pub mod exclusion_rule {
         /// Set of infoTypes for which findings would affect this rule.
         #[prost(message, tag = "3")]
         ExcludeInfoTypes(super::ExcludeInfoTypes),
-        /// Drop if the hotword rule is contained in the proximate context. For
-        /// tabular data, the context includes the column name.
-        #[prost(message, tag = "5")]
-        ExcludeByHotword(super::ExcludeByHotword),
     }
 }
 /// A single inspection rule to be applied to infoTypes, specified in
@@ -1220,12 +1200,12 @@ pub struct InspectConfig {
     /// When redacting sensitive data from images, finding limits don't apply. They
     /// can cause unexpected or inconsistent results, where only some data is
     /// redacted. Don't include finding limits in
-    /// \[RedactImage][google.privacy.dlp.v2.DlpService.RedactImage\]
+    /// [RedactImage][google.privacy.dlp.v2.DlpService.RedactImage]
     /// requests. Otherwise, Cloud DLP returns an error.
     #[prost(message, optional, tag = "3")]
     pub limits: ::core::option::Option<inspect_config::FindingLimits>,
     /// When true, a contextual quote from the data that triggered a finding is
-    /// included in the response; see \[Finding.quote][google.privacy.dlp.v2.Finding.quote\].
+    /// included in the response; see [Finding.quote][google.privacy.dlp.v2.Finding.quote].
     /// This is not used for data profiling.
     #[prost(bool, tag = "4")]
     pub include_quote: bool,
@@ -1254,7 +1234,7 @@ pub mod inspect_config {
     /// When redacting sensitive data from images, finding limits don't apply. They
     /// can cause unexpected or inconsistent results, where only some data is
     /// redacted. Don't include finding limits in
-    /// \[RedactImage][google.privacy.dlp.v2.DlpService.RedactImage\]
+    /// [RedactImage][google.privacy.dlp.v2.DlpService.RedactImage]
     /// requests. Otherwise, Cloud DLP returns an error.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1398,6 +1378,7 @@ pub mod byte_content_item {
         }
     }
 }
+/// Container structure for the content to inspect.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentItem {
@@ -1507,10 +1488,10 @@ pub struct Finding {
     /// The labels associated with this `Finding`.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
+    /// to the following regular expression: `[a-z](\[-a-z0-9\]*[a-z0-9])?`.
     ///
     /// Label values must be between 0 and 63 characters long and must conform
-    /// to the regular expression `(\[a-z]([-a-z0-9]*[a-z0-9\])?)?`.
+    /// to the regular expression `([a-z](\[-a-z0-9\]*[a-z0-9])?)?`.
     ///
     /// No more than 10 labels can be associated with a given finding.
     ///
@@ -1836,13 +1817,13 @@ pub mod redact_image_request {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Color {
-    /// The amount of red in the color as a value in the interval [0, 1].
+    /// The amount of red in the color as a value in the interval \[0, 1\].
     #[prost(float, tag = "1")]
     pub red: f32,
-    /// The amount of green in the color as a value in the interval [0, 1].
+    /// The amount of green in the color as a value in the interval \[0, 1\].
     #[prost(float, tag = "2")]
     pub green: f32,
-    /// The amount of blue in the color as a value in the interval [0, 1].
+    /// The amount of blue in the color as a value in the interval \[0, 1\].
     #[prost(float, tag = "3")]
     pub blue: f32,
 }
@@ -1895,13 +1876,6 @@ pub struct DeidentifyContentRequest {
     #[prost(message, optional, tag = "3")]
     pub inspect_config: ::core::option::Option<InspectConfig>,
     /// The item to de-identify. Will be treated as text.
-    ///
-    /// This value must be of type
-    /// \[Table][google.privacy.dlp.v2.Table\] if your
-    /// \[deidentify_config][google.privacy.dlp.v2.DeidentifyContentRequest.deidentify_config\]
-    /// is a
-    /// \[RecordTransformations][google.privacy.dlp.v2.RecordTransformations\]
-    /// object.
     #[prost(message, optional, tag = "4")]
     pub item: ::core::option::Option<ContentItem>,
     /// Template to use. Any configuration directly specified in
@@ -2361,8 +2335,6 @@ pub mod info_type_category {
         Venezuela = 39,
         /// The infoType is typically used in Google internally.
         Internal = 40,
-        /// The infoType is typically used in New Zealand.
-        NewZealand = 41,
     }
     impl LocationCategory {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2412,7 +2384,6 @@ pub mod info_type_category {
                 LocationCategory::Uruguay => "URUGUAY",
                 LocationCategory::Venezuela => "VENEZUELA",
                 LocationCategory::Internal => "INTERNAL",
-                LocationCategory::NewZealand => "NEW_ZEALAND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2459,7 +2430,6 @@ pub mod info_type_category {
                 "URUGUAY" => Some(Self::Uruguay),
                 "VENEZUELA" => Some(Self::Venezuela),
                 "INTERNAL" => Some(Self::Internal),
-                "NEW_ZEALAND" => Some(Self::NewZealand),
                 _ => None,
             }
         }
@@ -3132,7 +3102,7 @@ pub mod analyze_data_source_risk_details {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KMapEstimationResult {
-        /// The intervals [min_anonymity, max_anonymity] do not overlap. If a value
+        /// The intervals \[min_anonymity, max_anonymity\] do not overlap. If a value
         /// doesn't correspond to any such interval, the associated frequency is
         /// zero. For example, the following records:
         ///    {min_anonymity: 1, max_anonymity: 1, frequency: 17}
@@ -3752,7 +3722,7 @@ pub mod replace_dictionary_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A list of words to select from for random replacement. The
-        /// \[limits\](<https://cloud.google.com/dlp/limits>) page contains details about
+        /// [limits](<https://cloud.google.com/dlp/limits>) page contains details about
         /// the size limits of dictionaries.
         #[prost(message, tag = "1")]
         WordList(super::custom_info_type::dictionary::WordList),
@@ -3800,9 +3770,9 @@ pub mod chars_to_ignore {
         AlphaUpperCase = 2,
         /// a-z
         AlphaLowerCase = 3,
-        /// US Punctuation, one of !"#$%&'()*+,-./:;<=>?@\[\\]^_`{|}~
+        /// US Punctuation, one of !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
         Punctuation = 4,
-        /// Whitespace character, one of [ \t\n\x0B\f\r]
+        /// Whitespace character, one of \[ \t\n\x0B\f\r\]
         Whitespace = 5,
     }
     impl CommonCharsToIgnore {
@@ -4016,7 +3986,7 @@ pub struct CryptoReplaceFfxFpeConfig {
     ///
     /// This annotation identifies the surrogate when inspecting content using the
     /// custom infoType
-    /// \[`SurrogateType`\](<https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype>).
+    /// [`SurrogateType`](<https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype>).
     /// This facilitates reversal of the surrogate when it occurs in free text.
     ///
     /// In order for inspection to work properly, the name of this infoType must
@@ -4105,7 +4075,7 @@ pub mod crypto_replace_ffx_fpe_config {
         /// that the FFX mode natively supports. This happens before/after
         /// encryption/decryption.
         /// Each character listed must appear only once.
-        /// Number of characters must be in the range [2, 95].
+        /// Number of characters must be in the range \[2, 95\].
         /// This must be encoded as ASCII.
         /// The order of characters does not matter.
         /// The full list of allowed characters is:
@@ -4113,7 +4083,7 @@ pub mod crypto_replace_ffx_fpe_config {
         /// ~`!@#$%^&*()_-+={\[}\]|\:;"'<,>.?/</code>
         #[prost(string, tag = "5")]
         CustomAlphabet(::prost::alloc::string::String),
-        /// The native way to select the alphabet. Must be in the range [2, 95].
+        /// The native way to select the alphabet. Must be in the range \[2, 95\].
         #[prost(int32, tag = "6")]
         Radix(i32),
     }
@@ -4177,7 +4147,7 @@ pub struct UnwrappedCryptoKey {
 /// to perform a crypto transformation using a KMS-wrapped crypto key:
 /// dlp.kms.encrypt
 ///
-/// For more information, see [Creating a wrapped key]
+/// For more information, see \[Creating a wrapped key\]
 /// (<https://cloud.google.com/dlp/docs/create-wrapped-key>).
 ///
 /// Note: When you use Cloud KMS for cryptographic operations,
@@ -4367,7 +4337,7 @@ pub mod record_condition {
         /// Required. Operator used to compare the field or infoType to the value.
         #[prost(enumeration = "super::RelationalOperator", tag = "3")]
         pub operator: i32,
-        /// Value to compare against. [Mandatory, except for `EXISTS` tests.]
+        /// Value to compare against. \[Mandatory, except for `EXISTS` tests.\]
         #[prost(message, optional, tag = "4")]
         pub value: ::core::option::Option<super::Value>,
     }
@@ -4935,7 +4905,7 @@ pub mod action {
     /// Publish a message into a given Pub/Sub topic when DlpJob has completed. The
     /// message contains a single field, `DlpJobName`, which is equal to the
     /// finished job's
-    /// \[`DlpJob.name`\](<https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
+    /// [`DlpJob.name`](<https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
     /// Compatible with: Inspect, Risk
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4968,7 +4938,7 @@ pub mod action {
     /// `roles/datacatalog.tagTemplateOwner` permission on the project. The tag
     /// template contains fields summarizing the results of the DlpJob. Any field
     /// values previously written by another DlpJob are deleted. [InfoType naming
-    /// patterns]\[google.privacy.dlp.v2.InfoType\] are strictly enforced when using
+    /// patterns][google.privacy.dlp.v2.InfoType] are strictly enforced when using
     /// this feature.
     ///
     /// Findings are persisted in Data Catalog storage and are governed by
@@ -5007,7 +4977,7 @@ pub mod action {
         /// transformations and/or failures that occurred while de-identifying. This
         /// needs to be set in order for users to access information about the status
         /// of each transformation (see
-        /// \[TransformationDetails][google.privacy.dlp.v2.TransformationDetails\]
+        /// [TransformationDetails][google.privacy.dlp.v2.TransformationDetails]
         /// message for more information about what is noted).
         #[prost(message, optional, tag = "3")]
         pub transformation_details_storage_config: ::core::option::Option<
@@ -5071,9 +5041,8 @@ pub mod action {
         /// Create a de-identified copy of the input data.
         #[prost(message, tag = "7")]
         Deidentify(Deidentify),
-        /// Sends an email when the job completes. The email goes to IAM project
-        /// owners and technical [Essential
-        /// Contacts](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts>).
+        /// Enable email notification for project owners and editors on job's
+        /// completion/failure.
         #[prost(message, tag = "8")]
         JobNotificationEmails(JobNotificationEmails),
         /// Enable Stackdriver metric dlp.googleapis.com/finding_count.
@@ -5654,7 +5623,7 @@ pub mod data_profile_action {
 /// or project.
 ///
 /// The generated data profiles are retained according to the
-/// [data retention policy]
+/// \[data retention policy\]
 /// (<https://cloud.google.com/dlp/docs/data-profiles#retention>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5819,7 +5788,7 @@ pub mod dlp_job {
         InspectDetails(super::InspectDataSourceDetails),
     }
 }
-/// The request message for \[DlpJobs.GetDlpJob][\].
+/// The request message for [DlpJobs.GetDlpJob][].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDlpJobRequest {
@@ -6085,7 +6054,7 @@ pub struct DeleteDeidentifyTemplateRequest {
 }
 /// Configuration for a custom dictionary created from a data source of any size
 /// up to the maximum size defined in the
-/// \[limits\](<https://cloud.google.com/dlp/limits>) page. The artifacts of
+/// [limits](<https://cloud.google.com/dlp/limits>) page. The artifacts of
 /// dictionary creation are stored in the specified Cloud Storage
 /// location. Consider using `CustomInfoType.Dictionary` for smaller dictionaries
 /// that satisfy the size requirements.
@@ -6431,10 +6400,10 @@ pub struct HybridFindingDetails {
     /// inspection.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
+    /// to the following regular expression: `[a-z](\[-a-z0-9\]*[a-z0-9])?`.
     ///
     /// Label values must be between 0 and 63 characters long and must conform
-    /// to the regular expression `(\[a-z]([-a-z0-9]*[a-z0-9\])?)?`.
+    /// to the regular expression `([a-z](\[-a-z0-9\]*[a-z0-9])?)?`.
     ///
     /// No more than 10 labels can be associated with a given finding.
     ///
@@ -6594,7 +6563,6 @@ pub struct TableDataProfile {
     #[prost(int64, tag = "12")]
     pub table_size_bytes: i64,
     /// Number of rows in the table when the profile was generated.
-    /// This will not be populated for BigLake tables.
     #[prost(int64, tag = "13")]
     pub row_count: i64,
     /// How the table is encrypted.

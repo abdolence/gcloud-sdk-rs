@@ -764,7 +764,7 @@ pub struct AuthorizedCertificate {
     pub domain_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The time when this certificate expires. To update the renewal time on this
     /// certificate, upload an SSL certificate with a different expiration time
-    /// using \[`AuthorizedCertificates.UpdateAuthorizedCertificate`\]().
+    /// using [`AuthorizedCertificates.UpdateAuthorizedCertificate`]().
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "5")]
@@ -916,7 +916,7 @@ impl ManagementStatus {
 }
 /// A domain that a user has been authorized to administer. To authorize use
 /// of a domain, verify ownership via
-/// [Search Console](<https://search.google.com/search-console/welcome>).
+/// [Webmaster Central](<https://www.google.com/webmasters/verification/home>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizedDomain {
@@ -1101,7 +1101,7 @@ pub mod resource_record {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallRule {
-    /// A positive integer between [1, Int32.MaxValue-1] that defines the order of
+    /// A positive integer between \[1, Int32.MaxValue-1\] that defines the order of
     /// rule evaluation. Rules with the lowest priority are evaluated first.
     ///
     /// A default rule at priority Int32.MaxValue matches all IPv4 and IPv6 traffic
@@ -1671,7 +1671,7 @@ pub struct Version {
     >,
     /// Duration that static files should be cached by web proxies and browsers.
     /// Only applicable if the corresponding
-    /// \[StaticFilesHandler\](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1beta/apps.services.versions#StaticFilesHandler>)
+    /// [StaticFilesHandler](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1beta/apps.services.versions#StaticFilesHandler>)
     /// does not specify its own expiration time.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
@@ -1849,7 +1849,7 @@ pub mod endpoints_api_service {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutomaticScaling {
     /// The time period that the
-    /// \[Autoscaler\](<https://cloud.google.com/compute/docs/autoscaler/>)
+    /// [Autoscaler](<https://cloud.google.com/compute/docs/autoscaler/>)
     /// should wait before it starts collecting information from a new instance.
     /// This prevents the autoscaler from collecting information when the instance
     /// is initializing, during which the collected usage would not be reliable.
@@ -2461,7 +2461,7 @@ pub struct UpdateServiceRequest {
     /// and
     /// [automatic scaling](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1beta/apps.services.versions#AutomaticScaling>).
     /// You must specify the
-    /// \[`shardBy`\](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1beta/apps.services#ShardBy>)
+    /// [`shardBy`](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1beta/apps.services#ShardBy>)
     /// field in the Service resource. Gradual traffic migration is not
     /// supported in the App Engine flexible environment. For examples, see
     /// [Migrating and Splitting Traffic](<https://cloud.google.com/appengine/docs/admin-api/migrating-splitting-traffic>).
@@ -2608,8 +2608,8 @@ pub struct DebugInstanceRequest {
     pub name: ::prost::alloc::string::String,
     /// Public SSH key to add to the instance. Examples:
     ///
-    /// * `\[USERNAME\]:ssh-rsa \[KEY_VALUE\] \[USERNAME\]`
-    /// * `\[USERNAME\]:ssh-rsa \[KEY_VALUE\] google-ssh {"userName":"\[USERNAME]","expireOn":"[EXPIRE_TIME\]"}`
+    /// * `\[USERNAME\]:ssh-rsa \[KEY_VALUE\] [USERNAME]`
+    /// * `\[USERNAME\]:ssh-rsa \[KEY_VALUE\] google-ssh {"userName":"\[USERNAME\]","expireOn":"\[EXPIRE_TIME\]"}`
     ///
     /// For more information, see
     /// [Adding and Removing SSH Keys](<https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys>).
@@ -2897,7 +2897,7 @@ pub struct DeleteDomainMappingRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Fields that should be returned when \[Version][google.appengine.v1beta.Version\] resources
+/// Fields that should be returned when [Version][google.appengine.v1beta.Version] resources
 /// are retrieved.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4843,7 +4843,7 @@ pub struct CreateVersionMethod {
     #[prost(message, optional, tag = "1")]
     pub request: ::core::option::Option<CreateVersionRequest>,
 }
-/// Metadata for the given \[google.cloud.location.Location][google.cloud.location.Location\].
+/// Metadata for the given [google.cloud.location.Location][google.cloud.location.Location].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
@@ -4862,7 +4862,7 @@ pub struct LocationMetadata {
     #[prost(bool, tag = "6")]
     pub search_api_available: bool,
 }
-/// Metadata for the given \[google.longrunning.Operation][google.longrunning.Operation\].
+/// Metadata for the given [google.longrunning.Operation][google.longrunning.Operation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadataV1Beta {
@@ -4919,8 +4919,8 @@ pub mod operation_metadata_v1_beta {
         CreateVersionMetadata(super::CreateVersionMetadataV1Beta),
     }
 }
-/// Metadata for the given \[google.longrunning.Operation][google.longrunning.Operation\] during a
-/// \[google.appengine.v1beta.CreateVersionRequest][google.appengine.v1beta.CreateVersionRequest\].
+/// Metadata for the given [google.longrunning.Operation][google.longrunning.Operation] during a
+/// [google.appengine.v1beta.CreateVersionRequest][google.appengine.v1beta.CreateVersionRequest].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVersionMetadataV1Beta {

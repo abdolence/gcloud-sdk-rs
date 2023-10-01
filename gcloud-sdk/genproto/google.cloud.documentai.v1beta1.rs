@@ -51,20 +51,20 @@ pub struct Document {
     #[prost(string, tag = "4")]
     pub text: ::prost::alloc::string::String,
     /// Styles for the
-    /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+    /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
     #[prost(message, repeated, tag = "5")]
     pub text_styles: ::prost::alloc::vec::Vec<document::Style>,
     /// Visual page layout for the
-    /// \[Document][google.cloud.documentai.v1beta1.Document\].
+    /// [Document][google.cloud.documentai.v1beta1.Document].
     #[prost(message, repeated, tag = "6")]
     pub pages: ::prost::alloc::vec::Vec<document::Page>,
     /// A list of entities detected on
-    /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\]. For
+    /// [Document.text][google.cloud.documentai.v1beta1.Document.text]. For
     /// document shards, entities in this list may cross shard boundaries.
     #[prost(message, repeated, tag = "7")]
     pub entities: ::prost::alloc::vec::Vec<document::Entity>,
     /// Relationship among
-    /// \[Document.entities][google.cloud.documentai.v1beta1.Document.entities\].
+    /// [Document.entities][google.cloud.documentai.v1beta1.Document.entities].
     #[prost(message, repeated, tag = "8")]
     pub entity_relations: ::prost::alloc::vec::Vec<document::EntityRelation>,
     /// Information about the sharding if this document is sharded part of a larger
@@ -93,7 +93,7 @@ pub mod document {
         #[prost(int64, tag = "2")]
         pub shard_count: i64,
         /// The index of the first character in
-        /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\] in the
+        /// [Document.text][google.cloud.documentai.v1beta1.Document.text] in the
         /// overall document global text.
         #[prost(int64, tag = "3")]
         pub text_offset: i64,
@@ -104,7 +104,7 @@ pub mod document {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Style {
         /// Text anchor indexing into the
-        /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+        /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
         /// Text color.
@@ -146,21 +146,21 @@ pub mod document {
             pub unit: ::prost::alloc::string::String,
         }
     }
-    /// A page in a \[Document][google.cloud.documentai.v1beta1.Document\].
+    /// A page in a [Document][google.cloud.documentai.v1beta1.Document].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Page {
         /// 1-based index for current
-        /// \[Page][google.cloud.documentai.v1beta1.Document.Page\] in a parent
-        /// \[Document][google.cloud.documentai.v1beta1.Document\]. Useful when a page
-        /// is taken out of a \[Document][google.cloud.documentai.v1beta1.Document\]
+        /// [Page][google.cloud.documentai.v1beta1.Document.Page] in a parent
+        /// [Document][google.cloud.documentai.v1beta1.Document]. Useful when a page
+        /// is taken out of a [Document][google.cloud.documentai.v1beta1.Document]
         /// for individual processing.
         #[prost(int32, tag = "1")]
         pub page_number: i32,
         /// Physical dimension of the page.
         #[prost(message, optional, tag = "2")]
         pub dimension: ::core::option::Option<page::Dimension>,
-        /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the
+        /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for the
         /// page.
         #[prost(message, optional, tag = "3")]
         pub layout: ::core::option::Option<page::Layout>,
@@ -215,22 +215,22 @@ pub mod document {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Layout {
             /// Text anchor indexing into the
-            /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+            /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
             #[prost(message, optional, tag = "1")]
             pub text_anchor: ::core::option::Option<super::TextAnchor>,
             /// Confidence of the current
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] within
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] within
             /// context of the object this layout is for. e.g. confidence can be for a
             /// single token, a table, a visual element, etc. depending on context.
-            /// Range [0, 1].
+            /// Range \[0, 1\].
             #[prost(float, tag = "2")]
             pub confidence: f32,
             /// The bounding polygon for the
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout].
             #[prost(message, optional, tag = "3")]
             pub bounding_poly: ::core::option::Option<super::super::BoundingPoly>,
             /// Detected orientation for the
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout].
             #[prost(enumeration = "layout::Orientation", tag = "4")]
             pub orientation: i32,
         }
@@ -296,8 +296,8 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Block {
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
-            /// \[Block][google.cloud.documentai.v1beta1.Document.Page.Block\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for
+            /// [Block][google.cloud.documentai.v1beta1.Document.Page.Block].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
@@ -308,8 +308,8 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Paragraph {
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
-            /// \[Paragraph][google.cloud.documentai.v1beta1.Document.Page.Paragraph\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for
+            /// [Paragraph][google.cloud.documentai.v1beta1.Document.Page.Paragraph].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
@@ -321,8 +321,8 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Line {
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
-            /// \[Line][google.cloud.documentai.v1beta1.Document.Page.Line\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for
+            /// [Line][google.cloud.documentai.v1beta1.Document.Page.Line].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
@@ -333,12 +333,12 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Token {
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
-            /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for
+            /// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// Detected break at the end of a
-            /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
+            /// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].
             #[prost(message, optional, tag = "2")]
             pub detected_break: ::core::option::Option<token::DetectedBreak>,
             /// A list of detected languages together with confidence.
@@ -348,7 +348,7 @@ pub mod document {
         /// Nested message and enum types in `Token`.
         pub mod token {
             /// Detected break at the end of a
-            /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
+            /// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DetectedBreak {
@@ -412,12 +412,12 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VisualElement {
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
-            /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for
+            /// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// Type of the
-            /// \[VisualElement][google.cloud.documentai.v1beta1.Document.Page.VisualElement\].
+            /// [VisualElement][google.cloud.documentai.v1beta1.Document.Page.VisualElement].
             #[prost(string, tag = "2")]
             pub r#type: ::prost::alloc::string::String,
             /// A list of detected languages together with confidence.
@@ -428,8 +428,8 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Table {
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
-            /// \[Table][google.cloud.documentai.v1beta1.Document.Page.Table\].
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for
+            /// [Table][google.cloud.documentai.v1beta1.Document.Page.Table].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// Header rows of the table.
@@ -456,8 +456,8 @@ pub mod document {
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct TableCell {
-                /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
-                /// \[TableCell][google.cloud.documentai.v1beta1.Document.Page.Table.TableCell\].
+                /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for
+                /// [TableCell][google.cloud.documentai.v1beta1.Document.Page.Table.TableCell].
                 #[prost(message, optional, tag = "1")]
                 pub layout: ::core::option::Option<super::Layout>,
                 /// How many rows this cell spans.
@@ -477,13 +477,13 @@ pub mod document {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FormField {
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the
-            /// \[FormField][google.cloud.documentai.v1beta1.Document.Page.FormField\]
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for the
+            /// [FormField][google.cloud.documentai.v1beta1.Document.Page.FormField]
             /// name. e.g. `Address`, `Email`, `Grand total`, `Phone number`, etc.
             #[prost(message, optional, tag = "1")]
             pub field_name: ::core::option::Option<Layout>,
-            /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the
-            /// \[FormField][google.cloud.documentai.v1beta1.Document.Page.FormField\]
+            /// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for the
+            /// [FormField][google.cloud.documentai.v1beta1.Document.Page.FormField]
             /// value.
             #[prost(message, optional, tag = "2")]
             pub field_value: ::core::option::Option<Layout>,
@@ -503,7 +503,7 @@ pub mod document {
             /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
             #[prost(string, tag = "1")]
             pub language_code: ::prost::alloc::string::String,
-            /// Confidence of detected language. Range [0, 1].
+            /// Confidence of detected language. Range \[0, 1\].
             #[prost(float, tag = "2")]
             pub confidence: f32,
         }
@@ -515,7 +515,7 @@ pub mod document {
     pub struct Entity {
         /// Provenance of the entity.
         /// Text anchor indexing into the
-        /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+        /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
         /// Required. Entity type from a schema e.g. `Address`.
@@ -530,7 +530,7 @@ pub mod document {
         pub mention_id: ::prost::alloc::string::String,
     }
     /// Relationship between
-    /// \[Entities][google.cloud.documentai.v1beta1.Document.Entity\].
+    /// [Entities][google.cloud.documentai.v1beta1.Document.Entity].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityRelation {
@@ -545,33 +545,33 @@ pub mod document {
         pub relation: ::prost::alloc::string::String,
     }
     /// Text reference indexing into the
-    /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+    /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextAnchor {
         /// The text segments from the
-        /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+        /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
         #[prost(message, repeated, tag = "1")]
         pub text_segments: ::prost::alloc::vec::Vec<text_anchor::TextSegment>,
     }
     /// Nested message and enum types in `TextAnchor`.
     pub mod text_anchor {
         /// A text segment in the
-        /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\]. The
+        /// [Document.text][google.cloud.documentai.v1beta1.Document.text]. The
         /// indices may be out of bounds which indicate that the text extends into
         /// another document shard for large sharded documents. See
-        /// \[ShardInfo.text_offset][google.cloud.documentai.v1beta1.Document.ShardInfo.text_offset\]
+        /// [ShardInfo.text_offset][google.cloud.documentai.v1beta1.Document.ShardInfo.text_offset]
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TextSegment {
-            /// \[TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment\]
+            /// [TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment]
             /// start UTF-8 char index in the
-            /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+            /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
             #[prost(int64, tag = "1")]
             pub start_index: i64,
-            /// \[TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment\]
+            /// [TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment]
             /// half open end UTF-8 char index in the
-            /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+            /// [Document.text][google.cloud.documentai.v1beta1.Document.text].
             #[prost(int64, tag = "2")]
             pub end_index: i64,
         }
@@ -725,12 +725,12 @@ pub struct FormExtractionParams {
     /// For example, if a document has a field called "Date" that holds a date
     /// value and a field called "Amount" that may hold either a currency value
     /// (e.g., "$500.00") or a simple number value (e.g., "20"), you could use the
-    /// following hints: [ {"key": "Date", value_types: [ "DATE"]}, {"key":
-    /// "Amount", "value_types": [ "PRICE", "NUMBER" ]} ]
+    /// following hints: \[ {"key": "Date", value_types: [ "DATE"\]}, {"key":
+    /// "Amount", "value_types": \[ "PRICE", "NUMBER" \]} ]
     ///
     /// If the value type is unknown, but you want to provide hints for the keys,
     /// you can leave the value_types field blank. e.g. {"key": "Date",
-    /// "value_types": []}
+    /// "value_types": \[\]}
     #[prost(message, repeated, tag = "2")]
     pub key_value_pair_hints: ::prost::alloc::vec::Vec<KeyValuePairHint>,
     /// Model version of the form extraction system. Default is
@@ -795,12 +795,12 @@ pub struct OutputConfig {
     /// The max number of pages to include into each output Document shard JSON on
     /// Google Cloud Storage.
     ///
-    /// The valid range is [1, 100]. If not specified, the default value is 20.
+    /// The valid range is \[1, 100\]. If not specified, the default value is 20.
     ///
     /// For example, for one pdf file with 100 pages, 100 parsed pages will be
     /// produced. If `pages_per_shard` = 20, then 5 Document shard JSON files each
     /// containing 20 parsed pages will be written under the prefix
-    /// \[OutputConfig.gcs_destination.uri][\] and suffix pages-x-to-y.json where
+    /// [OutputConfig.gcs_destination.uri][] and suffix pages-x-to-y.json where
     /// x and y are 1-indexed page numbers.
     ///
     /// Example GCS outputs with 157 pages and pages_per_shard = 50:

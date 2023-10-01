@@ -7717,7 +7717,7 @@ pub mod custom_audience_error_enum {
         CannotRemoveWhileInUse = 3,
         /// Cannot update or remove a custom audience that is already removed.
         ResourceAlreadyRemoved = 4,
-        /// The pair of [type, value] already exists in members.
+        /// The pair of \[type, value\] already exists in members.
         MemberTypeAndParameterAlreadyExisted = 5,
         /// Member type is invalid.
         InvalidMemberType = 6,
@@ -7884,11 +7884,11 @@ pub mod custom_interest_error_enum {
         /// Duplicate custom interest name ignoring case.
         NameAlreadyUsed = 2,
         /// In the remove custom interest member operation, both member ID and
-        /// pair [type, parameter] are not present.
+        /// pair \[type, parameter\] are not present.
         CustomInterestMemberIdAndTypeParameterNotPresentInRemove = 3,
-        /// The pair of [type, parameter] does not exist.
+        /// The pair of \[type, parameter\] does not exist.
         TypeAndParameterNotFound = 4,
-        /// The pair of [type, parameter] already exists.
+        /// The pair of \[type, parameter\] already exists.
         TypeAndParameterAlreadyExisted = 5,
         /// Unsupported custom interest member type.
         InvalidCustomInterestMemberType = 6,

@@ -263,17 +263,15 @@ pub mod subscription {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportConfig {
-    /// The desired state of this export. Setting this to values other than
-    /// `ACTIVE` and `PAUSED` will result in an error.
+    /// The desired state of this export.
     #[prost(enumeration = "export_config::State", tag = "1")]
     pub desired_state: i32,
-    /// Output only. The current state of the export, which may be different to the
-    /// desired state due to errors. This field is output only.
-    #[prost(enumeration = "export_config::State", tag = "6")]
-    pub current_state: i32,
-    /// Optional. The name of an optional Pub/Sub Lite topic to publish messages
-    /// that can not be exported to the destination. For example, the message can
-    /// not be published to the Pub/Sub service because it does not satisfy the
+    /// Output only. The export statuses of each partition. This field is output only.
+    #[prost(message, repeated, tag = "4")]
+    pub statuses: ::prost::alloc::vec::Vec<export_config::PartitionStatus>,
+    /// Optional. The name of an optional Pub/Sub Lite topic to publish messages that can not
+    /// be exported to the destination. For example, the message can not be
+    /// published to the Pub/Sub service because it does not satisfy the
     /// constraints documented at <https://cloud.google.com/pubsub/docs/publisher.>
     ///
     /// Structured like:
@@ -288,6 +286,24 @@ pub struct ExportConfig {
 }
 /// Nested message and enum types in `ExportConfig`.
 pub mod export_config {
+    /// The export status of a partition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PartitionStatus {
+        /// The partition number.
+        #[prost(int64, tag = "1")]
+        pub partition: i64,
+        /// If the export for a partition is healthy and the desired state is
+        /// `ACTIVE`, the status code will be `OK` (zero). If the desired state of
+        /// the export is `PAUSED`, the status code will be `CANCELLED`.
+        ///
+        /// If the export has been suspended due to an error, the status will be
+        /// populated with an error code and details. The service will automatically
+        /// retry after a period of time, and will update the status code to `OK` if
+        /// export subsequently succeeds.
+        #[prost(message, optional, tag = "2")]
+        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
     /// Configuration for exporting to a Pub/Sub topic.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -298,7 +314,7 @@ pub mod export_config {
         #[prost(string, tag = "1")]
         pub topic: ::prost::alloc::string::String,
     }
-    /// The desired export state.
+    /// An export state.
     #[derive(
         Clone,
         Copy,
@@ -318,10 +334,6 @@ pub mod export_config {
         Active = 1,
         /// Exporting messages is suspended.
         Paused = 2,
-        /// Messages cannot be exported due to permission denied errors. Output only.
-        PermissionDenied = 3,
-        /// Messages cannot be exported due to missing resources. Output only.
-        NotFound = 4,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -333,8 +345,6 @@ pub mod export_config {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Paused => "PAUSED",
-                State::PermissionDenied => "PERMISSION_DENIED",
-                State::NotFound => "NOT_FOUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -343,8 +353,6 @@ pub mod export_config {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "ACTIVE" => Some(Self::Active),
                 "PAUSED" => Some(Self::Paused),
-                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
-                "NOT_FOUND" => Some(Self::NotFound),
                 _ => None,
             }
         }
@@ -396,12 +404,11 @@ pub struct CreateTopicRequest {
     /// Structured like `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Configuration of the topic to create. Its `name` field is
-    /// ignored.
+    /// Required. Configuration of the topic to create. Its `name` field is ignored.
     #[prost(message, optional, tag = "2")]
     pub topic: ::core::option::Option<Topic>,
-    /// Required. The ID to use for the topic, which will become the final
-    /// component of the topic's name.
+    /// Required. The ID to use for the topic, which will become the final component of
+    /// the topic's name.
     ///
     /// This value is structured like: `my-topic-name`.
     #[prost(string, tag = "3")]
@@ -525,12 +532,11 @@ pub struct CreateSubscriptionRequest {
     /// Structured like `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Configuration of the subscription to create. Its `name` field is
-    /// ignored.
+    /// Required. Configuration of the subscription to create. Its `name` field is ignored.
     #[prost(message, optional, tag = "2")]
     pub subscription: ::core::option::Option<Subscription>,
-    /// Required. The ID to use for the subscription, which will become the final
-    /// component of the subscription's name.
+    /// Required. The ID to use for the subscription, which will become the final component
+    /// of the subscription's name.
     ///
     /// This value is structured like: `my-sub-name`.
     #[prost(string, tag = "3")]
@@ -706,12 +712,11 @@ pub struct CreateReservationRequest {
     /// Structured like `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Configuration of the reservation to create. Its `name` field is
-    /// ignored.
+    /// Required. Configuration of the reservation to create. Its `name` field is ignored.
     #[prost(message, optional, tag = "2")]
     pub reservation: ::core::option::Option<Reservation>,
-    /// Required. The ID to use for the reservation, which will become the final
-    /// component of the reservation's name.
+    /// Required. The ID to use for the reservation, which will become the final component of
+    /// the reservation's name.
     ///
     /// This value is structured like: `my-reservation-name`.
     #[prost(string, tag = "3")]
@@ -1823,15 +1828,6 @@ pub struct InitialPublishRequest {
     /// topic.num_partitions).
     #[prost(int64, tag = "2")]
     pub partition: i64,
-    /// Unique identifier for a publisher client. If set, enables publish
-    /// idempotency within a publisher client session.
-    ///
-    /// The length of this field must be exactly 16 bytes long and should be
-    /// populated with a 128 bit uuid, generated by standard uuid algorithms like
-    /// uuid1 or uuid4. The same identifier should be reused following
-    /// disconnections with retryable stream errors.
-    #[prost(bytes = "vec", tag = "3")]
-    pub client_id: ::prost::alloc::vec::Vec<u8>,
 }
 /// Response to an InitialPublishRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1844,19 +1840,6 @@ pub struct MessagePublishRequest {
     /// The messages to publish.
     #[prost(message, repeated, tag = "1")]
     pub messages: ::prost::alloc::vec::Vec<PubSubMessage>,
-    /// The sequence number corresponding to the first message in `messages`.
-    /// Messages within a batch are ordered and the sequence numbers of all
-    /// subsequent messages in the batch are assumed to be incremental.
-    ///
-    /// Sequence numbers are assigned at the message level and the first message
-    /// published in a publisher client session must have a sequence number of 0.
-    /// All messages must have contiguous sequence numbers, which uniquely identify
-    /// the messages accepted by the publisher client. Since messages are ordered,
-    /// the client only needs to specify the sequence number of the first message
-    /// in a published batch. The server deduplicates messages with the same
-    /// sequence number from the same publisher `client_id`.
-    #[prost(int64, tag = "2")]
-    pub first_sequence_number: i64,
 }
 /// Response to a MessagePublishRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1866,35 +1849,6 @@ pub struct MessagePublishResponse {
     /// remaining messages in the batch are guaranteed to be sequential.
     #[prost(message, optional, tag = "1")]
     pub start_cursor: ::core::option::Option<Cursor>,
-    /// Cursors for messages published in the batch. There will exist multiple
-    /// ranges when cursors are not contiguous within the batch.
-    ///
-    /// The cursor ranges may not account for all messages in the batch when
-    /// publish idempotency is enabled. A missing range indicates that cursors
-    /// could not be determined for messages within the range, as they were
-    /// deduplicated and the necessary data was not available at publish time.
-    /// These messages will have offsets when received by a subscriber.
-    #[prost(message, repeated, tag = "2")]
-    pub cursor_ranges: ::prost::alloc::vec::Vec<message_publish_response::CursorRange>,
-}
-/// Nested message and enum types in `MessagePublishResponse`.
-pub mod message_publish_response {
-    /// Cursors for a subrange of published messages.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CursorRange {
-        /// The cursor of the message at the start index. The cursors for remaining
-        /// messages up to the end index (exclusive) are sequential.
-        #[prost(message, optional, tag = "1")]
-        pub start_cursor: ::core::option::Option<super::Cursor>,
-        /// Index of the message in the published batch that corresponds to the
-        /// start cursor. Inclusive.
-        #[prost(int32, tag = "2")]
-        pub start_index: i32,
-        /// Index of the last message in this range. Exclusive.
-        #[prost(int32, tag = "3")]
-        pub end_index: i32,
-    }
 }
 /// Request sent from the client to the server on a stream.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2080,9 +2034,9 @@ pub struct InitialSubscribeRequest {
     /// so `partition` must be in the range [0, topic.num_partitions).
     #[prost(int64, tag = "2")]
     pub partition: i64,
-    /// Optional. Initial target location within the message backlog. If not set,
-    /// messages will be delivered from the commit cursor for the given
-    /// subscription and partition.
+    /// Optional. Initial target location within the message backlog. If not set, messages
+    /// will be delivered from the commit cursor for the given subscription and
+    /// partition.
     #[prost(message, optional, tag = "4")]
     pub initial_location: ::core::option::Option<SeekRequest>,
 }
@@ -2632,8 +2586,8 @@ pub struct ComputeTimeCursorRequest {
     /// Required. The partition for which we should compute the cursor.
     #[prost(int64, tag = "2")]
     pub partition: i64,
-    /// Required. The target publish or event time. Specifying a future time will
-    /// return an unset cursor.
+    /// Required. The target publish or event time. Specifying a future time will return an
+    /// unset cursor.
     #[prost(message, optional, tag = "3")]
     pub target: ::core::option::Option<TimeTarget>,
 }

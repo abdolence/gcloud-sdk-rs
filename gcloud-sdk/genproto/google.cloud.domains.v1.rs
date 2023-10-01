@@ -164,7 +164,7 @@ pub mod registration {
         Unspecified = 0,
         /// Contact the Cloud Support team to resolve a problem with this domain.
         ContactSupport = 1,
-        /// \[ICANN\](<https://icann.org/>) requires verification of the email address
+        /// [ICANN](<https://icann.org/>) requires verification of the email address
         /// in the `Registration`'s `contact_settings.registrant_contact` field. To
         /// verify the email address, follow the
         /// instructions in the email the `registrant_contact` receives following
@@ -577,7 +577,7 @@ pub mod dns_settings {
 }
 /// Defines the contact information associated with a `Registration`.
 ///
-/// \[ICANN\](<https://icann.org/>) requires all domain names to have associated
+/// [ICANN](<https://icann.org/>) requires all domain names to have associated
 /// contact information. The `registrant_contact` is considered the
 /// domain's legal owner, and often the other contacts are identical.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1059,7 +1059,7 @@ pub struct OperationMetadata {
 }
 /// Defines a set of possible contact privacy settings for a `Registration`.
 ///
-/// \[ICANN\](<https://icann.org/>) maintains the WHOIS database, a publicly
+/// [ICANN](<https://icann.org/>) maintains the WHOIS database, a publicly
 /// accessible mapping from domain name to contact information, and requires that
 /// each domain name have an entry. Choose from these options to control how much
 /// information in your `ContactSettings` is published.

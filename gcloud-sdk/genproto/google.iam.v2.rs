@@ -123,7 +123,7 @@ pub struct Policy {
     /// this value to help manage concurrent updates, so they do not cause one
     /// update to be overwritten by another.
     ///
-    /// If this field is present in a \[CreatePolicy][\] request, the value is
+    /// If this field is present in a [CreatePolicy][] request, the value is
     /// ignored.
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
@@ -188,7 +188,7 @@ pub struct ListPoliciesRequest {
     /// the value 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token received in a \[ListPoliciesResponse][google.iam.v2.ListPoliciesResponse\]. Provide this token to
+    /// A page token received in a [ListPoliciesResponse][google.iam.v2.ListPoliciesResponse]. Provide this token to
     /// retrieve the next page.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -200,7 +200,7 @@ pub struct ListPoliciesResponse {
     /// Metadata for the policies that are attached to the resource.
     #[prost(message, repeated, tag = "1")]
     pub policies: ::prost::alloc::vec::Vec<Policy>,
-    /// A page token that you can use in a \[ListPoliciesRequest][google.iam.v2.ListPoliciesRequest\] to retrieve the
+    /// A page token that you can use in a [ListPoliciesRequest][google.iam.v2.ListPoliciesRequest] to retrieve the
     /// next page. If this field is omitted, there are no additional pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,

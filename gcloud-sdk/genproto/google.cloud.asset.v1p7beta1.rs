@@ -1,3 +1,216 @@
+/// An asset in Google Cloud. An asset can be any resource in the Google Cloud
+/// [resource
+/// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
+/// a resource outside the Google Cloud resource hierarchy (such as Google
+/// Kubernetes Engine clusters and objects), or a policy (e.g. Cloud IAM policy).
+/// See [Supported asset
+/// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
+/// for more information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Asset {
+    /// The last update timestamp of an asset. update_time is updated when
+    /// create/update/delete operation is performed.
+    #[prost(message, optional, tag = "11")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The full name of the asset. Example:
+    /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
+    ///
+    /// See [Resource
+    /// names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
+    /// for more information.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The type of the asset. Example: `compute.googleapis.com/Disk`
+    ///
+    /// See [Supported asset
+    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
+    /// for more information.
+    #[prost(string, tag = "2")]
+    pub asset_type: ::prost::alloc::string::String,
+    /// A representation of the resource.
+    #[prost(message, optional, tag = "3")]
+    pub resource: ::core::option::Option<Resource>,
+    /// A representation of the Cloud IAM policy set on a Google Cloud resource.
+    /// There can be a maximum of one Cloud IAM policy set on any given resource.
+    /// In addition, Cloud IAM policies inherit their granted access scope from any
+    /// policies set on parent resources in the resource hierarchy. Therefore, the
+    /// effectively policy is the union of both the policy set on this resource
+    /// and each policy set on all of the resource's ancestry resource levels in
+    /// the hierarchy. See
+    /// [this topic](<https://cloud.google.com/iam/docs/policies#inheritance>) for
+    /// more information.
+    #[prost(message, optional, tag = "4")]
+    pub iam_policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
+    /// A representation of an [organization
+    /// policy](<https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>).
+    /// There can be more than one organization policy with different constraints
+    /// set on a given resource.
+    #[prost(message, repeated, tag = "6")]
+    pub org_policy: ::prost::alloc::vec::Vec<super::super::orgpolicy::v1::Policy>,
+    /// The related assets of the asset of one relationship type.
+    /// One asset only represents one type of relationship.
+    #[prost(message, optional, tag = "13")]
+    pub related_assets: ::core::option::Option<RelatedAssets>,
+    /// The ancestry path of an asset in Google Cloud [resource
+    /// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
+    /// represented as a list of relative resource names. An ancestry path starts
+    /// with the closest ancestor in the hierarchy and ends at root. If the asset
+    /// is a project, folder, or organization, the ancestry path starts from the
+    /// asset itself.
+    ///
+    /// Example: `\["projects/123456789", "folders/5432", "organizations/1234"\]`
+    #[prost(string, repeated, tag = "10")]
+    pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A representation of an [access
+    /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
+    #[prost(oneof = "asset::AccessContextPolicy", tags = "7, 8, 9")]
+    pub access_context_policy: ::core::option::Option<asset::AccessContextPolicy>,
+}
+/// Nested message and enum types in `Asset`.
+pub mod asset {
+    /// A representation of an [access
+    /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AccessContextPolicy {
+        /// Please also refer to the [access policy user
+        /// guide](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
+        #[prost(message, tag = "7")]
+        AccessPolicy(
+            super::super::super::super::identity::accesscontextmanager::v1::AccessPolicy,
+        ),
+        /// Please also refer to the [access level user
+        /// guide](<https://cloud.google.com/access-context-manager/docs/overview#access-levels>).
+        #[prost(message, tag = "8")]
+        AccessLevel(
+            super::super::super::super::identity::accesscontextmanager::v1::AccessLevel,
+        ),
+        /// Please also refer to the [service perimeter user
+        /// guide](<https://cloud.google.com/vpc-service-controls/docs/overview>).
+        #[prost(message, tag = "9")]
+        ServicePerimeter(
+            super::super::super::super::identity::accesscontextmanager::v1::ServicePerimeter,
+        ),
+    }
+}
+/// A representation of a Google Cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Resource {
+    /// The API version. Example: `v1`
+    #[prost(string, tag = "1")]
+    pub version: ::prost::alloc::string::String,
+    /// The URL of the discovery document containing the resource's JSON schema.
+    /// Example:
+    /// `<https://www.googleapis.com/discovery/v1/apis/compute/v1/rest`>
+    ///
+    /// This value is unspecified for resources that do not have an API based on a
+    /// discovery document, such as Cloud Bigtable.
+    #[prost(string, tag = "2")]
+    pub discovery_document_uri: ::prost::alloc::string::String,
+    /// The JSON schema name listed in the discovery document. Example:
+    /// `Project`
+    ///
+    /// This value is unspecified for resources that do not have an API based on a
+    /// discovery document, such as Cloud Bigtable.
+    #[prost(string, tag = "3")]
+    pub discovery_name: ::prost::alloc::string::String,
+    /// The REST URL for accessing the resource. An HTTP `GET` request using this
+    /// URL returns the resource itself. Example:
+    /// `<https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`>
+    ///
+    /// This value is unspecified for resources without a REST API.
+    #[prost(string, tag = "4")]
+    pub resource_url: ::prost::alloc::string::String,
+    /// The full name of the immediate parent of this resource. See
+    /// [Resource
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
+    /// for more information.
+    ///
+    /// For Google Cloud assets, this value is the parent resource defined in the
+    /// [Cloud IAM policy
+    /// hierarchy](<https://cloud.google.com/iam/docs/overview#policy_hierarchy>).
+    /// Example:
+    /// `//cloudresourcemanager.googleapis.com/projects/my_project_123`
+    ///
+    /// For third-party assets, this field may be set differently.
+    #[prost(string, tag = "5")]
+    pub parent: ::prost::alloc::string::String,
+    /// The content of the resource, in which some sensitive fields are removed
+    /// and may not be present.
+    #[prost(message, optional, tag = "6")]
+    pub data: ::core::option::Option<::prost_types::Struct>,
+    /// The location of the resource in Google Cloud, such as its zone and region.
+    /// For more information, see <https://cloud.google.com/about/locations/.>
+    #[prost(string, tag = "8")]
+    pub location: ::prost::alloc::string::String,
+}
+/// The detailed related assets with the `relationship_type`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RelatedAssets {
+    /// The detailed relation attributes.
+    #[prost(message, optional, tag = "1")]
+    pub relationship_attributes: ::core::option::Option<RelationshipAttributes>,
+    /// The peer resources of the relationship.
+    #[prost(message, repeated, tag = "2")]
+    pub assets: ::prost::alloc::vec::Vec<RelatedAsset>,
+}
+/// The relationship attributes which include  `type`, `source_resource_type`,
+/// `target_resource_type` and `action`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RelationshipAttributes {
+    /// The unique identifier of the relationship type. Example:
+    /// `INSTANCE_TO_INSTANCEGROUP`
+    #[prost(string, tag = "4")]
+    pub r#type: ::prost::alloc::string::String,
+    /// The source asset type. Example: `compute.googleapis.com/Instance`
+    #[prost(string, tag = "1")]
+    pub source_resource_type: ::prost::alloc::string::String,
+    /// The target asset type. Example: `compute.googleapis.com/Disk`
+    #[prost(string, tag = "2")]
+    pub target_resource_type: ::prost::alloc::string::String,
+    /// The detail of the relationship, e.g. `contains`, `attaches`
+    #[prost(string, tag = "3")]
+    pub action: ::prost::alloc::string::String,
+}
+/// An asset identify in Google Cloud which contains its name, type and
+/// ancestors. An asset can be any resource in the Google Cloud [resource
+/// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
+/// a resource outside the Google Cloud resource hierarchy (such as Google
+/// Kubernetes Engine clusters and objects), or a policy (e.g. Cloud IAM policy).
+/// See [Supported asset
+/// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
+/// for more information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RelatedAsset {
+    /// The full name of the asset. Example:
+    /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
+    ///
+    /// See [Resource
+    /// names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
+    /// for more information.
+    #[prost(string, tag = "1")]
+    pub asset: ::prost::alloc::string::String,
+    /// The type of the asset. Example: `compute.googleapis.com/Disk`
+    ///
+    /// See [Supported asset
+    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
+    /// for more information.
+    #[prost(string, tag = "2")]
+    pub asset_type: ::prost::alloc::string::String,
+    /// The ancestors of an asset in Google Cloud [resource
+    /// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
+    /// represented as a list of relative resource names. An ancestry path starts
+    /// with the closest ancestor in the hierarchy and ends at root.
+    ///
+    /// Example: `\["projects/123456789", "folders/5432", "organizations/1234"\]`
+    #[prost(string, repeated, tag = "3")]
+    pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Export asset request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -25,7 +238,7 @@ pub struct ExportAssetsRequest {
     /// * ".*Instance" snapshots resources whose asset type ends with "Instance".
     /// * ".*Instance.*" snapshots resources whose asset type contains "Instance".
     ///
-    /// See \[RE2\](<https://github.com/google/re2/wiki/Syntax>) for all supported
+    /// See [RE2](<https://github.com/google/re2/wiki/Syntax>) for all supported
     /// regular expression syntax. If the regular expression does not match any
     /// supported asset type, an INVALID_ARGUMENT error will be returned.
     ///
@@ -57,9 +270,9 @@ pub struct ExportAssetsRequest {
     pub relationship_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The export asset response. This message is returned by the
-/// \[google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation\]
+/// [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
 /// method in the returned
-/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
+/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -71,10 +284,10 @@ pub struct ExportAssetsResponse {
     #[prost(message, optional, tag = "2")]
     pub output_config: ::core::option::Option<OutputConfig>,
     /// Output result indicating where the assets were exported to. For example, a
-    /// set of actual Cloud Storage object URIs where the assets are
-    /// exported to. The URIs can be different from what \[output_config\] has
+    /// set of actual Google Cloud Storage object uris where the assets are
+    /// exported to. The uris can be different from what \[output_config\] has
     /// specified, as the service will split the output object into multiple ones
-    /// once it exceeds a single Cloud Storage object limit.
+    /// once it exceeds a single Google Cloud Storage object limit.
     #[prost(message, optional, tag = "3")]
     pub output_result: ::core::option::Option<OutputResult>,
 }
@@ -124,7 +337,7 @@ pub mod output_result {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsOutputResult {
-    /// List of URIs of the Cloud Storage objects. Example:
+    /// List of uris of the Cloud Storage objects. Example:
     /// "gs://bucket_name/object_name".
     #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -143,15 +356,15 @@ pub mod gcs_destination {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ObjectUri {
-        /// The URI of the Cloud Storage object. It's the same URI that is used by
+        /// The uri of the Cloud Storage object. It's the same uri that is used by
         /// gsutil. Example: "gs://bucket_name/object_name". See [Viewing and
         /// Editing Object
         /// Metadata](<https://cloud.google.com/storage/docs/viewing-editing-metadata>)
         /// for more information.
         #[prost(string, tag = "1")]
         Uri(::prost::alloc::string::String),
-        /// The URI prefix of all generated Cloud Storage objects. Example:
-        /// "gs://bucket_name/object_name_prefix". Each object URI is in format:
+        /// The uri prefix of all generated Cloud Storage objects. Example:
+        /// "gs://bucket_name/object_name_prefix". Each object uri is in format:
         /// "gs://bucket_name/object_name_prefix/{ASSET_TYPE}/{SHARD_NUMBER} and only
         /// contains assets for that type. <shard number> starts from 0. Example:
         /// "gs://bucket_name/object_name_prefix/compute.googleapis.com/Disk/0" is
@@ -308,9 +521,9 @@ pub enum ContentType {
     Resource = 1,
     /// The actual IAM policy set on a resource.
     IamPolicy = 2,
-    /// The organization policy set on an asset.
+    /// The Cloud Organization Policy set on an asset.
     OrgPolicy = 4,
-    /// The Access Context Manager policy set on an asset.
+    /// The Cloud Access context manager Policy set on an asset.
     AccessPolicy = 5,
     /// The related resources.
     Relationship = 7,
@@ -471,217 +684,4 @@ pub mod asset_service_client {
             self.inner.unary(req, path, codec).await
         }
     }
-}
-/// An asset in Google Cloud. An asset can be any resource in the Google Cloud
-/// [resource
-/// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
-/// a resource outside the Google Cloud resource hierarchy (such as Google
-/// Kubernetes Engine clusters and objects), or a policy (e.g. IAM policy).
-/// See [Supported asset
-/// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
-/// for more information.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Asset {
-    /// The last update timestamp of an asset. update_time is updated when
-    /// create/update/delete operation is performed.
-    #[prost(message, optional, tag = "11")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The full name of the asset. Example:
-    /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
-    ///
-    /// See [Resource
-    /// names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
-    /// for more information.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The type of the asset. Example: `compute.googleapis.com/Disk`
-    ///
-    /// See [Supported asset
-    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
-    /// for more information.
-    #[prost(string, tag = "2")]
-    pub asset_type: ::prost::alloc::string::String,
-    /// A representation of the resource.
-    #[prost(message, optional, tag = "3")]
-    pub resource: ::core::option::Option<Resource>,
-    /// A representation of the IAM policy set on a Google Cloud resource.
-    /// There can be a maximum of one IAM policy set on any given resource.
-    /// In addition, IAM policies inherit their granted access scope from any
-    /// policies set on parent resources in the resource hierarchy. Therefore, the
-    /// effectively policy is the union of both the policy set on this resource
-    /// and each policy set on all of the resource's ancestry resource levels in
-    /// the hierarchy. See
-    /// [this topic](<https://cloud.google.com/iam/help/allow-policies/inheritance>)
-    /// for more information.
-    #[prost(message, optional, tag = "4")]
-    pub iam_policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
-    /// A representation of an [organization
-    /// policy](<https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>).
-    /// There can be more than one organization policy with different constraints
-    /// set on a given resource.
-    #[prost(message, repeated, tag = "6")]
-    pub org_policy: ::prost::alloc::vec::Vec<super::super::orgpolicy::v1::Policy>,
-    /// The related assets of the asset of one relationship type.
-    /// One asset only represents one type of relationship.
-    #[prost(message, optional, tag = "13")]
-    pub related_assets: ::core::option::Option<RelatedAssets>,
-    /// The ancestry path of an asset in Google Cloud [resource
-    /// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
-    /// represented as a list of relative resource names. An ancestry path starts
-    /// with the closest ancestor in the hierarchy and ends at root. If the asset
-    /// is a project, folder, or organization, the ancestry path starts from the
-    /// asset itself.
-    ///
-    /// Example: `["projects/123456789", "folders/5432", "organizations/1234"]`
-    #[prost(string, repeated, tag = "10")]
-    pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// A representation of an [access
-    /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
-    #[prost(oneof = "asset::AccessContextPolicy", tags = "7, 8, 9")]
-    pub access_context_policy: ::core::option::Option<asset::AccessContextPolicy>,
-}
-/// Nested message and enum types in `Asset`.
-pub mod asset {
-    /// A representation of an [access
-    /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum AccessContextPolicy {
-        /// Please also refer to the [access policy user
-        /// guide](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
-        #[prost(message, tag = "7")]
-        AccessPolicy(
-            super::super::super::super::identity::accesscontextmanager::v1::AccessPolicy,
-        ),
-        /// Please also refer to the [access level user
-        /// guide](<https://cloud.google.com/access-context-manager/docs/overview#access-levels>).
-        #[prost(message, tag = "8")]
-        AccessLevel(
-            super::super::super::super::identity::accesscontextmanager::v1::AccessLevel,
-        ),
-        /// Please also refer to the [service perimeter user
-        /// guide](<https://cloud.google.com/vpc-service-controls/docs/overview>).
-        #[prost(message, tag = "9")]
-        ServicePerimeter(
-            super::super::super::super::identity::accesscontextmanager::v1::ServicePerimeter,
-        ),
-    }
-}
-/// A representation of a Google Cloud resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Resource {
-    /// The API version. Example: `v1`
-    #[prost(string, tag = "1")]
-    pub version: ::prost::alloc::string::String,
-    /// The URL of the discovery document containing the resource's JSON schema.
-    /// Example:
-    /// `<https://www.googleapis.com/discovery/v1/apis/compute/v1/rest`>
-    ///
-    /// This value is unspecified for resources that do not have an API based on a
-    /// discovery document, such as Cloud Bigtable.
-    #[prost(string, tag = "2")]
-    pub discovery_document_uri: ::prost::alloc::string::String,
-    /// The JSON schema name listed in the discovery document. Example:
-    /// `Project`
-    ///
-    /// This value is unspecified for resources that do not have an API based on a
-    /// discovery document, such as Cloud Bigtable.
-    #[prost(string, tag = "3")]
-    pub discovery_name: ::prost::alloc::string::String,
-    /// The REST URL for accessing the resource. An HTTP `GET` request using this
-    /// URL returns the resource itself. Example:
-    /// `<https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`>
-    ///
-    /// This value is unspecified for resources without a REST API.
-    #[prost(string, tag = "4")]
-    pub resource_url: ::prost::alloc::string::String,
-    /// The full name of the immediate parent of this resource. See
-    /// [Resource
-    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
-    /// for more information.
-    ///
-    /// For Google Cloud assets, this value is the parent resource defined in the
-    /// [IAM policy
-    /// hierarchy](<https://cloud.google.com/iam/docs/overview#policy_hierarchy>).
-    /// Example:
-    /// `//cloudresourcemanager.googleapis.com/projects/my_project_123`
-    ///
-    /// For third-party assets, this field may be set differently.
-    #[prost(string, tag = "5")]
-    pub parent: ::prost::alloc::string::String,
-    /// The content of the resource, in which some sensitive fields are removed
-    /// and may not be present.
-    #[prost(message, optional, tag = "6")]
-    pub data: ::core::option::Option<::prost_types::Struct>,
-    /// The location of the resource in Google Cloud, such as its zone and region.
-    /// For more information, see <https://cloud.google.com/about/locations/.>
-    #[prost(string, tag = "8")]
-    pub location: ::prost::alloc::string::String,
-}
-/// The detailed related assets with the `relationship_type`.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RelatedAssets {
-    /// The detailed relation attributes.
-    #[prost(message, optional, tag = "1")]
-    pub relationship_attributes: ::core::option::Option<RelationshipAttributes>,
-    /// The peer resources of the relationship.
-    #[prost(message, repeated, tag = "2")]
-    pub assets: ::prost::alloc::vec::Vec<RelatedAsset>,
-}
-/// The relationship attributes which include  `type`, `source_resource_type`,
-/// `target_resource_type` and `action`.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RelationshipAttributes {
-    /// The unique identifier of the relationship type. Example:
-    /// `INSTANCE_TO_INSTANCEGROUP`
-    #[prost(string, tag = "4")]
-    pub r#type: ::prost::alloc::string::String,
-    /// The source asset type. Example: `compute.googleapis.com/Instance`
-    #[prost(string, tag = "1")]
-    pub source_resource_type: ::prost::alloc::string::String,
-    /// The target asset type. Example: `compute.googleapis.com/Disk`
-    #[prost(string, tag = "2")]
-    pub target_resource_type: ::prost::alloc::string::String,
-    /// The detail of the relationship, e.g. `contains`, `attaches`
-    #[prost(string, tag = "3")]
-    pub action: ::prost::alloc::string::String,
-}
-/// An asset identify in Google Cloud which contains its name, type and
-/// ancestors. An asset can be any resource in the Google Cloud [resource
-/// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
-/// a resource outside the Google Cloud resource hierarchy (such as Google
-/// Kubernetes Engine clusters and objects), or a policy (e.g. IAM policy).
-/// See [Supported asset
-/// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
-/// for more information.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RelatedAsset {
-    /// The full name of the asset. Example:
-    /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
-    ///
-    /// See [Resource
-    /// names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
-    /// for more information.
-    #[prost(string, tag = "1")]
-    pub asset: ::prost::alloc::string::String,
-    /// The type of the asset. Example: `compute.googleapis.com/Disk`
-    ///
-    /// See [Supported asset
-    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
-    /// for more information.
-    #[prost(string, tag = "2")]
-    pub asset_type: ::prost::alloc::string::String,
-    /// The ancestors of an asset in Google Cloud [resource
-    /// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
-    /// represented as a list of relative resource names. An ancestry path starts
-    /// with the closest ancestor in the hierarchy and ends at root.
-    ///
-    /// Example: `["projects/123456789", "folders/5432", "organizations/1234"]`
-    #[prost(string, repeated, tag = "3")]
-    pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

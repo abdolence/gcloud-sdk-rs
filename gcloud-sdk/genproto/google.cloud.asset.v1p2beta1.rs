@@ -52,7 +52,7 @@ pub struct Asset {
     /// the closest CRM ancestor and ends at root. If the asset is a CRM
     /// project/folder/organization, this starts from the asset itself.
     ///
-    /// Example: ["projects/123456789", "folders/5432", "organizations/1234"]
+    /// Example: \["projects/123456789", "folders/5432", "organizations/1234"\]
     #[prost(string, repeated, tag = "6")]
     pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

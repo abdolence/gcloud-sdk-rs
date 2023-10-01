@@ -394,7 +394,7 @@ pub struct RestoreConfig {
 /// Nested message and enum types in `RestoreConfig`.
 pub mod restore_config {
     /// This is a direct map to the Kubernetes GroupKind type
-    /// \[GroupKind\](<https://godoc.org/k8s.io/apimachinery/pkg/runtime/schema#GroupKind>)
+    /// [GroupKind](<https://godoc.org/k8s.io/apimachinery/pkg/runtime/schema#GroupKind>)
     /// and is used for identifying specific "types" of resources to restore.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -451,7 +451,7 @@ pub mod restore_config {
         /// fields out of the candidate resources will be modified).
         #[prost(string, tag = "3")]
         pub target_json_path: ::prost::alloc::string::String,
-        /// (Filtering parameter) This is a [regular expression]
+        /// (Filtering parameter) This is a \[regular expression\]
         /// (<https://en.wikipedia.org/wiki/Regular_expression>)
         /// that is compared against the fields matched by the target_json_path
         /// expression (and must also have passed the previous filters).

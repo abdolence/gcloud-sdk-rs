@@ -10,9 +10,7 @@ pub struct LiveAdTagDetail {
     #[prost(message, repeated, tag = "2")]
     pub ad_requests: ::prost::alloc::vec::Vec<AdRequest>,
 }
-/// Information related to the details for one ad tag. This resource is only
-/// available for VOD sessions that do not implement Google Ad Manager ad
-/// insertion.
+/// Information related to the details for one ad tag.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodAdTagDetail {
@@ -84,7 +82,7 @@ pub struct CdnKey {
     #[prost(string, tag = "4")]
     pub hostname: ::prost::alloc::string::String,
     /// Configuration associated with the CDN key.
-    #[prost(oneof = "cdn_key::CdnKeyConfig", tags = "5, 6, 8")]
+    #[prost(oneof = "cdn_key::CdnKeyConfig", tags = "5, 6")]
     pub cdn_key_config: ::core::option::Option<cdn_key::CdnKeyConfig>,
 }
 /// Nested message and enum types in `CdnKey`.
@@ -99,9 +97,6 @@ pub mod cdn_key {
         /// The configuration for an Akamai CDN key.
         #[prost(message, tag = "6")]
         AkamaiCdnKey(super::AkamaiCdnKey),
-        /// The configuration for a Media CDN key.
-        #[prost(message, tag = "8")]
-        MediaCdnKey(super::MediaCdnKey),
     }
 }
 /// Configuration for a Google Cloud CDN key.
@@ -122,17 +117,6 @@ pub struct AkamaiCdnKey {
     /// Input only. Token key for the Akamai CDN edge configuration.
     #[prost(bytes = "vec", tag = "1")]
     pub token_key: ::prost::alloc::vec::Vec<u8>,
-}
-/// Configuration for a Media CDN key.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaCdnKey {
-    /// Input only. 64-byte ed25519 private key for this Media CDN key.
-    #[prost(bytes = "vec", tag = "1")]
-    pub private_key: ::prost::alloc::vec::Vec<u8>,
-    /// The keyset name of the Media CDN key.
-    #[prost(string, tag = "2")]
-    pub key_name: ::prost::alloc::string::String,
 }
 /// Describes an event and a trigger URI.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -443,207 +427,7 @@ pub struct StaticAdResource {
     #[prost(string, tag = "2")]
     pub creative_type: ::prost::alloc::string::String,
 }
-/// Metadata for used to register live configs.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LiveConfig {
-    /// Output only. The resource name of the live config, in the form of
-    /// `projects/{project}/locations/{location}/liveConfigs/{id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. Source URI for the live stream manifest.
-    #[prost(string, tag = "2")]
-    pub source_uri: ::prost::alloc::string::String,
-    /// The default ad tag associated with this live stream config.
-    #[prost(string, tag = "3")]
-    pub ad_tag_uri: ::prost::alloc::string::String,
-    /// Additional metadata used to register a live stream with Google Ad Manager
-    /// (GAM)
-    #[prost(message, optional, tag = "4")]
-    pub gam_live_config: ::core::option::Option<GamLiveConfig>,
-    /// Output only. State of the live config.
-    #[prost(enumeration = "live_config::State", tag = "5")]
-    pub state: i32,
-    /// Required. Determines how the ads are tracked. If
-    /// \[gam_live_config][google.cloud.video.stitcher.v1.LiveConfig.gam_live_config\]
-    /// is set, the value must be `CLIENT` because the IMA SDK handles ad tracking.
-    #[prost(enumeration = "AdTracking", tag = "6")]
-    pub ad_tracking: i32,
-    /// This must refer to a slate in the same
-    /// project. If Google Ad Manager (GAM) is used for ads, this string sets the
-    /// value of `slateCreativeId` in
-    /// <https://developers.google.com/ad-manager/api/reference/v202211/LiveStreamEventService.LiveStreamEvent#slateCreativeId>
-    #[prost(string, tag = "7")]
-    pub default_slate: ::prost::alloc::string::String,
-    /// Defines the stitcher behavior in case an ad does not align exactly with
-    /// the ad break boundaries. If not specified, the default is `CUT_CURRENT`.
-    #[prost(enumeration = "live_config::StitchingPolicy", tag = "8")]
-    pub stitching_policy: i32,
-    /// The configuration for prefetching ads.
-    #[prost(message, optional, tag = "10")]
-    pub prefetch_config: ::core::option::Option<PrefetchConfig>,
-}
-/// Nested message and enum types in `LiveConfig`.
-pub mod live_config {
-    /// State of the live config.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// State is not specified.
-        Unspecified = 0,
-        /// Live config is being created.
-        Creating = 1,
-        /// Live config is ready for use.
-        Ready = 2,
-        /// Live config is queued up for deletion.
-        Deleting = 3,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "CREATING" => Some(Self::Creating),
-                "READY" => Some(Self::Ready),
-                "DELETING" => Some(Self::Deleting),
-                _ => None,
-            }
-        }
-    }
-    /// Defines the ad stitching behavior in case the ad duration does not align
-    /// exactly with the ad break boundaries. If not specified, the default is
-    /// `CUT_CURRENT`.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum StitchingPolicy {
-        /// Stitching policy is not specified.
-        Unspecified = 0,
-        /// Cuts an ad short and returns to content in the middle of the ad.
-        CutCurrent = 1,
-        /// Finishes stitching the current ad before returning to content.
-        CompleteAd = 2,
-    }
-    impl StitchingPolicy {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                StitchingPolicy::Unspecified => "STITCHING_POLICY_UNSPECIFIED",
-                StitchingPolicy::CutCurrent => "CUT_CURRENT",
-                StitchingPolicy::CompleteAd => "COMPLETE_AD",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STITCHING_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
-                "CUT_CURRENT" => Some(Self::CutCurrent),
-                "COMPLETE_AD" => Some(Self::CompleteAd),
-                _ => None,
-            }
-        }
-    }
-}
-/// The configuration for prefetch ads.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PrefetchConfig {
-    /// Required. Indicates whether the option to prefetch ad requests is enabled.
-    #[prost(bool, tag = "1")]
-    pub enabled: bool,
-    /// The duration in seconds of the part of the break to be prefetched.
-    /// This field is only relevant if prefetch is enabled.
-    /// You should set this duration to as long as possible to increase the
-    /// benefits of prefetching, but not longer than the shortest ad break
-    /// expected. For example, for a live event with 30s and 60s ad breaks, the
-    /// initial duration should be set to 30s.
-    #[prost(message, optional, tag = "2")]
-    pub initial_ad_request_duration: ::core::option::Option<::prost_types::Duration>,
-}
-/// Metadata used to register a live stream with Google Ad Manager (GAM)
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GamLiveConfig {
-    /// Required. Ad Manager network code to associate with the live config.
-    #[prost(string, tag = "1")]
-    pub network_code: ::prost::alloc::string::String,
-    /// Output only. The asset key identifier generated for the live config.
-    #[prost(string, tag = "2")]
-    pub asset_key: ::prost::alloc::string::String,
-    /// Output only. The custom asset key identifier generated for the live config.
-    #[prost(string, tag = "3")]
-    pub custom_asset_key: ::prost::alloc::string::String,
-}
-/// Determines the ad tracking policy.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum AdTracking {
-    /// The ad tracking policy is not specified.
-    Unspecified = 0,
-    /// Client-side ad tracking is specified. The client player is expected to
-    /// trigger playback and activity events itself.
-    Client = 1,
-    /// The Video Stitcher API will trigger playback events on behalf of
-    /// the client player.
-    Server = 2,
-}
-impl AdTracking {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            AdTracking::Unspecified => "AD_TRACKING_UNSPECIFIED",
-            AdTracking::Client => "CLIENT",
-            AdTracking::Server => "SERVER",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "AD_TRACKING_UNSPECIFIED" => Some(Self::Unspecified),
-            "CLIENT" => Some(Self::Client),
-            "SERVER" => Some(Self::Server),
-            _ => None,
-        }
-    }
-}
-/// Metadata for a VOD session. The session expires 4 hours after its creation.
+/// Metadata for a VOD session.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodSession {
@@ -680,34 +464,20 @@ pub struct VodSession {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Indicates whether client side ad tracking is enabled. If client
+    /// side ad tracking is enabled, then the client player is expected
+    /// to trigger playback and activity events itself.
+    /// If this is set to false, server side ad tracking is enabled,
+    /// causing the Video Stitcher service will trigger playback events
+    /// on behalf of the client player.
+    #[prost(bool, tag = "8")]
+    pub client_ad_tracking: bool,
     /// Additional options that affect the output of the manifest.
     #[prost(message, optional, tag = "9")]
     pub manifest_options: ::core::option::Option<ManifestOptions>,
     /// Output only. The generated ID of the VodSession's source media.
     #[prost(string, tag = "10")]
     pub asset_id: ::prost::alloc::string::String,
-    /// Required. Determines how the ad should be tracked.
-    #[prost(enumeration = "AdTracking", tag = "11")]
-    pub ad_tracking: i32,
-    /// This field should be set with appropriate values if GAM is being used for
-    /// ads.
-    #[prost(message, optional, tag = "13")]
-    pub gam_settings: ::core::option::Option<vod_session::GamSettings>,
-}
-/// Nested message and enum types in `VodSession`.
-pub mod vod_session {
-    /// Defines fields related to Google Ad Manager (GAM). This should be set if
-    /// GAM is being used for ads.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct GamSettings {
-        /// Required. Ad Manager network code.
-        #[prost(string, tag = "1")]
-        pub network_code: ::prost::alloc::string::String,
-        /// Required. The stream ID generated by Ad Manager.
-        #[prost(string, tag = "2")]
-        pub stream_id: ::prost::alloc::string::String,
-    }
 }
 /// Describes what was stitched into a VOD session's manifest.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -764,8 +534,7 @@ pub struct VodSessionAdBreak {
     #[prost(message, optional, tag = "4")]
     pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
-/// Metadata for a live session. The session expires 5 minutes after the client
-/// stops fetching the session's playlists.
+/// Metadata for a live session.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LiveSession {
@@ -776,6 +545,20 @@ pub struct LiveSession {
     /// Output only. The URI to play the live session's ad-stitched stream.
     #[prost(string, tag = "2")]
     pub play_uri: ::prost::alloc::string::String,
+    /// The URI of the live session's source stream.
+    #[prost(string, tag = "3")]
+    pub source_uri: ::prost::alloc::string::String,
+    /// The default ad tag to use when no ad tag ids are specified in an ad break's
+    /// SCTE-35 message.
+    ///
+    /// default_ad_tag_id is necessary when `adTagMap` has more than one key. Its
+    /// value must be present in the `adTagMap`.
+    #[prost(string, tag = "4")]
+    pub default_ad_tag_id: ::prost::alloc::string::String,
+    /// Key value pairs for ad tags. Ads parsed from ad tags must be MP4 videos
+    /// each with at least one audio track.
+    #[prost(map = "string, message", tag = "5")]
+    pub ad_tag_map: ::std::collections::HashMap<::prost::alloc::string::String, AdTag>,
     /// Key value pairs for ad tag macro replacement. If the
     /// specified ad tag URI has macros, this field provides the mapping
     /// to the value that will replace the macro in the ad tag URI.
@@ -794,29 +577,83 @@ pub struct LiveSession {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Whether client side ad tracking is enabled. If enabled, the client player
+    /// is expected to trigger playback and activity events itself. Otherwise,
+    /// server side ad tracking is enabled and the Video Stitcher API will trigger
+    /// playback events on behalf of the client player.
+    #[prost(bool, tag = "7")]
+    pub client_ad_tracking: bool,
+    /// The default slate to use when no slates are specified in an ad break's
+    /// SCTE-35 message. When specified, this value must match the ID for a slate
+    /// that has already been created via the
+    /// [CreateSlate](projects.locations.slates/create) method.
+    #[prost(string, tag = "8")]
+    pub default_slate_id: ::prost::alloc::string::String,
+    /// Defines the stitcher behavior in case an ad does not align exactly with
+    /// the ad break boundaries. If not specified, the default is `COMPLETE_AD`.
+    #[prost(enumeration = "live_session::StitchingPolicy", tag = "9")]
+    pub stitching_policy: i32,
     /// Additional options that affect the output of the manifest.
     #[prost(message, optional, tag = "10")]
     pub manifest_options: ::core::option::Option<ManifestOptions>,
-    /// This field should be set with appropriate values if GAM is being used for
-    /// ads.
-    #[prost(message, optional, tag = "15")]
-    pub gam_settings: ::core::option::Option<live_session::GamSettings>,
-    /// Required. The resource name of the live config for this session, in the
-    /// form of `projects/{project}/locations/{location}/liveConfigs/{id}`.
-    #[prost(string, tag = "16")]
-    pub live_config: ::prost::alloc::string::String,
+    /// Output only. The generated ID of the LiveSession's source stream.
+    #[prost(string, tag = "11")]
+    pub stream_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `LiveSession`.
 pub mod live_session {
-    /// Defines fields related to Google Ad Manager (GAM). This should be set if
-    /// GAM is being used for ads.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct GamSettings {
-        /// Required. The stream ID generated by Ad Manager.
-        #[prost(string, tag = "1")]
-        pub stream_id: ::prost::alloc::string::String,
+    /// Defines the stitcher behavior in case an ad does not align exactly with
+    /// the ad break boundaries. If not specified, the default is COMPLETE_AD.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StitchingPolicy {
+        /// Stitching policy is not specified.
+        Unspecified = 0,
+        /// Finishes stitching the current ad before returning to content.
+        CompleteAd = 1,
+        /// Cuts an ad short and returns to content in the middle of the ad.
+        CutCurrent = 3,
     }
+    impl StitchingPolicy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                StitchingPolicy::Unspecified => "STITCHING_POLICY_UNSPECIFIED",
+                StitchingPolicy::CompleteAd => "COMPLETE_AD",
+                StitchingPolicy::CutCurrent => "CUT_CURRENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STITCHING_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETE_AD" => Some(Self::CompleteAd),
+                "CUT_CURRENT" => Some(Self::CutCurrent),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata of an ad tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdTag {
+    /// Ad tag URI template.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
 }
 /// Options for manifest generation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -902,28 +739,8 @@ pub struct Slate {
     /// MP4 video with at least one audio track.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// gam_slate has all the GAM-related attributes of slates.
-    #[prost(message, optional, tag = "3")]
-    pub gam_slate: ::core::option::Option<slate::GamSlate>,
 }
-/// Nested message and enum types in `Slate`.
-pub mod slate {
-    /// GamSlate object has Google Ad Manager (GAM) related properties for the
-    /// slate.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct GamSlate {
-        /// Required. Ad Manager network code to associate with the live config.
-        #[prost(string, tag = "1")]
-        pub network_code: ::prost::alloc::string::String,
-        /// Output only. The identifier generated for the slate by GAM.
-        #[prost(int64, tag = "2")]
-        pub gam_slate_id: i64,
-    }
-}
-/// Detailed information related to the interstitial of a VOD session. This
-/// resource is only available for VOD sessions that do not implement Google Ad
-/// Manager ad insertion.
+/// Detailed information related to the interstitial of a VOD session.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodStitchDetail {
@@ -962,15 +779,15 @@ pub struct AdStitchDetail {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCdnKeyRequest {
-    /// Required. The project in which the CDN key should be created, in the form
-    /// of `projects/{project_number}/locations/{location}`.
+    /// Required. The project in which the CDN key should be created, in the form of
+    /// `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The CDN key resource to create.
     #[prost(message, optional, tag = "2")]
     pub cdn_key: ::core::option::Option<CdnKey>,
-    /// Required. The ID to use for the CDN key, which will become the final
-    /// component of the CDN key's resource name.
+    /// Required. The ID to use for the CDN key, which will become the final component of
+    /// the CDN key's resource name.
     ///
     /// This value should conform to RFC-1034, which restricts to
     /// lower-case letters, numbers, and hyphen, with the first character a
@@ -1049,8 +866,8 @@ pub struct UpdateCdnKeyRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVodSessionRequest {
-    /// Required. The project and location in which the VOD session should be
-    /// created, in the form of `projects/{project_number}/locations/{location}`.
+    /// Required. The project and location in which the VOD session should be created, in the
+    /// form of `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Parameters for creating a session.
@@ -1070,8 +887,8 @@ pub struct GetVodSessionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVodStitchDetailsRequest {
-    /// Required. The VOD session where the stitch details belong to, in the form
-    /// of `projects/{project}/locations/{location}/vodSessions/{id}`.
+    /// Required. The VOD session where the stitch details belong to, in the form of
+    /// `projects/{project}/locations/{location}/vodSessions/{id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -1096,8 +913,7 @@ pub struct ListVodStitchDetailsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVodStitchDetailRequest {
-    /// Required. The name of the stitch detail in the specified VOD session, in
-    /// the form of
+    /// Required. The name of the stitch detail in the specified VOD session, in the form of
     /// `projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodStitchDetails/{id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1106,8 +922,8 @@ pub struct GetVodStitchDetailRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVodAdTagDetailsRequest {
-    /// Required. The VOD session which the ad tag details belong to, in the form
-    /// of `projects/{project}/locations/{location}/vodSessions/{vod_session_id}`.
+    /// Required. The VOD session which the ad tag details belong to, in the form of
+    /// `projects/{project}/locations/{location}/vodSessions/{vod_session_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -1132,8 +948,7 @@ pub struct ListVodAdTagDetailsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVodAdTagDetailRequest {
-    /// Required. The name of the ad tag detail for the specified VOD session, in
-    /// the form of
+    /// Required. The name of the ad tag detail for the specified VOD session, in the form of
     /// `projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodAdTagDetails/{vod_ad_tag_detail}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1178,7 +993,7 @@ pub struct GetLiveAdTagDetailRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSlateRequest {
     /// Required. The project in which the slate should be created, in the form of
-    /// `projects/{project_number}/locations/{location}`.
+    /// `projects/{project_number}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The unique identifier for the slate.
@@ -1190,28 +1005,13 @@ pub struct CreateSlateRequest {
     /// Required. The slate to create.
     #[prost(message, optional, tag = "3")]
     pub slate: ::core::option::Option<Slate>,
-    /// A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request ID,
-    /// the server can check if original operation with the same request ID was
-    /// received, and if so, will ignore the second request. This prevents clients
-    /// from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported `(00000000-0000-0000-0000-000000000000)`.
-    #[prost(string, tag = "4")]
-    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getSlate.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSlateRequest {
-    /// Required. The name of the slate to be retrieved, of the slate, in the form
-    /// of `projects/{project_number}/locations/{location}/slates/{id}`.
+    /// Required. The name of the slate to be retrieved, of the slate, in the form of
+    /// `projects/{project_number}/locations/{location}/slates/{id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1219,8 +1019,7 @@ pub struct GetSlateRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSlatesRequest {
-    /// Required. The project to list slates, in the form of
-    /// `projects/{project_number}/locations/{location}`.
+    /// Required. The project to list slates, in the form of `projects/{project_number}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
@@ -1275,8 +1074,8 @@ pub struct DeleteSlateRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateLiveSessionRequest {
-    /// Required. The project and location in which the live session should be
-    /// created, in the form of `projects/{project_number}/locations/{location}`.
+    /// Required. The project and location in which the live session should be created,
+    /// in the form of `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Parameters for creating a live session.
@@ -1291,110 +1090,6 @@ pub struct GetLiveSessionRequest {
     /// `projects/{project_number}/locations/{location}/liveSessions/{id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-}
-/// Request message for VideoStitcherService.createLiveConfig
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateLiveConfigRequest {
-    /// Required. The project in which the live config should be created, in
-    /// the form of `projects/{project_number}/locations/{location}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The unique identifier ID to use for the live config.
-    #[prost(string, tag = "2")]
-    pub live_config_id: ::prost::alloc::string::String,
-    /// Required. The live config resource to create.
-    #[prost(message, optional, tag = "3")]
-    pub live_config: ::core::option::Option<LiveConfig>,
-    /// A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and the
-    /// request times out. If you make the request again with the same request ID,
-    /// the server can check if original operation with the same request ID was
-    /// received, and if so, will ignore the second request. This prevents clients
-    /// from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported `(00000000-0000-0000-0000-000000000000)`.
-    #[prost(string, tag = "4")]
-    pub request_id: ::prost::alloc::string::String,
-}
-/// Request message for VideoStitcherService.listLiveConfig.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListLiveConfigsRequest {
-    /// Required. The project that contains the list of live configs, in the
-    /// form of `projects/{project_number}/locations/{location}`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of items to return.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to apply to list results (see
-    /// \[Filtering\](<https://google.aip.dev/160>)).
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-    /// Optional. Specifies the ordering of results following
-    /// [Cloud API
-    /// syntax](<https://cloud.google.com/apis/design/design_patterns#sorting_order>).
-    #[prost(string, tag = "5")]
-    pub order_by: ::prost::alloc::string::String,
-}
-/// Response message for VideoStitcher.ListLiveConfig.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListLiveConfigsResponse {
-    /// List of live configs.
-    #[prost(message, repeated, tag = "1")]
-    pub live_configs: ::prost::alloc::vec::Vec<LiveConfig>,
-    /// The pagination token.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Request message for VideoStitcherService.getLiveConfig.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetLiveConfigRequest {
-    /// Required. The name of the live config to be retrieved, in the form
-    /// of
-    /// `projects/{project_number}/locations/{location}/liveConfigs/{id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for VideoStitcherService.deleteLiveConfig.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteLiveConfigRequest {
-    /// Required. The name of the live config to be deleted, in the form of
-    /// `projects/{project_number}/locations/{location}/liveConfigs/{id}`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Represents the metadata of the long-running operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationMetadata {
-    /// The time the operation was created.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Server-defined resource path for the target of the operation.
-    #[prost(string, tag = "3")]
-    pub target: ::prost::alloc::string::String,
-    /// Name of the verb executed by the operation.
-    #[prost(string, tag = "4")]
-    pub verb: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod video_stitcher_service_client {
@@ -1490,10 +1185,7 @@ pub mod video_stitcher_service_client {
         pub async fn create_cdn_key(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCdnKeyRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
+        ) -> std::result::Result<tonic::Response<super::CdnKey>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1580,10 +1272,7 @@ pub mod video_stitcher_service_client {
         pub async fn delete_cdn_key(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCdnKeyRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1612,10 +1301,7 @@ pub mod video_stitcher_service_client {
         pub async fn update_cdn_key(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCdnKeyRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
+        ) -> std::result::Result<tonic::Response<super::CdnKey>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1885,10 +1571,7 @@ pub mod video_stitcher_service_client {
         pub async fn create_slate(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSlateRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
+        ) -> std::result::Result<tonic::Response<super::Slate>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -1975,10 +1658,7 @@ pub mod video_stitcher_service_client {
         pub async fn update_slate(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSlateRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
+        ) -> std::result::Result<tonic::Response<super::Slate>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2006,10 +1686,7 @@ pub mod video_stitcher_service_client {
         pub async fn delete_slate(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSlateRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -2085,130 +1762,6 @@ pub mod video_stitcher_service_client {
                     GrpcMethod::new(
                         "google.cloud.video.stitcher.v1.VideoStitcherService",
                         "GetLiveSession",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Registers the live config with the provided unique ID in
-        /// the specified region.
-        pub async fn create_live_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateLiveConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateLiveConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.video.stitcher.v1.VideoStitcherService",
-                        "CreateLiveConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists all live configs managed by the Video Stitcher that
-        /// belong to the specified project and region.
-        pub async fn list_live_configs(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListLiveConfigsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListLiveConfigsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.video.stitcher.v1.VideoStitcherService/ListLiveConfigs",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.video.stitcher.v1.VideoStitcherService",
-                        "ListLiveConfigs",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Returns the specified live config managed by the Video
-        /// Stitcher service.
-        pub async fn get_live_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetLiveConfigRequest>,
-        ) -> std::result::Result<tonic::Response<super::LiveConfig>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.video.stitcher.v1.VideoStitcherService",
-                        "GetLiveConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes the specified live config.
-        pub async fn delete_live_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteLiveConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteLiveConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.video.stitcher.v1.VideoStitcherService",
-                        "DeleteLiveConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -149,7 +149,7 @@ pub mod cloud_support_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D: TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -205,12 +205,28 @@ pub mod cloud_support_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
         /// Retrieves the support account details given an account identifier.
         /// The authenticated user calling this method must be the account owner.
         pub async fn get_support_account(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSupportAccountRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::common::SupportAccount>,
             tonic::Status,
         > {
@@ -227,14 +243,25 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/GetSupportAccount",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "GetSupportAccount",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of accounts the current authenticated user has access
         /// to.
         pub async fn list_support_accounts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSupportAccountsRequest>,
-        ) -> Result<tonic::Response<super::ListSupportAccountsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListSupportAccountsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -248,14 +275,25 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/ListSupportAccounts",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "ListSupportAccounts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the details for a support case. The current authenticated user
         /// calling this method must have permissions to view this case.
         pub async fn get_case(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCaseRequest>,
-        ) -> Result<tonic::Response<super::super::common::Case>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::Case>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -269,14 +307,25 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/GetCase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "GetCase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the list of support cases associated with an account. The current
         /// authenticated user must have the permission to list and view these cases.
         pub async fn list_cases(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCasesRequest>,
-        ) -> Result<tonic::Response<super::ListCasesResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCasesResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -290,13 +339,24 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/ListCases",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "ListCases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Lists all comments from a case.
         pub async fn list_comments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCommentsRequest>,
-        ) -> Result<tonic::Response<super::ListCommentsResponse>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::ListCommentsResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -310,7 +370,15 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/ListComments",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "ListComments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a case and associates it with a
         /// [SupportAccount][google.cloud.support.v1alpha2.SupportAcccount]. The
@@ -319,7 +387,10 @@ pub mod cloud_support_client {
         pub async fn create_case(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCaseRequest>,
-        ) -> Result<tonic::Response<super::super::common::Case>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::Case>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -333,14 +404,25 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/CreateCase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "CreateCase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Updates a support case. Only a small set of details (priority, subject and
         /// cc_address) can be update after a case is created.
         pub async fn update_case(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCaseRequest>,
-        ) -> Result<tonic::Response<super::super::common::Case>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::Case>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -354,13 +436,24 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/UpdateCase",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "UpdateCase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Adds a new comment to a case.
         pub async fn create_comment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCommentRequest>,
-        ) -> Result<tonic::Response<super::super::common::Comment>, tonic::Status> {
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::Comment>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await
@@ -374,14 +467,22 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/CreateComment",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "CreateComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Retrieves the taxonomy of product categories and components to be used
         /// while creating a support case.
         pub async fn get_issue_taxonomy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIssueTaxonomyRequest>,
-        ) -> Result<
+        ) -> std::result::Result<
             tonic::Response<super::super::common::IssueTaxonomy>,
             tonic::Status,
         > {
@@ -398,7 +499,15 @@ pub mod cloud_support_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v1alpha1.CloudSupport/GetIssueTaxonomy",
             );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.support.v1alpha1.CloudSupport",
+                        "GetIssueTaxonomy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
