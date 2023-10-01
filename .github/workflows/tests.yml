@@ -1,8 +1,6 @@
 name: tests & formatting
 on: 
   push:
-  pull_request:
-    types: [opened]  
 jobs:
   build:
     runs-on: ubuntu-latest

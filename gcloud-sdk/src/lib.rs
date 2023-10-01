@@ -69,3 +69,7 @@ mod rest_apis;
 pub use rest_apis::*;
 
 pub const GCLOUD_SDK_USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
+
+pub use tonic;
+pub use prost;
+pub use prost_types;

@@ -6,11 +6,6 @@ edition = "2021"
 
 [dependencies]
 gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-cloud-secretmanager-v1"] }
-tonic = { version = "0.10", features = ["tls"] }
-tower = "0.4"
-prost = "0.12"
-prost-types = "0.12"
-chrono = { version = "0.4", default-features = false }
 tokio = { version = "1.20", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version ="0.3", features = ["env-filter"] }

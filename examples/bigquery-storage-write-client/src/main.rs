@@ -83,6 +83,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ],
             }),
         })),
+        ..Default::default()
     }]);
 
     let response = client.get().append_rows(rows_stream).await?;
