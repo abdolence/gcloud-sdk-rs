@@ -76,6 +76,62 @@ pub mod linux_node_config {
         }
     }
 }
+/// Parameters that can be configured on Windows nodes.
+/// Windows Node Config that define the parameters that will be used to
+/// configure the Windows node pool settings
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WindowsNodeConfig {
+    /// OSVersion specifies the Windows node config to be used on the node
+    #[prost(enumeration = "windows_node_config::OsVersion", tag = "1")]
+    pub os_version: i32,
+}
+/// Nested message and enum types in `WindowsNodeConfig`.
+pub mod windows_node_config {
+    /// Possible OS version that can be used.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OsVersion {
+        /// When OSVersion is not specified
+        Unspecified = 0,
+        /// LTSC2019 specifies to use LTSC2019 as the Windows Servercore Base Image
+        Ltsc2019 = 1,
+        /// LTSC2022 specifies to use LTSC2022 as the Windows Servercore Base Image
+        Ltsc2022 = 2,
+    }
+    impl OsVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OsVersion::Unspecified => "OS_VERSION_UNSPECIFIED",
+                OsVersion::Ltsc2019 => "OS_VERSION_LTSC2019",
+                OsVersion::Ltsc2022 => "OS_VERSION_LTSC2022",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OS_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "OS_VERSION_LTSC2019" => Some(Self::Ltsc2019),
+                "OS_VERSION_LTSC2022" => Some(Self::Ltsc2022),
+                _ => None,
+            }
+        }
+    }
+}
 /// Node kubelet configs.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -119,6 +175,9 @@ pub struct NodeKubeletConfig {
     /// must be greater than or equal to 1024 and less than 4194304.
     #[prost(int64, tag = "4")]
     pub pod_pids_limit: i64,
+    /// Enable or disable Kubelet read only port.
+    #[prost(bool, optional, tag = "7")]
+    pub insecure_kubelet_readonly_port_enabled: ::core::option::Option<bool>,
 }
 /// Parameters that describe the nodes in a cluster.
 ///
@@ -202,7 +261,9 @@ pub struct NodeConfig {
         ::prost::alloc::string::String,
     >,
     /// The image type to use for this node. Note that for a given image type,
-    /// the latest version of it will be used.
+    /// the latest version of it will be used. Please see
+    /// <https://cloud.google.com/kubernetes-engine/docs/concepts/node-images> for
+    /// available image types.
     #[prost(string, tag = "5")]
     pub image_type: ::prost::alloc::string::String,
     /// The map of Kubernetes labels (key/value pairs) to be applied to each node.
@@ -234,7 +295,7 @@ pub struct NodeConfig {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Whether the nodes are created as preemptible VM instances. See:
     /// <https://cloud.google.com/compute/docs/instances/preemptible> for more
-    /// inforamtion about preemptible VM instances.
+    /// information about preemptible VM instances.
     #[prost(bool, tag = "10")]
     pub preemptible: bool,
     /// A list of hardware accelerators to be attached to each node.
@@ -320,9 +381,44 @@ pub struct NodeConfig {
     /// All the nodes in the node pool will be Confidential VM once enabled.
     #[prost(message, optional, tag = "35")]
     pub confidential_nodes: ::core::option::Option<ConfidentialNodes>,
+    /// Enable or disable NCCL fast socket for the node pool.
+    #[prost(message, optional, tag = "36")]
+    pub fast_socket: ::core::option::Option<FastSocket>,
+    /// The resource labels for the node pool to use to annotate any related
+    /// Google Compute Engine resources.
+    #[prost(map = "string, string", tag = "37")]
+    pub resource_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Logging configuration.
     #[prost(message, optional, tag = "38")]
     pub logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// Parameters that can be configured on Windows nodes.
+    #[prost(message, optional, tag = "39")]
+    pub windows_node_config: ::core::option::Option<WindowsNodeConfig>,
+    /// Parameters for using raw-block Local NVMe SSDs.
+    #[prost(message, optional, tag = "40")]
+    pub local_nvme_ssd_block_config: ::core::option::Option<LocalNvmeSsdBlockConfig>,
+    /// Parameters for the node ephemeral storage using Local SSDs.
+    /// If unspecified, ephemeral storage is backed by the boot disk.
+    /// This field is functionally equivalent to the ephemeral_storage_config
+    #[prost(message, optional, tag = "41")]
+    pub ephemeral_storage_local_ssd_config: ::core::option::Option<
+        EphemeralStorageLocalSsdConfig,
+    >,
+    /// Parameters for node pools to be backed by shared sole tenant node groups.
+    #[prost(message, optional, tag = "42")]
+    pub sole_tenant_config: ::core::option::Option<SoleTenantConfig>,
+    /// HostMaintenancePolicy contains the desired maintenance policy for the
+    /// Google Compute Engine hosts.
+    #[prost(message, optional, tag = "44")]
+    pub host_maintenance_policy: ::core::option::Option<HostMaintenancePolicy>,
+    /// Optional. Enable confidential storage on Hyperdisk.
+    /// boot_disk_kms_key is required when enable_confidential_storage is true.
+    /// This is only available for private preview.
+    #[prost(bool, tag = "46")]
+    pub enable_confidential_storage: bool,
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -379,11 +475,49 @@ pub struct NodeNetworkConfig {
     /// This field cannot be changed after the node pool has been created.
     #[prost(string, tag = "6")]
     pub pod_ipv4_cidr_block: ::prost::alloc::string::String,
+    /// Whether nodes have internal IP addresses only.
+    /// If enable_private_nodes is not specified, then the value is derived from
+    /// [cluster.privateClusterConfig.enablePrivateNodes][google.container.v1beta1.PrivateClusterConfig.enablePrivateNodes]
+    #[prost(bool, optional, tag = "9")]
+    pub enable_private_nodes: ::core::option::Option<bool>,
     /// Network bandwidth tier configuration.
     #[prost(message, optional, tag = "11")]
     pub network_performance_config: ::core::option::Option<
         node_network_config::NetworkPerformanceConfig,
     >,
+    /// \[PRIVATE FIELD\]
+    /// Pod CIDR size overprovisioning config for the nodepool.
+    ///
+    /// Pod CIDR size per node depends on max_pods_per_node. By default, the value
+    /// of max_pods_per_node is rounded off to next power of 2 and we then double
+    /// that to get the size of pod CIDR block per node.
+    /// Example: max_pods_per_node of 30 would result in 64 IPs (/26).
+    ///
+    /// This config can disable the doubling of IPs (we still round off to next
+    /// power of 2)
+    /// Example: max_pods_per_node of 30 will result in 32 IPs (/27) when
+    /// overprovisioning is disabled.
+    #[prost(message, optional, tag = "13")]
+    pub pod_cidr_overprovision_config: ::core::option::Option<
+        PodCidrOverprovisionConfig,
+    >,
+    /// We specify the additional node networks for this node pool using this list.
+    /// Each node network corresponds to an additional interface
+    #[prost(message, repeated, tag = "14")]
+    pub additional_node_network_configs: ::prost::alloc::vec::Vec<
+        AdditionalNodeNetworkConfig,
+    >,
+    /// We specify the additional pod networks for this node pool using this list.
+    /// Each pod network corresponds to an additional alias IP range for the node
+    #[prost(message, repeated, tag = "15")]
+    pub additional_pod_network_configs: ::prost::alloc::vec::Vec<
+        AdditionalPodNetworkConfig,
+    >,
+    /// Output only. \[Output only\] The utilization of the IPv4 range for the pod.
+    /// The ratio is Usage/\[Total number of IPs in the secondary range\],
+    /// Usage=numNodes*numZones*podIPsPerNode.
+    #[prost(double, tag = "16")]
+    pub pod_ipv4_range_utilization: f64,
 }
 /// Nested message and enum types in `NodeNetworkConfig`.
 pub mod node_network_config {
@@ -441,6 +575,34 @@ pub mod node_network_config {
             }
         }
     }
+}
+/// AdditionalNodeNetworkConfig is the configuration for additional node networks
+/// within the NodeNetworkConfig message
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdditionalNodeNetworkConfig {
+    /// Name of the VPC where the additional interface belongs
+    #[prost(string, tag = "1")]
+    pub network: ::prost::alloc::string::String,
+    /// Name of the subnetwork where the additional interface belongs
+    #[prost(string, tag = "2")]
+    pub subnetwork: ::prost::alloc::string::String,
+}
+/// AdditionalPodNetworkConfig is the configuration for additional pod networks
+/// within the NodeNetworkConfig message
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdditionalPodNetworkConfig {
+    /// Name of the subnetwork where the additional pod network belongs
+    #[prost(string, tag = "1")]
+    pub subnetwork: ::prost::alloc::string::String,
+    /// The name of the secondary range on the subnet which provides IP address for
+    /// this pod range
+    #[prost(string, tag = "2")]
+    pub secondary_pod_range: ::prost::alloc::string::String,
+    /// The maximum number of pods per node which use this pod network
+    #[prost(message, optional, tag = "3")]
+    pub max_pods_per_node: ::core::option::Option<MaxPodsConstraint>,
 }
 /// A set of Shielded Instance options.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -527,6 +689,36 @@ pub struct EphemeralStorageConfig {
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
 }
+/// LocalNvmeSsdBlockConfig contains configuration for using raw-block local
+/// NVMe SSDs
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocalNvmeSsdBlockConfig {
+    /// The number of raw-block local NVMe SSD disks to be attached to the node.
+    /// Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe
+    /// SSD disks to be attached to the node.
+    /// The limit for this value is dependent upon the maximum number of
+    /// disks available on a machine per zone. See:
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd>
+    /// for more information.
+    #[prost(int32, tag = "1")]
+    pub local_ssd_count: i32,
+}
+/// EphemeralStorageLocalSsdConfig contains configuration for the node ephemeral
+/// storage using Local SSDs.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EphemeralStorageLocalSsdConfig {
+    /// Number of local SSDs to use to back ephemeral storage. Uses NVMe
+    /// interfaces. Each local SSD is 375 GB in size.
+    /// If zero, it means to disable using local SSDs as ephemeral storage.
+    /// The limit for this value is dependent upon the maximum number of
+    /// disks available on a machine per zone. See:
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd>
+    /// for more information.
+    #[prost(int32, tag = "1")]
+    pub local_ssd_count: i32,
+}
 /// GcfsConfig contains configurations of Google Container File System.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -605,7 +797,149 @@ pub mod reservation_affinity {
         }
     }
 }
-/// Kubernetes taint is comprised of three fields: key, value, and effect. Effect
+/// SoleTenantConfig contains the NodeAffinities to specify what shared sole
+/// tenant node groups should back the node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SoleTenantConfig {
+    /// NodeAffinities used to match to a shared sole tenant node group.
+    #[prost(message, repeated, tag = "1")]
+    pub node_affinities: ::prost::alloc::vec::Vec<sole_tenant_config::NodeAffinity>,
+}
+/// Nested message and enum types in `SoleTenantConfig`.
+pub mod sole_tenant_config {
+    /// Specifies the NodeAffinity key, values, and affinity operator according to
+    /// [shared sole tenant node group
+    /// affinities](<https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_affinity_and_anti-affinity>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NodeAffinity {
+        /// Key for NodeAffinity.
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Operator for NodeAffinity.
+        #[prost(enumeration = "node_affinity::Operator", tag = "2")]
+        pub operator: i32,
+        /// Values for NodeAffinity.
+        #[prost(string, repeated, tag = "3")]
+        pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Nested message and enum types in `NodeAffinity`.
+    pub mod node_affinity {
+        /// Operator allows user to specify affinity or anti-affinity for the
+        /// given key values.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Operator {
+            /// Invalid or unspecified affinity operator.
+            Unspecified = 0,
+            /// Affinity operator.
+            In = 1,
+            /// Anti-affinity operator.
+            NotIn = 2,
+        }
+        impl Operator {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Operator::In => "IN",
+                    Operator::NotIn => "NOT_IN",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IN" => Some(Self::In),
+                    "NOT_IN" => Some(Self::NotIn),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// HostMaintenancePolicy contains the maintenance policy for the hosts on which
+/// the GKE VMs run on.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HostMaintenancePolicy {
+    /// Specifies the frequency of planned maintenance events.
+    #[prost(
+        enumeration = "host_maintenance_policy::MaintenanceInterval",
+        optional,
+        tag = "1"
+    )]
+    pub maintenance_interval: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `HostMaintenancePolicy`.
+pub mod host_maintenance_policy {
+    /// Allows selecting how infrastructure upgrades should be applied to the
+    /// cluster or node pool.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MaintenanceInterval {
+        /// The maintenance interval is not explicitly specified.
+        Unspecified = 0,
+        /// Nodes are eligible to receive infrastructure and hypervisor updates as
+        /// they become available.  This may result in more maintenance operations
+        /// (live migrations or terminations) for the node than the PERIODIC option.
+        AsNeeded = 1,
+        /// Nodes receive infrastructure and hypervisor updates on a periodic basis,
+        /// minimizing the number of maintenance operations (live migrations or
+        /// terminations) on an individual VM.  This may mean underlying VMs will
+        /// take longer to receive an update than if it was configured for
+        /// AS_NEEDED.  Security updates will still be applied as soon
+        /// as they are available.
+        Periodic = 2,
+    }
+    impl MaintenanceInterval {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MaintenanceInterval::Unspecified => "MAINTENANCE_INTERVAL_UNSPECIFIED",
+                MaintenanceInterval::AsNeeded => "AS_NEEDED",
+                MaintenanceInterval::Periodic => "PERIODIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MAINTENANCE_INTERVAL_UNSPECIFIED" => Some(Self::Unspecified),
+                "AS_NEEDED" => Some(Self::AsNeeded),
+                "PERIODIC" => Some(Self::Periodic),
+                _ => None,
+            }
+        }
+    }
+}
+/// Kubernetes taint is composed of three fields: key, value, and effect. Effect
 /// can only be one of three types:  NoSchedule, PreferNoSchedule or NoExecute.
 ///
 /// See
@@ -688,6 +1022,18 @@ pub struct NodeTaints {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeLabels {
+    /// Map of node label keys and node label values.
+    #[prost(map = "string, string", tag = "1")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Collection of [GCP
+/// labels](<https://cloud.google.com/resource-manager/docs/creating-managing-labels>).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceLabels {
     /// Map of node label keys and node label values.
     #[prost(map = "string, string", tag = "1")]
     pub labels: ::std::collections::HashMap<
@@ -820,6 +1166,9 @@ pub struct AddonsConfig {
     /// Configuration for the Backup for GKE agent addon.
     #[prost(message, optional, tag = "16")]
     pub gke_backup_agent_config: ::core::option::Option<GkeBackupAgentConfig>,
+    /// Configuration for the Cloud Storage Fuse CSI driver.
+    #[prost(message, optional, tag = "17")]
+    pub gcs_fuse_csi_driver_config: ::core::option::Option<GcsFuseCsiDriverConfig>,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
@@ -911,6 +1260,14 @@ pub struct GcpFilestoreCsiDriverConfig {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// Configuration for the Cloud Storage Fuse CSI driver.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsFuseCsiDriverConfig {
+    /// Whether the Cloud Storage Fuse CSI driver is enabled for this cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// Configuration for controlling master global access settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -951,6 +1308,10 @@ pub struct PrivateClusterConfig {
     pub master_global_access_config: ::core::option::Option<
         PrivateClusterMasterGlobalAccessConfig,
     >,
+    /// Subnet to provision the master's private endpoint during cluster creation.
+    /// Specified in projects/*/regions/*/subnetworks/* format.
+    #[prost(string, tag = "10")]
+    pub private_endpoint_subnetwork: ::prost::alloc::string::String,
 }
 /// Configuration options for Istio addon.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1080,6 +1441,9 @@ pub struct MasterAuthorizedNetworksConfig {
     pub cidr_blocks: ::prost::alloc::vec::Vec<
         master_authorized_networks_config::CidrBlock,
     >,
+    /// Whether master is accessbile via Google Compute Engine Public IP addresses.
+    #[prost(bool, optional, tag = "3")]
+    pub gcp_public_cidrs_access_enabled: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `MasterAuthorizedNetworksConfig`.
 pub mod master_authorized_networks_config {
@@ -1160,6 +1524,16 @@ pub mod network_policy {
             }
         }
     }
+}
+/// \[PRIVATE FIELD\]
+/// Config for pod CIDR size overprovisioning.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PodCidrOverprovisionConfig {
+    /// Whether Pod CIDR overprovisioning is disabled.
+    /// Note: Pod CIDR overprovisioning is enabled by default.
+    #[prost(bool, tag = "1")]
+    pub disable: bool,
 }
 /// Configuration for controlling how IPs are allocated in the cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1305,12 +1679,40 @@ pub struct IpAllocationPolicy {
     /// The ipv6 access type (internal or external) when create_subnetwork is true
     #[prost(enumeration = "ip_allocation_policy::IPv6AccessType", tag = "17")]
     pub ipv6_access_type: i32,
-    /// Output only. \[Output only\] The subnet's IPv6 CIDR block used by nodes and pods.
+    /// \[PRIVATE FIELD\]
+    /// Pod CIDR size overprovisioning config for the cluster.
+    ///
+    /// Pod CIDR size per node depends on max_pods_per_node. By default, the value
+    /// of max_pods_per_node is doubled and then rounded off to next power of 2 to
+    /// get the size of pod CIDR block per node.
+    /// Example: max_pods_per_node of 30 would result in 64 IPs (/26).
+    ///
+    /// This config can disable the doubling of IPs (we still round off to next
+    /// power of 2)
+    /// Example: max_pods_per_node of 30 will result in 32 IPs (/27) when
+    /// overprovisioning is disabled.
+    #[prost(message, optional, tag = "21")]
+    pub pod_cidr_overprovision_config: ::core::option::Option<
+        PodCidrOverprovisionConfig,
+    >,
+    /// Output only. \[Output only\] The subnet's IPv6 CIDR block used by nodes and
+    /// pods.
     #[prost(string, tag = "22")]
     pub subnet_ipv6_cidr_block: ::prost::alloc::string::String,
     /// Output only. \[Output only\] The services IPv6 CIDR block for the cluster.
     #[prost(string, tag = "23")]
     pub services_ipv6_cidr_block: ::prost::alloc::string::String,
+    /// Output only. \[Output only\] The additional pod ranges that are added to the
+    /// cluster. These pod ranges can be used by new node pools to allocate pod IPs
+    /// automatically. Once the range is removed it will not show up in
+    /// IPAllocationPolicy.
+    #[prost(message, optional, tag = "24")]
+    pub additional_pod_ranges_config: ::core::option::Option<AdditionalPodRangesConfig>,
+    /// Output only. \[Output only\] The utilization of the cluster default IPv4
+    /// range for the pod. The ratio is Usage/[Total number of IPs in the secondary
+    /// range], Usage=numNodes*numZones*podIPsPerNode.
+    #[prost(double, tag = "25")]
+    pub default_pod_ipv4_range_utilization: f64,
 }
 /// Nested message and enum types in `IPAllocationPolicy`.
 pub mod ip_allocation_policy {
@@ -1413,14 +1815,26 @@ pub struct BinaryAuthorization {
     #[deprecated]
     #[prost(bool, tag = "1")]
     pub enabled: bool,
-    /// Mode of operation for binauthz policy evaluation. Currently the only
-    /// options are equivalent to enable/disable. If unspecified, defaults to
-    /// DISABLED.
+    /// Mode of operation for binauthz policy evaluation. If unspecified, defaults
+    /// to DISABLED.
     #[prost(enumeration = "binary_authorization::EvaluationMode", tag = "2")]
     pub evaluation_mode: i32,
+    /// Optional. Binauthz policies that apply to this cluster.
+    #[prost(message, repeated, tag = "5")]
+    pub policy_bindings: ::prost::alloc::vec::Vec<binary_authorization::PolicyBinding>,
 }
 /// Nested message and enum types in `BinaryAuthorization`.
 pub mod binary_authorization {
+    /// Binauthz policy that applies to this cluster.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PolicyBinding {
+        /// The relative resource name of the binauthz platform policy to audit. GKE
+        /// platform policies have the following format:
+        /// `projects/{project_number}/platforms/gke/policies/{policy_id}`.
+        #[prost(string, optional, tag = "1")]
+        pub name: ::core::option::Option<::prost::alloc::string::String>,
+    }
     /// Binary Authorization mode of operation.
     #[derive(
         Clone,
@@ -1443,6 +1857,11 @@ pub mod binary_authorization {
         /// project's singleton policy. This is equivalent to setting the
         /// enabled boolean to true.
         ProjectSingletonPolicyEnforce = 2,
+        /// Use Binary Authorization with the policies specified in policy_bindings.
+        PolicyBindings = 5,
+        /// Use Binary Authorization with the policies specified in policy_bindings,
+        /// and also with the project's singleton policy in enforcement mode.
+        PolicyBindingsAndProjectSingletonPolicyEnforce = 6,
     }
     impl EvaluationMode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1456,6 +1875,10 @@ pub mod binary_authorization {
                 EvaluationMode::ProjectSingletonPolicyEnforce => {
                     "PROJECT_SINGLETON_POLICY_ENFORCE"
                 }
+                EvaluationMode::PolicyBindings => "POLICY_BINDINGS",
+                EvaluationMode::PolicyBindingsAndProjectSingletonPolicyEnforce => {
+                    "POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1465,6 +1888,10 @@ pub mod binary_authorization {
                 "DISABLED" => Some(Self::Disabled),
                 "PROJECT_SINGLETON_POLICY_ENFORCE" => {
                     Some(Self::ProjectSingletonPolicyEnforce)
+                }
+                "POLICY_BINDINGS" => Some(Self::PolicyBindings),
+                "POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE" => {
+                    Some(Self::PolicyBindingsAndProjectSingletonPolicyEnforce)
                 }
                 _ => None,
             }
@@ -1675,6 +2102,9 @@ pub struct Cluster {
     /// creation.
     #[prost(bool, tag = "14")]
     pub enable_kubernetes_alpha: bool,
+    /// Kubernetes open source beta apis enabled on the cluster. Only beta apis.
+    #[prost(message, optional, tag = "143")]
+    pub enable_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
     /// The resource labels for the cluster to use to annotate any related
     /// Google Compute Engine resources.
     #[prost(map = "string, string", tag = "15")]
@@ -1751,7 +2181,12 @@ pub struct Cluster {
     /// Shielded Nodes configuration.
     #[prost(message, optional, tag = "40")]
     pub shielded_nodes: ::core::option::Option<ShieldedNodes>,
-    /// Release channel configuration.
+    /// Release channel configuration. If left unspecified on cluster creation and
+    /// a version is specified, the cluster is enrolled in the most mature release
+    /// channel where the version is available (first checking STABLE, then
+    /// REGULAR, and finally RAPID). Otherwise, if no release channel
+    /// configuration and no version is specified, the cluster is enrolled in the
+    /// REGULAR channel with its default version.
     #[prost(message, optional, tag = "41")]
     pub release_channel: ::core::option::Option<ReleaseChannel>,
     /// Configuration for the use of Kubernetes Service Accounts in GCP IAM
@@ -1915,9 +2350,22 @@ pub struct Cluster {
     /// in autopilot clusters and node auto-provisioning enabled clusters.
     #[prost(message, optional, tag = "136")]
     pub node_pool_auto_config: ::core::option::Option<NodePoolAutoConfig>,
+    /// Deprecated: Use SecurityPostureConfig instead.
     /// Enable/Disable Protect API features for the cluster.
+    #[deprecated]
     #[prost(message, optional, tag = "137")]
     pub protect_config: ::core::option::Option<ProtectConfig>,
+    /// This checksum is computed by the server based on the value of cluster
+    /// fields, and may be sent on update requests to ensure the client has an
+    /// up-to-date value before proceeding.
+    #[prost(string, tag = "139")]
+    pub etag: ::prost::alloc::string::String,
+    /// Fleet information for the cluster.
+    #[prost(message, optional, tag = "140")]
+    pub fleet: ::core::option::Option<Fleet>,
+    /// Enable/Disable Security Posture API features for the cluster.
+    #[prost(message, optional, tag = "145")]
+    pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -1985,6 +2433,14 @@ pub mod cluster {
             }
         }
     }
+}
+/// Kubernetes open source beta apis enabled on the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct K8sBetaApiConfig {
+    /// api name, e.g. storage.k8s.io/v1beta1/csistoragecapacities.
+    #[prost(string, repeated, tag = "1")]
+    pub enabled_apis: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// WorkloadConfig defines the flags to enable or disable the
 /// workload configurations for the cluster.
@@ -2117,6 +2573,116 @@ pub mod protect_config {
         }
     }
 }
+/// SecurityPostureConfig defines the flags needed to enable/disable features for
+/// the Security Posture API.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityPostureConfig {
+    /// Sets which mode to use for Security Posture features.
+    #[prost(enumeration = "security_posture_config::Mode", optional, tag = "1")]
+    pub mode: ::core::option::Option<i32>,
+    /// Sets which mode to use for vulnerability scanning.
+    #[prost(
+        enumeration = "security_posture_config::VulnerabilityMode",
+        optional,
+        tag = "2"
+    )]
+    pub vulnerability_mode: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `SecurityPostureConfig`.
+pub mod security_posture_config {
+    /// Mode defines enablement mode for GKE Security posture features.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Disables Security Posture features on the cluster.
+        Disabled = 1,
+        /// Applies Security Posture features on the cluster.
+        Basic = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Mode::Unspecified => "MODE_UNSPECIFIED",
+                Mode::Disabled => "DISABLED",
+                Mode::Basic => "BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "BASIC" => Some(Self::Basic),
+                _ => None,
+            }
+        }
+    }
+    /// VulnerabilityMode defines enablement mode for vulnerability scanning.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VulnerabilityMode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Disables vulnerability scanning on the cluster.
+        VulnerabilityDisabled = 1,
+        /// Applies basic vulnerability scanning on the cluster.
+        VulnerabilityBasic = 2,
+        /// Applies the Security Posture's vulnerability on cluster Enterprise level
+        /// features.
+        VulnerabilityEnterprise = 3,
+    }
+    impl VulnerabilityMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                VulnerabilityMode::Unspecified => "VULNERABILITY_MODE_UNSPECIFIED",
+                VulnerabilityMode::VulnerabilityDisabled => "VULNERABILITY_DISABLED",
+                VulnerabilityMode::VulnerabilityBasic => "VULNERABILITY_BASIC",
+                VulnerabilityMode::VulnerabilityEnterprise => "VULNERABILITY_ENTERPRISE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VULNERABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VULNERABILITY_DISABLED" => Some(Self::VulnerabilityDisabled),
+                "VULNERABILITY_BASIC" => Some(Self::VulnerabilityBasic),
+                "VULNERABILITY_ENTERPRISE" => Some(Self::VulnerabilityEnterprise),
+                _ => None,
+            }
+        }
+    }
+}
 /// Subset of Nodepool message that has defaults.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2135,6 +2701,10 @@ pub struct NodeConfigDefaults {
     /// Logging configuration for node pools.
     #[prost(message, optional, tag = "3")]
     pub logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// HostMaintenancePolicy contains the desired maintenance policy for the
+    /// Google Compute Engine hosts.
+    #[prost(message, optional, tag = "5")]
+    pub host_maintenance_policy: ::core::option::Option<HostMaintenancePolicy>,
 }
 /// node pool configs that apply to all auto-provisioned node pools
 /// in autopilot clusters and node auto-provisioning enabled clusters
@@ -2344,16 +2914,97 @@ pub struct ClusterUpdate {
     /// The desired Identity Service component configuration.
     #[prost(message, optional, tag = "66")]
     pub desired_identity_service_config: ::core::option::Option<IdentityServiceConfig>,
+    /// Enable/Disable private endpoint for the cluster's master.
+    #[prost(bool, optional, tag = "71")]
+    pub desired_enable_private_endpoint: ::core::option::Option<bool>,
     /// The desired network tags that apply to all auto-provisioned node pools
     /// in autopilot clusters and node auto-provisioning enabled clusters.
     #[prost(message, optional, tag = "110")]
     pub desired_node_pool_auto_config_network_tags: ::core::option::Option<NetworkTags>,
+    /// Deprecated: Use DesiredSecurityPostureConfig instead.
     /// Enable/Disable Protect API features for the cluster.
+    #[deprecated]
     #[prost(message, optional, tag = "112")]
     pub desired_protect_config: ::core::option::Option<ProtectConfig>,
+    /// The desired config of Gateway API on this cluster.
+    #[prost(message, optional, tag = "114")]
+    pub desired_gateway_api_config: ::core::option::Option<GatewayApiConfig>,
+    /// The current etag of the cluster.
+    /// If an etag is provided and does not match the current etag of the cluster,
+    /// update will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "115")]
+    pub etag: ::prost::alloc::string::String,
     /// The desired node pool logging configuration defaults for the cluster.
     #[prost(message, optional, tag = "116")]
     pub desired_node_pool_logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// The desired fleet configuration for the cluster.
+    #[prost(message, optional, tag = "117")]
+    pub desired_fleet: ::core::option::Option<Fleet>,
+    /// The desired stack type of the cluster.
+    /// If a stack type is provided and does not match the current stack type of
+    /// the cluster, update will attempt to change the stack type to the new type.
+    #[prost(enumeration = "StackType", tag = "119")]
+    pub desired_stack_type: i32,
+    /// The additional pod ranges to be added to the cluster. These pod ranges
+    /// can be used by node pools to allocate pod IPs.
+    #[prost(message, optional, tag = "120")]
+    pub additional_pod_ranges_config: ::core::option::Option<AdditionalPodRangesConfig>,
+    /// The additional pod ranges that are to be removed from the cluster.
+    /// The pod ranges specified here must have been specified earlier in the
+    /// 'additional_pod_ranges_config' argument.
+    #[prost(message, optional, tag = "121")]
+    pub removed_additional_pod_ranges_config: ::core::option::Option<
+        AdditionalPodRangesConfig,
+    >,
+    /// Kubernetes open source beta apis enabled on the cluster. Only beta apis
+    #[prost(message, optional, tag = "122")]
+    pub enable_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
+    /// Enable/Disable Security Posture API features for the cluster.
+    #[prost(message, optional, tag = "124")]
+    pub desired_security_posture_config: ::core::option::Option<SecurityPostureConfig>,
+    /// The desired network performance config.
+    #[prost(message, optional, tag = "125")]
+    pub desired_network_performance_config: ::core::option::Option<
+        network_config::ClusterNetworkPerformanceConfig,
+    >,
+    /// Enable/Disable FQDN Network Policy for the cluster.
+    #[prost(bool, optional, tag = "126")]
+    pub desired_enable_fqdn_network_policy: ::core::option::Option<bool>,
+    /// The desired workload policy configuration for the autopilot cluster.
+    #[prost(message, optional, tag = "128")]
+    pub desired_autopilot_workload_policy_config: ::core::option::Option<
+        WorkloadPolicyConfig,
+    >,
+    /// Beta APIs enabled for cluster.
+    #[prost(message, optional, tag = "131")]
+    pub desired_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
+    /// HostMaintenancePolicy contains the desired maintenance policy for the
+    /// Google Compute Engine hosts.
+    #[prost(message, optional, tag = "132")]
+    pub desired_host_maintenance_policy: ::core::option::Option<HostMaintenancePolicy>,
+}
+/// AdditionalPodRangesConfig is the configuration for additional pod secondary
+/// ranges supporting the ClusterUpdate message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdditionalPodRangesConfig {
+    /// Name for pod secondary ipv4 range which has the actual range defined ahead.
+    #[prost(string, repeated, tag = "1")]
+    pub pod_range_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. \[Output only\] Information for additional pod range.
+    #[prost(message, repeated, tag = "2")]
+    pub pod_range_info: ::prost::alloc::vec::Vec<RangeInfo>,
+}
+/// RangeInfo contains the range name and the range utilization by this cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RangeInfo {
+    /// Output only. \[Output only\] Name of a range.
+    #[prost(string, tag = "1")]
+    pub range_name: ::prost::alloc::string::String,
+    /// Output only. \[Output only\] The utilization of the range.
+    #[prost(double, tag = "2")]
+    pub utilization: f64,
 }
 /// This operation resource represents operations that may have happened or are
 /// happening on the cluster. All fields are output only.
@@ -2383,10 +3034,25 @@ pub struct Operation {
     #[deprecated]
     #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
-    /// Server-defined URL for the resource.
+    /// Server-defined URI for the operation. Example:
+    /// `<https://container.googleapis.com/v1alpha1/projects/123/locations/us-central1/operations/operation-123`.>
     #[prost(string, tag = "6")]
     pub self_link: ::prost::alloc::string::String,
-    /// Server-defined URL for the target of the operation.
+    /// Server-defined URI for the target of the operation. The format of this is a
+    /// URI to the resource being modified (such as a cluster, node pool, or node).
+    /// For node pool repairs, there may be multiple nodes being repaired, but only
+    /// one will be the target.
+    ///
+    /// Examples:
+    ///
+    /// -
+    /// ##
+    /// `<https://container.googleapis.com/v1/projects/123/locations/us-central1/clusters/my-cluster`>
+    ///
+    /// ##
+    /// `<https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np`>
+    ///
+    /// `<https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np/node/my-node`>
     #[prost(string, tag = "7")]
     pub target_link: ::prost::alloc::string::String,
     /// \[Output only\] The name of the Google Compute Engine
@@ -2474,7 +3140,7 @@ pub mod operation {
             }
         }
     }
-    /// Operation type.
+    /// Operation type categorizes the operation.
     #[derive(
         Clone,
         Copy,
@@ -2490,38 +3156,105 @@ pub mod operation {
     pub enum Type {
         /// Not set.
         Unspecified = 0,
-        /// Cluster create.
+        /// The cluster is being created. The cluster should be assumed to be
+        /// unusable until the operation finishes.
+        ///
+        /// In the event of the operation failing, the cluster will enter the [ERROR
+        /// state][Cluster.Status.ERROR] and eventually be deleted.
         CreateCluster = 1,
-        /// Cluster delete.
+        /// The cluster is being deleted. The cluster should be assumed to be
+        /// unusable as soon as this operation starts.
+        ///
+        /// In the event of the operation failing, the cluster will enter the [ERROR
+        /// state][Cluster.Status.ERROR] and the deletion will be automatically
+        /// retried until completed.
         DeleteCluster = 2,
-        /// A master upgrade.
+        /// The [cluster
+        /// version][google.container.v1beta1.ClusterUpdate.desired_master_version]
+        /// is being updated. Note that this includes "upgrades" to the same version,
+        /// which are simply a recreation. This also includes
+        /// [auto-upgrades](<https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-upgrades#upgrading_automatically>).
+        /// For more details, see [documentation on cluster
+        /// upgrades](<https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-upgrades#cluster_upgrades>).
         UpgradeMaster = 3,
-        /// A node upgrade.
+        /// A node pool is being updated. Despite calling this an "upgrade", this
+        /// includes most forms of updates to node pools. This also includes
+        /// [auto-upgrades](<https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-upgrades>).
+        ///
+        /// This operation sets the
+        /// [progress][google.container.v1beta1.Operation.progress] field and may be
+        /// [canceled][google.container.v1beta1.ClusterManager.CancelOperation].
+        ///
+        /// The upgrade strategy depends on [node pool
+        /// configuration](<https://cloud.google.com/kubernetes-engine/docs/concepts/node-pool-upgrade-strategies>).
+        /// The nodes are generally still usable during this operation.
         UpgradeNodes = 4,
-        /// Cluster repair.
+        /// A problem has been detected with the control plane and is being repaired.
+        /// This operation type is initiated by GKE. For more details, see
+        /// [documentation on
+        /// repairs](<https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>).
         RepairCluster = 5,
-        /// Cluster update.
+        /// The cluster is being updated. This is a broad category of operations and
+        /// includes operations that only change metadata as well as those that must
+        /// recreate the entire cluster. If the control plane must be recreated, this
+        /// will cause temporary downtime for zonal clusters.
+        ///
+        /// Some features require recreating the nodes as well. Those will be
+        /// recreated as separate operations and the update may not be completely
+        /// functional until the node pools recreations finish. Node recreations will
+        /// generally follow [maintenance
+        /// policies](<https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions>).
+        ///
+        /// Some GKE-initiated operations use this type. This includes certain types
+        /// of auto-upgrades and incident mitigations.
         UpdateCluster = 6,
-        /// Node pool create.
+        /// A node pool is being created. The node pool should be assumed to be
+        /// unusable until this operation finishes. In the event of an error, the
+        /// node pool may be partially created.
+        ///
+        /// If enabled, [node
+        /// autoprovisioning](<https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning>)
+        /// may have automatically initiated such operations.
         CreateNodePool = 7,
-        /// Node pool delete.
+        /// The node pool is being deleted. The node pool should be assumed to be
+        /// unusable as soon as this operation starts.
         DeleteNodePool = 8,
-        /// Set node pool management.
+        /// The node pool's
+        /// [manamagent][google.container.v1beta1.NodePool.management] field is being
+        /// updated. These operations only update metadata and may be concurrent with
+        /// most other operations.
         SetNodePoolManagement = 9,
-        /// Automatic node pool repair.
+        /// A problem has been detected with nodes and [they are being
+        /// repaired](<https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-repair>).
+        /// This operation type is initiated by GKE, typically automatically. This
+        /// operation may be concurrent with other operations and there may be
+        /// multiple repairs occurring on the same node pool.
         AutoRepairNodes = 10,
-        /// Automatic node upgrade.
+        /// Unused. Automatic node upgrade uses
+        /// [UPGRADE_NODES][google.container.v1beta1.Operation.Type.UPGRADE_NODES].
         AutoUpgradeNodes = 11,
-        /// Set labels.
+        /// Unused. Updating labels uses
+        /// [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
         SetLabels = 12,
-        /// Set/generate master auth materials
+        /// Unused. Updating master auth uses
+        /// [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
         SetMasterAuth = 13,
-        /// Set node pool size.
+        /// The node pool is being resized. With the exception of resizing to or from
+        /// size zero, the node pool is generally usable during this operation.
         SetNodePoolSize = 14,
-        /// Updates network policy for a cluster.
+        /// Unused. Updating network policy uses
+        /// [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
         SetNetworkPolicy = 15,
-        /// Set the maintenance policy.
+        /// Unused. Updating maintenance policy uses
+        /// [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
         SetMaintenancePolicy = 16,
+        /// The control plane is being resized. This operation type is initiated by
+        /// GKE. These operations are often performed preemptively to ensure that the
+        /// control plane has sufficient resources and is not typically an indication
+        /// of issues. For more details, see
+        /// [documentation on
+        /// resizes](<https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>).
+        ResizeCluster = 18,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2547,6 +3280,7 @@ pub mod operation {
                 Type::SetNodePoolSize => "SET_NODE_POOL_SIZE",
                 Type::SetNetworkPolicy => "SET_NETWORK_POLICY",
                 Type::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
+                Type::ResizeCluster => "RESIZE_CLUSTER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2569,6 +3303,7 @@ pub mod operation {
                 "SET_NODE_POOL_SIZE" => Some(Self::SetNodePoolSize),
                 "SET_NETWORK_POLICY" => Some(Self::SetNetworkPolicy),
                 "SET_MAINTENANCE_POLICY" => Some(Self::SetMaintenancePolicy),
+                "RESIZE_CLUSTER" => Some(Self::ResizeCluster),
                 _ => None,
             }
         }
@@ -2752,7 +3487,9 @@ pub struct UpdateNodePoolRequest {
     /// - "-": picks the Kubernetes master version
     #[prost(string, tag = "5")]
     pub node_version: ::prost::alloc::string::String,
-    /// Required. The desired image type for the node pool.
+    /// Required. The desired image type for the node pool. Please see
+    /// <https://cloud.google.com/kubernetes-engine/docs/concepts/node-images> for
+    /// available image types.
     #[prost(string, tag = "6")]
     pub image_type: ::prost::alloc::string::String,
     /// The desired list of Google Compute Engine
@@ -2807,9 +3544,39 @@ pub struct UpdateNodePoolRequest {
     /// Enable or disable gvnic on the node pool.
     #[prost(message, optional, tag = "29")]
     pub gvnic: ::core::option::Option<VirtualNic>,
+    /// The current etag of the node pool.
+    /// If an etag is provided and does not match the current etag of the node
+    /// pool, update will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "30")]
+    pub etag: ::prost::alloc::string::String,
+    /// Enable or disable NCCL fast socket for the node pool.
+    #[prost(message, optional, tag = "31")]
+    pub fast_socket: ::core::option::Option<FastSocket>,
     /// Logging configuration.
     #[prost(message, optional, tag = "32")]
     pub logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// The resource labels for the node pool to use to annotate any related
+    /// Google Compute Engine resources.
+    #[prost(message, optional, tag = "33")]
+    pub resource_labels: ::core::option::Option<ResourceLabels>,
+    /// Parameters that can be configured on Windows nodes.
+    #[prost(message, optional, tag = "34")]
+    pub windows_node_config: ::core::option::Option<WindowsNodeConfig>,
+    /// Optional. The desired machine type for nodes in the node pool.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified machine type.
+    #[prost(string, tag = "36")]
+    pub machine_type: ::prost::alloc::string::String,
+    /// Optional. The desired disk type for nodes in the node pool.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified disk type.
+    #[prost(string, tag = "37")]
+    pub disk_type: ::prost::alloc::string::String,
+    /// Optional. The desired disk size for nodes in the node pool.
+    /// Initiates an upgrade operation that migrates the nodes in the
+    /// node pool to the specified disk size.
+    #[prost(int64, tag = "38")]
+    pub disk_size_gb: i64,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2949,8 +3716,8 @@ pub struct SetAddonsConfigRequest {
     #[deprecated]
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
-    /// Required. The desired configurations for the various addons available to run in the
-    /// cluster.
+    /// Required. The desired configurations for the various addons available to
+    /// run in the cluster.
     #[prost(message, optional, tag = "4")]
     pub addons_config: ::core::option::Option<AddonsConfig>,
     /// The name (project, location, cluster) of the cluster to set addons.
@@ -3361,6 +4128,21 @@ pub mod server_config {
         }
     }
 }
+/// Best effort provisioning.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BestEffortProvisioning {
+    /// When this is enabled, cluster/node pool creations will ignore non-fatal
+    /// errors like stockout to best provision as many nodes as possible right now
+    /// and eventually bring up all target number of nodes
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// Minimum number of nodes to be provisioned to be considered as succeeded,
+    /// and the rest of nodes will be provisioned gradually and eventually when
+    /// stockout issue has been resolved.
+    #[prost(int32, tag = "2")]
+    pub min_provision_nodes: i32,
+}
 /// Windows server versions.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3543,7 +4325,7 @@ pub mod blue_green_settings {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum UpdateBatchSize {
-            /// Percentage of the bool pool nodes to drain in a batch.
+            /// Percentage of the blue pool nodes to drain in a batch.
             /// The range of this field should be (0.0, 1.0].
             #[prost(float, tag = "1")]
             BatchPercentage(f32),
@@ -3624,7 +4406,9 @@ pub struct NodePool {
     /// \[Output only\] Server-defined URL for the resource.
     #[prost(string, tag = "100")]
     pub self_link: ::prost::alloc::string::String,
-    /// The version of the Kubernetes of this node.
+    /// The version of Kubernetes running on this NodePool's nodes. If unspecified,
+    /// it defaults as described
+    /// [here](<https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version>).
     #[prost(string, tag = "101")]
     pub version: ::prost::alloc::string::String,
     /// \[Output only\] The resource URLs of the [managed instance
@@ -3666,10 +4450,18 @@ pub struct NodePool {
     /// Specifies the node placement policy.
     #[prost(message, optional, tag = "108")]
     pub placement_policy: ::core::option::Option<node_pool::PlacementPolicy>,
-    /// Output only. \[Output only\] Update info contains relevant information during a node
-    /// pool update.
+    /// Output only. \[Output only\] Update info contains relevant information during
+    /// a node pool update.
     #[prost(message, optional, tag = "109")]
     pub update_info: ::core::option::Option<node_pool::UpdateInfo>,
+    /// This checksum is computed by the server based on the value of node pool
+    /// fields, and may be sent on update requests to ensure the client has an
+    /// up-to-date value before proceeding.
+    #[prost(string, tag = "110")]
+    pub etag: ::prost::alloc::string::String,
+    /// Enable best effort provisioning for nodes
+    #[prost(message, optional, tag = "113")]
+    pub best_effort_provisioning: ::core::option::Option<BestEffortProvisioning>,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
@@ -3828,6 +4620,15 @@ pub mod node_pool {
         /// The type of placement.
         #[prost(enumeration = "placement_policy::Type", tag = "1")]
         pub r#type: i32,
+        /// TPU placement topology for pod slice node pool.
+        /// <https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies>
+        #[prost(string, tag = "2")]
+        pub tpu_topology: ::prost::alloc::string::String,
+        /// If set, refers to the name of a custom resource policy supplied by the
+        /// user. The resource policy must be in the same project and region as the
+        /// node pool. If not found, InvalidArgument error is returned.
+        #[prost(string, tag = "3")]
+        pub policy_name: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `PlacementPolicy`.
     pub mod placement_policy {
@@ -4407,8 +5208,7 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// information, read [how to specify min CPU
     /// platform](<https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>).
     /// This field is deprecated, min_cpu_platform should be specified using
-    /// <https://cloud.google.com/requested-min-cpu-platform> label selector on the
-    /// pod.
+    /// `cloud.google.com/requested-min-cpu-platform` label selector on the pod.
     /// To unset the min cpu platform field pass "automatic"
     /// as field value.
     #[deprecated]
@@ -4438,9 +5238,14 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// <https://cloud.google.com/compute/docs/disks/customer-managed-encryption>
     #[prost(string, tag = "9")]
     pub boot_disk_kms_key: ::prost::alloc::string::String,
-    /// The image type to use for NAP created node.
+    /// The image type to use for NAP created node. Please see
+    /// <https://cloud.google.com/kubernetes-engine/docs/concepts/node-images> for
+    /// available image types.
     #[prost(string, tag = "10")]
     pub image_type: ::prost::alloc::string::String,
+    /// Enable or disable Kubelet read only port.
+    #[prost(bool, optional, tag = "13")]
+    pub insecure_kubelet_readonly_port_enabled: ::core::option::Option<bool>,
 }
 /// Contains information about amount of some resource in the cluster.
 /// For memory, value should be in GB.
@@ -4695,6 +5500,11 @@ pub struct AcceleratorConfig {
     /// The configuration for GPU sharing options.
     #[prost(message, optional, tag = "5")]
     pub gpu_sharing_config: ::core::option::Option<GpuSharingConfig>,
+    /// The configuration for auto installation of GPU driver.
+    #[prost(message, optional, tag = "6")]
+    pub gpu_driver_installation_config: ::core::option::Option<
+        GpuDriverInstallationConfig,
+    >,
 }
 /// GPUSharingConfig represents the GPU sharing configuration for Hardware
 /// Accelerators.
@@ -4745,6 +5555,69 @@ pub mod gpu_sharing_config {
             match value {
                 "GPU_SHARING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
                 "TIME_SHARING" => Some(Self::TimeSharing),
+                _ => None,
+            }
+        }
+    }
+}
+/// GPUDriverInstallationConfig specifies the version of GPU driver to be auto
+/// installed.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GpuDriverInstallationConfig {
+    /// Mode for how the GPU driver is installed.
+    #[prost(
+        enumeration = "gpu_driver_installation_config::GpuDriverVersion",
+        optional,
+        tag = "1"
+    )]
+    pub gpu_driver_version: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `GPUDriverInstallationConfig`.
+pub mod gpu_driver_installation_config {
+    /// The GPU driver version to install.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GpuDriverVersion {
+        /// Default value is to not install any GPU driver.
+        Unspecified = 0,
+        /// Disable GPU driver auto installation and needs manual installation
+        InstallationDisabled = 1,
+        /// "Default" GPU driver in COS and Ubuntu.
+        Default = 2,
+        /// "Latest" GPU driver in COS.
+        Latest = 3,
+    }
+    impl GpuDriverVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                GpuDriverVersion::Unspecified => "GPU_DRIVER_VERSION_UNSPECIFIED",
+                GpuDriverVersion::InstallationDisabled => "INSTALLATION_DISABLED",
+                GpuDriverVersion::Default => "DEFAULT",
+                GpuDriverVersion::Latest => "LATEST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GPU_DRIVER_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSTALLATION_DISABLED" => Some(Self::InstallationDisabled),
+                "DEFAULT" => Some(Self::Default),
+                "LATEST" => Some(Self::Latest),
                 _ => None,
             }
         }
@@ -5155,6 +6028,137 @@ pub struct NetworkConfig {
     /// blocked or not.
     #[prost(message, optional, tag = "15")]
     pub service_external_ips_config: ::core::option::Option<ServiceExternalIPsConfig>,
+    /// GatewayAPIConfig contains the desired config of Gateway API on this
+    /// cluster.
+    #[prost(message, optional, tag = "16")]
+    pub gateway_api_config: ::core::option::Option<GatewayApiConfig>,
+    /// Whether multi-networking is enabled for this cluster.
+    #[prost(bool, tag = "17")]
+    pub enable_multi_networking: bool,
+    /// Network bandwidth tier configuration.
+    #[prost(message, optional, tag = "18")]
+    pub network_performance_config: ::core::option::Option<
+        network_config::ClusterNetworkPerformanceConfig,
+    >,
+    /// Whether FQDN Network Policy is enabled on this cluster.
+    #[prost(bool, optional, tag = "19")]
+    pub enable_fqdn_network_policy: ::core::option::Option<bool>,
+}
+/// Nested message and enum types in `NetworkConfig`.
+pub mod network_config {
+    /// Configuration of all network bandwidth tiers
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClusterNetworkPerformanceConfig {
+        /// Specifies the total network bandwidth tier for the NodePool.
+        #[prost(
+            enumeration = "cluster_network_performance_config::Tier",
+            optional,
+            tag = "1"
+        )]
+        pub total_egress_bandwidth_tier: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `ClusterNetworkPerformanceConfig`.
+    pub mod cluster_network_performance_config {
+        /// Node network tier
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Tier {
+            /// Default value
+            Unspecified = 0,
+            /// Higher bandwidth, actual values based on VM size.
+            Tier1 = 1,
+        }
+        impl Tier {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Tier::Unspecified => "TIER_UNSPECIFIED",
+                    Tier::Tier1 => "TIER_1",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TIER_1" => Some(Self::Tier1),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// GatewayAPIConfig contains the desired config of Gateway API on this cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GatewayApiConfig {
+    /// The Gateway API release channel to use for Gateway API.
+    #[prost(enumeration = "gateway_api_config::Channel", tag = "1")]
+    pub channel: i32,
+}
+/// Nested message and enum types in `GatewayAPIConfig`.
+pub mod gateway_api_config {
+    /// Channel describes if/how Gateway API should be installed and implemented in
+    /// a cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Channel {
+        /// Default value.
+        Unspecified = 0,
+        /// Gateway API support is disabled
+        Disabled = 1,
+        /// Gateway API support is enabled, experimental CRDs are installed
+        Experimental = 3,
+        /// Gateway API support is enabled, standard CRDs are installed
+        Standard = 4,
+    }
+    impl Channel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Channel::Unspecified => "CHANNEL_UNSPECIFIED",
+                Channel::Disabled => "CHANNEL_DISABLED",
+                Channel::Experimental => "CHANNEL_EXPERIMENTAL",
+                Channel::Standard => "CHANNEL_STANDARD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHANNEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHANNEL_DISABLED" => Some(Self::Disabled),
+                "CHANNEL_EXPERIMENTAL" => Some(Self::Experimental),
+                "CHANNEL_STANDARD" => Some(Self::Standard),
+                _ => None,
+            }
+        }
+    }
 }
 /// Config to block services with externalIPs field.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5377,6 +6381,8 @@ pub mod dns_config {
         PlatformDefault = 1,
         /// Use CloudDNS for DNS resolution.
         CloudDns = 2,
+        /// Use KubeDNS for DNS resolution.
+        KubeDns = 3,
     }
     impl Provider {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5388,6 +6394,7 @@ pub mod dns_config {
                 Provider::Unspecified => "PROVIDER_UNSPECIFIED",
                 Provider::PlatformDefault => "PLATFORM_DEFAULT",
                 Provider::CloudDns => "CLOUD_DNS",
+                Provider::KubeDns => "KUBE_DNS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5396,6 +6403,7 @@ pub mod dns_config {
                 "PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
                 "PLATFORM_DEFAULT" => Some(Self::PlatformDefault),
                 "CLOUD_DNS" => Some(Self::CloudDns),
+                "KUBE_DNS" => Some(Self::KubeDns),
                 _ => None,
             }
         }
@@ -5517,13 +6525,13 @@ pub struct MeshCertificates {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseEncryption {
-    /// Denotes the state of etcd encryption.
-    #[prost(enumeration = "database_encryption::State", tag = "2")]
-    pub state: i32,
     /// Name of CloudKMS key to use for the encryption of secrets in etcd.
     /// Ex. projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key
     #[prost(string, tag = "1")]
     pub key_name: ::prost::alloc::string::String,
+    /// The desired state of etcd encryption.
+    #[prost(enumeration = "database_encryption::State", tag = "2")]
+    pub state: i32,
 }
 /// Nested message and enum types in `DatabaseEncryption`.
 pub mod database_encryption {
@@ -5628,6 +6636,14 @@ pub struct VirtualNic {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// Configuration of Fast Socket feature.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FastSocket {
+    /// Whether Fast Socket features are enabled in the node pool.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// GetOpenIDConfigRequest gets the OIDC discovery document for the
 /// cluster. See the OpenID Connect Discovery 1.0 specification for details.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5723,6 +6739,105 @@ pub struct GetJsonWebKeysResponse {
     /// requests.
     #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Jwk>,
+}
+/// CheckAutopilotCompatibilityRequest requests getting the blockers for the
+/// given operation in the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckAutopilotCompatibilityRequest {
+    /// The name (project, location, cluster) of the cluster to retrieve.
+    /// Specified in the format `projects/*/locations/*/clusters/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// AutopilotCompatibilityIssue contains information about a specific
+/// compatibility issue with Autopilot mode.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutopilotCompatibilityIssue {
+    /// The last time when this issue was observed.
+    #[prost(message, optional, tag = "1")]
+    pub last_observation: ::core::option::Option<::prost_types::Timestamp>,
+    /// The constraint type of the issue.
+    #[prost(string, tag = "2")]
+    pub constraint_type: ::prost::alloc::string::String,
+    /// The incompatibility type of this issue.
+    #[prost(enumeration = "autopilot_compatibility_issue::IssueType", tag = "3")]
+    pub incompatibility_type: i32,
+    /// The name of the resources which are subject to this issue.
+    #[prost(string, repeated, tag = "4")]
+    pub subjects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A URL to a public documnetation, which addresses resolving this issue.
+    #[prost(string, tag = "5")]
+    pub documentation_url: ::prost::alloc::string::String,
+    /// The description of the issue.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AutopilotCompatibilityIssue`.
+pub mod autopilot_compatibility_issue {
+    /// The type of the reported issue.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IssueType {
+        /// Default value, should not be used.
+        Unspecified = 0,
+        /// Indicates that the issue is a known incompatibility between the
+        /// cluster and Autopilot mode.
+        Incompatibility = 1,
+        /// Indicates the issue is an incompatibility if customers take no further
+        /// action to resolve.
+        AdditionalConfigRequired = 2,
+        /// Indicates the issue is not an incompatibility, but depending on the
+        /// workloads business logic, there is a potential that they won't work on
+        /// Autopilot.
+        PassedWithOptionalConfig = 3,
+    }
+    impl IssueType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                IssueType::Unspecified => "UNSPECIFIED",
+                IssueType::Incompatibility => "INCOMPATIBILITY",
+                IssueType::AdditionalConfigRequired => "ADDITIONAL_CONFIG_REQUIRED",
+                IssueType::PassedWithOptionalConfig => "PASSED_WITH_OPTIONAL_CONFIG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "INCOMPATIBILITY" => Some(Self::Incompatibility),
+                "ADDITIONAL_CONFIG_REQUIRED" => Some(Self::AdditionalConfigRequired),
+                "PASSED_WITH_OPTIONAL_CONFIG" => Some(Self::PassedWithOptionalConfig),
+                _ => None,
+            }
+        }
+    }
+}
+/// CheckAutopilotCompatibilityResponse has a list of compatibility issues.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckAutopilotCompatibilityResponse {
+    /// The list of issues for the given operation.
+    #[prost(message, repeated, tag = "1")]
+    pub issues: ::prost::alloc::vec::Vec<AutopilotCompatibilityIssue>,
+    /// The summary of the autopilot compatibility response.
+    #[prost(string, tag = "2")]
+    pub summary: ::prost::alloc::string::String,
 }
 /// ReleaseChannel indicates which release channel a cluster is
 /// subscribed to. Release channels are arranged in order of risk.
@@ -5828,6 +6943,18 @@ pub struct Autopilot {
     /// Enable Autopilot
     #[prost(bool, tag = "1")]
     pub enabled: bool,
+    /// Workload policy configuration for Autopilot.
+    #[prost(message, optional, tag = "2")]
+    pub workload_policy_config: ::core::option::Option<WorkloadPolicyConfig>,
+}
+/// WorkloadPolicyConfig is the configuration of workload policy for autopilot
+/// clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorkloadPolicyConfig {
+    /// If true, workloads can use NET_ADMIN capability.
+    #[prost(bool, optional, tag = "1")]
+    pub allow_net_admin: ::core::option::Option<bool>,
 }
 /// NotificationConfig is the configuration of notifications.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6066,6 +7193,12 @@ pub mod logging_component_config {
         SystemComponents = 1,
         /// workloads
         Workloads = 2,
+        /// kube-apiserver
+        Apiserver = 3,
+        /// kube-scheduler
+        Scheduler = 4,
+        /// kube-controller-manager
+        ControllerManager = 5,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6077,6 +7210,9 @@ pub mod logging_component_config {
                 Component::Unspecified => "COMPONENT_UNSPECIFIED",
                 Component::SystemComponents => "SYSTEM_COMPONENTS",
                 Component::Workloads => "WORKLOADS",
+                Component::Apiserver => "APISERVER",
+                Component::Scheduler => "SCHEDULER",
+                Component::ControllerManager => "CONTROLLER_MANAGER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6085,6 +7221,9 @@ pub mod logging_component_config {
                 "COMPONENT_UNSPECIFIED" => Some(Self::Unspecified),
                 "SYSTEM_COMPONENTS" => Some(Self::SystemComponents),
                 "WORKLOADS" => Some(Self::Workloads),
+                "APISERVER" => Some(Self::Apiserver),
+                "SCHEDULER" => Some(Self::Scheduler),
+                "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
                 _ => None,
             }
         }
@@ -6101,6 +7240,76 @@ pub struct MonitoringConfig {
     /// in the cluster.
     #[prost(message, optional, tag = "2")]
     pub managed_prometheus_config: ::core::option::Option<ManagedPrometheusConfig>,
+    /// Configuration of Advanced Datapath Observability features.
+    #[prost(message, optional, tag = "3")]
+    pub advanced_datapath_observability_config: ::core::option::Option<
+        AdvancedDatapathObservabilityConfig,
+    >,
+}
+/// AdvancedDatapathObservabilityConfig specifies configuration of observability
+/// features of advanced datapath.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdvancedDatapathObservabilityConfig {
+    /// Expose flow metrics on nodes
+    #[prost(bool, tag = "1")]
+    pub enable_metrics: bool,
+    /// Method used to make Relay available
+    #[prost(
+        enumeration = "advanced_datapath_observability_config::RelayMode",
+        tag = "2"
+    )]
+    pub relay_mode: i32,
+}
+/// Nested message and enum types in `AdvancedDatapathObservabilityConfig`.
+pub mod advanced_datapath_observability_config {
+    /// Supported Relay modes
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RelayMode {
+        /// Default value. This shouldn't be used.
+        Unspecified = 0,
+        /// disabled
+        Disabled = 1,
+        /// exposed via internal load balancer
+        InternalVpcLb = 3,
+        /// exposed via external load balancer
+        ExternalLb = 4,
+    }
+    impl RelayMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RelayMode::Unspecified => "RELAY_MODE_UNSPECIFIED",
+                RelayMode::Disabled => "DISABLED",
+                RelayMode::InternalVpcLb => "INTERNAL_VPC_LB",
+                RelayMode::ExternalLb => "EXTERNAL_LB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RELAY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "INTERNAL_VPC_LB" => Some(Self::InternalVpcLb),
+                "EXTERNAL_LB" => Some(Self::ExternalLb),
+                _ => None,
+            }
+        }
+    }
 }
 /// NodePoolLoggingConfig specifies logging configuration for nodepools.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6201,6 +7410,18 @@ pub mod monitoring_component_config {
         Scheduler = 4,
         /// kube-controller-manager
         ControllerManager = 5,
+        /// Storage
+        Storage = 7,
+        /// Horizontal Pod Autoscaling
+        Hpa = 8,
+        /// Pod
+        Pod = 9,
+        /// DaemonSet
+        Daemonset = 10,
+        /// Deployment
+        Deployment = 11,
+        /// Statefulset
+        Statefulset = 12,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6215,6 +7436,12 @@ pub mod monitoring_component_config {
                 Component::Apiserver => "APISERVER",
                 Component::Scheduler => "SCHEDULER",
                 Component::ControllerManager => "CONTROLLER_MANAGER",
+                Component::Storage => "STORAGE",
+                Component::Hpa => "HPA",
+                Component::Pod => "POD",
+                Component::Daemonset => "DAEMONSET",
+                Component::Deployment => "DEPLOYMENT",
+                Component::Statefulset => "STATEFULSET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6226,10 +7453,35 @@ pub mod monitoring_component_config {
                 "APISERVER" => Some(Self::Apiserver),
                 "SCHEDULER" => Some(Self::Scheduler),
                 "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
+                "STORAGE" => Some(Self::Storage),
+                "HPA" => Some(Self::Hpa),
+                "POD" => Some(Self::Pod),
+                "DAEMONSET" => Some(Self::Daemonset),
+                "DEPLOYMENT" => Some(Self::Deployment),
+                "STATEFULSET" => Some(Self::Statefulset),
                 _ => None,
             }
         }
     }
+}
+/// Fleet is the fleet configuration for the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Fleet {
+    /// The Fleet host project(project ID or project number) where this cluster
+    /// will be registered to. This field cannot be changed after the cluster has
+    /// been registered.
+    #[prost(string, tag = "1")]
+    pub project: ::prost::alloc::string::String,
+    /// \[Output only\] The full resource name of the registered fleet membership of
+    /// the cluster, in the format
+    /// `//gkehub.googleapis.com/projects/*/locations/*/memberships/*`.
+    #[prost(string, tag = "2")]
+    pub membership: ::prost::alloc::string::String,
+    /// \[Output only\] Whether the cluster has been registered through the fleet
+    /// API.
+    #[prost(bool, tag = "3")]
+    pub pre_registered: bool,
 }
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.
@@ -6242,7 +7494,7 @@ pub enum PrivateIPv6GoogleAccess {
     PrivateIpv6GoogleAccessDisabled = 1,
     /// Enables private IPv6 access to Google Services from GKE
     PrivateIpv6GoogleAccessToGoogle = 2,
-    /// Enables priate IPv6 access to and from Google Services
+    /// Enables private IPv6 access to and from Google Services
     PrivateIpv6GoogleAccessBidirectional = 3,
 }
 impl PrivateIPv6GoogleAccess {
@@ -6323,7 +7575,8 @@ impl UpgradeResourceType {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum NodePoolUpdateStrategy {
-    /// Default value.
+    /// Default value if unset. GKE internally defaults the update strategy to
+    /// SURGE for unspecified strategies.
     Unspecified = 0,
     /// blue-green upgrade.
     BlueGreen = 2,
@@ -6388,6 +7641,39 @@ impl DatapathProvider {
             "DATAPATH_PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
             "LEGACY_DATAPATH" => Some(Self::LegacyDatapath),
             "ADVANCED_DATAPATH" => Some(Self::AdvancedDatapath),
+            _ => None,
+        }
+    }
+}
+/// Possible values for IP stack type
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum StackType {
+    /// By default, the clusters will be IPV4 only
+    Unspecified = 0,
+    /// The value used if the cluster is a IPV4 only
+    Ipv4 = 1,
+    /// The value used if the cluster is a dual stack cluster
+    Ipv4Ipv6 = 2,
+}
+impl StackType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            StackType::Unspecified => "STACK_TYPE_UNSPECIFIED",
+            StackType::Ipv4 => "IPV4",
+            StackType::Ipv4Ipv6 => "IPV4_IPV6",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "IPV4" => Some(Self::Ipv4),
+            "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
             _ => None,
         }
     }
@@ -6987,37 +8273,6 @@ pub mod cluster_manager_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists the node pools for a cluster.
-        pub async fn list_node_pools(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListNodePoolsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListNodePoolsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.container.v1beta1.ClusterManager/ListNodePools",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.container.v1beta1.ClusterManager",
-                        "ListNodePools",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Gets the public component of the cluster signing keys in
         /// JSON Web Key format.
         /// This API is not yet intended for general use, and is not available for all
@@ -7048,6 +8303,37 @@ pub mod cluster_manager_client {
                     GrpcMethod::new(
                         "google.container.v1beta1.ClusterManager",
                         "GetJSONWebKeys",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the node pools for a cluster.
+        pub async fn list_node_pools(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNodePoolsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListNodePoolsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.container.v1beta1.ClusterManager/ListNodePools",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.container.v1beta1.ClusterManager",
+                        "ListNodePools",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -7447,6 +8733,38 @@ pub mod cluster_manager_client {
                     GrpcMethod::new(
                         "google.container.v1beta1.ClusterManager",
                         "ListUsableSubnetworks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Checks the cluster compatibility with Autopilot mode, and returns a list of
+        /// compatibility issues.
+        pub async fn check_autopilot_compatibility(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CheckAutopilotCompatibilityRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CheckAutopilotCompatibilityResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.container.v1beta1.ClusterManager/CheckAutopilotCompatibility",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.container.v1beta1.ClusterManager",
+                        "CheckAutopilotCompatibility",
                     ),
                 );
             self.inner.unary(req, path, codec).await

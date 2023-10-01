@@ -1,3 +1,4 @@
+/// A Memorystore for Memcached instance
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
@@ -5,13 +6,13 @@ pub struct Instance {
     /// location using the form:
     ///      `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     ///
-    /// Note: Memcached instances are managed and addressed at regional level so
-    /// location_id here refers to a GCP region; however, users may choose which
-    /// zones Memcached nodes within an instances should be provisioned in.
-    /// Refer to \[zones\] field for more details.
+    /// Note: Memcached instances are managed and addressed at the regional level
+    /// so `location_id` here refers to a Google Cloud region; however, users may
+    /// choose which zones Memcached nodes should be provisioned in within an
+    /// instance. Refer to [zones][google.cloud.memcache.v1.Instance.zones] field for more details.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// User provided name for the instance only used for display
+    /// User provided name for the instance, which is only used for display
     /// purposes. Cannot be more than 80 characters.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
@@ -29,7 +30,7 @@ pub struct Instance {
     /// will be used.
     #[prost(string, tag = "4")]
     pub authorized_network: ::prost::alloc::string::String,
-    /// Zones where Memcached nodes should be provisioned in.
+    /// Zones in which Memcached nodes should be provisioned.
     /// Memcached nodes will be equally distributed across these zones. If not
     /// provided, the service will by default create nodes in all zones in the
     /// region for the instance.
@@ -43,17 +44,17 @@ pub struct Instance {
     pub node_config: ::core::option::Option<instance::NodeConfig>,
     /// The major version of Memcached software.
     /// If not provided, latest supported version will be used. Currently the
-    /// latest supported major version is MEMCACHE_1_5.
+    /// latest supported major version is `MEMCACHE_1_5`.
     /// The minor version will be automatically determined by our system based on
     /// the latest supported minor version.
     #[prost(enumeration = "MemcacheVersion", tag = "9")]
     pub memcache_version: i32,
-    /// Optional: User defined parameters to apply to the memcached process
+    /// User defined parameters to apply to the memcached process
     /// on each node.
     #[prost(message, optional, tag = "11")]
     pub parameters: ::core::option::Option<MemcacheParameters>,
     /// Output only. List of Memcached nodes.
-    /// Refer to \[Node\] message for more details.
+    /// Refer to [Node][google.cloud.memcache.v1.Instance.Node] message for more details.
     #[prost(message, repeated, tag = "12")]
     pub memcache_nodes: ::prost::alloc::vec::Vec<instance::Node>,
     /// Output only. The time the instance was created.
@@ -71,12 +72,20 @@ pub struct Instance {
     /// The full version format will be "memcached-1.5.16".
     #[prost(string, tag = "18")]
     pub memcache_full_version: ::prost::alloc::string::String,
-    /// List of messages that describe current statuses of memcached instance.
+    /// List of messages that describe the current state of the Memcached instance.
     #[prost(message, repeated, tag = "19")]
     pub instance_messages: ::prost::alloc::vec::Vec<instance::InstanceMessage>,
-    /// Output only. Endpoint for Discovery API
+    /// Output only. Endpoint for the Discovery API.
     #[prost(string, tag = "20")]
     pub discovery_endpoint: ::prost::alloc::string::String,
+    /// The maintenance policy for the instance. If not provided,
+    /// the maintenance event will be performed based on Memorystore
+    /// internal rollout schedule.
+    #[prost(message, optional, tag = "21")]
+    pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
+    /// Output only. Published maintenance schedule.
+    #[prost(message, optional, tag = "22")]
+    pub maintenance_schedule: ::core::option::Option<MaintenanceSchedule>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -242,6 +251,9 @@ pub mod instance {
         Creating = 1,
         /// Memcached instance has been created and ready to be used.
         Ready = 2,
+        /// Memcached instance is updating configuration such as maintenance policy
+        /// and schedule.
+        Updating = 3,
         /// Memcached instance is being deleted.
         Deleting = 4,
         /// Memcached instance is going through maintenance, e.g. data plane rollout.
@@ -257,6 +269,7 @@ pub mod instance {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Creating => "CREATING",
                 State::Ready => "READY",
+                State::Updating => "UPDATING",
                 State::Deleting => "DELETING",
                 State::PerformingMaintenance => "PERFORMING_MAINTENANCE",
             }
@@ -267,8 +280,127 @@ pub mod instance {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "CREATING" => Some(Self::Creating),
                 "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
                 "DELETING" => Some(Self::Deleting),
                 "PERFORMING_MAINTENANCE" => Some(Self::PerformingMaintenance),
+                _ => None,
+            }
+        }
+    }
+}
+/// Maintenance policy per instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaintenancePolicy {
+    /// Output only. The time when the policy was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the policy was updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Description of what this policy is for. Create/Update methods
+    /// return INVALID_ARGUMENT if the length is greater than 512.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. Maintenance window that is applied to resources covered by this
+    /// policy. Minimum 1. For the current version, the maximum number of
+    /// weekly_maintenance_windows is expected to be one.
+    #[prost(message, repeated, tag = "4")]
+    pub weekly_maintenance_window: ::prost::alloc::vec::Vec<WeeklyMaintenanceWindow>,
+}
+/// Time window specified for weekly operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WeeklyMaintenanceWindow {
+    /// Required. Allows to define schedule that runs specified day of the week.
+    #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
+    pub day: i32,
+    /// Required. Start time of the window in UTC.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+    /// Required. Duration of the time window.
+    #[prost(message, optional, tag = "3")]
+    pub duration: ::core::option::Option<::prost_types::Duration>,
+}
+/// Upcoming maintenance schedule.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaintenanceSchedule {
+    /// Output only. The start time of any upcoming scheduled maintenance for this instance.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The end time of any upcoming scheduled maintenance for this instance.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The deadline that the maintenance schedule start time can not go beyond,
+    /// including reschedule.
+    #[prost(message, optional, tag = "4")]
+    pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request for [RescheduleMaintenance][google.cloud.memcache.v1.CloudMemcache.RescheduleMaintenance].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RescheduleMaintenanceRequest {
+    /// Required. Memcache instance resource name using the form:
+    ///      `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. If reschedule type is SPECIFIC_TIME, must set up schedule_time as well.
+    #[prost(enumeration = "reschedule_maintenance_request::RescheduleType", tag = "2")]
+    pub reschedule_type: i32,
+    /// Timestamp when the maintenance shall be rescheduled to if
+    /// reschedule_type=SPECIFIC_TIME, in RFC 3339 format, for
+    /// example `2012-11-15T16:19:00.094Z`.
+    #[prost(message, optional, tag = "3")]
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `RescheduleMaintenanceRequest`.
+pub mod reschedule_maintenance_request {
+    /// Reschedule options.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RescheduleType {
+        /// Not set.
+        Unspecified = 0,
+        /// If the user wants to schedule the maintenance to happen now.
+        Immediate = 1,
+        /// If the user wants to use the existing maintenance policy to find the
+        /// next available window.
+        NextAvailableWindow = 2,
+        /// If the user wants to reschedule the maintenance to a specific time.
+        SpecificTime = 3,
+    }
+    impl RescheduleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RescheduleType::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
+                RescheduleType::Immediate => "IMMEDIATE",
+                RescheduleType::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
+                RescheduleType::SpecificTime => "SPECIFIC_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "NEXT_AVAILABLE_WINDOW" => Some(Self::NextAvailableWindow),
+                "SPECIFIC_TIME" => Some(Self::SpecificTime),
                 _ => None,
             }
         }
@@ -286,18 +418,17 @@ pub struct ListInstancesRequest {
     /// The maximum number of items to return.
     ///
     /// If not specified, a default value of 1000 will be used by the service.
-    /// Regardless of the page_size value, the response may include a partial list
-    /// and a caller should only rely on response's
-    /// [next_page_token][CloudMemcache.ListInstancesResponse.next_page_token]
+    /// Regardless of the `page_size` value, the response may include a partial
+    /// list and a caller should only rely on response's
+    /// [`next_page_token`][google.cloud.memcache.v1.ListInstancesResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The next_page_token value returned from a previous List request,
-    /// if any.
+    /// The `next_page_token` value returned from a previous List request, if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// List filter. For example, exclude all Memcached instances with name as
-    /// my-instance by specifying "name != my-instance".
+    /// my-instance by specifying `"name != my-instance"`.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Sort results. Supported values are "name", "name desc" or "" (unsorted).
@@ -349,9 +480,9 @@ pub struct CreateInstanceRequest {
     /// * Must start with a letter.
     /// * Must be between 1-40 characters.
     /// * Must end with a number or a letter.
-    /// * Must be unique within the user project / location
+    /// * Must be unique within the user project / location.
     ///
-    /// If any of the above are not met, will raise an invalid argument error.
+    /// If any of the above are not met, the API raises an invalid argument error.
     #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
     /// Required. A Memcached Instance
@@ -363,6 +494,7 @@ pub struct CreateInstanceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Required. Mask of fields to update.
+    ///
     ///   *   `displayName`
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -389,12 +521,12 @@ pub struct ApplyParametersRequest {
     /// should be applied.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Nodes to which we should apply the instance-level parameter group.
+    /// Nodes to which the instance-level parameter group is applied.
     #[prost(string, repeated, tag = "2")]
     pub node_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Whether to apply instance-level parameter group to all nodes. If set to
-    /// true, will explicitly restrict users from specifying any nodes, and apply
-    /// parameter group updates to all nodes within the instance.
+    /// true, users are restricted from specifying individual nodes, and
+    /// `ApplyParameters` updates all nodes within the instance.
     #[prost(bool, tag = "3")]
     pub apply_all: bool,
 }
@@ -418,8 +550,9 @@ pub struct UpdateParametersRequest {
 pub struct MemcacheParameters {
     /// Output only. The unique ID associated with this set of parameters. Users
     /// can use this id to determine if the parameters associated with the instance
-    /// differ from the parameters associated with the nodes and any action needs
-    /// to be taken to apply parameters on nodes.
+    /// differ from the parameters associated with the nodes. A discrepancy between
+    /// parameter ids can inform users that they may need to take action to apply
+    /// parameters on nodes.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// User defined set of parameters to use in the memcached process.
@@ -458,6 +591,22 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
+/// Metadata for the given [google.cloud.location.Location][google.cloud.location.Location].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationMetadata {
+    /// Output only. The set of available zones in the location. The map is keyed
+    /// by the lowercase ID of each zone, as defined by GCE. These keys can be
+    /// specified in the `zones` field when creating a Memcached instance.
+    #[prost(map = "string, message", tag = "1")]
+    pub available_zones: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ZoneMetadata,
+    >,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ZoneMetadata {}
 /// Memcached versions supported by our service.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -707,9 +856,10 @@ pub mod cloud_memcache_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates the defined Memcached Parameters for an existing Instance.
+        /// Updates the defined Memcached parameters for an existing instance.
         /// This method only stages the parameters, it must be followed by
-        /// ApplyParameters to apply the parameters to nodes of the Memcached Instance.
+        /// `ApplyParameters` to apply the parameters to nodes of the Memcached
+        /// instance.
         pub async fn update_parameters(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateParametersRequest>,
@@ -771,7 +921,7 @@ pub mod cloud_memcache_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// ApplyParameters will restart the set of specified nodes in order to update
+        /// `ApplyParameters` restarts the set of specified nodes in order to update
         /// them to the current set of parameters for the Memcached Instance.
         pub async fn apply_parameters(
             &mut self,
@@ -799,6 +949,37 @@ pub mod cloud_memcache_client {
                     GrpcMethod::new(
                         "google.cloud.memcache.v1.CloudMemcache",
                         "ApplyParameters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Reschedules upcoming maintenance event.
+        pub async fn reschedule_maintenance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RescheduleMaintenanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memcache.v1.CloudMemcache/RescheduleMaintenance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1.CloudMemcache",
+                        "RescheduleMaintenance",
                     ),
                 );
             self.inner.unary(req, path, codec).await

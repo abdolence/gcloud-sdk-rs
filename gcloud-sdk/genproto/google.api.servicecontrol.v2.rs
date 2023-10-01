@@ -103,6 +103,14 @@ pub struct ReportRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportResponse {}
+/// Message containing resource details in a batch mode.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceInfoList {
+    /// The resource details.
+    #[prost(message, repeated, tag = "1")]
+    pub resources: ::prost::alloc::vec::Vec<ResourceInfo>,
+}
 /// Generated client implementations.
 pub mod service_controller_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]

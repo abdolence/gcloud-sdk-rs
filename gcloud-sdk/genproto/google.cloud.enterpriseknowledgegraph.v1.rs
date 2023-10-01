@@ -147,7 +147,7 @@ pub struct InputConfig {
     pub entity_type: i32,
     /// Optional. Provide the bigquery table containing the previous results if
     /// cluster ID stability is desired. Format is
-    /// “projects/*/datasets/*/tables/*".
+    /// `projects/*/datasets/*/tables/*`.
     #[prost(string, tag = "3")]
     pub previous_result_bigquery_table: ::prost::alloc::string::String,
 }
@@ -223,7 +223,7 @@ pub mod input_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryInputConfig {
-    /// Required. Format is “projects/*/datasets/*/tables/*”.
+    /// Required. Format is `projects/*/datasets/*/tables/*`.
     #[prost(string, tag = "1")]
     pub bigquery_table: ::prost::alloc::string::String,
     /// Required. Schema mapping file
@@ -260,9 +260,10 @@ pub mod recon_config {
     pub struct Options {
         /// If true, separate clusters by their geographic region (from geocoding).
         /// Uses the following entity features:
-        ///   - schema.org/addressLocality
-        ///   - schema.org/addressRegion
-        ///   - schema.org/addressCountry
+        ///
+        /// - schema.org/addressLocality
+        /// - schema.org/addressRegion
+        /// - schema.org/addressCountry
         /// Warning: processing will no longer be regionalized!
         #[prost(bool, tag = "100")]
         pub enable_geocoding_separation: bool,
@@ -427,6 +428,158 @@ pub struct EntityReconciliationJob {
     /// Optional. Recon configs to adjust the clustering behavior.
     #[prost(message, optional, tag = "9")]
     pub recon_config: ::core::option::Option<ReconConfig>,
+}
+/// Request message for
+/// [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The list of entity ids to be used for lookup.
+    #[prost(string, repeated, tag = "2")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for
+/// [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
+}
+/// Request message for
+/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The literal query string for search.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Restricts returned entities with these types, e.g. Person
+    /// (as defined in <http://schema.org/Person>). If multiple types are specified,
+    /// returned entities will contain one or more of these types.
+    #[prost(string, repeated, tag = "4")]
+    pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Limits the number of entities to be returned.
+    #[prost(message, optional, tag = "6")]
+    pub limit: ::core::option::Option<i32>,
+}
+/// Response message for
+/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
+}
+/// Request message for
+/// [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupPublicKgRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The list of entity ids to be used for lookup.
+    #[prost(string, repeated, tag = "2")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for
+/// [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupPublicKgResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
+}
+/// Request message for
+/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchPublicKgRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The literal query string for search.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Restricts returned entities with these types, e.g. Person
+    /// (as defined in <http://schema.org/Person>). If multiple types are specified,
+    /// returned entities will contain one or more of these types.
+    #[prost(string, repeated, tag = "4")]
+    pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Limits the number of entities to be returned.
+    #[prost(message, optional, tag = "6")]
+    pub limit: ::core::option::Option<i32>,
+}
+/// Response message for
+/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchPublicKgResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
 }
 /// Generated client implementations.
 pub mod enterprise_knowledge_graph_service_client {
@@ -665,6 +818,124 @@ pub mod enterprise_knowledge_graph_service_client {
                     GrpcMethod::new(
                         "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
                         "DeleteEntityReconciliationJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Finds the Cloud KG entities with CKG ID(s).
+        pub async fn lookup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupRequest>,
+        ) -> std::result::Result<tonic::Response<super::LookupResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Lookup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "Lookup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Searches the Cloud KG entities with entity name.
+        pub async fn search(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchRequest>,
+        ) -> std::result::Result<tonic::Response<super::SearchResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Search",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "Search",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Finds the public KG entities with public KG ID(s).
+        pub async fn lookup_public_kg(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupPublicKgRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LookupPublicKgResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/LookupPublicKg",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "LookupPublicKg",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Searches the public KG entities with entity name.
+        pub async fn search_public_kg(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchPublicKgRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchPublicKgResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/SearchPublicKg",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "SearchPublicKg",
                     ),
                 );
             self.inner.unary(req, path, codec).await

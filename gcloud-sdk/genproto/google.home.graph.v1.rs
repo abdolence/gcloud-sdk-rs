@@ -7,12 +7,12 @@ pub struct Device {
     pub id: ::prost::alloc::string::String,
     /// Hardware type of the device.
     /// See [device
-    /// types](<https://developers.google.com/assistant/smarthome/guides>).
+    /// types](<https://developers.home.google.com/cloud-to-cloud/guides>).
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
     /// Traits supported by the device.
     /// See [device
-    /// traits](<https://developers.google.com/assistant/smarthome/traits>).
+    /// traits](<https://developers.home.google.com/cloud-to-cloud/traits>).
     #[prost(string, repeated, tag = "3")]
     pub traits: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Names given to this device by your smart home Action.
@@ -39,15 +39,17 @@ pub struct Device {
     pub attributes: ::core::option::Option<::prost_types::Struct>,
     /// Custom device attributes stored in Home Graph and provided to your
     /// smart home Action in each
-    /// [QUERY](<https://developers.google.com/assistant/smarthome/reference/intent/query>)
+    /// [QUERY](<https://developers.home.google.com/cloud-to-cloud/intents/query>)
     /// and
-    /// [EXECUTE](<https://developers.google.com/assistant/smarthome/reference/intent/execute>)
+    /// [EXECUTE](<https://developers.home.google.com/cloud-to-cloud/intents/execute>)
     /// intent.
+    /// Data in this object has a few constraints: No sensitive information,
+    /// including but not limited to Personally Identifiable Information.
     #[prost(message, optional, tag = "10")]
     pub custom_data: ::core::option::Option<::prost_types::Struct>,
     /// Alternate IDs associated with this device.
     /// This is used to identify cloud synced devices enabled for [local
-    /// fulfillment](<https://developers.google.com/assistant/smarthome/concepts/local>).
+    /// fulfillment](<https://developers.home.google.com/local-home/overview>).
     #[prost(message, repeated, tag = "11")]
     pub other_device_ids: ::prost::alloc::vec::Vec<AgentOtherDeviceId>,
     /// Indicates whether your smart home Action will report notifications
@@ -132,7 +134,8 @@ pub struct RequestSyncDevicesResponse {}
 /// call. It may include states, notifications, or both. States and notifications
 /// are defined per `device_id` (for example, "123" and "456" in the following
 /// example).
-/// # Example
+///
+/// Example:
 ///
 /// ```json
 /// {
@@ -166,10 +169,6 @@ pub struct ReportStateAndNotificationRequest {
     #[prost(string, tag = "2")]
     pub agent_user_id: ::prost::alloc::string::String,
     /// Deprecated.
-    /// (-- Token to maintain state in the follow up notification response. See the
-    /// notifications guide at
-    /// <https://developers.google.com/assistant/smarthome/develop/notifications> for
-    /// details on implementing follow up notifications --)
     #[deprecated]
     #[prost(string, tag = "5")]
     pub follow_up_token: ::prost::alloc::string::String,
@@ -202,12 +201,12 @@ pub struct StateAndNotificationPayload {
 pub struct ReportStateAndNotificationDevice {
     /// States of devices to update. See the **Device STATES** section
     /// of the individual trait [reference
-    /// guides](<https://developers.google.com/assistant/smarthome/traits>).
+    /// guides](<https://developers.home.google.com/cloud-to-cloud/traits>).
     #[prost(message, optional, tag = "1")]
     pub states: ::core::option::Option<::prost_types::Struct>,
     /// Notifications metadata for devices. See the **Device NOTIFICATIONS**
     /// section of the individual trait [reference
-    /// guides](<https://developers.google.com/assistant/smarthome/traits>).
+    /// guides](<https://developers.home.google.com/cloud-to-cloud/traits>).
     #[prost(message, optional, tag = "2")]
     pub notifications: ::core::option::Option<::prost_types::Struct>,
 }
@@ -268,8 +267,9 @@ pub struct AgentDeviceId {
 /// [`Query`](#google.home.graph.v1.HomeGraphApiService.Query) call.
 /// This should follow the same format as the Google smart home
 /// `action.devices.QUERY`
-/// [response](<https://developers.google.com/assistant/smarthome/reference/intent/query>).
-/// # Example
+/// [response](<https://developers.home.google.com/cloud-to-cloud/intents/query>).
+///
+/// Example:
 ///
 /// ```json
 /// {
@@ -331,8 +331,9 @@ pub struct SyncRequest {
 /// [`Sync`](#google.home.graph.v1.HomeGraphApiService.Sync) call.
 /// This should follow the same format as the Google smart home
 /// `action.devices.SYNC`
-/// [response](<https://developers.google.com/assistant/smarthome/reference/intent/sync>).
-/// # Example
+/// [response](<https://developers.home.google.com/cloud-to-cloud/intents/sync>).
+///
+/// Example:
 ///
 /// ```json
 /// {
@@ -398,7 +399,7 @@ pub mod home_graph_api_service_client {
     /// between devices and the home.
     ///
     /// For more details, see the [Home Graph developer
-    /// guide](https://developers.google.com/assistant/smarthome/concepts/homegraph).
+    /// guide](https://developers.home.google.com/cloud-to-cloud/primer/home-graph).
     #[derive(Debug, Clone)]
     pub struct HomeGraphApiServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -480,7 +481,7 @@ pub mod home_graph_api_service_client {
             self
         }
         /// Requests Google to send an `action.devices.SYNC`
-        /// [intent](https://developers.google.com/assistant/smarthome/reference/intent/sync)
+        /// [intent](https://developers.home.google.com/cloud-to-cloud/intents/sync)
         /// to your smart home Action to update device metadata for the given user.
         ///
         ///
@@ -523,11 +524,11 @@ pub mod home_graph_api_service_client {
         /// Called by your smart home Action when the state of a third-party device
         /// changes or you need to send a notification about the device.
         /// See [Implement Report
-        /// State](https://developers.google.com/assistant/smarthome/develop/report-state)
+        /// State](https://developers.home.google.com/cloud-to-cloud/integration/report-state)
         /// for more information.
         ///
         /// This method updates the device state according to its declared
-        /// [traits](https://developers.google.com/assistant/smarthome/concepts/devices-traits).
+        /// [traits](https://developers.home.google.com/cloud-to-cloud/primer/device-types-and-traits).
         /// Publishing a new state value outside of these traits will result in an
         /// `INVALID_ARGUMENT` error response.
         ///
@@ -571,7 +572,7 @@ pub mod home_graph_api_service_client {
         ///
         /// For more details on how users link their accounts, see
         /// [fulfillment and
-        /// authentication](https://developers.google.com/assistant/smarthome/concepts/fulfillment-authentication).
+        /// authentication](https://developers.home.google.com/cloud-to-cloud/primer/fulfillment).
         ///
         /// The third-party user's identity is passed in via the `agent_user_id`
         /// (see

@@ -280,8 +280,9 @@ pub mod membership_feature_state {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Membership {
-    /// Output only. The full, unique name of this Membership resource in the format
-    /// `projects/*/locations/*/memberships/{membership_id}`, set during creation.
+    /// Output only. The full, unique name of this Membership resource in the
+    /// format `projects/*/locations/*/memberships/{membership_id}`, set during
+    /// creation.
     ///
     /// `membership_id` must be a valid RFC 1123 compliant DNS label:
     ///
@@ -293,7 +294,7 @@ pub struct Membership {
     /// with a maximum length of 63 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. GCP labels for this membership.
+    /// Optional. Labels for this membership.
     #[prost(map = "string, string", tag = "2")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -317,8 +318,8 @@ pub struct Membership {
     /// Output only. When the Membership was deleted.
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. An externally-generated and managed ID for this Membership. This ID may
-    /// be modified after creation, but this is not recommended.
+    /// Optional. An externally-generated and managed ID for this Membership. This
+    /// ID may be modified after creation, but this is not recommended.
     ///
     /// The ID must match the regex: `[a-zA-Z0-9][a-zA-Z0-9_\-\.]*`
     ///
@@ -326,14 +327,15 @@ pub struct Membership {
     /// set to the UID of the `kube-system` namespace object.
     #[prost(string, tag = "9")]
     pub external_id: ::prost::alloc::string::String,
-    /// Output only. For clusters using Connect, the timestamp of the most recent connection
-    /// established with Google Cloud. This time is updated every several minutes,
-    /// not continuously. For clusters that do not use GKE Connect, or that have
-    /// never connected successfully, this field will be unset.
+    /// Output only. For clusters using Connect, the timestamp of the most recent
+    /// connection established with Google Cloud. This time is updated every
+    /// several minutes, not continuously. For clusters that do not use GKE
+    /// Connect, or that have never connected successfully, this field will be
+    /// unset.
     #[prost(message, optional, tag = "10")]
     pub last_connection_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Google-generated UUID for this resource. This is unique across all
-    /// Membership resources. If a Membership resource is deleted and another
+    /// Output only. Google-generated UUID for this resource. This is unique across
+    /// all Membership resources. If a Membership resource is deleted and another
     /// resource with the same name is created, it gets a different unique_id.
     #[prost(string, tag = "11")]
     pub unique_id: ::prost::alloc::string::String,
@@ -342,6 +344,9 @@ pub struct Membership {
     /// <https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity>
     #[prost(message, optional, tag = "12")]
     pub authority: ::core::option::Option<Authority>,
+    /// Optional. The monitoring config information for this membership.
+    #[prost(message, optional, tag = "14")]
+    pub monitoring_config: ::core::option::Option<MonitoringConfig>,
     /// Type of resource represented by this Membership
     #[prost(oneof = "membership::Type", tags = "4")]
     pub r#type: ::core::option::Option<membership::Type>,
@@ -368,8 +373,8 @@ pub struct MembershipEndpoint {
     /// Output only. Useful Kubernetes-specific metadata.
     #[prost(message, optional, tag = "2")]
     pub kubernetes_metadata: ::core::option::Option<KubernetesMetadata>,
-    /// Optional. The in-cluster Kubernetes Resources that should be applied for a correctly
-    /// registered cluster, in the steady state. These resources:
+    /// Optional. The in-cluster Kubernetes Resources that should be applied for a
+    /// correctly registered cluster, in the steady state. These resources:
     ///
     ///    * Ensure that the cluster is exclusively registered to one and only one
     ///      Hub Membership.
@@ -378,6 +383,10 @@ pub struct MembershipEndpoint {
     ///    * Ensure proper initial configuration of default Hub Features.
     #[prost(message, optional, tag = "3")]
     pub kubernetes_resource: ::core::option::Option<KubernetesResource>,
+    /// Output only. Whether the lifecycle of this membership is managed by a
+    /// google cluster platform service.
+    #[prost(bool, tag = "8")]
+    pub google_managed: bool,
 }
 /// KubernetesResource contains the YAML manifests and configuration for
 /// Membership Kubernetes resources in the cluster. After CreateMembership or
@@ -385,8 +394,8 @@ pub struct MembershipEndpoint {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KubernetesResource {
-    /// Input only. The YAML representation of the Membership CR. This field is ignored for GKE
-    /// clusters where Hub can read the CR directly.
+    /// Input only. The YAML representation of the Membership CR. This field is
+    /// ignored for GKE clusters where Hub can read the CR directly.
     ///
     /// Callers should provide the CR that is currently present in the cluster
     /// during CreateMembership or UpdateMembership, or leave this field empty if
@@ -394,8 +403,8 @@ pub struct KubernetesResource {
     /// registered with another Membership.
     #[prost(string, tag = "1")]
     pub membership_cr_manifest: ::prost::alloc::string::String,
-    /// Output only. Additional Kubernetes resources that need to be applied to the cluster
-    /// after Membership creation, and after every update.
+    /// Output only. Additional Kubernetes resources that need to be applied to the
+    /// cluster after Membership creation, and after every update.
     ///
     /// This field is only populated in the Membership returned from a successful
     /// long-running operation from CreateMembership or UpdateMembership. It is not
@@ -421,9 +430,9 @@ pub struct KubernetesResource {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceOptions {
-    /// Optional. The Connect agent version to use for connect_resources. Defaults to the
-    /// latest GKE Connect version. The version must be a currently supported
-    /// version, obsolete versions will be rejected.
+    /// Optional. The Connect agent version to use for connect_resources. Defaults
+    /// to the latest GKE Connect version. The version must be a currently
+    /// supported version, obsolete versions will be rejected.
     #[prost(string, tag = "1")]
     pub connect_version: ::prost::alloc::string::String,
     /// Optional. Use `apiextensions/v1beta1` instead of `apiextensions/v1` for
@@ -432,8 +441,8 @@ pub struct ResourceOptions {
     /// <1.16.
     #[prost(bool, tag = "2")]
     pub v1beta1_crd: bool,
-    /// Optional. Major version of the Kubernetes cluster. This is only used to determine
-    /// which version to use for the CustomResourceDefinition resources,
+    /// Optional. Major version of the Kubernetes cluster. This is only used to
+    /// determine which version to use for the CustomResourceDefinition resources,
     /// `apiextensions/v1beta1` or`apiextensions/v1`.
     #[prost(string, tag = "3")]
     pub k8s_version: ::prost::alloc::string::String,
@@ -458,25 +467,31 @@ pub struct ResourceManifest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GkeCluster {
-    /// Immutable. Self-link of the GCP resource for the GKE cluster. For example:
+    /// Immutable. Self-link of the Google Cloud resource for the GKE cluster. For
+    /// example:
     ///
     /// //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
     ///
     /// Zonal clusters are also supported.
     #[prost(string, tag = "1")]
     pub resource_link: ::prost::alloc::string::String,
+    /// Output only. If cluster_missing is set then it denotes that the GKE cluster
+    /// no longer exists in the GKE Control Plane.
+    #[prost(bool, tag = "2")]
+    pub cluster_missing: bool,
 }
 /// KubernetesMetadata provides informational metadata for Memberships
 /// representing Kubernetes clusters.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KubernetesMetadata {
-    /// Output only. Kubernetes API server version string as reported by `/version`.
+    /// Output only. Kubernetes API server version string as reported by
+    /// `/version`.
     #[prost(string, tag = "1")]
     pub kubernetes_api_server_version: ::prost::alloc::string::String,
-    /// Output only. Node providerID as reported by the first node in the list of nodes on
-    /// the Kubernetes endpoint. On Kubernetes platforms that support zero-node
-    /// clusters (like GKE-on-GCP), the node_count will be zero and the
+    /// Output only. Node providerID as reported by the first node in the list of
+    /// nodes on the Kubernetes endpoint. On Kubernetes platforms that support
+    /// zero-node clusters (like GKE-on-GCP), the node_count will be zero and the
     /// node_provider_id will be empty.
     #[prost(string, tag = "2")]
     pub node_provider_id: ::prost::alloc::string::String,
@@ -486,15 +501,46 @@ pub struct KubernetesMetadata {
     /// Output only. vCPU count as reported by Kubernetes nodes resources.
     #[prost(int32, tag = "4")]
     pub vcpu_count: i32,
-    /// Output only. The total memory capacity as reported by the sum of all Kubernetes nodes
-    /// resources, defined in MB.
+    /// Output only. The total memory capacity as reported by the sum of all
+    /// Kubernetes nodes resources, defined in MB.
     #[prost(int32, tag = "5")]
     pub memory_mb: i32,
-    /// Output only. The time at which these details were last updated. This update_time is
-    /// different from the Membership-level update_time since EndpointDetails are
-    /// updated internally for API consumers.
+    /// Output only. The time at which these details were last updated. This
+    /// update_time is different from the Membership-level update_time since
+    /// EndpointDetails are updated internally for API consumers.
     #[prost(message, optional, tag = "100")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// This field informs Fleet-based applications/services/UIs with the necessary
+/// information for where each underlying Cluster reports its metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MonitoringConfig {
+    /// Immutable. Project used to report Metrics
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Immutable. Location used to report Metrics
+    #[prost(string, tag = "2")]
+    pub location: ::prost::alloc::string::String,
+    /// Immutable. Cluster name used to report metrics.
+    /// For Anthos on VMWare/Baremetal, it would be in format
+    /// `memberClusters/cluster_name`; And for Anthos on MultiCloud, it would be in
+    /// format
+    /// `{azureClusters, awsClusters}/cluster_name`.
+    #[prost(string, tag = "3")]
+    pub cluster: ::prost::alloc::string::String,
+    /// Kubernetes system metrics, if available, are written to this prefix.
+    /// This defaults to kubernetes.io for GKE, and kubernetes.io/anthos for Anthos
+    /// eventually. Noted: Anthos MultiCloud will have kubernetes.io prefix today
+    /// but will migration to be under kubernetes.io/anthos
+    #[prost(string, tag = "4")]
+    pub kubernetes_metrics_prefix: ::prost::alloc::string::String,
+    /// Immutable. Cluster hash, this is a unique string generated by google code,
+    /// which does not contain any PII, which we can use to reference the cluster.
+    /// This is expected to be created by the monitoring stack and persisted into
+    /// the Cluster object as well as to GKE-Hub.
+    #[prost(string, tag = "5")]
+    pub cluster_hash: ::prost::alloc::string::String,
 }
 /// MembershipState describes the state of a Membership resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -568,8 +614,8 @@ pub mod membership_state {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authority {
-    /// Optional. A JSON Web Token (JWT) issuer URI. `issuer` must start with `<https://`> and
-    /// be a valid URL with length <2000 characters.
+    /// Optional. A JSON Web Token (JWT) issuer URI. `issuer` must start with
+    /// `<https://`> and be a valid URL with length <2000 characters.
     ///
     /// If set, then Google will allow valid OIDC tokens from this issuer to
     /// authenticate within the workload_identity_pool. OIDC discovery will be
@@ -580,8 +626,8 @@ pub struct Authority {
     /// a new issuer (and re-enabling Workload Identity).
     #[prost(string, tag = "1")]
     pub issuer: ::prost::alloc::string::String,
-    /// Output only. The name of the workload identity pool in which `issuer` will be
-    /// recognized.
+    /// Output only. The name of the workload identity pool in which `issuer` will
+    /// be recognized.
     ///
     /// There is a single Workload Identity Pool per Hub that is shared
     /// between all Memberships that belong to that Hub. For a Hub hosted in
@@ -589,11 +635,12 @@ pub struct Authority {
     /// although this is subject to change in newer versions of this API.
     #[prost(string, tag = "2")]
     pub workload_identity_pool: ::prost::alloc::string::String,
-    /// Output only. An identity provider that reflects the `issuer` in the workload identity
-    /// pool.
+    /// Output only. An identity provider that reflects the `issuer` in the
+    /// workload identity pool.
     #[prost(string, tag = "3")]
     pub identity_provider: ::prost::alloc::string::String,
-    /// Optional. OIDC verification keys for this Membership in JWKS format (RFC 7517).
+    /// Optional. OIDC verification keys for this Membership in JWKS format (RFC
+    /// 7517).
     ///
     /// When this field is set, OIDC discovery will NOT be performed on `issuer`,
     /// and instead OIDC tokens will be validated using this field.
@@ -604,13 +651,14 @@ pub struct Authority {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMembershipsRequest {
-    /// Required. The parent (project and location) where the Memberships will be listed.
-    /// Specified in the format `projects/*/locations/*`.
+    /// Required. The parent (project and location) where the Memberships will be
+    /// listed. Specified in the format `projects/*/locations/*`.
+    /// `projects/*/locations/-` list memberships in all the regions.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. When requesting a 'page' of resources, `page_size` specifies number of
-    /// resources to return. If unspecified or set to 0, all resources will
-    /// be returned.
+    /// Optional. When requesting a 'page' of resources, `page_size` specifies
+    /// number of resources to return. If unspecified or set to 0, all resources
+    /// will be returned.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Token returned by previous call to `ListMemberships` which
@@ -618,8 +666,8 @@ pub struct ListMembershipsRequest {
     /// resources.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Lists Memberships that match the filter expression, following the syntax
-    /// outlined in <https://google.aip.dev/160.>
+    /// Optional. Lists Memberships that match the filter expression, following the
+    /// syntax outlined in <https://google.aip.dev/160.>
     ///
     /// Examples:
     ///
@@ -674,12 +722,12 @@ pub struct GetMembershipRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMembershipRequest {
-    /// Required. The parent (project and location) where the Memberships will be created.
-    /// Specified in the format `projects/*/locations/*`.
+    /// Required. The parent (project and location) where the Memberships will be
+    /// created. Specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Client chosen ID for the membership. `membership_id` must be a valid RFC
-    /// 1123 compliant DNS label:
+    /// Required. Client chosen ID for the membership. `membership_id` must be a
+    /// valid RFC 1123 compliant DNS label:
     ///
     ///    1. At most 63 characters in length
     ///    2. It must consist of lower case alphanumeric characters or `-`
@@ -731,6 +779,11 @@ pub struct DeleteMembershipRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, any subresource from this Membership will also be
+    /// deleted. Otherwise, the request will only work if the Membership has no
+    /// subresource.
+    #[prost(bool, tag = "3")]
+    pub force: bool,
 }
 /// Request message for `GkeHub.UpdateMembership` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -775,25 +828,27 @@ pub struct UpdateMembershipRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConnectManifestRequest {
-    /// Required. The Membership resource name the Agent will associate with, in the format
-    /// `projects/*/locations/*/memberships/*`.
+    /// Required. The Membership resource name the Agent will associate with, in
+    /// the format `projects/*/locations/*/memberships/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Namespace for GKE Connect agent resources. Defaults to `gke-connect`.
+    /// Optional. Namespace for GKE Connect agent resources. Defaults to
+    /// `gke-connect`.
     ///
     /// The Connect Agent is authorized automatically when run in the default
     /// namespace. Otherwise, explicit authorization must be granted with an
     /// additional IAM binding.
     #[prost(string, tag = "2")]
     pub namespace: ::prost::alloc::string::String,
-    /// Optional. URI of a proxy if connectivity from the agent to gkeconnect.googleapis.com
-    /// requires the use of a proxy. Format must be in the form
-    /// `http(s)://{proxy_address}`, depending on the HTTP/HTTPS protocol
+    /// Optional. URI of a proxy if connectivity from the agent to
+    /// gkeconnect.googleapis.com requires the use of a proxy. Format must be in
+    /// the form `http(s)://{proxy_address}`, depending on the HTTP/HTTPS protocol
     /// supported by the proxy. This will direct the connect agent's outbound
     /// traffic through a HTTP(S) proxy.
     #[prost(bytes = "vec", tag = "3")]
     pub proxy: ::prost::alloc::vec::Vec<u8>,
-    /// Optional. The Connect agent version to use. Defaults to the most current version.
+    /// Optional. The Connect agent version to use. Defaults to the most current
+    /// version.
     #[prost(string, tag = "4")]
     pub version: ::prost::alloc::string::String,
     /// Optional. If true, generate the resources for upgrade only. Some resources
@@ -1044,7 +1099,10 @@ pub mod gke_hub_client {
     /// * [Membership][google.cloud.gkehub.v1.Membership]
     /// * [Feature][google.cloud.gkehub.v1.Feature]
     ///
-    /// GKE Hub is currently only available in the global region.
+    /// GKE Hub is currently available in the global region and all regions in
+    /// https://cloud.google.com/compute/docs/regions-zones. Feature is only
+    /// available in global region while membership is global region and all the
+    /// regions.
     ///
     /// **Membership management may be non-trivial:** it is recommended to use one
     /// of the Google-provided client libraries or tools where possible when working

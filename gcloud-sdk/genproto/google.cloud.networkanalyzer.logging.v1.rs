@@ -269,6 +269,8 @@ pub enum ReportCauseCode {
     RouteInvalidNextHopVpnTunnelDeleted = 5,
     RouteInvalidNextHopIlbBackendIpForwardingDisabled = 6,
     IpUtilizationIpAllocationRatioHigh = 20,
+    /// Summary of ip utilization of all subnet ranges in the project.
+    IpUtilizationIpAllocationSummary = 21,
     /// Kubernetes Engine
     GkeNodeToControlPlaneBlockedByRoutingIssue = 201,
     GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall = 202,
@@ -326,6 +328,9 @@ impl ReportCauseCode {
             }
             ReportCauseCode::IpUtilizationIpAllocationRatioHigh => {
                 "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH"
+            }
+            ReportCauseCode::IpUtilizationIpAllocationSummary => {
+                "IP_UTILIZATION_IP_ALLOCATION_SUMMARY"
             }
             ReportCauseCode::GkeNodeToControlPlaneBlockedByRoutingIssue => {
                 "GKE_NODE_TO_CONTROL_PLANE_BLOCKED_BY_ROUTING_ISSUE"
@@ -425,6 +430,9 @@ impl ReportCauseCode {
             }
             "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH" => {
                 Some(Self::IpUtilizationIpAllocationRatioHigh)
+            }
+            "IP_UTILIZATION_IP_ALLOCATION_SUMMARY" => {
+                Some(Self::IpUtilizationIpAllocationSummary)
             }
             "GKE_NODE_TO_CONTROL_PLANE_BLOCKED_BY_ROUTING_ISSUE" => {
                 Some(Self::GkeNodeToControlPlaneBlockedByRoutingIssue)

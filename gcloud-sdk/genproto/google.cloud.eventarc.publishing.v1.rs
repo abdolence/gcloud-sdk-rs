@@ -7,8 +7,16 @@ pub struct PublishChannelConnectionEventsRequest {
     #[prost(string, tag = "1")]
     pub channel_connection: ::prost::alloc::string::String,
     /// The CloudEvents v1.0 events to publish. No other types are allowed.
+    /// If this field is set, then the `text_events` fields must not be set.
     #[prost(message, repeated, tag = "2")]
     pub events: ::prost::alloc::vec::Vec<::prost_types::Any>,
+    /// The text representation of events to publish.
+    /// CloudEvent v1.0 in JSON format is the only allowed type. Refer to
+    /// <https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/json-format.md>
+    /// for specification.
+    /// If this field is set, then the `events` fields must not be set.
+    #[prost(string, repeated, tag = "3")]
+    pub text_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response message for the PublishChannelConnectionEvents method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -23,8 +31,16 @@ pub struct PublishEventsRequest {
     #[prost(string, tag = "1")]
     pub channel: ::prost::alloc::string::String,
     /// The CloudEvents v1.0 events to publish. No other types are allowed.
+    /// If this field is set, then the `text_events` fields must not be set.
     #[prost(message, repeated, tag = "2")]
     pub events: ::prost::alloc::vec::Vec<::prost_types::Any>,
+    /// The text representation of events to publish.
+    /// CloudEvent v1.0 in JSON format is the only allowed type. Refer to
+    /// <https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/json-format.md>
+    /// for specification.
+    /// If this field is set, then the `events` fields must not be set.
+    #[prost(string, repeated, tag = "3")]
+    pub text_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response message for the PublishEvents method.
 #[allow(clippy::derive_partial_eq_without_eq)]

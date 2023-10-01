@@ -215,14 +215,17 @@ pub struct Index {
     /// time, and that have the same collection id as this index.
     #[prost(enumeration = "index::QueryScope", tag = "2")]
     pub query_scope: i32,
+    /// The API scope supported by this index.
+    #[prost(enumeration = "index::ApiScope", tag = "5")]
+    pub api_scope: i32,
     /// The fields supported by this index.
     ///
-    /// For composite indexes, this is always 2 or more fields.
-    /// The last field entry is always for the field path `__name__`. If, on
-    /// creation, `__name__` was not specified as the last field, it will be added
-    /// automatically with the same direction as that of the last field defined. If
-    /// the final field in a composite index is not directional, the `__name__`
-    /// will be ordered ASCENDING (unless explicitly specified).
+    /// For composite indexes, this requires a minimum of 2 and a maximum of 100
+    /// fields. The last field entry is always for the field path `__name__`. If,
+    /// on creation, `__name__` was not specified as the last field, it will be
+    /// added automatically with the same direction as that of the last field
+    /// defined. If the final field in a composite index is not directional, the
+    /// `__name__` will be ordered ASCENDING (unless explicitly specified).
     ///
     /// For single field indexes, this will always be exactly one entry with a
     /// field path equal to the field path of the associated field.
@@ -371,6 +374,9 @@ pub mod index {
         /// against all collections that has the collection id specified by the
         /// index.
         CollectionGroup = 2,
+        /// Include all the collections's ancestor in the index. Only available for
+        /// Datastore Mode databases.
+        CollectionRecursive = 3,
     }
     impl QueryScope {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -382,6 +388,7 @@ pub mod index {
                 QueryScope::Unspecified => "QUERY_SCOPE_UNSPECIFIED",
                 QueryScope::Collection => "COLLECTION",
                 QueryScope::CollectionGroup => "COLLECTION_GROUP",
+                QueryScope::CollectionRecursive => "COLLECTION_RECURSIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -390,6 +397,48 @@ pub mod index {
                 "QUERY_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "COLLECTION" => Some(Self::Collection),
                 "COLLECTION_GROUP" => Some(Self::CollectionGroup),
+                "COLLECTION_RECURSIVE" => Some(Self::CollectionRecursive),
+                _ => None,
+            }
+        }
+    }
+    /// API Scope defines the APIs (Firestore Native, or Firestore in
+    /// Datastore Mode) that are supported for queries.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ApiScope {
+        /// The index can only be used by the Firestore Native query API.
+        /// This is the default.
+        AnyApi = 0,
+        /// The index can only be used by the Firestore in Datastore Mode query API.
+        DatastoreModeApi = 1,
+    }
+    impl ApiScope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ApiScope::AnyApi => "ANY_API",
+                ApiScope::DatastoreModeApi => "DATASTORE_MODE_API",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANY_API" => Some(Self::AnyApi),
+                "DATASTORE_MODE_API" => Some(Self::DatastoreModeApi),
                 _ => None,
             }
         }
@@ -611,6 +660,29 @@ pub struct ListDatabasesRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
+/// The request for
+/// [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDatabaseRequest {
+    /// Required. A parent name of the form
+    /// `projects/{project_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Database to create.
+    #[prost(message, optional, tag = "2")]
+    pub database: ::core::option::Option<Database>,
+    /// Required. The ID to use for the database, which will become the final
+    /// component of the database's resource name.
+    ///
+    /// The value must be set to "(default)".
+    #[prost(string, tag = "3")]
+    pub database_id: ::prost::alloc::string::String,
+}
+/// Metadata related to the create database operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDatabaseMetadata {}
 /// The list of databases for a project.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -619,7 +691,8 @@ pub struct ListDatabasesResponse {
     #[prost(message, repeated, tag = "1")]
     pub databases: ::prost::alloc::vec::Vec<Database>,
 }
-/// The request for [FirestoreAdmin.GetDatabase][google.firestore.admin.v1.FirestoreAdmin.GetDatabase].
+/// The request for
+/// [FirestoreAdmin.GetDatabase][google.firestore.admin.v1.FirestoreAdmin.GetDatabase].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatabaseRequest {
@@ -628,7 +701,8 @@ pub struct GetDatabaseRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.UpdateDatabase][google.firestore.admin.v1.FirestoreAdmin.UpdateDatabase].
+/// The request for
+/// [FirestoreAdmin.UpdateDatabase][google.firestore.admin.v1.FirestoreAdmin.UpdateDatabase].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseRequest {
@@ -643,7 +717,8 @@ pub struct UpdateDatabaseRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseMetadata {}
-/// The request for [FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex].
+/// The request for
+/// [FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
@@ -655,7 +730,8 @@ pub struct CreateIndexRequest {
     #[prost(message, optional, tag = "2")]
     pub index: ::core::option::Option<Index>,
 }
-/// The request for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
+/// The request for
+/// [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
@@ -670,12 +746,13 @@ pub struct ListIndexesRequest {
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A page token, returned from a previous call to
-    /// [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes], that may be used to get the next
-    /// page of results.
+    /// [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes],
+    /// that may be used to get the next page of results.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
+/// The response for
+/// [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
@@ -687,7 +764,8 @@ pub struct ListIndexesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.GetIndex][google.firestore.admin.v1.FirestoreAdmin.GetIndex].
+/// The request for
+/// [FirestoreAdmin.GetIndex][google.firestore.admin.v1.FirestoreAdmin.GetIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
@@ -696,7 +774,8 @@ pub struct GetIndexRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.DeleteIndex][google.firestore.admin.v1.FirestoreAdmin.DeleteIndex].
+/// The request for
+/// [FirestoreAdmin.DeleteIndex][google.firestore.admin.v1.FirestoreAdmin.DeleteIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
@@ -705,7 +784,8 @@ pub struct DeleteIndexRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField].
+/// The request for
+/// [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFieldRequest {
@@ -717,7 +797,8 @@ pub struct UpdateFieldRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request for [FirestoreAdmin.GetField][google.firestore.admin.v1.FirestoreAdmin.GetField].
+/// The request for
+/// [FirestoreAdmin.GetField][google.firestore.admin.v1.FirestoreAdmin.GetField].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFieldRequest {
@@ -726,7 +807,8 @@ pub struct GetFieldRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
+/// The request for
+/// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsRequest {
@@ -735,22 +817,24 @@ pub struct ListFieldsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter to apply to list results. Currently,
-    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] only supports listing fields
-    /// that have been explicitly overridden. To issue this query, call
-    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] with a filter that includes
-    /// `indexConfig.usesAncestorConfig:false` .
+    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
+    /// only supports listing fields that have been explicitly overridden. To issue
+    /// this query, call
+    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
+    /// with a filter that includes `indexConfig.usesAncestorConfig:false` .
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The number of results to return.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A page token, returned from a previous call to
-    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields], that may be used to get the next
-    /// page of results.
+    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields],
+    /// that may be used to get the next page of results.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
+/// The response for
+/// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsResponse {
@@ -762,7 +846,8 @@ pub struct ListFieldsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1.FirestoreAdmin.ExportDocuments].
+/// The request for
+/// [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1.FirestoreAdmin.ExportDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsRequest {
@@ -784,7 +869,8 @@ pub struct ExportDocumentsRequest {
     #[prost(string, tag = "3")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments].
+/// The request for
+/// [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
@@ -917,9 +1003,11 @@ pub mod firestore_admin_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Creates a composite index. This returns a [google.longrunning.Operation][google.longrunning.Operation]
-        /// which may be used to track the status of the creation. The metadata for
-        /// the operation will be the type [IndexOperationMetadata][google.firestore.admin.v1.IndexOperationMetadata].
+        /// Creates a composite index. This returns a
+        /// [google.longrunning.Operation][google.longrunning.Operation] which may be
+        /// used to track the status of the creation. The metadata for the operation
+        /// will be the type
+        /// [IndexOperationMetadata][google.firestore.admin.v1.IndexOperationMetadata].
         pub async fn create_index(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateIndexRequest>,
@@ -1067,13 +1155,16 @@ pub mod firestore_admin_client {
         }
         /// Updates a field configuration. Currently, field updates apply only to
         /// single field index configuration. However, calls to
-        /// [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField] should provide a field mask to avoid
-        /// changing any configuration that the caller isn't aware of. The field mask
-        /// should be specified as: `{ paths: "index_config" }`.
+        /// [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField]
+        /// should provide a field mask to avoid changing any configuration that the
+        /// caller isn't aware of. The field mask should be specified as: `{ paths:
+        /// "index_config" }`.
         ///
-        /// This call returns a [google.longrunning.Operation][google.longrunning.Operation] which may be used to
-        /// track the status of the field update. The metadata for
-        /// the operation will be the type [FieldOperationMetadata][google.firestore.admin.v1.FieldOperationMetadata].
+        /// This call returns a
+        /// [google.longrunning.Operation][google.longrunning.Operation] which may be
+        /// used to track the status of the field update. The metadata for the
+        /// operation will be the type
+        /// [FieldOperationMetadata][google.firestore.admin.v1.FieldOperationMetadata].
         ///
         /// To configure the default field settings for the database, use
         /// the special `Field` with resource name:
@@ -1110,10 +1201,12 @@ pub mod firestore_admin_client {
         }
         /// Lists the field configuration and metadata for this database.
         ///
-        /// Currently, [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] only supports listing fields
-        /// that have been explicitly overridden. To issue this query, call
-        /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] with the filter set to
-        /// `indexConfig.usesAncestorConfig:false` .
+        /// Currently,
+        /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
+        /// only supports listing fields that have been explicitly overridden. To issue
+        /// this query, call
+        /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
+        /// with the filter set to `indexConfig.usesAncestorConfig:false` .
         pub async fn list_fields(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFieldsRequest>,
@@ -1216,6 +1309,37 @@ pub mod firestore_admin_client {
                     GrpcMethod::new(
                         "google.firestore.admin.v1.FirestoreAdmin",
                         "ImportDocuments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a database.
+        pub async fn create_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/CreateDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "CreateDatabase",
                     ),
                 );
             self.inner.unary(req, path, codec).await

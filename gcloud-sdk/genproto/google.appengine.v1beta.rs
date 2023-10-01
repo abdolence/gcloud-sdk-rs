@@ -916,7 +916,7 @@ impl ManagementStatus {
 }
 /// A domain that a user has been authorized to administer. To authorize use
 /// of a domain, verify ownership via
-/// [Webmaster Central](<https://www.google.com/webmasters/verification/home>).
+/// [Search Console](<https://search.google.com/search-console/welcome>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizedDomain {

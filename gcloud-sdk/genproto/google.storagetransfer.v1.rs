@@ -50,18 +50,19 @@ pub struct AzureCredentials {
 /// the `updated` property of Cloud Storage objects, the `LastModified` field
 /// of S3 objects, and the `Last-Modified` header of Azure blobs.
 ///
-/// Transfers with a [PosixFilesystem][google.storagetransfer.v1.PosixFilesystem] source or destination don't support
-/// `ObjectConditions`.
+/// Transfers with a [PosixFilesystem][google.storagetransfer.v1.PosixFilesystem]
+/// source or destination don't support `ObjectConditions`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectConditions {
     /// Ensures that objects are not transferred until a specific minimum time
     /// has elapsed after the "last modification time". When a
-    /// [TransferOperation][google.storagetransfer.v1.TransferOperation] begins, objects with a "last modification time" are
-    /// transferred only if the elapsed time between the
-    /// [start_time][google.storagetransfer.v1.TransferOperation.start_time] of the `TransferOperation`
-    /// and the "last modification time" of the object is equal to or
-    /// greater than the value of min_time_elapsed_since_last_modification`.
+    /// [TransferOperation][google.storagetransfer.v1.TransferOperation] begins,
+    /// objects with a "last modification time" are transferred only if the elapsed
+    /// time between the
+    /// [start_time][google.storagetransfer.v1.TransferOperation.start_time] of the
+    /// `TransferOperation` and the "last modification time" of the object is equal
+    /// to or greater than the value of min_time_elapsed_since_last_modification`.
     /// Objects that do not have a "last modification time" are also transferred.
     #[prost(message, optional, tag = "1")]
     pub min_time_elapsed_since_last_modification: ::core::option::Option<
@@ -69,9 +70,10 @@ pub struct ObjectConditions {
     >,
     /// Ensures that objects are not transferred if a specific maximum time
     /// has elapsed since the "last modification time".
-    /// When a [TransferOperation][google.storagetransfer.v1.TransferOperation] begins, objects with a
-    /// "last modification time" are transferred only if the elapsed time
-    /// between the [start_time][google.storagetransfer.v1.TransferOperation.start_time] of the
+    /// When a [TransferOperation][google.storagetransfer.v1.TransferOperation]
+    /// begins, objects with a "last modification time" are transferred only if the
+    /// elapsed time between the
+    /// [start_time][google.storagetransfer.v1.TransferOperation.start_time] of the
     /// `TransferOperation`and the "last modification time" of the object
     ///   is less than the value of max_time_elapsed_since_last_modification`.
     /// Objects that do not have a "last modification time" are also transferred.
@@ -82,9 +84,10 @@ pub struct ObjectConditions {
     /// If you specify `include_prefixes`, Storage Transfer Service uses the items
     /// in the `include_prefixes` array to determine which objects to include in a
     /// transfer. Objects must start with one of the matching `include_prefixes`
-    /// for inclusion in the transfer. If [exclude_prefixes][google.storagetransfer.v1.ObjectConditions.exclude_prefixes] is specified,
-    /// objects must not start with any of the `exclude_prefixes` specified for
-    /// inclusion in the transfer.
+    /// for inclusion in the transfer. If
+    /// [exclude_prefixes][google.storagetransfer.v1.ObjectConditions.exclude_prefixes]
+    /// is specified, objects must not start with any of the `exclude_prefixes`
+    /// specified for inclusion in the transfer.
     ///
     /// The following are requirements of `include_prefixes`:
     ///
@@ -131,8 +134,10 @@ pub struct ObjectConditions {
     ///      namespace. No exclude-prefix may be a prefix of another
     ///      exclude-prefix.
     ///
-    ///    * If [include_prefixes][google.storagetransfer.v1.ObjectConditions.include_prefixes] is specified, then each exclude-prefix must
-    ///    start with the value of a path explicitly included by `include_prefixes`.
+    ///    * If
+    ///    [include_prefixes][google.storagetransfer.v1.ObjectConditions.include_prefixes]
+    ///    is specified, then each exclude-prefix must start with the value of a
+    ///    path explicitly included by `include_prefixes`.
     ///
     /// The max size of `exclude_prefixes` is 1000.
     ///
@@ -192,9 +197,9 @@ pub struct AwsS3Data {
     /// bucket](<https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html>)).
     #[prost(string, tag = "1")]
     pub bucket_name: ::prost::alloc::string::String,
-    /// Input only. AWS access key used to sign the API requests to the AWS S3 bucket.
-    /// Permissions on the bucket must be granted to the access ID of the AWS
-    /// access key.
+    /// Input only. AWS access key used to sign the API requests to the AWS S3
+    /// bucket. Permissions on the bucket must be granted to the access ID of the
+    /// AWS access key.
     ///
     /// For information on our data retention policy for user credentials, see
     /// [User credentials](/storage-transfer/docs/data-retention#user-credentials).
@@ -214,9 +219,32 @@ pub struct AwsS3Data {
     ///
     /// When a role ARN is provided, Transfer Service fetches temporary
     /// credentials for the session using a `AssumeRoleWithWebIdentity` call for
-    /// the provided role using the [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount] for this project.
+    /// the provided role using the
+    /// [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount] for
+    /// this project.
     #[prost(string, tag = "4")]
     pub role_arn: ::prost::alloc::string::String,
+    /// Optional. The Resource name of a secret in Secret Manager.
+    ///
+    /// The Azure SAS token must be stored in Secret Manager in JSON format:
+    /// <pre>{
+    ///   "sas_token" : "<var>SAS_TOKEN</var>"
+    /// }</pre>
+    /// [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount] must
+    /// be granted `roles/secretmanager.secretAccessor` for the resource.
+    ///
+    /// See \[Configure access to a source: Microsoft Azure Blob Storage\]
+    /// (<https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#secret_manager>)
+    /// for more information.
+    ///
+    /// If `credentials_secret` is specified, do not specify [azure_credentials][].
+    ///
+    /// This feature is in
+    /// [preview](<https://cloud.google.com/terms/service-terms#1>).
+    ///
+    /// Format: `projects/{project_number}/secrets/{secret_name}`
+    #[prost(string, tag = "7")]
+    pub credentials_secret: ::prost::alloc::string::String,
 }
 /// An AzureBlobStorageData resource can be a data source, but not a data sink.
 /// An AzureBlobStorageData resource represents one Azure container. The storage
@@ -231,7 +259,8 @@ pub struct AzureBlobStorageData {
     /// Required. The name of the Azure Storage account.
     #[prost(string, tag = "1")]
     pub storage_account: ::prost::alloc::string::String,
-    /// Required. Input only. Credentials used to authenticate API requests to Azure.
+    /// Required. Input only. Credentials used to authenticate API requests to
+    /// Azure.
     ///
     /// For information on our data retention policy for user credentials, see
     /// [User credentials](/storage-transfer/docs/data-retention#user-credentials).
@@ -247,6 +276,28 @@ pub struct AzureBlobStorageData {
     /// a '/'.
     #[prost(string, tag = "5")]
     pub path: ::prost::alloc::string::String,
+    /// Optional. The Resource name of a secret in Secret Manager.
+    ///
+    /// The Azure SAS token must be stored in Secret Manager in JSON format:
+    /// <pre>{
+    ///   "sas_token" : "<var>SAS_TOKEN</var>"
+    /// }</pre>
+    /// [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount] must
+    /// be granted `roles/secretmanager.secretAccessor` for the resource.
+    ///
+    /// See \[Configure access to a source: Microsoft Azure Blob Storage\]
+    /// (<https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#secret_manager>)
+    /// for more information.
+    ///
+    /// If `credentials_secret` is specified, do not specify
+    /// [azure_credentials][google.storagetransfer.v1.AzureBlobStorageData.azure_credentials].
+    ///
+    /// This feature is in
+    /// [preview](<https://cloud.google.com/terms/service-terms#1>).
+    ///
+    /// Format: `projects/{project_number}/secrets/{secret_name}`
+    #[prost(string, tag = "7")]
+    pub credentials_secret: ::prost::alloc::string::String,
 }
 /// An HttpData resource specifies a list of objects on the web to be transferred
 /// over HTTP.  The information of the objects to be transferred is contained in
@@ -286,7 +337,8 @@ pub struct AzureBlobStorageData {
 /// HTTP server to support `Range` requests and to return a `Content-Length`
 /// header in each response.
 ///
-/// * [ObjectConditions][google.storagetransfer.v1.ObjectConditions] have no effect when filtering objects to transfer.
+/// * [ObjectConditions][google.storagetransfer.v1.ObjectConditions] have no
+/// effect when filtering objects to transfer.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpData {
@@ -641,15 +693,17 @@ pub struct TransferOptions {
     pub overwrite_objects_already_existing_in_sink: bool,
     /// Whether objects that exist only in the sink should be deleted.
     ///
-    /// **Note:** This option and [delete_objects_from_source_after_transfer][google.storagetransfer.v1.TransferOptions.delete_objects_from_source_after_transfer] are
-    /// mutually exclusive.
+    /// **Note:** This option and
+    /// [delete_objects_from_source_after_transfer][google.storagetransfer.v1.TransferOptions.delete_objects_from_source_after_transfer]
+    /// are mutually exclusive.
     #[prost(bool, tag = "2")]
     pub delete_objects_unique_in_sink: bool,
     /// Whether objects should be deleted from the source after they are
     /// transferred to the sink.
     ///
-    /// **Note:** This option and [delete_objects_unique_in_sink][google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink] are mutually
-    /// exclusive.
+    /// **Note:** This option and
+    /// [delete_objects_unique_in_sink][google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink]
+    /// are mutually exclusive.
     #[prost(bool, tag = "3")]
     pub delete_objects_from_source_after_transfer: bool,
     /// When to overwrite objects that already exist in the sink. If not set,
@@ -750,9 +804,6 @@ pub struct TransferSpec {
     /// The read source of the data.
     #[prost(oneof = "transfer_spec::DataSource", tags = "1, 2, 3, 14, 8, 19")]
     pub data_source: ::core::option::Option<transfer_spec::DataSource>,
-    /// Represents a supported data container type which is required for transfer
-    /// jobs which needs a data source, a data sink and an intermediate location to
-    /// transfer data through. This is validated on TransferJob creation.
     #[prost(oneof = "transfer_spec::IntermediateDataLocation", tags = "16")]
     pub intermediate_data_location: ::core::option::Option<
         transfer_spec::IntermediateDataLocation,
@@ -794,13 +845,15 @@ pub mod transfer_spec {
         #[prost(message, tag = "19")]
         AwsS3CompatibleDataSource(super::AwsS3CompatibleData),
     }
-    /// Represents a supported data container type which is required for transfer
-    /// jobs which needs a data source, a data sink and an intermediate location to
-    /// transfer data through. This is validated on TransferJob creation.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum IntermediateDataLocation {
-        /// Cloud Storage intermediate data location.
+        /// For transfers between file systems, specifies a Cloud Storage bucket
+        /// to be used as an intermediate location through which to transfer data.
+        ///
+        /// See [Transfer data between file
+        /// systems](<https://cloud.google.com/storage-transfer/docs/file-to-file>) for
+        /// more information.
         #[prost(message, tag = "16")]
         GcsIntermediateDataLocation(super::GcsData),
     }
@@ -1098,7 +1151,9 @@ pub mod metadata_options {
         /// Use the destination bucket's default storage class.
         DestinationBucketDefault = 1,
         /// Preserve the object's original storage class. This is only supported for
-        /// transfers from Google Cloud Storage buckets.
+        /// transfers from Google Cloud Storage buckets. REGIONAL and MULTI_REGIONAL
+        /// storage classes will be mapped to STANDARD to ensure they can be written
+        /// to the destination bucket.
         Preserve = 2,
         /// Set the storage class to STANDARD.
         Standard = 3,
@@ -1301,7 +1356,8 @@ pub struct TransferManifest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
     /// Required. The start date of a transfer. Date boundaries are determined
-    /// relative to UTC time. If `schedule_start_date` and [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]
+    /// relative to UTC time. If `schedule_start_date` and
+    /// [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]
     /// are in the past relative to the job's creation time, the transfer starts
     /// the day after you schedule the transfer request.
     ///
@@ -1311,17 +1367,22 @@ pub struct Schedule {
     /// Transfer Service server receives the request on June 2, then it creates
     /// a TransferJob with `schedule_start_date` set to June 2 and a
     /// `start_time_of_day` set to midnight UTC. The first scheduled
-    /// [TransferOperation][google.storagetransfer.v1.TransferOperation] takes place on June 3 at midnight UTC.
+    /// [TransferOperation][google.storagetransfer.v1.TransferOperation] takes
+    /// place on June 3 at midnight UTC.
     #[prost(message, optional, tag = "1")]
     pub schedule_start_date: ::core::option::Option<super::super::r#type::Date>,
     /// The last day a transfer runs. Date boundaries are determined relative to
     /// UTC time. A job runs once per 24 hours within the following guidelines:
     ///
-    /// *   If `schedule_end_date` and [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date] are the same and in
+    /// *   If `schedule_end_date` and
+    /// [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]
+    /// are the same and in
     ///      the future relative to UTC, the transfer is executed only one time.
     /// *   If `schedule_end_date` is later than `schedule_start_date`  and
     ///      `schedule_end_date` is in the future relative to UTC, the job runs each
-    ///      day at [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day] through `schedule_end_date`.
+    ///      day at
+    ///      [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]
+    ///      through `schedule_end_date`.
     #[prost(message, optional, tag = "2")]
     pub schedule_end_date: ::core::option::Option<super::super::r#type::Date>,
     /// The time in UTC that a transfer job is scheduled to run. Transfers may
@@ -1331,7 +1392,8 @@ pub struct Schedule {
     ///
     /// *   One-time transfers run immediately.
     /// *   Recurring transfers run immediately, and each day at midnight UTC,
-    ///      through [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date].
+    ///      through
+    ///      [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date].
     ///
     /// If `start_time_of_day` is specified:
     ///
@@ -1341,11 +1403,15 @@ pub struct Schedule {
     #[prost(message, optional, tag = "3")]
     pub start_time_of_day: ::core::option::Option<super::super::r#type::TimeOfDay>,
     /// The time in UTC that no further transfer operations are scheduled. Combined
-    /// with [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date], `end_time_of_day` specifies the end date and
-    /// time for starting new transfer operations. This field must be greater than
-    /// or equal to the timestamp corresponding to the combintation of
-    /// [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date] and [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day], and is subject to the
-    /// following:
+    /// with
+    /// [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date],
+    /// `end_time_of_day` specifies the end date and time for starting new transfer
+    /// operations. This field must be greater than or equal to the timestamp
+    /// corresponding to the combintation of
+    /// [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]
+    /// and
+    /// [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day],
+    /// and is subject to the following:
     ///
     /// *   If `end_time_of_day` is not set and `schedule_end_date` is set, then
     ///      a default value of `23:59:59` is used for `end_time_of_day`.
@@ -1359,6 +1425,29 @@ pub struct Schedule {
     /// 1 hour.
     #[prost(message, optional, tag = "5")]
     pub repeat_interval: ::core::option::Option<::prost_types::Duration>,
+}
+/// Specifies the Event-driven transfer options. Event-driven transfers listen to
+/// an event stream to transfer updated files.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventStream {
+    /// Required. Specifies a unique name of the resource such as AWS SQS
+    /// ARN in the form 'arn:aws:sqs:region:account_id:queue_name',
+    /// or Pub/Sub subscription resource name in the form
+    /// 'projects/{project}/subscriptions/{sub}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Specifies the date and time that Storage Transfer Service starts
+    /// listening for events from this stream. If no start time is specified or
+    /// start time is in the past, Storage Transfer Service starts listening
+    /// immediately.
+    #[prost(message, optional, tag = "2")]
+    pub event_stream_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Specifies the data and time at which Storage Transfer Service stops
+    /// listening for events from this stream. After this time, any transfers in
+    /// progress will complete, but no new transfers are initiated.
+    #[prost(message, optional, tag = "3")]
+    pub event_stream_expiration_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// This resource represents the configuration of a transfer job that runs
 /// periodically.
@@ -1415,14 +1504,19 @@ pub struct TransferJob {
     /// have a non-empty schedule.
     #[prost(message, optional, tag = "5")]
     pub schedule: ::core::option::Option<Schedule>,
+    /// Specifies the event stream for the transfer job for event-driven transfers.
+    /// When EventStream is specified, the Schedule fields are ignored.
+    #[prost(message, optional, tag = "15")]
+    pub event_stream: ::core::option::Option<EventStream>,
     /// Status of the job. This value MUST be specified for
     /// `CreateTransferJobRequests`.
     ///
     /// **Note:** The effect of the new job status takes place during a subsequent
     /// job run. For example, if you change the job status from
-    /// [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED] to [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], and an operation
-    /// spawned by the transfer is running, the status change would not affect the
-    /// current operation.
+    /// [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED] to
+    /// [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], and an
+    /// operation spawned by the transfer is running, the status change would not
+    /// affect the current operation.
     #[prost(enumeration = "transfer_job::Status", tag = "6")]
     pub status: i32,
     /// Output only. The time that the transfer job was created.
@@ -1614,17 +1708,23 @@ pub struct TransferCounters {
 /// Notifications are published to the customer-provided topic using the
 /// following `PubsubMessage.attributes`:
 ///
-/// * `"eventType"`: one of the [EventType][google.storagetransfer.v1.NotificationConfig.EventType] values
-/// * `"payloadFormat"`: one of the [PayloadFormat][google.storagetransfer.v1.NotificationConfig.PayloadFormat] values
-/// * `"projectId"`: the [project_id][google.storagetransfer.v1.TransferOperation.project_id] of the
+/// * `"eventType"`: one of the
+/// [EventType][google.storagetransfer.v1.NotificationConfig.EventType] values
+/// * `"payloadFormat"`: one of the
+/// [PayloadFormat][google.storagetransfer.v1.NotificationConfig.PayloadFormat]
+/// values
+/// * `"projectId"`: the
+/// [project_id][google.storagetransfer.v1.TransferOperation.project_id] of the
 /// `TransferOperation`
 /// * `"transferJobName"`: the
-/// [transfer_job_name][google.storagetransfer.v1.TransferOperation.transfer_job_name] of the
-/// `TransferOperation`
-/// * `"transferOperationName"`: the [name][google.storagetransfer.v1.TransferOperation.name] of the
+/// [transfer_job_name][google.storagetransfer.v1.TransferOperation.transfer_job_name]
+/// of the `TransferOperation`
+/// * `"transferOperationName"`: the
+/// [name][google.storagetransfer.v1.TransferOperation.name] of the
 /// `TransferOperation`
 ///
-/// The `PubsubMessage.data` contains a [TransferOperation][google.storagetransfer.v1.TransferOperation] resource
+/// The `PubsubMessage.data` contains a
+/// [TransferOperation][google.storagetransfer.v1.TransferOperation] resource
 /// formatted according to the specified `PayloadFormat`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1763,12 +1863,14 @@ pub mod notification_config {
 pub struct LoggingConfig {
     /// Specifies the actions to be logged. If empty, no logs are generated.
     /// Not supported for transfers with PosixFilesystem data sources; use
-    /// [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs] instead.
+    /// [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs]
+    /// instead.
     #[prost(enumeration = "logging_config::LoggableAction", repeated, tag = "1")]
     pub log_actions: ::prost::alloc::vec::Vec<i32>,
     /// States in which `log_actions` are logged. If empty, no logs are generated.
     /// Not supported for transfers with PosixFilesystem data sources; use
-    /// [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs] instead.
+    /// [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs]
+    /// instead.
     #[prost(enumeration = "logging_config::LoggableActionState", repeated, tag = "2")]
     pub log_action_states: ::prost::alloc::vec::Vec<i32>,
     /// For transfers with a PosixFilesystem source, this option enables the Cloud
@@ -1887,6 +1989,9 @@ pub struct TransferOperation {
     /// Notification configuration.
     #[prost(message, optional, tag = "10")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
+    /// Cloud Logging configuration.
+    #[prost(message, optional, tag = "12")]
+    pub logging_config: ::core::option::Option<LoggingConfig>,
     /// Start time of this transfer execution.
     #[prost(message, optional, tag = "4")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -1936,6 +2041,8 @@ pub mod transfer_operation {
         Aborted = 5,
         /// Temporarily delayed by the system. No user action is required.
         Queued = 6,
+        /// The operation is suspending and draining the ongoing work to completion.
+        Suspending = 7,
     }
     impl Status {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1951,6 +2058,7 @@ pub mod transfer_operation {
                 Status::Failed => "FAILED",
                 Status::Aborted => "ABORTED",
                 Status::Queued => "QUEUED",
+                Status::Suspending => "SUSPENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1963,6 +2071,7 @@ pub mod transfer_operation {
                 "FAILED" => Some(Self::Failed),
                 "ABORTED" => Some(Self::Aborted),
                 "QUEUED" => Some(Self::Queued),
+                "SUSPENDING" => Some(Self::Suspending),
                 _ => None,
             }
         }
@@ -1996,15 +2105,17 @@ pub struct UpdateTransferJobRequest {
     /// job.
     #[prost(string, tag = "2")]
     pub project_id: ::prost::alloc::string::String,
-    /// Required. The job to update. `transferJob` is expected to specify one or more of
-    /// five fields: [description][google.storagetransfer.v1.TransferJob.description],
+    /// Required. The job to update. `transferJob` is expected to specify one or
+    /// more of five fields:
+    /// [description][google.storagetransfer.v1.TransferJob.description],
     /// [transfer_spec][google.storagetransfer.v1.TransferJob.transfer_spec],
     /// [notification_config][google.storagetransfer.v1.TransferJob.notification_config],
     /// [logging_config][google.storagetransfer.v1.TransferJob.logging_config], and
-    /// [status][google.storagetransfer.v1.TransferJob.status].  An `UpdateTransferJobRequest` that specifies
-    /// other fields are rejected with the error
-    /// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. Updating a job status
-    /// to [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED] requires
+    /// [status][google.storagetransfer.v1.TransferJob.status].  An
+    /// `UpdateTransferJobRequest` that specifies other fields are rejected with
+    /// the error [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. Updating a
+    /// job status to
+    /// [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED] requires
     /// `storagetransfer.jobs.delete` permission.
     #[prost(message, optional, tag = "3")]
     pub transfer_job: ::core::option::Option<TransferJob>,
@@ -2014,9 +2125,10 @@ pub struct UpdateTransferJobRequest {
     /// [transfer_spec][google.storagetransfer.v1.TransferJob.transfer_spec],
     /// [notification_config][google.storagetransfer.v1.TransferJob.notification_config],
     /// [logging_config][google.storagetransfer.v1.TransferJob.logging_config], and
-    /// [status][google.storagetransfer.v1.TransferJob.status].  To update the `transfer_spec` of the job, a
-    /// complete transfer specification must be provided. An incomplete
-    /// specification missing any required fields is rejected with the error
+    /// [status][google.storagetransfer.v1.TransferJob.status].  To update the
+    /// `transfer_spec` of the job, a complete transfer specification must be
+    /// provided. An incomplete specification missing any required fields is
+    /// rejected with the error
     /// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
     #[prost(message, optional, tag = "4")]
     pub update_transfer_job_field_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -2141,8 +2253,8 @@ pub struct CreateAgentPoolRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAgentPoolRequest {
-    /// Required. The agent pool to update. `agent_pool` is expected to specify following
-    /// fields:
+    /// Required. The agent pool to update. `agent_pool` is expected to specify
+    /// following fields:
     ///
     /// *  [name][google.storagetransfer.v1.AgentPool.name]
     ///
@@ -2374,8 +2486,8 @@ pub mod storage_transfer_service_client {
         /// Updates a transfer job. Updating a job's transfer spec does not affect
         /// transfer operations that are running already.
         ///
-        /// **Note:** The job's [status][google.storagetransfer.v1.TransferJob.status] field can be modified
-        /// using this RPC (for example, to set a job's status to
+        /// **Note:** The job's [status][google.storagetransfer.v1.TransferJob.status]
+        /// field can be modified using this RPC (for example, to set a job's status to
         /// [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED],
         /// [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], or
         /// [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
@@ -2521,9 +2633,10 @@ pub mod storage_transfer_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Attempts to start a new TransferOperation for the current TransferJob. A
-        /// TransferJob has a maximum of one active TransferOperation. If this method
-        /// is called while a TransferOperation is active, an error will be returned.
+        /// Starts a new operation for the specified transfer job.
+        /// A `TransferJob` has a maximum of one active `TransferOperation`. If this
+        /// method is called while a `TransferOperation` is active, an error is
+        /// returned.
         pub async fn run_transfer_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RunTransferJobRequest>,

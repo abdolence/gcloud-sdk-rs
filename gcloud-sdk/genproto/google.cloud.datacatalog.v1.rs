@@ -159,6 +159,16 @@ pub enum IntegratedSystem {
     DataprocMetastore = 3,
     /// Dataplex.
     Dataplex = 4,
+    /// Cloud Spanner
+    CloudSpanner = 6,
+    /// Cloud Bigtable
+    CloudBigtable = 7,
+    /// Cloud Sql
+    CloudSql = 8,
+    /// Looker
+    Looker = 9,
+    /// Vertex AI
+    VertexAi = 10,
 }
 impl IntegratedSystem {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -172,6 +182,11 @@ impl IntegratedSystem {
             IntegratedSystem::CloudPubsub => "CLOUD_PUBSUB",
             IntegratedSystem::DataprocMetastore => "DATAPROC_METASTORE",
             IntegratedSystem::Dataplex => "DATAPLEX",
+            IntegratedSystem::CloudSpanner => "CLOUD_SPANNER",
+            IntegratedSystem::CloudBigtable => "CLOUD_BIGTABLE",
+            IntegratedSystem::CloudSql => "CLOUD_SQL",
+            IntegratedSystem::Looker => "LOOKER",
+            IntegratedSystem::VertexAi => "VERTEX_AI",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -182,6 +197,45 @@ impl IntegratedSystem {
             "CLOUD_PUBSUB" => Some(Self::CloudPubsub),
             "DATAPROC_METASTORE" => Some(Self::DataprocMetastore),
             "DATAPLEX" => Some(Self::Dataplex),
+            "CLOUD_SPANNER" => Some(Self::CloudSpanner),
+            "CLOUD_BIGTABLE" => Some(Self::CloudBigtable),
+            "CLOUD_SQL" => Some(Self::CloudSql),
+            "LOOKER" => Some(Self::Looker),
+            "VERTEX_AI" => Some(Self::VertexAi),
+            _ => None,
+        }
+    }
+}
+/// This enum describes all the systems that manage
+/// Taxonomy and PolicyTag resources in DataCatalog.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ManagingSystem {
+    /// Default value
+    Unspecified = 0,
+    /// Dataplex.
+    Dataplex = 1,
+    /// Other
+    Other = 2,
+}
+impl ManagingSystem {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ManagingSystem::Unspecified => "MANAGING_SYSTEM_UNSPECIFIED",
+            ManagingSystem::Dataplex => "MANAGING_SYSTEM_DATAPLEX",
+            ManagingSystem::Other => "MANAGING_SYSTEM_OTHER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MANAGING_SYSTEM_UNSPECIFIED" => Some(Self::Unspecified),
+            "MANAGING_SYSTEM_DATAPLEX" => Some(Self::Dataplex),
+            "MANAGING_SYSTEM_OTHER" => Some(Self::Other),
             _ => None,
         }
     }
@@ -494,7 +548,8 @@ pub struct GcsFileSpec {
     /// Required. Full file path. Example: `gs://bucket_name/a/b.txt`.
     #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
-    /// Output only. Creation, modification, and expiration timestamps of a Cloud Storage file.
+    /// Output only. Creation, modification, and expiration timestamps of a Cloud
+    /// Storage file.
     #[prost(message, optional, tag = "2")]
     pub gcs_timestamps: ::core::option::Option<SystemTimestamps>,
     /// Output only. File size in bytes.
@@ -534,16 +589,161 @@ pub struct ColumnSchema {
     /// bytes.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. A column's mode indicates whether values in this column are required,
-    /// nullable, or repeated.
+    /// Optional. A column's mode indicates whether values in this column are
+    /// required, nullable, or repeated.
     ///
     /// Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
     /// Default mode is `NULLABLE`.
     #[prost(string, tag = "3")]
     pub mode: ::prost::alloc::string::String,
-    /// Optional. Schema of sub-columns. A column can have zero or more sub-columns.
+    /// Optional. Default value for the column.
+    #[prost(string, tag = "8")]
+    pub default_value: ::prost::alloc::string::String,
+    /// Optional. Ordinal position
+    #[prost(int32, tag = "9")]
+    pub ordinal_position: i32,
+    /// Optional. Most important inclusion of this column.
+    #[prost(enumeration = "column_schema::IndexingType", tag = "10")]
+    pub highest_indexing_type: i32,
+    /// Optional. Schema of sub-columns. A column can have zero or more
+    /// sub-columns.
     #[prost(message, repeated, tag = "7")]
     pub subcolumns: ::prost::alloc::vec::Vec<ColumnSchema>,
+    /// Optional. Garbage collection policy for the column or column family.
+    /// Applies to systems like Cloud Bigtable.
+    #[prost(string, tag = "11")]
+    pub gc_rule: ::prost::alloc::string::String,
+    /// Information only applying for columns in Entries from a specific system.
+    #[prost(oneof = "column_schema::SystemSpec", tags = "18")]
+    pub system_spec: ::core::option::Option<column_schema::SystemSpec>,
+}
+/// Nested message and enum types in `ColumnSchema`.
+pub mod column_schema {
+    /// Column info specific to Looker System.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LookerColumnSpec {
+        /// Looker specific column type of this column.
+        #[prost(enumeration = "looker_column_spec::LookerColumnType", tag = "1")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `LookerColumnSpec`.
+    pub mod looker_column_spec {
+        /// Column type in Looker.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum LookerColumnType {
+            /// Unspecified.
+            Unspecified = 0,
+            /// Dimension.
+            Dimension = 1,
+            /// Dimension group - parent for Dimension.
+            DimensionGroup = 2,
+            /// Filter.
+            Filter = 3,
+            /// Measure.
+            Measure = 4,
+            /// Parameter.
+            Parameter = 5,
+        }
+        impl LookerColumnType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    LookerColumnType::Unspecified => "LOOKER_COLUMN_TYPE_UNSPECIFIED",
+                    LookerColumnType::Dimension => "DIMENSION",
+                    LookerColumnType::DimensionGroup => "DIMENSION_GROUP",
+                    LookerColumnType::Filter => "FILTER",
+                    LookerColumnType::Measure => "MEASURE",
+                    LookerColumnType::Parameter => "PARAMETER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "LOOKER_COLUMN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DIMENSION" => Some(Self::Dimension),
+                    "DIMENSION_GROUP" => Some(Self::DimensionGroup),
+                    "FILTER" => Some(Self::Filter),
+                    "MEASURE" => Some(Self::Measure),
+                    "PARAMETER" => Some(Self::Parameter),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Specifies inclusion of the column in an index
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IndexingType {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Column not a part of an index.
+        None = 1,
+        /// Column Part of non unique index.
+        NonUnique = 2,
+        /// Column part of unique index.
+        Unique = 3,
+        /// Column part of the primary key.
+        PrimaryKey = 4,
+    }
+    impl IndexingType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                IndexingType::Unspecified => "INDEXING_TYPE_UNSPECIFIED",
+                IndexingType::None => "INDEXING_TYPE_NONE",
+                IndexingType::NonUnique => "INDEXING_TYPE_NON_UNIQUE",
+                IndexingType::Unique => "INDEXING_TYPE_UNIQUE",
+                IndexingType::PrimaryKey => "INDEXING_TYPE_PRIMARY_KEY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INDEXING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INDEXING_TYPE_NONE" => Some(Self::None),
+                "INDEXING_TYPE_NON_UNIQUE" => Some(Self::NonUnique),
+                "INDEXING_TYPE_UNIQUE" => Some(Self::Unique),
+                "INDEXING_TYPE_PRIMARY_KEY" => Some(Self::PrimaryKey),
+                _ => None,
+            }
+        }
+    }
+    /// Information only applying for columns in Entries from a specific system.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SystemSpec {
+        /// Looker specific column info of this column.
+        #[prost(message, tag = "18")]
+        LookerColumnSpec(LookerColumnSpec),
+    }
 }
 /// Result in the response to a search request.
 ///
@@ -622,8 +822,8 @@ pub mod search_catalog_result {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum System {
-        /// Output only. The source system that Data Catalog automatically integrates  with, such
-        /// as BigQuery, Cloud Pub/Sub, or Dataproc Metastore.
+        /// Output only. The source system that Data Catalog automatically integrates
+        /// with, such as BigQuery, Cloud Pub/Sub, or Dataproc Metastore.
         #[prost(enumeration = "super::IntegratedSystem", tag = "8")]
         IntegratedSystem(i32),
         /// Custom source system that you can manually integrate Data Catalog with.
@@ -707,9 +907,9 @@ pub struct ViewSpec {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSpec {
-    /// Output only. If the table is date-sharded, that is, it matches the `\[prefix\]YYYYMMDD`
-    /// name pattern, this field is the Data Catalog resource name of the
-    /// date-sharded grouped entry. For example:
+    /// Output only. If the table is date-sharded, that is, it matches the
+    /// `\[prefix\]YYYYMMDD` name pattern, this field is the Data Catalog resource
+    /// name of the date-sharded grouped entry. For example:
     ///
     /// `projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
     ///
@@ -725,8 +925,8 @@ pub struct TableSpec {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDateShardedSpec {
-    /// Output only. The Data Catalog resource name of the dataset entry the current table
-    /// belongs to. For example:
+    /// Output only. The Data Catalog resource name of the dataset entry the
+    /// current table belongs to. For example:
     ///
     /// `projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
     #[prost(string, tag = "1")]
@@ -808,8 +1008,8 @@ pub struct Tag {
     /// Output only. The display name of the tag template.
     #[prost(string, tag = "5")]
     pub template_display_name: ::prost::alloc::string::String,
-    /// Required. Maps the ID of a tag field to its value and additional information
-    /// about that field.
+    /// Required. Maps the ID of a tag field to its value and additional
+    /// information about that field.
     ///
     /// Tag template defines valid field IDs. A tag
     /// must have at least 1 field and at most 500 fields.
@@ -854,8 +1054,9 @@ pub struct TagField {
     /// Output only. The display name of this field.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. The order of this field with respect to other fields in this tag. Can be
-    /// set by [Tag][google.cloud.datacatalog.v1.TagTemplateField.order].
+    /// Output only. The order of this field with respect to other fields in this
+    /// tag. Can be set by
+    /// [Tag][google.cloud.datacatalog.v1.TagTemplateField.order].
     ///
     /// For example, a higher value can indicate a more important field.
     /// The value can be negative. Multiple fields can have the same order, and
@@ -910,8 +1111,8 @@ pub mod tag_field {
 }
 /// A tag template defines a tag that can have one or more typed fields.
 ///
-/// The template is used to create tags that are attached to GCP resources.
-/// \[Tag template roles\]
+/// The template is used to create tags that are attached to Google Cloud
+///   resources. \[Tag template roles\]
 /// (<https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>)
 /// provide permissions to create, edit, and use the template. For example,
 /// see the \[TagTemplate User\]
@@ -962,7 +1163,8 @@ pub struct TagTemplate {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplateField {
-    /// Output only. The resource name of the tag template field in URL format. Example:
+    /// Output only. The resource name of the tag template field in URL format.
+    /// Example:
     ///
     /// `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}`
     ///
@@ -1028,7 +1230,8 @@ pub mod field_type {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct EnumValue {
-            /// Required. The display name of the enum value. Must not be an empty string.
+            /// Required. The display name of the enum value. Must not be an empty
+            /// string.
             ///
             /// The name must contain only Unicode letters, numbers (0-9), underscores
             /// (_), dashes (-), spaces ( ), and can't start or end with spaces. The
@@ -1129,6 +1332,16 @@ pub struct UsageStats {
     #[prost(float, tag = "4")]
     pub total_execution_time_for_completions_millis: f32,
 }
+/// Common statistics on the entry's usage.
+///
+/// They can be set on any system.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommonUsageStats {
+    /// View count in source system.
+    #[prost(int64, optional, tag = "1")]
+    pub view_count: ::core::option::Option<i64>,
+}
 /// The set of all usage signals that Data Catalog stores.
 ///
 /// Note: Usually, these signals are updated daily. In rare cases, an update may
@@ -1139,7 +1352,8 @@ pub struct UsageSignal {
     /// The end timestamp of the duration of usage statistics.
     #[prost(message, optional, tag = "1")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Usage statistics over each of the predefined time ranges.
+    /// Output only. BigQuery usage statistics over each of the predefined time
+    /// ranges.
     ///
     /// Supported time ranges are `{"24H", "7D", "30D"}`.
     #[prost(map = "string, message", tag = "2")]
@@ -1147,6 +1361,17 @@ pub struct UsageSignal {
         ::prost::alloc::string::String,
         UsageStats,
     >,
+    /// Common usage statistics over each of the predefined time ranges.
+    ///
+    /// Supported time ranges are `{"24H", "7D", "30D", "Lifetime"}`.
+    #[prost(map = "string, message", tag = "3")]
+    pub common_usage_within_time_range: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        CommonUsageStats,
+    >,
+    /// Favorite count in the source system.
+    #[prost(int64, optional, tag = "4")]
+    pub favorite_count: ::core::option::Option<i64>,
 }
 /// Request message for
 /// [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
@@ -1160,9 +1385,8 @@ pub struct SearchCatalogRequest {
     /// the request returns an error.
     #[prost(message, optional, tag = "6")]
     pub scope: ::core::option::Option<search_catalog_request::Scope>,
-    /// Optional. The query string with a minimum of 3 characters and specific syntax.
-    /// For more information, see
-    /// [Data Catalog search
+    /// Optional. The query string with a minimum of 3 characters and specific
+    /// syntax. For more information, see [Data Catalog search
     /// syntax](<https://cloud.google.com/data-catalog/docs/how-to/search-reference>).
     ///
     /// An empty query string returns all data assets (in the specified scope)
@@ -1175,17 +1399,18 @@ pub struct SearchCatalogRequest {
     /// * `description:z`
     #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
-    /// Number of results to return in a single search page.
+    /// Upper bound on the number of results you can get in a single response.
     ///
     /// Can't be negative or 0, defaults to 10 in this case.
     /// The maximum number is 1000. If exceeded, throws an "invalid argument"
     /// exception.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Pagination token that, if specified, returns the next page of search
-    /// results. If empty, returns the first page.
+    /// Optional. Pagination token that, if specified, returns the next page of
+    /// search results. If empty, returns the first page.
     ///
-    /// This token is returned in the [SearchCatalogResponse.next_page_token][google.cloud.datacatalog.v1.SearchCatalogResponse.next_page_token]
+    /// This token is returned in the
+    /// [SearchCatalogResponse.next_page_token][google.cloud.datacatalog.v1.SearchCatalogResponse.next_page_token]
     /// field of the response to a previous
     /// [SearchCatalogRequest][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog]
     /// call.
@@ -1199,9 +1424,23 @@ pub struct SearchCatalogRequest {
     /// * `last_modified_timestamp \[asc|desc\]` with descending (`desc`) as default
     /// * `default` that can only be descending
     ///
+    /// Search queries don't guarantee full recall. Results that match your query
+    /// might not be returned, even in subsequent result pages. Additionally,
+    /// returned (and not returned) results can vary if you repeat search queries.
+    /// If you are experiencing recall issues and you don't have to fetch the
+    /// results in any specific order, consider setting this parameter to
+    /// `default`.
+    ///
     /// If this parameter is omitted, it defaults to the descending `relevance`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
+    /// Optional. If set, use searchAll permission granted on organizations from
+    /// `include_org_ids` and projects from `include_project_ids` instead of the
+    /// fine grained per resource permissions when filtering the search results.
+    /// The only allowed `order_by` criteria for admin_search mode is `default`.
+    /// Using this flags guarantees a full recall of the search results.
+    #[prost(bool, tag = "17")]
+    pub admin_search: bool,
 }
 /// Nested message and enum types in `SearchCatalogRequest`.
 pub mod search_catalog_request {
@@ -1224,15 +1463,15 @@ pub mod search_catalog_request {
         pub include_project_ids: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
         >,
-        /// If `true`, include Google Cloud Platform (GCP) public datasets in
+        /// If `true`, include Google Cloud public datasets in
         /// search results. By default, they are excluded.
         ///
         /// See [Google Cloud Public Datasets](/public-datasets) for more
         /// information.
         #[prost(bool, tag = "7")]
         pub include_gcp_public_datasets: bool,
-        /// Optional. The list of locations to search within. If empty, all locations are
-        /// searched.
+        /// Optional. The list of locations to search within. If empty, all locations
+        /// are searched.
         ///
         /// Returns an error if any location in the list isn't one of the [Supported
         /// regions](<https://cloud.google.com/data-catalog/docs/concepts/regions#supported_regions>).
@@ -1250,8 +1489,8 @@ pub mod search_catalog_request {
         /// By default, all results are returned, starred or not.
         #[prost(bool, tag = "18")]
         pub starred_only: bool,
-        /// Optional. This field is deprecated. The search mechanism for public and private tag
-        /// templates is the same.
+        /// Optional. This field is deprecated. The search mechanism for public and
+        /// private tag templates is the same.
         #[deprecated]
         #[prost(bool, tag = "19")]
         pub include_public_tag_templates: bool,
@@ -1265,6 +1504,9 @@ pub struct SearchCatalogResponse {
     /// Search results.
     #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<SearchCatalogResult>,
+    /// The approximate total number of entries matched by the query.
+    #[prost(int32, tag = "2")]
+    pub total_size: i32,
     /// Pagination token that can be used in subsequent calls to retrieve the next
     /// page of results.
     #[prost(string, tag = "3")]
@@ -1283,7 +1525,8 @@ pub struct SearchCatalogResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntryGroupRequest {
-    /// Required. The names of the project and location that the new entry group belongs to.
+    /// Required. The names of the project and location that the new entry group
+    /// belongs to.
     ///
     /// Note: The entry group itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -1459,6 +1702,16 @@ pub struct GetEntryRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupEntryRequest {
+    /// Project where the lookup should be performed. Required to lookup
+    /// entry that is not a part of `DPMS` or `DATAPLEX` `integrated_system`
+    /// using its `fully_qualified_name`. Ignored in other cases.
+    #[prost(string, tag = "6")]
+    pub project: ::prost::alloc::string::String,
+    /// Location where the lookup should be performed. Required to lookup
+    /// entry that is not a part of `DPMS` or `DATAPLEX` `integrated_system`
+    /// using its `fully_qualified_name`. Ignored in other cases.
+    #[prost(string, tag = "7")]
+    pub location: ::prost::alloc::string::String,
     /// Required. A full name, SQL name, or a fully qualified name of a
     /// Google Cloud Platform resource.
     #[prost(oneof = "lookup_entry_request::TargetName", tags = "1, 3, 5")]
@@ -1496,7 +1749,9 @@ pub mod lookup_entry_request {
         /// (<https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical>).
         #[prost(string, tag = "3")]
         SqlResource(::prost::alloc::string::String),
-        /// Fully qualified name (FQN) of the resource.
+        /// [Fully Qualified Name
+        /// (FQN)](<https://cloud.google.com//data-catalog/docs/fully-qualified-names>)
+        /// of the resource.
         ///
         /// FQNs take two forms:
         ///
@@ -1554,32 +1809,17 @@ pub struct Entry {
     /// The maximum size is 200 bytes when encoded in UTF-8.
     #[prost(string, tag = "9")]
     pub linked_resource: ::prost::alloc::string::String,
-    /// Fully qualified name (FQN) of the resource. Set automatically for entries
-    /// representing resources from synced systems. Settable only during creation
-    /// and read-only afterwards. Can be used for search and lookup of the entries.
+    /// [Fully Qualified Name
+    /// (FQN)](<https://cloud.google.com//data-catalog/docs/fully-qualified-names>)
+    /// of the resource. Set automatically for entries representing resources from
+    /// synced systems. Settable only during creation, and read-only later. Can
+    /// be used for search and lookup of the entries.
     ///
-    ///
-    ///
-    /// FQNs take two forms:
-    ///
-    /// * For non-regionalized resources:
-    ///
-    ///    `{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}`
-    ///
-    /// * For regionalized resources:
-    ///
-    ///    `{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}`
-    ///
-    /// Example for a DPMS table:
-    ///
-    /// `dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}`
     #[prost(string, tag = "29")]
     pub fully_qualified_name: ::prost::alloc::string::String,
     /// Display name of an entry.
     ///
-    /// The name must contain only Unicode letters, numbers (0-9), underscores (_),
-    /// dashes (-), spaces ( ), and can't start or end with spaces.
-    /// The maximum size is 200 bytes when encoded in UTF-8.
+    /// The maximum size is 500 bytes when encoded in UTF-8.
     /// Default value is an empty string.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
@@ -1602,12 +1842,12 @@ pub struct Entry {
     /// Timestamps from the underlying resource, not from the Data Catalog
     /// entry.
     ///
-    /// Output only when the entry has a type listed in the `EntryType` enum.
-    /// For entries with `user_specified_type`, this field is optional and defaults
-    /// to an empty timestamp.
+    /// Output only when the entry has a system listed in the `IntegratedSystem`
+    /// enum. For entries with `user_specified_system`, this field is optional
+    /// and defaults to an empty timestamp.
     #[prost(message, optional, tag = "7")]
     pub source_system_timestamps: ::core::option::Option<SystemTimestamps>,
-    /// Output only. Resource usage statistics.
+    /// Resource usage statistics.
     #[prost(message, optional, tag = "13")]
     pub usage_signal: ::core::option::Option<UsageSignal>,
     /// Cloud labels attached to the entry.
@@ -1623,7 +1863,8 @@ pub struct Entry {
     /// Output only. Physical location of the entry.
     #[prost(message, optional, tag = "20")]
     pub data_source: ::core::option::Option<DataSource>,
-    /// Output only. Additional information related to the entry. Private to the current user.
+    /// Output only. Additional information related to the entry. Private to the
+    /// current user.
     #[prost(message, optional, tag = "26")]
     pub personal_details: ::core::option::Option<PersonalDetails>,
     /// Required. Entry type.
@@ -1632,6 +1873,11 @@ pub struct Entry {
     /// The source system of the entry.
     #[prost(oneof = "entry::System", tags = "17, 18")]
     pub system: ::core::option::Option<entry::System>,
+    /// System specification.
+    /// Can be used as a complement for `spec`, when some metadata is relevant for
+    /// all entries existing within given system
+    #[prost(oneof = "entry::SystemSpec", tags = "39, 40, 41")]
+    pub system_spec: ::core::option::Option<entry::SystemSpec>,
     /// Type specification.
     #[prost(oneof = "entry::TypeSpec", tags = "6, 12, 15")]
     pub type_spec: ::core::option::Option<entry::TypeSpec>,
@@ -1641,7 +1887,7 @@ pub struct Entry {
     ///
     /// When extending the API with new types and systems, use this field instead
     /// of the legacy `type_spec`.
-    #[prost(oneof = "entry::Spec", tags = "24, 27, 28, 33")]
+    #[prost(oneof = "entry::Spec", tags = "24, 27, 28, 32, 33, 42, 43")]
     pub spec: ::core::option::Option<entry::Spec>,
 }
 /// Nested message and enum types in `Entry`.
@@ -1651,10 +1897,8 @@ pub mod entry {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EntryType {
         /// The type of the entry.
-        /// Only used for entries with types listed in the `EntryType` enum.
         ///
-        /// Currently, only `FILESET` enum value is allowed. All other entries
-        /// created in Data Catalog must use the `user_specified_type`.
+        /// For details, see [`EntryType`](#entrytype).
         #[prost(enumeration = "super::EntryType", tag = "2")]
         Type(i32),
         /// Custom entry type that doesn't match any of the values allowed for input
@@ -1693,6 +1937,25 @@ pub mod entry {
         #[prost(string, tag = "18")]
         UserSpecifiedSystem(::prost::alloc::string::String),
     }
+    /// System specification.
+    /// Can be used as a complement for `spec`, when some metadata is relevant for
+    /// all entries existing within given system
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SystemSpec {
+        /// Specification that applies to a relational database system. Only settable
+        /// when `user_specified_system` is equal to `SQL_DATABASE`
+        #[prost(message, tag = "39")]
+        SqlDatabaseSystemSpec(super::SqlDatabaseSystemSpec),
+        /// Specification that applies to Looker sysstem. Only settable when
+        /// `user_specified_system` is equal to `LOOKER`
+        #[prost(message, tag = "40")]
+        LookerSystemSpec(super::LookerSystemSpec),
+        /// Specification that applies to Cloud Bigtable system. Only settable when
+        /// `integrated_system` is equal to `CLOUD_BIGTABLE`
+        #[prost(message, tag = "41")]
+        CloudBigtableSystemSpec(super::CloudBigtableSystemSpec),
+    }
     /// Type specification.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1701,12 +1964,12 @@ pub mod entry {
         /// for entries with the `FILESET` type.
         #[prost(message, tag = "6")]
         GcsFilesetSpec(super::GcsFilesetSpec),
-        /// Specification that applies to a BigQuery table. Valid only for
-        /// entries with the `TABLE` type.
+        /// Output only. Specification that applies to a BigQuery table. Valid only
+        /// for entries with the `TABLE` type.
         #[prost(message, tag = "12")]
         BigqueryTableSpec(super::BigQueryTableSpec),
-        /// Specification for a group of BigQuery tables with the `\[prefix\]YYYYMMDD`
-        /// name pattern.
+        /// Output only. Specification for a group of BigQuery tables with
+        /// the `\[prefix\]YYYYMMDD` name pattern.
         ///
         /// For more information, see \[Introduction to partitioned tables\]
         /// (<https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding>).
@@ -1723,7 +1986,7 @@ pub mod entry {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Spec {
         /// Specification that applies to a table resource. Valid only
-        /// for entries with the `TABLE` type.
+        /// for entries with the `TABLE` or `EXPLORE` type.
         #[prost(message, tag = "24")]
         DatabaseTableSpec(super::DatabaseTableSpec),
         /// Specification that applies to a data source connection. Valid only
@@ -1734,10 +1997,19 @@ pub mod entry {
         /// only for entries with the `ROUTINE` type.
         #[prost(message, tag = "28")]
         RoutineSpec(super::RoutineSpec),
+        /// Specification that applies to a dataset.
+        #[prost(message, tag = "32")]
+        DatasetSpec(super::DatasetSpec),
         /// Specification that applies to a fileset resource. Valid only
         /// for entries with the `FILESET` type.
         #[prost(message, tag = "33")]
         FilesetSpec(super::FilesetSpec),
+        /// Specification that applies to a Service resource.
+        #[prost(message, tag = "42")]
+        ServiceSpec(super::ServiceSpec),
+        /// Model specification.
+        #[prost(message, tag = "43")]
+        ModelSpec(super::ModelSpec),
     }
 }
 /// Specification that applies to a table resource. Valid only
@@ -1748,13 +2020,89 @@ pub struct DatabaseTableSpec {
     /// Type of this table.
     #[prost(enumeration = "database_table_spec::TableType", tag = "1")]
     pub r#type: i32,
-    /// Fields specific to a Dataplex table and present only in the Dataplex table
-    /// entries.
+    /// Output only. Fields specific to a Dataplex table and present only in the
+    /// Dataplex table entries.
     #[prost(message, optional, tag = "2")]
     pub dataplex_table: ::core::option::Option<DataplexTableSpec>,
+    /// Spec what aplies to tables that are actually views.
+    /// Not set for "real" tables.
+    #[prost(message, optional, tag = "3")]
+    pub database_view_spec: ::core::option::Option<
+        database_table_spec::DatabaseViewSpec,
+    >,
 }
 /// Nested message and enum types in `DatabaseTableSpec`.
 pub mod database_table_spec {
+    /// Specification that applies to database view.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DatabaseViewSpec {
+        /// Type of this view.
+        #[prost(enumeration = "database_view_spec::ViewType", tag = "1")]
+        pub view_type: i32,
+        /// Definition of the view.
+        #[prost(oneof = "database_view_spec::SourceDefinition", tags = "2, 3")]
+        pub source_definition: ::core::option::Option<
+            database_view_spec::SourceDefinition,
+        >,
+    }
+    /// Nested message and enum types in `DatabaseViewSpec`.
+    pub mod database_view_spec {
+        /// Concrete type of the view.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ViewType {
+            /// Default unknown view type.
+            Unspecified = 0,
+            /// Standard view.
+            StandardView = 1,
+            /// Materialized view.
+            MaterializedView = 2,
+        }
+        impl ViewType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ViewType::Unspecified => "VIEW_TYPE_UNSPECIFIED",
+                    ViewType::StandardView => "STANDARD_VIEW",
+                    ViewType::MaterializedView => "MATERIALIZED_VIEW",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "VIEW_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "STANDARD_VIEW" => Some(Self::StandardView),
+                    "MATERIALIZED_VIEW" => Some(Self::MaterializedView),
+                    _ => None,
+                }
+            }
+        }
+        /// Definition of the view.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum SourceDefinition {
+            /// Name of a singular table this view reflects one to one.
+            #[prost(string, tag = "2")]
+            BaseTable(::prost::alloc::string::String),
+            /// SQL query used to generate this view.
+            #[prost(string, tag = "3")]
+            SqlQuery(::prost::alloc::string::String),
+        }
+    }
     /// Type of the table.
     #[derive(
         Clone,
@@ -1811,10 +2159,12 @@ pub struct FilesetSpec {
 }
 /// Specification that applies to a data source connection. Valid only for
 /// entries with the `DATA_SOURCE_CONNECTION` type.
+/// Only one of internal specs can be set at the time, and cannot
+/// be changed later.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSourceConnectionSpec {
-    /// Fields specific to BigQuery connections.
+    /// Output only. Fields specific to BigQuery connections.
     #[prost(message, optional, tag = "1")]
     pub bigquery_connection_spec: ::core::option::Option<BigQueryConnectionSpec>,
 }
@@ -1965,6 +2315,358 @@ pub mod routine_spec {
         /// Fields specific for BigQuery routines.
         #[prost(message, tag = "6")]
         BigqueryRoutineSpec(super::BigQueryRoutineSpec),
+    }
+}
+/// Specification that applies to a dataset. Valid only for
+/// entries with the `DATASET` type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatasetSpec {
+    /// Fields specific to the source system.
+    #[prost(oneof = "dataset_spec::SystemSpec", tags = "2")]
+    pub system_spec: ::core::option::Option<dataset_spec::SystemSpec>,
+}
+/// Nested message and enum types in `DatasetSpec`.
+pub mod dataset_spec {
+    /// Fields specific to the source system.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SystemSpec {
+        /// Vertex AI Dataset specific fields
+        #[prost(message, tag = "2")]
+        VertexDatasetSpec(super::VertexDatasetSpec),
+    }
+}
+/// Specification that applies to
+/// entries that are part `SQL_DATABASE` system
+/// (user_specified_type)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlDatabaseSystemSpec {
+    /// SQL Database Engine.
+    /// enum SqlEngine {
+    ///   UNDEFINED = 0;
+    ///   MY_SQL = 1;
+    ///   POSTGRE_SQL = 2;
+    ///   SQL_SERVER = 3;
+    /// }
+    /// Engine of the enclosing database instance.
+    #[prost(string, tag = "1")]
+    pub sql_engine: ::prost::alloc::string::String,
+    /// Version of the database engine.
+    #[prost(string, tag = "2")]
+    pub database_version: ::prost::alloc::string::String,
+    /// Host of the SQL database
+    /// enum InstanceHost {
+    ///   UNDEFINED = 0;
+    ///   SELF_HOSTED = 1;
+    ///   CLOUD_SQL = 2;
+    ///   AMAZON_RDS = 3;
+    ///   AZURE_SQL = 4;
+    /// }
+    /// Host of the enclousing database instance.
+    #[prost(string, tag = "3")]
+    pub instance_host: ::prost::alloc::string::String,
+}
+/// Specification that applies to
+/// entries that are part `LOOKER` system
+/// (user_specified_type)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookerSystemSpec {
+    /// ID of the parent Looker Instance. Empty if it does not exist.
+    /// Example value: `someinstance.looker.com`
+    #[prost(string, tag = "1")]
+    pub parent_instance_id: ::prost::alloc::string::String,
+    /// Name of the parent Looker Instance. Empty if it does not exist.
+    #[prost(string, tag = "2")]
+    pub parent_instance_display_name: ::prost::alloc::string::String,
+    /// ID of the parent Model. Empty if it does not exist.
+    #[prost(string, tag = "3")]
+    pub parent_model_id: ::prost::alloc::string::String,
+    /// Name of the parent Model. Empty if it does not exist.
+    #[prost(string, tag = "4")]
+    pub parent_model_display_name: ::prost::alloc::string::String,
+    /// ID of the parent View. Empty if it does not exist.
+    #[prost(string, tag = "5")]
+    pub parent_view_id: ::prost::alloc::string::String,
+    /// Name of the parent View. Empty if it does not exist.
+    #[prost(string, tag = "6")]
+    pub parent_view_display_name: ::prost::alloc::string::String,
+}
+/// Specification that applies to
+/// all entries that are part of `CLOUD_BIGTABLE` system
+/// (user_specified_type)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudBigtableSystemSpec {
+    /// Display name of the Instance. This is user specified and different from
+    /// the resource name.
+    #[prost(string, tag = "1")]
+    pub instance_display_name: ::prost::alloc::string::String,
+}
+/// Specification that applies to Instance
+/// entries that are part of `CLOUD_BIGTABLE` system.
+/// (user_specified_type)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudBigtableInstanceSpec {
+    /// The list of clusters for the Instance.
+    #[prost(message, repeated, tag = "1")]
+    pub cloud_bigtable_cluster_specs: ::prost::alloc::vec::Vec<
+        cloud_bigtable_instance_spec::CloudBigtableClusterSpec,
+    >,
+}
+/// Nested message and enum types in `CloudBigtableInstanceSpec`.
+pub mod cloud_bigtable_instance_spec {
+    /// Spec that applies to clusters of an Instance of Cloud Bigtable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CloudBigtableClusterSpec {
+        /// Name of the cluster.
+        #[prost(string, tag = "1")]
+        pub display_name: ::prost::alloc::string::String,
+        /// Location of the cluster, typically a Cloud zone.
+        #[prost(string, tag = "2")]
+        pub location: ::prost::alloc::string::String,
+        /// Type of the resource. For a cluster this would be "CLUSTER".
+        #[prost(string, tag = "3")]
+        pub r#type: ::prost::alloc::string::String,
+        /// A link back to the parent resource, in this case Instance.
+        #[prost(string, tag = "4")]
+        pub linked_resource: ::prost::alloc::string::String,
+    }
+}
+/// Specification that applies to a Service resource. Valid only
+/// for entries with the `SERVICE` type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceSpec {
+    /// System spec
+    #[prost(oneof = "service_spec::SystemSpec", tags = "1")]
+    pub system_spec: ::core::option::Option<service_spec::SystemSpec>,
+}
+/// Nested message and enum types in `ServiceSpec`.
+pub mod service_spec {
+    /// System spec
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SystemSpec {
+        /// Specification that applies to Instance entries of `CLOUD_BIGTABLE`
+        /// system.
+        #[prost(message, tag = "1")]
+        CloudBigtableInstanceSpec(super::CloudBigtableInstanceSpec),
+    }
+}
+/// Detail description of the source information of a Vertex model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexModelSourceInfo {
+    /// Type of the model source.
+    #[prost(enumeration = "vertex_model_source_info::ModelSourceType", tag = "1")]
+    pub source_type: i32,
+    /// If this Model is copy of another Model. If true then
+    /// [source_type][google.cloud.datacatalog.v1.VertexModelSourceInfo.source_type]
+    /// pertains to the original.
+    #[prost(bool, tag = "2")]
+    pub copy: bool,
+}
+/// Nested message and enum types in `VertexModelSourceInfo`.
+pub mod vertex_model_source_info {
+    /// Source of the model.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ModelSourceType {
+        /// Should not be used.
+        Unspecified = 0,
+        /// The Model is uploaded by automl training pipeline.
+        Automl = 1,
+        /// The Model is uploaded by user or custom training pipeline.
+        Custom = 2,
+        /// The Model is registered and sync'ed from BigQuery ML.
+        Bqml = 3,
+        /// The Model is saved or tuned from Model Garden.
+        ModelGarden = 4,
+    }
+    impl ModelSourceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ModelSourceType::Unspecified => "MODEL_SOURCE_TYPE_UNSPECIFIED",
+                ModelSourceType::Automl => "AUTOML",
+                ModelSourceType::Custom => "CUSTOM",
+                ModelSourceType::Bqml => "BQML",
+                ModelSourceType::ModelGarden => "MODEL_GARDEN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOML" => Some(Self::Automl),
+                "CUSTOM" => Some(Self::Custom),
+                "BQML" => Some(Self::Bqml),
+                "MODEL_GARDEN" => Some(Self::ModelGarden),
+                _ => None,
+            }
+        }
+    }
+}
+/// Specification for vertex model resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexModelSpec {
+    /// The version ID of the model.
+    #[prost(string, tag = "1")]
+    pub version_id: ::prost::alloc::string::String,
+    /// User provided version aliases so that a model version can be referenced via
+    /// alias
+    #[prost(string, repeated, tag = "2")]
+    pub version_aliases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The description of this version.
+    #[prost(string, tag = "3")]
+    pub version_description: ::prost::alloc::string::String,
+    /// Source of a Vertex model.
+    #[prost(message, optional, tag = "4")]
+    pub vertex_model_source_info: ::core::option::Option<VertexModelSourceInfo>,
+    /// URI of the Docker image to be used as the custom container for serving
+    /// predictions.
+    #[prost(string, tag = "5")]
+    pub container_image_uri: ::prost::alloc::string::String,
+}
+/// Specification for vertex dataset resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexDatasetSpec {
+    /// The number of DataItems in this Dataset. Only apply for non-structured
+    /// Dataset.
+    #[prost(int64, tag = "1")]
+    pub data_item_count: i64,
+    /// Type of the dataset.
+    #[prost(enumeration = "vertex_dataset_spec::DataType", tag = "2")]
+    pub data_type: i32,
+}
+/// Nested message and enum types in `VertexDatasetSpec`.
+pub mod vertex_dataset_spec {
+    /// Type of data stored in the dataset.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataType {
+        /// Should not be used.
+        Unspecified = 0,
+        /// Structured data dataset.
+        Table = 1,
+        /// Image dataset which supports ImageClassification, ImageObjectDetection
+        /// and ImageSegmentation problems.
+        Image = 2,
+        /// Document dataset which supports TextClassification, TextExtraction and
+        /// TextSentiment problems.
+        Text = 3,
+        /// Video dataset which supports VideoClassification, VideoObjectTracking and
+        /// VideoActionRecognition problems.
+        Video = 4,
+        /// Conversation dataset which supports conversation problems.
+        Conversation = 5,
+        /// TimeSeries dataset.
+        TimeSeries = 6,
+        /// Document dataset which supports DocumentAnnotation problems.
+        Document = 7,
+        /// TextToSpeech dataset which supports TextToSpeech problems.
+        TextToSpeech = 8,
+        /// Translation dataset which supports Translation problems.
+        Translation = 9,
+        /// Store Vision dataset which is used for HITL integration.
+        StoreVision = 10,
+        /// Enterprise Knowledge Graph dataset which is used for HITL labeling
+        /// integration.
+        EnterpriseKnowledgeGraph = 11,
+        /// Text prompt dataset which supports Large Language Models.
+        TextPrompt = 12,
+    }
+    impl DataType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                DataType::Table => "TABLE",
+                DataType::Image => "IMAGE",
+                DataType::Text => "TEXT",
+                DataType::Video => "VIDEO",
+                DataType::Conversation => "CONVERSATION",
+                DataType::TimeSeries => "TIME_SERIES",
+                DataType::Document => "DOCUMENT",
+                DataType::TextToSpeech => "TEXT_TO_SPEECH",
+                DataType::Translation => "TRANSLATION",
+                DataType::StoreVision => "STORE_VISION",
+                DataType::EnterpriseKnowledgeGraph => "ENTERPRISE_KNOWLEDGE_GRAPH",
+                DataType::TextPrompt => "TEXT_PROMPT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLE" => Some(Self::Table),
+                "IMAGE" => Some(Self::Image),
+                "TEXT" => Some(Self::Text),
+                "VIDEO" => Some(Self::Video),
+                "CONVERSATION" => Some(Self::Conversation),
+                "TIME_SERIES" => Some(Self::TimeSeries),
+                "DOCUMENT" => Some(Self::Document),
+                "TEXT_TO_SPEECH" => Some(Self::TextToSpeech),
+                "TRANSLATION" => Some(Self::Translation),
+                "STORE_VISION" => Some(Self::StoreVision),
+                "ENTERPRISE_KNOWLEDGE_GRAPH" => Some(Self::EnterpriseKnowledgeGraph),
+                "TEXT_PROMPT" => Some(Self::TextPrompt),
+                _ => None,
+            }
+        }
+    }
+}
+/// Specification that applies to a model. Valid only for
+/// entries with the `MODEL` type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelSpec {
+    /// System spec
+    #[prost(oneof = "model_spec::SystemSpec", tags = "1")]
+    pub system_spec: ::core::option::Option<model_spec::SystemSpec>,
+}
+/// Nested message and enum types in `ModelSpec`.
+pub mod model_spec {
+    /// System spec
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SystemSpec {
+        /// Specification for vertex model resources.
+        #[prost(message, tag = "1")]
+        VertexModelSpec(super::VertexModelSpec),
     }
 }
 /// Business Context of the entry.
@@ -2182,8 +2884,8 @@ pub struct UpdateTagTemplateFieldRequest {
     /// Required. The template to update.
     #[prost(message, optional, tag = "2")]
     pub tag_template_field: ::core::option::Option<TagTemplateField>,
-    /// Optional. Names of fields whose values to overwrite on an individual field of a tag
-    /// template. The following fields are modifiable:
+    /// Optional. Names of fields whose values to overwrite on an individual field
+    /// of a tag template. The following fields are modifiable:
     ///
     /// * `display_name`
     /// * `type.enum_type`
@@ -2209,7 +2911,8 @@ pub struct RenameTagTemplateFieldRequest {
     /// Required. The name of the tag template field.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The new ID of this tag template field. For example, `my_new_field`.
+    /// Required. The new ID of this tag template field. For example,
+    /// `my_new_field`.
     #[prost(string, tag = "2")]
     pub new_tag_template_field_id: ::prost::alloc::string::String,
 }
@@ -2221,7 +2924,8 @@ pub struct RenameTagTemplateFieldEnumValueRequest {
     /// Required. The name of the enum field value.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The new display name of the enum value. For example, `my_new_enum_value`.
+    /// Required. The new display name of the enum value. For example,
+    /// `my_new_enum_value`.
     #[prost(string, tag = "2")]
     pub new_enum_value_display_name: ::prost::alloc::string::String,
 }
@@ -2271,6 +2975,114 @@ pub struct ListTagsResponse {
     /// no more items in results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReconcileTagsRequest {
+    /// Required. Name of [Entry][google.cloud.datacatalog.v1.Entry] to be tagged.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The name of the tag template, which is used for reconciliation.
+    #[prost(string, tag = "2")]
+    pub tag_template: ::prost::alloc::string::String,
+    /// If set to `true`, deletes entry tags related to a tag template
+    /// not listed in the tags source from an entry. If set to `false`,
+    /// unlisted tags are retained.
+    #[prost(bool, tag = "3")]
+    pub force_delete_missing: bool,
+    /// A list of tags to apply to an entry. A tag can specify a
+    /// tag template, which must be the template specified in the
+    /// `ReconcileTagsRequest`.
+    /// The sole entry and each of its columns must be mentioned at most once.
+    #[prost(message, repeated, tag = "4")]
+    pub tags: ::prost::alloc::vec::Vec<Tag>,
+}
+/// [Long-running operation][google.longrunning.Operation]
+/// response message returned by
+/// [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReconcileTagsResponse {
+    /// Number of tags created in the request.
+    #[prost(int64, tag = "1")]
+    pub created_tags_count: i64,
+    /// Number of tags updated in the request.
+    #[prost(int64, tag = "2")]
+    pub updated_tags_count: i64,
+    /// Number of tags deleted in the request.
+    #[prost(int64, tag = "3")]
+    pub deleted_tags_count: i64,
+}
+/// [Long-running operation][google.longrunning.Operation]
+/// metadata message returned by the
+/// [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReconcileTagsMetadata {
+    /// State of the reconciliation operation.
+    #[prost(enumeration = "reconcile_tags_metadata::ReconciliationState", tag = "1")]
+    pub state: i32,
+    /// Maps the name of each tagged column (or empty string for a
+    /// sole entry) to tagging operation [status][google.rpc.Status].
+    #[prost(map = "string, message", tag = "2")]
+    pub errors: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        super::super::super::rpc::Status,
+    >,
+}
+/// Nested message and enum types in `ReconcileTagsMetadata`.
+pub mod reconcile_tags_metadata {
+    /// Enum holding possible states of the reconciliation operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ReconciliationState {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The reconciliation has been queued and awaits for execution.
+        ReconciliationQueued = 1,
+        /// The reconciliation is in progress.
+        ReconciliationInProgress = 2,
+        /// The reconciliation has been finished.
+        ReconciliationDone = 3,
+    }
+    impl ReconciliationState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ReconciliationState::Unspecified => "RECONCILIATION_STATE_UNSPECIFIED",
+                ReconciliationState::ReconciliationQueued => "RECONCILIATION_QUEUED",
+                ReconciliationState::ReconciliationInProgress => {
+                    "RECONCILIATION_IN_PROGRESS"
+                }
+                ReconciliationState::ReconciliationDone => "RECONCILIATION_DONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECONCILIATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RECONCILIATION_QUEUED" => Some(Self::ReconciliationQueued),
+                "RECONCILIATION_IN_PROGRESS" => Some(Self::ReconciliationInProgress),
+                "RECONCILIATION_DONE" => Some(Self::ReconciliationDone),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request message for
 /// [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
@@ -2342,6 +3154,118 @@ pub struct UnstarEntryRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnstarEntryResponse {}
 /// Request message for
+/// [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportEntriesRequest {
+    /// Required. Target entry group for ingested entries.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. (Optional) Dataplex task job id, if specified will be used as
+    /// part of ImportEntries LRO ID
+    #[prost(string, tag = "3")]
+    pub job_id: ::prost::alloc::string::String,
+    /// Source of imported entries, e.g. dump stored in a Cloud Storage
+    #[prost(oneof = "import_entries_request::Source", tags = "2")]
+    pub source: ::core::option::Option<import_entries_request::Source>,
+}
+/// Nested message and enum types in `ImportEntriesRequest`.
+pub mod import_entries_request {
+    /// Source of imported entries, e.g. dump stored in a Cloud Storage
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Path to a Cloud Storage bucket that contains a dump ready for ingestion.
+        #[prost(string, tag = "2")]
+        GcsBucketPath(::prost::alloc::string::String),
+    }
+}
+/// Response message for [long-running operation][google.longrunning.Operation]
+/// returned by the
+/// [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportEntriesResponse {
+    /// Cumulative number of entries created and entries updated as a result of
+    /// import operation.
+    #[prost(int64, optional, tag = "5")]
+    pub upserted_entries_count: ::core::option::Option<i64>,
+    /// Number of entries deleted as a result of import operation.
+    #[prost(int64, optional, tag = "6")]
+    pub deleted_entries_count: ::core::option::Option<i64>,
+}
+/// Metadata message for [long-running operation][google.longrunning.Operation]
+/// returned by the
+/// [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportEntriesMetadata {
+    /// State of the import operation.
+    #[prost(enumeration = "import_entries_metadata::ImportState", tag = "1")]
+    pub state: i32,
+    /// Partial errors that are encountered during the ImportEntries operation.
+    /// There is no guarantee that all the encountered errors are reported.
+    /// However, if no errors are reported, it means that no errors were
+    /// encountered.
+    #[prost(message, repeated, tag = "2")]
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// Nested message and enum types in `ImportEntriesMetadata`.
+pub mod import_entries_metadata {
+    /// Enum holding possible states of the import operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ImportState {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The dump with entries has been queued for import.
+        ImportQueued = 1,
+        /// The import of entries is in progress.
+        ImportInProgress = 2,
+        /// The import of entries has been finished.
+        ImportDone = 3,
+        /// The import of entries has been abandoned in favor of a newer request.
+        ImportObsolete = 4,
+    }
+    impl ImportState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ImportState::Unspecified => "IMPORT_STATE_UNSPECIFIED",
+                ImportState::ImportQueued => "IMPORT_QUEUED",
+                ImportState::ImportInProgress => "IMPORT_IN_PROGRESS",
+                ImportState::ImportDone => "IMPORT_DONE",
+                ImportState::ImportObsolete => "IMPORT_OBSOLETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IMPORT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMPORT_QUEUED" => Some(Self::ImportQueued),
+                "IMPORT_IN_PROGRESS" => Some(Self::ImportInProgress),
+                "IMPORT_DONE" => Some(Self::ImportDone),
+                "IMPORT_OBSOLETE" => Some(Self::ImportObsolete),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for
 /// [ModifyEntryOverview][google.cloud.datacatalog.v1.DataCatalog.ModifyEntryOverview].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2365,20 +3289,30 @@ pub struct ModifyEntryContactsRequest {
     #[prost(message, optional, tag = "2")]
     pub contacts: ::core::option::Option<Contacts>,
 }
-/// The enum field that lists all the types of entry resources in Data
-/// Catalog. For example, a BigQuery table entry has the `TABLE` type.
+/// Metadata automatically ingested from Google Cloud resources like BigQuery
+/// tables or Pub/Sub topics always uses enum values from `EntryType` as the type
+/// of entry.
+///
+/// Other sources of metadata like Hive or Oracle databases can identify the type
+/// by either using one of the enum values from `EntryType` (for example,
+/// `FILESET` for a Cloud Storage fileset) or specifying a custom value using
+/// the [`Entry`](#resource:-entry) field `user_specified_type`. For more
+/// information, see
+/// [Surface files from Cloud Storage with fileset
+/// entries](/data-catalog/docs/how-to/filesets) or [Create custom entries for
+/// your data sources](/data-catalog/docs/how-to/custom-entries).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EntryType {
     /// Default unknown type.
     Unspecified = 0,
-    /// Output only. The entry type that has a GoogleSQL schema, including
+    /// The entry type that has a GoogleSQL schema, including
     /// logical views.
     Table = 2,
-    /// Output only. The type of models.
+    /// The type of models.
     ///
-    /// For more information, see \[Supported models in BigQuery ML\]
-    /// (<https://cloud.google.com/bigquery-ml/docs/introduction#supported_models_in>).
+    /// For more information, see [Supported models in BigQuery
+    /// ML](/bigquery/docs/bqml-introduction#supported_models).
     Model = 5,
     /// An entry type for streaming entries. For example, a Pub/Sub topic.
     DataStream = 3,
@@ -2389,10 +3323,10 @@ pub enum EntryType {
     Cluster = 6,
     /// A database.
     Database = 7,
-    /// Output only. Connection to a data source. For example, a BigQuery
+    /// Connection to a data source. For example, a BigQuery
     /// connection.
     DataSourceConnection = 8,
-    /// Output only. Routine, for example, a BigQuery routine.
+    /// Routine, for example, a BigQuery routine.
     Routine = 9,
     /// A Dataplex lake.
     Lake = 10,
@@ -2400,6 +3334,20 @@ pub enum EntryType {
     Zone = 11,
     /// A service, for example, a Dataproc Metastore service.
     Service = 14,
+    /// Schema within a relational database.
+    DatabaseSchema = 15,
+    /// A Dashboard, for example from Looker.
+    Dashboard = 16,
+    /// A Looker Explore.
+    ///
+    /// For more information, see \[Looker Explore API\]
+    /// (<https://developers.looker.com/api/explorer/4.0/methods/LookmlModel/lookml_model_explore>).
+    Explore = 17,
+    /// A Looker Look.
+    ///
+    /// For more information, see \[Looker Look API\]
+    /// (<https://developers.looker.com/api/explorer/4.0/methods/Look>).
+    Look = 18,
 }
 impl EntryType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2420,6 +3368,10 @@ impl EntryType {
             EntryType::Lake => "LAKE",
             EntryType::Zone => "ZONE",
             EntryType::Service => "SERVICE",
+            EntryType::DatabaseSchema => "DATABASE_SCHEMA",
+            EntryType::Dashboard => "DASHBOARD",
+            EntryType::Explore => "EXPLORE",
+            EntryType::Look => "LOOK",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2437,6 +3389,10 @@ impl EntryType {
             "LAKE" => Some(Self::Lake),
             "ZONE" => Some(Self::Zone),
             "SERVICE" => Some(Self::Service),
+            "DATABASE_SCHEMA" => Some(Self::DatabaseSchema),
+            "DASHBOARD" => Some(Self::Dashboard),
+            "EXPLORE" => Some(Self::Explore),
+            "LOOK" => Some(Self::Look),
             _ => None,
         }
     }
@@ -3450,6 +4406,49 @@ pub mod data_catalog_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// `ReconcileTags` creates or updates a list of tags on the entry.
+        /// If the
+        /// [ReconcileTagsRequest.force_delete_missing][google.cloud.datacatalog.v1.ReconcileTagsRequest.force_delete_missing]
+        /// parameter is set, the operation deletes tags not included in the input tag
+        /// list.
+        ///
+        /// `ReconcileTags` returns a [long-running operation]
+        /// [google.longrunning.Operation] resource that can be queried with
+        /// [Operations.GetOperation][google.longrunning.Operations.GetOperation]
+        /// to return [ReconcileTagsMetadata]
+        /// [google.cloud.datacatalog.v1.ReconcileTagsMetadata] and
+        /// a [ReconcileTagsResponse]
+        /// [google.cloud.datacatalog.v1.ReconcileTagsResponse] message.
+        pub async fn reconcile_tags(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReconcileTagsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/ReconcileTags",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.v1.DataCatalog",
+                        "ReconcileTags",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Marks an [Entry][google.cloud.datacatalog.v1.Entry] as starred by
         /// the current user. Starring information is private to each user.
         pub async fn star_entry(
@@ -3664,6 +4663,99 @@ pub mod data_catalog_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Imports entries from a source, such as data previously dumped into a
+        /// Cloud Storage bucket, into Data Catalog. Import of entries
+        /// is a sync operation that reconciles the state of the third-party system
+        /// with the Data Catalog.
+        ///
+        /// `ImportEntries` accepts source data snapshots of a third-party system.
+        /// Snapshot should be delivered as a .wire or base65-encoded .txt file
+        /// containing a sequence of Protocol Buffer messages of
+        /// [DumpItem][google.cloud.datacatalog.v1.DumpItem] type.
+        ///
+        /// `ImportEntries` returns a [long-running operation]
+        /// [google.longrunning.Operation] resource that can be queried with
+        /// [Operations.GetOperation][google.longrunning.Operations.GetOperation]
+        /// to return
+        /// [ImportEntriesMetadata][google.cloud.datacatalog.v1.ImportEntriesMetadata]
+        /// and an
+        /// [ImportEntriesResponse][google.cloud.datacatalog.v1.ImportEntriesResponse]
+        /// message.
+        pub async fn import_entries(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportEntriesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/ImportEntries",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.v1.DataCatalog",
+                        "ImportEntries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Wrapper containing Entry and information about Tags
+/// that should and should not be attached to it.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaggedEntry {
+    /// Optional. Tags that should be ingested into the Data Catalog.
+    /// Caller should populate template name, column and fields.
+    #[prost(message, repeated, tag = "2")]
+    pub present_tags: ::prost::alloc::vec::Vec<Tag>,
+    /// Optional. Tags that should be deleted from the Data Catalog.
+    /// Caller should populate template name and column only.
+    #[prost(message, repeated, tag = "3")]
+    pub absent_tags: ::prost::alloc::vec::Vec<Tag>,
+    /// Required. Entry to be ingested.
+    #[prost(oneof = "tagged_entry::Entry", tags = "1")]
+    pub entry: ::core::option::Option<tagged_entry::Entry>,
+}
+/// Nested message and enum types in `TaggedEntry`.
+pub mod tagged_entry {
+    /// Required. Entry to be ingested.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Entry {
+        /// Non-encrypted Data Catalog v1 Entry.
+        #[prost(message, tag = "1")]
+        V1Entry(super::Entry),
+    }
+}
+/// Wrapper for any item that can be contained in the dump.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DumpItem {
+    #[prost(oneof = "dump_item::Item", tags = "1")]
+    pub item: ::core::option::Option<dump_item::Item>,
+}
+/// Nested message and enum types in `DumpItem`.
+pub mod dump_item {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Item {
+        /// Entry and its tags.
+        #[prost(message, tag = "1")]
+        TaggedEntry(super::TaggedEntry),
     }
 }
 /// A taxonomy is a collection of hierarchical policy tags that classify data
@@ -3720,13 +4812,29 @@ pub struct Taxonomy {
     /// Output only. Creation and modification timestamps of this taxonomy.
     #[prost(message, optional, tag = "5")]
     pub taxonomy_timestamps: ::core::option::Option<SystemTimestamps>,
-    /// Optional. A list of policy types that are activated for this taxonomy. If not set,
-    /// defaults to an empty list.
+    /// Optional. A list of policy types that are activated for this taxonomy. If
+    /// not set, defaults to an empty list.
     #[prost(enumeration = "taxonomy::PolicyType", repeated, packed = "false", tag = "6")]
     pub activated_policy_types: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. Identity of the service which owns the Taxonomy. This field is
+    /// only populated when the taxonomy is created by a Google Cloud service.
+    /// Currently only 'DATAPLEX' is supported.
+    #[prost(message, optional, tag = "7")]
+    pub service: ::core::option::Option<taxonomy::Service>,
 }
 /// Nested message and enum types in `Taxonomy`.
 pub mod taxonomy {
+    /// The source system of the Taxonomy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Service {
+        /// The Google Cloud service name.
+        #[prost(enumeration = "super::ManagingSystem", tag = "1")]
+        pub name: i32,
+        /// The service agent for the service.
+        #[prost(string, tag = "2")]
+        pub identity: ::prost::alloc::string::String,
+    }
     /// Defines policy types where the policy tags can be used for.
     #[derive(
         Clone,
@@ -3872,6 +4980,10 @@ pub struct ListTaxonomiesRequest {
     /// The token is returned in the response to a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Supported field for filter is 'service' and value is 'dataplex'.
+    /// Eg: service=dataplex.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies].
@@ -4477,7 +5589,8 @@ pub mod policy_tag_manager_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerializedTaxonomy {
-    /// Required. Display name of the taxonomy. At most 200 bytes when encoded in UTF-8.
+    /// Required. Display name of the taxonomy. At most 200 bytes when encoded in
+    /// UTF-8.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
     /// Description of the serialized taxonomy. At most 2000 bytes when
@@ -4531,7 +5644,8 @@ pub struct ReplaceTaxonomyRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportTaxonomiesRequest {
-    /// Required. Resource name of project that the imported taxonomies will belong to.
+    /// Required. Resource name of project that the imported taxonomies will belong
+    /// to.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Source taxonomies to import.
@@ -4583,7 +5697,8 @@ pub struct ImportTaxonomiesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTaxonomiesRequest {
-    /// Required. Resource name of the project that the exported taxonomies belong to.
+    /// Required. Resource name of the project that the exported taxonomies belong
+    /// to.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Resource names of the taxonomies to export.

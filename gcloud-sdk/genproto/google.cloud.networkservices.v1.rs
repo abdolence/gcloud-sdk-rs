@@ -19,8 +19,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -201,30 +202,32 @@ pub struct EndpointPolicy {
     /// endpoint.
     #[prost(string, tag = "7")]
     pub authorization_policy: ::prost::alloc::string::String,
-    /// Required. A matcher that selects endpoints to which the policies should be applied.
+    /// Required. A matcher that selects endpoints to which the policies should be
+    /// applied.
     #[prost(message, optional, tag = "9")]
     pub endpoint_matcher: ::core::option::Option<EndpointMatcher>,
     /// Optional. Port selector for the (matched) endpoints. If no port selector is
     /// provided, the matched config is applied to all ports.
     #[prost(message, optional, tag = "10")]
     pub traffic_port_selector: ::core::option::Option<TrafficPortSelector>,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "11")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. A URL referring to ServerTlsPolicy resource. ServerTlsPolicy is used to
-    /// determine the authentication policy to be applied to terminate the inbound
-    /// traffic at the identified backends. If this field is not set,
+    /// Optional. A URL referring to ServerTlsPolicy resource. ServerTlsPolicy is
+    /// used to determine the authentication policy to be applied to terminate the
+    /// inbound traffic at the identified backends. If this field is not set,
     /// authentication is disabled(open) for this endpoint.
     #[prost(string, tag = "12")]
     pub server_tls_policy: ::prost::alloc::string::String,
-    /// Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy can be set
-    /// to specify the authentication for traffic from the proxy to the actual
-    /// endpoints. More specifically, it is applied to the outgoing traffic from
-    /// the proxy to the endpoint. This is typically used for sidecar model where
-    /// the proxy identifies itself as endpoint to the control plane, with the
-    /// connection between sidecar and endpoint requiring authentication. If this
-    /// field is not set, authentication is disabled(open). Applicable only when
-    /// EndpointPolicyType is SIDECAR_PROXY.
+    /// Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy
+    /// can be set to specify the authentication for traffic from the proxy to the
+    /// actual endpoints. More specifically, it is applied to the outgoing traffic
+    /// from the proxy to the endpoint. This is typically used for sidecar model
+    /// where the proxy identifies itself as endpoint to the control plane, with
+    /// the connection between sidecar and endpoint requiring authentication. If
+    /// this field is not set, authentication is disabled(open). Applicable only
+    /// when EndpointPolicyType is SIDECAR_PROXY.
     #[prost(string, tag = "13")]
     pub client_tls_policy: ::prost::alloc::string::String,
 }
@@ -278,8 +281,8 @@ pub mod endpoint_policy {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointPoliciesRequest {
-    /// Required. The project and location from which the EndpointPolicies should be
-    /// listed, specified in the format `projects/*/locations/global`.
+    /// Required. The project and location from which the EndpointPolicies should
+    /// be listed, specified in the format `projects/*/locations/global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of EndpointPolicies to return per call.
@@ -380,30 +383,31 @@ pub struct Gateway {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
     /// Immutable. The type of the customer managed gateway.
     /// This field is required. If unspecified, an error is returned.
     #[prost(enumeration = "gateway::Type", tag = "6")]
     pub r#type: i32,
-    /// Required. One or more ports that the Gateway must receive traffic on. The proxy binds
-    /// to the ports specified. Gateway listen on 0.0.0.0 on the ports specified
-    /// below.
+    /// Required. One or more ports that the Gateway must receive traffic on. The
+    /// proxy binds to the ports specified. Gateway listen on 0.0.0.0 on the ports
+    /// specified below.
     #[prost(int32, repeated, packed = "false", tag = "11")]
     pub ports: ::prost::alloc::vec::Vec<i32>,
-    /// Required. Immutable. Scope determines how configuration across multiple Gateway instances are
-    /// merged. The configuration for multiple Gateway instances with the same
-    /// scope will be merged as presented as a single coniguration to the
-    /// proxy/load balancer.
+    /// Required. Immutable. Scope determines how configuration across multiple
+    /// Gateway instances are merged. The configuration for multiple Gateway
+    /// instances with the same scope will be merged as presented as a single
+    /// coniguration to the proxy/load balancer.
     ///
     /// Max length 64 characters.
     /// Scope should start with a letter and can only have letters, numbers,
     /// hyphens.
     #[prost(string, tag = "8")]
     pub scope: ::prost::alloc::string::String,
-    /// Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS
-    /// traffic is terminated. If empty, TLS termination is disabled.
+    /// Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how
+    /// TLS traffic is terminated. If empty, TLS termination is disabled.
     #[prost(string, tag = "9")]
     pub server_tls_policy: ::prost::alloc::string::String,
 }
@@ -559,23 +563,24 @@ pub struct GrpcRoute {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Service hostnames with an optional port for which this route describes
-    /// traffic.
+    /// Required. Service hostnames with an optional port for which this route
+    /// describes traffic.
     ///
     /// Format: <hostname>\[:<port>\]
     ///
     /// Hostname is the fully qualified domain name of a network host. This matches
     /// the RFC 1123 definition of a hostname with 2 notable exceptions:
     ///   - IPs are not allowed.
-    ///   - A hostname may be prefixed with a wildcard label (*.). The wildcard
+    ///   - A hostname may be prefixed with a wildcard label (`*.`). The wildcard
     ///     label must appear by itself as the first label.
     ///
     /// Hostname can be "precise" which is a domain name without the terminating
-    /// dot of a network host (e.g. "foo.example.com") or "wildcard", which is a
-    /// domain name prefixed with a single wildcard label (e.g. *.example.com).
+    /// dot of a network host (e.g. `foo.example.com`) or "wildcard", which is a
+    /// domain name prefixed with a single wildcard label (e.g. `*.example.com`).
     ///
     /// Note that as per RFC1035 and RFC1123, a label must consist of lower case
     /// alphanumeric characters or '-', and must start and end with an alphanumeric
@@ -586,24 +591,25 @@ pub struct GrpcRoute {
     /// configuration will be rejected.
     ///
     /// For example, while it is acceptable for routes for the hostnames
-    /// "*.foo.bar.com" and "*.bar.com" to be associated with the same route, it is
-    /// not possible to associate two routes both with "*.bar.com" or both with
-    /// "bar.com".
+    /// `*.foo.bar.com` and `*.bar.com` to be associated with the same route, it is
+    /// not possible to associate two routes both with `*.bar.com` or both with
+    /// `bar.com`.
     ///
     /// If a port is specified, then gRPC clients must use the channel URI with the
     /// port to match this rule (i.e. "xds:///service:123"), otherwise they must
     /// supply the URI without a port (i.e. "xds:///service").
     #[prost(string, repeated, tag = "6")]
     pub hostnames: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Meshes defines a list of meshes this GrpcRoute is attached to, as one of
-    /// the routing rules to route the requests served by the mesh.
+    /// Optional. Meshes defines a list of meshes this GrpcRoute is attached to, as
+    /// one of the routing rules to route the requests served by the mesh.
     ///
     /// Each mesh reference should match the pattern:
     /// `projects/*/locations/global/meshes/<mesh_name>`
     #[prost(string, repeated, tag = "9")]
     pub meshes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Gateways defines a list of gateways this GrpcRoute is attached to, as one
-    /// of the routing rules to route the requests served by the gateway.
+    /// Optional. Gateways defines a list of gateways this GrpcRoute is attached
+    /// to, as one of the routing rules to route the requests served by the
+    /// gateway.
     ///
     /// Each gateway reference should match the pattern:
     /// `projects/*/locations/global/gateways/<gateway_name>`
@@ -623,20 +629,21 @@ pub mod grpc_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MethodMatch {
-        /// Optional. Specifies how to match against the name. If not specified, a default
-        /// value of "EXACT" is used.
+        /// Optional. Specifies how to match against the name. If not specified, a
+        /// default value of "EXACT" is used.
         #[prost(enumeration = "method_match::Type", tag = "1")]
         pub r#type: i32,
-        /// Required. Name of the service to match against. If unspecified, will match all
-        /// services.
+        /// Required. Name of the service to match against. If unspecified, will
+        /// match all services.
         #[prost(string, tag = "2")]
         pub grpc_service: ::prost::alloc::string::String,
-        /// Required. Name of the method to match against. If unspecified, will match all
-        /// methods.
+        /// Required. Name of the method to match against. If unspecified, will match
+        /// all methods.
         #[prost(string, tag = "3")]
         pub grpc_method: ::prost::alloc::string::String,
-        /// Optional. Specifies that matches are case sensitive.  The default value is true.
-        /// case_sensitive must not be used with a type of REGULAR_EXPRESSION.
+        /// Optional. Specifies that matches are case sensitive.  The default value
+        /// is true. case_sensitive must not be used with a type of
+        /// REGULAR_EXPRESSION.
         #[prost(bool, optional, tag = "4")]
         pub case_sensitive: ::core::option::Option<bool>,
     }
@@ -754,8 +761,8 @@ pub mod grpc_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
-        /// Optional. A gRPC method to match against. If this field is empty or omitted, will
-        /// match all methods.
+        /// Optional. A gRPC method to match against. If this field is empty or
+        /// omitted, will match all methods.
         #[prost(message, optional, tag = "1")]
         pub method: ::core::option::Option<MethodMatch>,
         /// Optional. Specifies a collection of headers to match.
@@ -766,9 +773,9 @@ pub mod grpc_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Destination {
-        /// Optional. Specifies the proportion of requests forwarded to the backend referenced
-        /// by the serviceName field. This is computed as:
-        ///          weight/Sum(weights in this destination list).
+        /// Optional. Specifies the proportion of requests forwarded to the backend
+        /// referenced by the serviceName field. This is computed as:
+        /// - weight/Sum(weights in this destination list).
         /// For non-zero values, there may be some epsilon from the exact proportion
         /// defined here depending on the precision an implementation supports.
         ///
@@ -792,8 +799,8 @@ pub mod grpc_route {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DestinationType {
-            /// Required. The URL of a destination service to which to route traffic. Must refer
-            /// to either a BackendService or ServiceDirectoryService.
+            /// Required. The URL of a destination service to which to route traffic.
+            /// Must refer to either a BackendService or ServiceDirectoryService.
             #[prost(string, tag = "1")]
             ServiceName(::prost::alloc::string::String),
         }
@@ -878,8 +885,8 @@ pub mod grpc_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteAction {
-        /// Optional. The destination services to which traffic should be forwarded. If
-        /// multiple destinations are specified, traffic will be split between
+        /// Optional. The destination services to which traffic should be forwarded.
+        /// If multiple destinations are specified, traffic will be split between
         /// Backend Service(s) according to the weight field of these destinations.
         #[prost(message, repeated, tag = "1")]
         pub destinations: ::prost::alloc::vec::Vec<Destination>,
@@ -894,9 +901,10 @@ pub mod grpc_route {
         /// with a fault_injection_policy
         #[prost(message, optional, tag = "3")]
         pub fault_injection_policy: ::core::option::Option<FaultInjectionPolicy>,
-        /// Optional. Specifies the timeout for selected route. Timeout is computed from the
-        /// time the request has been fully processed (i.e. end of stream) up until
-        /// the response has been completely processed. Timeout includes all retries.
+        /// Optional. Specifies the timeout for selected route. Timeout is computed
+        /// from the time the request has been fully processed (i.e. end of stream)
+        /// up until the response has been completely processed. Timeout includes all
+        /// retries.
         #[prost(message, optional, tag = "7")]
         pub timeout: ::core::option::Option<::prost_types::Duration>,
         /// Optional. Specifies the retry policy associated with this route.
@@ -907,13 +915,14 @@ pub mod grpc_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
-        /// Optional. Matches define conditions used for matching the rule against incoming
-        /// gRPC requests. Each match is independent, i.e. this rule will be matched
-        /// if ANY one of the matches is satisfied.  If no matches field is
+        /// Optional. Matches define conditions used for matching the rule against
+        /// incoming gRPC requests. Each match is independent, i.e. this rule will be
+        /// matched if ANY one of the matches is satisfied.  If no matches field is
         /// specified, this rule will unconditionally match traffic.
         #[prost(message, repeated, tag = "1")]
         pub matches: ::prost::alloc::vec::Vec<RouteMatch>,
-        /// Required. A detailed rule defining how to route traffic. This field is required.
+        /// Required. A detailed rule defining how to route traffic. This field is
+        /// required.
         #[prost(message, optional, tag = "2")]
         pub action: ::core::option::Option<RouteAction>,
     }
@@ -1008,7 +1017,8 @@ pub struct HttpRoute {
     /// Output only. Server-defined URL of this resource
     #[prost(string, tag = "11")]
     pub self_link: ::prost::alloc::string::String,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The timestamp when the resource was created.
@@ -1017,17 +1027,17 @@ pub struct HttpRoute {
     /// Output only. The timestamp when the resource was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Hostnames define a set of hosts that should match against the HTTP host
-    /// header to select a HttpRoute to process the request. Hostname is the fully
-    /// qualified domain name of a network host, as defined by RFC 1123 with the
-    /// exception that:
+    /// Required. Hostnames define a set of hosts that should match against the
+    /// HTTP host header to select a HttpRoute to process the request. Hostname is
+    /// the fully qualified domain name of a network host, as defined by RFC 1123
+    /// with the exception that:
     ///   - IPs are not allowed.
-    ///   - A hostname may be prefixed with a wildcard label (*.). The wildcard
+    ///   - A hostname may be prefixed with a wildcard label (`*.`). The wildcard
     ///     label must appear by itself as the first label.
     ///
     /// Hostname can be "precise" which is a domain name without the terminating
-    /// dot of a network host (e.g. "foo.example.com") or "wildcard", which is a
-    /// domain name prefixed with a single wildcard label (e.g. *.example.com).
+    /// dot of a network host (e.g. `foo.example.com`) or "wildcard", which is a
+    /// domain name prefixed with a single wildcard label (e.g. `*.example.com`).
     ///
     /// Note that as per RFC1035 and RFC1123, a label must consist of lower case
     /// alphanumeric characters or '-', and must start and end with an alphanumeric
@@ -1038,13 +1048,13 @@ pub struct HttpRoute {
     /// the configuration will be rejected.
     ///
     /// For example, while it is acceptable for routes for the hostnames
-    /// "*.foo.bar.com" and "*.bar.com" to be associated with the same Mesh (or
+    /// `*.foo.bar.com` and `*.bar.com` to be associated with the same Mesh (or
     /// Gateways under the same scope), it is not possible to associate two routes
-    /// both with "*.bar.com" or both with "bar.com".
+    /// both with `*.bar.com` or both with `bar.com`.
     #[prost(string, repeated, tag = "5")]
     pub hostnames: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Meshes defines a list of meshes this HttpRoute is attached to, as one of
-    /// the routing rules to route the requests served by the mesh.
+    /// Optional. Meshes defines a list of meshes this HttpRoute is attached to, as
+    /// one of the routing rules to route the requests served by the mesh.
     ///
     /// Each mesh reference should match the pattern:
     /// `projects/*/locations/global/meshes/<mesh_name>`
@@ -1052,8 +1062,9 @@ pub struct HttpRoute {
     /// The attached Mesh should be of a type SIDECAR
     #[prost(string, repeated, tag = "8")]
     pub meshes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Gateways defines a list of gateways this HttpRoute is attached to, as one
-    /// of the routing rules to route the requests served by the gateway.
+    /// Optional. Gateways defines a list of gateways this HttpRoute is attached
+    /// to, as one of the routing rules to route the requests served by the
+    /// gateway.
     ///
     /// Each gateway reference should match the pattern:
     /// `projects/*/locations/global/gateways/<gateway_name>`
@@ -1224,7 +1235,7 @@ pub mod http_route {
         pub service_name: ::prost::alloc::string::String,
         /// Specifies the proportion of requests forwarded to the backend referenced
         /// by the serviceName field. This is computed as:
-        ///          weight/Sum(weights in this destination list).
+        /// - weight/Sum(weights in this destination list).
         /// For non-zero values, there may be some epsilon from the exact proportion
         /// defined here depending on the precision an implementation supports.
         ///
@@ -1536,11 +1547,15 @@ pub mod http_route {
         #[prost(message, optional, tag = "4")]
         pub fault_injection_policy: ::core::option::Option<FaultInjectionPolicy>,
         /// The specification for modifying the headers of a matching request prior
-        /// to delivery of the request to the destination.
+        /// to delivery of the request to the destination. If HeaderModifiers are set
+        /// on both the Destination and the RouteAction, they will be merged.
+        /// Conflicts between the two will not be resolved on the configuration.
         #[prost(message, optional, tag = "5")]
         pub request_header_modifier: ::core::option::Option<HeaderModifier>,
         /// The specification for modifying the headers of a response prior to
-        /// sending the response back to the client.
+        /// sending the response back to the client. If HeaderModifiers are set
+        /// on both the Destination and the RouteAction, they will be merged.
+        /// Conflicts between the two will not be resolved on the configuration.
         #[prost(message, optional, tag = "6")]
         pub response_header_modifier: ::core::option::Option<HeaderModifier>,
         /// The specification for rewrite URL before forwarding requests to the
@@ -1690,14 +1705,15 @@ pub struct Mesh {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. If set to a valid TCP port (1-65535), instructs the SIDECAR proxy to listen
-    /// on the specified port of localhost (127.0.0.1) address. The SIDECAR proxy
-    /// will expect all traffic to be redirected to this port regardless of its
-    /// actual ip:port destination. If unset, a port '15001' is used as the
-    /// interception port. This will is applicable only for sidecar proxy
+    /// Optional. If set to a valid TCP port (1-65535), instructs the SIDECAR proxy
+    /// to listen on the specified port of localhost (127.0.0.1) address. The
+    /// SIDECAR proxy will expect all traffic to be redirected to this port
+    /// regardless of its actual ip:port destination. If unset, a port '15001' is
+    /// used as the interception port. This is applicable only for sidecar proxy
     /// deployments.
     #[prost(int32, tag = "8")]
     pub interception_port: i32,
@@ -1786,10 +1802,11 @@ pub struct DeleteMeshRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceBinding {
     /// Required. Name of the ServiceBinding resource. It matches pattern
-    /// `projects/*/locations/global/serviceBindings/service_binding_name>`.
+    /// `projects/*/locations/global/serviceBindings/service_binding_name`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The timestamp when the resource was created.
@@ -1890,16 +1907,17 @@ pub struct TcpRoute {
     /// Output only. The timestamp when the resource was updated.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Rules that define how traffic is routed and handled. At least one RouteRule
-    /// must be supplied. If there are multiple rules then the action taken will be
-    /// the first rule to match.
+    /// Required. Rules that define how traffic is routed and handled. At least one
+    /// RouteRule must be supplied. If there are multiple rules then the action
+    /// taken will be the first rule to match.
     #[prost(message, repeated, tag = "5")]
     pub rules: ::prost::alloc::vec::Vec<tcp_route::RouteRule>,
-    /// Optional. Meshes defines a list of meshes this TcpRoute is attached to, as one of the
-    /// routing rules to route the requests served by the mesh.
+    /// Optional. Meshes defines a list of meshes this TcpRoute is attached to, as
+    /// one of the routing rules to route the requests served by the mesh.
     ///
     /// Each mesh reference should match the pattern:
     /// `projects/*/locations/global/meshes/<mesh_name>`
@@ -1907,8 +1925,8 @@ pub struct TcpRoute {
     /// The attached Mesh should be of a type SIDECAR
     #[prost(string, repeated, tag = "8")]
     pub meshes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Gateways defines a list of gateways this TcpRoute is attached to, as one of
-    /// the routing rules to route the requests served by the gateway.
+    /// Optional. Gateways defines a list of gateways this TcpRoute is attached to,
+    /// as one of the routing rules to route the requests served by the gateway.
     ///
     /// Each gateway reference should match the pattern:
     /// `projects/*/locations/global/gateways/<gateway_name>`
@@ -1928,9 +1946,9 @@ pub mod tcp_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
-        /// Optional. RouteMatch defines the predicate used to match requests to a given
-        /// action. Multiple match types are "OR"ed for evaluation.
-        /// If no routeMatch field is specified, this rule will unconditionally match
+        /// Optional. RouteMatch defines the predicate used to match requests to a
+        /// given action. Multiple match types are "OR"ed for evaluation. If no
+        /// routeMatch field is specified, this rule will unconditionally match
         /// traffic.
         #[prost(message, repeated, tag = "1")]
         pub matches: ::prost::alloc::vec::Vec<RouteMatch>,
@@ -1945,10 +1963,10 @@ pub mod tcp_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
-        /// Required. Must be specified in the CIDR range format. A CIDR range consists of an
-        /// IP Address and a prefix length to construct the subnet mask. By default,
-        /// the prefix length is 32 (i.e. matches a single IP address). Only IPV4
-        /// addresses are supported.
+        /// Required. Must be specified in the CIDR range format. A CIDR range
+        /// consists of an IP Address and a prefix length to construct the subnet
+        /// mask. By default, the prefix length is 32 (i.e. matches a single IP
+        /// address). Only IPV4 addresses are supported.
         /// Examples:
         /// "10.0.0.1" - matches against this exact IP address.
         /// "10.0.0.0/8" - matches against any IP address within the 10.0.0.0 subnet
@@ -1964,12 +1982,14 @@ pub mod tcp_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteAction {
-        /// Optional. The destination services to which traffic should be forwarded. At least
-        /// one destination service is required.
+        /// Optional. The destination services to which traffic should be forwarded.
+        /// At least one destination service is required. Only one of route
+        /// destination or original destination can be set.
         #[prost(message, repeated, tag = "1")]
         pub destinations: ::prost::alloc::vec::Vec<RouteDestination>,
-        /// Optional. If true, Router will use the destination IP and port of the original
-        /// connection as the destination of the request. Default is false.
+        /// Optional. If true, Router will use the destination IP and port of the
+        /// original connection as the destination of the request. Default is false.
+        /// Only one of route destinations or original destination can be set.
         #[prost(bool, tag = "3")]
         pub original_destination: bool,
     }
@@ -1980,9 +2000,9 @@ pub mod tcp_route {
         /// Required. The URL of a BackendService to route traffic to.
         #[prost(string, tag = "1")]
         pub service_name: ::prost::alloc::string::String,
-        /// Optional. Specifies the proportion of requests forwarded to the backend referenced
-        /// by the serviceName field. This is computed as:
-        ///          weight/Sum(weights in this destination list).
+        /// Optional. Specifies the proportion of requests forwarded to the backend
+        /// referenced by the serviceName field. This is computed as:
+        /// - weight/Sum(weights in this destination list).
         /// For non-zero values, there may be some epsilon from the exact proportion
         /// defined here depending on the precision an implementation supports.
         ///
@@ -2045,8 +2065,7 @@ pub struct CreateTcpRouteRequest {
     /// format `projects/*/locations/global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Short name of the TcpRoute resource to be created. E.g. TODO(Add an
-    /// example).
+    /// Required. Short name of the TcpRoute resource to be created.
     #[prost(string, tag = "2")]
     pub tcp_route_id: ::prost::alloc::string::String,
     /// Required. TcpRoute resource to be created.
@@ -2095,16 +2114,17 @@ pub struct TlsRoute {
     /// Output only. The timestamp when the resource was updated.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. A free-text description of the resource. Max length 1024 characters.
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Rules that define how traffic is routed and handled. At least one RouteRule
-    /// must be supplied. If there are multiple rules then the action taken will be
-    /// the first rule to match.
+    /// Required. Rules that define how traffic is routed and handled. At least one
+    /// RouteRule must be supplied. If there are multiple rules then the action
+    /// taken will be the first rule to match.
     #[prost(message, repeated, tag = "5")]
     pub rules: ::prost::alloc::vec::Vec<tls_route::RouteRule>,
-    /// Optional. Meshes defines a list of meshes this TlsRoute is attached to, as one of the
-    /// routing rules to route the requests served by the mesh.
+    /// Optional. Meshes defines a list of meshes this TlsRoute is attached to, as
+    /// one of the routing rules to route the requests served by the mesh.
     ///
     /// Each mesh reference should match the pattern:
     /// `projects/*/locations/global/meshes/<mesh_name>`
@@ -2112,8 +2132,8 @@ pub struct TlsRoute {
     /// The attached Mesh should be of a type SIDECAR
     #[prost(string, repeated, tag = "6")]
     pub meshes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Gateways defines a list of gateways this TlsRoute is attached to, as one of
-    /// the routing rules to route the requests served by the gateway.
+    /// Optional. Gateways defines a list of gateways this TlsRoute is attached to,
+    /// as one of the routing rules to route the requests served by the gateway.
     ///
     /// Each gateway reference should match the pattern:
     /// `projects/*/locations/global/gateways/<gateway_name>`
@@ -2127,8 +2147,8 @@ pub mod tls_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
-        /// Required. RouteMatch defines the predicate used to match requests to a given
-        /// action. Multiple match types are "OR"ed for evaluation.
+        /// Required. RouteMatch defines the predicate used to match requests to a
+        /// given action. Multiple match types are "OR"ed for evaluation.
         #[prost(message, repeated, tag = "1")]
         pub matches: ::prost::alloc::vec::Vec<RouteMatch>,
         /// Required. The detailed rule defining how to route matched traffic.
@@ -2143,9 +2163,9 @@ pub mod tls_route {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
         /// Optional. SNI (server name indicator) to match against.
-        /// SNI will be matched against all wildcard domains, i.e. www.example.com
-        /// will be first matched against www.example.com, then *.example.com, then
-        /// *.com.
+        /// SNI will be matched against all wildcard domains, i.e. `www.example.com`
+        /// will be first matched against `www.example.com`, then `*.example.com`,
+        /// then `*.com.`
         /// Partial wildcards are not supported, and values like *w.example.com are
         /// invalid.
         /// At least one of sni_host and alpn is required.
@@ -2163,8 +2183,8 @@ pub mod tls_route {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteAction {
-        /// Required. The destination services to which traffic should be forwarded. At least
-        /// one destination service is required.
+        /// Required. The destination services to which traffic should be forwarded.
+        /// At least one destination service is required.
         #[prost(message, repeated, tag = "1")]
         pub destinations: ::prost::alloc::vec::Vec<RouteDestination>,
     }
@@ -2175,9 +2195,9 @@ pub mod tls_route {
         /// Required. The URL of a BackendService to route traffic to.
         #[prost(string, tag = "1")]
         pub service_name: ::prost::alloc::string::String,
-        /// Optional. Specifies the proportion of requests forwareded to the backend referenced
-        /// by the service_name field. This is computed as:
-        ///          weight/Sum(weights in destinations)
+        /// Optional. Specifies the proportion of requests forwareded to the backend
+        /// referenced by the service_name field. This is computed as:
+        /// - weight/Sum(weights in destinations)
         /// Weights in all destinations does not need to sum up to 100.
         #[prost(int32, tag = "2")]
         pub weight: i32,
@@ -2230,8 +2250,7 @@ pub struct CreateTlsRouteRequest {
     /// format `projects/*/locations/global`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Short name of the TlsRoute resource to be created. E.g. TODO(Add an
-    /// example).
+    /// Required. Short name of the TlsRoute resource to be created.
     #[prost(string, tag = "2")]
     pub tls_route_id: ::prost::alloc::string::String,
     /// Required. TlsRoute resource to be created.

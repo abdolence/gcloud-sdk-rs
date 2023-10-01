@@ -1,4 +1,5 @@
-/// The request for [ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1.ConnectionService.CreateConnection].
+/// The request for
+/// [ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1.ConnectionService.CreateConnection].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionRequest {
@@ -13,7 +14,8 @@ pub struct CreateConnectionRequest {
     #[prost(message, optional, tag = "3")]
     pub connection: ::core::option::Option<Connection>,
 }
-/// The request for [ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection].
+/// The request for
+/// [ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionRequest {
@@ -22,7 +24,8 @@ pub struct GetConnectionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
+/// The request for
+/// [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsRequest {
@@ -37,7 +40,8 @@ pub struct ListConnectionsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
+/// The response for
+/// [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
@@ -48,7 +52,8 @@ pub struct ListConnectionsResponse {
     #[prost(message, repeated, tag = "2")]
     pub connections: ::prost::alloc::vec::Vec<Connection>,
 }
-/// The request for [ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection].
+/// The request for
+/// [ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionRequest {
@@ -97,7 +102,7 @@ pub struct Connection {
     #[prost(bool, tag = "7")]
     pub has_credential: bool,
     /// Properties specific to the underlying data source.
-    #[prost(oneof = "connection::Properties", tags = "4, 8, 11, 21, 22")]
+    #[prost(oneof = "connection::Properties", tags = "4, 8, 11, 21, 22, 23, 24")]
     pub properties: ::core::option::Option<connection::Properties>,
 }
 /// Nested message and enum types in `Connection`.
@@ -121,6 +126,14 @@ pub mod connection {
         /// Cloud Resource properties.
         #[prost(message, tag = "22")]
         CloudResource(super::CloudResourceProperties),
+        /// Spark properties.
+        #[prost(message, tag = "23")]
+        Spark(super::SparkProperties),
+        /// Optional. Salesforce DataCloud properties. This field is intended for
+        /// use only by Salesforce partner projects. This field contains properties
+        /// for your Salesforce DataCloud connection.
+        #[prost(message, tag = "24")]
+        SalesforceDataCloud(super::SalesforceDataCloudProperties),
     }
 }
 /// Connection properties specific to the Cloud SQL.
@@ -139,10 +152,11 @@ pub struct CloudSqlProperties {
     /// Input only. Cloud SQL credential.
     #[prost(message, optional, tag = "4")]
     pub credential: ::core::option::Option<CloudSqlCredential>,
-    /// Output only. The account ID of the service used for the purpose of this connection.
+    /// Output only. The account ID of the service used for the purpose of this
+    /// connection.
     ///
     /// When the connection is used in the context of an operation in
-    /// BigQuery, this service account will serve as identity being used for
+    /// BigQuery, this service account will serve as the identity being used for
     /// connecting to the CloudSQL instance specified in this connection.
     #[prost(string, tag = "5")]
     pub service_account_id: ::prost::alloc::string::String,
@@ -214,6 +228,41 @@ pub struct CloudSpannerProperties {
     /// If parallelism should be used when reading from Cloud Spanner
     #[prost(bool, tag = "2")]
     pub use_parallelism: bool,
+    /// Allows setting max parallelism per query when executing on Spanner
+    /// independent compute resources. If unspecified, default values of
+    /// parallelism are chosen that are dependent on the Cloud Spanner instance
+    /// configuration.
+    ///
+    /// REQUIRES: `use_parallelism` must be set.
+    /// REQUIRES: Either `use_data_boost` or `use_serverless_analytics` must be
+    /// set.
+    #[prost(int32, tag = "5")]
+    pub max_parallelism: i32,
+    /// If the serverless analytics service should be used to read data from Cloud
+    /// Spanner.
+    /// Note: `use_parallelism` must be set when using serverless analytics.
+    #[prost(bool, tag = "3")]
+    pub use_serverless_analytics: bool,
+    /// If set, the request will be executed via Spanner independent compute
+    /// resources.
+    /// REQUIRES: `use_parallelism` must be set.
+    ///
+    /// NOTE: `use_serverless_analytics` will be deprecated. Prefer
+    /// `use_data_boost` over `use_serverless_analytics`.
+    #[prost(bool, tag = "6")]
+    pub use_data_boost: bool,
+    /// Optional. Cloud Spanner database role for fine-grained access control.
+    /// The Cloud Spanner admin should have provisioned the database role with
+    /// appropriate permissions, such as `SELECT` and `INSERT`. Other users should
+    /// only use roles provided by their Cloud Spanner admins.
+    ///
+    /// For more details, see \[About fine-grained access control\]
+    /// (<https://cloud.google.com/spanner/docs/fgac-about>).
+    ///
+    /// REQUIRES: The database role name must start with a letter, and can only
+    /// contain letters, numbers, and underscores.
+    #[prost(string, tag = "4")]
+    pub database_role: ::prost::alloc::string::String,
 }
 /// Connection properties specific to Amazon Web Services (AWS).
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -254,8 +303,9 @@ pub struct AwsCrossAccountRole {
     /// Output only. Google-owned AWS IAM User for a Connection.
     #[prost(string, tag = "2")]
     pub iam_user_id: ::prost::alloc::string::String,
-    /// Output only. A Google-generated id for representing Connection’s identity in AWS.
-    /// External Id is also used for preventing the Confused Deputy Problem. See
+    /// Output only. A Google-generated id for representing Connection’s identity
+    /// in AWS. External Id is also used for preventing the Confused Deputy
+    /// Problem. See
     /// <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html>
     #[prost(string, tag = "3")]
     pub external_id: ::prost::alloc::string::String,
@@ -294,13 +344,13 @@ pub struct AzureProperties {
     /// setup.
     #[prost(string, tag = "5")]
     pub redirect_uri: ::prost::alloc::string::String,
-    /// The client id of the user's Azure Active Directory Application used for a
+    /// The client ID of the user's Azure Active Directory Application used for a
     /// federated connection.
     #[prost(string, tag = "6")]
     pub federated_application_client_id: ::prost::alloc::string::String,
-    /// Output only. A unique Google-owned and Google-generated identity for the Connection.
-    /// This identity will be used to access the user's Azure Active Directory
-    /// Application.
+    /// Output only. A unique Google-owned and Google-generated identity for the
+    /// Connection. This identity will be used to access the user's Azure Active
+    /// Directory Application.
     #[prost(string, tag = "7")]
     pub identity: ::prost::alloc::string::String,
 }
@@ -309,7 +359,8 @@ pub struct AzureProperties {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudResourceProperties {
-    /// Output only. The account ID of the service created for the purpose of this connection.
+    /// Output only. The account ID of the service created for the purpose of this
+    /// connection.
     ///
     /// The service account does not have any permissions associated with it
     /// when it is created. After creation, customers delegate permissions
@@ -321,6 +372,72 @@ pub struct CloudResourceProperties {
     ///    <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
     #[prost(string, tag = "1")]
     pub service_account_id: ::prost::alloc::string::String,
+}
+/// Configuration of the Dataproc Metastore Service.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetastoreServiceConfig {
+    /// Optional. Resource name of an existing Dataproc Metastore service.
+    ///
+    /// Example:
+    ///
+    /// * `projects/\[project_id\]/locations/\[region\]/services/\[service_id\]`
+    #[prost(string, tag = "1")]
+    pub metastore_service: ::prost::alloc::string::String,
+}
+/// Configuration of the Spark History Server.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SparkHistoryServerConfig {
+    /// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+    /// History Server for the connection.
+    ///
+    /// Example:
+    ///
+    /// * `projects/\[project_id\]/regions/\[region\]/clusters/\[cluster_name\]`
+    #[prost(string, tag = "1")]
+    pub dataproc_cluster: ::prost::alloc::string::String,
+}
+/// Container for connection properties to execute stored procedures for Apache
+/// Spark.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SparkProperties {
+    /// Output only. The account ID of the service created for the purpose of this
+    /// connection.
+    ///
+    /// The service account does not have any permissions associated with it when
+    /// it is created. After creation, customers delegate permissions to the
+    /// service account. When the connection is used in the context of a stored
+    /// procedure for Apache Spark in BigQuery, the service account is used to
+    /// connect to the desired resources in Google Cloud.
+    ///
+    /// The account ID is in the form of:
+    /// bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
+    #[prost(string, tag = "1")]
+    pub service_account_id: ::prost::alloc::string::String,
+    /// Optional. Dataproc Metastore Service configuration for the connection.
+    #[prost(message, optional, tag = "3")]
+    pub metastore_service_config: ::core::option::Option<MetastoreServiceConfig>,
+    /// Optional. Spark History Server configuration for the connection.
+    #[prost(message, optional, tag = "4")]
+    pub spark_history_server_config: ::core::option::Option<SparkHistoryServerConfig>,
+}
+/// Connection properties specific to Salesforce DataCloud. This is intended for
+/// use only by Salesforce partner projects.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SalesforceDataCloudProperties {
+    /// The URL to the user's Salesforce DataCloud instance.
+    #[prost(string, tag = "1")]
+    pub instance_uri: ::prost::alloc::string::String,
+    /// Output only. A unique Google-owned and Google-generated service account
+    /// identity for the connection.
+    #[prost(string, tag = "2")]
+    pub identity: ::prost::alloc::string::String,
+    /// The ID of the user's Salesforce tenant.
+    #[prost(string, tag = "3")]
+    pub tenant_id: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod connection_service_client {

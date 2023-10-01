@@ -49,7 +49,7 @@ pub struct Instance {
     /// the latest supported minor version.
     #[prost(enumeration = "MemcacheVersion", tag = "9")]
     pub memcache_version: i32,
-    /// Optional: User defined parameters to apply to the memcached process
+    /// User defined parameters to apply to the memcached process
     /// on each node.
     #[prost(message, optional, tag = "11")]
     pub parameters: ::core::option::Option<MemcacheParameters>,
@@ -81,6 +81,14 @@ pub struct Instance {
     /// Output only. Returns true if there is an update waiting to be applied
     #[prost(bool, tag = "21")]
     pub update_available: bool,
+    /// The maintenance policy for the instance. If not provided,
+    /// the maintenance event will be performed based on Memorystore
+    /// internal rollout schedule.
+    #[prost(message, optional, tag = "22")]
+    pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
+    /// Output only. Published maintenance schedule.
+    #[prost(message, optional, tag = "23")]
+    pub maintenance_schedule: ::core::option::Option<MaintenanceSchedule>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -249,6 +257,9 @@ pub mod instance {
         Creating = 1,
         /// Memcached instance has been created and ready to be used.
         Ready = 2,
+        /// Memcached instance is updating configuration such as maintenance policy
+        /// and schedule.
+        Updating = 3,
         /// Memcached instance is being deleted.
         Deleting = 4,
         /// Memcached instance is going through maintenance, e.g. data plane rollout.
@@ -264,6 +275,7 @@ pub mod instance {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Creating => "CREATING",
                 State::Ready => "READY",
+                State::Updating => "UPDATING",
                 State::Deleting => "DELETING",
                 State::PerformingMaintenance => "PERFORMING_MAINTENANCE",
             }
@@ -274,12 +286,62 @@ pub mod instance {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "CREATING" => Some(Self::Creating),
                 "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
                 "DELETING" => Some(Self::Deleting),
                 "PERFORMING_MAINTENANCE" => Some(Self::PerformingMaintenance),
                 _ => None,
             }
         }
     }
+}
+/// Maintenance policy per instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaintenancePolicy {
+    /// Output only. The time when the policy was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the policy was updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Description of what this policy is for. Create/Update methods
+    /// return INVALID_ARGUMENT if the length is greater than 512.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. Maintenance window that is applied to resources covered by this
+    /// policy. Minimum 1. For the current version, the maximum number of
+    /// weekly_maintenance_windows is expected to be one.
+    #[prost(message, repeated, tag = "4")]
+    pub weekly_maintenance_window: ::prost::alloc::vec::Vec<WeeklyMaintenanceWindow>,
+}
+/// Time window specified for weekly operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WeeklyMaintenanceWindow {
+    /// Required. Allows to define schedule that runs specified day of the week.
+    #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
+    pub day: i32,
+    /// Required. Start time of the window in UTC.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+    /// Required. Duration of the time window.
+    #[prost(message, optional, tag = "3")]
+    pub duration: ::core::option::Option<::prost_types::Duration>,
+}
+/// Upcoming maintenance schedule.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaintenanceSchedule {
+    /// Output only. The start time of any upcoming scheduled maintenance for this instance.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The end time of any upcoming scheduled maintenance for this instance.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The deadline that the maintenance schedule start time can not go beyond,
+    /// including reschedule.
+    #[prost(message, optional, tag = "4")]
+    pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for [ListInstances][google.cloud.memcache.v1beta2.CloudMemcache.ListInstances].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -369,6 +431,7 @@ pub struct CreateInstanceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Required. Mask of fields to update.
+    ///
     ///   *  `displayName`
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -386,6 +449,75 @@ pub struct DeleteInstanceRequest {
     /// where `location_id` refers to a GCP region
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request for [RescheduleMaintenance][google.cloud.memcache.v1beta2.CloudMemcache.RescheduleMaintenance].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RescheduleMaintenanceRequest {
+    /// Required. Memcache instance resource name using the form:
+    ///      `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. If reschedule type is SPECIFIC_TIME, must set up schedule_time as well.
+    #[prost(enumeration = "reschedule_maintenance_request::RescheduleType", tag = "2")]
+    pub reschedule_type: i32,
+    /// Timestamp when the maintenance shall be rescheduled to if
+    /// reschedule_type=SPECIFIC_TIME, in RFC 3339 format, for
+    /// example `2012-11-15T16:19:00.094Z`.
+    #[prost(message, optional, tag = "3")]
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `RescheduleMaintenanceRequest`.
+pub mod reschedule_maintenance_request {
+    /// Reschedule options.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RescheduleType {
+        /// Not set.
+        Unspecified = 0,
+        /// If the user wants to schedule the maintenance to happen now.
+        Immediate = 1,
+        /// If the user wants to use the existing maintenance policy to find the
+        /// next available window.
+        NextAvailableWindow = 2,
+        /// If the user wants to reschedule the maintenance to a specific time.
+        SpecificTime = 3,
+    }
+    impl RescheduleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RescheduleType::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
+                RescheduleType::Immediate => "IMMEDIATE",
+                RescheduleType::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
+                RescheduleType::SpecificTime => "SPECIFIC_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "NEXT_AVAILABLE_WINDOW" => Some(Self::NextAvailableWindow),
+                "SPECIFIC_TIME" => Some(Self::SpecificTime),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request for [ApplyParameters][google.cloud.memcache.v1beta2.CloudMemcache.ApplyParameters].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -437,15 +569,14 @@ pub struct ApplySoftwareUpdateRequest {
     #[prost(bool, tag = "3")]
     pub apply_all: bool,
 }
-/// The unique ID associated with this set of parameters. Users
-/// can use this id to determine if the parameters associated with the instance
-/// differ from the parameters associated with the nodes. A discrepancy between
-/// parameter ids can inform users that they may need to take action to apply
-/// parameters on nodes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MemcacheParameters {
-    /// Output only.
+    /// Output only. The unique ID associated with this set of parameters. Users
+    /// can use this id to determine if the parameters associated with the instance
+    /// differ from the parameters associated with the nodes. A discrepancy between
+    /// parameter ids can inform users that they may need to take action to apply
+    /// parameters on nodes.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// User defined set of parameters to use in the memcached process.
@@ -873,6 +1004,37 @@ pub mod cloud_memcache_client {
                     GrpcMethod::new(
                         "google.cloud.memcache.v1beta2.CloudMemcache",
                         "ApplySoftwareUpdate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Performs the apply phase of the RescheduleMaintenance verb.
+        pub async fn reschedule_maintenance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RescheduleMaintenanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memcache.v1beta2.CloudMemcache/RescheduleMaintenance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memcache.v1beta2.CloudMemcache",
+                        "RescheduleMaintenance",
                     ),
                 );
             self.inner.unary(req, path, codec).await

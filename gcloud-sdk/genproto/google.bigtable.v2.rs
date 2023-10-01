@@ -623,6 +623,39 @@ pub mod read_modify_write_rule {
         IncrementAmount(i64),
     }
 }
+/// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+/// A partition of a change stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamPartition {
+    /// The row range covered by this partition and is specified by
+    /// [`start_key_closed`, `end_key_open`).
+    #[prost(message, optional, tag = "1")]
+    pub row_range: ::core::option::Option<RowRange>,
+}
+/// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+/// The information required to continue reading the data from multiple
+/// `StreamPartitions` from where a previous read left off.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamContinuationTokens {
+    /// List of continuation tokens.
+    #[prost(message, repeated, tag = "1")]
+    pub tokens: ::prost::alloc::vec::Vec<StreamContinuationToken>,
+}
+/// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+/// The information required to continue reading the data from a
+/// `StreamPartition` from where a previous read left off.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamContinuationToken {
+    /// The partition that this token applies to.
+    #[prost(message, optional, tag = "1")]
+    pub partition: ::core::option::Option<StreamPartition>,
+    /// An encoded position in the stream to restart reading from.
+    #[prost(string, tag = "2")]
+    pub token: ::prost::alloc::string::String,
+}
 /// ReadIterationStats captures information about the iteration of rows or cells
 /// over the course of a read, e.g. how many results were scanned in a read
 /// operation versus the results returned.
@@ -723,8 +756,8 @@ pub struct ReadRowsRequest {
     /// `projects/<project>/instances/<instance>/tables/<table>`.
     #[prost(string, tag = "1")]
     pub table_name: ::prost::alloc::string::String,
-    /// This value specifies routing for replication. This API only accepts the
-    /// empty value of app_profile_id.
+    /// This value specifies routing for replication. If not specified, the
+    /// "default" application profile will be used.
     #[prost(string, tag = "5")]
     pub app_profile_id: ::prost::alloc::string::String,
     /// The row keys and/or ranges to read sequentially. If not specified, reads
@@ -742,10 +775,23 @@ pub struct ReadRowsRequest {
     /// The view into RequestStats, as described above.
     #[prost(enumeration = "read_rows_request::RequestStatsView", tag = "6")]
     pub request_stats_view: i32,
+    /// Experimental API - Please note that this API is currently experimental
+    /// and can change in the future.
+    ///
+    /// Return rows in lexiographical descending order of the row keys. The row
+    /// contents will not be affected by this flag.
+    ///
+    /// Example result set:
+    ///
+    ///      [
+    ///        {key: "k2", "f:col1": "v1", "f:col2": "v1"},
+    ///        {key: "k1", "f:col1": "v2", "f:col2": "v2"}
+    ///      ]
+    #[prost(bool, tag = "7")]
+    pub reversed: bool,
 }
 /// Nested message and enum types in `ReadRowsRequest`.
 pub mod read_rows_request {
-    ///
     /// The desired view into RequestStats that should be returned in the response.
     ///
     /// See also: RequestStats message.
@@ -948,8 +994,8 @@ pub struct SampleRowKeysResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRowRequest {
-    /// Required. The unique name of the table to which the mutation should be applied.
-    /// Values are of the form
+    /// Required. The unique name of the table to which the mutation should be
+    /// applied. Values are of the form
     /// `projects/<project>/instances/<instance>/tables/<table>`.
     #[prost(string, tag = "1")]
     pub table_name: ::prost::alloc::string::String,
@@ -960,9 +1006,9 @@ pub struct MutateRowRequest {
     /// Required. The key of the row to which the mutation should be applied.
     #[prost(bytes = "vec", tag = "2")]
     pub row_key: ::prost::alloc::vec::Vec<u8>,
-    /// Required. Changes to be atomically applied to the specified row. Entries are applied
-    /// in order, meaning that earlier mutations can be masked by later ones.
-    /// Must contain at least one entry and at most 100000.
+    /// Required. Changes to be atomically applied to the specified row. Entries
+    /// are applied in order, meaning that earlier mutations can be masked by later
+    /// ones. Must contain at least one entry and at most 100000.
     #[prost(message, repeated, tag = "3")]
     pub mutations: ::prost::alloc::vec::Vec<Mutation>,
 }
@@ -974,7 +1020,8 @@ pub struct MutateRowResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRowsRequest {
-    /// Required. The unique name of the table to which the mutations should be applied.
+    /// Required. The unique name of the table to which the mutations should be
+    /// applied.
     #[prost(string, tag = "1")]
     pub table_name: ::prost::alloc::string::String,
     /// This value specifies routing for replication. If not specified, the
@@ -998,10 +1045,9 @@ pub mod mutate_rows_request {
         /// The key of the row to which the `mutations` should be applied.
         #[prost(bytes = "vec", tag = "1")]
         pub row_key: ::prost::alloc::vec::Vec<u8>,
-        /// Required. Changes to be atomically applied to the specified row. Mutations are
-        /// applied in order, meaning that earlier mutations can be masked by
-        /// later ones.
-        /// You must specify at least one mutation.
+        /// Required. Changes to be atomically applied to the specified row.
+        /// Mutations are applied in order, meaning that earlier mutations can be
+        /// masked by later ones. You must specify at least one mutation.
         #[prost(message, repeated, tag = "2")]
         pub mutations: ::prost::alloc::vec::Vec<super::Mutation>,
     }
@@ -1013,6 +1059,11 @@ pub struct MutateRowsResponse {
     /// One or more results for Entries from the batch request.
     #[prost(message, repeated, tag = "1")]
     pub entries: ::prost::alloc::vec::Vec<mutate_rows_response::Entry>,
+    /// Information about how client should limit the rate (QPS). Primirily used by
+    /// supported official Cloud Bigtable clients. If unset, the rate limit info is
+    /// not provided by the server.
+    #[prost(message, optional, tag = "3")]
+    pub rate_limit_info: ::core::option::Option<RateLimitInfo>,
 }
 /// Nested message and enum types in `MutateRowsResponse`.
 pub mod mutate_rows_response {
@@ -1032,13 +1083,36 @@ pub mod mutate_rows_response {
         pub status: ::core::option::Option<super::super::super::rpc::Status>,
     }
 }
+/// Information about how client should adjust the load to Bigtable.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RateLimitInfo {
+    /// Time that clients should wait before adjusting the target rate again.
+    /// If clients adjust rate too frequently, the impact of the previous
+    /// adjustment may not have been taken into account and may
+    /// over-throttle or under-throttle. If clients adjust rate too slowly, they
+    /// will not be responsive to load changes on server side, and may
+    /// over-throttle or under-throttle.
+    #[prost(message, optional, tag = "1")]
+    pub period: ::core::option::Option<::prost_types::Duration>,
+    /// If it has been at least one `period` since the last load adjustment, the
+    /// client should multiply the current load by this value to get the new target
+    /// load. For example, if the current load is 100 and `factor` is 0.8, the new
+    /// target load should be 80. After adjusting, the client should ignore
+    /// `factor` until another `period` has passed.
+    ///
+    /// The client can measure its load using any unit that's comparable over time
+    /// For example, QPS can be used as long as each request involves a similar
+    /// amount of work.
+    #[prost(double, tag = "2")]
+    pub factor: f64,
+}
 /// Request message for Bigtable.CheckAndMutateRow.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckAndMutateRowRequest {
-    /// Required. The unique name of the table to which the conditional mutation should be
-    /// applied.
-    /// Values are of the form
+    /// Required. The unique name of the table to which the conditional mutation
+    /// should be applied. Values are of the form
     /// `projects/<project>/instances/<instance>/tables/<table>`.
     #[prost(string, tag = "1")]
     pub table_name: ::prost::alloc::string::String,
@@ -1046,7 +1120,8 @@ pub struct CheckAndMutateRowRequest {
     /// "default" application profile will be used.
     #[prost(string, tag = "7")]
     pub app_profile_id: ::prost::alloc::string::String,
-    /// Required. The key of the row to which the conditional mutation should be applied.
+    /// Required. The key of the row to which the conditional mutation should be
+    /// applied.
     #[prost(bytes = "vec", tag = "2")]
     pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// The filter to be applied to the contents of the specified row. Depending
@@ -1083,8 +1158,9 @@ pub struct CheckAndMutateRowResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PingAndWarmRequest {
-    /// Required. The unique name of the instance to check permissions for as well as
-    /// respond. Values are of the form `projects/<project>/instances/<instance>`.
+    /// Required. The unique name of the instance to check permissions for as well
+    /// as respond. Values are of the form
+    /// `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This value specifies routing for replication. If not specified, the
@@ -1100,9 +1176,8 @@ pub struct PingAndWarmResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadModifyWriteRowRequest {
-    /// Required. The unique name of the table to which the read/modify/write rules should be
-    /// applied.
-    /// Values are of the form
+    /// Required. The unique name of the table to which the read/modify/write rules
+    /// should be applied. Values are of the form
     /// `projects/<project>/instances/<instance>/tables/<table>`.
     #[prost(string, tag = "1")]
     pub table_name: ::prost::alloc::string::String,
@@ -1110,12 +1185,13 @@ pub struct ReadModifyWriteRowRequest {
     /// "default" application profile will be used.
     #[prost(string, tag = "4")]
     pub app_profile_id: ::prost::alloc::string::String,
-    /// Required. The key of the row to which the read/modify/write rules should be applied.
+    /// Required. The key of the row to which the read/modify/write rules should be
+    /// applied.
     #[prost(bytes = "vec", tag = "2")]
     pub row_key: ::prost::alloc::vec::Vec<u8>,
-    /// Required. Rules specifying how the specified row's contents are to be transformed
-    /// into writes. Entries are applied in order, meaning that earlier rules will
-    /// affect the results of later ones.
+    /// Required. Rules specifying how the specified row's contents are to be
+    /// transformed into writes. Entries are applied in order, meaning that earlier
+    /// rules will affect the results of later ones.
     #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<ReadModifyWriteRule>,
 }
@@ -1126,6 +1202,312 @@ pub struct ReadModifyWriteRowResponse {
     /// A Row containing the new contents of all cells modified by the request.
     #[prost(message, optional, tag = "1")]
     pub row: ::core::option::Option<Row>,
+}
+/// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+/// Request message for Bigtable.GenerateInitialChangeStreamPartitions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateInitialChangeStreamPartitionsRequest {
+    /// Required. The unique name of the table from which to get change stream
+    /// partitions. Values are of the form
+    /// `projects/<project>/instances/<instance>/tables/<table>`.
+    /// Change streaming must be enabled on the table.
+    #[prost(string, tag = "1")]
+    pub table_name: ::prost::alloc::string::String,
+    /// This value specifies routing for replication. If not specified, the
+    /// "default" application profile will be used.
+    /// Single cluster routing must be configured on the profile.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+}
+/// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+/// Response message for Bigtable.GenerateInitialChangeStreamPartitions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateInitialChangeStreamPartitionsResponse {
+    /// A partition of the change stream.
+    #[prost(message, optional, tag = "1")]
+    pub partition: ::core::option::Option<StreamPartition>,
+}
+/// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+/// Request message for Bigtable.ReadChangeStream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadChangeStreamRequest {
+    /// Required. The unique name of the table from which to read a change stream.
+    /// Values are of the form
+    /// `projects/<project>/instances/<instance>/tables/<table>`.
+    /// Change streaming must be enabled on the table.
+    #[prost(string, tag = "1")]
+    pub table_name: ::prost::alloc::string::String,
+    /// This value specifies routing for replication. If not specified, the
+    /// "default" application profile will be used.
+    /// Single cluster routing must be configured on the profile.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+    /// The partition to read changes from.
+    #[prost(message, optional, tag = "3")]
+    pub partition: ::core::option::Option<StreamPartition>,
+    /// If specified, OK will be returned when the stream advances beyond
+    /// this time. Otherwise, changes will be continuously delivered on the stream.
+    /// This value is inclusive and will be truncated to microsecond granularity.
+    #[prost(message, optional, tag = "5")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If specified, the duration between `Heartbeat` messages on the stream.
+    /// Otherwise, defaults to 5 seconds.
+    #[prost(message, optional, tag = "7")]
+    pub heartbeat_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Options for describing where we want to start reading from the stream.
+    #[prost(oneof = "read_change_stream_request::StartFrom", tags = "4, 6")]
+    pub start_from: ::core::option::Option<read_change_stream_request::StartFrom>,
+}
+/// Nested message and enum types in `ReadChangeStreamRequest`.
+pub mod read_change_stream_request {
+    /// Options for describing where we want to start reading from the stream.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StartFrom {
+        /// Start reading the stream at the specified timestamp. This timestamp must
+        /// be within the change stream retention period, less than or equal to the
+        /// current time, and after change stream creation, whichever is greater.
+        /// This value is inclusive and will be truncated to microsecond granularity.
+        #[prost(message, tag = "4")]
+        StartTime(::prost_types::Timestamp),
+        /// Tokens that describe how to resume reading a stream where reading
+        /// previously left off. If specified, changes will be read starting at the
+        /// the position. Tokens are delivered on the stream as part of `Heartbeat`
+        /// and `CloseStream` messages.
+        ///
+        /// If a single token is provided, the token’s partition must exactly match
+        /// the request’s partition. If multiple tokens are provided, as in the case
+        /// of a partition merge, the union of the token partitions must exactly
+        /// cover the request’s partition. Otherwise, INVALID_ARGUMENT will be
+        /// returned.
+        #[prost(message, tag = "6")]
+        ContinuationTokens(super::StreamContinuationTokens),
+    }
+}
+/// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+/// Response message for Bigtable.ReadChangeStream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadChangeStreamResponse {
+    /// The data or control message on the stream.
+    #[prost(oneof = "read_change_stream_response::StreamRecord", tags = "1, 2, 3")]
+    pub stream_record: ::core::option::Option<read_change_stream_response::StreamRecord>,
+}
+/// Nested message and enum types in `ReadChangeStreamResponse`.
+pub mod read_change_stream_response {
+    /// A partial or complete mutation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MutationChunk {
+        /// If set, then the mutation is a `SetCell` with a chunked value across
+        /// multiple messages.
+        #[prost(message, optional, tag = "1")]
+        pub chunk_info: ::core::option::Option<mutation_chunk::ChunkInfo>,
+        /// If this is a continuation of a chunked message (`chunked_value_offset` >
+        /// 0), ignore all fields except the `SetCell`'s value and merge it with
+        /// the previous message by concatenating the value fields.
+        #[prost(message, optional, tag = "2")]
+        pub mutation: ::core::option::Option<super::Mutation>,
+    }
+    /// Nested message and enum types in `MutationChunk`.
+    pub mod mutation_chunk {
+        /// Information about the chunking of this mutation.
+        /// Only `SetCell` mutations can be chunked, and all chunks for a `SetCell`
+        /// will be delivered contiguously with no other mutation types interleaved.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ChunkInfo {
+            /// The total value size of all the chunks that make up the `SetCell`.
+            #[prost(int32, tag = "1")]
+            pub chunked_value_size: i32,
+            /// The byte offset of this chunk into the total value size of the
+            /// mutation.
+            #[prost(int32, tag = "2")]
+            pub chunked_value_offset: i32,
+            /// When true, this is the last chunk of a chunked `SetCell`.
+            #[prost(bool, tag = "3")]
+            pub last_chunk: bool,
+        }
+    }
+    /// A message corresponding to one or more mutations to the partition
+    /// being streamed. A single logical `DataChange` message may also be split
+    /// across a sequence of multiple individual messages. Messages other than
+    /// the first in a sequence will only have the `type` and `chunks` fields
+    /// populated, with the final message in the sequence also containing `done`
+    /// set to true.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataChange {
+        /// The type of the mutation.
+        #[prost(enumeration = "data_change::Type", tag = "1")]
+        pub r#type: i32,
+        /// The cluster where the mutation was applied.
+        /// Not set when `type` is `GARBAGE_COLLECTION`.
+        #[prost(string, tag = "2")]
+        pub source_cluster_id: ::prost::alloc::string::String,
+        /// The row key for all mutations that are part of this `DataChange`.
+        /// If the `DataChange` is chunked across multiple messages, then this field
+        /// will only be set for the first message.
+        #[prost(bytes = "vec", tag = "3")]
+        pub row_key: ::prost::alloc::vec::Vec<u8>,
+        /// The timestamp at which the mutation was applied on the Bigtable server.
+        #[prost(message, optional, tag = "4")]
+        pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
+        /// A value that lets stream consumers reconstruct Bigtable's
+        /// conflict resolution semantics.
+        /// <https://cloud.google.com/bigtable/docs/writes#conflict-resolution>
+        /// In the event that the same row key, column family, column qualifier,
+        /// timestamp are modified on different clusters at the same
+        /// `commit_timestamp`, the mutation with the larger `tiebreaker` will be the
+        /// one chosen for the eventually consistent state of the system.
+        #[prost(int32, tag = "5")]
+        pub tiebreaker: i32,
+        /// The mutations associated with this change to the partition.
+        /// May contain complete mutations or chunks of a multi-message chunked
+        /// `DataChange` record.
+        #[prost(message, repeated, tag = "6")]
+        pub chunks: ::prost::alloc::vec::Vec<MutationChunk>,
+        /// When true, indicates that the entire `DataChange` has been read
+        /// and the client can safely process the message.
+        #[prost(bool, tag = "8")]
+        pub done: bool,
+        /// An encoded position for this stream's partition to restart reading from.
+        /// This token is for the StreamPartition from the request.
+        #[prost(string, tag = "9")]
+        pub token: ::prost::alloc::string::String,
+        /// An estimate of the commit timestamp that is usually lower than or equal
+        /// to any timestamp for a record that will be delivered in the future on the
+        /// stream. It is possible that, under particular circumstances that a future
+        /// record has a timestamp is is lower than a previously seen timestamp. For
+        /// an example usage see
+        /// <https://beam.apache.org/documentation/basics/#watermarks>
+        #[prost(message, optional, tag = "10")]
+        pub estimated_low_watermark: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `DataChange`.
+    pub mod data_change {
+        /// The type of mutation.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// The type is unspecified.
+            Unspecified = 0,
+            /// A user-initiated mutation.
+            User = 1,
+            /// A system-initiated mutation as part of garbage collection.
+            /// <https://cloud.google.com/bigtable/docs/garbage-collection>
+            GarbageCollection = 2,
+            /// This is a continuation of a multi-message change.
+            Continuation = 3,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Type::Unspecified => "TYPE_UNSPECIFIED",
+                    Type::User => "USER",
+                    Type::GarbageCollection => "GARBAGE_COLLECTION",
+                    Type::Continuation => "CONTINUATION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "USER" => Some(Self::User),
+                    "GARBAGE_COLLECTION" => Some(Self::GarbageCollection),
+                    "CONTINUATION" => Some(Self::Continuation),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// A periodic message with information that can be used to checkpoint
+    /// the state of a stream.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Heartbeat {
+        /// A token that can be provided to a subsequent `ReadChangeStream` call
+        /// to pick up reading at the current stream position.
+        #[prost(message, optional, tag = "1")]
+        pub continuation_token: ::core::option::Option<super::StreamContinuationToken>,
+        /// An estimate of the commit timestamp that is usually lower than or equal
+        /// to any timestamp for a record that will be delivered in the future on the
+        /// stream. It is possible that, under particular circumstances that a future
+        /// record has a timestamp is is lower than a previously seen timestamp. For
+        /// an example usage see
+        /// <https://beam.apache.org/documentation/basics/#watermarks>
+        #[prost(message, optional, tag = "2")]
+        pub estimated_low_watermark: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// A message indicating that the client should stop reading from the stream.
+    /// If status is OK and `continuation_tokens` & `new_partitions` are empty, the
+    /// stream has finished (for example if there was an `end_time` specified).
+    /// If `continuation_tokens` & `new_partitions` are present, then a change in
+    /// partitioning requires the client to open a new stream for each token to
+    /// resume reading. Example:
+    ///                                   [B,      D) ends
+    ///                                        |
+    ///                                        v
+    ///                new_partitions:  [A,  C) [C,  E)
+    /// continuation_tokens.partitions:  [B,C) [C,D)
+    ///                                   ^---^ ^---^
+    ///                                   ^     ^
+    ///                                   |     |
+    ///                                   |     StreamContinuationToken 2
+    ///                                   |
+    ///                                   StreamContinuationToken 1
+    /// To read the new partition [A,C), supply the continuation tokens whose
+    /// ranges cover the new partition, for example ContinuationToken[A,B) &
+    /// ContinuationToken[B,C).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CloseStream {
+        /// The status of the stream.
+        #[prost(message, optional, tag = "1")]
+        pub status: ::core::option::Option<super::super::super::rpc::Status>,
+        /// If non-empty, contains the information needed to resume reading their
+        /// associated partitions.
+        #[prost(message, repeated, tag = "2")]
+        pub continuation_tokens: ::prost::alloc::vec::Vec<
+            super::StreamContinuationToken,
+        >,
+        /// If non-empty, contains the new partitions to start reading from, which
+        /// are related to but not necessarily identical to the partitions for the
+        /// above `continuation_tokens`.
+        #[prost(message, repeated, tag = "3")]
+        pub new_partitions: ::prost::alloc::vec::Vec<super::StreamPartition>,
+    }
+    /// The data or control message on the stream.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StreamRecord {
+        /// A mutation to the partition.
+        #[prost(message, tag = "1")]
+        DataChange(DataChange),
+        /// A periodic heartbeat message.
+        #[prost(message, tag = "2")]
+        Heartbeat(Heartbeat),
+        /// An indication that the stream should be closed.
+        #[prost(message, tag = "3")]
+        CloseStream(CloseStream),
+    }
 }
 /// Generated client implementations.
 pub mod bigtable_client {
@@ -1414,7 +1796,108 @@ pub mod bigtable_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+        /// Returns the current list of partitions that make up the table's
+        /// change stream. The union of partitions will cover the entire keyspace.
+        /// Partitions can be read with `ReadChangeStream`.
+        pub async fn generate_initial_change_stream_partitions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GenerateInitialChangeStreamPartitionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<
+                    super::GenerateInitialChangeStreamPartitionsResponse,
+                >,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.v2.Bigtable/GenerateInitialChangeStreamPartitions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.v2.Bigtable",
+                        "GenerateInitialChangeStreamPartitions",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
+        /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
+        /// Reads changes from a table's change stream. Changes will
+        /// reflect both user-initiated mutations and mutations that are caused by
+        /// garbage collection.
+        pub async fn read_change_stream(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReadChangeStreamRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::ReadChangeStreamResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.v2.Bigtable/ReadChangeStream",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.bigtable.v2.Bigtable", "ReadChangeStream"),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
     }
+}
+/// Feature flags supported or enabled by a client.
+/// This is intended to be sent as part of request metadata to assure the server
+/// that certain behaviors are safe to enable. This proto is meant to be
+/// serialized and websafe-base64 encoded under the `bigtable-features` metadata
+/// key. The value will remain constant for the lifetime of a client and due to
+/// HTTP2's HPACK compression, the request overhead will be tiny.
+/// This is an internal implementation detail and should not be used by end users
+/// directly.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureFlags {
+    /// Notify the server that the client supports reverse scans. The server will
+    /// reject ReadRowsRequests with the reverse bit set when this is absent.
+    #[prost(bool, tag = "1")]
+    pub reverse_scans: bool,
+    /// Notify the server that the client enables batch write flow control by
+    /// requesting RateLimitInfo from MutateRowsResponse. Due to technical reasons,
+    /// this disables partial retries.
+    #[prost(bool, tag = "3")]
+    pub mutate_rows_rate_limit: bool,
+    /// Notify the server that the client enables batch write flow control by
+    /// requesting RateLimitInfo from MutateRowsResponse. With partial retries
+    /// enabled.
+    #[prost(bool, tag = "5")]
+    pub mutate_rows_rate_limit2: bool,
+    /// Notify the server that the client supports the last_scanned_row field
+    /// in ReadRowsResponse for long-running scans.
+    #[prost(bool, tag = "4")]
+    pub last_scanned_row_responses: bool,
 }
 /// Response metadata proto
 /// This is an experimental feature that will be used to get zone_id and
